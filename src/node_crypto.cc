@@ -156,7 +156,11 @@ template int SSLWrap<TLSWrap>::SelectNextProtoCallback(
     unsigned int inlen,
     void* arg);
 #endif
+
+#ifdef NODE__HAVE_TLSEXT_STATUS_CB
 template int SSLWrap<TLSWrap>::TLSExtStatusCallback(SSL* s, void* arg);
+#endif
+
 template void SSLWrap<TLSWrap>::DestroySSL();
 template int SSLWrap<TLSWrap>::SSLCertCallback(SSL* s, void* arg);
 template void SSLWrap<TLSWrap>::WaitForCertCb(CertCb cb, void* arg);
@@ -528,10 +532,7 @@ int SSL_CTX_use_certificate_chain(SSL_CTX* ctx,
     // the CA certificates.
     int r;
 
-    if (ctx->extra_certs != nullptr) {
-      sk_X509_pop_free(ctx->extra_certs, X509_free);
-      ctx->extra_certs = nullptr;
-    }
+    SSL_CTX_clear_extra_chain_certs(ctx);
 
     for (int i = 0; i < sk_X509_num(extra_certs); i++) {
       X509* ca = sk_X509_value(extra_certs, i);
@@ -2119,7 +2120,12 @@ int SSLWrap<Base>::SSLCertCallback(SSL* s, void* arg) {
     info->Set(env->tls_ticket_string(),
               Boolean::New(env->isolate(), sess->tlsext_ticklen != 0));
   }
-  bool ocsp = s->tlsext_status_type == TLSEXT_STATUSTYPE_ocsp;
+
+  bool ocsp = false;
+#ifdef NODE__HAVE_TLSEXT_STATUS_CB
+  ocsp = s->tlsext_status_type == TLSEXT_STATUSTYPE_ocsp;
+#endif
+
   info->Set(env->ocsp_request_string(), Boolean::New(env->isolate(), ocsp));
 
   Local<Value> argv[] = { info };
@@ -4975,7 +4981,7 @@ void PBKDF2(const FunctionCallbackInfo<Value>& args) {
 
   if (args[5]->IsFunction()) {
     obj->Set(env->ondone_string(), args[5]);
-    // XXX(trevnorris): This will need to go with the rest of domains.
+
     if (env->in_domain())
       obj->Set(env->domain_string(), env->domain_array()->Get(0));
     uv_queue_work(env->event_loop(),
@@ -5136,7 +5142,7 @@ void RandomBytes(const FunctionCallbackInfo<Value>& args) {
 
   if (args[1]->IsFunction()) {
     obj->Set(FIXED_ONE_BYTE_STRING(args.GetIsolate(), "ondone"), args[1]);
-    // XXX(trevnorris): This will need to go with the rest of domains.
+
     if (env->in_domain())
       obj->Set(env->domain_string(), env->domain_array()->Get(0));
     uv_queue_work(env->event_loop(),
@@ -5177,7 +5183,7 @@ void GetSSLCiphers(const FunctionCallbackInfo<Value>& args) {
   STACK_OF(SSL_CIPHER)* ciphers = SSL_get_ciphers(ssl);
 
   for (int i = 0; i < sk_SSL_CIPHER_num(ciphers); ++i) {
-    SSL_CIPHER* cipher = sk_SSL_CIPHER_value(ciphers, i);
+    const SSL_CIPHER* cipher = sk_SSL_CIPHER_value(ciphers, i);
     arr->Set(i, OneByteString(args.GetIsolate(), SSL_CIPHER_get_name(cipher)));
   }
 
