@@ -160,8 +160,8 @@ $ node -e "console.log('Hello from Node.js ' + process.version)"
 Prerequisites:
 
 * [Python 2.6 or 2.7](https://www.python.org/downloads/)
-* Visual Studio 2013 for Windows Desktop, or
-* Visual Studio Express 2013 for Windows Desktop
+* Visual Studio 2013 / 2015, all editions including the Community edition, or
+* Visual Studio Express 2013 / 2015 for Desktop
 * Basic Unix tools required for some tests,
   [Git for Windows](http://git-scm.com/download/win) includes Git Bash
   and tools which can be included in the global `PATH`.
@@ -367,11 +367,11 @@ handling your report.
 ## Current Project Team Members
 
 The Node.js project team comprises a group of core collaborators and a sub-group
-that forms the _Technical Steering Committee_ (TSC) which governs the project. For more
+that forms the _Core Technical Committee_ (CTC) which governs the project. For more
 information about the governance of the Node.js project, see
 [GOVERNANCE.md](./GOVERNANCE.md).
 
-### TSC (Technical Steering Committee)
+### CTC (Core Technical Committee)
 
 * [bnoordhuis](https://github.com/bnoordhuis) - **Ben Noordhuis** &lt;info@bnoordhuis.nl&gt;
 * [chrisdickinson](https://github.com/chrisdickinson) - **Chris Dickinson** &lt;christopher.s.dickinson@gmail.com&gt;
@@ -422,7 +422,7 @@ information about the governance of the Node.js project, see
 * [srl295](https://github.com/srl295) - **Steven R Loomis** &lt;srloomis@us.ibm.com&gt;
 * [targos](https://github.com/targos) - **Michaël Zasso** &lt;mic.besace@gmail.com&gt;
 * [tellnes](https://github.com/tellnes) - **Christian Tellnes** &lt;christian@tellnes.no&gt;
-* [thealphanerd](http://github.com/thealphanerd) - **Myles Borins** &lt;myles.borins@gmail.com&gt;
+* [thealphanerd](https://github.com/thealphanerd) - **Myles Borins** &lt;myles.borins@gmail.com&gt;
 * [thefourtheye](https://github.com/thefourtheye) - **Sakthipriyan Vairamani** &lt;thechargingvolcano@gmail.com&gt;
 * [thlorenz](https://github.com/thlorenz) - **Thorsten Lorenz** &lt;thlorenz@gmx.de&gt;
 * [Trott](https://github.com/Trott) - **Rich Trott** &lt;rtrott@gmail.com&gt;
@@ -431,7 +431,7 @@ information about the governance of the Node.js project, see
 * [yosuke-furukawa](https://github.com/yosuke-furukawa) - **Yosuke Furukawa** &lt;yosuke.furukawa@gmail.com&gt;
 * [zkat](https://github.com/zkat) - **Kat Marchán** &lt;kzm@sykosomatic.org&gt;
 
-Collaborators & TSC members follow the [COLLABORATOR_GUIDE.md](./COLLABORATOR_GUIDE.md) in
+Collaborators & CTC members follow the [COLLABORATOR_GUIDE.md](./COLLABORATOR_GUIDE.md) in
 maintaining the Node.js project.
 
 ### Release Team
