@@ -91,7 +91,6 @@
       '<(v8_parent_path)/tools/tickprocessor.js',
       '<(v8_parent_path)/tools/SourceMap.js',
       '<(v8_parent_path)/tools/tickprocessor-driver.js',
-      '<(v8_parent_path)/tools/mac-nm',
     ],
   },
 
