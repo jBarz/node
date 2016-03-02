@@ -1,5 +1,19 @@
 # Node.js ChangeLog
 
+## 2016-03-02, Version 4.3.2 'Argon' (LTS), @thealphanerd
+
+This is a security release with only a single commit, an update to openssl due to a recent security advisory. You can read more about the security advisory on [the Node.js website](https://nodejs.org/en/blog/vulnerability/openssl-march-2016/)
+
+### Notable changes
+
+* **openssl**
+  - Upgrade to openssl 1.0.2g. This fixes the security vulnerabilities that are references in [this openssl announcement](https://mta.openssl.org/pipermail/openssl-announce/2016-February/000063.html)
+  
+## Commits
+
+* [[`c133797d09`](https://github.com/nodejs/node/commit/c133797d09)] - **deps**: upgrade openssl to 1.0.2g (Ben Noordhuis) [#5507](https://github.com/nodejs/node/pull/5507)
+
+
 ## 2016-02-16, Version 4.3.1 'Argon' (LTS), @thealphanerd
 
 ### Notable changes
