@@ -1,5 +1,16 @@
 # Node.js ChangeLog
 
+## 2016-03-03, Version 5.7.2 (Stable). @TheAlphaNerd
+
+### Notable changes
+
+* **http_parser**:
+  * revert d77c3bf204 which was causing errors inside of http client callbacks to not propagate.
+  
+### Commits
+
+* [[`38e134435e`](https://github.com/nodejs/node/commit/38e134435e)] - **http_parser**: revert d77c3bf204 (Myles Borins)
+
 ## 2016-03-02, Version 5.7.1 (Stable), @Fishrock123
 
 ### Notable changes
