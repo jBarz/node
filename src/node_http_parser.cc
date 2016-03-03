@@ -2,8 +2,8 @@
 #include "node_buffer.h"
 #include "node_http_parser.h"
 
-#include "async-wrap.h"
-#include "async-wrap-inl.h"
+#include "base-object.h"
+#include "base-object-inl.h"
 #include "env.h"
 #include "env-inl.h"
 #include "stream_base.h"
@@ -147,10 +147,10 @@ struct StringPtr {
 };
 
 
-class Parser : public AsyncWrap {
+class Parser : public BaseObject {
  public:
   Parser(Environment* env, Local<Object> wrap, enum http_parser_type type)
-      : AsyncWrap(env, wrap, AsyncWrap::PROVIDER_HTTPPARSER),
+      : BaseObject(env, wrap),
         current_buffer_len_(0),
         current_buffer_data_(nullptr) {
     Wrap(object(), this);
@@ -161,11 +161,6 @@ class Parser : public AsyncWrap {
   ~Parser() override {
     ClearWrap(object());
     persistent().Reset();
-  }
-
-
-  size_t self_size() const override {
-    return sizeof(*this);
   }
 
 
@@ -290,10 +285,8 @@ class Parser : public AsyncWrap {
 
     argv[A_UPGRADE] = Boolean::New(env()->isolate(), parser_.upgrade);
 
-    Environment::AsyncCallbackScope callback_scope(env());
-
     Local<Value> head_response =
-        MakeCallback(cb.As<Function>(), ARRAY_SIZE(argv), argv);
+        cb.As<Function>()->Call(obj, ARRAY_SIZE(argv), argv);
 
     if (head_response.IsEmpty()) {
       got_exception_ = true;
@@ -328,7 +321,7 @@ class Parser : public AsyncWrap {
       Integer::NewFromUnsigned(env()->isolate(), length)
     };
 
-    Local<Value> r = MakeCallback(cb.As<Function>(), ARRAY_SIZE(argv), argv);
+    Local<Value> r = cb.As<Function>()->Call(obj, ARRAY_SIZE(argv), argv);
 
     if (r.IsEmpty()) {
       got_exception_ = true;
@@ -351,9 +344,7 @@ class Parser : public AsyncWrap {
     if (!cb->IsFunction())
       return 0;
 
-    Environment::AsyncCallbackScope callback_scope(env());
-
-    Local<Value> r = MakeCallback(cb.As<Function>(), 0, nullptr);
+    Local<Value> r = cb.As<Function>()->Call(obj, 0, nullptr);
 
     if (r.IsEmpty()) {
       got_exception_ = true;
@@ -593,7 +584,7 @@ class Parser : public AsyncWrap {
     parser->current_buffer_len_ = nread;
     parser->current_buffer_data_ = buf->base;
 
-    parser->MakeCallback(cb.As<Function>(), 1, &ret);
+    cb.As<Function>()->Call(obj, 1, &ret);
 
     parser->current_buffer_len_ = 0;
     parser->current_buffer_data_ = nullptr;
@@ -680,7 +671,7 @@ class Parser : public AsyncWrap {
       url_.ToString(env())
     };
 
-    Local<Value> r = MakeCallback(cb.As<Function>(), ARRAY_SIZE(argv), argv);
+    Local<Value> r = cb.As<Function>()->Call(obj, ARRAY_SIZE(argv), argv);
 
     if (r.IsEmpty())
       got_exception_ = true;

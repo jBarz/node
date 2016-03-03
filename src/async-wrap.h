@@ -17,7 +17,6 @@ namespace node {
   V(FSREQWRAP)                                                                \
   V(GETADDRINFOREQWRAP)                                                       \
   V(GETNAMEINFOREQWRAP)                                                       \
-  V(HTTPPARSER)                                                               \
   V(JSSTREAM)                                                                 \
   V(PIPEWRAP)                                                                 \
   V(PIPECONNECTWRAP)                                                          \
