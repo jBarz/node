@@ -826,7 +826,7 @@ recent OpenSSL releases, `openssl list-cipher-algorithms` will display the
 available cipher algorithms.
 
 The `password` is used to derive the cipher key and initialization vector (IV).
-The value must be either a `'binary'` encoded string or a [`Buffer`[].
+The value must be either a `'binary'` encoded string or a [`Buffer`][].
 
 The implementation of `crypto.createCipher()` derives keys using the OpenSSL
 function [`EVP_BytesToKey`][] with the digest algorithm set to MD5, one
@@ -908,7 +908,7 @@ The `key` is the raw key used by the `algorithm` and `iv` is an
 [initialization vector][]. Both arguments must be `'binary'` encoded strings or
 [buffers][`Buffer`].
 
-## crypto.createDiffieHellman(prime[, prime_encoding][, generator][, generator_encoding])
+### crypto.createDiffieHellman(prime[, prime_encoding][, generator][, generator_encoding])
 
 Creates a `DiffieHellman` key exchange object using the supplied `prime` and an
 optional specific `generator`.
@@ -1131,7 +1131,7 @@ Example:
 
 ```js
 const crypto = require('crypto');
-const key = crypto.pbkdf2sync('secret', 'salt', 100000, 512, 'sha512');
+const key = crypto.pbkdf2Sync('secret', 'salt', 100000, 512, 'sha512');
 console.log(key.toString('hex'));  // 'c5e478d...1469e50'
 ```
 
@@ -1243,7 +1243,7 @@ there is a problem generating the bytes.
 // Synchronous
 const buf = crypto.randomBytes(256);
 console.log(
-  `${buf.length}` bytes of random data: ${buf.toString('hex')});
+  `${buf.length} bytes of random data: ${buf.toString('hex')}`);
 ```
 
 The `crypto.randomBytes()` method will block until there is sufficient entropy.

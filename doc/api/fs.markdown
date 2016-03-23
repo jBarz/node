@@ -190,10 +190,11 @@ The times in the stat object have the following semantics:
 * `birthtime` "Birth Time" -  Time of file creation. Set once when the
   file is created.  On filesystems where birthtime is not available,
   this field may instead hold either the `ctime` or
-  `1970-01-01T00:00Z` (ie, unix epoch timestamp `0`).  On Darwin and
-  other FreeBSD variants, also set if the `atime` is explicitly set to
-  an earlier value than the current `birthtime` using the `utimes(2)`
-  system call.
+  `1970-01-01T00:00Z` (ie, unix epoch timestamp `0`). Note that this
+  value may be greater than `atime` or `mtime` in this case. On Darwin
+  and other FreeBSD variants, also set if the `atime` is explicitly
+  set to an earlier value than the current `birthtime` using the
+  `utimes(2)` system call.
 
 Prior to Node v0.12, the `ctime` held the `birthtime` on Windows
 systems.  Note that as of v0.12, `ctime` is not "creation time", and
@@ -428,6 +429,15 @@ to the completion callback.
 ## fs.fchownSync(fd, uid, gid)
 
 Synchronous fchown(2). Returns `undefined`.
+
+## fs.fdatasync(fd, callback)
+
+Asynchronous fdatasync(2). No arguments other than a possible exception are
+given to the completion callback.
+
+## fs.fdatasyncSync(fd)
+
+Synchronous fdatasync(2). Returns `undefined`.
 
 ## fs.fstat(fd, callback)
 
@@ -726,7 +736,7 @@ Here is an example below:
 fs.symlink('./foo', './new-port');
 ```
 
-It would create a symlic link named with "new-port" that points to "foo".
+It creates a symbolic link named "new-port" that points to "foo".
 
 ## fs.symlinkSync(target, path[, type])
 

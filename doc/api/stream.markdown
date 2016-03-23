@@ -416,6 +416,10 @@ potentially mangled if you simply pulled the Buffers directly and
 called [`buf.toString(encoding)`][] on them. If you want to read the data
 as strings, always use this method.
 
+Also you can disable any encoding at all with `readable.setEncoding(null)`.
+This approach is very useful if you deal with binary data or with large
+multi-byte strings spread out over multiple chunks.
+
 ```js
 var readable = getReadableStreamSomehow();
 readable.setEncoding('utf8');
@@ -706,7 +710,9 @@ Flush all data, buffered since [`stream.cork()`][] call.
 * Returns: {Boolean} `true` if the data was handled completely.
 
 This method writes some data to the underlying system, and calls the
-supplied callback once the data has been fully handled.
+supplied callback once the data has been fully handled.  If an error
+occurs, the callback may or may not be called with the error as its
+first argument.  To detect write errors, listen for the `'error'` event.
 
 The return value indicates if you should continue writing right now.
 If the data had to be buffered internally, then it will return

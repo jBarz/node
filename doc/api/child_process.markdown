@@ -32,7 +32,7 @@ mean that data sent to the child process may not be immediately consumed.*
 The `child_process.spawn()` method spawns the child process asynchronously,
 without blocking the Node.js event loop. The `child_process.spawnSync()`
 function provides equivalent functionality in a synchronous manner that blocks
-the event loop until the spawned process either exits of is terminated.
+the event loop until the spawned process either exits or is terminated.
 
 For convenience, the `child_process` module provides a handful of synchronous
 and asynchronous alternatives to [`child_process.spawn()`][] and
@@ -808,7 +808,7 @@ used to implement flow control.
 #### Example: sending a server object
 
 The `sendHandle` argument can be used, for instance, to pass the handle of
-a TSCP server object to the child process as illustrated in the example below:
+a TCP server object to the child process as illustrated in the example below:
 
 ```js
 const child = require('child_process').fork('child.js');
@@ -883,6 +883,8 @@ Once a socket has been passed to a child, the parent is no longer capable of
 tracking when the socket is destroyed. To indicate this, the `.connections`
 property becomes `null`. It is recommended not to use `.maxConnections` when
 this occurs.
+
+*Note: this function uses [`JSON.stringify()`][] internally to serialize the `message`.*
 
 ### child.stderr
 
@@ -978,3 +980,4 @@ to the same value.
 [`options.stdio`]: #child_process_options_stdio
 [`stdio`]: #child_process_options_stdio
 [synchronous counterparts]: #child_process_synchronous_process_creation
+[`JSON.stringify()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
