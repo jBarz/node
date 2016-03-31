@@ -85,9 +85,9 @@ path.extname('.index')
 
 Returns a path string from an object. This is the opposite of [`path.parse`][].
 
-If `pathObject` has all expected properties, the returned string will be a
-concatenation of the `dir` property, the platform-dependent path separator, and
-the `base` property.
+If `pathObject` has `dir` and `base` properties, the returned string will
+be a concatenation of the `dir` property, the platform-dependent path separator,
+and the `base` property.
 
 If the `dir` property is not supplied, the `root` property will be used as the
 `dir` property. However, it will be assumed that the `root` property already
@@ -99,6 +99,10 @@ string will be the contents of the `base` property.
 
 If the `base` property is not supplied, a concatenation of the `name` property
 and the `ext` property will be used as the `base` property.
+
+Examples:
+
+An example on Posix systems:
 
 ```js
 path.format({
@@ -118,6 +122,19 @@ path.format({
     name : "file"
 })
 // returns '/file.txt'
+```
+
+An example on Windows:
+
+```js
+path.format({
+    root : "C:\\",
+    dir : "C:\\path\\dir",
+    base : "file.txt",
+    ext : ".txt",
+    name : "file"
+})
+// returns 'C:\\path\\dir\\file.txt'
 ```
 
 ## path.isAbsolute(path)
