@@ -325,19 +325,19 @@ const crypto = require('crypto');
 const assert = require('assert');
 
 // Generate Alice's keys...
-const alice = crypto.createDiffieHellman(11);
+const alice = crypto.createDiffieHellman(2048);
 const alice_key = alice.generateKeys();
 
 // Generate Bob's keys...
-const bob = crypto.createDiffieHellman(11);
+const bob = crypto.createDiffieHellman(alice.getPrime(), alice.getGenerator());
 const bob_key = bob.generateKeys();
 
 // Exchange and generate the secret...
 const alice_secret = alice.computeSecret(bob_key);
 const bob_secret = bob.computeSecret(alice_key);
 
-assert(alice_secret, bob_secret);
-  // OK
+// OK
+assert.equal(alice_secret.toString('hex'), bob_secret.toString('hex'));
 ```
 
 ### diffieHellman.computeSecret(other_public_key[, input_encoding][, output_encoding])
@@ -669,10 +669,15 @@ provided a string is returned; otherwise a [`Buffer`][] is returned;
 The `Hmac` object can not be used again after `hmac.digest()` has been
 called. Multiple calls to `hmac.digest()` will result in an error being thrown.
 
-### hmac.update(data)
+### hmac.update(data[, input_encoding])
 
-Update the `Hmac` content with the given `data`. This can be called
-many times with new data as it is streamed.
+Updates the `Hmac` content with the given `data`, the encoding of which
+is given in `input_encoding` and can be `'utf8'`, `'ascii'` or
+`'binary'`. If `encoding` is not provided, and the `data` is a string, an
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][] then
+`input_encoding` is ignored.
+
+This can be called many times with new data as it is streamed.
 
 ## Class: Sign
 
@@ -733,10 +738,15 @@ returned.
 The `Sign` object can not be again used after `sign.sign()` method has been
 called. Multiple calls to `sign.sign()` will result in an error being thrown.
 
-### sign.update(data)
+### sign.update(data[, input_encoding])
 
-Updates the sign object with the given `data`. This can be called many times
-with new data as it is streamed.
+Updates the `Sign` content with the given `data`, the encoding of which
+is given in `input_encoding` and can be `'utf8'`, `'ascii'` or
+`'binary'`. If `encoding` is not provided, and the `data` is a string, an
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][] then
+`input_encoding` is ignored.
+
+This can be called many times with new data as it is streamed.
 
 ## Class: Verify
 
@@ -780,10 +790,15 @@ console.log(verify.verify(public_key, signature));
   // Prints true or false
 ```
 
-### verifier.update(data)
+### verifier.update(data[, input_encoding])
 
-Updates the verifier object with the given `data`. This can be called many
-times with new data as it is streamed.
+Updates the `Verify` content with the given `data`, the encoding of which
+is given in `input_encoding` and can be `'utf8'`, `'ascii'` or
+`'binary'`. If `encoding` is not provided, and the `data` is a string, an
+encoding of `'utf8'` is enforced. If `data` is a [`Buffer`][] then
+`input_encoding` is ignored.
+
+This can be called many times with new data as it is streamed.
 
 ### verifier.verify(object, signature[, signature_format])
 

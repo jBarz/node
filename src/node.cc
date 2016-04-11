@@ -3205,6 +3205,8 @@ static bool ParseDebugOpt(const char* arg) {
 }
 
 static void PrintHelp() {
+  // XXX: If you add an option here, please also add it to doc/node.1 and
+  // doc/api/cli.markdown
   printf("Usage: node [options] [ -e script | script.js ] [arguments] \n"
          "       node debug script.js [arguments] \n"
          "\n"
@@ -3217,9 +3219,9 @@ static void PrintHelp() {
          "                        does not appear to be a terminal\n"
          "  -r, --require         module to preload (option can be repeated)\n"
          "  --no-deprecation      silence deprecation warnings\n"
+         "  --trace-deprecation   show stack traces on deprecations\n"
          "  --throw-deprecation   throw an exception anytime a deprecated "
          "function is used\n"
-         "  --trace-deprecation   show stack traces on deprecations\n"
          "  --trace-sync-io       show stack trace when use of sync IO\n"
          "                        is detected after the first tick\n"
          "  --track-heap-objects  track heap object allocations for heap "
