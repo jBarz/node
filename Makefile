@@ -516,6 +516,8 @@ bench-all: bench bench-misc bench-array bench-buffer bench-url bench-events
 
 bench: bench-net bench-http bench-fs bench-tls
 
+bench-ci: bench
+
 bench-http-simple:
 	benchmark/http_simple_bench.sh
 
@@ -555,9 +557,11 @@ cpplint:
 
 lint: jslint cpplint
 
+lint-ci: lint
+
 .PHONY: lint cpplint jslint bench clean docopen docclean doc dist distclean \
 	check uninstall install install-includes install-bin all staticlib \
 	dynamiclib test test-all test-addons build-addons website-upload pkg \
 	blog blogclean tar binary release-only bench-http-simple bench-idle \
 	bench-all bench bench-misc bench-array bench-buffer bench-net \
-	bench-http bench-fs bench-tls cctest run-ci
+	bench-http bench-fs bench-tls cctest run-ci lint-ci bench-ci
