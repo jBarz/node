@@ -25,6 +25,9 @@
     # Don't bake anything extra into the snapshot.
     'v8_use_external_startup_data%': 0,
 
+    # Don't compile with -B, we don't bundle ld.gold.
+    'linux_use_bundled_gold%': 0,
+
     'conditions': [
       ['OS == "win"', {
         'os_posix': 0,
@@ -328,7 +331,12 @@
         },
         'target_conditions': [
           ['_type!="static_library"', {
-            'xcode_settings': {'OTHER_LDFLAGS': ['-Wl,-search_paths_first']},
+            'xcode_settings': {
+              'OTHER_LDFLAGS': [
+                '-Wl,-no_pie',
+                '-Wl,-search_paths_first',
+              ],
+            },
           }],
         ],
         'conditions': [

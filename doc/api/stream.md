@@ -160,7 +160,8 @@ Emitted when the stream and any of its underlying resources (a file
 descriptor, for example) have been closed. The event indicates that
 no more events will be emitted, and no further computation will occur.
 
-Not all streams will emit the `'close'` event.
+Not all streams will emit the `'close'` event as the `'close'` event is
+optional.
 
 #### Event: 'data'
 
@@ -490,7 +491,7 @@ function parseHeader(stream, callback) {
         var split = str.split(/\n\n/);
         header += split.shift();
         var remaining = split.join('\n\n');
-        var buf = new Buffer(remaining, 'utf8');
+        var buf = Buffer.from(remaining, 'utf8');
         if (buf.length)
           stream.unshift(buf);
         stream.removeListener('error', callback);
@@ -572,6 +573,15 @@ Examples of writable streams include:
 * [TCP sockets][]
 * [child process stdin][]
 * [`process.stdout`][], [`process.stderr`][]
+
+#### Event: 'close'
+
+Emitted when the stream and any of its underlying resources (a file descriptor,
+for example) have been closed. The event indicates that no more events will be
+emitted, and no further computation will occur.
+
+Not all streams will emit the `'close'` event as the `'close'` event is
+optional.
 
 #### Event: 'drain'
 
@@ -695,6 +705,7 @@ file.end('world!');
 #### writable.setDefaultEncoding(encoding)
 
 * `encoding` {String} The new default encoding
+* Return: `this`
 
 Sets the default encoding for a writable stream.
 
@@ -985,7 +996,7 @@ Counter.prototype._read = function() {
     this.push(null);
   else {
     var str = '' + i;
-    var buf = new Buffer(str, 'ascii');
+    var buf = Buffer.from(str, 'ascii');
     this.push(buf);
   }
 };
