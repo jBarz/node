@@ -28,6 +28,13 @@ export npm_config_cache="npm-cache"
 export npm_config_prefix="npm-prefix"
 export npm_config_tmp="npm-tmp"
 
+# ensure npm always uses the local node
+export PATH="$(../$NODE -p 'require("path").resolve("..")'):$PATH"
+
+# add npm being tested to path
+ln -fs npm-cli.js bin/npm
+export PATH="$(pwd)/bin:$PATH"
+env
 # install npm devDependencies and run npm's tests
 
 ../$NODE cli.js install --ignore-scripts
