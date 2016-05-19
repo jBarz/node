@@ -1,12 +1,22 @@
 'use strict';
 
-var fs = require('fs');
-var marked = require('marked');
-var path = require('path');
-var preprocess = require('./preprocess.js');
-var typeParser = require('./type-parser.js');
+const common = require('./common.js');
+const fs = require('fs');
+const marked = require('marked');
+const path = require('path');
+const preprocess = require('./preprocess.js');
+const typeParser = require('./type-parser.js');
 
 module.exports = toHTML;
+
+// customized heading without id attribute
+var renderer = new marked.Renderer();
+renderer.heading = function(text, level) {
+  return '<h' + level + '>' + text + '</h' + level + '>\n';
+};
+marked.setOptions({
+  renderer: renderer
+});
 
 // TODO(chrisdickinson): never stop vomitting / fix this.
 var gtocPath = path.resolve(path.join(
@@ -20,7 +30,13 @@ var gtocPath = path.resolve(path.join(
 var gtocLoading = null;
 var gtocData = null;
 
-function toHTML(input, filename, template, cb) {
+function toHTML(input, filename, template, nodeVersion, cb) {
+  if (typeof nodeVersion === 'function') {
+    cb = nodeVersion;
+    nodeVersion = null;
+  }
+  nodeVersion = nodeVersion || process.version;
+
   if (gtocData) {
     return onGtocLoaded();
   }
@@ -44,7 +60,7 @@ function toHTML(input, filename, template, cb) {
     var lexed = marked.lexer(input);
     fs.readFile(template, 'utf8', function(er, template) {
       if (er) return cb(er);
-      render(lexed, filename, template, cb);
+      render(lexed, filename, template, nodeVersion, cb);
     });
   }
 }
@@ -71,7 +87,14 @@ function toID(filename) {
     .replace(/-+/g, '-');
 }
 
-function render(lexed, filename, template, cb) {
+function render(lexed, filename, template, nodeVersion, cb) {
+  if (typeof nodeVersion === 'function') {
+    cb = nodeVersion;
+    nodeVersion = null;
+  }
+
+  nodeVersion = nodeVersion || process.version;
+
   // get the section
   var section = getSection(lexed);
 
@@ -90,7 +113,7 @@ function render(lexed, filename, template, cb) {
     template = template.replace(/__ID__/g, id);
     template = template.replace(/__FILENAME__/g, filename);
     template = template.replace(/__SECTION__/g, section);
-    template = template.replace(/__VERSION__/g, process.version);
+    template = template.replace(/__VERSION__/g, nodeVersion);
     template = template.replace(/__TOC__/g, toc);
     template = template.replace(
       /__GTOC__/g,
@@ -142,11 +165,14 @@ function parseLists(input) {
       if (tok.type === 'list_start') {
         state = 'LIST';
         if (depth === 0) {
-          output.push({ type:'html', text: '<div class="signature">' });
+          output.push({ type: 'html', text: '<div class="signature">' });
         }
         depth++;
         output.push(tok);
         return;
+      }
+      if (tok.type === 'html' && common.isYAMLBlock(tok.text)) {
+        tok.text = parseYAML(tok.text);
       }
       state = null;
       output.push(tok);
@@ -163,7 +189,7 @@ function parseLists(input) {
         output.push(tok);
         if (depth === 0) {
           state = null;
-          output.push({ type:'html', text: '</div>' });
+          output.push({ type: 'html', text: '</div>' });
         }
         return;
       }
@@ -174,6 +200,21 @@ function parseLists(input) {
   return output;
 }
 
+function parseYAML(text) {
+  const meta = common.extractAndParseYAML(text);
+  const html = ['<div class="api_metadata">'];
+
+  if (meta.added) {
+    html.push(`<span>Added in: ${meta.added.join(', ')}</span>`);
+  }
+
+  if (meta.deprecated) {
+    html.push(`<span>Deprecated since: ${meta.deprecated.join(', ')} </span>`);
+  }
+
+  html.push('</div>');
+  return html.join('\n');
+}
 
 // Syscalls which appear in the docs, but which only exist in BSD / OSX
 var BSD_ONLY_SYSCALLS = new Set(['lchmod']);
