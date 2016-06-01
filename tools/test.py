@@ -273,10 +273,11 @@ class TapProgressIndicator(SimpleProgressIndicator):
     # Print test name as (for example) "parallel/test-assert".  Tests that are
     # scraped from the addons documentation are all named test.js, making it
     # hard to decipher what test is running when only the filename is printed.
-    prefix = abspath(join(dirname(__file__), '../test')) + '/'
+    prefix = abspath(join(dirname(__file__), '../test')) + os.sep
     command = output.command[-1]
     if command.endswith('.js'): command = command[:-3]
     if command.startswith(prefix): command = command[len(prefix):]
+    command = command.replace('\\', '/')
 
     if output.UnexpectedOutput():
       status_line = 'not ok %i %s' % (self._done, command)
@@ -734,8 +735,7 @@ class TestRepository(TestSuite):
       tests = self.GetConfiguration(context).ListTests(current_path, path,
                                                        arch, mode)
       for t in tests: t.variant_flags = v
-      result += tests
-
+      result += tests * context.repeat
 
   def GetTestStatus(self, context, sections, defs):
     self.GetConfiguration(context).GetTestStatus(sections, defs)
@@ -788,7 +788,8 @@ TIMEOUT_SCALEFACTOR = {
 class Context(object):
 
   def __init__(self, workspace, buildspace, verbose, vm, args, expect_fail,
-               timeout, processor, suppress_dialogs, store_unexpected_output):
+               timeout, processor, suppress_dialogs,
+               store_unexpected_output, repeat):
     self.workspace = workspace
     self.buildspace = buildspace
     self.verbose = verbose
@@ -799,6 +800,7 @@ class Context(object):
     self.processor = processor
     self.suppress_dialogs = suppress_dialogs
     self.store_unexpected_output = store_unexpected_output
+    self.repeat = repeat
 
   def GetVm(self, arch, mode):
     if arch == 'none':
@@ -1332,6 +1334,9 @@ def BuildOptions():
       default="")
   result.add_option('--temp-dir',
       help='Optional path to change directory used for tests', default=False)
+  result.add_option('--repeat',
+      help='Number of times to repeat given tests',
+      default=1, type="int")
   return result
 
 
@@ -1497,7 +1502,8 @@ def Main():
                     options.timeout,
                     processor,
                     options.suppress_dialogs,
-                    options.store_unexpected_output)
+                    options.store_unexpected_output,
+                    options.repeat)
   # First build the required targets
   if not options.no_build:
     reqs = [ ]
@@ -1536,6 +1542,7 @@ def Main():
         vmArch = archEngineContext.stdout.rstrip()
         if archEngineContext.exit_code is not 0 or vmArch == "undefined":
           print "Can't determine the arch of: '%s'" % vm
+          print archEngineContext.stderr.rstrip()
           continue
         env = {
           'mode': mode,
