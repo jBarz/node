@@ -1,7 +1,7 @@
 Node.js
 =======
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/nodejs/node?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/nodejs/node?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/29/badge)](https://bestpractices.coreinfrastructure.org/projects/29)
 
 Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js
 uses an event-driven, non-blocking I/O model that makes it lightweight and
@@ -22,7 +22,7 @@ If you need help using or installing Node.js, please use the
 * [Website](https://nodejs.org/en/)
 * [Contributing to the project](./CONTRIBUTING.md)
 * IRC (general questions): [#node.js on chat.freenode.net](https://webchat.freenode.net?channels=node.js&uio=d4)
-* IRC (node core development): [#node-dev on chat.reenode.net](https://webchat.freenode.net?channels=node-dev&uio=d4)
+* IRC (node core development): [#node-dev on chat.freenode.net](https://webchat.freenode.net?channels=node-dev&uio=d4)
 
 ## Release Types
 
