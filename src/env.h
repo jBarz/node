@@ -5,6 +5,9 @@
 
 #include "ares.h"
 #include "debug-agent.h"
+#if HAVE_INSPECTOR
+#include "inspector_agent.h"
+#endif
 #include "handle_wrap.h"
 #include "req-wrap.h"
 #include "tree.h"
@@ -288,16 +291,14 @@ namespace node {
 
 class Environment;
 
-// TODO(bnoordhuis) Rename struct, the ares_ prefix implies it's part
-// of the c-ares API while the _t suffix implies it's a typedef.
-struct ares_task_t {
+struct node_ares_task {
   Environment* env;
   ares_socket_t sock;
   uv_poll_t poll_watcher;
-  RB_ENTRY(ares_task_t) node;
+  RB_ENTRY(node_ares_task) node;
 };
 
-RB_HEAD(ares_task_list, ares_task_t);
+RB_HEAD(node_ares_task_list, node_ares_task);
 
 class Environment {
  public:
@@ -469,7 +470,7 @@ class Environment {
   inline uv_timer_t* cares_timer_handle();
   inline ares_channel cares_channel();
   inline ares_channel* cares_channel_ptr();
-  inline ares_task_list* cares_task_list();
+  inline node_ares_task_list* cares_task_list();
 
   inline bool using_domains() const;
   inline void set_using_domains(bool value);
@@ -549,6 +550,12 @@ class Environment {
     return &debugger_agent_;
   }
 
+#if HAVE_INSPECTOR
+  inline inspector::Agent* inspector_agent() {
+    return &inspector_agent_;
+  }
+#endif
+
   typedef ListHead<HandleWrap, &HandleWrap::handle_wrap_queue_> HandleWrapQueue;
   typedef ListHead<ReqWrap<uv_req_t>, &ReqWrap<uv_req_t>::req_wrap_queue_>
           ReqWrapQueue;
@@ -579,13 +586,16 @@ class Environment {
   const uint64_t timer_base_;
   uv_timer_t cares_timer_handle_;
   ares_channel cares_channel_;
-  ares_task_list cares_task_list_;
+  node_ares_task_list cares_task_list_;
   bool using_domains_;
   bool printed_error_;
   bool trace_sync_io_;
   size_t makecallback_cntr_;
   int64_t async_wrap_uid_;
   debugger::Agent debugger_agent_;
+#if HAVE_INSPECTOR
+  inspector::Agent inspector_agent_;
+#endif
 
   HandleWrapQueue handle_wrap_queue_;
   ReqWrapQueue req_wrap_queue_;

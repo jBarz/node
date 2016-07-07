@@ -225,6 +225,9 @@ inline Environment::Environment(v8::Local<v8::Context> context,
       makecallback_cntr_(0),
       async_wrap_uid_(0),
       debugger_agent_(this),
+#if HAVE_INSPECTOR
+      inspector_agent_(this),
+#endif
       http_parser_buffer_(nullptr),
       context_(context->GetIsolate(), context) {
   // We'll be creating new objects so make sure we've entered the context.
@@ -425,7 +428,7 @@ inline ares_channel* Environment::cares_channel_ptr() {
   return &cares_channel_;
 }
 
-inline ares_task_list* Environment::cares_task_list() {
+inline node_ares_task_list* Environment::cares_task_list() {
   return &cares_task_list_;
 }
 
