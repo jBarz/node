@@ -250,12 +250,12 @@
         }],
         [ 'node_use_bundled_v8=="true"', {
           'include_dirs': [
-            'deps/v8', # include/v8_platform.h
+            '<(v8_parent_path)', # include/v8_platform.h
           ],
 
           'dependencies': [
-            'deps/v8/tools/gyp/v8.gyp:v8',
-            'deps/v8/tools/gyp/v8.gyp:v8_libplatform'
+            '<(v8_parent_path)/tools/gyp/v8.gyp:v8',
+            '<(v8_parent_path)/tools/gyp/v8.gyp:v8_libplatform'
           ],
         }],
         [ 'node_use_v8_platform=="true"', {
@@ -842,13 +842,13 @@
         }],
         [ 'node_use_v8_platform=="true"', {
           'dependencies': [
-            'deps/v8/tools/gyp/v8.gyp:v8_libplatform',
+            '<(v8_parent_path)/tools/gyp/v8.gyp:v8_libplatform',
           ],
         }],
         [ 'node_use_bundled_v8=="true"', {
           'dependencies': [
-            'deps/v8/tools/gyp/v8.gyp:v8',
-            'deps/v8/tools/gyp/v8.gyp:v8_libplatform'
+            '<(v8_parent_path)/tools/gyp/v8.gyp:v8',
+            '<(v8_parent_path)/tools/gyp/v8.gyp:v8_libplatform'
           ],
         }],
       ]
