@@ -11,6 +11,7 @@ const tls = require('tls');
 const zlib = require('zlib');
 const ChildProcess = require('child_process').ChildProcess;
 const StreamWrap = require('_stream_wrap').StreamWrap;
+const HTTPParser = process.binding('http_parser').HTTPParser;
 const async_wrap = process.binding('async_wrap');
 const pkeys = Object.keys(async_wrap.Providers);
 
@@ -29,13 +30,13 @@ if (common.isAix) {
   }
 }
 
-function init(id) {
-  keyList = keyList.filter((e) => e != pkeys[id]);
+function init(id, provider) {
+  keyList = keyList.filter((e) => e != pkeys[provider]);
 }
 
 function noop() { }
 
-async_wrap.setupHooks(init, noop, noop);
+async_wrap.setupHooks({ init });
 
 async_wrap.enable();
 
@@ -105,6 +106,8 @@ function checkTLS() {
 zlib.createGzip();
 
 new ChildProcess();
+
+new HTTPParser(HTTPParser.REQUEST);
 
 process.on('exit', function() {
   if (keyList.length !== 0) {

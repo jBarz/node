@@ -115,6 +115,7 @@ using v8::Integer;
 using v8::Isolate;
 using v8::Local;
 using v8::Locker;
+using v8::MaybeLocal;
 using v8::Message;
 using v8::Number;
 using v8::Object;
@@ -1119,10 +1120,10 @@ void SetupPromises(const FunctionCallbackInfo<Value>& args) {
 
 
 Local<Value> MakeCallback(Environment* env,
-                           Local<Value> recv,
-                           const Local<Function> callback,
-                           int argc,
-                           Local<Value> argv[]) {
+                          Local<Value> recv,
+                          const Local<Function> callback,
+                          int argc,
+                          Local<Value> argv[]) {
   // If you hit this assertion, you forgot to enter the v8::Context first.
   CHECK_EQ(env->context(), env->isolate()->GetCurrentContext());
 
@@ -1131,6 +1132,8 @@ Local<Value> MakeCallback(Environment* env,
   Local<Object> object, domain;
   bool ran_init_callback = false;
   bool has_domain = false;
+
+  Environment::AsyncCallbackScope callback_scope(env);
 
   // TODO(trevnorris): Adding "_asyncQueue" to the "this" in the init callback
   // is a horrible way to detect usage. Rethink how detection should happen.
@@ -1152,51 +1155,80 @@ Local<Value> MakeCallback(Environment* env,
     }
   }
 
-  TryCatch try_catch;
-  try_catch.SetVerbose(true);
-
   if (has_domain) {
     Local<Value> enter_v = domain->Get(env->enter_string());
     if (enter_v->IsFunction()) {
-        enter_v.As<Function>()->Call(domain, 0, nullptr);
-      if (try_catch.HasCaught())
-        return Undefined(env->isolate());
+      if (enter_v.As<Function>()->Call(domain, 0, nullptr).IsEmpty()) {
+        FatalError("node::MakeCallback",
+                   "domain enter callback threw, please report this");
+      }
     }
   }
 
   if (ran_init_callback && !pre_fn.IsEmpty()) {
-    try_catch.SetVerbose(false);
-    pre_fn->Call(object, 0, nullptr);
-    if (try_catch.HasCaught())
-      FatalError("node::MakeCallback", "pre hook threw");
-    try_catch.SetVerbose(true);
+    TryCatch try_catch(env->isolate());
+    MaybeLocal<Value> ar = pre_fn->Call(env->context(), object, 0, nullptr);
+    if (ar.IsEmpty()) {
+      ClearFatalExceptionHandlers(env);
+      FatalException(env->isolate(), try_catch);
+      return Local<Value>();
+    }
   }
 
   Local<Value> ret = callback->Call(recv, argc, argv);
 
   if (ran_init_callback && !post_fn.IsEmpty()) {
-    try_catch.SetVerbose(false);
-    post_fn->Call(object, 0, nullptr);
-    if (try_catch.HasCaught())
-      FatalError("node::MakeCallback", "post hook threw");
-    try_catch.SetVerbose(true);
+    Local<Value> did_throw = Boolean::New(env->isolate(), ret.IsEmpty());
+    // Currently there's no way to retrieve an uid from node::MakeCallback().
+    // This needs to be fixed.
+    Local<Value> vals[] =
+        { Undefined(env->isolate()).As<Value>(), did_throw };
+    TryCatch try_catch(env->isolate());
+    MaybeLocal<Value> ar =
+        post_fn->Call(env->context(), object, arraysize(vals), vals);
+    if (ar.IsEmpty()) {
+      ClearFatalExceptionHandlers(env);
+      FatalException(env->isolate(), try_catch);
+      return Local<Value>();
+    }
+  }
+
+  if (ret.IsEmpty()) {
+    // NOTE: For backwards compatibility with public API we return Undefined()
+    // if the top level call threw.
+    return callback_scope.in_makecallback() ?
+        ret : Undefined(env->isolate()).As<Value>();
   }
 
   if (has_domain) {
     Local<Value> exit_v = domain->Get(env->exit_string());
     if (exit_v->IsFunction()) {
-      exit_v.As<Function>()->Call(domain, 0, nullptr);
-      if (try_catch.HasCaught())
-        return Undefined(env->isolate());
+      if (exit_v.As<Function>()->Call(domain, 0, nullptr).IsEmpty()) {
+        FatalError("node::MakeCallback",
+                   "domain exit callback threw, please report this");
+      }
     }
   }
 
-  if (try_catch.HasCaught()) {
-    return Undefined(env->isolate());
+  if (callback_scope.in_makecallback()) {
+    return ret;
   }
 
-  if (!env->KickNextTick())
+  Environment::TickInfo* tick_info = env->tick_info();
+
+  if (tick_info->length() == 0) {
+    env->isolate()->RunMicrotasks();
+  }
+
+  Local<Object> process = env->process_object();
+
+  if (tick_info->length() == 0) {
+    tick_info->set_index(0);
+  }
+
+  if (env->tick_callback_function()->Call(process, 0, nullptr).IsEmpty()) {
     return Undefined(env->isolate());
+  }
 
   return ret;
 }
@@ -2329,6 +2361,25 @@ void OnMessage(Local<Message> message, Local<Value> error) {
   // The current version of V8 sends messages for errors only
   // (thus `error` is always set).
   FatalException(Isolate::GetCurrent(), error, message);
+}
+
+
+void ClearFatalExceptionHandlers(Environment* env) {
+  Local<Object> process = env->process_object();
+  Local<Value> events =
+      process->Get(env->context(), env->events_string()).ToLocalChecked();
+
+  if (events->IsObject()) {
+    events.As<Object>()->Set(
+        env->context(),
+        OneByteString(env->isolate(), "uncaughtException"),
+        Undefined(env->isolate())).FromJust();
+  }
+
+  process->Set(
+      env->context(),
+      env->domain_string(),
+      Undefined(env->isolate())).FromJust();
 }
 
 
@@ -4103,7 +4154,10 @@ static void StartNodeInstance(void* arg) {
     if (instance_data->use_debug_agent())
       StartDebug(env, debug_wait_connect);
 
-    LoadEnvironment(env);
+    {
+      Environment::AsyncCallbackScope callback_scope(env);
+      LoadEnvironment(env);
+    }
 
     env->set_trace_sync_io(trace_sync_io);
 

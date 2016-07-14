@@ -69,8 +69,6 @@ v8::Local<v8::Value> MakeCallback(Environment* env,
                                    int argc = 0,
                                    v8::Local<v8::Value>* argv = nullptr);
 
-bool KickNextTick();
-
 // Convert a struct sockaddr to a { address: '1.2.3.4', port: 1234 } JS object.
 // Sets address and port properties on the info object and returns it.
 // If |info| is omitted, a new object is returned.
@@ -238,6 +236,11 @@ class ArrayBufferAllocator : public v8::ArrayBuffer::Allocator {
  private:
   Environment* env_;
 };
+
+// Clear any domain and/or uncaughtException handlers to force the error's
+// propagation and shutdown the process. Use this to force the process to exit
+// by clearing all callbacks that could handle the error.
+void ClearFatalExceptionHandlers(Environment* env);
 
 enum NodeInstanceType { MAIN, WORKER };
 
