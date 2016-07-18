@@ -32,8 +32,8 @@ BUILDTYPE_LOWER := $(shell echo $(BUILDTYPE) | tr '[A-Z]' '[a-z]')
 EXEEXT := $(shell $(PYTHON) -c \
 		"import sys; print('.exe' if sys.platform == 'win32' else '')")
 
-NODE ?= ./node$(EXEEXT)
 NODE_EXE = node$(EXEEXT)
+NODE ?= ./$(NODE_EXE)
 NODE_G_EXE = node_g$(EXEEXT)
 
 # Flags for packaging.
@@ -108,10 +108,10 @@ cctest: all
 
 v8:
 	tools/make-v8.sh v8
-	$(MAKE) -C deps/v8 $(V8_ARCH) $(V8_BUILD_OPTIONS)
+	$(MAKE) -C deps/v8 $(V8_ARCH).$(BUILDTYPE_LOWER) $(V8_BUILD_OPTIONS)
 
 test: | cctest  # Depends on 'all'.
-	$(PYTHON) tools/test.py --mode=release doctool message parallel sequential -J
+	$(PYTHON) tools/test.py --mode=release doctool message pseudo-tty parallel sequential -J
 	$(MAKE) jslint
 	$(MAKE) cpplint
 
@@ -123,13 +123,14 @@ test-valgrind: all
 
 test/gc/node_modules/weak/build/Release/weakref.node: $(NODE_EXE)
 	$(NODE) deps/npm/node_modules/node-gyp/bin/node-gyp rebuild \
+		--python="$(PYTHON)" \
 		--directory="$(shell pwd)/test/gc/node_modules/weak" \
 		--nodedir="$(shell pwd)"
 
 # Implicitly depends on $(NODE_EXE), see the build-addons rule for rationale.
-test/addons/.docbuildstamp: doc/api/addons.md
+test/addons/.docbuildstamp: tools/doc/addon-verify.js doc/api/addons.md
 	$(RM) -r test/addons/??_*/
-	$(NODE) tools/doc/addon-verify.js
+	$(NODE) $<
 	touch $@
 
 ADDONS_BINDING_GYPS := \
@@ -137,11 +138,12 @@ ADDONS_BINDING_GYPS := \
 		$(wildcard test/addons/*/binding.gyp))
 
 # Implicitly depends on $(NODE_EXE), see the build-addons rule for rationale.
-test/addons/.buildstamp: $(ADDONS_BINDING_GYPS) | test/addons/.docbuildstamp
+test/addons/.buildstamp: $(ADDONS_BINDING_GYPS) test/addons/.docbuildstamp
 	# Cannot use $(wildcard test/addons/*/) here, it's evaluated before
 	# embedded addons have been generated from the documentation.
 	for dirname in test/addons/*/; do \
 		$(NODE) deps/npm/node_modules/node-gyp/bin/node-gyp rebuild \
+			--python="$(PYTHON)" \
 			--directory="$$PWD/$$dirname" \
 			--nodedir="$$PWD"; \
 	done
@@ -167,7 +169,7 @@ test-all-valgrind: test-build
 	$(PYTHON) tools/test.py --mode=debug,release --valgrind
 
 CI_NATIVE_SUITES := addons
-CI_JS_SUITES := doctool message parallel sequential
+CI_JS_SUITES := doctool message parallel pseudo-tty sequential
 
 # Build and test addons without building anything else
 test-ci-native: | test/addons/.buildstamp
@@ -225,7 +227,7 @@ test-timers:
 test-timers-clean:
 	$(MAKE) --directory=tools clean
 
-test-v8:
+test-v8: v8
 	# note: performs full test unless QUICKCHECK is specified
 	deps/v8/tools/run-tests.py --arch=$(V8_ARCH) \
         --mode=$(BUILDTYPE_LOWER) $(V8_TEST_NO_I18N) $(QUICKCHECK_ARG) \
@@ -233,14 +235,14 @@ test-v8:
         --shell-dir=$(PWD)/deps/v8/out/$(V8_ARCH).$(BUILDTYPE_LOWER) \
 	 $(TAP_V8)
 
-test-v8-intl:
+test-v8-intl: v8
 	# note: performs full test unless QUICKCHECK is specified
 	deps/v8/tools/run-tests.py --arch=$(V8_ARCH) \
         --mode=$(BUILDTYPE_LOWER) --no-presubmit $(QUICKCHECK_ARG) \
         --shell-dir=deps/v8/out/$(V8_ARCH).$(BUILDTYPE_LOWER) intl \
         $(TAP_V8_INTL)
 
-test-v8-benchmarks:
+test-v8-benchmarks: v8
 	deps/v8/tools/run-tests.py --arch=$(V8_ARCH) --mode=$(BUILDTYPE_LOWER) \
         --download-data $(QUICKCHECK_ARG) --no-presubmit \
         --shell-dir=deps/v8/out/$(V8_ARCH).$(BUILDTYPE_LOWER) benchmarks \
@@ -257,7 +259,9 @@ apidoc_dirs = out/doc out/doc/api/ out/doc/api/assets
 
 apiassets = $(subst api_assets,api/assets,$(addprefix out/,$(wildcard doc/api_assets/*)))
 
-doc: $(apidoc_dirs) $(apiassets) $(apidocs) tools/doc/ $(NODE_EXE)
+doc-only: $(apidoc_dirs) $(apiassets) $(apidocs) tools/doc/
+
+doc: $(NODE_EXE) doc-only
 
 $(apidoc_dirs):
 	mkdir -p $@
@@ -268,11 +272,15 @@ out/doc/api/assets/%: doc/api_assets/% out/doc/api/assets/
 out/doc/%: doc/%
 	cp -r $< $@
 
-out/doc/api/%.json: doc/api/%.md $(NODE_EXE)
-	$(NODE) tools/doc/generate.js --format=json $< > $@
+# check if ./node is actually set, else use user pre-installed binary
+gen-json = tools/doc/generate.js --format=json $< > $@
+out/doc/api/%.json: doc/api/%.md
+	[ -x $(NODE) ] && $(NODE) $(gen-json) || node $(gen-json)
 
-out/doc/api/%.html: doc/api/%.md $(NODE_EXE)
-	$(NODE) tools/doc/generate.js --format=html --template=doc/template.html $< > $@
+# check if ./node is actually set, else use user pre-installed binary
+gen-html = tools/doc/generate.js --node-version=$(FULLVERSION) --format=html --template=doc/template.html $< > $@
+out/doc/api/%.html: doc/api/%.md
+	[ -x $(NODE) ] && $(NODE) $(gen-html) || node $(gen-html)
 
 docopen: out/doc/api/all.html
 	-google-chrome out/doc/api/all.html
@@ -421,6 +429,10 @@ PACKAGEMAKER ?= /Developer/Applications/Utilities/PackageMaker.app/Contents/MacO
 PKGDIR=out/dist-osx
 
 release-only:
+	@if `grep -q REPLACEME doc/api/*.md`; then \
+		echo 'Please update Added: tags in the documentation first.' ; \
+		exit 1 ; \
+	fi
 	@if [ "$(shell git status --porcelain | egrep -v '^\?\? ')" = "" ]; then \
 		exit 0 ; \
 	else \
@@ -633,18 +645,12 @@ jslint:
 	  tools/eslint-rules --rulesdir tools/eslint-rules
 
 CPPLINT_EXCLUDE ?=
-CPPLINT_EXCLUDE += src/node_lttng.cc
 CPPLINT_EXCLUDE += src/node_root_certs.h
-CPPLINT_EXCLUDE += src/node_lttng_tp.h
-CPPLINT_EXCLUDE += src/node_win32_perfctr_provider.cc
 CPPLINT_EXCLUDE += src/queue.h
 CPPLINT_EXCLUDE += src/tree.h
-CPPLINT_EXCLUDE += src/v8abbr.h
 CPPLINT_EXCLUDE += $(wildcard test/addons/??_*/*.cc test/addons/??_*/*.h)
 
 CPPLINT_FILES = $(filter-out $(CPPLINT_EXCLUDE), $(wildcard \
-	deps/debugger-agent/include/* \
-	deps/debugger-agent/src/* \
 	src/*.c \
 	src/*.cc \
 	src/*.h \
@@ -668,4 +674,4 @@ lint-ci: lint
 	bench-all bench bench-misc bench-array bench-buffer bench-net \
 	bench-http bench-fs bench-tls cctest run-ci lint-ci bench-ci \
 	test-v8 test-v8-intl test-v8-benchmarks test-v8-all v8 \
-	$(TARBALL)-headers test-ci test-ci-native test-ci-js build-ci
+	$(TARBALL)-headers test-ci test-ci-native test-ci-js build-ci doc-only
