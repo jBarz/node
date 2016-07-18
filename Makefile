@@ -127,7 +127,7 @@ test/gc/node_modules/weak/build/Release/weakref.node: $(NODE_EXE)
 		--nodedir="$(shell pwd)"
 
 # Implicitly depends on $(NODE_EXE), see the build-addons rule for rationale.
-test/addons/.docbuildstamp: doc/api/addons.markdown
+test/addons/.docbuildstamp: doc/api/addons.md
 	$(RM) -r test/addons/??_*/
 	$(NODE) tools/doc/addon-verify.js
 	touch $@
@@ -166,9 +166,24 @@ test-all: test-build test/gc/node_modules/weak/build/Release/weakref.node
 test-all-valgrind: test-build
 	$(PYTHON) tools/test.py --mode=debug,release --valgrind
 
+CI_NATIVE_SUITES := addons
+CI_JS_SUITES := doctool message parallel sequential
+
+# Build and test addons without building anything else
+test-ci-native: | test/addons/.buildstamp
+	$(PYTHON) tools/test.py -p tap --logfile test.tap \
+		--mode=release --flaky-tests=$(FLAKY_TESTS) \
+		$(TEST_CI_ARGS) $(CI_NATIVE_SUITES)
+
+# This target should not use a native compiler at all
+test-ci-js:
+	$(PYTHON) tools/test.py -p tap --logfile test.tap \
+		--mode=release --flaky-tests=$(FLAKY_TESTS) \
+		$(TEST_CI_ARGS) $(CI_JS_SUITES)
+
 test-ci: | build-addons
 	$(PYTHON) tools/test.py -p tap --logfile test.tap --mode=release --flaky-tests=$(FLAKY_TESTS) \
-		$(TEST_CI_ARGS) addons doctool message parallel sequential
+		$(TEST_CI_ARGS) $(CI_NATIVE_SUITES) $(CI_JS_SUITES)
 
 test-release: test-build
 	$(PYTHON) tools/test.py --mode=release
@@ -234,9 +249,9 @@ test-v8-benchmarks:
 test-v8-all: test-v8 test-v8-intl test-v8-benchmarks
 	# runs all v8 tests
 
-apidoc_sources = $(wildcard doc/api/*.markdown)
-apidocs = $(addprefix out/,$(apidoc_sources:.markdown=.html)) \
-		$(addprefix out/,$(apidoc_sources:.markdown=.json))
+apidoc_sources = $(wildcard doc/api/*.md)
+apidocs = $(addprefix out/,$(apidoc_sources:.md=.html)) \
+		$(addprefix out/,$(apidoc_sources:.md=.json))
 
 apidoc_dirs = out/doc out/doc/api/ out/doc/api/assets
 
@@ -253,10 +268,10 @@ out/doc/api/assets/%: doc/api_assets/% out/doc/api/assets/
 out/doc/%: doc/%
 	cp -r $< $@
 
-out/doc/api/%.json: doc/api/%.markdown $(NODE_EXE)
+out/doc/api/%.json: doc/api/%.md $(NODE_EXE)
 	$(NODE) tools/doc/generate.js --format=json $< > $@
 
-out/doc/api/%.html: doc/api/%.markdown $(NODE_EXE)
+out/doc/api/%.html: doc/api/%.md $(NODE_EXE)
 	$(NODE) tools/doc/generate.js --format=html --template=doc/template.html $< > $@
 
 docopen: out/doc/api/all.html
@@ -265,9 +280,11 @@ docopen: out/doc/api/all.html
 docclean:
 	-rm -rf out/doc
 
-run-ci:
+build-ci:
 	$(PYTHON) ./configure $(CONFIG_FLAGS)
 	$(MAKE)
+
+run-ci: build-ci
 	$(MAKE) test-ci
 
 RAWVER=$(shell $(PYTHON) tools/getnodeversion.py)
@@ -650,4 +667,5 @@ lint-ci: lint
 	blog blogclean tar binary release-only bench-http-simple bench-idle \
 	bench-all bench bench-misc bench-array bench-buffer bench-net \
 	bench-http bench-fs bench-tls cctest run-ci lint-ci bench-ci \
-	test-v8 test-v8-intl test-v8-benchmarks test-v8-all v8 $(TARBALL)-headers
+	test-v8 test-v8-intl test-v8-benchmarks test-v8-all v8 \
+	$(TARBALL)-headers test-ci test-ci-native test-ci-js build-ci
