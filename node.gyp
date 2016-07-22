@@ -248,6 +248,9 @@
             }]
           ],
         }],
+        [ 'node_enable_d8=="true"', {
+          'dependencies': [ 'deps/v8/src/d8.gyp:d8' ],
+        }],
         [ 'node_use_bundled_v8=="true"', {
           'include_dirs': [
             '<(v8_parent_path)', # include/v8_platform.h
@@ -830,14 +833,26 @@
 
       'conditions': [
         ['v8_inspector=="true"', {
-          'dependencies': [
-            'deps/openssl/openssl.gyp:openssl',
-            'deps/http_parser/http_parser.gyp:http_parser',
-            'deps/uv/uv.gyp:libuv'
-          ],
           'sources': [
             'src/inspector_socket.cc',
             'test/cctest/test_inspector_socket.cc'
+          ],
+          'conditions': [
+            [ 'node_shared_openssl=="false"', {
+              'dependencies': [
+                'deps/openssl/openssl.gyp:openssl'
+              ]
+            }],
+            [ 'node_shared_http_parser=="false"', {
+              'dependencies': [
+                'deps/http_parser/http_parser.gyp:http_parser'
+              ]
+            }],
+            [ 'node_shared_libuv=="false"', {
+              'dependencies': [
+                'deps/uv/uv.gyp:libuv'
+              ]
+            }]
           ]
         }],
         [ 'node_use_v8_platform=="true"', {
