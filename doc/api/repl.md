@@ -1,6 +1,6 @@
 # REPL
 
-    Stability: 2 - Stable
+> Stability: 2 - Stable
 
 The `repl` module provides a Read-Eval-Print-Loop (REPL) implementation that
 is available both as a standalone program or includable in other applications.
@@ -38,6 +38,21 @@ The following special commands are supported by all REPL instances:
   `> .save ./file/to/save.js`
 * `.load` - Load a file into the current REPL session.
   `> .load ./file/to/load.js`
+* `.editor` - Enter editor mode (`<ctrl>-D` to finish, `<ctrl>-C` to cancel)
+
+```js
+> .editor
+// Entering editor mode (^D to finish, ^C to cancel)
+function welcome(name) {
+  return `Hello ${name}!`;
+}
+
+welcome('Node.js User');
+
+// ^D
+'Hello Node.js User!'
+>
+```
 
 The following key combinations in the REPL have these special effects:
 
@@ -324,7 +339,7 @@ replServer.defineCommand('saybye', function() {
 
 The new commands can then be used from within the REPL instance:
 
-```
+```txt
 > .sayhello Node.js User
 Hello, Node.js User!
 > .saybye
@@ -382,6 +397,8 @@ added: v0.1.91
      `undefined`. Defaults to `false`.
   * `writer` {Function} The function to invoke to format the output of each
      command before writing to `output`. Defaults to [`util.inspect()`][].
+  * `completer` {Function} An optional function used for custom Tab auto
+     completion. See [`readline.InterfaceCompleter`][] for an example.
   * `replMode` - A flag that specifies whether the default evaluator executes
     all JavaScript commands in strict mode, default mode, or a hybrid mode
     ("magic" mode.) Acceptable values are:
@@ -390,9 +407,9 @@ added: v0.1.91
       equivalent to prefacing every repl statement with `'use strict'`.
     * `repl.REPL_MODE_MAGIC` - attempt to evaluates expressions in default
       mode.  If expressions fail to parse, re-try in strict mode.
-    * `breakEvalOnSigint` - Stop evaluating the current piece of code when
-      `SIGINT` is received, i.e. `Ctrl+C` is pressed. This cannot be used together
-      with a custom `eval` function. Defaults to `false`.
+  * `breakEvalOnSigint` - Stop evaluating the current piece of code when
+    `SIGINT` is received, i.e. `Ctrl+C` is pressed. This cannot be used together
+    with a custom `eval` function. Defaults to `false`.
 
 The `repl.start()` method creates and starts a `repl.REPLServer` instance.
 
@@ -442,7 +459,7 @@ added: v2.0.0
 deprecated: v3.0.0
 -->
 
-   Stability: 0 - Deprecated: Use `NODE_REPL_HISTORY` instead.
+> Stability: 0 - Deprecated: Use `NODE_REPL_HISTORY` instead.
 
 Previously in Node.js/io.js v2.x, REPL history was controlled by using a
 `NODE_REPL_HISTORY_FILE` environment variable, and the history was saved in JSON
@@ -522,7 +539,6 @@ For an example of running a REPL instance over `curl(1)`,
 see: https://gist.github.com/2053342
 
 [stream]: stream.html
-[`readline.prompt`]: readline.html#readline_rl_prompt_preservecursor
 [`util.inspect()`]: util.html#util_util_inspect_object_options
-[here]: util.html#util_custom_inspect_function_on_objects
 [`readline.Interface`]: readline.html#readline_class_interface
+[`readline.InterfaceCompleter`]: readline.html#readline_use_of_the_completer_function

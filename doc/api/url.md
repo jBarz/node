@@ -1,6 +1,6 @@
 # URL
 
-    Stability: 2 - Stable
+> Stability: 2 - Stable
 
 The `url` module provides utilities for URL resolution and parsing. It can be
 accessed using:
@@ -19,7 +19,7 @@ The following details each of the components of a parsed URL. The example
 `'http://user:pass@host.com:8080/p/a/t/h?query=string#hash'` is used to
 illustrate each.
 
-```
+```txt
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                                    href                                     │
 ├──────────┬┬───────────┬─────────────────┬───────────────────────────┬───────┤
@@ -241,7 +241,7 @@ URLs are only permitted to contain a certain range of characters. Spaces (`' '`)
 and the following characters will be automatically escaped in the
 properties of URL objects:
 
-```
+```txt
 < > " ` \r \n \t { } | \ ^ '
 ```
 

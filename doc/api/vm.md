@@ -1,6 +1,6 @@
 # Executing JavaScript
 
-    Stability: 2 - Stable
+> Stability: 2 - Stable
 
 <!--name=vm-->
 
@@ -321,7 +321,7 @@ added: v0.3.1
     before terminating execution. If execution is terminated, an [`Error`][]
     will be thrown.
 
-The `vm.runInContext()` first contextifies the given `sandbox` object (or
+The `vm.runInNewContext()` first contextifies the given `sandbox` object (or
 creates a new `sandbox` if passed as `undefined`), compiles the `code`, runs it
 within the context of the created context, then returns the result. Running code
 does not have access to the local scope.
@@ -376,12 +376,12 @@ const vm = require('vm');
 var localVar = 'initial value';
 
 const vmResult = vm.runInThisContext('localVar = "vm";');
-console.log('vmResult: ', vmResult);
-console.log('localVar: ', localVar);
+console.log('vmResult:', vmResult);
+console.log('localVar:', localVar);
 
 const evalResult = eval('localVar = "eval";');
-console.log('evalResult: ', evalResult);
-console.log('localVar: ', localVar);
+console.log('evalResult:', evalResult);
+console.log('localVar:', localVar);
 
 // vmResult: 'vm', localVar: 'initial value'
 // evalResult: 'eval', localVar: 'eval'
@@ -395,7 +395,7 @@ local scope, so the value `localVar` is changed. In this way
 
 ## Example: Running an HTTP Server within a VM
 
-When using either `script.runInThisContext()` or `vm.runInThisContext()`, the
+When using either [`script.runInThisContext()`][] or [`vm.runInThisContext()`][], the
 code is executed within the current V8 global context. The code passed
 to this VM context will have its own isolated scope.
 
@@ -451,7 +451,6 @@ associating it with the `sandbox` object is what this document refers to as
 [`script.runInThisContext()`]: #vm_script_runinthiscontext_options
 [`vm.createContext()`]: #vm_vm_createcontext_sandbox
 [`vm.runInContext()`]: #vm_vm_runincontext_code_contextifiedsandbox_options
-[`vm.runInNewContext()`]: #vm_vm_runinnewcontext_code_sandbox_options
 [`vm.runInThisContext()`]: #vm_vm_runinthiscontext_code_options
 [`eval()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 [V8 Embedder's Guide]: https://developers.google.com/v8/embed#contexts

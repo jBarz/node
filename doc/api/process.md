@@ -223,8 +223,8 @@ For example:
 
 ```js
 process.on('unhandledRejection', (reason, p) => {
-    console.log("Unhandled Rejection at: Promise ", p, " reason: ", reason);
-    // application specific logging, throwing an error, or other logic here
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+  // application specific logging, throwing an error, or other logic here
 });
 
 somePromise.then((res) => {
@@ -288,7 +288,7 @@ command-line option can be used to suppress the default console output but the
 The following example illustrates the warning that is printed to `stderr` when
 too many listeners have been added to an event
 
-```
+```txt
 $ node
 > event.defaultMaxListeners = 1;
 > process.on('foo', () => {});
@@ -300,7 +300,7 @@ $ node
 In contrast, the following example turns off the default warning output and
 adds a custom handler to the `'warning'` event:
 
-```
+```txt
 $ node --no-warnings
 > var p = process.on('warning', (warning) => console.warn('Do not do that!'));
 > event.defaultMaxListeners = 1;
@@ -457,9 +457,10 @@ added: v0.1.27
 
 The `process.argv` property returns an array containing the command line
 arguments passed when the Node.js process was launched. The first element will
-be [`process.execPath`]. The second element will be the path to the
-JavaScript file being executed. The remaining elements will be any additional
-command line arguments.
+be [`process.execPath`]. See `process.argv0` if access to the original value of
+`argv[0]` is needed.  The second element will be the path to the JavaScript
+file being executed. The remaining elements will be any additional command line
+arguments.
 
 For example, assuming the following script for `process-args.js`:
 
@@ -472,7 +473,7 @@ process.argv.forEach((val, index) => {
 
 Launching the Node.js process as:
 
-```
+```sh
 $ node process-2.js one two=three four
 ```
 
@@ -484,6 +485,22 @@ Would generate the output:
 2: one
 3: two=three
 4: four
+```
+
+## process.argv0
+<!-- YAML
+added: 6.4.0
+-->
+
+The `process.argv0` property stores a read-only copy of the original value of
+`argv[0]` passed when Node.js starts.
+
+```js
+$ bash -c 'exec -a customArgv0 ./node'
+> process.argv[0]
+'/Volumes/code/external/node/out/Release/node'
+> process.argv0
+'customArgv0'
 ```
 
 ## process.chdir(directory)
@@ -650,7 +667,7 @@ It is possible to modify this object, but such modifications will not be
 reflected outside the Node.js process. In other words, the following example
 would not work:
 
-```
+```sh
 $ node -e 'process.env.foo = "bar"' && echo $foo
 ```
 
@@ -708,7 +725,7 @@ process.emitWarning('Something happened!');
   // Emits: (node: 56338) Warning: Something happened!
 ```
 
-```
+```js
 // Emit a warning using a string and a name...
 process.emitWarning('Something Happened!', 'CustomWarning');
   // Emits: (node:56338) CustomWarning: Something Happened!
@@ -718,7 +735,7 @@ In each of the previous examples, an `Error` object is generated internally by
 `process.emitWarning()` and passed through to the
 [`process.on('warning')`][process_warning] event.
 
-```
+```js
 process.on('warning', (warning) => {
   console.warn(warning.name);
   console.warn(warning.message);
@@ -730,7 +747,7 @@ If `warning` is passed as an `Error` object, it will be passed through to the
 `process.on('warning')` event handler unmodified (and the optional `name`
 and `ctor` arguments will be ignored):
 
-```
+```js
 // Emit a warning using an Error object...
 const myWarning = new Error('Warning! Something happened!');
 myWarning.name = 'CustomWarning';
@@ -761,7 +778,7 @@ As a best practice, warnings should be emitted only once per process. To do
 so, it is recommended to place the `emitWarning()` behind a simple boolean
 flag as illustrated in the example below:
 
-```
+```js
 var warned = false;
 function emitMyWarning() {
   if (!warned) {
@@ -789,7 +806,7 @@ the same execution environment as the parent.
 
 For example:
 
-```
+```sh
 $ node --harmony script.js --version
 ```
 
@@ -815,7 +832,7 @@ that started the Node.js process.
 
 For example:
 
-```
+```sh
 /usr/local/bin/node
 ```
 
@@ -863,10 +880,9 @@ if (someConditionNotMet()) {
 ```
 
 The reason this is problematic is because writes to `process.stdout` in Node.js
-are usually *non-blocking* and may occur over multiple ticks of the Node.js
-event loop.
-Calling `process.exit()`, however, forces the process to exit *before* those
-additional writes to `stdout` can be performed.
+are sometimes *non-blocking* and may occur over multiple ticks of the Node.js
+event loop. Calling `process.exit()`, however, forces the process to exit
+*before* those additional writes to `stdout` can be performed.
 
 Rather than calling `process.exit()` directly, the code *should* set the
 `process.exitCode` and allow the process to exit naturally by avoiding
@@ -1434,15 +1450,20 @@ Android)
 The `process.stderr` property returns a [Writable][] stream equivalent to or
 associated with `stderr` (fd `2`).
 
-`process.stderr` and `process.stdout` are unlike other streams in Node.js in
-that they cannot be closed (calling [`end()`][] will throw an Error), they never
-emit the [`'finish'`][] event, and writes can block when output is redirected to
-a file (although disks are fast and operating systems normally employ write-back
-caching so it should be a very rare occurrence indeed.)
+Note: `process.stderr` and `process.stdout` differ from other Node.js streams
+in several ways:
+1. They cannot be closed ([`end()`][] will throw).
+2. They never emit the [`'finish'`][] event.
+3. Writes _can_ block when output is redirected to a file.
+  - Note that disks are fast and operating systems normally employ write-back
+    caching so this is very uncommon.
+4. Writes on UNIX __will__ block by default if output is going to a TTY
+   (a terminal).
+5. Windows functionality differs. Writes block except when output is going to a
+   TTY.
 
-Additionally, `process.stderr` and `process.stdout` are blocking when outputting
-to TTYs (terminals) on OS X as a workaround for the OS's very small, 1kb
-buffer size. This is to prevent interleaving between `stdout` and `stderr`.
+To check if Node.js is being run in a TTY context, read the `isTTY` property
+on `process.stderr`, `process.stdout`, or `process.stdin`:
 
 ## process.stdin
 
@@ -1487,11 +1508,17 @@ console.log = (msg) => {
 };
 ```
 
-`process.stderr` and `process.stdout` are unlike other streams in Node.js in
-that they cannot be closed (calling [`end()`][] will throw an Error), they never
-emit the [`'finish'`][] event and that writes can block when output is
-redirected to a file (although disks are fast and operating systems normally
-employ write-back caching so it should be a very rare occurrence indeed.)
+Note: `process.stderr` and `process.stdout` differ from other Node.js streams
+in several ways:
+1. They cannot be closed ([`end()`][] will throw).
+2. They never emit the [`'finish'`][] event.
+3. Writes _can_ block when output is redirected to a file.
+  - Note that disks are fast and operating systems normally employ write-back
+    caching so this is very uncommon.
+4. Writes on UNIX __will__ block by default if output is going to a TTY
+   (a terminal).
+5. Windows functionality differs. Writes block except when output is going to a
+   TTY.
 
 To check if Node.js is being run in a TTY context, read the `isTTY` property
 on `process.stderr`, `process.stdout`, or `process.stdin`:
@@ -1506,7 +1533,7 @@ To check if Node.js is being run in a [TTY][] context, check the `isTTY`
 property on `process.stderr`, `process.stdout`, or `process.stdin`.
 
 For instance:
-```
+```sh
 $ node -p "Boolean(process.stdin.isTTY)"
 true
 $ echo "foo" | node -p "Boolean(process.stdin.isTTY)"
@@ -1643,8 +1670,9 @@ cases:
   source code internal in Node.js's bootstrapping process threw an error
   when the bootstrapping function was called.  This is extremely rare,
   and generally can only happen during development of Node.js itself.
-* `12` **Invalid Debug Argument** - The `--debug` and/or `--debug-brk`
-  options were set, but an invalid port number was chosen.
+* `12` **Invalid Debug Argument** - The `--debug`, `--inspect` and/or
+  `--debug-brk` options were set, but the port number chosen was invalid
+  or unavailable.
 * `>128` **Signal Exits** - If Node.js receives a fatal signal such as
   `SIGKILL` or `SIGHUP`, then its exit code will be `128` plus the
   value of the signal code.  This is a standard Unix practice, since
@@ -1669,11 +1697,10 @@ cases:
 [`process.argv`]: #process_process_argv
 [`process.exit()`]: #process_process_exit_code
 [`process.kill()`]: #process_process_kill_pid_signal
-[`process.execPath`]: #process_process_execPath
+[`process.execPath`]: #process_process_execpath
 [`promise.catch()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch
 [`require.main`]: modules.html#modules_accessing_the_main_module
 [`setTimeout(fn, 0)`]: timers.html#timers_settimeout_callback_delay_arg
-[child_process `'disconnect'` event]: child_process.html#child_process_event_disconnect
 [process_emit_warning]: #process_process_emitwarning_warning_name_ctor
 [process_warning]: #process_event_warning
 [Signal Events]: #process_signal_events

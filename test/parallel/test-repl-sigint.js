@@ -4,7 +4,7 @@ const assert = require('assert');
 
 const spawn = require('child_process').spawn;
 
-if (process.platform === 'win32') {
+if (common.isWindows) {
   // No way to send CTRL_C_EVENT to processes from JS right now.
   common.skip('platform not supported');
   return;
@@ -34,17 +34,18 @@ child.stdout.once('data', common.mustCall(() => {
     process.kill(child.pid, 'SIGINT');
     child.stdout.once('data', common.mustCall(() => {
       // Make sure state from before the interruption is still available.
-      child.stdin.end('a*2*3*7\n');
+      child.stdin.end('a*2*3*7\r\n');
     }));
   }));
 
   child.stdin.write('a = 1001;' +
                     'process.kill(+process.env.REPL_TEST_PPID, "SIGUSR2");' +
-                    'while(true){}\n');
+                    'while(true){}\r\n');
 }));
 
 child.on('close', function(code) {
   assert.strictEqual(code, 0);
-  assert.notStrictEqual(stdout.indexOf('Script execution interrupted.\n'), -1);
-  assert.notStrictEqual(stdout.indexOf('42042\n'), -1);
+  assert.notStrictEqual(stdout.indexOf('Script execution interrupted.' +
+                                       '\r\n'), -1);
+  assert.notStrictEqual(stdout.indexOf('42042\r\n'), -1);
 });

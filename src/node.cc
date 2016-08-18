@@ -126,7 +126,6 @@ using v8::ScriptOrigin;
 using v8::SealHandleScope;
 using v8::String;
 using v8::TryCatch;
-using v8::Uint32;
 using v8::Uint32Array;
 using v8::V8;
 using v8::Value;
@@ -209,9 +208,11 @@ static struct {
     platform_ = nullptr;
   }
 
-  void StartInspector(Environment *env, int port, bool wait) {
+  bool StartInspector(Environment *env, int port, bool wait) {
 #if HAVE_INSPECTOR
-    env->inspector_agent()->Start(platform_, port, wait);
+    return env->inspector_agent()->Start(platform_, port, wait);
+#else
+    return true;
 #endif  // HAVE_INSPECTOR
   }
 
@@ -1410,11 +1411,18 @@ enum encoding ParseEncoding(const char* encoding,
           return UCS2;
       }
       break;
+    case 'l':
+      // latin1
+      if (encoding[1] == 'a') {
+        if (strncmp(encoding + 2, "tin1", 4) == 0)
+          return LATIN1;
+      }
+      break;
     case 'b':
       // binary
       if (encoding[1] == 'i') {
         if (strncmp(encoding + 2, "nary", 4) == 0)
-          return BINARY;
+          return LATIN1;
 
       // buffer
       } else if (encoding[1] == 'u') {
@@ -1444,8 +1452,10 @@ enum encoding ParseEncoding(const char* encoding,
     return UCS2;
   } else if (StringEqualNoCase(encoding, "utf-16le")) {
     return UCS2;
+  } else if (StringEqualNoCase(encoding, "latin1")) {
+    return LATIN1;
   } else if (StringEqualNoCase(encoding, "binary")) {
-    return BINARY;
+    return LATIN1;  // BINARY is a deprecated alias of LATIN1.
   } else if (StringEqualNoCase(encoding, "buffer")) {
     return BUFFER;
   } else if (StringEqualNoCase(encoding, "hex")) {
@@ -1484,13 +1494,6 @@ ssize_t DecodeBytes(Isolate* isolate,
                     Local<Value> val,
                     enum encoding encoding) {
   HandleScope scope(isolate);
-
-  if (val->IsArray()) {
-    fprintf(stderr, "'raw' encoding (array of integers) has been removed. "
-                    "Use 'binary'.\n");
-    UNREACHABLE();
-    return -1;
-  }
 
   return StringBytes::Size(isolate, val, encoding);
 }
@@ -2772,23 +2775,18 @@ static void EnvQuery(Local<String> property,
 
 static void EnvDeleter(Local<String> property,
                        const PropertyCallbackInfo<Boolean>& info) {
-  bool rc = true;
 #ifdef __POSIX__
   node::Utf8Value key(info.GetIsolate(), property);
-  rc = getenv(*key) != nullptr;
-  if (rc)
-    unsetenv(*key);
+  unsetenv(*key);
 #else
   String::Value key(property);
   WCHAR* key_ptr = reinterpret_cast<WCHAR*>(*key);
-  if (key_ptr[0] == L'=' || !SetEnvironmentVariableW(key_ptr, nullptr)) {
-    // Deletion failed. Return true if the key wasn't there in the first place,
-    // false if it is still there.
-    rc = GetEnvironmentVariableW(key_ptr, nullptr, 0) == 0 &&
-         GetLastError() != ERROR_SUCCESS;
-  }
+  SetEnvironmentVariableW(key_ptr, nullptr);
 #endif
-  info.GetReturnValue().Set(rc);
+
+  // process.env never has non-configurable properties, so always
+  // return true like the tc39 delete operator.
+  info.GetReturnValue().Set(true);
 }
 
 
@@ -3840,8 +3838,7 @@ static void DispatchMessagesDebugAgentCallback(Environment* env) {
 static void StartDebug(Environment* env, bool wait) {
   CHECK(!debugger_running);
   if (use_inspector) {
-    v8_platform.StartInspector(env, inspector_port, wait);
-    debugger_running = true;
+    debugger_running = v8_platform.StartInspector(env, inspector_port, wait);
   } else {
     env->debugger_agent()->set_dispatch_handler(
           DispatchMessagesDebugAgentCallback);
@@ -4551,8 +4548,12 @@ static void StartNodeInstance(void* arg) {
         ShouldAbortOnUncaughtException);
 
     // Start debug agent when argv has --debug
-    if (instance_data->use_debug_agent())
+    if (instance_data->use_debug_agent()) {
       StartDebug(env, debug_wait_connect);
+      if (use_inspector && !debugger_running) {
+        exit(12);
+      }
+    }
 
     {
       Environment::AsyncCallbackScope callback_scope(env);
