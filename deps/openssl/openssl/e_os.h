@@ -461,6 +461,9 @@ extern int kbhit(void);
 
 #  else
      /* !defined VMS */
+#   ifdef OPENSSL_SYS_OS390
+#    define NO_SYS_PARAM_H
+#   endif
 #   ifdef OPENSSL_SYS_MPE
 #    define NO_SYS_PARAM_H
 #   endif
