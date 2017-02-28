@@ -157,8 +157,25 @@
         },
       }, {
         'defines': ['<@(openssl_default_defines_not_win)'],
-        'cflags': ['-Wno-missing-field-initializers'],
         'conditions': [
+          ['OS=="os390"', {
+            'cflags': [
+              '-q64',
+              '-qlonglong',
+              '-qbitfields=signed',
+              '-qchars=signed',
+              '-qexportall',
+            ],
+            'defines': [
+              '_XOPEN_SOURCE_EXTENDED',
+              '_UNIX03_SOURCE',
+              'OPENSSL_NO_HW',
+              'NI_MAXHOST=1024',
+              'NI_MAXSERV=32',
+            ],
+          }, {
+            'cflags': ['-Wno-missing-field-initializers'],
+          }],
           ['OS=="mac"', {
             'defines': ['<@(openssl_default_defines_mac)'],
           }, {
