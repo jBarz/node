@@ -93,16 +93,16 @@
       'lib/internal/v8_prof_processor.js',
       'lib/internal/streams/lazy_transform.js',
       'lib/internal/streams/BufferList.js',
-      'deps/v8/tools/splaytree.js',
-      'deps/v8/tools/codemap.js',
-      'deps/v8/tools/consarray.js',
-      'deps/v8/tools/csvparser.js',
-      'deps/v8/tools/profile.js',
-      'deps/v8/tools/profile_view.js',
-      'deps/v8/tools/logreader.js',
-      'deps/v8/tools/tickprocessor.js',
-      'deps/v8/tools/SourceMap.js',
-      'deps/v8/tools/tickprocessor-driver.js',
+      'deps/v8z/tools/splaytree.js',
+      'deps/v8z/tools/codemap.js',
+      'deps/v8z/tools/consarray.js',
+      'deps/v8z/tools/csvparser.js',
+      'deps/v8z/tools/profile.js',
+      'deps/v8z/tools/profile_view.js',
+      'deps/v8z/tools/logreader.js',
+      'deps/v8z/tools/tickprocessor.js',
+      'deps/v8z/tools/SourceMap.js',
+      'deps/v8z/tools/tickprocessor-driver.js',
     ],
     'conditions': [
       [ 'node_shared=="true"', {
@@ -217,8 +217,8 @@
         'src/util.cc',
         'src/string_search.cc',
         'deps/http_parser/http_parser.h',
-        'deps/v8/include/v8.h',
-        'deps/v8/include/v8-debug.h',
+        'deps/v8z/include/v8.h',
+        'deps/v8z/include/v8-debug.h',
         '<(SHARED_INTERMEDIATE_DIR)/node_natives.h',
         # javascript files to make for an even more pleasant IDE experience
         '<@(library_files)',
@@ -254,12 +254,12 @@
           ],
         }],
         [ 'node_enable_d8=="true"', {
-          'dependencies': [ 'deps/v8/src/d8.gyp:d8' ],
+          'dependencies': [ 'deps/v8z/src/d8.gyp:d8' ],
         }],
         [ 'node_use_bundled_v8=="true"', {
           'dependencies': [
-            'deps/v8/tools/gyp/v8.gyp:v8',
-            'deps/v8/tools/gyp/v8.gyp:v8_libplatform'
+            'deps/v8z/tools/gyp/v8.gyp:v8',
+            'deps/v8z/tools/gyp/v8.gyp:v8_libplatform'
           ],
         }],
         [ 'node_use_v8_platform=="true"', {
@@ -304,7 +304,7 @@
            target_arch=="ia32" or target_arch=="x32")', {
           'defines': [ 'NODE_ENABLE_VTUNE_PROFILING' ],
           'dependencies': [
-            'deps/v8/src/third_party/vtune/v8vtune.gyp:v8_vtune'
+            'deps/v8z/src/third_party/vtune/v8vtune.gyp:v8_vtune'
           ],
         }],
         [ 'v8_inspector=="true"', {
@@ -462,8 +462,8 @@
         [ 'node_no_browser_globals=="true"', {
           'defines': [ 'NODE_NO_BROWSER_GLOBALS' ],
         } ],
-        [ 'node_use_bundled_v8=="true" and v8_postmortem_support=="true"', {
-          'dependencies': [ 'deps/v8/tools/gyp/v8.gyp:postmortem-metadata' ],
+        [ 'node_use_bundled_v8=="true" and v8_postmortem_support=="true" and target_arch not in "s390x"', {
+          'dependencies': [ 'deps/v8z/tools/gyp/v8.gyp:postmortem-metadata' ],
           'conditions': [
             # -force_load is not applicable for the static library
             [ 'node_target_type!="static_library"', {
@@ -867,7 +867,7 @@
       'dependencies': [ 'deps/gtest/gtest.gyp:gtest' ],
       'include_dirs': [
         'src',
-        'deps/v8/include'
+        'deps/v8z/include'
       ],
       'defines': [
         # gtest's ASSERT macros conflict with our own.
@@ -909,13 +909,13 @@
         }],
         [ 'node_use_v8_platform=="true"', {
           'dependencies': [
-            'deps/v8/tools/gyp/v8.gyp:v8_libplatform',
+            'deps/v8z/tools/gyp/v8.gyp:v8_libplatform',
           ],
         }],
         [ 'node_use_bundled_v8=="true"', {
           'dependencies': [
-            'deps/v8/tools/gyp/v8.gyp:v8',
-            'deps/v8/tools/gyp/v8.gyp:v8_libplatform'
+            'deps/v8z/tools/gyp/v8.gyp:v8',
+            'deps/v8z/tools/gyp/v8.gyp:v8_libplatform'
           ],
         }],
       ]
@@ -950,7 +950,7 @@
 
           'include_dirs': [
             'src',
-            'deps/v8/include',
+            'deps/v8z/include',
           ],
 
           'sources': [
