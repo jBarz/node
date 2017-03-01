@@ -455,7 +455,6 @@
       'defines': [
         'U_COMMON_IMPLEMENTATION=1',
       ],
-      'cflags_c': ['-std=c99'],
       'export_dependent_settings': [ 'icu_uconfig', 'icu_uconfig_target' ],
       'direct_dependent_settings': {
         'include_dirs': [
@@ -466,6 +465,9 @@
             'link_settings': {
               'libraries': [ '-lAdvAPI32.Lib', '-lUser32.lib' ],
             },
+          }],
+          [ 'OS!="os390"', {
+            'cflags_c': ['-std=c99'],
           }],
         ],
       },
