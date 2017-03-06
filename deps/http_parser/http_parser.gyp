@@ -43,7 +43,10 @@
         'defines': [
           'WIN32'
         ],
-      }]
+      }],
+      ['OS == "os390"', {
+        'cflags!': [ '-Wall', '-Wextra', '-ftrapv', '-O0' ],
+      }],
     ],
   },
 
