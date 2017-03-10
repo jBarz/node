@@ -52,7 +52,7 @@ typedef struct {
   char* _pad[8];
 } node_dtrace_http_server_request_t;
 
-}  // extern u8"C"
+}  // extern "C"
 
 namespace node {
 

@@ -440,7 +440,7 @@ extern "C" NODE_EXTERN void node_module_register(void* mod);
 #endif
 
 #define NODE_MODULE_X(modname, regfunc, priv, flags)                  \
-  extern u8"C" {                                                        \
+  extern "C" {                                                        \
     static node::node_module _module =                                \
     {                                                                 \
       NODE_MODULE_VERSION,                                            \
@@ -459,7 +459,7 @@ extern "C" NODE_EXTERN void node_module_register(void* mod);
   }
 
 #define NODE_MODULE_CONTEXT_AWARE_X(modname, regfunc, priv, flags)    \
-  extern u8"C" {                                                        \
+  extern "C" {                                                        \
     static node::node_module _module =                                \
     {                                                                 \
       NODE_MODULE_VERSION,                                            \
