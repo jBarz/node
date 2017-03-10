@@ -99,7 +99,7 @@ NODE_EXTERN v8::Local<v8::Value> UVException(v8::Isolate* isolate,
                                              const char* path,
                                              const char* dest);
 
-NODE_DEPRECATED(u8"Use ErrnoException(isolate, ...)",
+NODE_DEPRECATED("Use ErrnoException(isolate, ...)",
                 inline v8::Local<v8::Value> ErrnoException(
       int errorno,
       const char* syscall = NULL,
@@ -294,7 +294,7 @@ NODE_EXTERN enum encoding ParseEncoding(
     v8::Isolate* isolate,
     v8::Local<v8::Value> encoding_v,
     enum encoding default_encoding = LATIN1);
-NODE_DEPRECATED(u8"Use ParseEncoding(isolate, ...)",
+NODE_DEPRECATED("Use ParseEncoding(isolate, ...)",
                 inline enum encoding ParseEncoding(
       v8::Local<v8::Value> encoding_v,
       enum encoding default_encoding = LATIN1) {
@@ -304,7 +304,7 @@ NODE_DEPRECATED(u8"Use ParseEncoding(isolate, ...)",
 NODE_EXTERN void FatalException(v8::Isolate* isolate,
                                 const v8::TryCatch& try_catch);
 
-NODE_DEPRECATED(u8"Use FatalException(isolate, ...)",
+NODE_DEPRECATED("Use FatalException(isolate, ...)",
                 inline void FatalException(const v8::TryCatch& try_catch) {
   return FatalException(v8::Isolate::GetCurrent(), try_catch);
 })
@@ -320,7 +320,7 @@ NODE_EXTERN v8::Local<v8::Value> Encode(v8::Isolate* isolate,
                                         const uint16_t* buf,
                                         size_t len);
 
-NODE_DEPRECATED(u8"Use Encode(isolate, ...)",
+NODE_DEPRECATED("Use Encode(isolate, ...)",
                 inline v8::Local<v8::Value> Encode(
     const void* buf,
     size_t len,
@@ -339,7 +339,7 @@ NODE_DEPRECATED(u8"Use Encode(isolate, ...)",
 NODE_EXTERN ssize_t DecodeBytes(v8::Isolate* isolate,
                                 v8::Local<v8::Value>,
                                 enum encoding encoding = LATIN1);
-NODE_DEPRECATED(u8"Use DecodeBytes(isolate, ...)",
+NODE_DEPRECATED("Use DecodeBytes(isolate, ...)",
                 inline ssize_t DecodeBytes(
     v8::Local<v8::Value> val,
     enum encoding encoding = LATIN1) {
@@ -352,7 +352,7 @@ NODE_EXTERN ssize_t DecodeWrite(v8::Isolate* isolate,
                                 size_t buflen,
                                 v8::Local<v8::Value>,
                                 enum encoding encoding = LATIN1);
-NODE_DEPRECATED(u8"Use DecodeWrite(isolate, ...)",
+NODE_DEPRECATED("Use DecodeWrite(isolate, ...)",
                 inline ssize_t DecodeWrite(char* buf,
                                            size_t buflen,
                                            v8::Local<v8::Value> val,
@@ -368,7 +368,7 @@ NODE_EXTERN v8::Local<v8::Value> WinapiErrnoException(
     const char *msg = u8"",
     const char *path = NULL);
 
-NODE_DEPRECATED(u8"Use WinapiErrnoException(isolate, ...)",
+NODE_DEPRECATED("Use WinapiErrnoException(isolate, ...)",
                 inline v8::Local<v8::Value> WinapiErrnoException(int errorno,
     const char *syscall = NULL,  const char *msg = u8"",
     const char *path = NULL) {
@@ -417,7 +417,7 @@ extern "C" NODE_EXTERN void node_module_register(void* mod);
 #ifdef _WIN32
 # define NODE_MODULE_EXPORT __declspec(dllexport)
 #else
-# define NODE_MODULE_EXPORT __attribute__((visibility(u8"default")))
+# define NODE_MODULE_EXPORT __attribute__((visibility("default")))
 #endif
 
 #ifdef NODE_SHARED_MODE
