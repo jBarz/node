@@ -72,7 +72,7 @@
     declarator
 #endif
 
-#undef USTR(X)
+#undef USTR
 #define USTR(X) u8##X
 
 // Forward-declare libuv loop
