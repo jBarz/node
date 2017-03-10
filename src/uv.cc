@@ -31,7 +31,7 @@ void Initialize(Local<Object> target,
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"errname"),
               env->NewFunctionTemplate(ErrName)->GetFunction());
 #define V(name, _)                                                            \
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"UV_" # name),            \
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), *E2A("UV_" # name)),      \
               Integer::New(env->isolate(), UV_ ## name));
   UV_ERRNO_MAP(V)
 #undef V

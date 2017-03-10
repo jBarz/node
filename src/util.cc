@@ -2,6 +2,7 @@
 #include "string_bytes.h"
 #include "node_buffer.h"
 #include <stdio.h>
+#include <unistd.h>
 
 namespace node {
 
@@ -33,6 +34,28 @@ Utf8Value::Utf8Value(Isolate* isolate, Local<Value> value) {
   MakeUtf8String(isolate, value, this);
 }
 
+E2A::E2A(const char* val)
+  : length_(strlen(val)) {
+    str_ = (char *)malloc(sizeof(char) * length_ + 1);
+    assert(str_ != NULL);
+    memcpy(str_, val, length_);
+    str_[length_] = NULL;
+    __e2a_l(str_, length_);
+}
+
+E2A::E2A(const char* prefix, const char* val)
+  : length_(0) {
+    int prelen = strlen(prefix);
+    int vallen = strlen(val);
+    length_ = prelen + vallen;
+
+    str_ = (char *)malloc(sizeof(char) * length_ + 1);
+    assert(str_ != NULL);
+    memcpy(str_, prefix, prelen);
+    memcpy(str_ + prelen, val, vallen);
+    str_[length_] = NULL;
+    __e2a_l(str_ + prelen, vallen);
+}
 
 TwoByteValue::TwoByteValue(Isolate* isolate, Local<Value> value) {
   if (value.IsEmpty()) {

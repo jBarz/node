@@ -27,21 +27,21 @@
 #define THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(val, prefix)                  \
   do {                                                                         \
     if (!Buffer::HasInstance(val) && !val->IsString()) {                       \
-      return env->ThrowTypeError(prefix u8" must be a string or a buffer");      \
+      return env->ThrowTypeError(*E2A(prefix, " must be a string or a buffer"));      \
     }                                                                          \
   } while (0)
 
 #define THROW_AND_RETURN_IF_NOT_BUFFER(val, prefix)           \
   do {                                                        \
     if (!Buffer::HasInstance(val)) {                          \
-      return env->ThrowTypeError(prefix u8" must be a buffer"); \
+      return env->ThrowTypeError(*E2A(prefix, " must be a buffer")); \
     }                                                         \
   } while (0)
 
 #define THROW_AND_RETURN_IF_NOT_STRING(val, prefix)           \
   do {                                                        \
     if (!val->IsString()) {                                   \
-      return env->ThrowTypeError(prefix u8" must be a string"); \
+      return env->ThrowTypeError(*E2A(prefix, " must be a string")); \
     }                                                         \
   } while (0)
 
@@ -91,9 +91,9 @@ using v8::Value;
 // certverifier/NSSCertDBTrustDomain.cpp#l672
 // C = CN, O = CNNIC, CN = CNNIC ROOT
 static const uint8_t CNNIC_ROOT_CA_SUBJECT_DATA[] =
-    u8"\x30\x32\x31\x0B\x30\x09\x06\x03\x55\x04\x06\x13\x02\x43\x4E\x31\x0E\x30"
-    u8"\x0C\x06\x03\x55\x04\x0A\x13\x05\x43\x4E\x4E\x49\x43\x31\x13\x30\x11\x06"
-    u8"\x03\x55\x04\x03\x13\x0A\x43\x4E\x4E\x49\x43\x20\x52\x4F\x4F\x54";
+    "\x30\x32\x31\x0B\x30\x09\x06\x03\x55\x04\x06\x13\x02\x43\x4E\x31\x0E\x30"
+    "\x0C\x06\x03\x55\x04\x0A\x13\x05\x43\x4E\x4E\x49\x43\x31\x13\x30\x11\x06"
+    "\x03\x55\x04\x03\x13\x0A\x43\x4E\x4E\x49\x43\x20\x52\x4F\x4F\x54";
 static const uint8_t* cnnic_p = CNNIC_ROOT_CA_SUBJECT_DATA;
 static X509_NAME* cnnic_name =
     d2i_X509_NAME(nullptr, &cnnic_p, sizeof(CNNIC_ROOT_CA_SUBJECT_DATA)-1);
@@ -101,14 +101,14 @@ static X509_NAME* cnnic_name =
 // C = CN, O = China Internet Network Information Center, CN = China
 // Internet Network Information Center EV Certificates Root
 static const uint8_t CNNIC_EV_ROOT_CA_SUBJECT_DATA[] =
-    u8"\x30\x81\x8A\x31\x0B\x30\x09\x06\x03\x55\x04\x06\x13\x02\x43\x4E\x31\x32"
-    u8"\x30\x30\x06\x03\x55\x04\x0A\x0C\x29\x43\x68\x69\x6E\x61\x20\x49\x6E\x74"
-    u8"\x65\x72\x6E\x65\x74\x20\x4E\x65\x74\x77\x6F\x72\x6B\x20\x49\x6E\x66\x6F"
-    u8"\x72\x6D\x61\x74\x69\x6F\x6E\x20\x43\x65\x6E\x74\x65\x72\x31\x47\x30\x45"
-    u8"\x06\x03\x55\x04\x03\x0C\x3E\x43\x68\x69\x6E\x61\x20\x49\x6E\x74\x65\x72"
-    u8"\x6E\x65\x74\x20\x4E\x65\x74\x77\x6F\x72\x6B\x20\x49\x6E\x66\x6F\x72\x6D"
-    u8"\x61\x74\x69\x6F\x6E\x20\x43\x65\x6E\x74\x65\x72\x20\x45\x56\x20\x43\x65"
-    u8"\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x52\x6F\x6F\x74";
+    "\x30\x81\x8A\x31\x0B\x30\x09\x06\x03\x55\x04\x06\x13\x02\x43\x4E\x31\x32"
+    "\x30\x30\x06\x03\x55\x04\x0A\x0C\x29\x43\x68\x69\x6E\x61\x20\x49\x6E\x74"
+    "\x65\x72\x6E\x65\x74\x20\x4E\x65\x74\x77\x6F\x72\x6B\x20\x49\x6E\x66\x6F"
+    "\x72\x6D\x61\x74\x69\x6F\x6E\x20\x43\x65\x6E\x74\x65\x72\x31\x47\x30\x45"
+    "\x06\x03\x55\x04\x03\x0C\x3E\x43\x68\x69\x6E\x61\x20\x49\x6E\x74\x65\x72"
+    "\x6E\x65\x74\x20\x4E\x65\x74\x77\x6F\x72\x6B\x20\x49\x6E\x66\x6F\x72\x6D"
+    "\x61\x74\x69\x6F\x6E\x20\x43\x65\x6E\x74\x65\x72\x20\x45\x56\x20\x43\x65"
+    "\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x52\x6F\x6F\x74";
 static const uint8_t* cnnic_ev_p = CNNIC_EV_ROOT_CA_SUBJECT_DATA;
 static X509_NAME *cnnic_ev_name =
     d2i_X509_NAME(nullptr, &cnnic_ev_p,
@@ -1583,7 +1583,7 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
   unsigned int md_size, i;
   unsigned char md[EVP_MAX_MD_SIZE];
   if (X509_digest(cert, EVP_sha1(), md, &md_size)) {
-    const char hex[] = u8"0123456789ABCDEF";
+    const char hex[] = "0123456789ABCDEF";
     char fingerprint[EVP_MAX_MD_SIZE * 3];
 
     // TODO(indutny): Unify it with buffer's code

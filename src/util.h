@@ -372,6 +372,32 @@ class BufferValue : public MaybeStackBuffer<char> {
   explicit BufferValue(v8::Isolate* isolate, v8::Local<v8::Value> value);
 };
 
+class E2A {
+  public:
+    explicit E2A(const char* val);
+    explicit E2A(const char* prefix, const char* val);
+
+    ~E2A() {
+        free(str_);
+    }
+
+    char* operator*() {
+      return str_;
+    };
+
+    const char* operator*() const {
+      return str_;
+    };
+
+    size_t length() const {
+      return length_;
+    };
+
+  private:
+    size_t length_;
+    char* str_;
+};
+
 }  // namespace node
 
 #endif  // defined(NODE_WANT_INTERNALS) && NODE_WANT_INTERNALS

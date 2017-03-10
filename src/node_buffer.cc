@@ -19,13 +19,13 @@
 
 #define THROW_AND_RETURN_IF_OOB(r)                                          \
   do {                                                                      \
-    if (!(r)) return env->ThrowRangeError(u8"out of range index");            \
+    if (!(r)) return env->ThrowRangeError(*E2A("out of range index"));            \
   } while (0)
 
 #define THROW_AND_RETURN_UNLESS_BUFFER(env, obj)                            \
   do {                                                                      \
     if (!HasInstance(obj))                                                  \
-      return env->ThrowTypeError(u8"argument should be a Buffer");            \
+      return env->ThrowTypeError(*E2A("argument should be a Buffer"));            \
   } while (0)
 
 #define SPREAD_ARG(val, name)                                                 \
