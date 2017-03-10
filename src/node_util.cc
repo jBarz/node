@@ -59,10 +59,10 @@ static void GetHiddenValue(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[0]->IsObject())
-    return env->ThrowTypeError("obj must be an object");
+    return env->ThrowTypeError(u8"obj must be an object");
 
   if (!args[1]->IsString())
-    return env->ThrowTypeError("name must be a string");
+    return env->ThrowTypeError(u8"name must be a string");
 
   Local<Object> obj = args[0].As<Object>();
   Local<String> name = args[1].As<String>();
@@ -76,10 +76,10 @@ static void SetHiddenValue(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[0]->IsObject())
-    return env->ThrowTypeError("obj must be an object");
+    return env->ThrowTypeError(u8"obj must be an object");
 
   if (!args[1]->IsString())
-    return env->ThrowTypeError("name must be a string");
+    return env->ThrowTypeError(u8"name must be a string");
 
   Local<Object> obj = args[0].As<Object>();
   Local<String> name = args[1].As<String>();
@@ -94,7 +94,7 @@ void StartSigintWatchdog(const FunctionCallbackInfo<Value>& args) {
   int ret = SigintWatchdogHelper::GetInstance()->Start();
   if (ret != 0) {
     Environment* env = Environment::GetCurrent(args);
-    env->ThrowErrnoException(ret, "StartSigintWatchdog");
+    env->ThrowErrnoException(ret, u8"StartSigintWatchdog");
   }
 }
 
@@ -120,13 +120,13 @@ void Initialize(Local<Object> target,
   VALUE_METHOD_MAP(V)
 #undef V
 
-  env->SetMethod(target, "getHiddenValue", GetHiddenValue);
-  env->SetMethod(target, "setHiddenValue", SetHiddenValue);
-  env->SetMethod(target, "getProxyDetails", GetProxyDetails);
+  env->SetMethod(target, u8"getHiddenValue", GetHiddenValue);
+  env->SetMethod(target, u8"setHiddenValue", SetHiddenValue);
+  env->SetMethod(target, u8"getProxyDetails", GetProxyDetails);
 
-  env->SetMethod(target, "startSigintWatchdog", StartSigintWatchdog);
-  env->SetMethod(target, "stopSigintWatchdog", StopSigintWatchdog);
-  env->SetMethod(target, "watchdogHasPendingSigint", WatchdogHasPendingSigint);
+  env->SetMethod(target, u8"startSigintWatchdog", StartSigintWatchdog);
+  env->SetMethod(target, u8"stopSigintWatchdog", StopSigintWatchdog);
+  env->SetMethod(target, u8"watchdogHasPendingSigint", WatchdogHasPendingSigint);
 }
 
 }  // namespace util

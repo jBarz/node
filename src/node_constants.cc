@@ -1134,10 +1134,10 @@ void DefineUVConstants(Local<Object> target) {
 void DefineCryptoConstants(Local<Object> target) {
 #if HAVE_OPENSSL
   NODE_DEFINE_STRING_CONSTANT(target,
-                              "defaultCoreCipherList",
+                              u8"defaultCoreCipherList",
                               DEFAULT_CIPHER_LIST_CORE);
   NODE_DEFINE_STRING_CONSTANT(target,
-                              "defaultCipherList",
+                              u8"defaultCipherList",
                               default_cipher_list);
 #endif
 }
@@ -1157,11 +1157,11 @@ void DefineConstants(v8::Isolate* isolate, Local<Object> target) {
   DefineOpenSSLConstants(crypto_constants);
   DefineCryptoConstants(crypto_constants);
 
-  os_constants->Set(OneByteString(isolate, "errno"), err_constants);
-  os_constants->Set(OneByteString(isolate, "signals"), sig_constants);
-  target->Set(OneByteString(isolate, "os"), os_constants);
-  target->Set(OneByteString(isolate, "fs"), fs_constants);
-  target->Set(OneByteString(isolate, "crypto"), crypto_constants);
+  os_constants->Set(OneByteString(isolate, u8"errno"), err_constants);
+  os_constants->Set(OneByteString(isolate, u8"signals"), sig_constants);
+  target->Set(OneByteString(isolate, u8"os"), os_constants);
+  target->Set(OneByteString(isolate, u8"fs"), fs_constants);
+  target->Set(OneByteString(isolate, u8"crypto"), crypto_constants);
 }
 
 }  // namespace node

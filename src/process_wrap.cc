@@ -30,18 +30,18 @@ class ProcessWrap : public HandleWrap {
     Environment* env = Environment::GetCurrent(context);
     Local<FunctionTemplate> constructor = env->NewFunctionTemplate(New);
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Process"));
+    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Process"));
 
-    env->SetProtoMethod(constructor, "close", HandleWrap::Close);
+    env->SetProtoMethod(constructor, u8"close", HandleWrap::Close);
 
-    env->SetProtoMethod(constructor, "spawn", Spawn);
-    env->SetProtoMethod(constructor, "kill", Kill);
+    env->SetProtoMethod(constructor, u8"spawn", Spawn);
+    env->SetProtoMethod(constructor, u8"kill", Kill);
 
-    env->SetProtoMethod(constructor, "ref", HandleWrap::Ref);
-    env->SetProtoMethod(constructor, "unref", HandleWrap::Unref);
-    env->SetProtoMethod(constructor, "hasRef", HandleWrap::HasRef);
+    env->SetProtoMethod(constructor, u8"ref", HandleWrap::Ref);
+    env->SetProtoMethod(constructor, u8"unref", HandleWrap::Unref);
+    env->SetProtoMethod(constructor, u8"hasRef", HandleWrap::HasRef);
 
-    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Process"),
+    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Process"),
                 constructor->GetFunction());
   }
 
@@ -126,7 +126,7 @@ class ProcessWrap : public HandleWrap {
       options.flags |= UV_PROCESS_SETUID;
       options.uid = static_cast<uv_uid_t>(uid);
     } else if (!uid_v->IsUndefined() && !uid_v->IsNull()) {
-      return env->ThrowTypeError("options.uid should be a number");
+      return env->ThrowTypeError(u8"options.uid should be a number");
     }
 
     // options.gid
@@ -136,7 +136,7 @@ class ProcessWrap : public HandleWrap {
       options.flags |= UV_PROCESS_SETGID;
       options.gid = static_cast<uv_gid_t>(gid);
     } else if (!gid_v->IsUndefined() && !gid_v->IsNull()) {
-      return env->ThrowTypeError("options.gid should be a number");
+      return env->ThrowTypeError(u8"options.gid should be a number");
     }
 
     // TODO(bnoordhuis) is this possible to do without mallocing ?
@@ -148,7 +148,7 @@ class ProcessWrap : public HandleWrap {
     if (file.length() > 0) {
       options.file = *file;
     } else {
-      return env->ThrowTypeError("Bad argument");
+      return env->ThrowTypeError(u8"Bad argument");
     }
 
     // options.args

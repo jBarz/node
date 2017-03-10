@@ -238,7 +238,7 @@ inline Environment::Environment(v8::Local<v8::Context> context,
   set_module_load_list_array(v8::Array::New(isolate()));
 
   v8::Local<v8::FunctionTemplate> fn = v8::FunctionTemplate::New(isolate());
-  fn->SetClassName(FIXED_ONE_BYTE_STRING(isolate(), "InternalFieldObject"));
+  fn->SetClassName(FIXED_ONE_BYTE_STRING(isolate(), u8"InternalFieldObject"));
   v8::Local<v8::ObjectTemplate> obj = fn->InstanceTemplate();
   obj->SetInternalFieldCount(1);
   set_generic_internal_field_template(obj);

@@ -77,7 +77,7 @@ inline const char* ToErrorCodeString(int status) {
     V(ETIMEOUT)
 #undef V
   }
-  return "UNKNOWN_ARES_ERROR";
+  return u8"UNKNOWN_ARES_ERROR";
 }
 
 class GetAddrInfoReqWrap : public ReqWrap<uv_getaddrinfo_t> {
@@ -241,7 +241,7 @@ static void ares_sockstate_cb(void* data,
     /* the socket is now closed. We must free the data associated with */
     /* socket. */
     CHECK(task &&
-          "When an ares socket is closed we should have a handle for it");
+          u8"When an ares socket is closed we should have a handle for it");
 
     RB_REMOVE(node_ares_task_list, env->cares_task_list(), task);
     uv_close(reinterpret_cast<uv_handle_t*>(&task->poll_watcher),
@@ -1134,7 +1134,7 @@ static void GetAddrInfo(const FunctionCallbackInfo<Value>& args) {
     family = AF_INET6;
     break;
   default:
-    CHECK(0 && "bad address family");
+    CHECK(0 && u8"bad address family");
   }
 
   GetAddrInfoReqWrap* req_wrap = new GetAddrInfoReqWrap(env, req_wrap_obj);
@@ -1259,7 +1259,7 @@ static void SetServers(const FunctionCallbackInfo<Value>& args) {
         err = uv_inet_pton(AF_INET6, *ip, &cur->addr);
         break;
       default:
-        CHECK(0 && "Bad address family.");
+        CHECK(0 && u8"Bad address family.");
     }
 
     if (err)
@@ -1337,61 +1337,61 @@ static void Initialize(Local<Object> target,
       CaresTimerClose,
       nullptr);
 
-  env->SetMethod(target, "queryA", Query<QueryAWrap>);
-  env->SetMethod(target, "queryAaaa", Query<QueryAaaaWrap>);
-  env->SetMethod(target, "queryCname", Query<QueryCnameWrap>);
-  env->SetMethod(target, "queryMx", Query<QueryMxWrap>);
-  env->SetMethod(target, "queryNs", Query<QueryNsWrap>);
-  env->SetMethod(target, "queryTxt", Query<QueryTxtWrap>);
-  env->SetMethod(target, "querySrv", Query<QuerySrvWrap>);
-  env->SetMethod(target, "queryPtr", Query<QueryPtrWrap>);
-  env->SetMethod(target, "queryNaptr", Query<QueryNaptrWrap>);
-  env->SetMethod(target, "querySoa", Query<QuerySoaWrap>);
-  env->SetMethod(target, "getHostByAddr", Query<GetHostByAddrWrap>);
+  env->SetMethod(target, u8"queryA", Query<QueryAWrap>);
+  env->SetMethod(target, u8"queryAaaa", Query<QueryAaaaWrap>);
+  env->SetMethod(target, u8"queryCname", Query<QueryCnameWrap>);
+  env->SetMethod(target, u8"queryMx", Query<QueryMxWrap>);
+  env->SetMethod(target, u8"queryNs", Query<QueryNsWrap>);
+  env->SetMethod(target, u8"queryTxt", Query<QueryTxtWrap>);
+  env->SetMethod(target, u8"querySrv", Query<QuerySrvWrap>);
+  env->SetMethod(target, u8"queryPtr", Query<QueryPtrWrap>);
+  env->SetMethod(target, u8"queryNaptr", Query<QueryNaptrWrap>);
+  env->SetMethod(target, u8"querySoa", Query<QuerySoaWrap>);
+  env->SetMethod(target, u8"getHostByAddr", Query<GetHostByAddrWrap>);
 
-  env->SetMethod(target, "getaddrinfo", GetAddrInfo);
-  env->SetMethod(target, "getnameinfo", GetNameInfo);
-  env->SetMethod(target, "isIP", IsIP);
-  env->SetMethod(target, "isIPv4", IsIPv4);
-  env->SetMethod(target, "isIPv6", IsIPv6);
+  env->SetMethod(target, u8"getaddrinfo", GetAddrInfo);
+  env->SetMethod(target, u8"getnameinfo", GetNameInfo);
+  env->SetMethod(target, u8"isIP", IsIP);
+  env->SetMethod(target, u8"isIPv4", IsIPv4);
+  env->SetMethod(target, u8"isIPv6", IsIPv6);
 
-  env->SetMethod(target, "strerror", StrError);
-  env->SetMethod(target, "getServers", GetServers);
-  env->SetMethod(target, "setServers", SetServers);
+  env->SetMethod(target, u8"strerror", StrError);
+  env->SetMethod(target, u8"getServers", GetServers);
+  env->SetMethod(target, u8"setServers", SetServers);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AF_INET"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AF_INET"),
               Integer::New(env->isolate(), AF_INET));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AF_INET6"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AF_INET6"),
               Integer::New(env->isolate(), AF_INET6));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AF_UNSPEC"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AF_UNSPEC"),
               Integer::New(env->isolate(), AF_UNSPEC));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AI_ADDRCONFIG"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AI_ADDRCONFIG"),
               Integer::New(env->isolate(), AI_ADDRCONFIG));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AI_V4MAPPED"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AI_V4MAPPED"),
               Integer::New(env->isolate(), AI_V4MAPPED));
 
   Local<FunctionTemplate> aiw =
       FunctionTemplate::New(env->isolate(), NewGetAddrInfoReqWrap);
   aiw->InstanceTemplate()->SetInternalFieldCount(1);
   aiw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), "GetAddrInfoReqWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "GetAddrInfoReqWrap"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), u8"GetAddrInfoReqWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"GetAddrInfoReqWrap"),
               aiw->GetFunction());
 
   Local<FunctionTemplate> niw =
       FunctionTemplate::New(env->isolate(), NewGetNameInfoReqWrap);
   niw->InstanceTemplate()->SetInternalFieldCount(1);
   niw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), "GetNameInfoReqWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "GetNameInfoReqWrap"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), u8"GetNameInfoReqWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"GetNameInfoReqWrap"),
               niw->GetFunction());
 
   Local<FunctionTemplate> qrw =
       FunctionTemplate::New(env->isolate(), NewQueryReqWrap);
   qrw->InstanceTemplate()->SetInternalFieldCount(1);
   qrw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), "QueryReqWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "QueryReqWrap"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), u8"QueryReqWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"QueryReqWrap"),
               qrw->GetFunction());
 }
 

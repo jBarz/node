@@ -77,7 +77,7 @@ void UDPWrap::Initialize(Local<Object> target,
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "UDP"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"UDP"));
 
   enum PropertyAttribute attributes =
       static_cast<PropertyAttribute>(v8::ReadOnly | v8::DontDelete);
@@ -88,35 +88,35 @@ void UDPWrap::Initialize(Local<Object> target,
                                      v8::DEFAULT,
                                      attributes);
 
-  env->SetProtoMethod(t, "bind", Bind);
-  env->SetProtoMethod(t, "send", Send);
-  env->SetProtoMethod(t, "bind6", Bind6);
-  env->SetProtoMethod(t, "send6", Send6);
-  env->SetProtoMethod(t, "close", Close);
-  env->SetProtoMethod(t, "recvStart", RecvStart);
-  env->SetProtoMethod(t, "recvStop", RecvStop);
-  env->SetProtoMethod(t, "getsockname",
+  env->SetProtoMethod(t, u8"bind", Bind);
+  env->SetProtoMethod(t, u8"send", Send);
+  env->SetProtoMethod(t, u8"bind6", Bind6);
+  env->SetProtoMethod(t, u8"send6", Send6);
+  env->SetProtoMethod(t, u8"close", Close);
+  env->SetProtoMethod(t, u8"recvStart", RecvStart);
+  env->SetProtoMethod(t, u8"recvStop", RecvStop);
+  env->SetProtoMethod(t, u8"getsockname",
                       GetSockOrPeerName<UDPWrap, uv_udp_getsockname>);
-  env->SetProtoMethod(t, "addMembership", AddMembership);
-  env->SetProtoMethod(t, "dropMembership", DropMembership);
-  env->SetProtoMethod(t, "setMulticastTTL", SetMulticastTTL);
-  env->SetProtoMethod(t, "setMulticastLoopback", SetMulticastLoopback);
-  env->SetProtoMethod(t, "setBroadcast", SetBroadcast);
-  env->SetProtoMethod(t, "setTTL", SetTTL);
+  env->SetProtoMethod(t, u8"addMembership", AddMembership);
+  env->SetProtoMethod(t, u8"dropMembership", DropMembership);
+  env->SetProtoMethod(t, u8"setMulticastTTL", SetMulticastTTL);
+  env->SetProtoMethod(t, u8"setMulticastLoopback", SetMulticastLoopback);
+  env->SetProtoMethod(t, u8"setBroadcast", SetBroadcast);
+  env->SetProtoMethod(t, u8"setTTL", SetTTL);
 
-  env->SetProtoMethod(t, "ref", HandleWrap::Ref);
-  env->SetProtoMethod(t, "unref", HandleWrap::Unref);
-  env->SetProtoMethod(t, "hasRef", HandleWrap::HasRef);
+  env->SetProtoMethod(t, u8"ref", HandleWrap::Ref);
+  env->SetProtoMethod(t, u8"unref", HandleWrap::Unref);
+  env->SetProtoMethod(t, u8"hasRef", HandleWrap::HasRef);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "UDP"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"UDP"), t->GetFunction());
   env->set_udp_constructor_function(t->GetFunction());
 
   // Create FunctionTemplate for SendWrap
   Local<FunctionTemplate> swt =
       FunctionTemplate::New(env->isolate(), NewSendWrap);
   swt->InstanceTemplate()->SetInternalFieldCount(1);
-  swt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "SendWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "SendWrap"),
+  swt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"SendWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"SendWrap"),
               swt->GetFunction());
 }
 
@@ -171,7 +171,7 @@ void UDPWrap::DoBind(const FunctionCallbackInfo<Value>& args, int family) {
     err = uv_ip6_addr(*address, port, reinterpret_cast<sockaddr_in6*>(&addr));
     break;
   default:
-    CHECK(0 && "unexpected address family");
+    CHECK(0 && u8"unexpected address family");
     ABORT();
   }
 
@@ -300,7 +300,7 @@ void UDPWrap::DoSend(const FunctionCallbackInfo<Value>& args, int family) {
     err = uv_ip6_addr(*address, port, reinterpret_cast<sockaddr_in6*>(&addr));
     break;
   default:
-    CHECK(0 && "unexpected address family");
+    CHECK(0 && u8"unexpected address family");
     ABORT();
   }
 
@@ -377,8 +377,8 @@ void UDPWrap::OnAlloc(uv_handle_t* handle,
   buf->len = suggested_size;
 
   if (buf->base == nullptr && suggested_size > 0) {
-    FatalError("node::UDPWrap::OnAlloc(uv_handle_t*, size_t, uv_buf_t*)",
-               "Out Of Memory");
+    FatalError(u8"node::UDPWrap::OnAlloc(uv_handle_t*, size_t, uv_buf_t*)",
+               u8"Out Of Memory");
   }
 }
 

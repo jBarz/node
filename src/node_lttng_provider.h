@@ -61,8 +61,8 @@ void NODE_NET_STREAM_END(node_lttng_connection_t* conn,
 void NODE_GC_START(v8::GCType type,
                    v8::GCCallbackFlags flags,
                    v8::Isolate* isolate) {
-  const char* typeStr = "Unkown GC Type";
-  const char* flagsStr = "Unknown GC Flag";
+  const char* typeStr = u8"Unkown GC Type";
+  const char* flagsStr = u8"Unknown GC Flag";
 
 #define BUILD_IF(f) if (type == v8::GCType::f) { typeStr = #f; }
   FOR_ALL_GC_TYPES(BUILD_IF);
@@ -78,8 +78,8 @@ void NODE_GC_START(v8::GCType type,
 void NODE_GC_DONE(v8::GCType type,
                   v8::GCCallbackFlags flags,
                   v8::Isolate* isolate) {
-  const char* typeStr = "Unkown GC Type";
-  const char* flagsStr = "Unknown GC Flag";
+  const char* typeStr = u8"Unkown GC Type";
+  const char* flagsStr = u8"Unknown GC Flag";
 
 #define BUILD_IF(f) if (type == v8::GCType::f) { typeStr = #f; }
   FOR_ALL_GC_TYPES(BUILD_IF);

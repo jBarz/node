@@ -86,7 +86,7 @@ void InitPerfCounters(Environment* env, Local<Object> target) {
     const char* name;
     void (*func)(const FunctionCallbackInfo<Value>&);
   } tab[] = {
-#define NODE_PROBE(name) #name, name
+#define NODE_PROBE(name) USTR(#name), name
     { NODE_PROBE(COUNTER_NET_SERVER_CONNECTION) },
     { NODE_PROBE(COUNTER_NET_SERVER_CONNECTION_CLOSE) },
     { NODE_PROBE(COUNTER_HTTP_SERVER_REQUEST) },

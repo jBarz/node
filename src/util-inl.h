@@ -297,15 +297,15 @@ void SwapBytes64(char* data, size_t nbytes) {
 }
 
 char ToLower(char c) {
-  return c >= 'A' && c <= 'Z' ? c + ('a' - 'A') : c;
+  return c >= '\x41' && c <= '\x5a' ? c + ('\x61' - '\x41') : c;
 }
 
 bool StringEqualNoCase(const char* a, const char* b) {
   do {
-    if (*a == '\0')
-      return *b == '\0';
-    if (*b == '\0')
-      return *a == '\0';
+    if (*a == '\x0')
+      return *b == '\x0';
+    if (*b == '\x0')
+      return *a == '\x0';
   } while (ToLower(*a++) == ToLower(*b++));
   return false;
 }
@@ -314,7 +314,7 @@ bool StringEqualNoCaseN(const char* a, const char* b, size_t length) {
   for (size_t i = 0; i < length; i++) {
     if (ToLower(a[i]) != ToLower(b[i]))
       return false;
-    if (a[i] == '\0')
+    if (a[i] == '\x0')
       return true;
   }
   return true;

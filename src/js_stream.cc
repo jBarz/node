@@ -218,19 +218,19 @@ void JSStream::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "JSStream"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"JSStream"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "doAlloc", DoAlloc);
-  env->SetProtoMethod(t, "doRead", DoRead);
-  env->SetProtoMethod(t, "doAfterWrite", DoAfterWrite);
-  env->SetProtoMethod(t, "finishWrite", Finish<WriteWrap>);
-  env->SetProtoMethod(t, "finishShutdown", Finish<ShutdownWrap>);
-  env->SetProtoMethod(t, "readBuffer", ReadBuffer);
-  env->SetProtoMethod(t, "emitEOF", EmitEOF);
+  env->SetProtoMethod(t, u8"doAlloc", DoAlloc);
+  env->SetProtoMethod(t, u8"doRead", DoRead);
+  env->SetProtoMethod(t, u8"doAfterWrite", DoAfterWrite);
+  env->SetProtoMethod(t, u8"finishWrite", Finish<WriteWrap>);
+  env->SetProtoMethod(t, u8"finishShutdown", Finish<ShutdownWrap>);
+  env->SetProtoMethod(t, u8"readBuffer", ReadBuffer);
+  env->SetProtoMethod(t, u8"emitEOF", EmitEOF);
 
   StreamBase::AddMethods<JSStream>(env, t, StreamBase::kFlagHasWritev);
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "JSStream"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"JSStream"),
               t->GetFunction());
   env->set_jsstream_constructor_template(t);
 }

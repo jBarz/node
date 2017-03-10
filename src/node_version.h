@@ -6,7 +6,7 @@
 #define NODE_PATCH_VERSION 1
 
 #define NODE_VERSION_IS_LTS 1
-#define NODE_VERSION_LTS_CODENAME "Boron"
+#define NODE_VERSION_LTS_CODENAME u8"Boron"
 
 #define NODE_VERSION_IS_RELEASE 0
 
@@ -17,27 +17,27 @@
 
 #ifndef NODE_TAG
 # if NODE_VERSION_IS_RELEASE
-#  define NODE_TAG ""
+#  define NODE_TAG u8""
 # else
-#  define NODE_TAG "-pre"
+#  define NODE_TAG u8"-pre"
 # endif
 #else
 // NODE_TAG is passed without quotes when rc.exe is run from msbuild
-# define NODE_EXE_VERSION NODE_STRINGIFY(NODE_MAJOR_VERSION) "." \
-                          NODE_STRINGIFY(NODE_MINOR_VERSION) "." \
+# define NODE_EXE_VERSION NODE_STRINGIFY(NODE_MAJOR_VERSION) u8"." \
+                          NODE_STRINGIFY(NODE_MINOR_VERSION) u8"." \
                           NODE_STRINGIFY(NODE_PATCH_VERSION)     \
                           NODE_STRINGIFY(NODE_TAG)
 #endif
 
-# define NODE_VERSION_STRING  NODE_STRINGIFY(NODE_MAJOR_VERSION) "." \
-                              NODE_STRINGIFY(NODE_MINOR_VERSION) "." \
+# define NODE_VERSION_STRING  NODE_STRINGIFY(NODE_MAJOR_VERSION) u8"." \
+                              NODE_STRINGIFY(NODE_MINOR_VERSION) u8"." \
                               NODE_STRINGIFY(NODE_PATCH_VERSION)     \
                               NODE_TAG
 #ifndef NODE_EXE_VERSION
 # define NODE_EXE_VERSION NODE_VERSION_STRING
 #endif
 
-#define NODE_VERSION "v" NODE_VERSION_STRING
+#define NODE_VERSION u8"v" NODE_VERSION_STRING
 
 
 #define NODE_VERSION_AT_LEAST(major, minor, patch) \

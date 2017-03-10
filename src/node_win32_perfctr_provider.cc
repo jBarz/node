@@ -107,37 +107,37 @@ void InitPerfCountersWin32() {
   // create instance name using pid
 #define INST_MAX_LEN       32
 #define INST_PREFIX_LEN    5
-#define INST_PREFIX        L"node_"
+#define INST_PREFIX        Lu8"node_"
 
   wchar_t Inst[INST_MAX_LEN];
   DWORD pid = GetCurrentProcessId();
   wcscpy_s(Inst, INST_MAX_LEN, INST_PREFIX);
   _itow_s(pid, Inst + INST_PREFIX_LEN, INST_MAX_LEN - INST_PREFIX_LEN, 10);
 
-  advapimod = LoadLibraryW(L"advapi32.dll");
+  advapimod = LoadLibraryW(Lu8"advapi32.dll");
   if (advapimod) {
     perfctr_startProvider = (PerfStartProviderExFunc)
-      GetProcAddress(advapimod, "PerfStartProviderEx");
+      GetProcAddress(advapimod, u8"PerfStartProviderEx");
     perfctr_stopProvider = (PerfStopProviderFunc)
-      GetProcAddress(advapimod, "PerfStopProvider");
+      GetProcAddress(advapimod, u8"PerfStopProvider");
     perfctr_setCounterSetInfo = (PerfSetCounterSetInfoFunc)
-      GetProcAddress(advapimod, "PerfSetCounterSetInfo");
+      GetProcAddress(advapimod, u8"PerfSetCounterSetInfo");
     perfctr_createInstance = (PerfCreateInstanceFunc)
-      GetProcAddress(advapimod, "PerfCreateInstance");
+      GetProcAddress(advapimod, u8"PerfCreateInstance");
     perfctr_deleteInstance = (PerfDeleteInstanceFunc)
-      GetProcAddress(advapimod, "PerfDeleteInstance");
+      GetProcAddress(advapimod, u8"PerfDeleteInstance");
     perfctr_setULongValue = (PerfSetULongCounterValueFunc)
-      GetProcAddress(advapimod, "PerfSetULongCounterValue");
+      GetProcAddress(advapimod, u8"PerfSetULongCounterValue");
     perfctr_setULongLongValue = (PerfSetULongLongCounterValueFunc)
-      GetProcAddress(advapimod, "PerfSetULongLongCounterValue");
+      GetProcAddress(advapimod, u8"PerfSetULongLongCounterValue");
     perfctr_incrementULongValue = (PerfIncrementULongCounterValueFunc)
-      GetProcAddress(advapimod, "PerfIncrementULongCounterValue");
+      GetProcAddress(advapimod, u8"PerfIncrementULongCounterValue");
     perfctr_incrementULongLongValue = (PerfIncrementULongLongCounterValueFunc)
-      GetProcAddress(advapimod, "PerfIncrementULongLongCounterValue");
+      GetProcAddress(advapimod, u8"PerfIncrementULongLongCounterValue");
     perfctr_decrementULongValue = (PerfDecrementULongCounterValueFunc)
-      GetProcAddress(advapimod, "PerfDecrementULongCounterValue");
+      GetProcAddress(advapimod, u8"PerfDecrementULongCounterValue");
     perfctr_decrementULongLongValue = (PerfDecrementULongLongCounterValueFunc)
-      GetProcAddress(advapimod, "PerfDecrementULongLongCounterValue");
+      GetProcAddress(advapimod, u8"PerfDecrementULongLongCounterValue");
 
     ZeroMemory(&providerContext, sizeof(providerContext));
     providerContext.ContextSize = sizeof(providerContext);

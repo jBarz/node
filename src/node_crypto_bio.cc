@@ -9,7 +9,7 @@ namespace node {
 
 const BIO_METHOD NodeBIO::method = {
   BIO_TYPE_MEM,
-  "node.js SSL buffer",
+  u8"node.js SSL buffer",
   NodeBIO::Write,
   NodeBIO::Read,
   NodeBIO::Puts,
@@ -145,7 +145,7 @@ int NodeBIO::Gets(BIO* bio, char* out, int size) {
   if (nbio->Length() == 0)
     return 0;
 
-  int i = nbio->IndexOf('\n', size);
+  int i = nbio->IndexOf('\xa', size);
 
   // Include '\n', if it's there.  If not, don't read off the end.
   if (i < size && i >= 0 && static_cast<size_t>(i) < nbio->Length())
@@ -188,10 +188,10 @@ long NodeBIO::Ctrl(BIO* bio, int cmd, long num,  // NOLINT(runtime/int)
         *reinterpret_cast<void**>(ptr) = nullptr;
       break;
     case BIO_C_SET_BUF_MEM:
-      CHECK(0 && "Can't use SET_BUF_MEM_PTR with NodeBIO");
+      CHECK(0 && u8"Can't use SET_BUF_MEM_PTR with NodeBIO");
       break;
     case BIO_C_GET_BUF_MEM_PTR:
-      CHECK(0 && "Can't use GET_BUF_MEM_PTR with NodeBIO");
+      CHECK(0 && u8"Can't use GET_BUF_MEM_PTR with NodeBIO");
       ret = 0;
       break;
     case BIO_CTRL_GET_CLOSE:

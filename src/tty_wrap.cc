@@ -29,22 +29,22 @@ void TTYWrap::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TTY"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TTY"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "close", HandleWrap::Close);
-  env->SetProtoMethod(t, "unref", HandleWrap::Unref);
-  env->SetProtoMethod(t, "hasRef", HandleWrap::HasRef);
+  env->SetProtoMethod(t, u8"close", HandleWrap::Close);
+  env->SetProtoMethod(t, u8"unref", HandleWrap::Unref);
+  env->SetProtoMethod(t, u8"hasRef", HandleWrap::HasRef);
 
   StreamWrap::AddMethods(env, t, StreamBase::kFlagNoShutdown);
 
-  env->SetProtoMethod(t, "getWindowSize", TTYWrap::GetWindowSize);
-  env->SetProtoMethod(t, "setRawMode", SetRawMode);
+  env->SetProtoMethod(t, u8"getWindowSize", TTYWrap::GetWindowSize);
+  env->SetProtoMethod(t, u8"setRawMode", SetRawMode);
 
-  env->SetMethod(target, "isTTY", IsTTY);
-  env->SetMethod(target, "guessHandleType", GuessHandleType);
+  env->SetMethod(target, u8"isTTY", IsTTY);
+  env->SetMethod(target, u8"guessHandleType", GuessHandleType);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TTY"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TTY"), t->GetFunction());
   env->set_tty_constructor_template(t);
 }
 
@@ -63,12 +63,12 @@ void TTYWrap::GuessHandleType(const FunctionCallbackInfo<Value>& args) {
   const char* type = nullptr;
 
   switch (t) {
-  case UV_TCP: type = "TCP"; break;
-  case UV_TTY: type = "TTY"; break;
-  case UV_UDP: type = "UDP"; break;
-  case UV_FILE: type = "FILE"; break;
-  case UV_NAMED_PIPE: type = "PIPE"; break;
-  case UV_UNKNOWN_HANDLE: type = "UNKNOWN"; break;
+  case UV_TCP: type = u8"TCP"; break;
+  case UV_TTY: type = u8"TTY"; break;
+  case UV_UDP: type = u8"UDP"; break;
+  case UV_FILE: type = u8"FILE"; break;
+  case UV_NAMED_PIPE: type = u8"PIPE"; break;
+  case UV_UNKNOWN_HANDLE: type = u8"UNKNOWN"; break;
   default:
     ABORT();
   }

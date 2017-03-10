@@ -72,7 +72,7 @@ class ZCtx : public AsyncWrap {
 
 
   ~ZCtx() override {
-    CHECK_EQ(false, write_in_progress_ && "write in progress");
+    CHECK_EQ(false, write_in_progress_ && u8"write in progress");
     Close();
   }
 
@@ -83,7 +83,7 @@ class ZCtx : public AsyncWrap {
     }
 
     pending_close_ = false;
-    CHECK(init_done_ && "close before init");
+    CHECK(init_done_ && u8"close before init");
     CHECK_LE(mode_, UNZIP);
 
     if (mode_ == DEFLATE || mode_ == GZIP || mode_ == DEFLATERAW) {
@@ -119,15 +119,15 @@ class ZCtx : public AsyncWrap {
 
     ZCtx* ctx;
     ASSIGN_OR_RETURN_UNWRAP(&ctx, args.Holder());
-    CHECK(ctx->init_done_ && "write before init");
-    CHECK(ctx->mode_ != NONE && "already finalized");
+    CHECK(ctx->init_done_ && u8"write before init");
+    CHECK(ctx->mode_ != NONE && u8"already finalized");
 
-    CHECK_EQ(false, ctx->write_in_progress_ && "write already in progress");
-    CHECK_EQ(false, ctx->pending_close_ && "close is pending");
+    CHECK_EQ(false, ctx->write_in_progress_ && u8"write already in progress");
+    CHECK_EQ(false, ctx->pending_close_ && u8"close is pending");
     ctx->write_in_progress_ = true;
     ctx->Ref();
 
-    CHECK_EQ(false, args[0]->IsUndefined() && "must provide flush value");
+    CHECK_EQ(false, args[0]->IsUndefined() && u8"must provide flush value");
 
     unsigned int flush = args[0]->Uint32Value();
 
@@ -137,7 +137,7 @@ class ZCtx : public AsyncWrap {
         flush != Z_FULL_FLUSH &&
         flush != Z_FINISH &&
         flush != Z_BLOCK) {
-      CHECK(0 && "Invalid flush value");
+      CHECK(0 && u8"Invalid flush value");
     }
 
     Bytef *in;
@@ -273,7 +273,7 @@ class ZCtx : public AsyncWrap {
 
             break;
           default:
-            CHECK(0 && "invalid number of gzip magic number bytes read");
+            CHECK(0 && u8"invalid number of gzip magic number bytes read");
         }
 
         // fallthrough
@@ -316,7 +316,7 @@ class ZCtx : public AsyncWrap {
         }
         break;
       default:
-        CHECK(0 && "wtf?");
+        CHECK(0 && u8"wtf?");
     }
 
     // pass any errors back to the main thread to deal with.
@@ -333,7 +333,7 @@ class ZCtx : public AsyncWrap {
     case Z_OK:
     case Z_BUF_ERROR:
       if (ctx->strm_.avail_out != 0 && ctx->flush_ == Z_FINISH) {
-        ZCtx::Error(ctx, "unexpected end of file");
+        ZCtx::Error(ctx, u8"unexpected end of file");
         return false;
       }
     case Z_STREAM_END:
@@ -341,13 +341,13 @@ class ZCtx : public AsyncWrap {
       break;
     case Z_NEED_DICT:
       if (ctx->dictionary_ == nullptr)
-        ZCtx::Error(ctx, "Missing dictionary");
+        ZCtx::Error(ctx, u8"Missing dictionary");
       else
-        ZCtx::Error(ctx, "Bad dictionary");
+        ZCtx::Error(ctx, u8"Bad dictionary");
       return false;
     default:
       // something else.
-      ZCtx::Error(ctx, "Zlib error");
+      ZCtx::Error(ctx, u8"Zlib error");
       return false;
     }
 
@@ -413,12 +413,12 @@ class ZCtx : public AsyncWrap {
     Environment* env = Environment::GetCurrent(args);
 
     if (args.Length() < 1 || !args[0]->IsInt32()) {
-      return env->ThrowTypeError("Bad argument");
+      return env->ThrowTypeError(u8"Bad argument");
     }
     node_zlib_mode mode = static_cast<node_zlib_mode>(args[0]->Int32Value());
 
     if (mode < DEFLATE || mode > UNZIP) {
-      return env->ThrowTypeError("Bad argument");
+      return env->ThrowTypeError(u8"Bad argument");
     }
 
     new ZCtx(env, args.This(), mode);
@@ -427,26 +427,26 @@ class ZCtx : public AsyncWrap {
   // just pull the ints out of the args and call the other Init
   static void Init(const FunctionCallbackInfo<Value>& args) {
     CHECK((args.Length() == 4 || args.Length() == 5) &&
-           "init(windowBits, level, memLevel, strategy, [dictionary])");
+           u8"init(windowBits, level, memLevel, strategy, [dictionary])");
 
     ZCtx* ctx;
     ASSIGN_OR_RETURN_UNWRAP(&ctx, args.Holder());
 
     int windowBits = args[0]->Uint32Value();
-    CHECK((windowBits >= 8 && windowBits <= 15) && "invalid windowBits");
+    CHECK((windowBits >= 8 && windowBits <= 15) && u8"invalid windowBits");
 
     int level = args[1]->Int32Value();
-    CHECK((level >= -1 && level <= 9) && "invalid compression level");
+    CHECK((level >= -1 && level <= 9) && u8"invalid compression level");
 
     int memLevel = args[2]->Uint32Value();
-    CHECK((memLevel >= 1 && memLevel <= 9) && "invalid memlevel");
+    CHECK((memLevel >= 1 && memLevel <= 9) && u8"invalid memlevel");
 
     int strategy = args[3]->Uint32Value();
     CHECK((strategy == Z_FILTERED ||
             strategy == Z_HUFFMAN_ONLY ||
             strategy == Z_RLE ||
             strategy == Z_FIXED ||
-            strategy == Z_DEFAULT_STRATEGY) && "invalid strategy");
+            strategy == Z_DEFAULT_STRATEGY) && u8"invalid strategy");
 
     char* dictionary = nullptr;
     size_t dictionary_len = 0;
@@ -465,7 +465,7 @@ class ZCtx : public AsyncWrap {
   }
 
   static void Params(const FunctionCallbackInfo<Value>& args) {
-    CHECK(args.Length() == 2 && "params(level, strategy)");
+    CHECK(args.Length() == 2 && u8"params(level, strategy)");
     ZCtx* ctx;
     ASSIGN_OR_RETURN_UNWRAP(&ctx, args.Holder());
     Params(ctx, args[0]->Int32Value(), args[1]->Int32Value());
@@ -527,11 +527,11 @@ class ZCtx : public AsyncWrap {
             ->AdjustAmountOfExternalAllocatedMemory(kInflateContextSize);
         break;
       default:
-        CHECK(0 && "wtf?");
+        CHECK(0 && u8"wtf?");
     }
 
     if (ctx->err_ != Z_OK) {
-      ZCtx::Error(ctx, "Init error");
+      ZCtx::Error(ctx, u8"Init error");
     }
 
 
@@ -567,7 +567,7 @@ class ZCtx : public AsyncWrap {
     }
 
     if (ctx->err_ != Z_OK) {
-      ZCtx::Error(ctx, "Failed to set dictionary");
+      ZCtx::Error(ctx, u8"Failed to set dictionary");
     }
   }
 
@@ -584,7 +584,7 @@ class ZCtx : public AsyncWrap {
     }
 
     if (ctx->err_ != Z_OK && ctx->err_ != Z_BUF_ERROR) {
-      ZCtx::Error(ctx, "Failed to set parameters");
+      ZCtx::Error(ctx, u8"Failed to set parameters");
     }
   }
 
@@ -607,7 +607,7 @@ class ZCtx : public AsyncWrap {
     }
 
     if (ctx->err_ != Z_OK) {
-      ZCtx::Error(ctx, "Failed to reset stream");
+      ZCtx::Error(ctx, u8"Failed to reset stream");
     }
   }
 
@@ -658,15 +658,15 @@ void InitZlib(Local<Object> target,
 
   z->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(z, "write", ZCtx::Write<true>);
-  env->SetProtoMethod(z, "writeSync", ZCtx::Write<false>);
-  env->SetProtoMethod(z, "init", ZCtx::Init);
-  env->SetProtoMethod(z, "close", ZCtx::Close);
-  env->SetProtoMethod(z, "params", ZCtx::Params);
-  env->SetProtoMethod(z, "reset", ZCtx::Reset);
+  env->SetProtoMethod(z, u8"write", ZCtx::Write<true>);
+  env->SetProtoMethod(z, u8"writeSync", ZCtx::Write<false>);
+  env->SetProtoMethod(z, u8"init", ZCtx::Init);
+  env->SetProtoMethod(z, u8"close", ZCtx::Close);
+  env->SetProtoMethod(z, u8"params", ZCtx::Params);
+  env->SetProtoMethod(z, u8"reset", ZCtx::Reset);
 
-  z->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Zlib"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Zlib"), z->GetFunction());
+  z->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Zlib"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Zlib"), z->GetFunction());
 
   // valid flush values.
   NODE_DEFINE_CONSTANT(target, Z_NO_FLUSH);
@@ -706,7 +706,7 @@ void InitZlib(Local<Object> target,
   NODE_DEFINE_CONSTANT(target, INFLATERAW);
   NODE_DEFINE_CONSTANT(target, UNZIP);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "ZLIB_VERSION"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"ZLIB_VERSION"),
               FIXED_ONE_BYTE_STRING(env->isolate(), ZLIB_VERSION));
 }
 

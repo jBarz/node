@@ -148,16 +148,16 @@ class ContextifyContext {
         // that can be done using Object.defineProperty.
         if (clone_property_method.IsEmpty()) {
           Local<String> code = FIXED_ONE_BYTE_STRING(env()->isolate(),
-              "(function cloneProperty(source, key, target) {\n"
-              "  if (key === 'Proxy') return;\n"
-              "  try {\n"
-              "    var desc = Object.getOwnPropertyDescriptor(source, key);\n"
-              "    if (desc.value === source) desc.value = target;\n"
-              "    Object.defineProperty(target, key, desc);\n"
-              "  } catch (e) {\n"
-              "   // Catch sealed properties errors\n"
-              "  }\n"
-              "})");
+              u8"(function cloneProperty(source, key, target) {\n"
+              u8"  if (key === 'Proxy') return;\n"
+              u8"  try {\n"
+              u8"    var desc = Object.getOwnPropertyDescriptor(source, key);\n"
+              u8"    if (desc.value === source) desc.value = target;\n"
+              u8"    Object.defineProperty(target, key, desc);\n"
+              u8"  } catch (e) {\n"
+              u8"   // Catch sealed properties errors\n"
+              u8"  }\n"
+              u8"})");
 
           Local<Script> script =
               Script::Compile(context, code).ToLocalChecked();
@@ -211,7 +211,7 @@ class ContextifyContext {
     Local<Context> ctx = Context::New(env->isolate(), nullptr, object_template);
 
     if (ctx.IsEmpty()) {
-      env->ThrowError("Could not instantiate context");
+      env->ThrowError(u8"Could not instantiate context");
       return Local<Context>();
     }
 
@@ -240,9 +240,9 @@ class ContextifyContext {
     function_template->InstanceTemplate()->SetInternalFieldCount(1);
     env->set_script_data_constructor_function(function_template->GetFunction());
 
-    env->SetMethod(target, "runInDebugContext", RunInDebugContext);
-    env->SetMethod(target, "makeContext", MakeContext);
-    env->SetMethod(target, "isContext", IsContext);
+    env->SetMethod(target, u8"runInDebugContext", RunInDebugContext);
+    env->SetMethod(target, u8"makeContext", MakeContext);
+    env->SetMethod(target, u8"isContext", IsContext);
   }
 
 
@@ -279,7 +279,7 @@ class ContextifyContext {
     Environment* env = Environment::GetCurrent(args);
 
     if (!args[0]->IsObject()) {
-      return env->ThrowTypeError("sandbox argument must be an object.");
+      return env->ThrowTypeError(u8"sandbox argument must be an object.");
     }
     Local<Object> sandbox = args[0].As<Object>();
 
@@ -311,7 +311,7 @@ class ContextifyContext {
     Environment* env = Environment::GetCurrent(args);
 
     if (!args[0]->IsObject()) {
-      env->ThrowTypeError("sandbox must be an object");
+      env->ThrowTypeError(u8"sandbox must be an object");
       return;
     }
     Local<Object> sandbox = args[0].As<Object>();
@@ -466,13 +466,13 @@ class ContextifyScript : public BaseObject {
   static void Init(Environment* env, Local<Object> target) {
     HandleScope scope(env->isolate());
     Local<String> class_name =
-        FIXED_ONE_BYTE_STRING(env->isolate(), "ContextifyScript");
+        FIXED_ONE_BYTE_STRING(env->isolate(), u8"ContextifyScript");
 
     Local<FunctionTemplate> script_tmpl = env->NewFunctionTemplate(New);
     script_tmpl->InstanceTemplate()->SetInternalFieldCount(1);
     script_tmpl->SetClassName(class_name);
-    env->SetProtoMethod(script_tmpl, "runInContext", RunInContext);
-    env->SetProtoMethod(script_tmpl, "runInThisContext", RunInThisContext);
+    env->SetProtoMethod(script_tmpl, u8"runInContext", RunInContext);
+    env->SetProtoMethod(script_tmpl, u8"runInThisContext", RunInThisContext);
 
     target->Set(class_name, script_tmpl->GetFunction());
     env->set_script_context_constructor_template(script_tmpl);
@@ -484,7 +484,7 @@ class ContextifyScript : public BaseObject {
     Environment* env = Environment::GetCurrent(args);
 
     if (!args.IsConstructCall()) {
-      return env->ThrowError("Must call vm.Script as a constructor.");
+      return env->ThrowError(u8"Must call vm.Script as a constructor.");
     }
 
     ContextifyScript* contextify_script =
@@ -596,7 +596,7 @@ class ContextifyScript : public BaseObject {
     // Assemble arguments
     if (!args[0]->IsObject()) {
       return env->ThrowTypeError(
-          "contextifiedSandbox argument must be an object.");
+          u8"contextifiedSandbox argument must be an object.");
     }
 
     Local<Object> sandbox = args[0].As<Object>();
@@ -616,7 +616,7 @@ class ContextifyScript : public BaseObject {
         ContextifyContext::ContextFromContextifiedSandbox(env, sandbox);
     if (contextify_context == nullptr) {
       return env->ThrowTypeError(
-          "sandbox argument must have been converted to a context.");
+          u8"sandbox argument must have been converted to a context.");
     }
 
     if (contextify_context->context().IsEmpty())
@@ -683,11 +683,11 @@ class ContextifyScript : public BaseObject {
       return false;
     }
     if (!options->IsObject()) {
-      env->ThrowTypeError("options must be an object");
+      env->ThrowTypeError(u8"options must be an object");
       return false;
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "breakOnSigint");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), u8"breakOnSigint");
     Local<Value> value = options.As<Object>()->Get(key);
     return value->IsTrue();
   }
@@ -697,11 +697,11 @@ class ContextifyScript : public BaseObject {
       return -1;
     }
     if (!options->IsObject()) {
-      env->ThrowTypeError("options must be an object");
+      env->ThrowTypeError(u8"options must be an object");
       return -1;
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "timeout");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), u8"timeout");
     Local<Value> value = options.As<Object>()->Get(key);
     if (value->IsUndefined()) {
       return -1;
@@ -709,7 +709,7 @@ class ContextifyScript : public BaseObject {
     int64_t timeout = value->IntegerValue();
 
     if (timeout <= 0) {
-      env->ThrowRangeError("timeout must be a positive number");
+      env->ThrowRangeError(u8"timeout must be a positive number");
       return -1;
     }
     return timeout;
@@ -721,11 +721,11 @@ class ContextifyScript : public BaseObject {
       return true;
     }
     if (!options->IsObject()) {
-      env->ThrowTypeError("options must be an object");
+      env->ThrowTypeError(u8"options must be an object");
       return false;
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "displayErrors");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), u8"displayErrors");
     Local<Value> value = options.As<Object>()->Get(key);
 
     return value->IsUndefined() ? true : value->BooleanValue();
@@ -734,7 +734,7 @@ class ContextifyScript : public BaseObject {
 
   static Local<String> GetFilenameArg(Environment* env, Local<Value> options) {
     Local<String> defaultFilename =
-        FIXED_ONE_BYTE_STRING(env->isolate(), "evalmachine.<anonymous>");
+        FIXED_ONE_BYTE_STRING(env->isolate(), u8"evalmachine.<anonymous>");
 
     if (options->IsUndefined()) {
       return defaultFilename;
@@ -743,11 +743,11 @@ class ContextifyScript : public BaseObject {
       return options.As<String>();
     }
     if (!options->IsObject()) {
-      env->ThrowTypeError("options must be an object");
+      env->ThrowTypeError(u8"options must be an object");
       return Local<String>();
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "filename");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), u8"filename");
     Local<Value> value = options.As<Object>()->Get(key);
 
     if (value->IsUndefined())
@@ -767,7 +767,7 @@ class ContextifyScript : public BaseObject {
     }
 
     if (!value->IsUint8Array()) {
-      env->ThrowTypeError("options.cachedData must be a Buffer instance");
+      env->ThrowTypeError(u8"options.cachedData must be a Buffer instance");
       return MaybeLocal<Uint8Array>();
     }
 
@@ -794,7 +794,7 @@ class ContextifyScript : public BaseObject {
       return defaultLineOffset;
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "lineOffset");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), u8"lineOffset");
     Local<Value> value = options.As<Object>()->Get(key);
 
     return value->IsUndefined() ? defaultLineOffset : value->ToInteger();
@@ -809,7 +809,7 @@ class ContextifyScript : public BaseObject {
       return defaultColumnOffset;
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "columnOffset");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), u8"columnOffset");
     Local<Value> value = options.As<Object>()->Get(key);
 
     return value->IsUndefined() ? defaultColumnOffset : value->ToInteger();
@@ -824,7 +824,7 @@ class ContextifyScript : public BaseObject {
                           TryCatch* try_catch) {
     if (!ContextifyScript::InstanceOf(env, args.Holder())) {
       env->ThrowTypeError(
-          "Script methods can only be called on script instances.");
+          u8"Script methods can only be called on script instances.");
       return false;
     }
 
@@ -863,9 +863,9 @@ class ContextifyScript : public BaseObject {
       // which this timeout is nested, so check whether one of the watchdogs
       // from this invocation is responsible for termination.
       if (timed_out) {
-        env->ThrowError("Script execution timed out.");
+        env->ThrowError(u8"Script execution timed out.");
       } else if (received_signal) {
-        env->ThrowError("Script execution interrupted.");
+        env->ThrowError(u8"Script execution interrupted.");
       }
 
       // If there was an exception thrown during script execution, re-throw it.

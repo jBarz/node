@@ -7,18 +7,18 @@ namespace node {
 unsigned int reverted = 0;
 
 const char* RevertMessage(const unsigned int cve) {
-#define V(code, label, msg) case REVERT_ ## code: return label ": " msg;
+#define V(code, label, msg) case REVERT_ ## code: return label u8": " msg;
   switch (cve) {
     REVERSIONS(V)
     default:
-      return "Unknown";
+      return u8"Unknown";
   }
 #undef V
 }
 
 void Revert(const unsigned int cve) {
   reverted |= 1 << cve;
-  printf("SECURITY WARNING: Reverting %s\n", RevertMessage(cve));
+  printf(u8"SECURITY WARNING: Reverting %s\n", RevertMessage(cve));
 }
 
 void Revert(const char* cve) {
@@ -31,7 +31,7 @@ void Revert(const char* cve) {
   } while (0);
   REVERSIONS(V)
 #undef V
-  printf("Error: Attempt to revert an unknown CVE [%s]\n", cve);
+  printf(u8"Error: Attempt to revert an unknown CVE [%s]\n", cve);
   exit(12);
 }
 

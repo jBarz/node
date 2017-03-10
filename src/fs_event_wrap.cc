@@ -65,13 +65,13 @@ void FSEventWrap::Initialize(Local<Object> target,
                              Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-  auto fsevent_string = FIXED_ONE_BYTE_STRING(env->isolate(), "FSEvent");
+  auto fsevent_string = FIXED_ONE_BYTE_STRING(env->isolate(), u8"FSEvent");
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
   t->SetClassName(fsevent_string);
 
-  env->SetProtoMethod(t, "start", Start);
-  env->SetProtoMethod(t, "close", Close);
+  env->SetProtoMethod(t, u8"start", Start);
+  env->SetProtoMethod(t, u8"close", Close);
 
   target->Set(fsevent_string, t->GetFunction());
 }
@@ -91,7 +91,7 @@ void FSEventWrap::Start(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
   CHECK_EQ(wrap->initialized_, false);
 
-  static const char kErrMsg[] = "filename must be a string or Buffer";
+  static const char kErrMsg[] = u8"filename must be a string or Buffer";
   if (args.Length() < 1)
     return env->ThrowTypeError(kErrMsg);
 
@@ -154,7 +154,7 @@ void FSEventWrap::OnEvent(uv_fs_event_t* handle, const char* filename,
   } else if (events & UV_CHANGE) {
     event_string = env->change_string();
   } else {
-    CHECK(0 && "bad fs events flag");
+    CHECK(0 && u8"bad fs events flag");
   }
 
   Local<Value> argv[] = {

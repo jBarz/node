@@ -49,47 +49,47 @@ void TCPWrap::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TCP"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TCP"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
   // Init properties
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "reading"),
+  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), u8"reading"),
                              Boolean::New(env->isolate(), false));
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "owner"),
+  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), u8"owner"),
                              Null(env->isolate()));
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "onread"),
+  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), u8"onread"),
                              Null(env->isolate()));
   t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(),
-                                                 "onconnection"),
+                                                 u8"onconnection"),
                              Null(env->isolate()));
 
 
-  env->SetProtoMethod(t, "close", HandleWrap::Close);
+  env->SetProtoMethod(t, u8"close", HandleWrap::Close);
 
-  env->SetProtoMethod(t, "ref", HandleWrap::Ref);
-  env->SetProtoMethod(t, "unref", HandleWrap::Unref);
-  env->SetProtoMethod(t, "hasRef", HandleWrap::HasRef);
+  env->SetProtoMethod(t, u8"ref", HandleWrap::Ref);
+  env->SetProtoMethod(t, u8"unref", HandleWrap::Unref);
+  env->SetProtoMethod(t, u8"hasRef", HandleWrap::HasRef);
 
   StreamWrap::AddMethods(env, t, StreamBase::kFlagHasWritev);
 
-  env->SetProtoMethod(t, "open", Open);
-  env->SetProtoMethod(t, "bind", Bind);
-  env->SetProtoMethod(t, "listen", Listen);
-  env->SetProtoMethod(t, "connect", Connect);
-  env->SetProtoMethod(t, "bind6", Bind6);
-  env->SetProtoMethod(t, "connect6", Connect6);
-  env->SetProtoMethod(t, "getsockname",
+  env->SetProtoMethod(t, u8"open", Open);
+  env->SetProtoMethod(t, u8"bind", Bind);
+  env->SetProtoMethod(t, u8"listen", Listen);
+  env->SetProtoMethod(t, u8"connect", Connect);
+  env->SetProtoMethod(t, u8"bind6", Bind6);
+  env->SetProtoMethod(t, u8"connect6", Connect6);
+  env->SetProtoMethod(t, u8"getsockname",
                       GetSockOrPeerName<TCPWrap, uv_tcp_getsockname>);
-  env->SetProtoMethod(t, "getpeername",
+  env->SetProtoMethod(t, u8"getpeername",
                       GetSockOrPeerName<TCPWrap, uv_tcp_getpeername>);
-  env->SetProtoMethod(t, "setNoDelay", SetNoDelay);
-  env->SetProtoMethod(t, "setKeepAlive", SetKeepAlive);
+  env->SetProtoMethod(t, u8"setNoDelay", SetNoDelay);
+  env->SetProtoMethod(t, u8"setKeepAlive", SetKeepAlive);
 
 #ifdef _WIN32
-  env->SetProtoMethod(t, "setSimultaneousAccepts", SetSimultaneousAccepts);
+  env->SetProtoMethod(t, u8"setSimultaneousAccepts", SetSimultaneousAccepts);
 #endif
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TCP"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TCP"), t->GetFunction());
   env->set_tcp_constructor_template(t);
 
   // Create FunctionTemplate for TCPConnectWrap.
@@ -98,8 +98,8 @@ void TCPWrap::Initialize(Local<Object> target,
   };
   auto cwt = FunctionTemplate::New(env->isolate(), constructor);
   cwt->InstanceTemplate()->SetInternalFieldCount(1);
-  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TCPConnectWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TCPConnectWrap"),
+  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TCPConnectWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TCPConnectWrap"),
               cwt->GetFunction());
 }
 

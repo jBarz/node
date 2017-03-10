@@ -31,8 +31,8 @@ namespace node {
 namespace inspector {
 namespace {
 
-const char TAG_CONNECT[] = "#connect";
-const char TAG_DISCONNECT[] = "#disconnect";
+const char TAG_CONNECT[] = u8"#connect";
+const char TAG_DISCONNECT[] = u8"#disconnect";
 
 static const uint8_t PROTOCOL_JSON[] = {
 #include "v8_inspector_protocol_json.h"  // NOLINT(build/include_order)
@@ -40,39 +40,39 @@ static const uint8_t PROTOCOL_JSON[] = {
 
 std::string GetWsUrl(int port, const std::string& id) {
   char buf[1024];
-  snprintf(buf, sizeof(buf), "127.0.0.1:%d/%s", port, id.c_str());
+  snprintf(buf, sizeof(buf), u8"127.0.0.1:%d/%s", port, id.c_str());
   return buf;
 }
 
 void PrintDebuggerReadyMessage(int port, const std::string& id) {
-  fprintf(stderr, "Debugger listening on port %d.\n"
-    "Warning: This is an experimental feature and could change at any time.\n"
-    "To start debugging, open the following URL in Chrome:\n"
-    "    chrome-devtools://devtools/remote/serve_file/"
-    "@" V8_INSPECTOR_REVISION "/inspector.html?"
-    "experiments=true&v8only=true&ws=%s\n",
+  fprintf(stderr, u8"Debugger listening on port %d.\n"
+    u8"Warning: This is an experimental feature and could change at any time.\n"
+    u8"To start debugging, open the following URL in Chrome:\n"
+    u8"    chrome-devtools://devtools/remote/serve_file/"
+    u8"@" V8_INSPECTOR_REVISION u8"/inspector.html?"
+    u8"experiments=true&v8only=true&ws=%s\n",
       port, GetWsUrl(port, id).c_str());
   fflush(stderr);
 }
 
 std::string MapToString(const std::map<std::string, std::string> object) {
   std::ostringstream json;
-  json << "[ {\n";
+  json << u8"[ {\n";
   bool first = true;
   for (const auto& name_value : object) {
     if (!first)
-      json << ",\n";
-    json << "  \"" << name_value.first << "\": \"";
-    json << name_value.second << "\"";
+      json << u8",\n";
+    json << u8"  \"" << name_value.first << u8"\": \"";
+    json << name_value.second << u8"\"";
     first = false;
   }
-  json << "\n} ]\n\n";
+  json << u8"\n} ]\n\n";
   return json.str();
 }
 
 void Escape(std::string* string) {
   for (char& c : *string) {
-    c = (c == '\"' || c == '\\') ? '_' : c;
+    c = (c == '\x22' || c == '\x5c') ? '\x5f' : c;
   }
 }
 
@@ -93,11 +93,11 @@ void OnBufferAlloc(uv_handle_t* handle, size_t len, uv_buf_t* buf) {
 
 void SendHttpResponse(InspectorSocket* socket, const char* response,
                       size_t size) {
-  const char HEADERS[] = "HTTP/1.0 200 OK\r\n"
-                         "Content-Type: application/json; charset=UTF-8\r\n"
-                         "Cache-Control: no-cache\r\n"
-                         "Content-Length: %zu\r\n"
-                         "\r\n";
+  const char HEADERS[] = u8"HTTP/1.0 200 OK\r\n"
+                         u8"Content-Type: application/json; charset=UTF-8\r\n"
+                         u8"Cache-Control: no-cache\r\n"
+                         u8"Content-Length: %zu\r\n"
+                         u8"\r\n";
   char header[sizeof(HEADERS) + 20];
   int header_len = snprintf(header, sizeof(header), HEADERS, size);
   inspector_write(socket, header, header_len);
@@ -110,10 +110,10 @@ void SendHttpResponse(InspectorSocket* socket, const std::string& response) {
 
 void SendVersionResponse(InspectorSocket* socket) {
   static const char response[] =
-      "{\n"
-      "  \"Browser\": \"node.js/" NODE_VERSION "\",\n"
-      "  \"Protocol-Version\": \"1.1\"\n"
-      "}\n";
+      u8"{\n"
+      u8"  \"Browser\": \"node.js/" NODE_VERSION u8"\",\n"
+      u8"  \"Protocol-Version\": \"1.1\"\n"
+      u8"}\n";
   SendHttpResponse(socket, response, sizeof(response) - 1);
 }
 
@@ -124,7 +124,7 @@ std::string GetProcessTitle() {
   if (err == 0) {
     return title;
   } else {
-    return "Node.js";
+    return u8"Node.js";
   }
 }
 
@@ -140,7 +140,7 @@ void SendProtocolJson(InspectorSocket* socket) {
       PROTOCOL_JSON[2];
   strm.next_in = const_cast<uint8_t*>(PROTOCOL_JSON + 3);
   strm.avail_in = sizeof(PROTOCOL_JSON) - 3;
-  std::string data(kDecompressedSize, '\0');
+  std::string data(kDecompressedSize, '\x0');
   strm.next_out = reinterpret_cast<Byte*>(&data[0]);
   strm.avail_out = data.size();
   CHECK_EQ(Z_STREAM_END, inflate(&strm, Z_FINISH));
@@ -152,8 +152,8 @@ void SendProtocolJson(InspectorSocket* socket) {
 const char* match_path_segment(const char* path, const char* expected) {
   size_t len = strlen(expected);
   if (StringEqualNoCaseN(path, expected, len)) {
-    if (path[len] == '/') return path + len + 1;
-    if (path[len] == '\0') return path + len;
+    if (path[len] == '\x2f') return path + len + 1;
+    if (path[len] == '\x0') return path + len;
   }
   return nullptr;
 }
@@ -166,7 +166,7 @@ std::string GenerateID() {
                               sizeof(buffer)));
 
   char uuid[256];
-  snprintf(uuid, sizeof(uuid), "%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
+  snprintf(uuid, sizeof(uuid), u8"%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
            buffer[0],  // time_low
            buffer[1],  // time_mid
            buffer[2],  // time_low
@@ -324,7 +324,7 @@ class V8NodeInspector : public v8_inspector::V8InspectorClient {
                     running_nested_loop_(false),
                     inspector_(V8Inspector::create(env->isolate(), this)) {
     inspector_->contextCreated(
-        v8_inspector::V8ContextInfo(env->context(), 1, "NodeJS Main Context"));
+        v8_inspector::V8ContextInfo(env->context(), 1, u8"NodeJS Main Context"));
   }
 
   void runMessageLoopOnPause(int context_group_id) override {
@@ -432,7 +432,7 @@ void InspectorConsoleCall(const v8::FunctionCallbackInfo<v8::Value>& info) {
     call_args[i] = info[i];
   }
 
-  v8::Local<v8::String> in_call_key = OneByteString(isolate, "in_call");
+  v8::Local<v8::String> in_call_key = OneByteString(isolate, u8"in_call");
   bool in_call = config_object->Has(context, in_call_key).FromMaybe(false);
   if (!in_call) {
     CHECK(config_object->Set(context,
@@ -460,8 +460,8 @@ void InspectorWrapConsoleCall(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
   if (args.Length() != 3 || !args[0]->IsFunction() ||
       !args[1]->IsFunction() || !args[2]->IsObject()) {
-    return env->ThrowError("inspector.wrapConsoleCall takes exactly 3 "
-        "arguments: two functions and an object.");
+    return env->ThrowError(u8"inspector.wrapConsoleCall takes exactly 3 "
+        u8"arguments: two functions and an object.");
   }
 
   v8::Local<v8::Array> array = v8::Array::New(env->isolate(), args.Length());
@@ -517,7 +517,7 @@ bool AgentImpl::IsStarted() {
 void AgentImpl::WaitForDisconnect() {
   if (state_ == State::kConnected) {
     shutting_down_ = true;
-    fprintf(stderr, "Waiting for the debugger to disconnect...\n");
+    fprintf(stderr, u8"Waiting for the debugger to disconnect...\n");
     fflush(stderr);
     inspector_->runMessageLoopOnPause(0);
   }
@@ -535,8 +535,8 @@ void AgentImpl::InstallInspectorOnProcess() {
   auto env = parent_env_;
   v8::Local<v8::Object> process = env->process_object();
   v8::Local<v8::Object> inspector = v8::Object::New(env->isolate());
-  READONLY_PROPERTY(process, "inspector", inspector);
-  env->SetMethod(inspector, "wrapConsoleCall", InspectorWrapConsoleCall);
+  READONLY_PROPERTY(process, u8"inspector", inspector);
+  env->SetMethod(inspector, u8"wrapConsoleCall", InspectorWrapConsoleCall);
 }
 
 String16 ToProtocolString(v8::Local<v8::Value> value) {
@@ -545,7 +545,7 @@ String16 ToProtocolString(v8::Local<v8::Value> value) {
     return String16();
   }
   v8::Local<v8::String> string_value = v8::Local<v8::String>::Cast(value);
-  std::basic_string<uint16_t> buffer(string_value->Length(), '\0');
+  std::basic_string<uint16_t> buffer(string_value->Length(), '\x0');
   string_value->Write(&buffer[0], 0, string_value->Length());
   return String16(buffer);
 }
@@ -568,7 +568,7 @@ void AgentImpl::FatalException(v8::Local<v8::Value> error,
 
   inspector_->inspector()->exceptionThrown(
       context,
-      "Uncaught",
+      u8"Uncaught",
       error,
       ToProtocolString(message->Get()),
       ToProtocolString(message->GetScriptResourceName()),
@@ -628,7 +628,7 @@ void AgentImpl::OnRemoteDataIO(InspectorSocket* socket,
     // engages, node should wait for the run callback from the remote client
     // and initiate its startup. This is a change to node.cc that should be
     // upstreamed separately.
-    if (wait_&& str.find("\"Runtime.runIfWaitingForDebugger\"")
+    if (wait_&& str.find(u8"\"Runtime.runIfWaitingForDebugger\"")
         != std::string::npos) {
       wait_ = false;
       uv_sem_post(&start_sem_);
@@ -650,50 +650,50 @@ void AgentImpl::OnRemoteDataIO(InspectorSocket* socket,
 
 void AgentImpl::SendListResponse(InspectorSocket* socket) {
   std::map<std::string, std::string> response;
-  response["description"] = "node.js instance";
-  response["faviconUrl"] = "https://nodejs.org/static/favicon.ico";
-  response["id"] = id_;
-  response["title"] = script_name_.empty() ? GetProcessTitle() : script_name_;
-  Escape(&response["title"]);
-  response["type"] = "node";
+  response[u8"description"] = u8"node.js instance";
+  response[u8"faviconUrl"] = u8"https://nodejs.org/static/favicon.ico";
+  response[u8"id"] = id_;
+  response[u8"title"] = script_name_.empty() ? GetProcessTitle() : script_name_;
+  Escape(&response[u8"title"]);
+  response[u8"type"] = u8"node";
   // This attribute value is a "best effort" URL that is passed as a JSON
   // string. It is not guaranteed to resolve to a valid resource.
-  response["url"] = "file://" + script_path_;
-  Escape(&response["url"]);
+  response[u8"url"] = u8"file://" + script_path_;
+  Escape(&response[u8"url"]);
 
   if (!client_socket_) {
     std::string address = GetWsUrl(port_, id_);
 
     std::ostringstream frontend_url;
-    frontend_url << "https://chrome-devtools-frontend.appspot.com/serve_file/@";
+    frontend_url << u8"https://chrome-devtools-frontend.appspot.com/serve_file/@";
     frontend_url << V8_INSPECTOR_REVISION;
-    frontend_url << "/inspector.html?experiments=true&v8only=true&ws=";
+    frontend_url << u8"/inspector.html?experiments=true&v8only=true&ws=";
     frontend_url << address;
 
-    response["devtoolsFrontendUrl"] += frontend_url.str();
-    response["webSocketDebuggerUrl"] = "ws://" + address;
+    response[u8"devtoolsFrontendUrl"] += frontend_url.str();
+    response[u8"webSocketDebuggerUrl"] = u8"ws://" + address;
   }
   SendHttpResponse(socket, MapToString(response));
 }
 
 bool AgentImpl::RespondToGet(InspectorSocket* socket, const std::string& path) {
-  const char* command = match_path_segment(path.c_str(), "/json");
+  const char* command = match_path_segment(path.c_str(), u8"/json");
   if (command == nullptr)
     return false;
 
-  if (match_path_segment(command, "list") || command[0] == '\0') {
+  if (match_path_segment(command, u8"list") || command[0] == '\x0') {
     SendListResponse(socket);
     return true;
-  } else if (match_path_segment(command, "protocol")) {
+  } else if (match_path_segment(command, u8"protocol")) {
     SendProtocolJson(socket);
     return true;
-  } else if (match_path_segment(command, "version")) {
+  } else if (match_path_segment(command, u8"version")) {
     SendVersionResponse(socket);
     return true;
-  } else if (const char* pid = match_path_segment(command, "activate")) {
+  } else if (const char* pid = match_path_segment(command, u8"activate")) {
     if (pid != id_)
       return false;
-    SendHttpResponse(socket, "Target activated");
+    SendHttpResponse(socket, u8"Target activated");
     return true;
   }
   return false;
@@ -730,7 +730,7 @@ void AgentImpl::WorkerRunIO() {
     uv_fs_req_cleanup(&req);
   }
   uv_tcp_init(&child_loop_, &server);
-  uv_ip4_addr("0.0.0.0", port_, &addr);
+  uv_ip4_addr(u8"0.0.0.0", port_, &addr);
   server.data = this;
   err = uv_tcp_bind(&server,
                     reinterpret_cast<const struct sockaddr*>(&addr), 0);
@@ -739,7 +739,7 @@ void AgentImpl::WorkerRunIO() {
                     OnSocketConnectionIO);
   }
   if (err != 0) {
-    fprintf(stderr, "Unable to open devtools socket: %s\n", uv_strerror(err));
+    fprintf(stderr, u8"Unable to open devtools socket: %s\n", uv_strerror(err));
     state_ = State::kError;  // Safe, main thread is waiting on semaphore
     uv_close(reinterpret_cast<uv_handle_t*>(&io_thread_req_), nullptr);
     uv_close(reinterpret_cast<uv_handle_t*>(&server), nullptr);
@@ -824,7 +824,7 @@ void AgentImpl::DispatchMessages() {
         CHECK_EQ(State::kAccepting, state_);
         backend_session_id_++;
         state_ = State::kConnected;
-        fprintf(stderr, "Debugger attached.\n");
+        fprintf(stderr, u8"Debugger attached.\n");
         inspector_->connectFrontend();
       } else if (message == TAG_DISCONNECT) {
         CHECK_EQ(State::kConnected, state_);

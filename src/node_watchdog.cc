@@ -14,8 +14,8 @@ Watchdog::Watchdog(v8::Isolate* isolate, uint64_t ms) : isolate_(isolate),
   CHECK(loop_);
   rc = uv_loop_init(loop_);
   if (rc != 0) {
-    FatalError("node::Watchdog::Watchdog()",
-               "Failed to initialize uv loop.");
+    FatalError(u8"node::Watchdog::Watchdog()",
+               u8"Failed to initialize uv loop.");
   }
 
   rc = uv_async_init(loop_, &async_, &Watchdog::Async);

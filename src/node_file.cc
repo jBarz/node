@@ -101,7 +101,7 @@ class FSReqWrap: public ReqWrap<uv_fs_t> {
 
 #define ASSERT_PATH(path)                                                   \
   if (*path == nullptr)                                                     \
-    return TYPE_ERROR( #path " must be a string or Buffer");
+    return TYPE_ERROR( #path u8" must be a string or Buffer");
 
 FSReqWrap* FSReqWrap::New(Environment* env,
                           Local<Object> req,
@@ -216,7 +216,7 @@ static void After(uv_fs_t *req) {
           argv[0] = UVException(env->isolate(),
                                 UV_EINVAL,
                                 req_wrap->syscall(),
-                                "Invalid character encoding for filename",
+                                u8"Invalid character encoding for filename",
                                 req->path,
                                 req_wrap->data());
         } else {
@@ -232,7 +232,7 @@ static void After(uv_fs_t *req) {
           argv[0] = UVException(env->isolate(),
                                 UV_EINVAL,
                                 req_wrap->syscall(),
-                                "Invalid character encoding for link",
+                                u8"Invalid character encoding for link",
                                 req->path,
                                 req_wrap->data());
         } else {
@@ -248,7 +248,7 @@ static void After(uv_fs_t *req) {
           argv[0] = UVException(env->isolate(),
                                 UV_EINVAL,
                                 req_wrap->syscall(),
-                                "Invalid character encoding for link",
+                                u8"Invalid character encoding for link",
                                 req->path,
                                 req_wrap->data());
         } else {
@@ -290,7 +290,7 @@ static void After(uv_fs_t *req) {
               argv[0] = UVException(env->isolate(),
                                     UV_EINVAL,
                                     req_wrap->syscall(),
-                                    "Invalid character encoding for filename",
+                                    u8"Invalid character encoding for filename",
                                     req->path,
                                     req_wrap->data());
               break;
@@ -314,7 +314,7 @@ static void After(uv_fs_t *req) {
         break;
 
       default:
-        CHECK(0 && "Unhandled eio response");
+        CHECK(0 && u8"Unhandled eio response");
     }
   }
 
@@ -383,9 +383,9 @@ static void Access(const FunctionCallbackInfo<Value>& args) {
   HandleScope scope(env->isolate());
 
   if (args.Length() < 2)
-    return TYPE_ERROR("path and mode are required");
+    return TYPE_ERROR(u8"path and mode are required");
   if (!args[1]->IsInt32())
-    return TYPE_ERROR("mode must be an integer");
+    return TYPE_ERROR(u8"mode must be an integer");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -404,9 +404,9 @@ static void Close(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return TYPE_ERROR("fd is required");
+    return TYPE_ERROR(u8"fd is required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be a file descriptor");
+    return TYPE_ERROR(u8"fd must be a file descriptor");
 
   int fd = args[0]->Int32Value();
 
@@ -577,7 +577,7 @@ static void InternalModuleReadFile(const FunctionCallbackInfo<Value>& args) {
   uv_fs_req_cleanup(&close_req);
 
   size_t start = 0;
-  if (chars.size() >= 3 && 0 == memcmp(&chars[0], "\xEF\xBB\xBF", 3)) {
+  if (chars.size() >= 3 && 0 == memcmp(&chars[0], u8"\xEF\xBB\xBF", 3)) {
     start = 3;  // Skip UTF-8 BOM.
   }
 
@@ -613,7 +613,7 @@ static void Stat(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -631,7 +631,7 @@ static void LStat(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -649,9 +649,9 @@ static void FStat(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return TYPE_ERROR("fd is required");
+    return TYPE_ERROR(u8"fd is required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be a file descriptor");
+    return TYPE_ERROR(u8"fd must be a file descriptor");
 
   int fd = args[0]->Int32Value();
 
@@ -669,9 +669,9 @@ static void Symlink(const FunctionCallbackInfo<Value>& args) {
 
   int len = args.Length();
   if (len < 1)
-    return TYPE_ERROR("target path required");
+    return TYPE_ERROR(u8"target path required");
   if (len < 2)
-    return TYPE_ERROR("src path required");
+    return TYPE_ERROR(u8"src path required");
 
   BufferValue target(env->isolate(), args[0]);
   ASSERT_PATH(target)
@@ -682,12 +682,12 @@ static void Symlink(const FunctionCallbackInfo<Value>& args) {
 
   if (args[2]->IsString()) {
     node::Utf8Value mode(env->isolate(), args[2]);
-    if (strcmp(*mode, "dir") == 0) {
+    if (strcmp(*mode, u8"dir") == 0) {
       flags |= UV_FS_SYMLINK_DIR;
-    } else if (strcmp(*mode, "junction") == 0) {
+    } else if (strcmp(*mode, u8"junction") == 0) {
       flags |= UV_FS_SYMLINK_JUNCTION;
-    } else if (strcmp(*mode, "file") != 0) {
-      return env->ThrowError("Unknown symlink type");
+    } else if (strcmp(*mode, u8"file") != 0) {
+      return env->ThrowError(u8"Unknown symlink type");
     }
   }
 
@@ -703,9 +703,9 @@ static void Link(const FunctionCallbackInfo<Value>& args) {
 
   int len = args.Length();
   if (len < 1)
-    return TYPE_ERROR("src path required");
+    return TYPE_ERROR(u8"src path required");
   if (len < 2)
-    return TYPE_ERROR("dest path required");
+    return TYPE_ERROR(u8"dest path required");
 
   BufferValue src(env->isolate(), args[0]);
   ASSERT_PATH(src)
@@ -726,7 +726,7 @@ static void ReadLink(const FunctionCallbackInfo<Value>& args) {
   const int argc = args.Length();
 
   if (argc < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -747,8 +747,8 @@ static void ReadLink(const FunctionCallbackInfo<Value>& args) {
                                           encoding);
     if (rc.IsEmpty()) {
       return env->ThrowUVException(UV_EINVAL,
-                                   "readlink",
-                                   "Invalid character encoding for link",
+                                   u8"readlink",
+                                   u8"Invalid character encoding for link",
                                    *path);
     }
     args.GetReturnValue().Set(rc);
@@ -760,9 +760,9 @@ static void Rename(const FunctionCallbackInfo<Value>& args) {
 
   int len = args.Length();
   if (len < 1)
-    return TYPE_ERROR("old path required");
+    return TYPE_ERROR(u8"old path required");
   if (len < 2)
-    return TYPE_ERROR("new path required");
+    return TYPE_ERROR(u8"new path required");
 
   BufferValue old_path(env->isolate(), args[0]);
   ASSERT_PATH(old_path)
@@ -780,9 +780,9 @@ static void FTruncate(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 2)
-    return TYPE_ERROR("fd and length are required");
+    return TYPE_ERROR(u8"fd and length are required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be a file descriptor");
+    return TYPE_ERROR(u8"fd must be a file descriptor");
 
   int fd = args[0]->Int32Value();
 
@@ -793,7 +793,7 @@ static void FTruncate(const FunctionCallbackInfo<Value>& args) {
   if (!len_v->IsUndefined() &&
       !len_v->IsNull() &&
       !IsInt64(len_v->NumberValue())) {
-    return env->ThrowTypeError("Not an integer");
+    return env->ThrowTypeError(u8"Not an integer");
   }
 
   const int64_t len = len_v->IntegerValue();
@@ -809,9 +809,9 @@ static void Fdatasync(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return TYPE_ERROR("fd is required");
+    return TYPE_ERROR(u8"fd is required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be a file descriptor");
+    return TYPE_ERROR(u8"fd must be a file descriptor");
 
   int fd = args[0]->Int32Value();
 
@@ -826,9 +826,9 @@ static void Fsync(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return TYPE_ERROR("fd is required");
+    return TYPE_ERROR(u8"fd is required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be a file descriptor");
+    return TYPE_ERROR(u8"fd must be a file descriptor");
 
   int fd = args[0]->Int32Value();
 
@@ -843,7 +843,7 @@ static void Unlink(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -859,7 +859,7 @@ static void RMDir(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -875,9 +875,9 @@ static void MKDir(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 2)
-    return TYPE_ERROR("path and mode are required");
+    return TYPE_ERROR(u8"path and mode are required");
   if (!args[1]->IsInt32())
-    return TYPE_ERROR("mode must be an integer");
+    return TYPE_ERROR(u8"mode must be an integer");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -897,7 +897,7 @@ static void RealPath(const FunctionCallbackInfo<Value>& args) {
   const int argc = args.Length();
 
   if (argc < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -918,8 +918,8 @@ static void RealPath(const FunctionCallbackInfo<Value>& args) {
                                           encoding);
     if (rc.IsEmpty()) {
       return env->ThrowUVException(UV_EINVAL,
-                                   "realpath",
-                                   "Invalid character encoding for path",
+                                   u8"realpath",
+                                   u8"Invalid character encoding for path",
                                    *path);
     }
     args.GetReturnValue().Set(rc);
@@ -932,7 +932,7 @@ static void ReadDir(const FunctionCallbackInfo<Value>& args) {
   const int argc = args.Length();
 
   if (argc < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -962,15 +962,15 @@ static void ReadDir(const FunctionCallbackInfo<Value>& args) {
       if (r == UV_EOF)
         break;
       if (r != 0)
-        return env->ThrowUVException(r, "readdir", "", *path);
+        return env->ThrowUVException(r, u8"readdir", u8"", *path);
 
       Local<Value> filename = StringBytes::Encode(env->isolate(),
                                                   ent.name,
                                                   encoding);
       if (filename.IsEmpty()) {
         return env->ThrowUVException(UV_EINVAL,
-                                     "readdir",
-                                     "Invalid character encoding for filename",
+                                     u8"readdir",
+                                     u8"Invalid character encoding for filename",
                                      *path);
       }
 
@@ -996,15 +996,15 @@ static void Open(const FunctionCallbackInfo<Value>& args) {
 
   int len = args.Length();
   if (len < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
   if (len < 2)
-    return TYPE_ERROR("flags required");
+    return TYPE_ERROR(u8"flags required");
   if (len < 3)
-    return TYPE_ERROR("mode required");
+    return TYPE_ERROR(u8"mode required");
   if (!args[1]->IsInt32())
-    return TYPE_ERROR("flags must be an int");
+    return TYPE_ERROR(u8"flags must be an int");
   if (!args[2]->IsInt32())
-    return TYPE_ERROR("mode must be an int");
+    return TYPE_ERROR(u8"mode must be an int");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -1034,7 +1034,7 @@ static void WriteBuffer(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[0]->IsInt32())
-    return env->ThrowTypeError("First argument must be file descriptor");
+    return env->ThrowTypeError(u8"First argument must be file descriptor");
 
   CHECK(Buffer::HasInstance(args[1]));
 
@@ -1048,13 +1048,13 @@ static void WriteBuffer(const FunctionCallbackInfo<Value>& args) {
   Local<Value> req = args[5];
 
   if (off > buffer_length)
-    return env->ThrowRangeError("offset out of bounds");
+    return env->ThrowRangeError(u8"offset out of bounds");
   if (len > buffer_length)
-    return env->ThrowRangeError("length out of bounds");
+    return env->ThrowRangeError(u8"length out of bounds");
   if (off + len < off)
-    return env->ThrowRangeError("off + len overflow");
+    return env->ThrowRangeError(u8"off + len overflow");
   if (!Buffer::IsWithinBounds(off, len, buffer_length))
-    return env->ThrowRangeError("off + len > buffer.length");
+    return env->ThrowRangeError(u8"off + len > buffer.length");
 
   buf += off;
 
@@ -1094,7 +1094,7 @@ static void WriteBuffers(const FunctionCallbackInfo<Value>& args) {
     Local<Value> chunk = chunks->Get(i);
 
     if (!Buffer::HasInstance(chunk))
-      return env->ThrowTypeError("Array elements all need to be buffers");
+      return env->ThrowTypeError(u8"Array elements all need to be buffers");
 
     iovs[i] = uv_buf_init(Buffer::Data(chunk), Buffer::Length(chunk));
   }
@@ -1121,7 +1121,7 @@ static void WriteString(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[0]->IsInt32())
-    return env->ThrowTypeError("First argument must be file descriptor");
+    return env->ThrowTypeError(u8"First argument must be file descriptor");
 
   Local<Value> req;
   Local<Value> string = args[1];
@@ -1162,7 +1162,7 @@ static void WriteString(const FunctionCallbackInfo<Value>& args) {
   }
 
   FSReqWrap* req_wrap =
-      FSReqWrap::New(env, req.As<Object>(), "write", buf, UTF8, ownership);
+      FSReqWrap::New(env, req.As<Object>(), u8"write", buf, UTF8, ownership);
   int err = uv_fs_write(env->event_loop(),
                         req_wrap->req(),
                         fd,
@@ -1199,11 +1199,11 @@ static void Read(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 2)
-    return TYPE_ERROR("fd and buffer are required");
+    return TYPE_ERROR(u8"fd and buffer are required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be a file descriptor");
+    return TYPE_ERROR(u8"fd must be a file descriptor");
   if (!Buffer::HasInstance(args[1]))
-    return TYPE_ERROR("Second argument needs to be a buffer");
+    return TYPE_ERROR(u8"Second argument needs to be a buffer");
 
   int fd = args[0]->Int32Value();
 
@@ -1220,12 +1220,12 @@ static void Read(const FunctionCallbackInfo<Value>& args) {
 
   size_t off = args[2]->Int32Value();
   if (off >= buffer_length) {
-    return env->ThrowError("Offset is out of bounds");
+    return env->ThrowError(u8"Offset is out of bounds");
   }
 
   len = args[3]->Int32Value();
   if (!Buffer::IsWithinBounds(off, len, buffer_length))
-    return env->ThrowRangeError("Length extends beyond buffer");
+    return env->ThrowRangeError(u8"Length extends beyond buffer");
 
   pos = GET_OFFSET(args[4]);
 
@@ -1251,9 +1251,9 @@ static void Chmod(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 2)
-    return TYPE_ERROR("path and mode are required");
+    return TYPE_ERROR(u8"path and mode are required");
   if (!args[1]->IsInt32())
-    return TYPE_ERROR("mode must be an integer");
+    return TYPE_ERROR(u8"mode must be an integer");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -1275,11 +1275,11 @@ static void FChmod(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 2)
-    return TYPE_ERROR("fd and mode are required");
+    return TYPE_ERROR(u8"fd and mode are required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be a file descriptor");
+    return TYPE_ERROR(u8"fd must be a file descriptor");
   if (!args[1]->IsInt32())
-    return TYPE_ERROR("mode must be an integer");
+    return TYPE_ERROR(u8"mode must be an integer");
 
   int fd = args[0]->Int32Value();
   int mode = static_cast<int>(args[1]->Int32Value());
@@ -1300,15 +1300,15 @@ static void Chown(const FunctionCallbackInfo<Value>& args) {
 
   int len = args.Length();
   if (len < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
   if (len < 2)
-    return TYPE_ERROR("uid required");
+    return TYPE_ERROR(u8"uid required");
   if (len < 3)
-    return TYPE_ERROR("gid required");
+    return TYPE_ERROR(u8"gid required");
   if (!args[1]->IsUint32())
-    return TYPE_ERROR("uid must be an unsigned int");
+    return TYPE_ERROR(u8"uid must be an unsigned int");
   if (!args[2]->IsUint32())
-    return TYPE_ERROR("gid must be an unsigned int");
+    return TYPE_ERROR(u8"gid must be an unsigned int");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -1332,17 +1332,17 @@ static void FChown(const FunctionCallbackInfo<Value>& args) {
 
   int len = args.Length();
   if (len < 1)
-    return TYPE_ERROR("fd required");
+    return TYPE_ERROR(u8"fd required");
   if (len < 2)
-    return TYPE_ERROR("uid required");
+    return TYPE_ERROR(u8"uid required");
   if (len < 3)
-    return TYPE_ERROR("gid required");
+    return TYPE_ERROR(u8"gid required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be an int");
+    return TYPE_ERROR(u8"fd must be an int");
   if (!args[1]->IsUint32())
-    return TYPE_ERROR("uid must be an unsigned int");
+    return TYPE_ERROR(u8"uid must be an unsigned int");
   if (!args[2]->IsUint32())
-    return TYPE_ERROR("gid must be an unsigned int");
+    return TYPE_ERROR(u8"gid must be an unsigned int");
 
   int fd = args[0]->Int32Value();
   uv_uid_t uid = static_cast<uv_uid_t>(args[1]->Uint32Value());
@@ -1361,15 +1361,15 @@ static void UTimes(const FunctionCallbackInfo<Value>& args) {
 
   int len = args.Length();
   if (len < 1)
-    return TYPE_ERROR("path required");
+    return TYPE_ERROR(u8"path required");
   if (len < 2)
-    return TYPE_ERROR("atime required");
+    return TYPE_ERROR(u8"atime required");
   if (len < 3)
-    return TYPE_ERROR("mtime required");
+    return TYPE_ERROR(u8"mtime required");
   if (!args[1]->IsNumber())
-    return TYPE_ERROR("atime must be a number");
+    return TYPE_ERROR(u8"atime must be a number");
   if (!args[2]->IsNumber())
-    return TYPE_ERROR("mtime must be a number");
+    return TYPE_ERROR(u8"mtime must be a number");
 
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
@@ -1389,17 +1389,17 @@ static void FUTimes(const FunctionCallbackInfo<Value>& args) {
 
   int len = args.Length();
   if (len < 1)
-    return TYPE_ERROR("fd required");
+    return TYPE_ERROR(u8"fd required");
   if (len < 2)
-    return TYPE_ERROR("atime required");
+    return TYPE_ERROR(u8"atime required");
   if (len < 3)
-    return TYPE_ERROR("mtime required");
+    return TYPE_ERROR(u8"mtime required");
   if (!args[0]->IsInt32())
-    return TYPE_ERROR("fd must be an int");
+    return TYPE_ERROR(u8"fd must be an int");
   if (!args[1]->IsNumber())
-    return TYPE_ERROR("atime must be a number");
+    return TYPE_ERROR(u8"atime must be a number");
   if (!args[2]->IsNumber())
-    return TYPE_ERROR("mtime must be a number");
+    return TYPE_ERROR(u8"mtime must be a number");
 
   const int fd = args[0]->Int32Value();
   const double atime = static_cast<double>(args[1]->NumberValue());
@@ -1419,7 +1419,7 @@ static void Mkdtemp(const FunctionCallbackInfo<Value>& args) {
 
   BufferValue tmpl(env->isolate(), args[0]);
   if (*tmpl == nullptr)
-    return TYPE_ERROR("template must be a string or Buffer");
+    return TYPE_ERROR(u8"template must be a string or Buffer");
 
   const enum encoding encoding = ParseEncoding(env->isolate(), args[1], UTF8);
 
@@ -1431,8 +1431,8 @@ static void Mkdtemp(const FunctionCallbackInfo<Value>& args) {
     Local<Value> rc = StringBytes::Encode(env->isolate(), path, encoding);
     if (rc.IsEmpty()) {
       return env->ThrowUVException(UV_EINVAL,
-                                   "mkdtemp",
-                                   "Invalid character encoding for filename",
+                                   u8"mkdtemp",
+                                   u8"Invalid character encoding for filename",
                                    *tmpl);
     }
     args.GetReturnValue().Set(rc);
@@ -1454,46 +1454,46 @@ void InitFs(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   // Function which creates a new Stats object.
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "FSInitialize"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"FSInitialize"),
               env->NewFunctionTemplate(FSInitialize)->GetFunction());
 
-  env->SetMethod(target, "access", Access);
-  env->SetMethod(target, "close", Close);
-  env->SetMethod(target, "open", Open);
-  env->SetMethod(target, "read", Read);
-  env->SetMethod(target, "fdatasync", Fdatasync);
-  env->SetMethod(target, "fsync", Fsync);
-  env->SetMethod(target, "rename", Rename);
-  env->SetMethod(target, "ftruncate", FTruncate);
-  env->SetMethod(target, "rmdir", RMDir);
-  env->SetMethod(target, "mkdir", MKDir);
-  env->SetMethod(target, "readdir", ReadDir);
-  env->SetMethod(target, "internalModuleReadFile", InternalModuleReadFile);
-  env->SetMethod(target, "internalModuleStat", InternalModuleStat);
-  env->SetMethod(target, "stat", Stat);
-  env->SetMethod(target, "lstat", LStat);
-  env->SetMethod(target, "fstat", FStat);
-  env->SetMethod(target, "link", Link);
-  env->SetMethod(target, "symlink", Symlink);
-  env->SetMethod(target, "readlink", ReadLink);
-  env->SetMethod(target, "unlink", Unlink);
-  env->SetMethod(target, "writeBuffer", WriteBuffer);
-  env->SetMethod(target, "writeBuffers", WriteBuffers);
-  env->SetMethod(target, "writeString", WriteString);
-  env->SetMethod(target, "realpath", RealPath);
+  env->SetMethod(target, u8"access", Access);
+  env->SetMethod(target, u8"close", Close);
+  env->SetMethod(target, u8"open", Open);
+  env->SetMethod(target, u8"read", Read);
+  env->SetMethod(target, u8"fdatasync", Fdatasync);
+  env->SetMethod(target, u8"fsync", Fsync);
+  env->SetMethod(target, u8"rename", Rename);
+  env->SetMethod(target, u8"ftruncate", FTruncate);
+  env->SetMethod(target, u8"rmdir", RMDir);
+  env->SetMethod(target, u8"mkdir", MKDir);
+  env->SetMethod(target, u8"readdir", ReadDir);
+  env->SetMethod(target, u8"internalModuleReadFile", InternalModuleReadFile);
+  env->SetMethod(target, u8"internalModuleStat", InternalModuleStat);
+  env->SetMethod(target, u8"stat", Stat);
+  env->SetMethod(target, u8"lstat", LStat);
+  env->SetMethod(target, u8"fstat", FStat);
+  env->SetMethod(target, u8"link", Link);
+  env->SetMethod(target, u8"symlink", Symlink);
+  env->SetMethod(target, u8"readlink", ReadLink);
+  env->SetMethod(target, u8"unlink", Unlink);
+  env->SetMethod(target, u8"writeBuffer", WriteBuffer);
+  env->SetMethod(target, u8"writeBuffers", WriteBuffers);
+  env->SetMethod(target, u8"writeString", WriteString);
+  env->SetMethod(target, u8"realpath", RealPath);
 
-  env->SetMethod(target, "chmod", Chmod);
-  env->SetMethod(target, "fchmod", FChmod);
+  env->SetMethod(target, u8"chmod", Chmod);
+  env->SetMethod(target, u8"fchmod", FChmod);
   // env->SetMethod(target, "lchmod", LChmod);
 
-  env->SetMethod(target, "chown", Chown);
-  env->SetMethod(target, "fchown", FChown);
+  env->SetMethod(target, u8"chown", Chown);
+  env->SetMethod(target, u8"fchown", FChown);
   // env->SetMethod(target, "lchown", LChown);
 
-  env->SetMethod(target, "utimes", UTimes);
-  env->SetMethod(target, "futimes", FUTimes);
+  env->SetMethod(target, u8"utimes", UTimes);
+  env->SetMethod(target, u8"futimes", FUTimes);
 
-  env->SetMethod(target, "mkdtemp", Mkdtemp);
+  env->SetMethod(target, u8"mkdtemp", Mkdtemp);
 
   StatWatcher::Initialize(env, target);
 
@@ -1501,8 +1501,8 @@ void InitFs(Local<Object> target,
   Local<FunctionTemplate> fst =
       FunctionTemplate::New(env->isolate(), NewFSReqWrap);
   fst->InstanceTemplate()->SetInternalFieldCount(1);
-  fst->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "FSReqWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "FSReqWrap"),
+  fst->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"FSReqWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"FSReqWrap"),
               fst->GetFunction());
 }
 

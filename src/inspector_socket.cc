@@ -19,7 +19,7 @@
 namespace node {
 namespace inspector {
 
-static const char CLOSE_FRAME[] = {'\x88', '\x00'};
+static const char CLOSE_FRAME[] = {'\x88'\x2c\x20'\x00'};
 
 enum ws_decode_result {
   FRAME_OK, FRAME_INCOMPLETE, FRAME_CLOSE, FRAME_ERROR
@@ -36,18 +36,18 @@ static void dump_hex(const char* buf, size_t len) {
   while (ptr < end) {
     cptr = ptr;
     for (i = 0; i < 16 && ptr < end; i++) {
-      printf("%2.2X  ", static_cast<unsigned char>(*(ptr++)));
+      printf(u8"%2.2X  ", static_cast<unsigned char>(*(ptr++)));
     }
     for (i = 72 - (i * 4); i > 0; i--) {
-      printf(" ");
+      printf(u8" ");
     }
     for (i = 0; i < 16 && cptr < end; i++) {
       c = *(cptr++);
-      printf("%c", (c > 0x19) ? c : '.');
+      printf(u8"%c", (c > 0x19) ? c : '\x2e');
     }
-    printf("\n");
+    printf(u8"\n");
   }
-  printf("\n\n");
+  printf(u8"\n\n");
 }
 #endif
 
@@ -101,7 +101,7 @@ static int write_to_client(InspectorSocket* inspector,
                            size_t len,
                            uv_write_cb write_cb = write_request_cleanup) {
 #if DUMP_WRITES
-  printf("%s (%ld bytes):\n", __FUNCTION__, len);
+  printf(u8"%s (%ld bytes):\n", __FUNCTION__, len);
   dump_hex(msg, len);
 #endif
 
@@ -337,7 +337,7 @@ static void websockets_data_cb(uv_stream_t* stream, ssize_t nread,
     }
   } else {
     #if DUMP_READS
-      printf("%s read %ld bytes\n", __FUNCTION__, nread);
+      printf(u8"%s read %ld bytes\n", __FUNCTION__, nread);
       if (nread > 0) {
         dump_hex(inspector->buffer.data() + inspector->buffer.size() - nread,
                  nread);
@@ -381,7 +381,7 @@ void inspector_read_stop(InspectorSocket* inspector) {
 static void generate_accept_string(const std::string& client_key,
                                    char (*buffer)[ACCEPT_KEY_LENGTH]) {
   // Magic string from websockets spec.
-  static const char ws_magic[] = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+  static const char ws_magic[] = u8"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
   std::string input(client_key + ws_magic);
   char hash[SHA_DIGEST_LENGTH];
   SHA1(reinterpret_cast<const unsigned char*>(&input[0]), input.size(),
@@ -390,7 +390,7 @@ static void generate_accept_string(const std::string& client_key,
 }
 
 static int header_value_cb(http_parser* parser, const char* at, size_t length) {
-  static const char SEC_WEBSOCKET_KEY_HEADER[] = "Sec-WebSocket-Key";
+  static const char SEC_WEBSOCKET_KEY_HEADER[] = u8"Sec-WebSocket-Key";
   auto inspector = static_cast<InspectorSocket*>(parser->data);
   auto state = inspector->http_parsing_state;
   state->parsing_value = true;
@@ -461,9 +461,9 @@ static void then_close_and_report_failure(uv_write_t* req, int status) {
 
 static void handshake_failed(InspectorSocket* inspector) {
   const char HANDSHAKE_FAILED_RESPONSE[] =
-      "HTTP/1.0 400 Bad Request\r\n"
-      "Content-Type: text/html; charset=UTF-8\r\n\r\n"
-      "WebSockets request was expected\r\n";
+      u8"HTTP/1.0 400 Bad Request\r\n"
+      u8"Content-Type: text/html; charset=UTF-8\r\n\r\n"
+      u8"WebSockets request was expected\r\n";
   write_to_client(inspector, HANDSHAKE_FAILED_RESPONSE,
                   sizeof(HANDSHAKE_FAILED_RESPONSE) - 1,
                   then_close_and_report_failure);
@@ -489,11 +489,11 @@ static int message_complete_cb(http_parser* parser) {
                              state->path)) {
     char accept_string[ACCEPT_KEY_LENGTH];
     generate_accept_string(state->ws_key, &accept_string);
-    const char accept_ws_prefix[] = "HTTP/1.1 101 Switching Protocols\r\n"
-                                    "Upgrade: websocket\r\n"
-                                    "Connection: Upgrade\r\n"
-                                    "Sec-WebSocket-Accept: ";
-    const char accept_ws_suffix[] = "\r\n\r\n";
+    const char accept_ws_prefix[] = u8"HTTP/1.1 101 Switching Protocols\r\n"
+                                    u8"Upgrade: websocket\r\n"
+                                    u8"Connection: Upgrade\r\n"
+                                    u8"Sec-WebSocket-Accept: ";
+    const char accept_ws_suffix[] = u8"\r\n\r\n";
     std::string reply(accept_ws_prefix, sizeof(accept_ws_prefix) - 1);
     reply.append(accept_string, sizeof(accept_string));
     reply.append(accept_ws_suffix, sizeof(accept_ws_suffix) - 1);
@@ -513,10 +513,10 @@ static void data_received_cb(uv_stream_s* client, ssize_t nread,
                              const uv_buf_t* buf) {
 #if DUMP_READS
   if (nread >= 0) {
-    printf("%s (%ld bytes)\n", __FUNCTION__, nread);
+    printf(u8"%s (%ld bytes)\n", __FUNCTION__, nread);
     dump_hex(buf->base, nread);
   } else {
-    printf("[%s:%d] %s\n", __FUNCTION__, __LINE__, uv_err_name(nread));
+    printf(u8"[%s:%d] %s\n", __FUNCTION__, __LINE__, uv_err_name(nread));
   }
 #endif
   InspectorSocket* inspector = inspector_from_stream(client);

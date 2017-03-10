@@ -44,17 +44,17 @@ using v8::Value;
 #define SLURP_STRING(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-        "expected object for " #obj " to contain string member " #member); \
+        u8"expected object for " #obj u8" to contain string member " #member); \
   } \
   node::Utf8Value _##member(env->isolate(), \
       obj->Get(OneByteString(env->isolate(), #member))); \
   if ((*(const char **)valp = *_##member) == nullptr) \
-    *(const char **)valp = "<unknown>";
+    *(const char **)valp = u8"<unknown>";
 
 #define SLURP_INT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-      "expected object for " #obj " to contain integer member " #member); \
+      u8"expected object for " #obj u8" to contain integer member " #member); \
   } \
   *valp = obj->Get(OneByteString(env->isolate(), #member)) \
       ->ToInteger(env->isolate())->Value();
@@ -62,19 +62,19 @@ using v8::Value;
 #define SLURP_OBJECT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-      "expected object for " #obj " to contain object member " #member); \
+      u8"expected object for " #obj u8" to contain object member " #member); \
   } \
   *valp = Local<Object>::Cast(obj->Get(OneByteString(env->isolate(), #member)));
 
 #define SLURP_CONNECTION(arg, conn) \
   if (!(arg)->IsObject()) { \
     return env->ThrowError( \
-      "expected argument " #arg " to be a connection object"); \
+      u8"expected argument " #arg u8" to be a connection object"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg); \
   Local<Value> _handle = \
-      (_##conn)->Get(FIXED_ONE_BYTE_STRING(env->isolate(), "_handle")); \
+      (_##conn)->Get(FIXED_ONE_BYTE_STRING(env->isolate(), u8"_handle")); \
   if (_handle->IsObject()) { \
     SLURP_INT(_handle.As<Object>(), fd, &conn.fd); \
   } else { \
@@ -87,7 +87,7 @@ using v8::Value;
 #define SLURP_CONNECTION_HTTP_CLIENT(arg, conn) \
   if (!(arg)->IsObject()) { \
     return env->ThrowError( \
-      "expected argument " #arg " to be a connection object"); \
+      u8"expected argument " #arg u8" to be a connection object"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg); \
@@ -99,11 +99,11 @@ using v8::Value;
 #define SLURP_CONNECTION_HTTP_CLIENT_RESPONSE(arg0, arg1, conn) \
   if (!(arg0)->IsObject()) { \
     return env->ThrowError( \
-      "expected argument " #arg0 " to be a connection object"); \
+      u8"expected argument " #arg0 u8" to be a connection object"); \
   } \
   if (!(arg1)->IsObject()) { \
     return env->ThrowError( \
-      "expected argument " #arg1 " to be a connection object"); \
+      u8"expected argument " #arg1 u8" to be a connection object"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg0); \
@@ -150,14 +150,14 @@ void DTRACE_HTTP_SERVER_REQUEST(const FunctionCallbackInfo<Value>& args) {
 
   if (!(headers)->IsObject()) {
     return env->ThrowError(
-      "expected object for request to contain string member headers");
+      u8"expected object for request to contain string member headers");
   }
 
   Local<Value> strfwdfor = headers->Get(env->x_forwarded_string());
   node::Utf8Value fwdfor(env->isolate(), strfwdfor);
 
   if (!strfwdfor->IsString() || (req.forwardedFor = *fwdfor) == nullptr)
-    req.forwardedFor = const_cast<char*>("");
+    req.forwardedFor = const_cast<char*>(u8"");
 
   SLURP_CONNECTION(args[1], conn);
   NODE_HTTP_SERVER_REQUEST(&req, &conn, conn.remote, conn.port, req.method, \
@@ -195,18 +195,18 @@ void DTRACE_HTTP_CLIENT_REQUEST(const FunctionCallbackInfo<Value>& args) {
 
   req.method = header;
 
-  while (*header != '\0' && *header != ' ')
+  while (*header != '\x0' && *header != '\x20')
     header++;
 
-  if (*header != '\0')
-    *header++ = '\0';
+  if (*header != '\x0')
+    *header++ = '\x0';
 
   req.url = header;
 
-  while (*header != '\0' && *header != ' ')
+  while (*header != '\x0' && *header != '\x20')
     header++;
 
-  *header = '\0';
+  *header = '\x0';
 
   SLURP_CONNECTION_HTTP_CLIENT(args[1], conn);
   NODE_HTTP_CLIENT_REQUEST(&req, &conn, conn.remote, conn.port, req.method, \

@@ -35,9 +35,9 @@ size_t base64_decoded_size(const TypeName* src, size_t size) {
   if (size == 0)
     return 0;
 
-  if (src[size - 1] == '=')
+  if (src[size - 1] == '\x3d')
     size--;
-  if (size > 0 && src[size - 1] == '=')
+  if (size > 0 && src[size - 1] == '\x3d')
     size--;
 
   return base64_decoded_size_fast(size);
@@ -66,7 +66,7 @@ size_t base64_decode_slow(char* dst, size_t dstlen,
       i += 1;                                                                 \
       if (lo < 64)                                                            \
         break;  /* Legal character. */                                        \
-      if (c == '=')                                                           \
+      if (c == '\x3d')                                                           \
         return k;                                                             \
     }                                                                         \
     expr;                                                                     \
@@ -130,7 +130,7 @@ static size_t base64_encode(const char* src,
                             size_t dlen) {
   // We know how much we'll write, just make sure that there's space.
   CHECK(dlen >= base64_encoded_size(slen) &&
-        "not enough space provided for base64 encode");
+        u8"not enough space provided for base64 encode");
 
   dlen = base64_encoded_size(slen);
 
@@ -141,9 +141,9 @@ static size_t base64_encode(const char* src,
   unsigned k;
   unsigned n;
 
-  static const char table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                              "abcdefghijklmnopqrstuvwxyz"
-                              "0123456789+/";
+  static const char table[] = u8"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                              u8"abcdefghijklmnopqrstuvwxyz"
+                              u8"0123456789+/";
 
   i = 0;
   k = 0;
@@ -169,8 +169,8 @@ static size_t base64_encode(const char* src,
         a = src[i + 0] & 0xff;
         dst[k + 0] = table[a >> 2];
         dst[k + 1] = table[(a & 3) << 4];
-        dst[k + 2] = '=';
-        dst[k + 3] = '=';
+        dst[k + 2] = '\x3d';
+        dst[k + 3] = '\x3d';
         break;
 
       case 2:
@@ -179,7 +179,7 @@ static size_t base64_encode(const char* src,
         dst[k + 0] = table[a >> 2];
         dst[k + 1] = table[((a & 3) << 4) | (b >> 4)];
         dst[k + 2] = table[(b & 0x0f) << 2];
-        dst[k + 3] = '=';
+        dst[k + 3] = '\x3d';
         break;
     }
   }

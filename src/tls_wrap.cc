@@ -166,14 +166,14 @@ void TLSWrap::Wrap(const FunctionCallbackInfo<Value>& args) {
 
   if (args.Length() < 1 || !args[0]->IsObject()) {
     return env->ThrowTypeError(
-        "First argument should be a StreamWrap instance");
+        u8"First argument should be a StreamWrap instance");
   }
   if (args.Length() < 2 || !args[1]->IsObject()) {
     return env->ThrowTypeError(
-        "Second argument should be a SecureContext instance");
+        u8"Second argument should be a SecureContext instance");
   }
   if (args.Length() < 3 || !args[2]->IsBoolean())
-    return env->ThrowTypeError("Third argument should be boolean");
+    return env->ThrowTypeError(u8"Third argument should be boolean");
 
   Local<External> stream_obj = args[0].As<External>();
   Local<Object> sc = args[1].As<Object>();
@@ -220,7 +220,7 @@ void TLSWrap::Start(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
 
   if (wrap->started_)
-    return env->ThrowError("Already started.");
+    return env->ThrowError(u8"Already started.");
   wrap->started_ = true;
 
   // Send ClientHello handshake
@@ -380,7 +380,7 @@ Local<Value> TLSWrap::GetSSLError(int status, int* err, const char** msg) {
           CHECK_EQ(*msg, nullptr);
           char* const buf = new char[mem->length + 1];
           memcpy(buf, mem->data, mem->length);
-          buf[mem->length] = '\0';
+          buf[mem->length] = '\x0';
           *msg = buf;
         }
         BIO_free_all(bio);
@@ -597,7 +597,7 @@ int TLSWrap::DoWrite(WriteWrap* w,
   if (ssl_ == nullptr) {
     ClearError();
 
-    static char msg[] = "Write after DestroySSL";
+    static char msg[] = u8"Write after DestroySSL";
     char* tmp = new char[sizeof(msg)];
     memcpy(tmp, msg, sizeof(msg));
     error_ = tmp;
@@ -739,10 +739,10 @@ void TLSWrap::SetVerifyMode(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
 
   if (args.Length() < 2 || !args[0]->IsBoolean() || !args[1]->IsBoolean())
-    return env->ThrowTypeError("Bad arguments, expected two booleans");
+    return env->ThrowTypeError(u8"Bad arguments, expected two booleans");
 
   if (wrap->ssl_ == nullptr)
-    return env->ThrowTypeError("SetVerifyMode after destroySSL");
+    return env->ThrowTypeError(u8"SetVerifyMode after destroySSL");
 
   int verify_mode;
   if (wrap->is_server()) {
@@ -772,7 +772,7 @@ void TLSWrap::EnableSessionCallbacks(
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
   if (wrap->ssl_ == nullptr) {
     return wrap->env()->ThrowTypeError(
-        "EnableSessionCallbacks after destroySSL");
+        u8"EnableSessionCallbacks after destroySSL");
   }
   wrap->enable_session_callbacks();
   NodeBIO::FromBIO(wrap->enc_in_)->set_initial(kMaxHelloLength);
@@ -790,7 +790,7 @@ void TLSWrap::DestroySSL(const FunctionCallbackInfo<Value>& args) {
   wrap->MakePending();
 
   // And destroy
-  wrap->InvokeQueued(UV_ECANCELED, "Canceled because of SSL destruction");
+  wrap->InvokeQueued(UV_ECANCELED, u8"Canceled because of SSL destruction");
 
   // Destroy the SSL structure and friends
   wrap->SSLWrap<TLSWrap>::DestroySSL();
@@ -839,10 +839,10 @@ void TLSWrap::SetServername(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
 
   if (args.Length() < 1 || !args[0]->IsString())
-    return env->ThrowTypeError("First argument should be a string");
+    return env->ThrowTypeError(u8"First argument should be a string");
 
   if (wrap->started_)
-    return env->ThrowError("Already started.");
+    return env->ThrowError(u8"Already started.");
 
   if (!wrap->is_client())
     return;
@@ -897,34 +897,34 @@ void TLSWrap::Initialize(Local<Object> target,
                          Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-  env->SetMethod(target, "wrap", TLSWrap::Wrap);
+  env->SetMethod(target, u8"wrap", TLSWrap::Wrap);
 
   auto constructor = [](const FunctionCallbackInfo<Value>& args) {
     args.This()->SetAlignedPointerInInternalField(0, nullptr);
   };
   auto t = env->NewFunctionTemplate(constructor);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TLSWrap"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TLSWrap"));
 
-  env->SetProtoMethod(t, "receive", Receive);
-  env->SetProtoMethod(t, "start", Start);
-  env->SetProtoMethod(t, "setVerifyMode", SetVerifyMode);
-  env->SetProtoMethod(t, "enableSessionCallbacks", EnableSessionCallbacks);
-  env->SetProtoMethod(t, "destroySSL", DestroySSL);
-  env->SetProtoMethod(t, "enableCertCb", EnableCertCb);
+  env->SetProtoMethod(t, u8"receive", Receive);
+  env->SetProtoMethod(t, u8"start", Start);
+  env->SetProtoMethod(t, u8"setVerifyMode", SetVerifyMode);
+  env->SetProtoMethod(t, u8"enableSessionCallbacks", EnableSessionCallbacks);
+  env->SetProtoMethod(t, u8"destroySSL", DestroySSL);
+  env->SetProtoMethod(t, u8"enableCertCb", EnableCertCb);
 
   StreamBase::AddMethods<TLSWrap>(env, t, StreamBase::kFlagHasWritev);
   SSLWrap<TLSWrap>::AddMethods(env, t);
 
 #ifdef SSL_CTRL_SET_TLSEXT_SERVERNAME_CB
-  env->SetProtoMethod(t, "getServername", GetServername);
-  env->SetProtoMethod(t, "setServername", SetServername);
+  env->SetProtoMethod(t, u8"getServername", GetServername);
+  env->SetProtoMethod(t, u8"setServername", SetServername);
 #endif  // SSL_CRT_SET_TLSEXT_SERVERNAME_CB
 
   env->set_tls_wrap_constructor_template(t);
   env->set_tls_wrap_constructor_function(t->GetFunction());
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TLSWrap"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TLSWrap"),
               t->GetFunction());
 }
 

@@ -153,7 +153,7 @@ void Agent::Stop() {
 
 
 void Agent::WorkerRun() {
-  static const char* argv[] = { "node", "--debug-agent" };
+  static const char* argv[] = { u8"node", u8"--debug-agent" };
   Isolate::CreateParams params;
   ArrayBufferAllocator array_buffer_allocator;
   params.array_buffer_allocator = &array_buffer_allocator;
@@ -204,23 +204,23 @@ void Agent::InitAdaptor(Environment* env) {
   // Create API adaptor
   Local<FunctionTemplate> t = FunctionTemplate::New(isolate);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(String::NewFromUtf8(isolate, "DebugAPI"));
+  t->SetClassName(String::NewFromUtf8(isolate, u8"DebugAPI"));
 
-  NODE_SET_PROTOTYPE_METHOD(t, "notifyListen", NotifyListen);
-  NODE_SET_PROTOTYPE_METHOD(t, "notifyWait", NotifyWait);
-  NODE_SET_PROTOTYPE_METHOD(t, "sendCommand", SendCommand);
+  NODE_SET_PROTOTYPE_METHOD(t, u8"notifyListen", NotifyListen);
+  NODE_SET_PROTOTYPE_METHOD(t, u8"notifyWait", NotifyWait);
+  NODE_SET_PROTOTYPE_METHOD(t, u8"sendCommand", SendCommand);
 
   Local<Object> api =
       t->GetFunction()->NewInstance(env->context()).ToLocalChecked();
   api->SetAlignedPointerInInternalField(0, this);
 
-  api->Set(String::NewFromUtf8(isolate, "host",
+  api->Set(String::NewFromUtf8(isolate, u8"host",
                                NewStringType::kNormal).ToLocalChecked(),
            String::NewFromUtf8(isolate, host_.data(), NewStringType::kNormal,
                                host_.size()).ToLocalChecked());
-  api->Set(String::NewFromUtf8(isolate, "port"), Integer::New(isolate, port_));
+  api->Set(String::NewFromUtf8(isolate, u8"port"), Integer::New(isolate, port_));
 
-  env->process_object()->Set(String::NewFromUtf8(isolate, "_debugAPI"), api);
+  env->process_object()->Set(String::NewFromUtf8(isolate, u8"_debugAPI"), api);
   api_.Reset(env->isolate(), api);
 }
 
@@ -280,7 +280,7 @@ void Agent::ChildSignalCb(uv_async_t* signal) {
     if (msg->data() == nullptr) {
       delete msg;
 
-      MakeCallback(isolate, api, "onclose", 0, nullptr);
+      MakeCallback(isolate, api, u8"onclose", 0, nullptr);
       break;
     }
 
@@ -300,7 +300,7 @@ void Agent::ChildSignalCb(uv_async_t* signal) {
     // Emit message
     MakeCallback(isolate,
                  api,
-                 "onmessage",
+                 u8"onmessage",
                  arraysize(argv),
                  argv);
     delete msg;

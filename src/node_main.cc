@@ -5,8 +5,8 @@
 
 int wmain(int argc, wchar_t *wargv[]) {
   if (!IsWindows7OrGreater()) {
-    fprintf(stderr, "This application is only supported on Windows 7, "
-                    "Windows Server 2008 R2, or higher.");
+    fprintf(stderr, u8"This application is only supported on Windows 7, "
+                    u8"Windows Server 2008 R2, or higher.");
     exit(1);
   }
 
@@ -24,7 +24,7 @@ int wmain(int argc, wchar_t *wargv[]) {
                                      nullptr);
     if (size == 0) {
       // This should never happen.
-      fprintf(stderr, "Could not convert arguments to utf8.");
+      fprintf(stderr, u8"Could not convert arguments to utf8.");
       exit(1);
     }
     // Do the actual conversion
@@ -39,7 +39,7 @@ int wmain(int argc, wchar_t *wargv[]) {
                                        nullptr);
     if (result == 0) {
       // This should never happen.
-      fprintf(stderr, "Could not convert arguments to utf8.");
+      fprintf(stderr, u8"Could not convert arguments to utf8.");
       exit(1);
     }
   }

@@ -130,7 +130,7 @@ class StringSearch : private StringSearchBase {
 
     static_assert(sizeof(Char) == sizeof(uint8_t) ||
                   sizeof(Char) == sizeof(uint16_t),
-                  "sizeof(Char) == sizeof(uint16_t) || sizeof(uint8_t)");
+                  u8"sizeof(Char) == sizeof(uint16_t) || sizeof(uint8_t)");
   }
 
  private:

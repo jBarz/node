@@ -41,15 +41,15 @@ void StreamWrap::Initialize(Local<Object> target,
   Local<FunctionTemplate> sw =
       FunctionTemplate::New(env->isolate(), ShutdownWrap::NewShutdownWrap);
   sw->InstanceTemplate()->SetInternalFieldCount(1);
-  sw->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "ShutdownWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "ShutdownWrap"),
+  sw->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"ShutdownWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"ShutdownWrap"),
               sw->GetFunction());
 
   Local<FunctionTemplate> ww =
       FunctionTemplate::New(env->isolate(), WriteWrap::NewWriteWrap);
   ww->InstanceTemplate()->SetInternalFieldCount(1);
-  ww->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "WriteWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "WriteWrap"),
+  ww->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"WriteWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"WriteWrap"),
               ww->GetFunction());
   env->set_write_wrap_constructor_function(ww->GetFunction());
 }
@@ -76,7 +76,7 @@ StreamWrap::StreamWrap(Environment* env,
 void StreamWrap::AddMethods(Environment* env,
                             v8::Local<v8::FunctionTemplate> target,
                             int flags) {
-  env->SetProtoMethod(target, "setBlocking", SetBlocking);
+  env->SetProtoMethod(target, u8"setBlocking", SetBlocking);
   StreamBase::AddMethods<StreamWrap>(env, target, flags);
 }
 
@@ -153,8 +153,8 @@ void StreamWrap::OnAllocImpl(size_t size, uv_buf_t* buf, void* ctx) {
 
   if (buf->base == nullptr && size > 0) {
     FatalError(
-        "node::StreamWrap::DoAlloc(size_t, uv_buf_t*, void*)",
-        "Out Of Memory");
+        u8"node::StreamWrap::DoAlloc(size_t, uv_buf_t*, void*)",
+        u8"Out Of Memory");
   }
 }
 

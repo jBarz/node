@@ -26,16 +26,16 @@ class SignalWrap : public HandleWrap {
     Environment* env = Environment::GetCurrent(context);
     Local<FunctionTemplate> constructor = env->NewFunctionTemplate(New);
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Signal"));
+    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Signal"));
 
-    env->SetProtoMethod(constructor, "close", HandleWrap::Close);
-    env->SetProtoMethod(constructor, "ref", HandleWrap::Ref);
-    env->SetProtoMethod(constructor, "unref", HandleWrap::Unref);
-    env->SetProtoMethod(constructor, "hasRef", HandleWrap::HasRef);
-    env->SetProtoMethod(constructor, "start", Start);
-    env->SetProtoMethod(constructor, "stop", Stop);
+    env->SetProtoMethod(constructor, u8"close", HandleWrap::Close);
+    env->SetProtoMethod(constructor, u8"ref", HandleWrap::Ref);
+    env->SetProtoMethod(constructor, u8"unref", HandleWrap::Unref);
+    env->SetProtoMethod(constructor, u8"hasRef", HandleWrap::HasRef);
+    env->SetProtoMethod(constructor, u8"start", Start);
+    env->SetProtoMethod(constructor, u8"stop", Stop);
 
-    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Signal"),
+    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Signal"),
                 constructor->GetFunction());
   }
 
@@ -68,7 +68,7 @@ class SignalWrap : public HandleWrap {
     if (signum == SIGPROF) {
       Environment* env = Environment::GetCurrent(args);
       if (env->inspector_agent()->IsStarted()) {
-        fprintf(stderr, "process.on(SIGPROF) is reserved while debugging\n");
+        fprintf(stderr, u8"process.on(SIGPROF) is reserved while debugging\n");
         return;
       }
     }

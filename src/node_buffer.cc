@@ -19,13 +19,13 @@
 
 #define THROW_AND_RETURN_IF_OOB(r)                                          \
   do {                                                                      \
-    if (!(r)) return env->ThrowRangeError("out of range index");            \
+    if (!(r)) return env->ThrowRangeError(u8"out of range index");            \
   } while (0)
 
 #define THROW_AND_RETURN_UNLESS_BUFFER(env, obj)                            \
   do {                                                                      \
     if (!HasInstance(obj))                                                  \
-      return env->ThrowTypeError("argument should be a Buffer");            \
+      return env->ThrowTypeError(u8"argument should be a Buffer");            \
   } while (0)
 
 #define SPREAD_ARG(val, name)                                                 \
@@ -554,7 +554,7 @@ void Copy(const FunctionCallbackInfo<Value> &args) {
     return args.GetReturnValue().Set(0);
 
   if (source_start > ts_obj_length)
-    return env->ThrowRangeError("out of range index");
+    return env->ThrowRangeError(u8"out of range index");
 
   if (source_end - source_start > target_length - target_start)
     source_end = source_start + target_length - target_start;
@@ -605,7 +605,7 @@ void Fill(const FunctionCallbackInfo<Value>& args) {
       enc == UCS2 ? str_obj->Length() * sizeof(uint16_t) : str_obj->Length();
 
   if (enc == HEX && str_length  % 2 != 0)
-    return env->ThrowTypeError("Invalid hex string");
+    return env->ThrowTypeError(u8"Invalid hex string");
 
   if (str_length == 0)
     return;
@@ -670,19 +670,19 @@ void StringWrite(const FunctionCallbackInfo<Value>& args) {
   SPREAD_ARG(args.This(), ts_obj);
 
   if (!args[0]->IsString())
-    return env->ThrowTypeError("Argument must be a string");
+    return env->ThrowTypeError(u8"Argument must be a string");
 
   Local<String> str = args[0]->ToString(env->isolate());
 
   if (encoding == HEX && str->Length() % 2 != 0)
-    return env->ThrowTypeError("Invalid hex string");
+    return env->ThrowTypeError(u8"Invalid hex string");
 
   size_t offset;
   size_t max_length;
 
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[1], 0, &offset));
   if (offset > ts_obj_length)
-    return env->ThrowRangeError("Offset is out of bounds");
+    return env->ThrowRangeError(u8"Offset is out of bounds");
 
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[2], ts_obj_length - offset,
                                           &max_length));
@@ -893,9 +893,9 @@ void CompareOffset(const FunctionCallbackInfo<Value> &args) {
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[5], ts_obj_length, &source_end));
 
   if (source_start > ts_obj_length)
-    return env->ThrowRangeError("out of range index");
+    return env->ThrowRangeError(u8"out of range index");
   if (target_start > target_length)
-    return env->ThrowRangeError("out of range index");
+    return env->ThrowRangeError(u8"out of range index");
 
   CHECK_LE(source_start, source_end);
   CHECK_LE(target_start, target_end);
@@ -1201,21 +1201,21 @@ void SetupBufferJS(const FunctionCallbackInfo<Value>& args) {
   Local<Object> proto = args[0].As<Object>();
   env->set_buffer_prototype_object(proto);
 
-  env->SetMethod(proto, "asciiSlice", AsciiSlice);
-  env->SetMethod(proto, "base64Slice", Base64Slice);
-  env->SetMethod(proto, "latin1Slice", Latin1Slice);
-  env->SetMethod(proto, "hexSlice", HexSlice);
-  env->SetMethod(proto, "ucs2Slice", Ucs2Slice);
-  env->SetMethod(proto, "utf8Slice", Utf8Slice);
+  env->SetMethod(proto, u8"asciiSlice", AsciiSlice);
+  env->SetMethod(proto, u8"base64Slice", Base64Slice);
+  env->SetMethod(proto, u8"latin1Slice", Latin1Slice);
+  env->SetMethod(proto, u8"hexSlice", HexSlice);
+  env->SetMethod(proto, u8"ucs2Slice", Ucs2Slice);
+  env->SetMethod(proto, u8"utf8Slice", Utf8Slice);
 
-  env->SetMethod(proto, "asciiWrite", AsciiWrite);
-  env->SetMethod(proto, "base64Write", Base64Write);
-  env->SetMethod(proto, "latin1Write", Latin1Write);
-  env->SetMethod(proto, "hexWrite", HexWrite);
-  env->SetMethod(proto, "ucs2Write", Ucs2Write);
-  env->SetMethod(proto, "utf8Write", Utf8Write);
+  env->SetMethod(proto, u8"asciiWrite", AsciiWrite);
+  env->SetMethod(proto, u8"base64Write", Base64Write);
+  env->SetMethod(proto, u8"latin1Write", Latin1Write);
+  env->SetMethod(proto, u8"hexWrite", HexWrite);
+  env->SetMethod(proto, u8"ucs2Write", Ucs2Write);
+  env->SetMethod(proto, u8"utf8Write", Utf8Write);
 
-  env->SetMethod(proto, "copy", Copy);
+  env->SetMethod(proto, u8"copy", Copy);
 
   CHECK(args[1]->IsObject());
   Local<Object> bObj = args[1].As<Object>();
@@ -1227,7 +1227,7 @@ void SetupBufferJS(const FunctionCallbackInfo<Value>& args) {
   Local<ArrayBuffer> array_buffer =
       ArrayBuffer::New(env->isolate(), fields, sizeof(*fields) * fields_count);
 
-  bObj->Set(String::NewFromUtf8(env->isolate(), "flags"),
+  bObj->Set(String::NewFromUtf8(env->isolate(), u8"flags"),
             Uint32Array::New(array_buffer, 0, fields_count));
 }
 
@@ -1237,37 +1237,37 @@ void Initialize(Local<Object> target,
                 Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-  env->SetMethod(target, "setupBufferJS", SetupBufferJS);
-  env->SetMethod(target, "createFromString", CreateFromString);
+  env->SetMethod(target, u8"setupBufferJS", SetupBufferJS);
+  env->SetMethod(target, u8"createFromString", CreateFromString);
 
-  env->SetMethod(target, "byteLengthUtf8", ByteLengthUtf8);
-  env->SetMethod(target, "compare", Compare);
-  env->SetMethod(target, "compareOffset", CompareOffset);
-  env->SetMethod(target, "fill", Fill);
-  env->SetMethod(target, "indexOfBuffer", IndexOfBuffer);
-  env->SetMethod(target, "indexOfNumber", IndexOfNumber);
-  env->SetMethod(target, "indexOfString", IndexOfString);
+  env->SetMethod(target, u8"byteLengthUtf8", ByteLengthUtf8);
+  env->SetMethod(target, u8"compare", Compare);
+  env->SetMethod(target, u8"compareOffset", CompareOffset);
+  env->SetMethod(target, u8"fill", Fill);
+  env->SetMethod(target, u8"indexOfBuffer", IndexOfBuffer);
+  env->SetMethod(target, u8"indexOfNumber", IndexOfNumber);
+  env->SetMethod(target, u8"indexOfString", IndexOfString);
 
-  env->SetMethod(target, "readDoubleBE", ReadDoubleBE);
-  env->SetMethod(target, "readDoubleLE", ReadDoubleLE);
-  env->SetMethod(target, "readFloatBE", ReadFloatBE);
-  env->SetMethod(target, "readFloatLE", ReadFloatLE);
+  env->SetMethod(target, u8"readDoubleBE", ReadDoubleBE);
+  env->SetMethod(target, u8"readDoubleLE", ReadDoubleLE);
+  env->SetMethod(target, u8"readFloatBE", ReadFloatBE);
+  env->SetMethod(target, u8"readFloatLE", ReadFloatLE);
 
-  env->SetMethod(target, "writeDoubleBE", WriteDoubleBE);
-  env->SetMethod(target, "writeDoubleLE", WriteDoubleLE);
-  env->SetMethod(target, "writeFloatBE", WriteFloatBE);
-  env->SetMethod(target, "writeFloatLE", WriteFloatLE);
+  env->SetMethod(target, u8"writeDoubleBE", WriteDoubleBE);
+  env->SetMethod(target, u8"writeDoubleLE", WriteDoubleLE);
+  env->SetMethod(target, u8"writeFloatBE", WriteFloatBE);
+  env->SetMethod(target, u8"writeFloatLE", WriteFloatLE);
 
-  env->SetMethod(target, "swap16", Swap16);
-  env->SetMethod(target, "swap32", Swap32);
-  env->SetMethod(target, "swap64", Swap64);
+  env->SetMethod(target, u8"swap16", Swap16);
+  env->SetMethod(target, u8"swap32", Swap32);
+  env->SetMethod(target, u8"swap64", Swap64);
 
   target->Set(env->context(),
-              FIXED_ONE_BYTE_STRING(env->isolate(), "kMaxLength"),
+              FIXED_ONE_BYTE_STRING(env->isolate(), u8"kMaxLength"),
               Integer::NewFromUnsigned(env->isolate(), kMaxLength)).FromJust();
 
   target->Set(env->context(),
-              FIXED_ONE_BYTE_STRING(env->isolate(), "kStringMaxLength"),
+              FIXED_ONE_BYTE_STRING(env->isolate(), u8"kStringMaxLength"),
               Integer::New(env->isolate(), String::kMaxLength)).FromJust();
 }
 

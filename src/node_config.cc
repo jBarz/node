@@ -32,18 +32,18 @@ void InitConfig(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 #ifdef NODE_HAVE_I18N_SUPPORT
 
-  READONLY_BOOLEAN_PROPERTY("hasIntl");
+  READONLY_BOOLEAN_PROPERTY(u8"hasIntl");
 
 #ifdef NODE_HAVE_SMALL_ICU
-  READONLY_BOOLEAN_PROPERTY("hasSmallICU");
+  READONLY_BOOLEAN_PROPERTY(u8"hasSmallICU");
 #endif  // NODE_HAVE_SMALL_ICU
 
   if (flag_icu_data_dir)
-    READONLY_BOOLEAN_PROPERTY("usingICUDataDir");
+    READONLY_BOOLEAN_PROPERTY(u8"usingICUDataDir");
 #endif  // NODE_HAVE_I18N_SUPPORT
 
   if (config_preserve_symlinks)
-    READONLY_BOOLEAN_PROPERTY("preserveSymlinks");
+    READONLY_BOOLEAN_PROPERTY(u8"preserveSymlinks");
 }  // InitConfig
 
 }  // namespace node

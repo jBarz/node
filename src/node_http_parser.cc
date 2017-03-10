@@ -739,21 +739,21 @@ void InitHttpParser(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
   Local<FunctionTemplate> t = env->NewFunctionTemplate(Parser::New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "HTTPParser"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"HTTPParser"));
 
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "REQUEST"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"REQUEST"),
          Integer::New(env->isolate(), HTTP_REQUEST));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "RESPONSE"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"RESPONSE"),
          Integer::New(env->isolate(), HTTP_RESPONSE));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnHeaders"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kOnHeaders"),
          Integer::NewFromUnsigned(env->isolate(), kOnHeaders));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnHeadersComplete"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kOnHeadersComplete"),
          Integer::NewFromUnsigned(env->isolate(), kOnHeadersComplete));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnBody"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kOnBody"),
          Integer::NewFromUnsigned(env->isolate(), kOnBody));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnMessageComplete"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kOnMessageComplete"),
          Integer::NewFromUnsigned(env->isolate(), kOnMessageComplete));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnExecute"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kOnExecute"),
          Integer::NewFromUnsigned(env->isolate(), kOnExecute));
 
   Local<Array> methods = Array::New(env->isolate());
@@ -761,19 +761,19 @@ void InitHttpParser(Local<Object> target,
     methods->Set(num, FIXED_ONE_BYTE_STRING(env->isolate(), #string));
   HTTP_METHOD_MAP(V)
 #undef V
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "methods"), methods);
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"methods"), methods);
 
-  env->SetProtoMethod(t, "close", Parser::Close);
-  env->SetProtoMethod(t, "execute", Parser::Execute);
-  env->SetProtoMethod(t, "finish", Parser::Finish);
-  env->SetProtoMethod(t, "reinitialize", Parser::Reinitialize);
-  env->SetProtoMethod(t, "pause", Parser::Pause<true>);
-  env->SetProtoMethod(t, "resume", Parser::Pause<false>);
-  env->SetProtoMethod(t, "consume", Parser::Consume);
-  env->SetProtoMethod(t, "unconsume", Parser::Unconsume);
-  env->SetProtoMethod(t, "getCurrentBuffer", Parser::GetCurrentBuffer);
+  env->SetProtoMethod(t, u8"close", Parser::Close);
+  env->SetProtoMethod(t, u8"execute", Parser::Execute);
+  env->SetProtoMethod(t, u8"finish", Parser::Finish);
+  env->SetProtoMethod(t, u8"reinitialize", Parser::Reinitialize);
+  env->SetProtoMethod(t, u8"pause", Parser::Pause<true>);
+  env->SetProtoMethod(t, u8"resume", Parser::Pause<false>);
+  env->SetProtoMethod(t, u8"consume", Parser::Consume);
+  env->SetProtoMethod(t, u8"unconsume", Parser::Unconsume);
+  env->SetProtoMethod(t, u8"getCurrentBuffer", Parser::GetCurrentBuffer);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "HTTPParser"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"HTTPParser"),
               t->GetFunction());
 }
 

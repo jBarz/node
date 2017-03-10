@@ -109,7 +109,7 @@ static void EnableHooksJS(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
   Local<Function> init_fn = env->async_hooks_init_function();
   if (init_fn.IsEmpty() || !init_fn->IsFunction())
-    return env->ThrowTypeError("init callback is not assigned to a function");
+    return env->ThrowTypeError(u8"init callback is not assigned to a function");
   env->async_hooks()->set_enable_callbacks(1);
 }
 
@@ -124,27 +124,27 @@ static void SetupHooks(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (env->async_hooks()->callbacks_enabled())
-    return env->ThrowError("hooks should not be set while also enabled");
+    return env->ThrowError(u8"hooks should not be set while also enabled");
   if (!args[0]->IsObject())
-    return env->ThrowTypeError("first argument must be an object");
+    return env->ThrowTypeError(u8"first argument must be an object");
 
   Local<Object> fn_obj = args[0].As<Object>();
 
   Local<Value> init_v = fn_obj->Get(
       env->context(),
-      FIXED_ONE_BYTE_STRING(env->isolate(), "init")).ToLocalChecked();
+      FIXED_ONE_BYTE_STRING(env->isolate(), u8"init")).ToLocalChecked();
   Local<Value> pre_v = fn_obj->Get(
       env->context(),
-      FIXED_ONE_BYTE_STRING(env->isolate(), "pre")).ToLocalChecked();
+      FIXED_ONE_BYTE_STRING(env->isolate(), u8"pre")).ToLocalChecked();
   Local<Value> post_v = fn_obj->Get(
       env->context(),
-      FIXED_ONE_BYTE_STRING(env->isolate(), "post")).ToLocalChecked();
+      FIXED_ONE_BYTE_STRING(env->isolate(), u8"post")).ToLocalChecked();
   Local<Value> destroy_v = fn_obj->Get(
       env->context(),
-      FIXED_ONE_BYTE_STRING(env->isolate(), "destroy")).ToLocalChecked();
+      FIXED_ONE_BYTE_STRING(env->isolate(), u8"destroy")).ToLocalChecked();
 
   if (!init_v->IsFunction())
-    return env->ThrowTypeError("init callback must be a function");
+    return env->ThrowTypeError(u8"init callback must be a function");
 
   env->set_async_hooks_init_function(init_v.As<Function>());
 
@@ -164,9 +164,9 @@ void AsyncWrap::Initialize(Local<Object> target,
   Isolate* isolate = env->isolate();
   HandleScope scope(isolate);
 
-  env->SetMethod(target, "setupHooks", SetupHooks);
-  env->SetMethod(target, "disable", DisableHooksJS);
-  env->SetMethod(target, "enable", EnableHooksJS);
+  env->SetMethod(target, u8"setupHooks", SetupHooks);
+  env->SetMethod(target, u8"disable", DisableHooksJS);
+  env->SetMethod(target, u8"enable", EnableHooksJS);
 
   Local<Object> async_providers = Object::New(isolate);
 #define V(PROVIDER)                                                           \
@@ -174,7 +174,7 @@ void AsyncWrap::Initialize(Local<Object> target,
       Integer::New(isolate, AsyncWrap::PROVIDER_ ## PROVIDER));
   NODE_ASYNC_PROVIDER_TYPES(V)
 #undef V
-  target->Set(FIXED_ONE_BYTE_STRING(isolate, "Providers"), async_providers);
+  target->Set(FIXED_ONE_BYTE_STRING(isolate, u8"Providers"), async_providers);
 
   env->set_async_hooks_init_function(Local<Function>());
   env->set_async_hooks_pre_function(Local<Function>());
@@ -320,8 +320,8 @@ Local<Value> AsyncWrap::MakeCallback(const Local<Function> cb,
     Local<Value> enter_v = domain->Get(env()->enter_string());
     if (enter_v->IsFunction()) {
       if (enter_v.As<Function>()->Call(domain, 0, nullptr).IsEmpty()) {
-        FatalError("node::AsyncWrap::MakeCallback",
-                   "domain enter callback threw, please report this");
+        FatalError(u8"node::AsyncWrap::MakeCallback",
+                   u8"domain enter callback threw, please report this");
       }
     }
   }
@@ -359,8 +359,8 @@ Local<Value> AsyncWrap::MakeCallback(const Local<Function> cb,
     Local<Value> exit_v = domain->Get(env()->exit_string());
     if (exit_v->IsFunction()) {
       if (exit_v.As<Function>()->Call(domain, 0, nullptr).IsEmpty()) {
-        FatalError("node::AsyncWrap::MakeCallback",
-                   "domain exit callback threw, please report this");
+        FatalError(u8"node::AsyncWrap::MakeCallback",
+                   u8"domain exit callback threw, please report this");
       }
     }
   }

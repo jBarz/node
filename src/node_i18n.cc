@@ -156,7 +156,7 @@ static void ToUnicode(const FunctionCallbackInfo<Value>& args) {
   int32_t len = ToUnicode(&buf, *val, val.length());
 
   if (len < 0) {
-    return env->ThrowError("Cannot convert name to Unicode");
+    return env->ThrowError(u8"Cannot convert name to Unicode");
   }
 
   args.GetReturnValue().Set(
@@ -175,7 +175,7 @@ static void ToASCII(const FunctionCallbackInfo<Value>& args) {
   int32_t len = ToASCII(&buf, *val, val.length());
 
   if (len < 0) {
-    return env->ThrowError("Cannot convert name to ASCII");
+    return env->ThrowError(u8"Cannot convert name to ASCII");
   }
 
   args.GetReturnValue().Set(
@@ -190,8 +190,8 @@ void Init(Local<Object> target,
           Local<Context> context,
           void* priv) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, "toUnicode", ToUnicode);
-  env->SetMethod(target, "toASCII", ToASCII);
+  env->SetMethod(target, u8"toUnicode", ToUnicode);
+  env->SetMethod(target, u8"toASCII", ToASCII);
 }
 
 }  // namespace i18n

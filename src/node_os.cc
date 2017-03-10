@@ -52,9 +52,9 @@ static void GetHostname(const FunctionCallbackInfo<Value>& args) {
 #else  // __MINGW32__
     int errorno = WSAGetLastError();
 #endif  // __POSIX__
-    return env->ThrowErrnoException(errorno, "gethostname");
+    return env->ThrowErrnoException(errorno, u8"gethostname");
   }
-  buf[sizeof(buf) - 1] = '\0';
+  buf[sizeof(buf) - 1] = '\x0';
 
   args.GetReturnValue().Set(OneByteString(env->isolate(), buf));
 }
@@ -67,11 +67,11 @@ static void GetOSType(const FunctionCallbackInfo<Value>& args) {
 #ifdef __POSIX__
   struct utsname info;
   if (uname(&info) < 0) {
-    return env->ThrowErrnoException(errno, "uname");
+    return env->ThrowErrnoException(errno, u8"uname");
   }
   rval = info.sysname;
 #else  // __MINGW32__
-  rval ="Windows_NT";
+  rval =u8"Windows_NT";
 #endif  // __POSIX__
 
   args.GetReturnValue().Set(OneByteString(env->isolate(), rval));
@@ -85,12 +85,12 @@ static void GetOSRelease(const FunctionCallbackInfo<Value>& args) {
 #ifdef __POSIX__
   struct utsname info;
   if (uname(&info) < 0) {
-    return env->ThrowErrnoException(errno, "uname");
+    return env->ThrowErrnoException(errno, u8"uname");
   }
 # ifdef _AIX
   char release[256];
   snprintf(release, sizeof(release),
-           "%s.%s", info.version, info.release);
+           u8"%s.%s", info.version, info.release);
   rval = release;
 # else
   rval = info.release;
@@ -108,7 +108,7 @@ static void GetOSRelease(const FunctionCallbackInfo<Value>& args) {
 
   snprintf(release,
            sizeof(release),
-           "%d.%d.%d",
+           u8"%d.%d.%d",
            static_cast<int>(info.dwMajorVersion),
            static_cast<int>(info.dwMinorVersion),
            static_cast<int>(info.dwBuildNumber));
@@ -213,7 +213,7 @@ static void GetInterfaceAddresses(const FunctionCallbackInfo<Value>& args) {
   if (err == UV_ENOSYS) {
     return args.GetReturnValue().Set(ret);
   } else if (err) {
-    return env->ThrowUVException(err, "uv_interface_addresses");
+    return env->ThrowUVException(err, u8"uv_interface_addresses");
   }
 
   for (i = 0; i < count; i++) {
@@ -237,7 +237,7 @@ static void GetInterfaceAddresses(const FunctionCallbackInfo<Value>& args) {
 
     snprintf(mac,
              18,
-             "%02x:%02x:%02x:%02x:%02x:%02x",
+             u8"%02x:%02x:%02x:%02x:%02x:%02x",
              static_cast<unsigned char>(interfaces[i].phys_addr[0]),
              static_cast<unsigned char>(interfaces[i].phys_addr[1]),
              static_cast<unsigned char>(interfaces[i].phys_addr[2]),
@@ -254,7 +254,7 @@ static void GetInterfaceAddresses(const FunctionCallbackInfo<Value>& args) {
       uv_ip6_name(&interfaces[i].netmask.netmask6, netmask, sizeof(netmask));
       family = env->ipv6_string();
     } else {
-      strncpy(ip, "<unknown sa family>", INET6_ADDRSTRLEN);
+      strncpy(ip, u8"<unknown sa family>", INET6_ADDRSTRLEN);
       family = env->unknown_string();
     }
 
@@ -290,7 +290,7 @@ static void GetHomeDirectory(const FunctionCallbackInfo<Value>& args) {
   const int err = uv_os_homedir(buf, &len);
 
   if (err) {
-    return env->ThrowUVException(err, "uv_os_homedir");
+    return env->ThrowUVException(err, u8"uv_os_homedir");
   }
 
   Local<String> home = String::NewFromUtf8(env->isolate(),
@@ -317,7 +317,7 @@ static void GetUserInfo(const FunctionCallbackInfo<Value>& args) {
   const int err = uv_os_get_passwd(&pwd);
 
   if (err) {
-    return env->ThrowUVException(err, "uv_os_get_passwd");
+    return env->ThrowUVException(err, u8"uv_os_get_passwd");
   }
 
   Local<Value> uid = Number::New(env->isolate(), pwd.uid);
@@ -339,20 +339,20 @@ static void GetUserInfo(const FunctionCallbackInfo<Value>& args) {
 
   if (username.IsEmpty()) {
     return env->ThrowUVException(UV_EINVAL,
-                                 "uv_os_get_passwd",
-                                 "Invalid character encoding for username");
+                                 u8"uv_os_get_passwd",
+                                 u8"Invalid character encoding for username");
   }
 
   if (homedir.IsEmpty()) {
     return env->ThrowUVException(UV_EINVAL,
-                                 "uv_os_get_passwd",
-                                 "Invalid character encoding for homedir");
+                                 u8"uv_os_get_passwd",
+                                 u8"Invalid character encoding for homedir");
   }
 
   if (shell.IsEmpty()) {
     return env->ThrowUVException(UV_EINVAL,
-                                 "uv_os_get_passwd",
-                                 "Invalid character encoding for shell");
+                                 u8"uv_os_get_passwd",
+                                 u8"Invalid character encoding for shell");
   }
 
   Local<Object> entry = Object::New(env->isolate());
@@ -371,18 +371,18 @@ void Initialize(Local<Object> target,
                 Local<Value> unused,
                 Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, "getHostname", GetHostname);
-  env->SetMethod(target, "getLoadAvg", GetLoadAvg);
-  env->SetMethod(target, "getUptime", GetUptime);
-  env->SetMethod(target, "getTotalMem", GetTotalMemory);
-  env->SetMethod(target, "getFreeMem", GetFreeMemory);
-  env->SetMethod(target, "getCPUs", GetCPUInfo);
-  env->SetMethod(target, "getOSType", GetOSType);
-  env->SetMethod(target, "getOSRelease", GetOSRelease);
-  env->SetMethod(target, "getInterfaceAddresses", GetInterfaceAddresses);
-  env->SetMethod(target, "getHomeDirectory", GetHomeDirectory);
-  env->SetMethod(target, "getUserInfo", GetUserInfo);
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "isBigEndian"),
+  env->SetMethod(target, u8"getHostname", GetHostname);
+  env->SetMethod(target, u8"getLoadAvg", GetLoadAvg);
+  env->SetMethod(target, u8"getUptime", GetUptime);
+  env->SetMethod(target, u8"getTotalMem", GetTotalMemory);
+  env->SetMethod(target, u8"getFreeMem", GetFreeMemory);
+  env->SetMethod(target, u8"getCPUs", GetCPUInfo);
+  env->SetMethod(target, u8"getOSType", GetOSType);
+  env->SetMethod(target, u8"getOSRelease", GetOSRelease);
+  env->SetMethod(target, u8"getInterfaceAddresses", GetInterfaceAddresses);
+  env->SetMethod(target, u8"getHomeDirectory", GetHomeDirectory);
+  env->SetMethod(target, u8"getUserInfo", GetUserInfo);
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"isBigEndian"),
               Boolean::New(env->isolate(), IsBigEndian()));
 }
 

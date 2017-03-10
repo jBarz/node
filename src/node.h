@@ -72,6 +72,9 @@
     declarator
 #endif
 
+#undef USTR(X)
+#define USTR(X) u8##X
+
 // Forward-declare libuv loop
 struct uv_loop_s;
 
@@ -96,7 +99,7 @@ NODE_EXTERN v8::Local<v8::Value> UVException(v8::Isolate* isolate,
                                              const char* path,
                                              const char* dest);
 
-NODE_DEPRECATED("Use ErrnoException(isolate, ...)",
+NODE_DEPRECATED(u8"Use ErrnoException(isolate, ...)",
                 inline v8::Local<v8::Value> ErrnoException(
       int errorno,
       const char* syscall = NULL,
@@ -291,7 +294,7 @@ NODE_EXTERN enum encoding ParseEncoding(
     v8::Isolate* isolate,
     v8::Local<v8::Value> encoding_v,
     enum encoding default_encoding = LATIN1);
-NODE_DEPRECATED("Use ParseEncoding(isolate, ...)",
+NODE_DEPRECATED(u8"Use ParseEncoding(isolate, ...)",
                 inline enum encoding ParseEncoding(
       v8::Local<v8::Value> encoding_v,
       enum encoding default_encoding = LATIN1) {
@@ -301,7 +304,7 @@ NODE_DEPRECATED("Use ParseEncoding(isolate, ...)",
 NODE_EXTERN void FatalException(v8::Isolate* isolate,
                                 const v8::TryCatch& try_catch);
 
-NODE_DEPRECATED("Use FatalException(isolate, ...)",
+NODE_DEPRECATED(u8"Use FatalException(isolate, ...)",
                 inline void FatalException(const v8::TryCatch& try_catch) {
   return FatalException(v8::Isolate::GetCurrent(), try_catch);
 })
@@ -317,7 +320,7 @@ NODE_EXTERN v8::Local<v8::Value> Encode(v8::Isolate* isolate,
                                         const uint16_t* buf,
                                         size_t len);
 
-NODE_DEPRECATED("Use Encode(isolate, ...)",
+NODE_DEPRECATED(u8"Use Encode(isolate, ...)",
                 inline v8::Local<v8::Value> Encode(
     const void* buf,
     size_t len,
@@ -325,7 +328,7 @@ NODE_DEPRECATED("Use Encode(isolate, ...)",
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   if (encoding == UCS2) {
     assert(reinterpret_cast<uintptr_t>(buf) % sizeof(uint16_t) == 0 &&
-           "UCS2 buffer must be aligned on two-byte boundary.");
+           u8"UCS2 buffer must be aligned on two-byte boundary.");
     const uint16_t* that = static_cast<const uint16_t*>(buf);
     return Encode(isolate, that, len / sizeof(*that));
   }
@@ -336,7 +339,7 @@ NODE_DEPRECATED("Use Encode(isolate, ...)",
 NODE_EXTERN ssize_t DecodeBytes(v8::Isolate* isolate,
                                 v8::Local<v8::Value>,
                                 enum encoding encoding = LATIN1);
-NODE_DEPRECATED("Use DecodeBytes(isolate, ...)",
+NODE_DEPRECATED(u8"Use DecodeBytes(isolate, ...)",
                 inline ssize_t DecodeBytes(
     v8::Local<v8::Value> val,
     enum encoding encoding = LATIN1) {
@@ -349,7 +352,7 @@ NODE_EXTERN ssize_t DecodeWrite(v8::Isolate* isolate,
                                 size_t buflen,
                                 v8::Local<v8::Value>,
                                 enum encoding encoding = LATIN1);
-NODE_DEPRECATED("Use DecodeWrite(isolate, ...)",
+NODE_DEPRECATED(u8"Use DecodeWrite(isolate, ...)",
                 inline ssize_t DecodeWrite(char* buf,
                                            size_t buflen,
                                            v8::Local<v8::Value> val,
@@ -362,12 +365,12 @@ NODE_EXTERN v8::Local<v8::Value> WinapiErrnoException(
     v8::Isolate* isolate,
     int errorno,
     const char *syscall = NULL,
-    const char *msg = "",
+    const char *msg = u8"",
     const char *path = NULL);
 
-NODE_DEPRECATED("Use WinapiErrnoException(isolate, ...)",
+NODE_DEPRECATED(u8"Use WinapiErrnoException(isolate, ...)",
                 inline v8::Local<v8::Value> WinapiErrnoException(int errorno,
-    const char *syscall = NULL,  const char *msg = "",
+    const char *syscall = NULL,  const char *msg = u8"",
     const char *path = NULL) {
   return WinapiErrnoException(v8::Isolate::GetCurrent(),
                               errorno,
@@ -414,7 +417,7 @@ extern "C" NODE_EXTERN void node_module_register(void* mod);
 #ifdef _WIN32
 # define NODE_MODULE_EXPORT __declspec(dllexport)
 #else
-# define NODE_MODULE_EXPORT __attribute__((visibility("default")))
+# define NODE_MODULE_EXPORT __attribute__((visibility(u8"default")))
 #endif
 
 #ifdef NODE_SHARED_MODE
@@ -427,7 +430,7 @@ extern "C" NODE_EXTERN void node_module_register(void* mod);
 #pragma section(".CRT$XCU", read)
 #define NODE_C_CTOR(fn)                                               \
   NODE_CTOR_PREFIX void __cdecl fn(void);                             \
-  __declspec(dllexport, allocate(".CRT$XCU"))                         \
+  __declspec(dllexport, allocate(u8".CRT$XCU"))                         \
       void (__cdecl*fn ## _)(void) = fn;                              \
   NODE_CTOR_PREFIX void __cdecl fn(void)
 #else
@@ -437,7 +440,7 @@ extern "C" NODE_EXTERN void node_module_register(void* mod);
 #endif
 
 #define NODE_MODULE_X(modname, regfunc, priv, flags)                  \
-  extern "C" {                                                        \
+  extern u8"C" {                                                        \
     static node::node_module _module =                                \
     {                                                                 \
       NODE_MODULE_VERSION,                                            \
@@ -456,7 +459,7 @@ extern "C" NODE_EXTERN void node_module_register(void* mod);
   }
 
 #define NODE_MODULE_CONTEXT_AWARE_X(modname, regfunc, priv, flags)    \
-  extern "C" {                                                        \
+  extern u8"C" {                                                        \
     static node::node_module _module =                                \
     {                                                                 \
       NODE_MODULE_VERSION,                                            \

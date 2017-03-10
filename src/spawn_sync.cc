@@ -343,7 +343,7 @@ void SyncProcessRunner::Initialize(Local<Object> target,
                                    Local<Value> unused,
                                    Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, "spawn", Spawn);
+  env->SetMethod(target, u8"spawn", Spawn);
 }
 
 
@@ -858,7 +858,7 @@ int SyncProcessRunner::ParseStdioOption(int child_fd,
     return AddStdioInheritFD(child_fd, inherit_fd);
 
   } else {
-    CHECK(0 && "invalid child stdio type");
+    CHECK(0 && u8"invalid child stdio type");
     return UV_EINVAL;
   }
 }
@@ -935,7 +935,7 @@ int SyncProcessRunner::CopyJsString(Local<Value> js_value,
   buffer = new char[size];
 
   written = StringBytes::Write(isolate, buffer, -1, js_string, UTF8);
-  buffer[written] = '\0';
+  buffer[written] = '\x0';
 
   *target = buffer;
   return 0;
@@ -988,7 +988,7 @@ int SyncProcessRunner::CopyJsStringArray(Local<Value> js_value,
                                       -1,
                                       js_array->Get(i),
                                       UTF8);
-    buffer[data_offset++] = '\0';
+    buffer[data_offset++] = '\x0';
     data_offset = ROUND_UP(data_offset, sizeof(void*));
   }
 

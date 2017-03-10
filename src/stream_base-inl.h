@@ -52,26 +52,26 @@ void StreamBase::AddMethods(Environment* env,
                                      v8::DEFAULT,
                                      attributes);
 
-  env->SetProtoMethod(t, "readStart", JSMethod<Base, &StreamBase::ReadStart>);
-  env->SetProtoMethod(t, "readStop", JSMethod<Base, &StreamBase::ReadStop>);
+  env->SetProtoMethod(t, u8"readStart", JSMethod<Base, &StreamBase::ReadStart>);
+  env->SetProtoMethod(t, u8"readStop", JSMethod<Base, &StreamBase::ReadStop>);
   if ((flags & kFlagNoShutdown) == 0)
-    env->SetProtoMethod(t, "shutdown", JSMethod<Base, &StreamBase::Shutdown>);
+    env->SetProtoMethod(t, u8"shutdown", JSMethod<Base, &StreamBase::Shutdown>);
   if ((flags & kFlagHasWritev) != 0)
-    env->SetProtoMethod(t, "writev", JSMethod<Base, &StreamBase::Writev>);
+    env->SetProtoMethod(t, u8"writev", JSMethod<Base, &StreamBase::Writev>);
   env->SetProtoMethod(t,
-                      "writeBuffer",
+                      u8"writeBuffer",
                       JSMethod<Base, &StreamBase::WriteBuffer>);
   env->SetProtoMethod(t,
-                      "writeAsciiString",
+                      u8"writeAsciiString",
                       JSMethod<Base, &StreamBase::WriteString<ASCII> >);
   env->SetProtoMethod(t,
-                      "writeUtf8String",
+                      u8"writeUtf8String",
                       JSMethod<Base, &StreamBase::WriteString<UTF8> >);
   env->SetProtoMethod(t,
-                      "writeUcs2String",
+                      u8"writeUcs2String",
                       JSMethod<Base, &StreamBase::WriteString<UCS2> >);
   env->SetProtoMethod(t,
-                      "writeLatin1String",
+                      u8"writeLatin1String",
                       JSMethod<Base, &StreamBase::WriteString<LATIN1> >);
 }
 

@@ -379,14 +379,14 @@ typedef struct {
 
 static const modp_group modp_groups[] = {
 #define V(var) reinterpret_cast<const char*>(var)
-  { "modp1", V(group_modp1), sizeof(group_modp1), V(two_generator), 1 },
-  { "modp2", V(group_modp2), sizeof(group_modp2), V(two_generator), 1 },
-  { "modp5", V(group_modp5), sizeof(group_modp5), V(two_generator), 1 },
-  { "modp14", V(group_modp14), sizeof(group_modp14), V(two_generator), 1 },
-  { "modp15", V(group_modp15), sizeof(group_modp15), V(two_generator), 1 },
-  { "modp16", V(group_modp16), sizeof(group_modp16), V(two_generator), 1 },
-  { "modp17", V(group_modp17), sizeof(group_modp17), V(two_generator), 1 },
-  { "modp18", V(group_modp18), sizeof(group_modp18), V(two_generator), 1 }
+  { u8"modp1", V(group_modp1), sizeof(group_modp1), V(two_generator), 1 },
+  { u8"modp2", V(group_modp2), sizeof(group_modp2), V(two_generator), 1 },
+  { u8"modp5", V(group_modp5), sizeof(group_modp5), V(two_generator), 1 },
+  { u8"modp14", V(group_modp14), sizeof(group_modp14), V(two_generator), 1 },
+  { u8"modp15", V(group_modp15), sizeof(group_modp15), V(two_generator), 1 },
+  { u8"modp16", V(group_modp16), sizeof(group_modp16), V(two_generator), 1 },
+  { u8"modp17", V(group_modp17), sizeof(group_modp17), V(two_generator), 1 },
+  { u8"modp18", V(group_modp18), sizeof(group_modp18), V(two_generator), 1 }
 #undef V
 };
 

@@ -29,21 +29,21 @@ class TimerWrap : public HandleWrap {
     Environment* env = Environment::GetCurrent(context);
     Local<FunctionTemplate> constructor = env->NewFunctionTemplate(New);
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Timer"));
-    constructor->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnTimeout"),
+    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Timer"));
+    constructor->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kOnTimeout"),
                      Integer::New(env->isolate(), kOnTimeout));
 
-    env->SetTemplateMethod(constructor, "now", Now);
+    env->SetTemplateMethod(constructor, u8"now", Now);
 
-    env->SetProtoMethod(constructor, "close", HandleWrap::Close);
-    env->SetProtoMethod(constructor, "ref", HandleWrap::Ref);
-    env->SetProtoMethod(constructor, "unref", HandleWrap::Unref);
-    env->SetProtoMethod(constructor, "hasRef", HandleWrap::HasRef);
+    env->SetProtoMethod(constructor, u8"close", HandleWrap::Close);
+    env->SetProtoMethod(constructor, u8"ref", HandleWrap::Ref);
+    env->SetProtoMethod(constructor, u8"unref", HandleWrap::Unref);
+    env->SetProtoMethod(constructor, u8"hasRef", HandleWrap::HasRef);
 
-    env->SetProtoMethod(constructor, "start", Start);
-    env->SetProtoMethod(constructor, "stop", Stop);
+    env->SetProtoMethod(constructor, u8"start", Start);
+    env->SetProtoMethod(constructor, u8"stop", Stop);
 
-    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Timer"),
+    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Timer"),
                 constructor->GetFunction());
   }
 
