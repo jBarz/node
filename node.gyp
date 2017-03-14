@@ -373,29 +373,6 @@
                         '-Wl,--no-whole-archive',
                       ],
                     }],
-		    [ 'OS=="os390"', {
-		      'defines': [
-		        '_XOPEN_SOURCE_EXTENDED',
-		        '_UNIX03_THREADS',
-		        '_UNIX03_SOURCE',
-		        '_XOPEN_SOURCE=500',
-		        '_OPEN_SYS_SOCK_IPV6',
-		        '_POSIX_SOURCE',
-		        '_OPEN_SYS',
-		        '__IBMCPP_TR1__',
-		        'PATH_MAX=_POSIX_PATH_MAX',
-		      ],
-		      'cflags': [
-		        '-qlonglong',
-		        '-qxplink',
-		        '-q64',
-		      ],
-		      'ldflags': [
-		        '-Wl,DLL',
-		        '-qxplink',
-		        '-q64'
-		      ],
-		    }],
                     # openssl.def is based on zlib.def, zlib symbols
                     # are always exported.
                     ['use_openssl_def==1', {
@@ -590,8 +567,28 @@
           'ldflags': [ '-Wl,-M,/usr/lib/ld/map.noexstk' ],
         }],
         [ 'OS=="os390"', {
-          'ldflags': ['-qxplink -q64']
-        }],
+	  'defines': [
+	    '_XOPEN_SOURCE_EXTENDED',
+	    '_UNIX03_THREADS',
+	    '_UNIX03_SOURCE',
+	    '_XOPEN_SOURCE=500',
+	    '_OPEN_SYS_SOCK_IPV6',
+	    '_POSIX_SOURCE',
+	    '_OPEN_SYS',
+	    '__IBMCPP_TR1__',
+	    'PATH_MAX=_POSIX_PATH_MAX',
+	  ],
+	  'cflags': [
+	    '-qlonglong',
+	    '-qxplink',
+	    '-q64',
+	  ],
+	  'ldflags': [
+	    '-Wl,DLL',
+	    '-qxplink',
+	    '-q64'
+	  ],
+	}],
       ],
     },
     {
