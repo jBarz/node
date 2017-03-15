@@ -116,7 +116,7 @@ void Initialize(Local<Object> target,
                 Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-#define V(lcname, ucname) env->SetMethod(target, #lcname, ucname);
+#define V(lcname, ucname) env->SetMethod(target, NODE_STRINGIFY(lcname), ucname);
   VALUE_METHOD_MAP(V)
 #undef V
 
