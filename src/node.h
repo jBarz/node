@@ -164,7 +164,7 @@ NODE_EXTERN v8::Local<v8::Value> MakeCallback(
 
 #ifndef NODE_STRINGIFY
 #define NODE_STRINGIFY(n) NODE_STRINGIFY_HELPER(n)
-#define NODE_STRINGIFY_HELPER(n) #n
+#define NODE_STRINGIFY_HELPER(n) USTR(#n)
 #endif
 
 #ifdef _WIN32
