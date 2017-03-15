@@ -11,8 +11,10 @@
 #define NODE_VERSION_IS_RELEASE 0
 
 #ifndef NODE_STRINGIFY
+#define USTR(x) u8##x
 #define NODE_STRINGIFY(n) NODE_STRINGIFY_HELPER(n)
-#define NODE_STRINGIFY_HELPER(n) #n
+#define NODE_STRINGIFY_HELPER(n) USTR(#n)
+#undef USTR
 #endif
 
 #ifndef NODE_TAG
