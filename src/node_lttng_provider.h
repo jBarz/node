@@ -64,11 +64,11 @@ void NODE_GC_START(v8::GCType type,
   const char* typeStr = u8"Unkown GC Type";
   const char* flagsStr = u8"Unknown GC Flag";
 
-#define BUILD_IF(f) if (type == v8::GCType::f) { typeStr = #f; }
+#define BUILD_IF(f) if (type == v8::GCType::f) { typeStr = USTR(#f); }
   FOR_ALL_GC_TYPES(BUILD_IF);
 #undef BUILD_IF
 
-#define BUILD_IF(f) if (flags == v8::GCCallbackFlags::f) { flagsStr = #f; }
+#define BUILD_IF(f) if (flags == v8::GCCallbackFlags::f) { flagsStr = USTR(#f); }
   FOR_ALL_GC_CALLBACK_FLAGS(BUILD_IF);
 #undef BUILD_IF
 
@@ -81,11 +81,11 @@ void NODE_GC_DONE(v8::GCType type,
   const char* typeStr = u8"Unkown GC Type";
   const char* flagsStr = u8"Unknown GC Flag";
 
-#define BUILD_IF(f) if (type == v8::GCType::f) { typeStr = #f; }
+#define BUILD_IF(f) if (type == v8::GCType::f) { typeStr = USTR(#f); }
   FOR_ALL_GC_TYPES(BUILD_IF);
 #undef BUILD_IF
 
-#define BUILD_IF(f) if (flags == v8::GCCallbackFlags::f) { flagsStr = #f; }
+#define BUILD_IF(f) if (flags == v8::GCCallbackFlags::f) { flagsStr = USTR(#f); }
   FOR_ALL_GC_CALLBACK_FLAGS(BUILD_IF);
 #undef BUILD_IF
 

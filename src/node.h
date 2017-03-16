@@ -163,6 +163,7 @@ NODE_EXTERN v8::Local<v8::Value> MakeCallback(
 #include <stdint.h>
 
 #ifndef NODE_STRINGIFY
+#define USTR(x) u8##x
 #define NODE_STRINGIFY(n) NODE_STRINGIFY_HELPER(n)
 #define NODE_STRINGIFY_HELPER(n) USTR(#n)
 #endif
@@ -231,7 +232,7 @@ NODE_EXTERN void RunAtExit(Environment* env);
     v8::Isolate* isolate = target->GetIsolate();                              \
     v8::Local<v8::Context> context = isolate->GetCurrentContext();            \
     v8::Local<v8::String> constant_name =                                     \
-        v8::String::NewFromUtf8(isolate, #constant);                          \
+        v8::String::NewFromUtf8(isolate, USTR(#constant));                          \
     v8::Local<v8::Number> constant_value =                                    \
         v8::Number::New(isolate, static_cast<double>(constant));              \
     v8::PropertyAttribute constant_attributes =                               \
@@ -417,7 +418,7 @@ extern "C" NODE_EXTERN void node_module_register(void* mod);
 #ifdef _WIN32
 # define NODE_MODULE_EXPORT __declspec(dllexport)
 #else
-# define NODE_MODULE_EXPORT __attribute__((visibility("default")))
+# define NODE_MODULE_EXPORT __attribute__((visibility(u8"default")))
 #endif
 
 #ifdef NODE_SHARED_MODE

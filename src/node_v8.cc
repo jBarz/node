@@ -112,7 +112,7 @@ void InitializeV8Bindings(Local<Object> target,
                                heap_statistics_buffer_byte_length));
 
 #define V(i, _, name)                                                         \
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), #name),                   \
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), USTR(#name)),                   \
               Uint32::NewFromUnsigned(env->isolate(), i));
 
   HEAP_STATISTICS_PROPERTIES(V)
@@ -160,7 +160,7 @@ void InitializeV8Bindings(Local<Object> target,
                                heap_space_statistics_buffer_byte_length));
 
 #define V(i, _, name)                                                         \
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), #name),                   \
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), USTR(#name)),                   \
               Uint32::NewFromUnsigned(env->isolate(), i));
 
   HEAP_SPACE_STATISTICS_PROPERTIES(V)

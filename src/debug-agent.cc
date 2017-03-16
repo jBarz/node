@@ -153,7 +153,7 @@ void Agent::Stop() {
 
 
 void Agent::WorkerRun() {
-  static const char* argv[] = { u8"node", u8"--debug-agent" };
+  static const char* argv[] = { u8"nodeu8", u8"--debug-agent" };
   Isolate::CreateParams params;
   ArrayBufferAllocator array_buffer_allocator;
   params.array_buffer_allocator = &array_buffer_allocator;

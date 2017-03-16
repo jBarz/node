@@ -31,8 +31,8 @@ namespace node {
 namespace inspector {
 namespace {
 
-const char TAG_CONNECT[] = u8"#connect";
-const char TAG_DISCONNECT[] = u8"#disconnect";
+const char TAG_CONNECT[] = u8 USTR(u8"#connect");
+const char TAG_DISCONNECT[] = u8 USTR(u8"#disconnect");
 
 static const uint8_t PROTOCOL_JSON[] = {
 #include "v8_inspector_protocol_json.h"  // NOLINT(build/include_order)
@@ -49,7 +49,7 @@ void PrintDebuggerReadyMessage(int port, const std::string& id) {
     u8"Warning: This is an experimental feature and could change at any time.\n"
     u8"To start debugging, open the following URL in Chrome:\n"
     u8"    chrome-devtools://devtools/remote/serve_file/"
-    u8"@" V8_INSPECTOR_REVISION u8"/inspector.html?"
+    u8"@u8" V8_INSPECTOR_REVISION u8"/inspector.html?"
     u8"experiments=true&v8only=true&ws=%s\n",
       port, GetWsUrl(port, id).c_str());
   fflush(stderr);
@@ -62,8 +62,8 @@ std::string MapToString(const std::map<std::string, std::string> object) {
   for (const auto& name_value : object) {
     if (!first)
       json << u8",\n";
-    json << u8"  \"" << name_value.first << u8"\": \"";
-    json << name_value.second << u8"\"";
+    json << u8"  \u8"" << name_value.first << u8"\": \u8"";
+    json << name_value.second << u8"\u8"";
     first = false;
   }
   json << u8"\n} ]\n\n";
@@ -111,8 +111,8 @@ void SendHttpResponse(InspectorSocket* socket, const std::string& response) {
 void SendVersionResponse(InspectorSocket* socket) {
   static const char response[] =
       u8"{\n"
-      u8"  \"Browser\": \"node.js/" NODE_VERSION u8"\",\n"
-      u8"  \"Protocol-Version\": \"1.1\"\n"
+      u8"  \u8"Browser\": \"node.js/" NODE_VERSION u8"\u8",\n"
+      u8"  \u8"Protocol-Version\": \"1.1\"\n"
       u8"}\n";
   SendHttpResponse(socket, response, sizeof(response) - 1);
 }
@@ -628,7 +628,7 @@ void AgentImpl::OnRemoteDataIO(InspectorSocket* socket,
     // engages, node should wait for the run callback from the remote client
     // and initiate its startup. This is a change to node.cc that should be
     // upstreamed separately.
-    if (wait_&& str.find(u8"\"Runtime.runIfWaitingForDebugger\"")
+    if (wait_&& str.find(u8"\u8"Runtime.runIfWaitingForDebugger\"")
         != std::string::npos) {
       wait_ = false;
       uv_sem_post(&start_sem_);
@@ -650,15 +650,15 @@ void AgentImpl::OnRemoteDataIO(InspectorSocket* socket,
 
 void AgentImpl::SendListResponse(InspectorSocket* socket) {
   std::map<std::string, std::string> response;
-  response[u8"description"] = u8"node.js instance";
-  response[u8"faviconUrl"] = u8"https://nodejs.org/static/favicon.ico";
+  response[u8"descriptionu8"] = u8"node.js instance";
+  response[u8"faviconUrlu8"] = u8"https://nodejs.org/static/favicon.ico";
   response[u8"id"] = id_;
   response[u8"title"] = script_name_.empty() ? GetProcessTitle() : script_name_;
   Escape(&response[u8"title"]);
-  response[u8"type"] = u8"node";
+  response[u8"typeu8"] = u8"node";
   // This attribute value is a "best effort" URL that is passed as a JSON
   // string. It is not guaranteed to resolve to a valid resource.
-  response[u8"url"] = u8"file://" + script_path_;
+  response[u8"urlu8"] = u8"file://" + script_path_;
   Escape(&response[u8"url"]);
 
   if (!client_socket_) {
@@ -671,7 +671,7 @@ void AgentImpl::SendListResponse(InspectorSocket* socket) {
     frontend_url << address;
 
     response[u8"devtoolsFrontendUrl"] += frontend_url.str();
-    response[u8"webSocketDebuggerUrl"] = u8"ws://" + address;
+    response[u8"webSocketDebuggerUrlu8"] = u8"ws://" + address;
   }
   SendHttpResponse(socket, MapToString(response));
 }

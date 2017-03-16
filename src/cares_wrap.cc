@@ -50,7 +50,7 @@ using v8::Value;
 
 inline const char* ToErrorCodeString(int status) {
   switch (status) {
-#define V(code) case ARES_##code: return #code;
+#define V(code) case ARES_##code: return USTR(#code);
     V(EADDRGETNETWORKPARAMS)
     V(EBADFAMILY)
     V(EBADFLAGS)

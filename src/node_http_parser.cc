@@ -758,7 +758,7 @@ void InitHttpParser(Local<Object> target,
 
   Local<Array> methods = Array::New(env->isolate());
 #define V(num, name, string)                                                  \
-    methods->Set(num, FIXED_ONE_BYTE_STRING(env->isolate(), #string));
+    methods->Set(num, FIXED_ONE_BYTE_STRING(env->isolate(), USTR(#string)));
   HTTP_METHOD_MAP(V)
 #undef V
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"methods"), methods);

@@ -101,7 +101,7 @@ class FSReqWrap: public ReqWrap<uv_fs_t> {
 
 #define ASSERT_PATH(path)                                                   \
   if (*path == nullptr)                                                     \
-    return TYPE_ERROR( *E2A(#path " must be a string or Buffer"));
+    return TYPE_ERROR( *E2A(#path u8" must be a string or Buffer"));
 
 FSReqWrap* FSReqWrap::New(Environment* env,
                           Local<Object> req,
@@ -341,7 +341,7 @@ class fs_req_wrap {
   Environment* env = Environment::GetCurrent(args);                           \
   CHECK(request->IsObject());                                                 \
   FSReqWrap* req_wrap = FSReqWrap::New(env, request.As<Object>(),             \
-                                       #func, dest, encoding);                \
+                                       USTR(#func), dest, encoding);                \
   int err = uv_fs_ ## func(env->event_loop(),                                 \
                            req_wrap->req(),                                   \
                            __VA_ARGS__,                                       \
@@ -368,7 +368,7 @@ class fs_req_wrap {
                          __VA_ARGS__,                                         \
                          nullptr);                                            \
   if (err < 0) {                                                              \
-    return env->ThrowUVException(err, #func, nullptr, path, dest);            \
+    return env->ThrowUVException(err, USTR(#func), nullptr, path, dest);            \
   }                                                                           \
 
 #define SYNC_CALL(func, path, ...)                                            \
@@ -962,7 +962,7 @@ static void ReadDir(const FunctionCallbackInfo<Value>& args) {
       if (r == UV_EOF)
         break;
       if (r != 0)
-        return env->ThrowUVException(r, u8"readdir", u8"", *path);
+        return env->ThrowUVException(r, u8"readdiru8", u8"", *path);
 
       Local<Value> filename = StringBytes::Encode(env->isolate(),
                                                   ent.name,

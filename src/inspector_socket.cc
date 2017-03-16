@@ -336,13 +336,13 @@ static void websockets_data_cb(uv_stream_t* stream, ssize_t nread,
       inspector->ws_state->read_cb(stream, nread, nullptr);
     }
   } else {
-    #if DUMP_READS
+    USTR(#if) DUMP_READS
       printf(u8"%s read %ld bytes\n", __FUNCTION__, nread);
       if (nread > 0) {
         dump_hex(inspector->buffer.data() + inspector->buffer.size() - nread,
                  nread);
       }
-    #endif
+    USTR(#endif)
     // 2. Parse.
     int processed = 0;
     do {

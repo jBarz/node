@@ -30,7 +30,7 @@ namespace node {
 
 static const char* const provider_names[] = {
 #define V(PROVIDER)                                                           \
-  #PROVIDER,
+  USTR(#PROVIDER),
   NODE_ASYNC_PROVIDER_TYPES(V)
 #undef V
 };
@@ -170,7 +170,7 @@ void AsyncWrap::Initialize(Local<Object> target,
 
   Local<Object> async_providers = Object::New(isolate);
 #define V(PROVIDER)                                                           \
-  async_providers->Set(FIXED_ONE_BYTE_STRING(isolate, #PROVIDER),             \
+  async_providers->Set(FIXED_ONE_BYTE_STRING(isolate, USTR(#PROVIDER)),             \
       Integer::New(isolate, AsyncWrap::PROVIDER_ ## PROVIDER));
   NODE_ASYNC_PROVIDER_TYPES(V)
 #undef V

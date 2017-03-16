@@ -44,32 +44,32 @@ using v8::Value;
 #define SLURP_STRING(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-        u8"expected object for " #obj u8" to contain string member " #member); \
+        u8"expected object for u8" USTR(#obj) u8" to contain string member " USTR(#member)); \
   } \
   node::Utf8Value _##member(env->isolate(), \
-      obj->Get(OneByteString(env->isolate(), #member))); \
+      obj->Get(OneByteString(env->isolate(), USTR(#member)))); \
   if ((*(const char **)valp = *_##member) == nullptr) \
     *(const char **)valp = u8"<unknown>";
 
 #define SLURP_INT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected object for " #obj u8" to contain integer member " #member); \
+      u8"expected object for u8" USTR(#obj) u8" to contain integer member " USTR(#member)); \
   } \
-  *valp = obj->Get(OneByteString(env->isolate(), #member)) \
+  *valp = obj->Get(OneByteString(env->isolate(), USTR(#member))) \
       ->ToInteger(env->isolate())->Value();
 
 #define SLURP_OBJECT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected object for " #obj u8" to contain object member " #member); \
+      u8"expected object for u8" USTR(#obj) u8" to contain object member " USTR(#member)); \
   } \
-  *valp = Local<Object>::Cast(obj->Get(OneByteString(env->isolate(), #member)));
+  *valp = Local<Object>::Cast(obj->Get(OneByteString(env->isolate(), USTR(#member))));
 
 #define SLURP_CONNECTION(arg, conn) \
   if (!(arg)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected argument " #arg u8" to be a connection object"); \
+      u8"expected argument u8" USTR(#arg) u8" to be a connection object"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg); \
@@ -87,7 +87,7 @@ using v8::Value;
 #define SLURP_CONNECTION_HTTP_CLIENT(arg, conn) \
   if (!(arg)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected argument " #arg u8" to be a connection object"); \
+      u8"expected argument u8" USTR(#arg) u8" to be a connection object"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg); \
@@ -99,11 +99,11 @@ using v8::Value;
 #define SLURP_CONNECTION_HTTP_CLIENT_RESPONSE(arg0, arg1, conn) \
   if (!(arg0)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected argument " #arg0 u8" to be a connection object"); \
+      u8"expected argument u8" USTR(#arg0) u8" to be a connection object"); \
   } \
   if (!(arg1)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected argument " #arg1 u8" to be a connection object"); \
+      u8"expected argument u8" USTR(#arg1) u8" to be a connection object"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg0); \
@@ -244,7 +244,7 @@ void InitDTrace(Environment* env, Local<Object> target) {
     const char *name;
     void (*func)(const FunctionCallbackInfo<Value>&);
   } tab[] = {
-#define NODE_PROBE(name) #name, name
+#define NODE_PROBE(name) USTR(#name), name
     { NODE_PROBE(DTRACE_NET_SERVER_CONNECTION) },
     { NODE_PROBE(DTRACE_NET_STREAM_END) },
     { NODE_PROBE(DTRACE_HTTP_SERVER_REQUEST) },
