@@ -373,9 +373,16 @@ class BufferValue : public MaybeStackBuffer<char> {
   explicit BufferValue(v8::Isolate* isolate, v8::Local<v8::Value> value);
 };
 
+class NativeEncodingValue : public MaybeStackBuffer<char> {
+ public:
+  explicit NativeEncodingValue(v8::Isolate* isolate, v8::Local<v8::Value> value);
+};
+
+
 class E2A {
   public:
     explicit E2A(const char* val);
+    explicit E2A(const char* val, unsigned len);
     explicit E2A(const char* prefix, const char* val);
 
     ~E2A() {

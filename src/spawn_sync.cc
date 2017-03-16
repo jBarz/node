@@ -5,6 +5,9 @@
 
 #include <string.h>
 #include <stdlib.h>
+#ifdef __MVS__
+#include <unistd.h>
+#endif
 
 
 namespace node {
@@ -306,6 +309,9 @@ void SyncProcessStdioPipe::ReadCallback(uv_stream_t* stream,
                                         const uv_buf_t* buf) {
   SyncProcessStdioPipe* self =
         reinterpret_cast<SyncProcessStdioPipe*>(stream->data);
+#ifdef __MVS__
+  __e2a_l(buf->base, nread);
+#endif
   self->OnRead(buf, nread);
 }
 
@@ -313,6 +319,9 @@ void SyncProcessStdioPipe::ReadCallback(uv_stream_t* stream,
 void SyncProcessStdioPipe::WriteCallback(uv_write_t* req, int result) {
   SyncProcessStdioPipe* self =
       reinterpret_cast<SyncProcessStdioPipe*>(req->handle->data);
+#ifdef __MVS__
+        __e2a_l(self->input_buffer_.base, self->input_buffer_.len);
+#endif
   self->OnWriteDone(result);
 }
 
@@ -726,6 +735,11 @@ int SyncProcessRunner::ParseOptions(Local<Value> js_value) {
       return r;
 
     uv_process_options_.env = reinterpret_cast<char**>(env_buffer_);
+#ifdef __MVS__
+    int i = 0;
+    while (uv_process_options_.env[i] != NULL)
+      __a2e_s(uv_process_options_.env[i++]);
+#endif
   }
   Local<Value> js_uid = js_options->Get(env()->uid_string());
   if (IsSet(js_uid)) {
@@ -842,6 +856,9 @@ int SyncProcessRunner::ParseStdioOption(int child_fd,
       if (Buffer::HasInstance(input)) {
         buf = uv_buf_init(Buffer::Data(input),
                           static_cast<unsigned int>(Buffer::Length(input)));
+#ifdef __MVS__
+        __a2e_l(buf.base, buf.len);
+#endif
       } else if (!input->IsUndefined() && !input->IsNull()) {
         // Strings, numbers etc. are currently unsupported. It's not possible
         // to create a buffer for them here because there is no way to free

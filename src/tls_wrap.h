@@ -107,6 +107,8 @@ class TLSWrap : public AsyncWrap,
 
   AsyncWrap* GetAsyncWrap() override;
   bool IsIPCPipe() override;
+  bool IsTTY() override;
+  bool IsPipe() override;
 
   // Resource implementation
   static void OnAfterWriteImpl(WriteWrap* w, void* ctx);

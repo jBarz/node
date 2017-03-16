@@ -12,6 +12,7 @@
 #include "stream_wrap.h"
 #include "util-inl.h"
 #include "util.h"
+#include <unistd.h>
 
 namespace node {
 
@@ -113,6 +114,9 @@ void PipeWrap::Bind(const FunctionCallbackInfo<Value>& args) {
   PipeWrap* wrap;
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
   node::Utf8Value name(args.GetIsolate(), args[0]);
+#ifdef __MVS__
+  __a2e_s(*name);
+#endif
   int err = uv_pipe_bind(&wrap->handle_, *name);
   args.GetReturnValue().Set(err);
 }
@@ -168,6 +172,9 @@ void PipeWrap::Connect(const FunctionCallbackInfo<Value>& args) {
 
   ConnectWrap* req_wrap =
       new ConnectWrap(env, req_wrap_obj, AsyncWrap::PROVIDER_PIPECONNECTWRAP);
+#ifdef __MVS__
+  __a2e_s(*name);
+#endif
   uv_pipe_connect(req_wrap->req(),
                   &wrap->handle_,
                   *name,

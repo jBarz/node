@@ -5938,6 +5938,7 @@ void SetEngine(const FunctionCallbackInfo<Value>& args) {
   ENGINE* engine = ENGINE_by_id(*engine_id);
 
   // Engine not found, try loading dynamically
+  // TODO(mmallick84): undo this conversion
   if (engine == nullptr) {
     engine = ENGINE_by_id(u8"dynamic");
     if (engine != nullptr) {

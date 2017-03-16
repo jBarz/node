@@ -18,6 +18,9 @@
 #include <stdlib.h>  // abort()
 #include <string.h>  // memcpy()
 #include <limits.h>  // INT_MAX
+#if defined(__MVS__)
+#include <unistd.h>  // e2a
+#endif
 
 
 namespace node {
@@ -111,8 +114,18 @@ AsyncWrap* StreamWrap::GetAsyncWrap() {
 }
 
 
+bool StreamWrap::IsTTY() {
+  return is_tty();
+}
+
+
 bool StreamWrap::IsIPCPipe() {
   return is_named_pipe_ipc();
+}
+
+
+bool StreamWrap::IsPipe() {
+  return is_named_pipe();
 }
 
 
@@ -204,6 +217,10 @@ void StreamWrap::OnReadImpl(ssize_t nread,
     return;
   }
 
+#ifdef __MVS__
+  if (wrap->IsPipe() || wrap->IsTTY())
+    __e2a_l(buf->base, nread);
+#endif
   char* base = static_cast<char*>(node::Realloc(buf->base, nread));
   CHECK_LE(static_cast<size_t>(nread), buf->len);
 

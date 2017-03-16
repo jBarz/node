@@ -20,6 +20,8 @@
 
 #if defined(__MINGW32__) || defined(_MSC_VER)
 # include <io.h>
+#elif defined(__MVS__)
+# include <unistd.h>
 #endif
 
 #include <vector>
@@ -152,6 +154,14 @@ static void After(uv_fs_t *req) {
   Local<Value> argv[2];
   Local<Value> link;
 
+#ifdef __MVS__
+  if (req->path != NULL)
+      __e2a_s((char *)req->path);
+
+  if (req->new_path != NULL)
+      __e2a_s((char *)req->new_path);
+#endif
+
   if (req->result < 0) {
     // An error happened.
     argv[0] = UVException(env->isolate(),
@@ -225,6 +235,9 @@ static void After(uv_fs_t *req) {
         break;
 
       case UV_FS_READLINK:
+#ifdef __MVS__
+        __e2a_s((char*) req->ptr);
+#endif
         link = StringBytes::Encode(env->isolate(),
                                    static_cast<const char*>(req->ptr),
                                    req_wrap->encoding_);
@@ -283,9 +296,18 @@ static void After(uv_fs_t *req) {
               break;
             }
 
+#ifdef __MVS__
+            char ebc[strlen(ent.name) + 1];
+            strcpy(ebc, ent.name);
+            __e2a_s(ebc);
+            Local<Value> filename = StringBytes::Encode(env->isolate(),
+                                                        ebc,
+                                                        req_wrap->encoding_);
+#else
             Local<Value> filename = StringBytes::Encode(env->isolate(),
                                                         ent.name,
                                                         req_wrap->encoding_);
+#endif
             if (filename.IsEmpty()) {
               argv[0] = UVException(env->isolate(),
                                     UV_EINVAL,
@@ -741,6 +763,9 @@ static void ReadLink(const FunctionCallbackInfo<Value>& args) {
     ASYNC_CALL(readlink, callback, encoding, *path)
   } else {
     SYNC_CALL(readlink, *path, *path)
+#ifdef __MVS__
+    __e2a_s((char*)SYNC_REQ.ptr);
+#endif
     const char* link_path = static_cast<const char*>(SYNC_REQ.ptr);
     Local<Value> rc = StringBytes::Encode(env->isolate(),
                                           link_path,
@@ -964,9 +989,18 @@ static void ReadDir(const FunctionCallbackInfo<Value>& args) {
       if (r != 0)
         return env->ThrowUVException(r, u8"readdiru8", u8"", *path);
 
+#ifdef __MVS__
+      char ebc[strlen(ent.name + 1)];
+      strcpy(ebc, ent.name);
+      __e2a_s(ebc);
+      Local<Value> filename = StringBytes::Encode(env->isolate(),
+                                                  ebc,
+                                                  encoding);
+#else
       Local<Value> filename = StringBytes::Encode(env->isolate(),
                                                   ent.name,
                                                   encoding);
+#endif
       if (filename.IsEmpty()) {
         return env->ThrowUVException(UV_EINVAL,
                                      u8"readdir",

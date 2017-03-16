@@ -3,6 +3,7 @@
 #include "node_buffer.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 
 namespace node {
 
@@ -34,8 +35,28 @@ Utf8Value::Utf8Value(Isolate* isolate, Local<Value> value) {
   MakeUtf8String(isolate, value, this);
 }
 
+
+NativeEncodingValue::NativeEncodingValue(Isolate* isolate, Local<Value> value) {
+  if (value.IsEmpty())
+    return;
+
+  MakeUtf8String(isolate, value, this);
+  __a2e_l(out(), length());
+}
+
+
 E2A::E2A(const char* val)
   : length_(strlen(val)) {
+    str_ = (char *)malloc(sizeof(char) * length_ + 1);
+    assert(str_ != NULL);
+    memcpy(str_, val, length_);
+    str_[length_] = NULL;
+    __e2a_l(str_, length_);
+}
+
+
+E2A::E2A(const char* val, unsigned len)
+  : length_(len) {
     str_ = (char *)malloc(sizeof(char) * length_ + 1);
     assert(str_ != NULL);
     memcpy(str_, val, length_);

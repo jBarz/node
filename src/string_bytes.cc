@@ -8,6 +8,7 @@
 #include <limits.h>
 #include <string.h>  // memcpy
 #include <vector>
+#include <unistd.h>  // a2e
 
 // When creating strings >= this length v8's gc spins up and consumes
 // most of the execution time. For these cases it's more performant to
@@ -291,6 +292,18 @@ size_t StringBytes::Write(Isolate* isolate,
       }
       if (chars_written != nullptr)
         *chars_written = nbytes;
+      break;
+
+    case EBCDIC:
+      if (is_extern && str->IsOneByte()) {
+        memcpy(buf, data, nbytes);
+      } else {
+        uint8_t* const dst = reinterpret_cast<uint8_t*>(buf);
+        nbytes = str->WriteOneByte(dst, 0, buflen, flags);
+      }
+      if (chars_written != nullptr)
+        *chars_written = nbytes;
+      __a2e_l(buf, nbytes);
       break;
 
     case BUFFER:
@@ -627,6 +640,13 @@ Local<Value> StringBytes::Encode(Isolate* isolate,
         else
           val = ExternOneByteString::NewFromCopy(isolate, buf, buflen);
       }
+      break;
+
+    case EBCDIC:
+      val = String::NewFromOneByte(isolate,
+                                   (unsigned char*)(*E2A(buf, buflen)),
+                                   String::kNormalString,
+                                   buflen);
       break;
 
     case UTF8:

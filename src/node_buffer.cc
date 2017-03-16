@@ -511,6 +511,11 @@ void AsciiSlice(const FunctionCallbackInfo<Value>& args) {
 }
 
 
+void EbcdicSlice(const FunctionCallbackInfo<Value>& args) {
+  StringSlice<EBCDIC>(args);
+}
+
+
 void Utf8Slice(const FunctionCallbackInfo<Value>& args) {
   StringSlice<UTF8>(args);
 }
@@ -729,6 +734,11 @@ void HexWrite(const FunctionCallbackInfo<Value>& args) {
 
 void AsciiWrite(const FunctionCallbackInfo<Value>& args) {
   StringWrite<ASCII>(args);
+}
+
+
+void EbcdicWrite(const FunctionCallbackInfo<Value>& args) {
+  StringWrite<EBCDIC>(args);
 }
 
 
@@ -1207,6 +1217,7 @@ void SetupBufferJS(const FunctionCallbackInfo<Value>& args) {
   env->SetMethod(proto, u8"hexSlice", HexSlice);
   env->SetMethod(proto, u8"ucs2Slice", Ucs2Slice);
   env->SetMethod(proto, u8"utf8Slice", Utf8Slice);
+  env->SetMethod(proto, u8"ebcdicSlice", EbcdicSlice);
 
   env->SetMethod(proto, u8"asciiWrite", AsciiWrite);
   env->SetMethod(proto, u8"base64Write", Base64Write);
@@ -1214,6 +1225,7 @@ void SetupBufferJS(const FunctionCallbackInfo<Value>& args) {
   env->SetMethod(proto, u8"hexWrite", HexWrite);
   env->SetMethod(proto, u8"ucs2Write", Ucs2Write);
   env->SetMethod(proto, u8"utf8Write", Utf8Write);
+  env->SetMethod(proto, u8"ebcdicWrite", EbcdicWrite);
 
   env->SetMethod(proto, u8"copy", Copy);
 

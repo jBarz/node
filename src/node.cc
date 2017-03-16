@@ -94,6 +94,13 @@ typedef int mode_t;
 extern char **environ;
 #endif
 
+#ifdef __MVS__
+#include <strings.h>
+#include <unistd.h> // e2a
+#include <setjmp.h> // e2a
+#endif
+
+
 namespace node {
 
 using v8::Array;
@@ -289,6 +296,95 @@ static void IdleImmediateDummy(uv_idle_t* handle) {
   // TODO(bnoordhuis) Maybe make libuv accept nullptr idle callbacks.
 }
 
+inline const uint8_t& Ascii2Ebcdic(const char letter) {
+  static unsigned char a2e[256] = {
+  0,1,2,3,55,45,46,47,22,5,21,11,12,13,14,15,
+  16,17,18,19,60,61,50,38,24,25,63,39,28,29,30,31,
+  64,79,127,123,91,108,80,125,77,93,92,78,107,96,75,97,
+  240,241,242,243,244,245,246,247,248,249,122,94,76,126,110,111,
+  124,193,194,195,196,197,198,199,200,201,209,210,211,212,213,214,
+  215,216,217,226,227,228,229,230,231,232,233,74,224,90,95,109,
+  121,129,130,131,132,133,134,135,136,137,145,146,147,148,149,150,
+  151,152,153,162,163,164,165,166,167,168,169,192,106,208,161,7,
+  32,33,34,35,36,21,6,23,40,41,42,43,44,9,10,27,
+  48,49,26,51,52,53,54,8,56,57,58,59,4,20,62,225,
+  65,66,67,68,69,70,71,72,73,81,82,83,84,85,86,87,
+  88,89,98,99,100,101,102,103,104,105,112,113,114,115,116,117,
+  118,119,120,128,138,139,140,141,142,143,144,154,155,156,157,158,
+  159,160,170,171,172,173,174,175,176,177,178,179,180,181,182,183,
+  184,185,186,187,188,189,190,191,202,203,204,205,206,207,218,219,
+  220,221,222,223,234,235,236,237,238,239,250,251,252,253,254,255
+  };
+  return a2e[letter];
+}
+
+
+inline int GetFirstFlagFrom(const char* format_e, int start = 0) {
+  int flag_pos = start;
+  for (; format_e[flag_pos] != '\0' && format_e[flag_pos] != '%'; flag_pos++); // find the first flag
+  return flag_pos;
+}
+
+
+int VSNPrintFASCII(char* out, int length, const char* format_a, ...) {
+  va_list args;
+  va_start(args, format_a);
+
+  int bytes_written = 0, bytes_remain = length;
+  size_t format_len = strlen(format_a);
+  char buffer_e[format_len + 1];
+  char * format_e = buffer_e;
+  memcpy(format_e, format_a, format_len + 1);
+  __a2e_s(format_e);
+  int first_flag = GetFirstFlagFrom(format_e);
+  if (first_flag > 0) {
+    int size = snprintf(out, length, "%.*s", first_flag, format_e);
+    CHECK(size >= 0);
+    bytes_written += size;
+    bytes_remain = length - bytes_written;
+  }
+  format_e += first_flag;
+  if (format_e[0] == '\0') return bytes_written;
+
+  do {
+    int next_flag = GetFirstFlagFrom(format_e, 2);
+    char tmp = format_e[next_flag];
+    int ret = 0;
+    format_e[next_flag] = '\0';
+    char flag = format_e[1];
+    if (flag == 's') {
+      // convert arg
+      char * str = va_arg(args, char *);
+      size_t str_len = strlen(str);
+      char str_e[str_len + 1];
+      memcpy(str_e, str, str_len + 1);
+      __a2e_s(str_e);
+      ret = snprintf(out + bytes_written, bytes_remain, format_e, str_e);
+    } else if (flag == 'c') {
+      ret = snprintf(out + bytes_written, bytes_remain, format_e, Ascii2Ebcdic(va_arg(args, char)));
+    } else {
+      ret = snprintf(out + bytes_written, bytes_remain, format_e, args);
+    }
+    CHECK(ret >= 0);
+    bytes_written += ret;
+    bytes_remain = length - bytes_written;
+    format_e[next_flag] = tmp;
+    format_e += next_flag;
+    bytes_remain = length - bytes_written;
+  } while (format_e[0] != '\0' || bytes_remain <= 0);
+
+  __e2a_s(out);
+  return bytes_written;
+}
+
+
+int SNPrintFASCII(char * out, int length, const char* format_a, ...) {
+  va_list args;
+  va_start(args, format_a);
+  int ret = VSNPrintFASCII(out, length, format_a, args);
+  va_end(args);
+  return ret;
+}
 
 static inline const char *errno_string(int errorno) {
 #define ERRNO_CASE(e)  case e: return USTR(#e;)
@@ -1023,6 +1119,11 @@ Local<Value> WinapiErrnoException(Isolate* isolate,
 }
 #endif
 
+jmp_buf env;
+void on_sigabrt (int signum)
+{
+  longjmp (env, 1);
+}
 
 void* ArrayBufferAllocator::Allocate(size_t size) {
   if (env_ == nullptr ||
@@ -1553,11 +1654,11 @@ void AppendExceptionLine(Environment* env,
   }
 
   // Print (filename):(line number): (message).
-  node::Utf8Value filename(env->isolate(), message->GetScriptResourceName());
+  node::NativeEncodingValue filename(env->isolate(), message->GetScriptResourceName());
   const char* filename_string = *filename;
   int linenum = message->GetLineNumber();
   // Print line of source code.
-  node::Utf8Value sourceline(env->isolate(), message->GetSourceLine());
+  node::NativeEncodingValue sourceline(env->isolate(), message->GetSourceLine());
   const char* sourceline_string = *sourceline;
 
   // Because of how node modules work, all scripts are wrapped with a
@@ -1617,7 +1718,7 @@ void AppendExceptionLine(Environment* env,
   arrow[off] = '\xa';
   arrow[off + 1] = '\x0';
 
-  Local<String> arrow_str = String::NewFromUtf8(env->isolate(), arrow);
+  Local<String> arrow_str = String::NewFromUtf8(env->isolate(), *E2A(arrow));
 
   const bool can_set_arrow = !arrow_str.IsEmpty() && !err_obj.IsEmpty();
   // If allocating arrow_str failed, print it out. There's not much else to do.
@@ -1665,7 +1766,7 @@ static void ReportException(Environment* env,
             env->arrow_message_private_symbol()).ToLocalChecked();
   }
 
-  node::Utf8Value trace(env->isolate(), trace_value);
+  node::NativeEncodingValue trace(env->isolate(), trace_value);
 
   // range errors have a trace member set to undefined
   if (trace.length() > 0 && !trace_value->IsUndefined()) {
@@ -1693,13 +1794,13 @@ static void ReportException(Environment* env,
         name.IsEmpty() ||
         name->IsUndefined()) {
       // Not an error object. Just print as-is.
-      String::Utf8Value message(er);
+      node::NativeEncodingValue message(env->isolate(), er);
 
       PrintErrorString("\x6c\xa2\xa", *message ? *message :
                                           "\x3c\x74\x6f\x53\x74\x72\x69\x6e\x67\x28\x29\x20\x74\x68\x72\x65\x77\x20\x65\x78\x63\x65\x70\x74\x69\x6f\x6e\x3e");
     } else {
-      node::Utf8Value name_string(env->isolate(), name);
-      node::Utf8Value message_string(env->isolate(), message);
+      node::NativeEncodingValue name_string(env->isolate(), name);
+      node::NativeEncodingValue message_string(env->isolate(), message);
 
       if (arrow.IsEmpty() || !arrow->IsString() || decorated) {
         PrintErrorString("\x6c\xa2\x3a\x20\x6c\xa2\xa", *name_string, *message_string);
@@ -1856,7 +1957,7 @@ static void Chdir(const FunctionCallbackInfo<Value>& args) {
     return env->ThrowTypeError("\x42\x61\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x2e");
   }
 
-  node::Utf8Value path(args.GetIsolate(), args[0]);
+  node::NativeEncodingValue path(args.GetIsolate(), args[0]);
   int err = uv_chdir(*path);
   if (err) {
     return env->ThrowUVException(err, "\x75\x76\x5f\x63\x68\x64\x69\x72");
@@ -2441,6 +2542,9 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
 
   Local<Object> module = args[0]->ToObject(env->isolate());  // Cast
   node::Utf8Value filename(env->isolate(), args[1]);  // Cast
+#ifdef __MVS__
+  __a2e_s(*filename);
+#endif
   const bool is_dlopen_error = uv_dlopen(*filename, &lib);
 
   // Objects containing v14 or later modules will have registered themselves
@@ -2450,7 +2554,7 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
   modpending = nullptr;
 
   if (is_dlopen_error) {
-    Local<String> errmsg = OneByteString(env->isolate(), uv_dlerror(&lib));
+    Local<String> errmsg = OneByteString(env->isolate(), *E2A(uv_dlerror(&lib)));
     uv_dlclose(&lib);
 #ifdef _WIN32
     // Windows needs to add the filename into the error message
@@ -2513,6 +2617,7 @@ static void OnFatalError(const char* location, const char* message) {
     PrintErrorString("\x46\x41\x54\x41\x4c\x20\x45\x52\x52\x4f\x52\x3a\x20\x6c\xa2\xa", message);
   }
   fflush(stderr);
+  V8::ReleaseSystemResources();
   ABORT();
 }
 
@@ -2680,7 +2785,7 @@ static void Binding(const FunctionCallbackInfo<Value>& args) {
     cache->Set(module, exports);
   } else {
     char errmsg[1024];
-    snprintf(errmsg,
+    VSNPrintFASCII(errmsg,
              sizeof(errmsg),
              "\x4e\x6f\x20\x73\x75\x63\x68\x20\x6d\x6f\x64\x75\x6c\x65\x3a\x20\x6c\xa2",
              *module_v);
@@ -2739,6 +2844,9 @@ static void ProcessTitleGetter(Local<Name> property,
                                const PropertyCallbackInfo<Value>& info) {
   char buffer[512];
   uv_get_process_title(buffer, sizeof(buffer));
+#ifdef __MVS__
+  __e2a_s(buffer);
+#endif
   info.GetReturnValue().Set(String::NewFromUtf8(info.GetIsolate(), buffer));
 }
 
@@ -2748,6 +2856,9 @@ static void ProcessTitleSetter(Local<Name> property,
                                const PropertyCallbackInfo<void>& info) {
   node::Utf8Value title(info.GetIsolate(), value);
   // TODO(piscisaureus): protect with a lock
+#ifdef __MVS__
+  __a2e_s(*title);
+#endif
   uv_set_process_title(*title);
 }
 
@@ -2757,9 +2868,20 @@ static void EnvGetter(Local<Name> property,
   Isolate* isolate = info.GetIsolate();
 #ifdef __POSIX__
   node::Utf8Value key(isolate, property);
+#ifdef __MVS__
+  __a2e_s(*key);
+#endif
   const char* val = getenv(*key);
   if (val) {
+#ifdef __MVS__
+    char *utf8val = strdup(val);
+    __e2a_s(utf8val);
+    Local<String> vall = String::NewFromUtf8(isolate, utf8val);
+    free(utf8val);
+    return info.GetReturnValue().Set(vall);
+#else
     return info.GetReturnValue().Set(String::NewFromUtf8(isolate, val));
+#endif
   }
 #else  // _WIN32
   String::Value key(property);
@@ -2786,7 +2908,15 @@ static void EnvSetter(Local<Name> property,
 #ifdef __POSIX__
   node::Utf8Value key(info.GetIsolate(), property);
   node::Utf8Value val(info.GetIsolate(), value);
+#ifdef __MVS__
+  __a2e_s(*key);
+  __a2e_s(*val);
+#endif
   setenv(*key, *val, 1);
+#ifdef __MVS__
+  __e2a_s(*key);
+  __e2a_s(*val);
+#endif
 #else  // _WIN32
   String::Value key(property);
   String::Value val(value);
@@ -2806,6 +2936,9 @@ static void EnvQuery(Local<Name> property,
   int32_t rc = -1;  // Not found unless proven otherwise.
 #ifdef __POSIX__
   node::Utf8Value key(info.GetIsolate(), property);
+#ifdef __MVS__
+  __a2e_s(*key);
+#endif
   if (getenv(*key))
     rc = 0;
 #else  // _WIN32
@@ -2831,6 +2964,9 @@ static void EnvDeleter(Local<Name> property,
                        const PropertyCallbackInfo<Boolean>& info) {
 #ifdef __POSIX__
   node::Utf8Value key(info.GetIsolate(), property);
+#ifdef __MVS__
+  __a2e_s(*key);
+#endif
   unsetenv(*key);
 #else
   String::Value key(property);
@@ -2861,12 +2997,20 @@ static void EnvEnumerator(const PropertyCallbackInfo<Array>& info) {
 
   for (int i = 0; i < size; ++i) {
     const char* var = environ[i];
+#ifdef __MVS__
+    char * ascii_var = strdup(var);
+    __e2a_s(ascii_var);
+    var = ascii_var;
+#endif
     const char* s = strchr(var, '\x3d');
     const int length = s ? s - var : strlen(var);
     argv[idx] = String::NewFromUtf8(isolate,
                                     var,
                                     String::kNormalString,
                                     length);
+#ifdef __MVS__
+    free((void*)ascii_var);
+#endif
     if (++idx >= arraysize(argv)) {
       fn->Call(ctx, envarr, idx, argv).ToLocalChecked();
       idx = 0;
@@ -3121,9 +3265,14 @@ void SetupProcessObject(Environment* env,
   READONLY_PROPERTY(versions,
                     "\x76\x38",
                     OneByteString(env->isolate(), V8::GetVersion()));
+  char uv_version[strlen(uv_version_string())];
+  memcpy(&uv_version[0], uv_version_string(), sizeof(uv_version));
+#ifdef __MVS__
+  __e2a_s(&uv_version[0]);
+#endif
   READONLY_PROPERTY(versions,
                     "\x75\x76",
-                    OneByteString(env->isolate(), uv_version_string()));
+                    OneByteString(env->isolate(), uv_version));
   READONLY_PROPERTY(versions,
                     "\x7a\x6c\x69\x62",
                     FIXED_ONE_BYTE_STRING(env->isolate(), ZLIB_VERSION));
@@ -3368,6 +3517,9 @@ void SetupProcessObject(Environment* env,
   char* exec_path = new char[exec_path_len];
   Local<String> exec_path_value;
   if (uv_exepath(exec_path, &exec_path_len) == 0) {
+#ifdef __MVS__
+    __e2a_s(exec_path);
+#endif
     exec_path_value = String::NewFromUtf8(env->isolate(),
                                           exec_path,
                                           String::kNormalString,
@@ -3454,6 +3606,7 @@ void SetupProcessObject(Environment* env,
 
 static void AtProcessExit() {
   uv_tty_reset_mode();
+  V8::ReleaseSystemResources();
 }
 
 
@@ -3466,6 +3619,7 @@ void SignalExit(int signo) {
   sa.sa_handler = SIG_DFL;
   CHECK_EQ(sigaction(signo, &sa, nullptr), 0);
 #endif
+  V8::ReleaseSystemResources();
   raise(signo);
 }
 
@@ -3477,8 +3631,8 @@ void SignalExit(int signo) {
 static void RawDebug(const FunctionCallbackInfo<Value>& args) {
   CHECK(args.Length() == 1 && args[0]->IsString() &&
         "\x6d\x75\x73\x74\x20\x62\x65\x20\x63\x61\x6c\x6c\x65\x64\x20\x77\x69\x74\x68\x20\x61\x20\x73\x69\x6e\x67\x6c\x65\x20\x73\x74\x72\x69\x6e\x67");
-  node::Utf8Value message(args.GetIsolate(), args[0]);
-  PrintErrorString("\x6c\xa2\xa", *message);
+  node::NativeEncodingValue message(args.GetIsolate(), args[0]);
+  PrintErrorString(u8"%s\n", *message);
   fflush(stderr);
 }
 
@@ -3711,7 +3865,13 @@ static void PrintHelp() {
 #endif
          "\x4e\x4f\x44\x45\x5f\x52\x45\x50\x4c\x5f\x48\x49\x53\x54\x4f\x52\x59\x20\x20\x20\x20\x20\x20\x20\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x70\x65\x72\x73\x69\x73\x74\x65\x6e\x74\x20\x52\x45\x50\x4c\x20\x68\x69\x73\x74\x6f\x72\x79\x20\x66\x69\x6c\x65\xa"
          "\xa"
-         "\x44\x6f\x63\x75\x6d\x65\x6e\x74\x61\x74\x69\x6f\x6e\x20\x63\x61\x6e\x20\x62\x65\x20\x66\x6f\x75\x6e\x64\x20\x61\x74\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x6e\x6f\x64\x65\x6a\x73\x2e\x6f\x72\x67\x2f\xa");
+         "\x44\x6f\x63\x75\x6d\x65\x6e\x74\x61\x74\x69\x6f\x6e\x20\x63\x61\x6e\x20\x62\x65\x20\x66\x6f\x75\x6e\x64\x20\x61\x74\x20\x68\x74\x74\x70\x73\x3a\x2f\x2f\x6e\x6f\x64\x65\x6a\x73\x2e\x6f\x72\x67\x2f\xa"
+#ifdef NODE_TAG
+         NODE_VERSION \
+         NODE_TAG \
+         "\n"
+#endif
+        );
 }
 
 
@@ -4297,6 +4457,14 @@ inline void PlatformInit() {
 }
 
 
+void SignalHandlerThread(void* data) {
+  while(true) {
+    CHECK_EQ(pause(),-1);
+    CHECK_EQ(errno,EINTR);
+  }
+}
+
+
 void Init(int* argc,
           const char** argv,
           int* exec_argc,
@@ -4383,6 +4551,14 @@ void Init(int* argc,
   if (!use_debug_agent) {
     RegisterDebugSignalHandler();
   }
+
+#ifdef __MVS__
+  sigset_t set;
+  sigfillset(&set);
+  uv_thread_t thread;
+  uv_thread_create(&thread, SignalHandlerThread, NULL);
+  sigprocmask(SIG_BLOCK, &set, NULL);
+#endif
 
   // We should set node_is_initialized here instead of in node::Start,
   // otherwise embedders using node::Init to initialize everything will not be
@@ -4605,7 +4781,9 @@ static void StartNodeInstance(void* arg) {
     isolate->GetHeapProfiler()->StartTrackingHeapObjects(true);
   }
 
-  {
+  if (setjmp (env) == 0) {
+    signal(SIGABRT, &on_sigabrt);
+    signal(SIGABND, &on_sigabrt);
     Locker locker(isolate);
     Isolate::Scope isolate_scope(isolate);
     HandleScope handle_scope(isolate);
@@ -4674,6 +4852,9 @@ static void StartNodeInstance(void* arg) {
     array_buffer_allocator->set_env(nullptr);
     env->Dispose();
     env = nullptr;
+  } else {
+    V8::ReleaseSystemResources();
+    abort();
   }
 
   {
@@ -4695,6 +4876,11 @@ int Start(int argc, char** argv) {
 
   // Hack around with the argv pointer. Used for process.title = "blah".
   argv = uv_setup_args(argc, argv);
+
+#ifdef __MVS__
+  for (int i = 0; i < argc; i++)
+    __e2a_s(argv[i]);
+#endif
 
   // This needs to run *before* V8::Initialize().  The const_cast is not
   // optional, in case you're wondering.

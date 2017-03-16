@@ -26,6 +26,8 @@ class StreamWrap : public HandleWrap, public StreamBase {
   bool IsAlive() override;
   bool IsClosing() override;
   bool IsIPCPipe() override;
+  bool IsPipe() override;
+  bool IsTTY() override;
 
   // JavaScript functions
   int ReadStart() override;
@@ -56,6 +58,9 @@ class StreamWrap : public HandleWrap, public StreamBase {
     return stream()->type == UV_TCP;
   }
 
+  inline bool is_tty() const {
+   return stream()->type == UV_TTY;
+  }
  protected:
   StreamWrap(Environment* env,
              v8::Local<v8::Object> object,

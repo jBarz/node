@@ -11,6 +11,7 @@
 #include "util.h"
 #include "util-inl.h"
 #include "v8.h"
+#include <unistd.h>
 
 #include <limits.h>  // INT_MAX
 
@@ -201,6 +202,11 @@ int StreamBase::WriteBuffer(const FunctionCallbackInfo<Value>& args) {
   buf.base = const_cast<char*>(data);
   buf.len = length;
 
+#ifdef __MVS__
+  if (IsPipe())
+    __a2e_l(buf.base, buf.len);
+#endif
+
   // Try writing immediately without allocation
   uv_buf_t* bufs = &buf;
   size_t count = 1;
@@ -276,6 +282,11 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
                                    enc);
     buf = uv_buf_init(stack_storage, data_size);
 
+#ifdef __MVS__
+    if (enc == UTF8 && (IsTTY() || IsPipe()))
+      __a2e_l(buf.base, buf.len);
+#endif
+
     uv_buf_t* bufs = &buf;
     size_t count = 1;
     err = DoTryWrite(&bufs, &count);
@@ -312,6 +323,11 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
   CHECK_LE(data_size, storage_size);
 
   buf = uv_buf_init(data, data_size);
+
+#ifdef __MVS__
+  if (enc == UTF8 && (IsTTY() || IsPipe()))
+    __a2e_l(buf.base, buf.len);
+#endif
 
   if (!IsIPCPipe()) {
     err = DoWrite(req_wrap, &buf, 1, nullptr);
@@ -414,6 +430,16 @@ void StreamBase::EmitData(ssize_t nread,
   } else {
     async->MakeCallback(env->onread_string(), arraysize(argv), argv);
   }
+}
+
+
+bool StreamBase::IsPipe() {
+  return false;
+}
+
+
+bool StreamBase::IsTTY() {
+  return false;
 }
 
 

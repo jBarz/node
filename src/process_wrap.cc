@@ -7,6 +7,9 @@
 
 #include <string.h>
 #include <stdlib.h>
+#ifdef __MVS__
+#include <unistd.h> // e2a
+#endif
 
 namespace node {
 
@@ -182,6 +185,9 @@ class ProcessWrap : public HandleWrap {
       options.env = new char*[envc + 1];  // Heap allocated to detect errors.
       for (int i = 0; i < envc; i++) {
         node::Utf8Value pair(env->isolate(), env_opt->Get(i));
+#ifdef __MVS__
+        __a2e_s(*pair);
+#endif
         options.env[i] = strdup(*pair);
         CHECK_NE(options.env[i], nullptr);
       }

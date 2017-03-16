@@ -12,6 +12,7 @@
 #include "util-inl.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 
 
 namespace node {
@@ -191,7 +192,7 @@ void TCPWrap::Bind(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap,
                           args.Holder(),
                           args.GetReturnValue().Set(UV_EBADF));
-  node::Utf8Value ip_address(args.GetIsolate(), args[0]);
+  node::NativeEncodingValue ip_address(args.GetIsolate(), args[0]);
   int port = args[1]->Int32Value();
   sockaddr_in addr;
   int err = uv_ip4_addr(*ip_address, port, &addr);
@@ -209,7 +210,7 @@ void TCPWrap::Bind6(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap,
                           args.Holder(),
                           args.GetReturnValue().Set(UV_EBADF));
-  node::Utf8Value ip6_address(args.GetIsolate(), args[0]);
+  node::NativeEncodingValue ip6_address(args.GetIsolate(), args[0]);
   int port = args[1]->Int32Value();
   sockaddr_in6 addr;
   int err = uv_ip6_addr(*ip6_address, port, &addr);
@@ -248,7 +249,7 @@ void TCPWrap::Connect(const FunctionCallbackInfo<Value>& args) {
   CHECK(args[2]->IsUint32());
 
   Local<Object> req_wrap_obj = args[0].As<Object>();
-  node::Utf8Value ip_address(env->isolate(), args[1]);
+  node::NativeEncodingValue ip_address(env->isolate(), args[1]);
   int port = args[2]->Uint32Value();
 
   sockaddr_in addr;
@@ -283,7 +284,7 @@ void TCPWrap::Connect6(const FunctionCallbackInfo<Value>& args) {
   CHECK(args[2]->IsUint32());
 
   Local<Object> req_wrap_obj = args[0].As<Object>();
-  node::Utf8Value ip_address(env->isolate(), args[1]);
+  node::NativeEncodingValue ip_address(env->isolate(), args[1]);
   int port = args[2]->Int32Value();
 
   sockaddr_in6 addr;
@@ -323,6 +324,9 @@ Local<Object> AddressToJS(Environment* env,
     a6 = reinterpret_cast<const sockaddr_in6*>(addr);
     uv_inet_ntop(AF_INET6, &a6->sin6_addr, ip, sizeof ip);
     port = ntohs(a6->sin6_port);
+#ifdef __MVS__    
+    __e2a_s(ip);
+#endif
     info->Set(env->address_string(), OneByteString(env->isolate(), ip));
     info->Set(env->family_string(), env->ipv6_string());
     info->Set(env->port_string(), Integer::New(env->isolate(), port));
@@ -332,6 +336,9 @@ Local<Object> AddressToJS(Environment* env,
     a4 = reinterpret_cast<const sockaddr_in*>(addr);
     uv_inet_ntop(AF_INET, &a4->sin_addr, ip, sizeof ip);
     port = ntohs(a4->sin_port);
+#ifdef __MVS__ 
+    __e2a_s(ip);
+#endif
     info->Set(env->address_string(), OneByteString(env->isolate(), ip));
     info->Set(env->family_string(), env->ipv4_string());
     info->Set(env->port_string(), Integer::New(env->isolate(), port));
