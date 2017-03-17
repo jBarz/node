@@ -103,7 +103,7 @@ class FSReqWrap: public ReqWrap<uv_fs_t> {
 
 #define ASSERT_PATH(path)                                                   \
   if (*path == nullptr)                                                     \
-    return TYPE_ERROR( *E2A(#path u8" must be a string or Buffer"));
+    return TYPE_ERROR( #path " must be a string or Buffer");
 
 FSReqWrap* FSReqWrap::New(Environment* env,
                           Local<Object> req,
