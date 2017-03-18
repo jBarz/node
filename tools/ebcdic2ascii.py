@@ -19,12 +19,17 @@ IGNORE_STRING = "#include|#pragma|\s*//|extern\s+\"C\""
 IGNORE_RE = re.compile(IGNORE_STRING)
 
 #C-string literals in the source
-STRING_RE          = re.compile(r'(?<!u8)"(.*?)(?<!\\)"')
-CHAR_RE            = re.compile(r"'(.{1,2})'")
-
+STRING_RE            = re.compile(r'(?<!u8)"(.*?)(?<!\\)"')
+CHAR_RE              = re.compile(r"'(.{1,2})'")
+HEX_ENCODED_STRING_RE = re.compile(r'(?:\\x[0-9A-Fa-f]{1,2})+') 
 #TOKENIZER FOR string literal
 ESCAPE_RE      = re.compile(r'\\n|\\t|\\v|\\r|\\f|\\a|\\b|\\\'|\\"|\\\\|\\0')
 HEX_RE         = re.compile(r"(\\x[0-9A-Fa-f]{1,2})")
+OCTAL_RE       = re.compile(r"(\\[0-7]{1,3})")
+UNICODE_RE1    = re.compile(r"(\\u\[0-9A-Fa-f]{1,4})")
+UNICODE_RE2    = re.compile(r"(\\U\[0-9A-Fa-f]{1,8})")
+ENCODING_RE = re.compile(r"(\\x[0-9A-Fa-f]{1,2} |\\\\[0-7]{1,3} |\\\\u\[0-9A-Fa-f]{1,4} |\\\\U\[0-9A-Fa-f]{1,8})")
+
 PRINTF_RE=re.compile('%{1}\s*[-+#0]*\s*[0-9]*[.]*[0-9]*[hljztL]*[iduoxXffFeEgGaAcspn]+')
 
 #CONVERSION TABLES
@@ -95,7 +100,7 @@ def main():
   parser = optparse.OptionParser()
   parser.set_usage("""ebcdic2ascii.py [options] input.cc output.cc 
    input.cc: C file to be scanned
-   output.cc: Converted C File.""")
+   output.cc: String literals found.""")
   parser.add_option("-u", action="store_true", dest="unicode_support", default = False)
   (options, args) = parser.parse_args()
                     
@@ -125,7 +130,6 @@ def main():
     
     if not skip_line:
        token_list = STRINGIFY.split(line)
-       print token_list
        converted_macro = reduce(lambda x,y: x+y, map(ConvertMacroArgs, token_list))
        line = line.replace(line, converted_macro)
       
@@ -134,9 +138,10 @@ def main():
 
        for literal in string_literal: 
            if unicode_encode:
-              literal = "\"" + literal + "\""
-              unicode_literal = "u8" + literal
-              line = line.replace(literal, unicode_literal)
+              if not HEX_ENCODED_STRING_RE.match(literal):
+                 literal = "\"" + literal + "\""
+                 unicode_literal = "u8" + literal
+                 line = line.replace(literal, unicode_literal)
            else:
               encoded_literal = re.sub(ESCAPE_RE, EncodeEscapeSeq, literal)
               encoded_literal = re.sub(PRINTF_RE, EncodePrintF, encoded_literal) 
