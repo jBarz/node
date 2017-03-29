@@ -7,10 +7,11 @@ import re, sys, optparse
 OPEN_PAREN          = "(\()"
 CLOSE_PAREN         = "(\))"
 NEWLINE             = "(\\n)"
+COMMA               = "(,)"
 OUTSTREAM_OP        = "(<<)"
 UNICODE_PRE         = "u8"
 IGNORE_FUNCTIONS    = "(PrintError|printf|PrintF|VFPrintF|SPrintF|sprintf|vfprintf|feprintf|FePrintF|open|USTR)"
-STRING              = '(".*?")'
+STRING              = '(".*?(?<!\\\\)")'
 CHAR                = "('.{1,2}')"
 HEX_CHAR            = "('\\\\x[0-9A-Fa-f]{1,2}')"
 IGNORE_STRING       = "#include|#pragma|\s*//|extern\s+\"C\""
@@ -18,7 +19,7 @@ HEX_ENCODED_STRING  = r'(?:\\x[0-9A-Fa-f]{1,2})+'
 CONCAT              = "(##)"
 STRINGIFY           = "(#{1}\w+)"
 WHITESPACE          = "(\s*)"
-SPLIT_TOKEN_LIST    = [ IGNORE_FUNCTIONS, NEWLINE, UNICODE_PRE, OPEN_PAREN, CLOSE_PAREN, OUTSTREAM_OP, STRING, CHAR, HEX_CHAR,  CONCAT, STRINGIFY]
+SPLIT_TOKEN_LIST    = [ IGNORE_FUNCTIONS, COMMA, NEWLINE, UNICODE_PRE, OPEN_PAREN, CLOSE_PAREN, OUTSTREAM_OP, STRING, CHAR, HEX_CHAR,  CONCAT, STRINGIFY]
 
 EBCDIC_PRAGMA_START  = re.compile(r'\s*#pragma\s+convert\s*\(\s*\"IBM-1047\"\s*\)|\s*#pragma\s+convert\s*\(\s*\"ibm-1047\"\s*\)')
 EBCDIC_PRAGMA_END    = re.compile(r"\s*#pragma\s+convert\s*\(\s*pop\s*\)")
@@ -30,7 +31,7 @@ MULTILINE_COMMENT_END    = re.compile(r".*\*/\s*")
 IGNORE_RE = re.compile(IGNORE_STRING)
 
 #C-string literals in the source
-DEFINE_RE             = re.compile(r'#pragma|#import|#define|#undef|#endif|#if|#ifdef|#else|#elseif|#elif')
+DEFINE_RE             = re.compile(r'#pragma|#import|#error|#define|#undef|#endif|#if|#ifdef|#else|#elseif|#elif')
 OUTSTREAM_OP_RE       = re.compile(OUTSTREAM_OP)
 CLOSE_PAREN_RE        = re.compile(CLOSE_PAREN)
 STRING_RE             = re.compile(STRING)
@@ -44,7 +45,7 @@ CLOSE_PAREN_RE        = re.compile(CLOSE_PAREN)
 SPLIT_RE              = re.compile(('|').join(SPLIT_TOKEN_LIST))
 
 #TOKENIZER FOR string literal
-ESCAPE_RE    = re.compile(r'\\n|\\t|\\v|\\r|\\f|\\a|\\b|\\\'|\\"|\\\\|\\0')
+ESCAPE_RE    = re.compile(r'\\n|\\t|\\v|\\r|\\f|\\a|\\b|\\\'|\\\"|\\\\|\\0')
 HEX_RE       = re.compile(r"(\\x[0-9A-Fa-f]{1,2})")
 OCTAL_RE     = re.compile(r"(\\[0-7]{1,3})")
 UNICODE_RE1  = re.compile(r"(\\u\[0-9A-Fa-f]{1,4})")
@@ -154,7 +155,7 @@ def main():
     if not skip_line:
        tokens_of_interest = re.split(SPLIT_RE, line)
        tokens_of_interest = filter(None, tokens_of_interest)
-       #Mark strings inside functions which we do not want to be modified 
+       #Mark strings inside functions and between outstream_op which we do not want to be modified 
        delimiters = []
        delete = False
        open_paren = 0
@@ -178,10 +179,13 @@ def main():
        delimiters.reverse()
        start_index = -1;
        stop_index  = -1;
+       ostream_string = False
        #print tokens_of_interest
        #print delimiters
+       
        while index < (len(tokens_of_interest)):
            token = tokens_of_interest[index];
+           
            if IGNORE_FUNCTIONS_RE.match(token):
               if len(delimiters) > 0:
                  (start_index, stop_index) = delimiters.pop();
@@ -189,40 +193,50 @@ def main():
               newline = newline + token
               index = index +1
               continue
+           
            if index >= start_index and index <= stop_index:
               token = token
               newline = newline + token
               index = index + 1
               continue
+           
            if OUTSTREAM_OP_RE.match(token):
-              token = token + tokens_of_interest[index + 1]
-              index = index + 1; #skip whatever follows
-           if STRING_RE.match(token):
-              literal = token
-              if unicode_encode:
-                 if not HEX_ENCODED_STRING_RE.match(literal):
-                    unicode_literal = "u8" + literal
-                    line = line.replace(literal, unicode_literal)
+              if not ostream_string: 
+                ostream_string = True;
               else:
-                 encoded_literal = re.sub('\"','',literal)
-                 encoded_literal = re.sub(ESCAPE_RE, EncodeEscapeSeq, encoded_literal)
-                 encoded_literal = re.sub(PRINTF_RE, EncodePrintF, encoded_literal) 
-                 token_list = re.split(HEX_RE, encoded_literal)
-                 encoded_literal = reduce(lambda x,y: x+y, map(ConvertTokens, token_list))           
-                 encoded_literal = "\"" + encoded_literal + "\""
-                 token = encoded_literal
+                ostream_string = False;
+           
+           if NEWLINE_RE.match(token):
+               if ostream_string:
+                  ostream_string = False;
+
+           if STRING_RE.match(token):
+              if not ostream_string:
+                 literal = token
+                 if unicode_encode:
+                    if not HEX_ENCODED_STRING_RE.match(literal):
+                       unicode_literal = "u8" + literal
+                       line = line.replace(literal, unicode_literal)
+                 else:
+                    encoded_literal = literal[1:len(literal)-1]
+                    encoded_literal = re.sub(ESCAPE_RE, EncodeEscapeSeq,encoded_literal)
+                    encoded_literal = re.sub(PRINTF_RE, EncodePrintF, encoded_literal) 
+                    token_list = re.split(HEX_RE, encoded_literal)
+                    encoded_literal = reduce(lambda x,y: x+y, map(ConvertTokens, token_list))           
+                    encoded_literal = "\"" + encoded_literal + "\""
+                    token = encoded_literal
            if CHAR_RE.match(token):
-               char = token
-               char = re.sub('\'','',char)
-               encoded_char = ''
-               escape_seq = ESCAPE_RE.match(char)
-               if escape_seq:   
-                  encoded_char = EncodeEscapeSeq(escape_seq)
-               else: 
-                  encoded_char = ConvertTokens(char) 
-               char = "'" + char + "'"   
-               encoded_char = "'" + encoded_char + "'"
-               token =  encoded_char
+              if not ostream_string:
+                 char = token[1:len(token)-1]
+                 encoded_char = ''
+                 escape_seq = ESCAPE_RE.match(char)
+                 if escape_seq:   
+                    encoded_char = EncodeEscapeSeq(escape_seq)
+                 else: 
+                    encoded_char = ConvertTokens(char) 
+                 char = "'" + char + "'"   
+                 encoded_char = "'" + encoded_char + "'"
+                 token =  encoded_char
            if STRINGIFY_RE.match(token): 
               converted_token = ConvertMacroArgs(token)
               token = converted_token
