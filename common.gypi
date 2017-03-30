@@ -70,7 +70,7 @@
           'v8_enable_handle_zapping': 1,
         },
         'defines': [ 'DEBUG', '_DEBUG' ],
-        'cflags': [ '-g', '-O0' ],
+        'cflags': [ '-g' ],
         'conditions': [
           ['target_arch=="x64"', {
             'msvs_configuration_platform': 'x64',
@@ -78,6 +78,9 @@
           ['OS=="aix"', {
             'cflags': [ '-gxcoff' ],
             'ldflags': [ '-Wl,-bbigtoc' ],
+          }],
+          ['OS!="os390"', {
+            'cflags': [ '-O0' ],
           }],
           ['OS == "android"', {
             'cflags': [ '-fPIE' ],
