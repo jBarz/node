@@ -1,3 +1,6 @@
+#ifdef __MVS__
+#define _AE_BIMODAL
+#endif
 #include "node.h"
 #include "node_buffer.h"
 #include "node_constants.h"
@@ -276,6 +279,11 @@ static void PrintErrorString(const char* format, ...) {
   // Don't include the null character in the output
   CHECK_GT(n, 0);
   WriteConsoleW(stderr_handle, wbuf.data(), n - 1, nullptr, nullptr);
+#elif defined(__MVS__)
+  char out[1024];
+  __vsnprintf_a(out, sizeof(out), format, ap);
+  __a2e_s(out);
+  fprintf(stderr, out);
 #else
   vfprintf(stderr, format, ap);
 #endif
@@ -1694,7 +1702,7 @@ void AppendExceptionLine(Environment* env,
 
   int off = snprintf(arrow,
                      sizeof(arrow),
-                     "\x6c\xa2\x3a\x6c\x89\xa\x6c\xa2\xa",
+                     "%s:%i\n%s\n",
                      filename_string,
                      linenum,
                      sourceline_string);
@@ -1705,22 +1713,22 @@ void AppendExceptionLine(Environment* env,
 
   // Print wavy underline (GetUnderline is deprecated).
   for (int i = 0; i < start; i++) {
-    if (sourceline_string[i] == '\x0' || off >= max_off) {
+    if (sourceline_string[i] == '\0' || off >= max_off) {
       break;
     }
     CHECK_LT(off, max_off);
-    arrow[off++] = (sourceline_string[i] == '\x9') ? '\x9' : '\x20';
+    arrow[off++] = (sourceline_string[i] == '\t') ? '\t' : ' ';
   }
   for (int i = start; i < end; i++) {
-    if (sourceline_string[i] == '\x0' || off >= max_off) {
+    if (sourceline_string[i] == '\0' || off >= max_off) {
       break;
     }
     CHECK_LT(off, max_off);
-    arrow[off++] = '\x5e';
+    arrow[off++] = '^';
   }
   CHECK_LE(off, max_off);
-  arrow[off] = '\xa';
-  arrow[off + 1] = '\x0';
+  arrow[off] = '\n';
+  arrow[off + 1] = '\0';
 
 #ifdef __MVS__
   Local<String> arrow_str = String::NewFromUtf8(env->isolate(), *E2A(arrow));
@@ -1740,7 +1748,7 @@ void AppendExceptionLine(Environment* env,
     env->set_printed_error(true);
 
     uv_tty_reset_mode();
-    PrintErrorString("\xa\x6c\xa2", arrow);
+    PrintErrorString(u8"\n%s", arrow);
     return;
   }
 
@@ -1774,15 +1782,15 @@ static void ReportException(Environment* env,
             env->arrow_message_private_symbol()).ToLocalChecked();
   }
 
-  node::NativeEncodingValue trace(env->isolate(), trace_value);
+  node::Utf8Value trace(env->isolate(), trace_value);
 
   // range errors have a trace member set to undefined
   if (trace.length() > 0 && !trace_value->IsUndefined()) {
     if (arrow.IsEmpty() || !arrow->IsString() || decorated) {
-      PrintErrorString("\x6c\xa2\xa", *trace);
+      PrintErrorString(u8"%s\n", *trace);
     } else {
       node::Utf8Value arrow_string(env->isolate(), arrow);
-      PrintErrorString("\x6c\xa2\xa\x6c\xa2\xa", *arrow_string, *trace);
+      PrintErrorString(u8"%s\n%s\n", *arrow_string, *trace);
     }
   } else {
     // this really only happens for RangeErrors, since they're the only
@@ -1802,19 +1810,19 @@ static void ReportException(Environment* env,
         name.IsEmpty() ||
         name->IsUndefined()) {
       // Not an error object. Just print as-is.
-      node::NativeEncodingValue message(env->isolate(), er);
+      String::Utf8Value message(er);
 
-      PrintErrorString("\x6c\xa2\xa", *message ? *message :
-                                          "\x3c\x74\x6f\x53\x74\x72\x69\x6e\x67\x28\x29\x20\x74\x68\x72\x65\x77\x20\x65\x78\x63\x65\x70\x74\x69\x6f\x6e\x3e");
+      PrintErrorString(u8"%s\n", *message ? *message :
+                                          "<toString() threw exception>");
     } else {
-      node::NativeEncodingValue name_string(env->isolate(), name);
-      node::NativeEncodingValue message_string(env->isolate(), message);
+      node::Utf8Value name_string(env->isolate(), name);
+      node::Utf8Value message_string(env->isolate(), message);
 
       if (arrow.IsEmpty() || !arrow->IsString() || decorated) {
-        PrintErrorString("\x6c\xa2\x3a\x20\x6c\xa2\xa", *name_string, *message_string);
+        PrintErrorString(u8"%s: %s\n", *name_string, *message_string);
       } else {
         node::Utf8Value arrow_string(env->isolate(), arrow);
-        PrintErrorString("\x6c\xa2\xa\x6c\xa2\x3a\x20\x6c\xa2\xa",
+        PrintErrorString(u8"%s\n%s: %s\n",
                          *arrow_string,
                          *name_string,
                          *message_string);
@@ -2628,9 +2636,9 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
 
 static void OnFatalError(const char* location, const char* message) {
   if (location) {
-    PrintErrorString("\x46\x41\x54\x41\x4c\x20\x45\x52\x52\x4f\x52\x3a\x20\x6c\xa2\x20\x6c\xa2\xa", location, message);
+    PrintErrorString(u8"FATAL ERROR: %s %s\n", location, message);
   } else {
-    PrintErrorString("\x46\x41\x54\x41\x4c\x20\x45\x52\x52\x4f\x52\x3a\x20\x6c\xa2\xa", message);
+    PrintErrorString(u8"FATAL ERROR: %s\n", message);
   }
   fflush(stderr);
   V8::ReleaseSystemResources();
@@ -3654,8 +3662,8 @@ void SignalExit(int signo) {
 static void RawDebug(const FunctionCallbackInfo<Value>& args) {
   CHECK(args.Length() == 1 && args[0]->IsString() &&
         "\x6d\x75\x73\x74\x20\x62\x65\x20\x63\x61\x6c\x6c\x65\x64\x20\x77\x69\x74\x68\x20\x61\x20\x73\x69\x6e\x67\x6c\x65\x20\x73\x74\x72\x69\x6e\x67");
-  node::NativeEncodingValue message(args.GetIsolate(), args[0]);
-  PrintErrorString("%s\n", *message);
+  node::Utf8Value message(args.GetIsolate(), args[0]);
+  PrintErrorString(u8"%s\n", *message);
   fflush(stderr);
 }
 
