@@ -90,23 +90,6 @@
   }                                                                           \
   while (0)
 
-#ifdef __MVS__
-#define PATH2                                                                 \
-  do {                                                                        \
-    size_t path_len;                                                          \
-    size_t new_path_len;                                                      \
-    path_len = strlen((path)) + 1;                                            \
-    new_path_len = strlen((new_path)) + 1;                                    \
-    (req)->path = uv__malloc(path_len + new_path_len);                        \
-    if ((req)->path == NULL)                                                  \
-      return -ENOMEM;                                                         \
-    (req)->new_path = (req)->path + path_len;                                 \
-    memcpy((void*) (req)->path, (path), path_len);                            \
-    memcpy((void*) (req)->new_path, (new_path), new_path_len);                \
-    __a2e_l((req)->path, path_len + new_path_len);                            \
-  }                                                                           \
-  while (0)
-#else
 #define PATH2                                                                 \
   do {                                                                        \
     if (cb == NULL) {                                                         \
@@ -128,7 +111,6 @@
     }                                                                         \
   }                                                                           \
   while (0)
-#endif
 
 #define POST                                                                  \
   do {                                                                        \
