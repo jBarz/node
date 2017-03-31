@@ -9,7 +9,7 @@ namespace node {
 
 const BIO_METHOD NodeBIO::method = {
   BIO_TYPE_MEM,
-  u8"node.js SSL buffer",
+  "\x6e\x6f\x64\x65\x2e\x6a\x73\x20\x53\x53\x4c\x20\x62\x75\x66\x66\x65\x72",
   NodeBIO::Write,
   NodeBIO::Read,
   NodeBIO::Puts,
@@ -188,10 +188,10 @@ long NodeBIO::Ctrl(BIO* bio, int cmd, long num,  // NOLINT(runtime/int)
         *reinterpret_cast<void**>(ptr) = nullptr;
       break;
     case BIO_C_SET_BUF_MEM:
-      CHECK(0 && u8"Can't use SET_BUF_MEM_PTR with NodeBIO");
+      CHECK(0 && "\x43\x61\x6e\x27\x74\x20\x75\x73\x65\x20\x53\x45\x54\x5f\x42\x55\x46\x5f\x4d\x45\x4d\x5f\x50\x54\x52\x20\x77\x69\x74\x68\x20\x4e\x6f\x64\x65\x42\x49\x4f");
       break;
     case BIO_C_GET_BUF_MEM_PTR:
-      CHECK(0 && u8"Can't use GET_BUF_MEM_PTR with NodeBIO");
+      CHECK(0 && "\x43\x61\x6e\x27\x74\x20\x75\x73\x65\x20\x47\x45\x54\x5f\x42\x55\x46\x5f\x4d\x45\x4d\x5f\x50\x54\x52\x20\x77\x69\x74\x68\x20\x4e\x6f\x64\x65\x42\x49\x4f");
       ret = 0;
       break;
     case BIO_CTRL_GET_CLOSE:

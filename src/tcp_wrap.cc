@@ -50,47 +50,47 @@ void TCPWrap::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TCP"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x43\x50"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
   // Init properties
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), u8"reading"),
+  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "\x72\x65\x61\x64\x69\x6e\x67"),
                              Boolean::New(env->isolate(), false));
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), u8"owner"),
+  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "\x6f\x77\x6e\x65\x72"),
                              Null(env->isolate()));
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), u8"onread"),
+  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "\x6f\x6e\x72\x65\x61\x64"),
                              Null(env->isolate()));
   t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(),
-                                                 u8"onconnection"),
+                                                 "\x6f\x6e\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e"),
                              Null(env->isolate()));
 
 
-  env->SetProtoMethod(t, u8"close", HandleWrap::Close);
+  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
 
-  env->SetProtoMethod(t, u8"ref", HandleWrap::Ref);
-  env->SetProtoMethod(t, u8"unref", HandleWrap::Unref);
-  env->SetProtoMethod(t, u8"hasRef", HandleWrap::HasRef);
+  env->SetProtoMethod(t, "\x72\x65\x66", HandleWrap::Ref);
+  env->SetProtoMethod(t, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
+  env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
 
   StreamWrap::AddMethods(env, t, StreamBase::kFlagHasWritev);
 
-  env->SetProtoMethod(t, u8"open", Open);
-  env->SetProtoMethod(t, u8"bind", Bind);
-  env->SetProtoMethod(t, u8"listen", Listen);
-  env->SetProtoMethod(t, u8"connect", Connect);
-  env->SetProtoMethod(t, u8"bind6", Bind6);
-  env->SetProtoMethod(t, u8"connect6", Connect6);
-  env->SetProtoMethod(t, u8"getsockname",
+  env->SetProtoMethod(t, "\x6f\x70\x65\x6e", Open);
+  env->SetProtoMethod(t, "\x62\x69\x6e\x64", Bind);
+  env->SetProtoMethod(t, "\x6c\x69\x73\x74\x65\x6e", Listen);
+  env->SetProtoMethod(t, "\x63\x6f\x6e\x6e\x65\x63\x74", Connect);
+  env->SetProtoMethod(t, "\x62\x69\x6e\x64\x36", Bind6);
+  env->SetProtoMethod(t, "\x63\x6f\x6e\x6e\x65\x63\x74\x36", Connect6);
+  env->SetProtoMethod(t, "\x67\x65\x74\x73\x6f\x63\x6b\x6e\x61\x6d\x65",
                       GetSockOrPeerName<TCPWrap, uv_tcp_getsockname>);
-  env->SetProtoMethod(t, u8"getpeername",
+  env->SetProtoMethod(t, "\x67\x65\x74\x70\x65\x65\x72\x6e\x61\x6d\x65",
                       GetSockOrPeerName<TCPWrap, uv_tcp_getpeername>);
-  env->SetProtoMethod(t, u8"setNoDelay", SetNoDelay);
-  env->SetProtoMethod(t, u8"setKeepAlive", SetKeepAlive);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4e\x6f\x44\x65\x6c\x61\x79", SetNoDelay);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4b\x65\x65\x70\x41\x6c\x69\x76\x65", SetKeepAlive);
 
 #ifdef _WIN32
-  env->SetProtoMethod(t, u8"setSimultaneousAccepts", SetSimultaneousAccepts);
+  env->SetProtoMethod(t, "\x73\x65\x74\x53\x69\x6d\x75\x6c\x74\x61\x6e\x65\x6f\x75\x73\x41\x63\x63\x65\x70\x74\x73", SetSimultaneousAccepts);
 #endif
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TCP"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x43\x50"), t->GetFunction());
   env->set_tcp_constructor_template(t);
 
   // Create FunctionTemplate for TCPConnectWrap.
@@ -99,8 +99,8 @@ void TCPWrap::Initialize(Local<Object> target,
   };
   auto cwt = FunctionTemplate::New(env->isolate(), constructor);
   cwt->InstanceTemplate()->SetInternalFieldCount(1);
-  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TCPConnectWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TCPConnectWrap"),
+  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x43\x50\x43\x6f\x6e\x6e\x65\x63\x74\x57\x72\x61\x70"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x43\x50\x43\x6f\x6e\x6e\x65\x63\x74\x57\x72\x61\x70"),
               cwt->GetFunction());
 }
 

@@ -59,10 +59,10 @@ static void GetHiddenValue(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[0]->IsObject())
-    return env->ThrowTypeError(u8"obj must be an object");
+    return env->ThrowTypeError("\x6f\x62\x6a\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
 
   if (!args[1]->IsString())
-    return env->ThrowTypeError(u8"name must be a string");
+    return env->ThrowTypeError("\x6e\x61\x6d\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67");
 
   Local<Object> obj = args[0].As<Object>();
   Local<String> name = args[1].As<String>();
@@ -76,10 +76,10 @@ static void SetHiddenValue(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[0]->IsObject())
-    return env->ThrowTypeError(u8"obj must be an object");
+    return env->ThrowTypeError("\x6f\x62\x6a\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
 
   if (!args[1]->IsString())
-    return env->ThrowTypeError(u8"name must be a string");
+    return env->ThrowTypeError("\x6e\x61\x6d\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67");
 
   Local<Object> obj = args[0].As<Object>();
   Local<String> name = args[1].As<String>();
@@ -94,7 +94,7 @@ void StartSigintWatchdog(const FunctionCallbackInfo<Value>& args) {
   int ret = SigintWatchdogHelper::GetInstance()->Start();
   if (ret != 0) {
     Environment* env = Environment::GetCurrent(args);
-    env->ThrowErrnoException(ret, u8"StartSigintWatchdog");
+    env->ThrowErrnoException(ret, "\x53\x74\x61\x72\x74\x53\x69\x67\x69\x6e\x74\x57\x61\x74\x63\x68\x64\x6f\x67");
   }
 }
 
@@ -120,13 +120,13 @@ void Initialize(Local<Object> target,
   VALUE_METHOD_MAP(V)
 #undef V
 
-  env->SetMethod(target, u8"getHiddenValue", GetHiddenValue);
-  env->SetMethod(target, u8"setHiddenValue", SetHiddenValue);
-  env->SetMethod(target, u8"getProxyDetails", GetProxyDetails);
+  env->SetMethod(target, "\x67\x65\x74\x48\x69\x64\x64\x65\x6e\x56\x61\x6c\x75\x65", GetHiddenValue);
+  env->SetMethod(target, "\x73\x65\x74\x48\x69\x64\x64\x65\x6e\x56\x61\x6c\x75\x65", SetHiddenValue);
+  env->SetMethod(target, "\x67\x65\x74\x50\x72\x6f\x78\x79\x44\x65\x74\x61\x69\x6c\x73", GetProxyDetails);
 
-  env->SetMethod(target, u8"startSigintWatchdog", StartSigintWatchdog);
-  env->SetMethod(target, u8"stopSigintWatchdog", StopSigintWatchdog);
-  env->SetMethod(target, u8"watchdogHasPendingSigint", WatchdogHasPendingSigint);
+  env->SetMethod(target, "\x73\x74\x61\x72\x74\x53\x69\x67\x69\x6e\x74\x57\x61\x74\x63\x68\x64\x6f\x67", StartSigintWatchdog);
+  env->SetMethod(target, "\x73\x74\x6f\x70\x53\x69\x67\x69\x6e\x74\x57\x61\x74\x63\x68\x64\x6f\x67", StopSigintWatchdog);
+  env->SetMethod(target, "\x77\x61\x74\x63\x68\x64\x6f\x67\x48\x61\x73\x50\x65\x6e\x64\x69\x6e\x67\x53\x69\x67\x69\x6e\x74", WatchdogHasPendingSigint);
 }
 
 }  // namespace util

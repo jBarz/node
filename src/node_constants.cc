@@ -1134,10 +1134,10 @@ void DefineUVConstants(Local<Object> target) {
 void DefineCryptoConstants(Local<Object> target) {
 #if HAVE_OPENSSL
   NODE_DEFINE_STRING_CONSTANT(target,
-                              u8"defaultCoreCipherList",
+                              "\x64\x65\x66\x61\x75\x6c\x74\x43\x6f\x72\x65\x43\x69\x70\x68\x65\x72\x4c\x69\x73\x74",
                               DEFAULT_CIPHER_LIST_CORE);
   NODE_DEFINE_STRING_CONSTANT(target,
-                              u8"defaultCipherList",
+                              "\x64\x65\x66\x61\x75\x6c\x74\x43\x69\x70\x68\x65\x72\x4c\x69\x73\x74",
                               default_cipher_list);
 #endif
 }
@@ -1157,11 +1157,11 @@ void DefineConstants(v8::Isolate* isolate, Local<Object> target) {
   DefineOpenSSLConstants(crypto_constants);
   DefineCryptoConstants(crypto_constants);
 
-  os_constants->Set(OneByteString(isolate, u8"errno"), err_constants);
-  os_constants->Set(OneByteString(isolate, u8"signals"), sig_constants);
-  target->Set(OneByteString(isolate, u8"os"), os_constants);
-  target->Set(OneByteString(isolate, u8"fs"), fs_constants);
-  target->Set(OneByteString(isolate, u8"crypto"), crypto_constants);
+  os_constants->Set(OneByteString(isolate, "\x65\x72\x72\x6e\x6f"), err_constants);
+  os_constants->Set(OneByteString(isolate, "\x73\x69\x67\x6e\x61\x6c\x73"), sig_constants);
+  target->Set(OneByteString(isolate, "\x6f\x73"), os_constants);
+  target->Set(OneByteString(isolate, "\x66\x73"), fs_constants);
+  target->Set(OneByteString(isolate, "\x63\x72\x79\x70\x74\x6f"), crypto_constants);
 }
 
 }  // namespace node

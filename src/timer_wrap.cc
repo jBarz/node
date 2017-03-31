@@ -29,21 +29,21 @@ class TimerWrap : public HandleWrap {
     Environment* env = Environment::GetCurrent(context);
     Local<FunctionTemplate> constructor = env->NewFunctionTemplate(New);
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Timer"));
-    constructor->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kOnTimeout"),
+    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x69\x6d\x65\x72"));
+    constructor->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4f\x6e\x54\x69\x6d\x65\x6f\x75\x74"),
                      Integer::New(env->isolate(), kOnTimeout));
 
-    env->SetTemplateMethod(constructor, u8"now", Now);
+    env->SetTemplateMethod(constructor, "\x6e\x6f\x77", Now);
 
-    env->SetProtoMethod(constructor, u8"close", HandleWrap::Close);
-    env->SetProtoMethod(constructor, u8"ref", HandleWrap::Ref);
-    env->SetProtoMethod(constructor, u8"unref", HandleWrap::Unref);
-    env->SetProtoMethod(constructor, u8"hasRef", HandleWrap::HasRef);
+    env->SetProtoMethod(constructor, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
+    env->SetProtoMethod(constructor, "\x72\x65\x66", HandleWrap::Ref);
+    env->SetProtoMethod(constructor, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
+    env->SetProtoMethod(constructor, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
 
-    env->SetProtoMethod(constructor, u8"start", Start);
-    env->SetProtoMethod(constructor, u8"stop", Stop);
+    env->SetProtoMethod(constructor, "\x73\x74\x61\x72\x74", Start);
+    env->SetProtoMethod(constructor, "\x73\x74\x6f\x70", Stop);
 
-    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Timer"),
+    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x69\x6d\x65\x72"),
                 constructor->GetFunction());
   }
 

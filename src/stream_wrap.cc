@@ -44,15 +44,15 @@ void StreamWrap::Initialize(Local<Object> target,
   Local<FunctionTemplate> sw =
       FunctionTemplate::New(env->isolate(), ShutdownWrap::NewShutdownWrap);
   sw->InstanceTemplate()->SetInternalFieldCount(1);
-  sw->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"ShutdownWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"ShutdownWrap"),
+  sw->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x68\x75\x74\x64\x6f\x77\x6e\x57\x72\x61\x70"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x68\x75\x74\x64\x6f\x77\x6e\x57\x72\x61\x70"),
               sw->GetFunction());
 
   Local<FunctionTemplate> ww =
       FunctionTemplate::New(env->isolate(), WriteWrap::NewWriteWrap);
   ww->InstanceTemplate()->SetInternalFieldCount(1);
-  ww->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"WriteWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"WriteWrap"),
+  ww->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x57\x72\x69\x74\x65\x57\x72\x61\x70"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x57\x72\x69\x74\x65\x57\x72\x61\x70"),
               ww->GetFunction());
   env->set_write_wrap_constructor_function(ww->GetFunction());
 }
@@ -79,7 +79,7 @@ StreamWrap::StreamWrap(Environment* env,
 void StreamWrap::AddMethods(Environment* env,
                             v8::Local<v8::FunctionTemplate> target,
                             int flags) {
-  env->SetProtoMethod(target, u8"setBlocking", SetBlocking);
+  env->SetProtoMethod(target, "\x73\x65\x74\x42\x6c\x6f\x63\x6b\x69\x6e\x67", SetBlocking);
   StreamBase::AddMethods<StreamWrap>(env, target, flags);
 }
 
@@ -166,8 +166,8 @@ void StreamWrap::OnAllocImpl(size_t size, uv_buf_t* buf, void* ctx) {
 
   if (buf->base == nullptr && size > 0) {
     FatalError(
-        u8"node::StreamWrap::DoAlloc(size_t, uv_buf_t*, void*)",
-        u8"Out Of Memory");
+        "\x6e\x6f\x64\x65\x3a\x3a\x53\x74\x72\x65\x61\x6d\x57\x72\x61\x70\x3a\x3a\x44\x6f\x41\x6c\x6c\x6f\x63\x28\x73\x69\x7a\x65\x5f\x74\x2c\x20\x75\x76\x5f\x62\x75\x66\x5f\x74\x2a\x2c\x20\x76\x6f\x69\x64\x2a\x29",
+        "\x4f\x75\x74\x20\x4f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
   }
 }
 

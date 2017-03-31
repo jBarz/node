@@ -52,7 +52,7 @@ static void GetHostname(const FunctionCallbackInfo<Value>& args) {
 #else  // __MINGW32__
     int errorno = WSAGetLastError();
 #endif  // __POSIX__
-    return env->ThrowErrnoException(errorno, u8"gethostname");
+    return env->ThrowErrnoException(errorno, "\x67\x65\x74\x68\x6f\x73\x74\x6e\x61\x6d\x65");
   }
   buf[sizeof(buf) - 1] = '\x0';
 
@@ -67,11 +67,11 @@ static void GetOSType(const FunctionCallbackInfo<Value>& args) {
 #ifdef __POSIX__
   struct utsname info;
   if (uname(&info) < 0) {
-    return env->ThrowErrnoException(errno, u8"uname");
+    return env->ThrowErrnoException(errno, "\x75\x6e\x61\x6d\x65");
   }
   rval = info.sysname;
 #else  // __MINGW32__
-  rval =u8"Windows_NT";
+  rval ="\x57\x69\x6e\x64\x6f\x77\x73\x5f\x4e\x54";
 #endif  // __POSIX__
 
   args.GetReturnValue().Set(OneByteString(env->isolate(), rval));
@@ -85,12 +85,12 @@ static void GetOSRelease(const FunctionCallbackInfo<Value>& args) {
 #ifdef __POSIX__
   struct utsname info;
   if (uname(&info) < 0) {
-    return env->ThrowErrnoException(errno, u8"uname");
+    return env->ThrowErrnoException(errno, "\x75\x6e\x61\x6d\x65");
   }
 # ifdef _AIX
   char release[256];
   snprintf(release, sizeof(release),
-           u8"%s.%s", info.version, info.release);
+           "\x6c\xa2\x2e\x6c\xa2", info.version, info.release);
   rval = release;
 # else
   rval = info.release;
@@ -108,7 +108,7 @@ static void GetOSRelease(const FunctionCallbackInfo<Value>& args) {
 
   snprintf(release,
            sizeof(release),
-           u8"%d.%d.%d",
+           "\x6c\x84\x2e\x6c\x84\x2e\x6c\x84",
            static_cast<int>(info.dwMajorVersion),
            static_cast<int>(info.dwMinorVersion),
            static_cast<int>(info.dwBuildNumber));
@@ -213,7 +213,7 @@ static void GetInterfaceAddresses(const FunctionCallbackInfo<Value>& args) {
   if (err == UV_ENOSYS) {
     return args.GetReturnValue().Set(ret);
   } else if (err) {
-    return env->ThrowUVException(err, u8"uv_interface_addresses");
+    return env->ThrowUVException(err, "\x75\x76\x5f\x69\x6e\x74\x65\x72\x66\x61\x63\x65\x5f\x61\x64\x64\x72\x65\x73\x73\x65\x73");
   }
 
   for (i = 0; i < count; i++) {
@@ -238,7 +238,7 @@ static void GetInterfaceAddresses(const FunctionCallbackInfo<Value>& args) {
 
     snprintf(mac,
              18,
-             u8"%02x:%02x:%02x:%02x:%02x:%02x",
+             "\x6c\xf0\xf2\xa7\x3a\x6c\xf0\xf2\xa7\x3a\x6c\xf0\xf2\xa7\x3a\x6c\xf0\xf2\xa7\x3a\x6c\xf0\xf2\xa7\x3a\x6c\xf0\xf2\xa7",
              static_cast<unsigned char>(interfaces[i].phys_addr[0]),
              static_cast<unsigned char>(interfaces[i].phys_addr[1]),
              static_cast<unsigned char>(interfaces[i].phys_addr[2]),
@@ -257,7 +257,7 @@ static void GetInterfaceAddresses(const FunctionCallbackInfo<Value>& args) {
       family = env->ipv6_string();
       __e2a_s(ip);
     } else {
-      strncpy(ip, u8"<unknown sa family>", INET6_ADDRSTRLEN);
+      strncpy(ip, "\x3c\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x73\x61\x20\x66\x61\x6d\x69\x6c\x79\x3e", INET6_ADDRSTRLEN);
       family = env->unknown_string();
     }
 
@@ -295,7 +295,7 @@ static void GetHomeDirectory(const FunctionCallbackInfo<Value>& args) {
   const int err = uv_os_homedir(buf, &len);
 
   if (err) {
-    return env->ThrowUVException(err, u8"uv_os_homedir");
+    return env->ThrowUVException(err, "\x75\x76\x5f\x6f\x73\x5f\x68\x6f\x6d\x65\x64\x69\x72");
   }
 
   Local<String> home = String::NewFromUtf8(env->isolate(),
@@ -322,7 +322,7 @@ static void GetUserInfo(const FunctionCallbackInfo<Value>& args) {
   const int err = uv_os_get_passwd(&pwd);
 
   if (err) {
-    return env->ThrowUVException(err, u8"uv_os_get_passwd");
+    return env->ThrowUVException(err, "\x75\x76\x5f\x6f\x73\x5f\x67\x65\x74\x5f\x70\x61\x73\x73\x77\x64");
   }
 
   Local<Value> uid = Number::New(env->isolate(), pwd.uid);
@@ -344,20 +344,20 @@ static void GetUserInfo(const FunctionCallbackInfo<Value>& args) {
 
   if (username.IsEmpty()) {
     return env->ThrowUVException(UV_EINVAL,
-                                 u8"uv_os_get_passwd",
-                                 u8"Invalid character encoding for username");
+                                 "\x75\x76\x5f\x6f\x73\x5f\x67\x65\x74\x5f\x70\x61\x73\x73\x77\x64",
+                                 "\x49\x6e\x76\x61\x6c\x69\x64\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67\x20\x66\x6f\x72\x20\x75\x73\x65\x72\x6e\x61\x6d\x65");
   }
 
   if (homedir.IsEmpty()) {
     return env->ThrowUVException(UV_EINVAL,
-                                 u8"uv_os_get_passwd",
-                                 u8"Invalid character encoding for homedir");
+                                 "\x75\x76\x5f\x6f\x73\x5f\x67\x65\x74\x5f\x70\x61\x73\x73\x77\x64",
+                                 "\x49\x6e\x76\x61\x6c\x69\x64\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67\x20\x66\x6f\x72\x20\x68\x6f\x6d\x65\x64\x69\x72");
   }
 
   if (shell.IsEmpty()) {
     return env->ThrowUVException(UV_EINVAL,
-                                 u8"uv_os_get_passwd",
-                                 u8"Invalid character encoding for shell");
+                                 "\x75\x76\x5f\x6f\x73\x5f\x67\x65\x74\x5f\x70\x61\x73\x73\x77\x64",
+                                 "\x49\x6e\x76\x61\x6c\x69\x64\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67\x20\x66\x6f\x72\x20\x73\x68\x65\x6c\x6c");
   }
 
   Local<Object> entry = Object::New(env->isolate());
@@ -376,18 +376,18 @@ void Initialize(Local<Object> target,
                 Local<Value> unused,
                 Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, u8"getHostname", GetHostname);
-  env->SetMethod(target, u8"getLoadAvg", GetLoadAvg);
-  env->SetMethod(target, u8"getUptime", GetUptime);
-  env->SetMethod(target, u8"getTotalMem", GetTotalMemory);
-  env->SetMethod(target, u8"getFreeMem", GetFreeMemory);
-  env->SetMethod(target, u8"getCPUs", GetCPUInfo);
-  env->SetMethod(target, u8"getOSType", GetOSType);
-  env->SetMethod(target, u8"getOSRelease", GetOSRelease);
-  env->SetMethod(target, u8"getInterfaceAddresses", GetInterfaceAddresses);
-  env->SetMethod(target, u8"getHomeDirectory", GetHomeDirectory);
-  env->SetMethod(target, u8"getUserInfo", GetUserInfo);
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"isBigEndian"),
+  env->SetMethod(target, "\x67\x65\x74\x48\x6f\x73\x74\x6e\x61\x6d\x65", GetHostname);
+  env->SetMethod(target, "\x67\x65\x74\x4c\x6f\x61\x64\x41\x76\x67", GetLoadAvg);
+  env->SetMethod(target, "\x67\x65\x74\x55\x70\x74\x69\x6d\x65", GetUptime);
+  env->SetMethod(target, "\x67\x65\x74\x54\x6f\x74\x61\x6c\x4d\x65\x6d", GetTotalMemory);
+  env->SetMethod(target, "\x67\x65\x74\x46\x72\x65\x65\x4d\x65\x6d", GetFreeMemory);
+  env->SetMethod(target, "\x67\x65\x74\x43\x50\x55\x73", GetCPUInfo);
+  env->SetMethod(target, "\x67\x65\x74\x4f\x53\x54\x79\x70\x65", GetOSType);
+  env->SetMethod(target, "\x67\x65\x74\x4f\x53\x52\x65\x6c\x65\x61\x73\x65", GetOSRelease);
+  env->SetMethod(target, "\x67\x65\x74\x49\x6e\x74\x65\x72\x66\x61\x63\x65\x41\x64\x64\x72\x65\x73\x73\x65\x73", GetInterfaceAddresses);
+  env->SetMethod(target, "\x67\x65\x74\x48\x6f\x6d\x65\x44\x69\x72\x65\x63\x74\x6f\x72\x79", GetHomeDirectory);
+  env->SetMethod(target, "\x67\x65\x74\x55\x73\x65\x72\x49\x6e\x66\x6f", GetUserInfo);
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x69\x73\x42\x69\x67\x45\x6e\x64\x69\x61\x6e"),
               Boolean::New(env->isolate(), IsBigEndian()));
 }
 

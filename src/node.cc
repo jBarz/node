@@ -321,7 +321,7 @@ inline const uint8_t& Ascii2Ebcdic(const char letter) {
 
 inline int GetFirstFlagFrom(const char* format_e, int start = 0) {
   int flag_pos = start;
-  for (; format_e[flag_pos] != '\0' && format_e[flag_pos] != '%'; flag_pos++); // find the first flag
+  for (; format_e[flag_pos] != '\x0' && format_e[flag_pos] != '\x25'; flag_pos++); // find the first flag
   return flag_pos;
 }
 
@@ -344,15 +344,15 @@ int VSNPrintFASCII(char* out, int length, const char* format_a, ...) {
     bytes_remain = length - bytes_written;
   }
   format_e += first_flag;
-  if (format_e[0] == '\0') return bytes_written;
+  if (format_e[0] == '\x0') return bytes_written;
 
   do {
     int next_flag = GetFirstFlagFrom(format_e, 2);
     char tmp = format_e[next_flag];
     int ret = 0;
-    format_e[next_flag] = '\0';
+    format_e[next_flag] = '\x0';
     char flag = format_e[1];
-    if (flag == 's') {
+    if (flag == '\x73') {
       // convert arg
       char * str = va_arg(args, char *);
       size_t str_len = strlen(str);
@@ -360,7 +360,7 @@ int VSNPrintFASCII(char* out, int length, const char* format_a, ...) {
       memcpy(str_e, str, str_len + 1);
       __a2e_s(str_e);
       ret = snprintf(out + bytes_written, bytes_remain, format_e, str_e);
-    } else if (flag == 'c') {
+    } else if (flag == '\x63') {
       ret = snprintf(out + bytes_written, bytes_remain, format_e, Ascii2Ebcdic(va_arg(args, char)));
     } else {
       ret = snprintf(out + bytes_written, bytes_remain, format_e, args);
@@ -371,7 +371,7 @@ int VSNPrintFASCII(char* out, int length, const char* format_a, ...) {
     format_e[next_flag] = tmp;
     format_e += next_flag;
     bytes_remain = length - bytes_written;
-  } while (format_e[0] != '\0' || bytes_remain <= 0);
+  } while (format_e[0] != '\x0' || bytes_remain <= 0);
 
   __e2a_s(out);
   return bytes_written;
@@ -3632,7 +3632,7 @@ static void RawDebug(const FunctionCallbackInfo<Value>& args) {
   CHECK(args.Length() == 1 && args[0]->IsString() &&
         "\x6d\x75\x73\x74\x20\x62\x65\x20\x63\x61\x6c\x6c\x65\x64\x20\x77\x69\x74\x68\x20\x61\x20\x73\x69\x6e\x67\x6c\x65\x20\x73\x74\x72\x69\x6e\x67");
   node::NativeEncodingValue message(args.GetIsolate(), args[0]);
-  PrintErrorString(u8"%s\n", *message);
+  PrintErrorString("%s\n", *message);
   fflush(stderr);
 }
 
@@ -3869,7 +3869,7 @@ static void PrintHelp() {
 #ifdef NODE_TAG
          NODE_VERSION \
          NODE_TAG \
-         "\n"
+         "\xa"
 #endif
         );
 }

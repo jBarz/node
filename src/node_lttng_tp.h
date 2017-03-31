@@ -7,7 +7,7 @@
 #define TRACEPOINT_PROVIDER node
 
 #undef TRACEPOINT_INCLUDE
-#define TRACEPOINT_INCLUDE u8"./node_lttng_tp.h"
+#define TRACEPOINT_INCLUDE "\x2e\x2f\x6e\x6f\x64\x65\x5f\x6c\x74\x74\x6e\x67\x5f\x74\x70\x2e\x68"
 
 #if !defined(__NODE_LTTNG_TP_H) || defined(TRACEPOINT_HEADER_MULTI_READ)
 #define __NODE_LTTNG_TP_H

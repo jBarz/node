@@ -78,7 +78,7 @@ inline const char* ToErrorCodeString(int status) {
     V(ETIMEOUT)
 #undef V
   }
-  return u8"UNKNOWN_ARES_ERROR";
+  return "\x55\x4e\x4b\x4e\x4f\x57\x4e\x5f\x41\x52\x45\x53\x5f\x45\x52\x52\x4f\x52";
 }
 
 class GetAddrInfoReqWrap : public ReqWrap<uv_getaddrinfo_t> {
@@ -242,7 +242,7 @@ static void ares_sockstate_cb(void* data,
     /* the socket is now closed. We must free the data associated with */
     /* socket. */
     CHECK(task &&
-          u8"When an ares socket is closed we should have a handle for it");
+          "\x57\x68\x65\x6e\x20\x61\x6e\x20\x61\x72\x65\x73\x20\x73\x6f\x63\x6b\x65\x74\x20\x69\x73\x20\x63\x6c\x6f\x73\x65\x64\x20\x77\x65\x20\x73\x68\x6f\x75\x6c\x64\x20\x68\x61\x76\x65\x20\x61\x20\x68\x61\x6e\x64\x6c\x65\x20\x66\x6f\x72\x20\x69\x74");
 
     RB_REMOVE(node_ares_task_list, env->cares_task_list(), task);
     uv_close(reinterpret_cast<uv_handle_t*>(&task->poll_watcher),
@@ -1144,7 +1144,7 @@ static void GetAddrInfo(const FunctionCallbackInfo<Value>& args) {
     family = AF_INET6;
     break;
   default:
-    CHECK(0 && u8"bad address family");
+    CHECK(0 && "\x62\x61\x64\x20\x61\x64\x64\x72\x65\x73\x73\x20\x66\x61\x6d\x69\x6c\x79");
   }
 
   GetAddrInfoReqWrap* req_wrap = new GetAddrInfoReqWrap(env, req_wrap_obj);
@@ -1272,7 +1272,7 @@ static void SetServers(const FunctionCallbackInfo<Value>& args) {
         err = uv_inet_pton(AF_INET6, *ip, &cur->addr);
         break;
       default:
-        CHECK(0 && u8"Bad address family.");
+        CHECK(0 && "\x42\x61\x64\x20\x61\x64\x64\x72\x65\x73\x73\x20\x66\x61\x6d\x69\x6c\x79\x2e");
     }
 
     if (err)
@@ -1350,61 +1350,61 @@ static void Initialize(Local<Object> target,
       CaresTimerClose,
       nullptr);
 
-  env->SetMethod(target, u8"queryA", Query<QueryAWrap>);
-  env->SetMethod(target, u8"queryAaaa", Query<QueryAaaaWrap>);
-  env->SetMethod(target, u8"queryCname", Query<QueryCnameWrap>);
-  env->SetMethod(target, u8"queryMx", Query<QueryMxWrap>);
-  env->SetMethod(target, u8"queryNs", Query<QueryNsWrap>);
-  env->SetMethod(target, u8"queryTxt", Query<QueryTxtWrap>);
-  env->SetMethod(target, u8"querySrv", Query<QuerySrvWrap>);
-  env->SetMethod(target, u8"queryPtr", Query<QueryPtrWrap>);
-  env->SetMethod(target, u8"queryNaptr", Query<QueryNaptrWrap>);
-  env->SetMethod(target, u8"querySoa", Query<QuerySoaWrap>);
-  env->SetMethod(target, u8"getHostByAddr", Query<GetHostByAddrWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x41", Query<QueryAWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x41\x61\x61\x61", Query<QueryAaaaWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x43\x6e\x61\x6d\x65", Query<QueryCnameWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x4d\x78", Query<QueryMxWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x4e\x73", Query<QueryNsWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x54\x78\x74", Query<QueryTxtWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x53\x72\x76", Query<QuerySrvWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x50\x74\x72", Query<QueryPtrWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x4e\x61\x70\x74\x72", Query<QueryNaptrWrap>);
+  env->SetMethod(target, "\x71\x75\x65\x72\x79\x53\x6f\x61", Query<QuerySoaWrap>);
+  env->SetMethod(target, "\x67\x65\x74\x48\x6f\x73\x74\x42\x79\x41\x64\x64\x72", Query<GetHostByAddrWrap>);
 
-  env->SetMethod(target, u8"getaddrinfo", GetAddrInfo);
-  env->SetMethod(target, u8"getnameinfo", GetNameInfo);
-  env->SetMethod(target, u8"isIP", IsIP);
-  env->SetMethod(target, u8"isIPv4", IsIPv4);
-  env->SetMethod(target, u8"isIPv6", IsIPv6);
+  env->SetMethod(target, "\x67\x65\x74\x61\x64\x64\x72\x69\x6e\x66\x6f", GetAddrInfo);
+  env->SetMethod(target, "\x67\x65\x74\x6e\x61\x6d\x65\x69\x6e\x66\x6f", GetNameInfo);
+  env->SetMethod(target, "\x69\x73\x49\x50", IsIP);
+  env->SetMethod(target, "\x69\x73\x49\x50\x76\x34", IsIPv4);
+  env->SetMethod(target, "\x69\x73\x49\x50\x76\x36", IsIPv6);
 
-  env->SetMethod(target, u8"strerror", StrError);
-  env->SetMethod(target, u8"getServers", GetServers);
-  env->SetMethod(target, u8"setServers", SetServers);
+  env->SetMethod(target, "\x73\x74\x72\x65\x72\x72\x6f\x72", StrError);
+  env->SetMethod(target, "\x67\x65\x74\x53\x65\x72\x76\x65\x72\x73", GetServers);
+  env->SetMethod(target, "\x73\x65\x74\x53\x65\x72\x76\x65\x72\x73", SetServers);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AF_INET"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x46\x5f\x49\x4e\x45\x54"),
               Integer::New(env->isolate(), AF_INET));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AF_INET6"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x46\x5f\x49\x4e\x45\x54\x36"),
               Integer::New(env->isolate(), AF_INET6));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AF_UNSPEC"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x46\x5f\x55\x4e\x53\x50\x45\x43"),
               Integer::New(env->isolate(), AF_UNSPEC));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AI_ADDRCONFIG"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x49\x5f\x41\x44\x44\x52\x43\x4f\x4e\x46\x49\x47"),
               Integer::New(env->isolate(), AI_ADDRCONFIG));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"AI_V4MAPPED"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x49\x5f\x56\x34\x4d\x41\x50\x50\x45\x44"),
               Integer::New(env->isolate(), AI_V4MAPPED));
 
   Local<FunctionTemplate> aiw =
       FunctionTemplate::New(env->isolate(), NewGetAddrInfoReqWrap);
   aiw->InstanceTemplate()->SetInternalFieldCount(1);
   aiw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), u8"GetAddrInfoReqWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"GetAddrInfoReqWrap"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), "\x47\x65\x74\x41\x64\x64\x72\x49\x6e\x66\x6f\x52\x65\x71\x57\x72\x61\x70"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x47\x65\x74\x41\x64\x64\x72\x49\x6e\x66\x6f\x52\x65\x71\x57\x72\x61\x70"),
               aiw->GetFunction());
 
   Local<FunctionTemplate> niw =
       FunctionTemplate::New(env->isolate(), NewGetNameInfoReqWrap);
   niw->InstanceTemplate()->SetInternalFieldCount(1);
   niw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), u8"GetNameInfoReqWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"GetNameInfoReqWrap"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), "\x47\x65\x74\x4e\x61\x6d\x65\x49\x6e\x66\x6f\x52\x65\x71\x57\x72\x61\x70"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x47\x65\x74\x4e\x61\x6d\x65\x49\x6e\x66\x6f\x52\x65\x71\x57\x72\x61\x70"),
               niw->GetFunction());
 
   Local<FunctionTemplate> qrw =
       FunctionTemplate::New(env->isolate(), NewQueryReqWrap);
   qrw->InstanceTemplate()->SetInternalFieldCount(1);
   qrw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), u8"QueryReqWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"QueryReqWrap"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), "\x51\x75\x65\x72\x79\x52\x65\x71\x57\x72\x61\x70"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x51\x75\x65\x72\x79\x52\x65\x71\x57\x72\x61\x70"),
               qrw->GetFunction());
 }
 

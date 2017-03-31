@@ -46,26 +46,26 @@ void PipeWrap::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Pipe"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x69\x70\x65"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"close", HandleWrap::Close);
-  env->SetProtoMethod(t, u8"unref", HandleWrap::Unref);
-  env->SetProtoMethod(t, u8"ref", HandleWrap::Ref);
-  env->SetProtoMethod(t, u8"hasRef", HandleWrap::HasRef);
+  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
+  env->SetProtoMethod(t, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
+  env->SetProtoMethod(t, "\x72\x65\x66", HandleWrap::Ref);
+  env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
 
   StreamWrap::AddMethods(env, t);
 
-  env->SetProtoMethod(t, u8"bind", Bind);
-  env->SetProtoMethod(t, u8"listen", Listen);
-  env->SetProtoMethod(t, u8"connect", Connect);
-  env->SetProtoMethod(t, u8"open", Open);
+  env->SetProtoMethod(t, "\x62\x69\x6e\x64", Bind);
+  env->SetProtoMethod(t, "\x6c\x69\x73\x74\x65\x6e", Listen);
+  env->SetProtoMethod(t, "\x63\x6f\x6e\x6e\x65\x63\x74", Connect);
+  env->SetProtoMethod(t, "\x6f\x70\x65\x6e", Open);
 
 #ifdef _WIN32
-  env->SetProtoMethod(t, u8"setPendingInstances", SetPendingInstances);
+  env->SetProtoMethod(t, "\x73\x65\x74\x50\x65\x6e\x64\x69\x6e\x67\x49\x6e\x73\x74\x61\x6e\x63\x65\x73", SetPendingInstances);
 #endif
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Pipe"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x69\x70\x65"), t->GetFunction());
   env->set_pipe_constructor_template(t);
 
   // Create FunctionTemplate for PipeConnectWrap.
@@ -74,8 +74,8 @@ void PipeWrap::Initialize(Local<Object> target,
   };
   auto cwt = FunctionTemplate::New(env->isolate(), constructor);
   cwt->InstanceTemplate()->SetInternalFieldCount(1);
-  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"PipeConnectWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"PipeConnectWrap"),
+  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x69\x70\x65\x43\x6f\x6e\x6e\x65\x63\x74\x57\x72\x61\x70"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x69\x70\x65\x43\x6f\x6e\x6e\x65\x63\x74\x57\x72\x61\x70"),
               cwt->GetFunction());
 }
 
@@ -154,7 +154,7 @@ void PipeWrap::Open(const FunctionCallbackInfo<Value>& args) {
   int err = uv_pipe_open(&wrap->handle_, fd);
 
   if (err != 0)
-    env->isolate()->ThrowException(UVException(err, u8"uv_pipe_open"));
+    env->isolate()->ThrowException(UVException(err, "\x75\x76\x5f\x70\x69\x70\x65\x5f\x6f\x70\x65\x6e"));
 }
 
 

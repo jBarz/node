@@ -29,22 +29,22 @@ void TTYWrap::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TTY"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x54\x59"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"close", HandleWrap::Close);
-  env->SetProtoMethod(t, u8"unref", HandleWrap::Unref);
-  env->SetProtoMethod(t, u8"hasRef", HandleWrap::HasRef);
+  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
+  env->SetProtoMethod(t, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
+  env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
 
   StreamWrap::AddMethods(env, t, StreamBase::kFlagNoShutdown);
 
-  env->SetProtoMethod(t, u8"getWindowSize", TTYWrap::GetWindowSize);
-  env->SetProtoMethod(t, u8"setRawMode", SetRawMode);
+  env->SetProtoMethod(t, "\x67\x65\x74\x57\x69\x6e\x64\x6f\x77\x53\x69\x7a\x65", TTYWrap::GetWindowSize);
+  env->SetProtoMethod(t, "\x73\x65\x74\x52\x61\x77\x4d\x6f\x64\x65", SetRawMode);
 
-  env->SetMethod(target, u8"isTTY", IsTTY);
-  env->SetMethod(target, u8"guessHandleType", GuessHandleType);
+  env->SetMethod(target, "\x69\x73\x54\x54\x59", IsTTY);
+  env->SetMethod(target, "\x67\x75\x65\x73\x73\x48\x61\x6e\x64\x6c\x65\x54\x79\x70\x65", GuessHandleType);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"TTY"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x54\x59"), t->GetFunction());
   env->set_tty_constructor_template(t);
 }
 
@@ -63,12 +63,12 @@ void TTYWrap::GuessHandleType(const FunctionCallbackInfo<Value>& args) {
   const char* type = nullptr;
 
   switch (t) {
-  case UV_TCP: type = u8"TCP"; break;
-  case UV_TTY: type = u8"TTY"; break;
-  case UV_UDP: type = u8"UDP"; break;
-  case UV_FILE: type = u8"FILE"; break;
-  case UV_NAMED_PIPE: type = u8"PIPE"; break;
-  case UV_UNKNOWN_HANDLE: type = u8"UNKNOWN"; break;
+  case UV_TCP: type = "\x54\x43\x50"; break;
+  case UV_TTY: type = "\x54\x54\x59"; break;
+  case UV_UDP: type = "\x55\x44\x50"; break;
+  case UV_FILE: type = "\x46\x49\x4c\x45"; break;
+  case UV_NAMED_PIPE: type = "\x50\x49\x50\x45"; break;
+  case UV_UNKNOWN_HANDLE: type = "\x55\x4e\x4b\x4e\x4f\x57\x4e"; break;
   default:
     ABORT();
   }

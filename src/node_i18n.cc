@@ -156,7 +156,7 @@ static void ToUnicode(const FunctionCallbackInfo<Value>& args) {
   int32_t len = ToUnicode(&buf, *val, val.length());
 
   if (len < 0) {
-    return env->ThrowError(u8"Cannot convert name to Unicode");
+    return env->ThrowError("\x43\x61\x6e\x6e\x6f\x74\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x6e\x61\x6d\x65\x20\x74\x6f\x20\x55\x6e\x69\x63\x6f\x64\x65");
   }
 
   args.GetReturnValue().Set(
@@ -175,7 +175,7 @@ static void ToASCII(const FunctionCallbackInfo<Value>& args) {
   int32_t len = ToASCII(&buf, *val, val.length());
 
   if (len < 0) {
-    return env->ThrowError(u8"Cannot convert name to ASCII");
+    return env->ThrowError("\x43\x61\x6e\x6e\x6f\x74\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x6e\x61\x6d\x65\x20\x74\x6f\x20\x41\x53\x43\x49\x49");
   }
 
   args.GetReturnValue().Set(
@@ -190,8 +190,8 @@ void Init(Local<Object> target,
           Local<Context> context,
           void* priv) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, u8"toUnicode", ToUnicode);
-  env->SetMethod(target, u8"toASCII", ToASCII);
+  env->SetMethod(target, "\x74\x6f\x55\x6e\x69\x63\x6f\x64\x65", ToUnicode);
+  env->SetMethod(target, "\x74\x6f\x41\x53\x43\x49\x49", ToASCII);
 }
 
 }  // namespace i18n

@@ -358,7 +358,7 @@ size_t StringBytes::Write(Isolate* isolate,
       break;
 
     default:
-      CHECK(0 && u8"unknown encoding");
+      CHECK(0 && "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67");
       break;
   }
 
@@ -415,12 +415,12 @@ size_t StringBytes::StorageSize(Isolate* isolate,
       break;
 
     case HEX:
-      CHECK(str->Length() % 2 == 0 && u8"invalid hex string length");
+      CHECK(str->Length() % 2 == 0 && "\x69\x6e\x76\x61\x6c\x69\x64\x20\x68\x65\x78\x20\x73\x74\x72\x69\x6e\x67\x20\x6c\x65\x6e\x67\x74\x68");
       data_size = str->Length() / 2;
       break;
 
     default:
-      CHECK(0 && u8"unknown encoding");
+      CHECK(0 && "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67");
       break;
   }
 
@@ -470,7 +470,7 @@ size_t StringBytes::Size(Isolate* isolate,
       break;
 
     default:
-      CHECK(0 && u8"unknown encoding");
+      CHECK(0 && "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67");
       break;
   }
 
@@ -586,11 +586,11 @@ static void force_ascii(const char* src, char* dst, size_t len) {
 static size_t hex_encode(const char* src, size_t slen, char* dst, size_t dlen) {
   // We know how much we'll write, just make sure that there's space.
   CHECK(dlen >= slen * 2 &&
-      u8"not enough space provided for hex encode");
+      "\x6e\x6f\x74\x20\x65\x6e\x6f\x75\x67\x68\x20\x73\x70\x61\x63\x65\x20\x70\x72\x6f\x76\x69\x64\x65\x64\x20\x66\x6f\x72\x20\x68\x65\x78\x20\x65\x6e\x63\x6f\x64\x65");
 
   dlen = slen * 2;
   for (uint32_t i = 0, k = 0; k < dlen; i += 1, k += 2) {
-    static const char hex[] = u8"0123456789abcdef";
+    static const char hex[] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x61\x62\x63\x64\x65\x66";
     uint8_t val = static_cast<uint8_t>(src[i]);
     dst[k + 0] = hex[val >> 4];
     dst[k + 1] = hex[val & 15];
@@ -701,7 +701,7 @@ Local<Value> StringBytes::Encode(Isolate* isolate,
     }
 
     default:
-      CHECK(0 && u8"unknown encoding");
+      CHECK(0 && "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67");
       break;
   }
 

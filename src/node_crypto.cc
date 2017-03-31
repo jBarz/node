@@ -27,29 +27,29 @@
 #define THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(val, prefix)                  \
   do {                                                                         \
     if (!Buffer::HasInstance(val) && !val->IsString()) {                       \
-      return env->ThrowTypeError(*E2A(prefix, u8" must be a string or a buffer"));      \
+      return env->ThrowTypeError(*E2A(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67\x20\x6f\x72\x20\x61\x20\x62\x75\x66\x66\x65\x72"));      \
     }                                                                          \
   } while (0)
 
 #define THROW_AND_RETURN_IF_NOT_BUFFER(val, prefix)           \
   do {                                                        \
     if (!Buffer::HasInstance(val)) {                          \
-      return env->ThrowTypeError(*E2A(prefix, u8" must be a buffer")); \
+      return env->ThrowTypeError(*E2A(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x62\x75\x66\x66\x65\x72")); \
     }                                                         \
   } while (0)
 
 #define THROW_AND_RETURN_IF_NOT_STRING(val, prefix)           \
   do {                                                        \
     if (!val->IsString()) {                                   \
-      return env->ThrowTypeError(*E2A(prefix, u8" must be a string")); \
+      return env->ThrowTypeError(*E2A(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67")); \
     }                                                         \
   } while (0)
 
-static const char PUBLIC_KEY_PFX[] =  u8"-----BEGIN PUBLIC KEY-----";
+static const char PUBLIC_KEY_PFX[] =  "\x2d\x2d\x2d\x2d\x2d\x42\x45\x47\x49\x4e\x20\x50\x55\x42\x4c\x49\x43\x20\x4b\x45\x59\x2d\x2d\x2d\x2d\x2d";
 static const int PUBLIC_KEY_PFX_LEN = sizeof(PUBLIC_KEY_PFX) - 1;
-static const char PUBRSA_KEY_PFX[] =  u8"-----BEGIN RSA PUBLIC KEY-----";
+static const char PUBRSA_KEY_PFX[] =  "\x2d\x2d\x2d\x2d\x2d\x42\x45\x47\x49\x4e\x20\x52\x53\x41\x20\x50\x55\x42\x4c\x49\x43\x20\x4b\x45\x59\x2d\x2d\x2d\x2d\x2d";
 static const int PUBRSA_KEY_PFX_LEN = sizeof(PUBRSA_KEY_PFX) - 1;
-static const char CERTIFICATE_PFX[] =  u8"-----BEGIN CERTIFICATE-----";
+static const char CERTIFICATE_PFX[] =  "\x2d\x2d\x2d\x2d\x2d\x42\x45\x47\x49\x4e\x20\x43\x45\x52\x54\x49\x46\x49\x43\x41\x54\x45\x2d\x2d\x2d\x2d\x2d";
 static const int CERTIFICATE_PFX_LEN = sizeof(CERTIFICATE_PFX) - 1;
 
 static const int X509_NAME_FLAGS = ASN1_STRFLGS_ESC_CTRL
@@ -91,9 +91,9 @@ using v8::Value;
 // certverifier/NSSCertDBTrustDomain.cpp#l672
 // C = CN, O = CNNIC, CN = CNNIC ROOT
 static const uint8_t CNNIC_ROOT_CA_SUBJECT_DATA[] =
-    u8"\x30\x32\x31\x0B\x30\x09\x06\x03\x55\x04\x06\x13\x02\x43\x4E\x31\x0E\x30"
-    u8"\x0C\x06\x03\x55\x04\x0A\x13\x05\x43\x4E\x4E\x49\x43\x31\x13\x30\x11\x06"
-    u8"\x03\x55\x04\x03\x13\x0A\x43\x4E\x4E\x49\x43\x20\x52\x4F\x4F\x54";
+    "\x30\x32\x31\x0B\x30\x09\x06\x03\x55\x04\x06\x13\x02\x43\x4E\x31\x0E\x30"
+    "\x0C\x06\x03\x55\x04\x0A\x13\x05\x43\x4E\x4E\x49\x43\x31\x13\x30\x11\x06"
+    "\x03\x55\x04\x03\x13\x0A\x43\x4E\x4E\x49\x43\x20\x52\x4F\x4F\x54";
 static const uint8_t* cnnic_p = CNNIC_ROOT_CA_SUBJECT_DATA;
 static X509_NAME* cnnic_name =
     d2i_X509_NAME(nullptr, &cnnic_p, sizeof(CNNIC_ROOT_CA_SUBJECT_DATA)-1);
@@ -101,14 +101,14 @@ static X509_NAME* cnnic_name =
 // C = CN, O = China Internet Network Information Center, CN = China
 // Internet Network Information Center EV Certificates Root
 static const uint8_t CNNIC_EV_ROOT_CA_SUBJECT_DATA[] =
-    u8"\x30\x81\x8A\x31\x0B\x30\x09\x06\x03\x55\x04\x06\x13\x02\x43\x4E\x31\x32"
-    u8"\x30\x30\x06\x03\x55\x04\x0A\x0C\x29\x43\x68\x69\x6E\x61\x20\x49\x6E\x74"
-    u8"\x65\x72\x6E\x65\x74\x20\x4E\x65\x74\x77\x6F\x72\x6B\x20\x49\x6E\x66\x6F"
-    u8"\x72\x6D\x61\x74\x69\x6F\x6E\x20\x43\x65\x6E\x74\x65\x72\x31\x47\x30\x45"
-    u8"\x06\x03\x55\x04\x03\x0C\x3E\x43\x68\x69\x6E\x61\x20\x49\x6E\x74\x65\x72"
-    u8"\x6E\x65\x74\x20\x4E\x65\x74\x77\x6F\x72\x6B\x20\x49\x6E\x66\x6F\x72\x6D"
-    u8"\x61\x74\x69\x6F\x6E\x20\x43\x65\x6E\x74\x65\x72\x20\x45\x56\x20\x43\x65"
-    u8"\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x52\x6F\x6F\x74";
+    "\x30\x81\x8A\x31\x0B\x30\x09\x06\x03\x55\x04\x06\x13\x02\x43\x4E\x31\x32"
+    "\x30\x30\x06\x03\x55\x04\x0A\x0C\x29\x43\x68\x69\x6E\x61\x20\x49\x6E\x74"
+    "\x65\x72\x6E\x65\x74\x20\x4E\x65\x74\x77\x6F\x72\x6B\x20\x49\x6E\x66\x6F"
+    "\x72\x6D\x61\x74\x69\x6F\x6E\x20\x43\x65\x6E\x74\x65\x72\x31\x47\x30\x45"
+    "\x06\x03\x55\x04\x03\x0C\x3E\x43\x68\x69\x6E\x61\x20\x49\x6E\x74\x65\x72"
+    "\x6E\x65\x74\x20\x4E\x65\x74\x77\x6F\x72\x6B\x20\x49\x6E\x66\x6F\x72\x6D"
+    "\x61\x74\x69\x6F\x6E\x20\x43\x65\x6E\x74\x65\x72\x20\x45\x56\x20\x43\x65"
+    "\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x52\x6F\x6F\x74";
 static const uint8_t* cnnic_ev_p = CNNIC_EV_ROOT_CA_SUBJECT_DATA;
 static X509_NAME *cnnic_ev_name =
     d2i_X509_NAME(nullptr, &cnnic_ev_p,
@@ -178,7 +178,7 @@ template int SSLWrap<TLSWrap>::SelectALPNCallback(
 
 static void crypto_threadid_cb(CRYPTO_THREADID* tid) {
   static_assert(sizeof(uv_thread_t) <= sizeof(void*),
-                u8"uv_thread_t does not fit in a pointer");
+                "\x75\x76\x5f\x74\x68\x72\x65\x61\x64\x5f\x74\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x66\x69\x74\x20\x69\x6e\x20\x61\x20\x70\x6f\x69\x6e\x74\x65\x72");
 #ifndef __MVS__
   CRYPTO_THREADID_set_pointer(tid, reinterpret_cast<void*>(uv_thread_self()));
 #else
@@ -280,46 +280,46 @@ bool EntropySource(unsigned char* buffer, size_t length) {
 void SecureContext::Initialize(Environment* env, Local<Object> target) {
   Local<FunctionTemplate> t = env->NewFunctionTemplate(SecureContext::New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"SecureContext"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x65\x63\x75\x72\x65\x43\x6f\x6e\x74\x65\x78\x74"));
 
-  env->SetProtoMethod(t, u8"init", SecureContext::Init);
-  env->SetProtoMethod(t, u8"setKey", SecureContext::SetKey);
-  env->SetProtoMethod(t, u8"setCert", SecureContext::SetCert);
-  env->SetProtoMethod(t, u8"addCACert", SecureContext::AddCACert);
-  env->SetProtoMethod(t, u8"addCRL", SecureContext::AddCRL);
-  env->SetProtoMethod(t, u8"addRootCerts", SecureContext::AddRootCerts);
-  env->SetProtoMethod(t, u8"setCiphers", SecureContext::SetCiphers);
-  env->SetProtoMethod(t, u8"setECDHCurve", SecureContext::SetECDHCurve);
-  env->SetProtoMethod(t, u8"setDHParam", SecureContext::SetDHParam);
-  env->SetProtoMethod(t, u8"setOptions", SecureContext::SetOptions);
-  env->SetProtoMethod(t, u8"setSessionIdContext",
+  env->SetProtoMethod(t, "\x69\x6e\x69\x74", SecureContext::Init);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4b\x65\x79", SecureContext::SetKey);
+  env->SetProtoMethod(t, "\x73\x65\x74\x43\x65\x72\x74", SecureContext::SetCert);
+  env->SetProtoMethod(t, "\x61\x64\x64\x43\x41\x43\x65\x72\x74", SecureContext::AddCACert);
+  env->SetProtoMethod(t, "\x61\x64\x64\x43\x52\x4c", SecureContext::AddCRL);
+  env->SetProtoMethod(t, "\x61\x64\x64\x52\x6f\x6f\x74\x43\x65\x72\x74\x73", SecureContext::AddRootCerts);
+  env->SetProtoMethod(t, "\x73\x65\x74\x43\x69\x70\x68\x65\x72\x73", SecureContext::SetCiphers);
+  env->SetProtoMethod(t, "\x73\x65\x74\x45\x43\x44\x48\x43\x75\x72\x76\x65", SecureContext::SetECDHCurve);
+  env->SetProtoMethod(t, "\x73\x65\x74\x44\x48\x50\x61\x72\x61\x6d", SecureContext::SetDHParam);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4f\x70\x74\x69\x6f\x6e\x73", SecureContext::SetOptions);
+  env->SetProtoMethod(t, "\x73\x65\x74\x53\x65\x73\x73\x69\x6f\x6e\x49\x64\x43\x6f\x6e\x74\x65\x78\x74",
                       SecureContext::SetSessionIdContext);
-  env->SetProtoMethod(t, u8"setSessionTimeout",
+  env->SetProtoMethod(t, "\x73\x65\x74\x53\x65\x73\x73\x69\x6f\x6e\x54\x69\x6d\x65\x6f\x75\x74",
                       SecureContext::SetSessionTimeout);
-  env->SetProtoMethod(t, u8"close", SecureContext::Close);
-  env->SetProtoMethod(t, u8"loadPKCS12", SecureContext::LoadPKCS12);
-  env->SetProtoMethod(t, u8"getTicketKeys", SecureContext::GetTicketKeys);
-  env->SetProtoMethod(t, u8"setTicketKeys", SecureContext::SetTicketKeys);
-  env->SetProtoMethod(t, u8"setFreeListLength", SecureContext::SetFreeListLength);
+  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", SecureContext::Close);
+  env->SetProtoMethod(t, "\x6c\x6f\x61\x64\x50\x4b\x43\x53\x31\x32", SecureContext::LoadPKCS12);
+  env->SetProtoMethod(t, "\x67\x65\x74\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x73", SecureContext::GetTicketKeys);
+  env->SetProtoMethod(t, "\x73\x65\x74\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x73", SecureContext::SetTicketKeys);
+  env->SetProtoMethod(t, "\x73\x65\x74\x46\x72\x65\x65\x4c\x69\x73\x74\x4c\x65\x6e\x67\x74\x68", SecureContext::SetFreeListLength);
   env->SetProtoMethod(t,
-                      u8"enableTicketKeyCallback",
+                      "\x65\x6e\x61\x62\x6c\x65\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x43\x61\x6c\x6c\x62\x61\x63\x6b",
                       SecureContext::EnableTicketKeyCallback);
-  env->SetProtoMethod(t, u8"getCertificate", SecureContext::GetCertificate<true>);
-  env->SetProtoMethod(t, u8"getIssuer", SecureContext::GetCertificate<false>);
+  env->SetProtoMethod(t, "\x67\x65\x74\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65", SecureContext::GetCertificate<true>);
+  env->SetProtoMethod(t, "\x67\x65\x74\x49\x73\x73\x75\x65\x72", SecureContext::GetCertificate<false>);
 
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kTicketKeyReturnIndex"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x52\x65\x74\x75\x72\x6e\x49\x6e\x64\x65\x78"),
          Integer::NewFromUnsigned(env->isolate(), kTicketKeyReturnIndex));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kTicketKeyHMACIndex"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x48\x4d\x41\x43\x49\x6e\x64\x65\x78"),
          Integer::NewFromUnsigned(env->isolate(), kTicketKeyHMACIndex));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kTicketKeyAESIndex"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x41\x45\x53\x49\x6e\x64\x65\x78"),
          Integer::NewFromUnsigned(env->isolate(), kTicketKeyAESIndex));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kTicketKeyNameIndex"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x4e\x61\x6d\x65\x49\x6e\x64\x65\x78"),
          Integer::NewFromUnsigned(env->isolate(), kTicketKeyNameIndex));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"kTicketKeyIVIndex"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x49\x56\x49\x6e\x64\x65\x78"),
          Integer::NewFromUnsigned(env->isolate(), kTicketKeyIVIndex));
 
   t->PrototypeTemplate()->SetAccessor(
-      FIXED_ONE_BYTE_STRING(env->isolate(), u8"_external"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), "\x5f\x65\x78\x74\x65\x72\x6e\x61\x6c"),
       CtxGetter,
       nullptr,
       env->as_external(),
@@ -327,7 +327,7 @@ void SecureContext::Initialize(Environment* env, Local<Object> target) {
       static_cast<PropertyAttribute>(ReadOnly | DontDelete),
       AccessorSignature::New(env->isolate(), t));
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"SecureContext"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x65\x63\x75\x72\x65\x43\x6f\x6e\x74\x65\x78\x74"),
               t->GetFunction());
   env->set_secure_context_constructor_template(t);
 }
@@ -353,44 +353,44 @@ void SecureContext::Init(const FunctionCallbackInfo<Value>& args) {
     // are still accepted.  They are OpenSSL's way of saying that all known
     // protocols are supported unless explicitly disabled (which we do below
     // for SSLv2 and SSLv3.)
-    if (strcmp(*sslmethod, u8"SSLv2_method") == 0) {
-      return env->ThrowError(u8"SSLv2 methods disabled");
-    } else if (strcmp(*sslmethod, u8"SSLv2_server_method") == 0) {
-      return env->ThrowError(u8"SSLv2 methods disabled");
-    } else if (strcmp(*sslmethod, u8"SSLv2_client_method") == 0) {
-      return env->ThrowError(u8"SSLv2 methods disabled");
-    } else if (strcmp(*sslmethod, u8"SSLv3_method") == 0) {
-      return env->ThrowError(u8"SSLv3 methods disabled");
-    } else if (strcmp(*sslmethod, u8"SSLv3_server_method") == 0) {
-      return env->ThrowError(u8"SSLv3 methods disabled");
-    } else if (strcmp(*sslmethod, u8"SSLv3_client_method") == 0) {
-      return env->ThrowError(u8"SSLv3 methods disabled");
-    } else if (strcmp(*sslmethod, u8"SSLv23_method") == 0) {
+    if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+      return env->ThrowError("\x53\x53\x4c\x76\x32\x20\x6d\x65\x74\x68\x6f\x64\x73\x20\x64\x69\x73\x61\x62\x6c\x65\x64");
+    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+      return env->ThrowError("\x53\x53\x4c\x76\x32\x20\x6d\x65\x74\x68\x6f\x64\x73\x20\x64\x69\x73\x61\x62\x6c\x65\x64");
+    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+      return env->ThrowError("\x53\x53\x4c\x76\x32\x20\x6d\x65\x74\x68\x6f\x64\x73\x20\x64\x69\x73\x61\x62\x6c\x65\x64");
+    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x33\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+      return env->ThrowError("\x53\x53\x4c\x76\x33\x20\x6d\x65\x74\x68\x6f\x64\x73\x20\x64\x69\x73\x61\x62\x6c\x65\x64");
+    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x33\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+      return env->ThrowError("\x53\x53\x4c\x76\x33\x20\x6d\x65\x74\x68\x6f\x64\x73\x20\x64\x69\x73\x61\x62\x6c\x65\x64");
+    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x33\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+      return env->ThrowError("\x53\x53\x4c\x76\x33\x20\x6d\x65\x74\x68\x6f\x64\x73\x20\x64\x69\x73\x61\x62\x6c\x65\x64");
+    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x33\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = SSLv23_method();
-    } else if (strcmp(*sslmethod, u8"SSLv23_server_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x33\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = SSLv23_server_method();
-    } else if (strcmp(*sslmethod, u8"SSLv23_client_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x33\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = SSLv23_client_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_server_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_server_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_client_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_client_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_1_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x31\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_1_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_1_server_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x31\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_1_server_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_1_client_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x31\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_1_client_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_2_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x32\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_2_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_2_server_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x32\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_2_server_method();
-    } else if (strcmp(*sslmethod, u8"TLSv1_2_client_method") == 0) {
+    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x32\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
       method = TLSv1_2_client_method();
     } else {
-      return env->ThrowError(u8"Unknown method");
+      return env->ThrowError("\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x6d\x65\x74\x68\x6f\x64");
     }
   }
 
@@ -440,15 +440,15 @@ void SecureContext::SetKey(const FunctionCallbackInfo<Value>& args) {
 
   unsigned int len = args.Length();
   if (len < 1) {
-    return env->ThrowError(u8"Private key argument is mandatory");
+    return env->ThrowError("\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
   if (len > 2) {
-    return env->ThrowError(u8"Only private key and pass phrase are expected");
+    return env->ThrowError("\x4f\x6e\x6c\x79\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x61\x6e\x64\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x61\x72\x65\x20\x65\x78\x70\x65\x63\x74\x65\x64");
   }
 
   if (len == 2) {
-    THROW_AND_RETURN_IF_NOT_STRING(args[1], u8"Pass phrase");
+    THROW_AND_RETURN_IF_NOT_STRING(args[1], "\x50\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65");
   }
 
   BIO *bio = LoadBIO(env, args[0]);
@@ -466,7 +466,7 @@ void SecureContext::SetKey(const FunctionCallbackInfo<Value>& args) {
     BIO_free_all(bio);
     unsigned long err = ERR_get_error();  // NOLINT(runtime/int)
     if (!err) {
-      return env->ThrowError(u8"PEM_read_bio_PrivateKey");
+      return env->ThrowError("\x50\x45\x4d\x5f\x72\x65\x61\x64\x5f\x62\x69\x6f\x5f\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79");
     }
     return ThrowCryptoError(env, err);
   }
@@ -478,7 +478,7 @@ void SecureContext::SetKey(const FunctionCallbackInfo<Value>& args) {
   if (!rv) {
     unsigned long err = ERR_get_error();  // NOLINT(runtime/int)
     if (!err)
-      return env->ThrowError(u8"SSL_CTX_use_PrivateKey");
+      return env->ThrowError("\x53\x53\x4c\x5f\x43\x54\x58\x5f\x75\x73\x65\x5f\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79");
     return ThrowCryptoError(env, err);
   }
 }
@@ -645,7 +645,7 @@ void SecureContext::SetCert(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&sc, args.Holder());
 
   if (args.Length() != 1) {
-    return env->ThrowTypeError(u8"Certificate argument is mandatory");
+    return env->ThrowTypeError("\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
   BIO* bio = LoadBIO(env, args[0]);
@@ -672,7 +672,7 @@ void SecureContext::SetCert(const FunctionCallbackInfo<Value>& args) {
   if (!rv) {
     unsigned long err = ERR_get_error();  // NOLINT(runtime/int)
     if (!err) {
-      return env->ThrowError(u8"SSL_CTX_use_certificate_chain");
+      return env->ThrowError("\x53\x53\x4c\x5f\x43\x54\x58\x5f\x75\x73\x65\x5f\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x5f\x63\x68\x61\x69\x6e");
     }
     return ThrowCryptoError(env, err);
   }
@@ -733,7 +733,7 @@ void SecureContext::AddCACert(const FunctionCallbackInfo<Value>& args) {
   (void) &clear_error_on_return;  // Silence compiler warning.
 
   if (args.Length() != 1) {
-    return env->ThrowTypeError(u8"CA certificate argument is mandatory");
+    return env->ThrowTypeError("\x43\x41\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
   BIO* bio = LoadBIO(env, args[0]);
@@ -764,7 +764,7 @@ void SecureContext::AddCRL(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&sc, args.Holder());
 
   if (args.Length() != 1) {
-    return env->ThrowTypeError(u8"CRL argument is mandatory");
+    return env->ThrowTypeError("\x43\x52\x4c\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
   ClearErrorOnReturn clear_error_on_return;
@@ -779,7 +779,7 @@ void SecureContext::AddCRL(const FunctionCallbackInfo<Value>& args) {
 
   if (crl == nullptr) {
     BIO_free_all(bio);
-    return env->ThrowError(u8"Failed to parse CRL");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x70\x61\x72\x73\x65\x20\x43\x52\x4c");
   }
 
   X509_STORE* cert_store = SSL_CTX_get_cert_store(sc->ctx_);
@@ -808,7 +808,7 @@ static unsigned long AddCertsFromFile(  // NOLINT(runtime/int)
   ERR_clear_error();
   MarkPopErrorOnReturn mark_pop_error_on_return;
 
-  BIO* bio = BIO_new_file(file, u8"r");
+  BIO* bio = BIO_new_file(file, "\x72");
   if (!bio) {
     return ERR_get_error();
   }
@@ -845,7 +845,7 @@ void SecureContext::AddRootCerts(const FunctionCallbackInfo<Value>& args) {
                                            extra_root_certs_file.c_str());
       if (err) {
         ProcessEmitWarning(sc->env(),
-                           u8"Ignoring extra certs from `%s`, load failed: %s\n",
+                           "\x49\x67\x6e\x6f\x72\x69\x6e\x67\x20\x65\x78\x74\x72\x61\x20\x63\x65\x72\x74\x73\x20\x66\x72\x6f\x6d\x20\x60\x6c\xa2\x60\x2c\x20\x6c\x6f\x61\x64\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x6c\xa2\xa",
                            extra_root_certs_file.c_str(),
                            ERR_error_string(err, nullptr));
       }
@@ -866,10 +866,10 @@ void SecureContext::SetCiphers(const FunctionCallbackInfo<Value>& args) {
   (void) &clear_error_on_return;  // Silence compiler warning.
 
   if (args.Length() != 1) {
-    return env->ThrowTypeError(u8"Ciphers argument is mandatory");
+    return env->ThrowTypeError("\x43\x69\x70\x68\x65\x72\x73\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"Ciphers");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x43\x69\x70\x68\x65\x72\x73");
 
   const node::Utf8Value ciphers(args.GetIsolate(), args[0]);
   SSL_CTX_set_cipher_list(sc->ctx_, *ciphers);
@@ -882,21 +882,21 @@ void SecureContext::SetECDHCurve(const FunctionCallbackInfo<Value>& args) {
   Environment* env = sc->env();
 
   if (args.Length() != 1)
-    return env->ThrowTypeError(u8"ECDH curve name argument is mandatory");
+    return env->ThrowTypeError("\x45\x43\x44\x48\x20\x63\x75\x72\x76\x65\x20\x6e\x61\x6d\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"ECDH curve name");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x45\x43\x44\x48\x20\x63\x75\x72\x76\x65\x20\x6e\x61\x6d\x65");
 
   node::Utf8Value curve(env->isolate(), args[0]);
 
   int nid = OBJ_sn2nid(*curve);
 
   if (nid == NID_undef)
-    return env->ThrowTypeError(u8"First argument should be a valid curve name");
+    return env->ThrowTypeError("\x46\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x76\x61\x6c\x69\x64\x20\x63\x75\x72\x76\x65\x20\x6e\x61\x6d\x65");
 
   EC_KEY* ecdh = EC_KEY_new_by_curve_name(nid);
 
   if (ecdh == nullptr)
-    return env->ThrowTypeError(u8"First argument should be a valid curve name");
+    return env->ThrowTypeError("\x46\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x76\x61\x6c\x69\x64\x20\x63\x75\x72\x76\x65\x20\x6e\x61\x6d\x65");
 
   SSL_CTX_set_options(sc->ctx_, SSL_OP_SINGLE_ECDH_USE);
   SSL_CTX_set_tmp_ecdh(sc->ctx_, ecdh);
@@ -915,7 +915,7 @@ void SecureContext::SetDHParam(const FunctionCallbackInfo<Value>& args) {
   // Auto DH is not supported in openssl 1.0.1, so dhparam needs
   // to be specifed explicitly
   if (args.Length() != 1)
-    return env->ThrowTypeError(u8"DH argument is mandatory");
+    return env->ThrowTypeError("\x44\x48\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
 
   // Invalid dhparam is silently discarded and DHE is no longer used.
   BIO* bio = LoadBIO(env, args[0]);
@@ -930,10 +930,10 @@ void SecureContext::SetDHParam(const FunctionCallbackInfo<Value>& args) {
 
   const int size = BN_num_bits(dh->p);
   if (size < 1024) {
-    return env->ThrowError(u8"DH parameter is less than 1024 bits");
+    return env->ThrowError("\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x69\x73\x20\x6c\x65\x73\x73\x20\x74\x68\x61\x6e\x20\x31\x30\x32\x34\x20\x62\x69\x74\x73");
   } else if (size < 2048) {
     args.GetReturnValue().Set(FIXED_ONE_BYTE_STRING(
-        env->isolate(), u8"WARNING: DH parameter is less than 2048 bits"));
+        env->isolate(), "\x57\x41\x52\x4e\x49\x4e\x47\x3a\x20\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x69\x73\x20\x6c\x65\x73\x73\x20\x74\x68\x61\x6e\x20\x32\x30\x34\x38\x20\x62\x69\x74\x73"));
   }
 
   SSL_CTX_set_options(sc->ctx_, SSL_OP_SINGLE_DH_USE);
@@ -941,7 +941,7 @@ void SecureContext::SetDHParam(const FunctionCallbackInfo<Value>& args) {
   DH_free(dh);
 
   if (!r)
-    return env->ThrowTypeError(u8"Error setting temp DH parameter");
+    return env->ThrowTypeError("\x45\x72\x72\x6f\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x74\x65\x6d\x70\x20\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72");
 }
 
 
@@ -950,7 +950,7 @@ void SecureContext::SetOptions(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&sc, args.Holder());
 
   if (args.Length() != 1 || !args[0]->IntegerValue()) {
-    return sc->env()->ThrowTypeError(u8"Options must be an integer value");
+    return sc->env()->ThrowTypeError("\x4f\x70\x74\x69\x6f\x6e\x73\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x69\x6e\x74\x65\x67\x65\x72\x20\x76\x61\x6c\x75\x65");
   }
 
   SSL_CTX_set_options(
@@ -966,10 +966,10 @@ void SecureContext::SetSessionIdContext(
   Environment* env = sc->env();
 
   if (args.Length() != 1) {
-    return env->ThrowTypeError(u8"Session ID context argument is mandatory");
+    return env->ThrowTypeError("\x53\x65\x73\x73\x69\x6f\x6e\x20\x49\x44\x20\x63\x6f\x6e\x74\x65\x78\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"Session ID context");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x53\x65\x73\x73\x69\x6f\x6e\x20\x49\x44\x20\x63\x6f\x6e\x74\x65\x78\x74");
 
   const node::Utf8Value sessionIdContext(args.GetIsolate(), args[0]);
   const unsigned char* sid_ctx =
@@ -987,7 +987,7 @@ void SecureContext::SetSessionIdContext(
   bio = BIO_new(BIO_s_mem());
   if (bio == nullptr) {
     message = FIXED_ONE_BYTE_STRING(args.GetIsolate(),
-                                    u8"SSL_CTX_set_session_id_context error");
+                                    "\x53\x53\x4c\x5f\x43\x54\x58\x5f\x73\x65\x74\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x69\x64\x5f\x63\x6f\x6e\x74\x65\x78\x74\x20\x65\x72\x72\x6f\x72");
   } else {
     ERR_print_errors(bio);
     BIO_get_mem_ptr(bio, &mem);
@@ -1005,7 +1005,7 @@ void SecureContext::SetSessionTimeout(const FunctionCallbackInfo<Value>& args) {
 
   if (args.Length() != 1 || !args[0]->IsInt32()) {
     return sc->env()->ThrowTypeError(
-        u8"Session timeout must be a 32-bit integer");
+        "\x53\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x6d\x65\x6f\x75\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x33\x32\x2d\x62\x69\x74\x20\x69\x6e\x74\x65\x67\x65\x72");
   }
 
   int32_t sessionTimeout = args[0]->Int32Value();
@@ -1038,16 +1038,16 @@ void SecureContext::LoadPKCS12(const FunctionCallbackInfo<Value>& args) {
   (void) &clear_error_on_return;  // Silence compiler warning.
 
   if (args.Length() < 1) {
-    return env->ThrowTypeError(u8"PFX certificate argument is mandatory");
+    return env->ThrowTypeError("\x50\x46\x58\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
   in = LoadBIO(env, args[0]);
   if (in == nullptr) {
-    return env->ThrowError(u8"Unable to load BIO");
+    return env->ThrowError("\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x42\x49\x4f");
   }
 
   if (args.Length() >= 2) {
-    THROW_AND_RETURN_IF_NOT_BUFFER(args[1], u8"Pass phrase");
+    THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "\x50\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65");
     size_t passlen = Buffer::Length(args[1]);
     pass = new char[passlen + 1];
     memcpy(pass, Buffer::Data(args[1]), passlen);
@@ -1117,7 +1117,7 @@ void SecureContext::GetTicketKeys(const FunctionCallbackInfo<Value>& args) {
   if (SSL_CTX_get_tlsext_ticket_keys(wrap->ctx_,
                                      Buffer::Data(buff),
                                      Buffer::Length(buff)) != 1) {
-    return wrap->env()->ThrowError(u8"Failed to fetch tls ticket keys");
+    return wrap->env()->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x66\x65\x74\x63\x68\x20\x74\x6c\x73\x20\x74\x69\x63\x6b\x65\x74\x20\x6b\x65\x79\x73");
   }
 
   args.GetReturnValue().Set(buff);
@@ -1132,19 +1132,19 @@ void SecureContext::SetTicketKeys(const FunctionCallbackInfo<Value>& args) {
   Environment* env = wrap->env();
 
   if (args.Length() < 1) {
-    return env->ThrowTypeError(u8"Ticket keys argument is mandatory");
+    return env->ThrowTypeError("\x54\x69\x63\x6b\x65\x74\x20\x6b\x65\x79\x73\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Ticket keys");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x54\x69\x63\x6b\x65\x74\x20\x6b\x65\x79\x73");
 
   if (Buffer::Length(args[0]) != 48) {
-    return env->ThrowTypeError(u8"Ticket keys length must be 48 bytes");
+    return env->ThrowTypeError("\x54\x69\x63\x6b\x65\x74\x20\x6b\x65\x79\x73\x20\x6c\x65\x6e\x67\x74\x68\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x34\x38\x20\x62\x79\x74\x65\x73");
   }
 
   if (SSL_CTX_set_tlsext_ticket_keys(wrap->ctx_,
                                      Buffer::Data(args[0]),
                                      Buffer::Length(args[0])) != 1) {
-    return env->ThrowError(u8"Failed to fetch tls ticket keys");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x66\x65\x74\x63\x68\x20\x74\x6c\x73\x20\x74\x69\x63\x6b\x65\x74\x20\x6b\x65\x79\x73");
   }
 
   args.GetReturnValue().Set(true);
@@ -1287,42 +1287,42 @@ template <class Base>
 void SSLWrap<Base>::AddMethods(Environment* env, Local<FunctionTemplate> t) {
   HandleScope scope(env->isolate());
 
-  env->SetProtoMethod(t, u8"getPeerCertificate", GetPeerCertificate);
-  env->SetProtoMethod(t, u8"getSession", GetSession);
-  env->SetProtoMethod(t, u8"setSession", SetSession);
-  env->SetProtoMethod(t, u8"loadSession", LoadSession);
-  env->SetProtoMethod(t, u8"isSessionReused", IsSessionReused);
-  env->SetProtoMethod(t, u8"isInitFinished", IsInitFinished);
-  env->SetProtoMethod(t, u8"verifyError", VerifyError);
-  env->SetProtoMethod(t, u8"getCurrentCipher", GetCurrentCipher);
-  env->SetProtoMethod(t, u8"endParser", EndParser);
-  env->SetProtoMethod(t, u8"certCbDone", CertCbDone);
-  env->SetProtoMethod(t, u8"renegotiate", Renegotiate);
-  env->SetProtoMethod(t, u8"shutdownSSL", Shutdown);
-  env->SetProtoMethod(t, u8"getTLSTicket", GetTLSTicket);
-  env->SetProtoMethod(t, u8"newSessionDone", NewSessionDone);
-  env->SetProtoMethod(t, u8"setOCSPResponse", SetOCSPResponse);
-  env->SetProtoMethod(t, u8"requestOCSP", RequestOCSP);
-  env->SetProtoMethod(t, u8"getEphemeralKeyInfo", GetEphemeralKeyInfo);
-  env->SetProtoMethod(t, u8"getProtocol", GetProtocol);
+  env->SetProtoMethod(t, "\x67\x65\x74\x50\x65\x65\x72\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65", GetPeerCertificate);
+  env->SetProtoMethod(t, "\x67\x65\x74\x53\x65\x73\x73\x69\x6f\x6e", GetSession);
+  env->SetProtoMethod(t, "\x73\x65\x74\x53\x65\x73\x73\x69\x6f\x6e", SetSession);
+  env->SetProtoMethod(t, "\x6c\x6f\x61\x64\x53\x65\x73\x73\x69\x6f\x6e", LoadSession);
+  env->SetProtoMethod(t, "\x69\x73\x53\x65\x73\x73\x69\x6f\x6e\x52\x65\x75\x73\x65\x64", IsSessionReused);
+  env->SetProtoMethod(t, "\x69\x73\x49\x6e\x69\x74\x46\x69\x6e\x69\x73\x68\x65\x64", IsInitFinished);
+  env->SetProtoMethod(t, "\x76\x65\x72\x69\x66\x79\x45\x72\x72\x6f\x72", VerifyError);
+  env->SetProtoMethod(t, "\x67\x65\x74\x43\x75\x72\x72\x65\x6e\x74\x43\x69\x70\x68\x65\x72", GetCurrentCipher);
+  env->SetProtoMethod(t, "\x65\x6e\x64\x50\x61\x72\x73\x65\x72", EndParser);
+  env->SetProtoMethod(t, "\x63\x65\x72\x74\x43\x62\x44\x6f\x6e\x65", CertCbDone);
+  env->SetProtoMethod(t, "\x72\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x65", Renegotiate);
+  env->SetProtoMethod(t, "\x73\x68\x75\x74\x64\x6f\x77\x6e\x53\x53\x4c", Shutdown);
+  env->SetProtoMethod(t, "\x67\x65\x74\x54\x4c\x53\x54\x69\x63\x6b\x65\x74", GetTLSTicket);
+  env->SetProtoMethod(t, "\x6e\x65\x77\x53\x65\x73\x73\x69\x6f\x6e\x44\x6f\x6e\x65", NewSessionDone);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4f\x43\x53\x50\x52\x65\x73\x70\x6f\x6e\x73\x65", SetOCSPResponse);
+  env->SetProtoMethod(t, "\x72\x65\x71\x75\x65\x73\x74\x4f\x43\x53\x50", RequestOCSP);
+  env->SetProtoMethod(t, "\x67\x65\x74\x45\x70\x68\x65\x6d\x65\x72\x61\x6c\x4b\x65\x79\x49\x6e\x66\x6f", GetEphemeralKeyInfo);
+  env->SetProtoMethod(t, "\x67\x65\x74\x50\x72\x6f\x74\x6f\x63\x6f\x6c", GetProtocol);
 
 #ifdef SSL_set_max_send_fragment
-  env->SetProtoMethod(t, u8"setMaxSendFragment", SetMaxSendFragment);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4d\x61\x78\x53\x65\x6e\x64\x46\x72\x61\x67\x6d\x65\x6e\x74", SetMaxSendFragment);
 #endif  // SSL_set_max_send_fragment
 
 #ifdef OPENSSL_NPN_NEGOTIATED
-  env->SetProtoMethod(t, u8"getNegotiatedProtocol", GetNegotiatedProto);
+  env->SetProtoMethod(t, "\x67\x65\x74\x4e\x65\x67\x6f\x74\x69\x61\x74\x65\x64\x50\x72\x6f\x74\x6f\x63\x6f\x6c", GetNegotiatedProto);
 #endif  // OPENSSL_NPN_NEGOTIATED
 
 #ifdef OPENSSL_NPN_NEGOTIATED
-  env->SetProtoMethod(t, u8"setNPNProtocols", SetNPNProtocols);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4e\x50\x4e\x50\x72\x6f\x74\x6f\x63\x6f\x6c\x73", SetNPNProtocols);
 #endif
 
-  env->SetProtoMethod(t, u8"getALPNNegotiatedProtocol", GetALPNNegotiatedProto);
-  env->SetProtoMethod(t, u8"setALPNProtocols", SetALPNProtocols);
+  env->SetProtoMethod(t, "\x67\x65\x74\x41\x4c\x50\x4e\x4e\x65\x67\x6f\x74\x69\x61\x74\x65\x64\x50\x72\x6f\x74\x6f\x63\x6f\x6c", GetALPNNegotiatedProto);
+  env->SetProtoMethod(t, "\x73\x65\x74\x41\x4c\x50\x4e\x50\x72\x6f\x74\x6f\x63\x6f\x6c\x73", SetALPNProtocols);
 
   t->PrototypeTemplate()->SetAccessor(
-      FIXED_ONE_BYTE_STRING(env->isolate(), u8"_external"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), "\x5f\x65\x78\x74\x65\x72\x6e\x61\x6c"),
       SSLGetter,
       nullptr,
       env->as_external(),
@@ -1452,12 +1452,12 @@ static bool SafeX509ExtPrint(BIO* out, X509_EXTENSION* ext) {
     GENERAL_NAME* gen = sk_GENERAL_NAME_value(names, i);
 
     if (i != 0)
-      BIO_write(out, u8", ", 2);
+      BIO_write(out, "\x2c\x20", 2);
 
     if (gen->type == GEN_DNS) {
       ASN1_IA5STRING* name = gen->d.dNSName;
 
-      BIO_write(out, u8"DNS:", 4);
+      BIO_write(out, "\x44\x4e\x53\x3a", 4);
       BIO_write(out, name->data, name->length);
     } else {
       STACK_OF(CONF_VALUE)* nval = i2v_GENERAL_NAME(
@@ -1546,9 +1546,9 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
       uint32_t lo = static_cast<uint32_t>(exponent_word);
       uint32_t hi = static_cast<uint32_t>(exponent_word >> 32);
       if (hi == 0) {
-          BIO_printf(bio, u8"0x%x", lo);
+          BIO_printf(bio, "0x%x", lo);
       } else {
-          BIO_printf(bio, u8"0x%x%08x", hi, lo);
+          BIO_printf(bio, "0x%x%08x", hi, lo);
       }
       BIO_get_mem_ptr(bio, &mem);
       info->Set(env->exponent_string(),
@@ -1583,7 +1583,7 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
   unsigned int md_size, i;
   unsigned char md[EVP_MAX_MD_SIZE];
   if (X509_digest(cert, EVP_sha1(), md, &md_size)) {
-    const char hex[] = u8"0123456789ABCDEF";
+    const char hex[] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
     char fingerprint[EVP_MAX_MD_SIZE * 3];
 
     // TODO(indutny): Unify it with buffer's code
@@ -1781,10 +1781,10 @@ void SSLWrap<Base>::SetSession(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&w, args.Holder());
 
   if (args.Length() < 1) {
-    return env->ThrowError(u8"Session argument is mandatory");
+    return env->ThrowError("\x53\x65\x73\x73\x69\x6f\x6e\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Session");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x53\x65\x73\x73\x69\x6f\x6e");
   size_t slen = Buffer::Length(args[0]);
   char* sbuf = new char[slen];
   memcpy(sbuf, Buffer::Data(args[0]), slen);
@@ -1801,7 +1801,7 @@ void SSLWrap<Base>::SetSession(const FunctionCallbackInfo<Value>& args) {
   SSL_SESSION_free(sess);
 
   if (!r)
-    return env->ThrowError(u8"SSL_set_session error");
+    return env->ThrowError("\x53\x53\x4c\x5f\x73\x65\x74\x5f\x73\x65\x73\x73\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72");
 }
 
 
@@ -1914,9 +1914,9 @@ void SSLWrap<Base>::SetOCSPResponse(
   Environment* env = w->env();
 
   if (args.Length() < 1)
-    return env->ThrowTypeError(u8"OCSP response argument is mandatory");
+    return env->ThrowTypeError("\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"OCSP response");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x73\x65");
 
   w->ocsp_response_.Reset(args.GetIsolate(), args[0].As<Object>());
 #endif  // NODE__HAVE_TLSEXT_STATUS_CB
@@ -1956,7 +1956,7 @@ void SSLWrap<Base>::GetEphemeralKeyInfo(
     switch (EVP_PKEY_id(key)) {
       case EVP_PKEY_DH:
         info->Set(env->type_string(),
-                  FIXED_ONE_BYTE_STRING(env->isolate(), u8"DH"));
+                  FIXED_ONE_BYTE_STRING(env->isolate(), "\x44\x48"));
         info->Set(env->size_string(),
                   Integer::New(env->isolate(), EVP_PKEY_bits(key)));
         break;
@@ -1966,7 +1966,7 @@ void SSLWrap<Base>::GetEphemeralKeyInfo(
           int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(ec));
           EC_KEY_free(ec);
           info->Set(env->type_string(),
-                    FIXED_ONE_BYTE_STRING(env->isolate(), u8"ECDH"));
+                    FIXED_ONE_BYTE_STRING(env->isolate(), "\x45\x43\x44\x48"));
           info->Set(env->name_string(),
                     OneByteString(args.GetIsolate(), OBJ_nid2sn(nid)));
           info->Set(env->size_string(),
@@ -2063,7 +2063,7 @@ void SSLWrap<Base>::VerifyError(const FunctionCallbackInfo<Value>& args) {
   Local<String> reason_string = OneByteString(isolate, reason);
   Local<Value> exception_value = Exception::Error(reason_string);
   Local<Object> exception_object = exception_value->ToObject(isolate);
-  exception_object->Set(FIXED_ONE_BYTE_STRING(isolate, u8"code"),
+  exception_object->Set(FIXED_ONE_BYTE_STRING(isolate, "\x63\x6f\x64\x65"),
                         OneByteString(isolate, code));
   args.GetReturnValue().Set(exception_object);
 }
@@ -2117,7 +2117,7 @@ int SSLWrap<Base>::AdvertiseNextProtoCallback(SSL* s,
 
   if (npn_buffer->IsUndefined()) {
     // No initialization - no NPN protocols
-    *data = reinterpret_cast<const unsigned char*>(u8"");
+    *data = reinterpret_cast<const unsigned char*>("");
     *len = 0;
   } else {
     CHECK(Buffer::HasInstance(npn_buffer));
@@ -2149,7 +2149,7 @@ int SSLWrap<Base>::SelectNextProtoCallback(SSL* s,
   if (npn_buffer->IsUndefined()) {
     // We should at least select one protocol
     // If server is using NPN
-    *out = reinterpret_cast<unsigned char*>(const_cast<char*>(u8"http/1.1"));
+    *out = reinterpret_cast<unsigned char*>(const_cast<char*>("\x68\x74\x74\x70\x2f\x31\x2e\x31"));
     *outlen = 8;
 
     // set status: unsupported
@@ -2229,9 +2229,9 @@ void SSLWrap<Base>::SetNPNProtocols(const FunctionCallbackInfo<Value>& args) {
   Environment* env = w->env();
 
   if (args.Length() < 1)
-    return env->ThrowTypeError(u8"NPN protocols argument is mandatory");
+    return env->ThrowTypeError("\x4e\x50\x4e\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x73\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"NPN protocols");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x4e\x50\x4e\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x73");
 
   CHECK(
       w->object()->SetPrivate(
@@ -2311,7 +2311,7 @@ void SSLWrap<Base>::SetALPNProtocols(
   ASSIGN_OR_RETURN_UNWRAP(&w, args.Holder());
   Environment* env = w->env();
   if (args.Length() < 1 || !Buffer::HasInstance(args[0]))
-    return env->ThrowTypeError(u8"Must give a Buffer as first argument");
+    return env->ThrowTypeError("\x4d\x75\x73\x74\x20\x67\x69\x76\x65\x20\x61\x20\x42\x75\x66\x66\x65\x72\x20\x61\x73\x20\x66\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74");
 
   if (w->is_client()) {
     const unsigned char* alpn_protos =
@@ -2477,7 +2477,7 @@ void SSLWrap<Base>::CertCbDone(const FunctionCallbackInfo<Value>& args) {
     if (!rv) {
       unsigned long err = ERR_get_error();  // NOLINT(runtime/int)
       if (!err)
-        return env->ThrowError(u8"CertCbDone");
+        return env->ThrowError("\x43\x65\x72\x74\x43\x62\x44\x6f\x6e\x65");
       return ThrowCryptoError(env, err);
     }
   } else {
@@ -2555,7 +2555,7 @@ void Connection::OnClientHelloParseEnd(void* arg) {
   int r = BIO_write(conn->bio_read_,
                     reinterpret_cast<char*>(conn->hello_data_),
                     conn->hello_offset_);
-  conn->HandleBIOError(conn->bio_read_, u8"BIO_write", r);
+  conn->HandleBIOError(conn->bio_read_, "\x42\x49\x4f\x5f\x77\x72\x69\x74\x65", r);
   conn->SetShutdownFlags();
 }
 
@@ -2575,14 +2575,14 @@ int Connection::HandleBIOError(BIO *bio, const char* func, int rv) {
   (void) retry;  // unused if !defined(SSL_PRINT_DEBUG)
 
   if (BIO_should_write(bio)) {
-    DEBUG_PRINT(u8"[%p] BIO: %s want write. should retry %d\n",
+    DEBUG_PRINT("\x5b\x6c\x97\x5d\x20\x42\x49\x4f\x3a\x20\x6c\xa2\x20\x77\x61\x6e\x74\x20\x77\x72\x69\x74\x65\x2e\x20\x73\x68\x6f\x75\x6c\x64\x20\x72\x65\x74\x72\x79\x20\x6c\x84\xa",
                 ssl_,
                 func,
                 retry);
     return 0;
 
   } else if (BIO_should_read(bio)) {
-    DEBUG_PRINT(u8"[%p] BIO: %s want read. should retry %d\n", ssl_, func, retry);
+    DEBUG_PRINT("\x5b\x6c\x97\x5d\x20\x42\x49\x4f\x3a\x20\x6c\xa2\x20\x77\x61\x6e\x74\x20\x72\x65\x61\x64\x2e\x20\x73\x68\x6f\x75\x6c\x64\x20\x72\x65\x74\x72\x79\x20\x6c\x84\xa", ssl_, func, retry);
     return 0;
 
   } else {
@@ -2594,7 +2594,7 @@ int Connection::HandleBIOError(BIO *bio, const char* func, int rv) {
         Exception::Error(OneByteString(ssl_env()->isolate(), ssl_error_buf));
     object()->Set(ssl_env()->error_string(), exception);
 
-    DEBUG_PRINT(u8"[%p] BIO: %s failed: (%d) %s\n",
+    DEBUG_PRINT("\x5b\x6c\x97\x5d\x20\x42\x49\x4f\x3a\x20\x6c\xa2\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x28\x6c\x84\x29\x20\x6c\xa2\xa",
                 ssl_,
                 func,
                 rv,
@@ -2625,15 +2625,15 @@ int Connection::HandleSSLError(const char* func,
     return 0;
 
   } else if (err == SSL_ERROR_WANT_WRITE) {
-    DEBUG_PRINT(u8"[%p] SSL: %s want write\n", ssl_, func);
+    DEBUG_PRINT("\x5b\x6c\x97\x5d\x20\x53\x53\x4c\x3a\x20\x6c\xa2\x20\x77\x61\x6e\x74\x20\x77\x72\x69\x74\x65\xa", ssl_, func);
     return 0;
 
   } else if (err == SSL_ERROR_WANT_READ) {
-    DEBUG_PRINT(u8"[%p] SSL: %s want read\n", ssl_, func);
+    DEBUG_PRINT("\x5b\x6c\x97\x5d\x20\x53\x53\x4c\x3a\x20\x6c\xa2\x20\x77\x61\x6e\x74\x20\x72\x65\x61\x64\xa", ssl_, func);
     return 0;
 
   } else if (err == SSL_ERROR_WANT_X509_LOOKUP) {
-    DEBUG_PRINT(u8"[%p] SSL: %s want x509 lookup\n", ssl_, func);
+    DEBUG_PRINT("\x5b\x6c\x97\x5d\x20\x53\x53\x4c\x3a\x20\x6c\xa2\x20\x77\x61\x6e\x74\x20\x78\x35\x30\x39\x20\x6c\x6f\x6f\x6b\x75\x70\xa", ssl_, func);
     return 0;
 
   } else if (err == SSL_ERROR_ZERO_RETURN) {
@@ -2717,26 +2717,26 @@ void Connection::NewSessionDoneCb() {
 void Connection::Initialize(Environment* env, Local<Object> target) {
   Local<FunctionTemplate> t = env->NewFunctionTemplate(Connection::New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Connection"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x43\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e"));
 
-  env->SetProtoMethod(t, u8"encIn", Connection::EncIn);
-  env->SetProtoMethod(t, u8"clearOut", Connection::ClearOut);
-  env->SetProtoMethod(t, u8"clearIn", Connection::ClearIn);
-  env->SetProtoMethod(t, u8"encOut", Connection::EncOut);
-  env->SetProtoMethod(t, u8"clearPending", Connection::ClearPending);
-  env->SetProtoMethod(t, u8"encPending", Connection::EncPending);
-  env->SetProtoMethod(t, u8"start", Connection::Start);
-  env->SetProtoMethod(t, u8"close", Connection::Close);
+  env->SetProtoMethod(t, "\x65\x6e\x63\x49\x6e", Connection::EncIn);
+  env->SetProtoMethod(t, "\x63\x6c\x65\x61\x72\x4f\x75\x74", Connection::ClearOut);
+  env->SetProtoMethod(t, "\x63\x6c\x65\x61\x72\x49\x6e", Connection::ClearIn);
+  env->SetProtoMethod(t, "\x65\x6e\x63\x4f\x75\x74", Connection::EncOut);
+  env->SetProtoMethod(t, "\x63\x6c\x65\x61\x72\x50\x65\x6e\x64\x69\x6e\x67", Connection::ClearPending);
+  env->SetProtoMethod(t, "\x65\x6e\x63\x50\x65\x6e\x64\x69\x6e\x67", Connection::EncPending);
+  env->SetProtoMethod(t, "\x73\x74\x61\x72\x74", Connection::Start);
+  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", Connection::Close);
 
   SSLWrap<Connection>::AddMethods(env, t);
 
 
 #ifdef SSL_CTRL_SET_TLSEXT_SERVERNAME_CB
-  env->SetProtoMethod(t, u8"getServername", Connection::GetServername);
-  env->SetProtoMethod(t, u8"setSNICallback",  Connection::SetSNICallback);
+  env->SetProtoMethod(t, "\x67\x65\x74\x53\x65\x72\x76\x65\x72\x6e\x61\x6d\x65", Connection::GetServername);
+  env->SetProtoMethod(t, "\x73\x65\x74\x53\x4e\x49\x43\x61\x6c\x6c\x62\x61\x63\x6b",  Connection::SetSNICallback);
 #endif
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Connection"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x43\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e"),
               t->GetFunction());
 }
 
@@ -2877,7 +2877,7 @@ void Connection::New(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1 || !args[0]->IsObject()) {
-    env->ThrowError(u8"First argument must be a tls module SecureContext");
+    env->ThrowError("\x46\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x74\x6c\x73\x20\x6d\x6f\x64\x75\x6c\x65\x20\x53\x65\x63\x75\x72\x65\x43\x6f\x6e\x74\x65\x78\x74");
     return;
   }
 
@@ -2976,10 +2976,10 @@ void Connection::EncIn(const FunctionCallbackInfo<Value>& args) {
 
   if (args.Length() < 3) {
     return env->ThrowTypeError(
-        u8"Data, offset, and length arguments are mandatory");
+        "\x44\x61\x74\x61\x2c\x20\x6f\x66\x66\x73\x65\x74\x2c\x20\x61\x6e\x64\x20\x6c\x65\x6e\x67\x74\x68\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x20\x61\x72\x65\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x44\x61\x74\x61");
 
   char* buffer_data = Buffer::Data(args[0]);
   size_t buffer_length = Buffer::Length(args[0]);
@@ -2988,7 +2988,7 @@ void Connection::EncIn(const FunctionCallbackInfo<Value>& args) {
   size_t len = args[2]->Int32Value();
 
   if (!Buffer::IsWithinBounds(off, len, buffer_length))
-    return env->ThrowRangeError(u8"offset + length > buffer.length");
+    return env->ThrowRangeError("\x6f\x66\x66\x73\x65\x74\x20\x2b\x20\x6c\x65\x6e\x67\x74\x68\x20\x3e\x20\x62\x75\x66\x66\x65\x72\x2e\x6c\x65\x6e\x67\x74\x68");
 
   int bytes_written;
   char* data = buffer_data + off;
@@ -3010,7 +3010,7 @@ void Connection::EncIn(const FunctionCallbackInfo<Value>& args) {
     }
   } else {
     bytes_written = BIO_write(conn->bio_read_, data, len);
-    conn->HandleBIOError(conn->bio_read_, u8"BIO_write", bytes_written);
+    conn->HandleBIOError(conn->bio_read_, "\x42\x49\x4f\x5f\x77\x72\x69\x74\x65", bytes_written);
     conn->SetShutdownFlags();
   }
 
@@ -3025,10 +3025,10 @@ void Connection::ClearOut(const FunctionCallbackInfo<Value>& args) {
 
   if (args.Length() < 3) {
     return env->ThrowTypeError(
-        u8"Data, offset, and length arguments are mandatory");
+        "\x44\x61\x74\x61\x2c\x20\x6f\x66\x66\x73\x65\x74\x2c\x20\x61\x6e\x64\x20\x6c\x65\x6e\x67\x74\x68\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x20\x61\x72\x65\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x44\x61\x74\x61");
 
   char* buffer_data = Buffer::Data(args[0]);
   size_t buffer_length = Buffer::Length(args[0]);
@@ -3037,20 +3037,20 @@ void Connection::ClearOut(const FunctionCallbackInfo<Value>& args) {
   size_t len = args[2]->Int32Value();
 
   if (!Buffer::IsWithinBounds(off, len, buffer_length))
-    return env->ThrowRangeError(u8"offset + length > buffer.length");
+    return env->ThrowRangeError("\x6f\x66\x66\x73\x65\x74\x20\x2b\x20\x6c\x65\x6e\x67\x74\x68\x20\x3e\x20\x62\x75\x66\x66\x65\x72\x2e\x6c\x65\x6e\x67\x74\x68");
 
   if (!SSL_is_init_finished(conn->ssl_)) {
     int rv;
 
     if (conn->is_server()) {
       rv = SSL_accept(conn->ssl_);
-      conn->HandleSSLError(u8"SSL_accept:ClearOut",
+      conn->HandleSSLError("\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x3a\x43\x6c\x65\x61\x72\x4f\x75\x74",
                            rv,
                            kZeroIsAnError,
                            kSyscallError);
     } else {
       rv = SSL_connect(conn->ssl_);
-      conn->HandleSSLError(u8"SSL_connect:ClearOut",
+      conn->HandleSSLError("\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74\x3a\x43\x6c\x65\x61\x72\x4f\x75\x74",
                            rv,
                            kZeroIsAnError,
                            kSyscallError);
@@ -3062,7 +3062,7 @@ void Connection::ClearOut(const FunctionCallbackInfo<Value>& args) {
   }
 
   int bytes_read = SSL_read(conn->ssl_, buffer_data + off, len);
-  conn->HandleSSLError(u8"SSL_read:ClearOut",
+  conn->HandleSSLError("\x53\x53\x4c\x5f\x72\x65\x61\x64\x3a\x43\x6c\x65\x61\x72\x4f\x75\x74",
                        bytes_read,
                        kZeroIsNotAnError,
                        kSyscallError);
@@ -3095,10 +3095,10 @@ void Connection::EncOut(const FunctionCallbackInfo<Value>& args) {
 
   if (args.Length() < 3) {
     return env->ThrowTypeError(
-        u8"Data, offset, and length arguments are mandatory");
+        "\x44\x61\x74\x61\x2c\x20\x6f\x66\x66\x73\x65\x74\x2c\x20\x61\x6e\x64\x20\x6c\x65\x6e\x67\x74\x68\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x20\x61\x72\x65\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x44\x61\x74\x61");
 
   char* buffer_data = Buffer::Data(args[0]);
   size_t buffer_length = Buffer::Length(args[0]);
@@ -3107,11 +3107,11 @@ void Connection::EncOut(const FunctionCallbackInfo<Value>& args) {
   size_t len = args[2]->Int32Value();
 
   if (!Buffer::IsWithinBounds(off, len, buffer_length))
-    return env->ThrowRangeError(u8"offset + length > buffer.length");
+    return env->ThrowRangeError("\x6f\x66\x66\x73\x65\x74\x20\x2b\x20\x6c\x65\x6e\x67\x74\x68\x20\x3e\x20\x62\x75\x66\x66\x65\x72\x2e\x6c\x65\x6e\x67\x74\x68");
 
   int bytes_read = BIO_read(conn->bio_write_, buffer_data + off, len);
 
-  conn->HandleBIOError(conn->bio_write_, u8"BIO_read:EncOut", bytes_read);
+  conn->HandleBIOError(conn->bio_write_, "\x42\x49\x4f\x5f\x72\x65\x61\x64\x3a\x45\x6e\x63\x4f\x75\x74", bytes_read);
   conn->SetShutdownFlags();
 
   args.GetReturnValue().Set(bytes_read);
@@ -3125,10 +3125,10 @@ void Connection::ClearIn(const FunctionCallbackInfo<Value>& args) {
 
   if (args.Length() < 3) {
     return env->ThrowTypeError(
-        u8"Data, offset, and length arguments are mandatory");
+        "\x44\x61\x74\x61\x2c\x20\x6f\x66\x66\x73\x65\x74\x2c\x20\x61\x6e\x64\x20\x6c\x65\x6e\x67\x74\x68\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x20\x61\x72\x65\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x44\x61\x74\x61");
 
   char* buffer_data = Buffer::Data(args[0]);
   size_t buffer_length = Buffer::Length(args[0]);
@@ -3137,19 +3137,19 @@ void Connection::ClearIn(const FunctionCallbackInfo<Value>& args) {
   size_t len = args[2]->Int32Value();
 
   if (!Buffer::IsWithinBounds(off, len, buffer_length))
-    return env->ThrowRangeError(u8"offset + length > buffer.length");
+    return env->ThrowRangeError("\x6f\x66\x66\x73\x65\x74\x20\x2b\x20\x6c\x65\x6e\x67\x74\x68\x20\x3e\x20\x62\x75\x66\x66\x65\x72\x2e\x6c\x65\x6e\x67\x74\x68");
 
   if (!SSL_is_init_finished(conn->ssl_)) {
     int rv;
     if (conn->is_server()) {
       rv = SSL_accept(conn->ssl_);
-      conn->HandleSSLError(u8"SSL_accept:ClearIn",
+      conn->HandleSSLError("\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x3a\x43\x6c\x65\x61\x72\x49\x6e",
                            rv,
                            kZeroIsAnError,
                            kSyscallError);
     } else {
       rv = SSL_connect(conn->ssl_);
-      conn->HandleSSLError(u8"SSL_connect:ClearIn",
+      conn->HandleSSLError("\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74\x3a\x43\x6c\x65\x61\x72\x49\x6e",
                            rv,
                            kZeroIsAnError,
                            kSyscallError);
@@ -3162,7 +3162,7 @@ void Connection::ClearIn(const FunctionCallbackInfo<Value>& args) {
 
   int bytes_written = SSL_write(conn->ssl_, buffer_data + off, len);
 
-  conn->HandleSSLError(u8"SSL_write:ClearIn",
+  conn->HandleSSLError("\x53\x53\x4c\x5f\x77\x72\x69\x74\x65\x3a\x43\x6c\x65\x61\x72\x49\x6e",
                        bytes_written,
                        len == 0 ? kZeroIsNotAnError : kZeroIsAnError,
                        kSyscallError);
@@ -3180,13 +3180,13 @@ void Connection::Start(const FunctionCallbackInfo<Value>& args) {
   if (!SSL_is_init_finished(conn->ssl_)) {
     if (conn->is_server()) {
       rv = SSL_accept(conn->ssl_);
-      conn->HandleSSLError(u8"SSL_accept:Start",
+      conn->HandleSSLError("\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x3a\x53\x74\x61\x72\x74",
                            rv,
                            kZeroIsAnError,
                            kSyscallError);
     } else {
       rv = SSL_connect(conn->ssl_);
-      conn->HandleSSLError(u8"SSL_connect:Start",
+      conn->HandleSSLError("\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74\x3a\x53\x74\x61\x72\x74",
                            rv,
                            kZeroIsAnError,
                            kSyscallError);
@@ -3226,11 +3226,11 @@ void Connection::SetSNICallback(const FunctionCallbackInfo<Value>& args) {
   Environment* env = conn->env();
 
   if (args.Length() < 1 || !args[0]->IsFunction()) {
-    return env->ThrowError(u8"Must give a Function as first argument");
+    return env->ThrowError("\x4d\x75\x73\x74\x20\x67\x69\x76\x65\x20\x61\x20\x46\x75\x6e\x63\x74\x69\x6f\x6e\x20\x61\x73\x20\x66\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74");
   }
 
   Local<Object> obj = Object::New(env->isolate());
-  obj->Set(FIXED_ONE_BYTE_STRING(args.GetIsolate(), u8"onselect"), args[0]);
+  obj->Set(FIXED_ONE_BYTE_STRING(args.GetIsolate(), "\x6f\x6e\x73\x65\x6c\x65\x63\x74"), args[0]);
   conn->sniObject_.Reset(args.GetIsolate(), obj);
 }
 #endif
@@ -3241,16 +3241,16 @@ void CipherBase::Initialize(Environment* env, Local<Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"init", Init);
-  env->SetProtoMethod(t, u8"initiv", InitIv);
-  env->SetProtoMethod(t, u8"update", Update);
-  env->SetProtoMethod(t, u8"final", Final);
-  env->SetProtoMethod(t, u8"setAutoPadding", SetAutoPadding);
-  env->SetProtoMethod(t, u8"getAuthTag", GetAuthTag);
-  env->SetProtoMethod(t, u8"setAuthTag", SetAuthTag);
-  env->SetProtoMethod(t, u8"setAAD", SetAAD);
+  env->SetProtoMethod(t, "\x69\x6e\x69\x74", Init);
+  env->SetProtoMethod(t, "\x69\x6e\x69\x74\x69\x76", InitIv);
+  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", Update);
+  env->SetProtoMethod(t, "\x66\x69\x6e\x61\x6c", Final);
+  env->SetProtoMethod(t, "\x73\x65\x74\x41\x75\x74\x6f\x50\x61\x64\x64\x69\x6e\x67", SetAutoPadding);
+  env->SetProtoMethod(t, "\x67\x65\x74\x41\x75\x74\x68\x54\x61\x67", GetAuthTag);
+  env->SetProtoMethod(t, "\x73\x65\x74\x41\x75\x74\x68\x54\x61\x67", SetAuthTag);
+  env->SetProtoMethod(t, "\x73\x65\x74\x41\x41\x44", SetAAD);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"CipherBase"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x43\x69\x70\x68\x65\x72\x42\x61\x73\x65"),
               t->GetFunction());
 }
 
@@ -3271,14 +3271,14 @@ void CipherBase::Init(const char* cipher_type,
 #ifdef NODE_FIPS_MODE
   if (FIPS_mode()) {
     return env()->ThrowError(
-        u8"crypto.createCipher() is not supported in FIPS mode.");
+        "\x63\x72\x79\x70\x74\x6f\x2e\x63\x72\x65\x61\x74\x65\x43\x69\x70\x68\x65\x72\x28\x29\x20\x69\x73\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x69\x6e\x20\x46\x49\x50\x53\x20\x6d\x6f\x64\x65\x2e");
   }
 #endif  // NODE_FIPS_MODE
 
   CHECK_EQ(cipher_, nullptr);
   cipher_ = EVP_get_cipherbyname(cipher_type);
   if (cipher_ == nullptr) {
-    return env()->ThrowError(u8"Unknown cipher");
+    return env()->ThrowError("\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x69\x70\x68\x65\x72");
   }
 
   unsigned char key[EVP_MAX_KEY_LENGTH];
@@ -3298,7 +3298,7 @@ void CipherBase::Init(const char* cipher_type,
   EVP_CipherInit_ex(&ctx_, cipher_, nullptr, nullptr, nullptr, encrypt);
   if (!EVP_CIPHER_CTX_set_key_length(&ctx_, key_len)) {
     EVP_CIPHER_CTX_cleanup(&ctx_);
-    return env()->ThrowError(u8"Invalid key length");
+    return env()->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x6b\x65\x79\x20\x6c\x65\x6e\x67\x74\x68");
   }
 
   EVP_CipherInit_ex(&ctx_,
@@ -3317,11 +3317,11 @@ void CipherBase::Init(const FunctionCallbackInfo<Value>& args) {
   Environment* env = cipher->env();
 
   if (args.Length() < 2) {
-    return env->ThrowError(u8"Cipher type and key arguments are mandatory");
+    return env->ThrowError("\x43\x69\x70\x68\x65\x72\x20\x74\x79\x70\x65\x20\x61\x6e\x64\x20\x6b\x65\x79\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x20\x61\x72\x65\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"Cipher type");
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], u8"Key");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x43\x69\x70\x68\x65\x72\x20\x74\x79\x70\x65");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "\x4b\x65\x79");
 
   const node::Utf8Value cipher_type(args.GetIsolate(), args[0]);
   const char* key_buf = Buffer::Data(args[1]);
@@ -3339,14 +3339,14 @@ void CipherBase::InitIv(const char* cipher_type,
 
   cipher_ = EVP_get_cipherbyname(cipher_type);
   if (cipher_ == nullptr) {
-    return env()->ThrowError(u8"Unknown cipher");
+    return env()->ThrowError("\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x69\x70\x68\x65\x72");
   }
 
   const int expected_iv_len = EVP_CIPHER_iv_length(cipher_);
   const bool is_gcm_mode = (EVP_CIPH_GCM_MODE == EVP_CIPHER_mode(cipher_));
 
   if (is_gcm_mode == false && iv_len != expected_iv_len) {
-    return env()->ThrowError(u8"Invalid IV length");
+    return env()->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x49\x56\x20\x6c\x65\x6e\x67\x74\x68");
   }
 
   EVP_CIPHER_CTX_init(&ctx_);
@@ -3356,12 +3356,12 @@ void CipherBase::InitIv(const char* cipher_type,
   if (is_gcm_mode &&
       !EVP_CIPHER_CTX_ctrl(&ctx_, EVP_CTRL_GCM_SET_IVLEN, iv_len, nullptr)) {
     EVP_CIPHER_CTX_cleanup(&ctx_);
-    return env()->ThrowError(u8"Invalid IV length");
+    return env()->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x49\x56\x20\x6c\x65\x6e\x67\x74\x68");
   }
 
   if (!EVP_CIPHER_CTX_set_key_length(&ctx_, key_len)) {
     EVP_CIPHER_CTX_cleanup(&ctx_);
-    return env()->ThrowError(u8"Invalid key length");
+    return env()->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x6b\x65\x79\x20\x6c\x65\x6e\x67\x74\x68");
   }
 
   EVP_CipherInit_ex(&ctx_,
@@ -3380,12 +3380,12 @@ void CipherBase::InitIv(const FunctionCallbackInfo<Value>& args) {
   Environment* env = cipher->env();
 
   if (args.Length() < 3) {
-    return env->ThrowError(u8"Cipher type, key, and IV arguments are mandatory");
+    return env->ThrowError("\x43\x69\x70\x68\x65\x72\x20\x74\x79\x70\x65\x2c\x20\x6b\x65\x79\x2c\x20\x61\x6e\x64\x20\x49\x56\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x20\x61\x72\x65\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"Cipher type");
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], u8"Key");
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[2], u8"IV");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x43\x69\x70\x68\x65\x72\x20\x74\x79\x70\x65");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "\x4b\x65\x79");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[2], "\x49\x56");
 
   const node::Utf8Value cipher_type(env->isolate(), args[0]);
   ssize_t key_len = Buffer::Length(args[1]);
@@ -3429,7 +3429,7 @@ void CipherBase::GetAuthTag(const FunctionCallbackInfo<Value>& args) {
     Local<Object> buf = Buffer::New(env, out, out_len).ToLocalChecked();
     args.GetReturnValue().Set(buf);
   } else {
-    env->ThrowError(u8"Attempting to get auth tag in unsupported state");
+    env->ThrowError("\x41\x74\x74\x65\x6d\x70\x74\x69\x6e\x67\x20\x74\x6f\x20\x67\x65\x74\x20\x61\x75\x74\x68\x20\x74\x61\x67\x20\x69\x6e\x20\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x73\x74\x61\x74\x65");
   }
 }
 
@@ -3451,13 +3451,13 @@ void CipherBase::SetAuthTag(const FunctionCallbackInfo<Value>& args) {
   Local<Object> buf = args[0].As<Object>();
 
   if (!buf->IsObject() || !Buffer::HasInstance(buf))
-    return env->ThrowTypeError(u8"Auth tag must be a Buffer");
+    return env->ThrowTypeError("\x41\x75\x74\x68\x20\x74\x61\x67\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x42\x75\x66\x66\x65\x72");
 
   CipherBase* cipher;
   ASSIGN_OR_RETURN_UNWRAP(&cipher, args.Holder());
 
   if (!cipher->SetAuthTag(Buffer::Data(buf), Buffer::Length(buf)))
-    env->ThrowError(u8"Attempting to set auth tag in unsupported state");
+    env->ThrowError("\x41\x74\x74\x65\x6d\x70\x74\x69\x6e\x67\x20\x74\x6f\x20\x73\x65\x74\x20\x61\x75\x74\x68\x20\x74\x61\x67\x20\x69\x6e\x20\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x73\x74\x61\x74\x65");
 }
 
 
@@ -3479,13 +3479,13 @@ bool CipherBase::SetAAD(const char* data, unsigned int len) {
 void CipherBase::SetAAD(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"AAD");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x41\x41\x44");
 
   CipherBase* cipher;
   ASSIGN_OR_RETURN_UNWRAP(&cipher, args.Holder());
 
   if (!cipher->SetAAD(Buffer::Data(args[0]), Buffer::Length(args[0])))
-    env->ThrowError(u8"Attempting to set AAD in unsupported state");
+    env->ThrowError("\x41\x74\x74\x65\x6d\x70\x74\x69\x6e\x67\x20\x74\x6f\x20\x73\x65\x74\x20\x41\x41\x44\x20\x69\x6e\x20\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x73\x74\x61\x74\x65");
 }
 
 
@@ -3522,7 +3522,7 @@ void CipherBase::Update(const FunctionCallbackInfo<Value>& args) {
   CipherBase* cipher;
   ASSIGN_OR_RETURN_UNWRAP(&cipher, args.Holder());
 
-  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], u8"Cipher data");
+  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], "\x43\x69\x70\x68\x65\x72\x20\x64\x61\x74\x61");
 
   unsigned char* out = nullptr;
   bool r;
@@ -3544,7 +3544,7 @@ void CipherBase::Update(const FunctionCallbackInfo<Value>& args) {
     delete[] out;
     return ThrowCryptoError(env,
                             ERR_get_error(),
-                            u8"Trying to add data in unsupported state");
+                            "\x54\x72\x79\x69\x6e\x67\x20\x74\x6f\x20\x61\x64\x64\x20\x64\x61\x74\x61\x20\x69\x6e\x20\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x73\x74\x61\x74\x65");
   }
 
   CHECK(out != nullptr || out_len == 0);
@@ -3617,8 +3617,8 @@ void CipherBase::Final(const FunctionCallbackInfo<Value>& args) {
     out_len = 0;
     if (!r) {
       const char* msg = cipher->IsAuthenticatedMode() ?
-          u8"Unsupported state or unable to authenticate data" :
-          u8"Unsupported state";
+          "\x55\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x73\x74\x61\x74\x65\x20\x6f\x72\x20\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x65\x20\x64\x61\x74\x61" :
+          "\x55\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x73\x74\x61\x74\x65";
 
       return ThrowCryptoError(env,
                               ERR_get_error(),
@@ -3640,11 +3640,11 @@ void Hmac::Initialize(Environment* env, v8::Local<v8::Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"init", HmacInit);
-  env->SetProtoMethod(t, u8"update", HmacUpdate);
-  env->SetProtoMethod(t, u8"digest", HmacDigest);
+  env->SetProtoMethod(t, "\x69\x6e\x69\x74", HmacInit);
+  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", HmacUpdate);
+  env->SetProtoMethod(t, "\x64\x69\x67\x65\x73\x74", HmacDigest);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Hmac"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x48\x6d\x61\x63"), t->GetFunction());
 }
 
 
@@ -3660,11 +3660,11 @@ void Hmac::HmacInit(const char* hash_type, const char* key, int key_len) {
   CHECK_EQ(initialised_, false);
   const EVP_MD* md = EVP_get_digestbyname(hash_type);
   if (md == nullptr) {
-    return env()->ThrowError(u8"Unknown message digest");
+    return env()->ThrowError("\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x64\x69\x67\x65\x73\x74");
   }
   HMAC_CTX_init(&ctx_);
   if (key_len == 0) {
-    key = u8"";
+    key = "";
   }
   if (!HMAC_Init_ex(&ctx_, key, key_len, md, nullptr)) {
     return ThrowCryptoError(env(), ERR_get_error());
@@ -3679,11 +3679,11 @@ void Hmac::HmacInit(const FunctionCallbackInfo<Value>& args) {
   Environment* env = hmac->env();
 
   if (args.Length() < 2) {
-    return env->ThrowError(u8"Hash type and key arguments are mandatory");
+    return env->ThrowError("\x48\x61\x73\x68\x20\x74\x79\x70\x65\x20\x61\x6e\x64\x20\x6b\x65\x79\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x20\x61\x72\x65\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"Hash type");
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], u8"Key");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x48\x61\x73\x68\x20\x74\x79\x70\x65");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "\x4b\x65\x79");
 
   const node::Utf8Value hash_type(env->isolate(), args[0]);
   const char* buffer_data = Buffer::Data(args[1]);
@@ -3706,7 +3706,7 @@ void Hmac::HmacUpdate(const FunctionCallbackInfo<Value>& args) {
   Hmac* hmac;
   ASSIGN_OR_RETURN_UNWRAP(&hmac, args.Holder());
 
-  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], "\x44\x61\x74\x61");
 
   // Only copy the data if we have to, because it's a string
   bool r;
@@ -3722,7 +3722,7 @@ void Hmac::HmacUpdate(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (!r) {
-    return env->ThrowTypeError(u8"HmacUpdate fail");
+    return env->ThrowTypeError("\x48\x6d\x61\x63\x55\x70\x64\x61\x74\x65\x20\x66\x61\x69\x6c");
   }
 }
 
@@ -3774,10 +3774,10 @@ void Hash::Initialize(Environment* env, v8::Local<v8::Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"update", HashUpdate);
-  env->SetProtoMethod(t, u8"digest", HashDigest);
+  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", HashUpdate);
+  env->SetProtoMethod(t, "\x64\x69\x67\x65\x73\x74", HashDigest);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Hash"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x48\x61\x73\x68"), t->GetFunction());
 }
 
 
@@ -3785,7 +3785,7 @@ void Hash::New(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() == 0 || !args[0]->IsString()) {
-    return env->ThrowError(u8"Must give hashtype string as argument");
+    return env->ThrowError("\x4d\x75\x73\x74\x20\x67\x69\x76\x65\x20\x68\x61\x73\x68\x74\x79\x70\x65\x20\x73\x74\x72\x69\x6e\x67\x20\x61\x73\x20\x61\x72\x67\x75\x6d\x65\x6e\x74");
   }
 
   const node::Utf8Value hash_type(env->isolate(), args[0]);
@@ -3793,7 +3793,7 @@ void Hash::New(const FunctionCallbackInfo<Value>& args) {
   Hash* hash = new Hash(env, args.This());
   if (!hash->HashInit(*hash_type)) {
     return ThrowCryptoError(env, ERR_get_error(),
-                            u8"Digest method not supported");
+                            "\x44\x69\x67\x65\x73\x74\x20\x6d\x65\x74\x68\x6f\x64\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64");
   }
 }
 
@@ -3827,13 +3827,13 @@ void Hash::HashUpdate(const FunctionCallbackInfo<Value>& args) {
   Hash* hash;
   ASSIGN_OR_RETURN_UNWRAP(&hash, args.Holder());
 
-  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], "\x44\x61\x74\x61");
 
   if (!hash->initialised_) {
-    return env->ThrowError(u8"Not initialized");
+    return env->ThrowError("\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
   if (hash->finalized_) {
-    return env->ThrowError(u8"Digest already called");
+    return env->ThrowError("\x44\x69\x67\x65\x73\x74\x20\x61\x6c\x72\x65\x61\x64\x79\x20\x63\x61\x6c\x6c\x65\x64");
   }
 
   // Only copy the data if we have to, because it's a string
@@ -3850,7 +3850,7 @@ void Hash::HashUpdate(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (!r) {
-    return env->ThrowTypeError(u8"HashUpdate fail");
+    return env->ThrowTypeError("\x48\x61\x73\x68\x55\x70\x64\x61\x74\x65\x20\x66\x61\x69\x6c");
   }
 }
 
@@ -3862,10 +3862,10 @@ void Hash::HashDigest(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&hash, args.Holder());
 
   if (!hash->initialised_) {
-    return env->ThrowError(u8"Not initialized");
+    return env->ThrowError("\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
   if (hash->finalized_) {
-    return env->ThrowError(u8"Digest already called");
+    return env->ThrowError("\x44\x69\x67\x65\x73\x74\x20\x61\x6c\x72\x65\x61\x64\x79\x20\x63\x61\x6c\x6c\x65\x64");
   }
 
   enum encoding encoding = BUFFER;
@@ -3895,10 +3895,10 @@ void SignBase::CheckThrow(SignBase::Error error) {
 
   switch (error) {
     case kSignUnknownDigest:
-      return env()->ThrowError(u8"Unknown message digest");
+      return env()->ThrowError("\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x64\x69\x67\x65\x73\x74");
 
     case kSignNotInitialised:
-      return env()->ThrowError(u8"Not initialised");
+      return env()->ThrowError("\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x65\x64");
 
     case kSignInit:
     case kSignUpdate:
@@ -3910,13 +3910,13 @@ void SignBase::CheckThrow(SignBase::Error error) {
           return ThrowCryptoError(env(), err);
         switch (error) {
           case kSignInit:
-            return env()->ThrowError(u8"EVP_SignInit_ex failed");
+            return env()->ThrowError("\x45\x56\x50\x5f\x53\x69\x67\x6e\x49\x6e\x69\x74\x5f\x65\x78\x20\x66\x61\x69\x6c\x65\x64");
           case kSignUpdate:
-            return env()->ThrowError(u8"EVP_SignUpdate failed");
+            return env()->ThrowError("\x45\x56\x50\x5f\x53\x69\x67\x6e\x55\x70\x64\x61\x74\x65\x20\x66\x61\x69\x6c\x65\x64");
           case kSignPrivateKey:
-            return env()->ThrowError(u8"PEM_read_bio_PrivateKey failed");
+            return env()->ThrowError("\x50\x45\x4d\x5f\x72\x65\x61\x64\x5f\x62\x69\x6f\x5f\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79\x20\x66\x61\x69\x6c\x65\x64");
           case kSignPublicKey:
-            return env()->ThrowError(u8"PEM_read_bio_PUBKEY failed");
+            return env()->ThrowError("\x50\x45\x4d\x5f\x72\x65\x61\x64\x5f\x62\x69\x6f\x5f\x50\x55\x42\x4b\x45\x59\x20\x66\x61\x69\x6c\x65\x64");
           default:
             ABORT();
         }
@@ -3935,11 +3935,11 @@ void Sign::Initialize(Environment* env, v8::Local<v8::Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"init", SignInit);
-  env->SetProtoMethod(t, u8"update", SignUpdate);
-  env->SetProtoMethod(t, u8"sign", SignFinal);
+  env->SetProtoMethod(t, "\x69\x6e\x69\x74", SignInit);
+  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", SignUpdate);
+  env->SetProtoMethod(t, "\x73\x69\x67\x6e", SignFinal);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Sign"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x69\x67\x6e"), t->GetFunction());
 }
 
 
@@ -3970,10 +3970,10 @@ void Sign::SignInit(const FunctionCallbackInfo<Value>& args) {
   Environment* env = sign->env();
 
   if (args.Length() == 0) {
-    return env->ThrowError(u8"Sign type argument is mandatory");
+    return env->ThrowError("\x53\x69\x67\x6e\x20\x74\x79\x70\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"Sign type");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x53\x69\x67\x6e\x20\x74\x79\x70\x65");
 
   const node::Utf8Value sign_type(args.GetIsolate(), args[0]);
   sign->CheckThrow(sign->SignInit(*sign_type));
@@ -3995,7 +3995,7 @@ void Sign::SignUpdate(const FunctionCallbackInfo<Value>& args) {
   Sign* sign;
   ASSIGN_OR_RETURN_UNWRAP(&sign, args.Holder());
 
-  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], "\x44\x61\x74\x61");
 
   // Only copy the data if we have to, because it's a string
   Error err;
@@ -4103,7 +4103,7 @@ void Sign::SignFinal(const FunctionCallbackInfo<Value>& args) {
 
   node::Utf8Value passphrase(env->isolate(), args[2]);
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x44\x61\x74\x61");
   size_t buf_len = Buffer::Length(args[0]);
   char* buf = Buffer::Data(args[0]);
 
@@ -4140,11 +4140,11 @@ void Verify::Initialize(Environment* env, v8::Local<v8::Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"init", VerifyInit);
-  env->SetProtoMethod(t, u8"update", VerifyUpdate);
-  env->SetProtoMethod(t, u8"verify", VerifyFinal);
+  env->SetProtoMethod(t, "\x69\x6e\x69\x74", VerifyInit);
+  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", VerifyUpdate);
+  env->SetProtoMethod(t, "\x76\x65\x72\x69\x66\x79", VerifyFinal);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Verify"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x56\x65\x72\x69\x66\x79"),
               t->GetFunction());
 }
 
@@ -4176,10 +4176,10 @@ void Verify::VerifyInit(const FunctionCallbackInfo<Value>& args) {
   Environment* env = verify->env();
 
   if (args.Length() == 0) {
-    return env->ThrowError(u8"Verify type argument is mandatory");
+    return env->ThrowError("\x56\x65\x72\x69\x66\x79\x20\x74\x79\x70\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"Verify type");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x56\x65\x72\x69\x66\x79\x20\x74\x79\x70\x65");
 
   const node::Utf8Value verify_type(args.GetIsolate(), args[0]);
   verify->CheckThrow(verify->VerifyInit(*verify_type));
@@ -4203,7 +4203,7 @@ void Verify::VerifyUpdate(const FunctionCallbackInfo<Value>& args) {
   Verify* verify;
   ASSIGN_OR_RETURN_UNWRAP(&verify, args.Holder());
 
-  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[0], "\x44\x61\x74\x61");
 
   // Only copy the data if we have to, because it's a string
   Error err;
@@ -4303,11 +4303,11 @@ void Verify::VerifyFinal(const FunctionCallbackInfo<Value>& args) {
   Verify* verify;
   ASSIGN_OR_RETURN_UNWRAP(&verify, args.Holder());
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Key");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x4b\x65\x79");
   char* kbuf = Buffer::Data(args[0]);
   ssize_t klen = Buffer::Length(args[0]);
 
-  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[1], u8"Hash");
+  THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(args[1], "\x48\x61\x73\x68");
 
   enum encoding encoding = UTF8;
   if (args.Length() >= 3) {
@@ -4437,11 +4437,11 @@ template <PublicKeyCipher::Operation operation,
 void PublicKeyCipher::Cipher(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Key");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x4b\x65\x79");
   char* kbuf = Buffer::Data(args[0]);
   ssize_t klen = Buffer::Length(args[0]);
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], u8"Data");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "\x44\x61\x74\x61");
   char* buf = Buffer::Data(args[1]);
   ssize_t len = Buffer::Length(args[1]);
 
@@ -4492,14 +4492,14 @@ void DiffieHellman::Initialize(Environment* env, Local<Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"generateKeys", GenerateKeys);
-  env->SetProtoMethod(t, u8"computeSecret", ComputeSecret);
-  env->SetProtoMethod(t, u8"getPrime", GetPrime);
-  env->SetProtoMethod(t, u8"getGenerator", GetGenerator);
-  env->SetProtoMethod(t, u8"getPublicKey", GetPublicKey);
-  env->SetProtoMethod(t, u8"getPrivateKey", GetPrivateKey);
-  env->SetProtoMethod(t, u8"setPublicKey", SetPublicKey);
-  env->SetProtoMethod(t, u8"setPrivateKey", SetPrivateKey);
+  env->SetProtoMethod(t, "\x67\x65\x6e\x65\x72\x61\x74\x65\x4b\x65\x79\x73", GenerateKeys);
+  env->SetProtoMethod(t, "\x63\x6f\x6d\x70\x75\x74\x65\x53\x65\x63\x72\x65\x74", ComputeSecret);
+  env->SetProtoMethod(t, "\x67\x65\x74\x50\x72\x69\x6d\x65", GetPrime);
+  env->SetProtoMethod(t, "\x67\x65\x74\x47\x65\x6e\x65\x72\x61\x74\x6f\x72", GetGenerator);
+  env->SetProtoMethod(t, "\x67\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", GetPublicKey);
+  env->SetProtoMethod(t, "\x67\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", GetPrivateKey);
+  env->SetProtoMethod(t, "\x73\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", SetPublicKey);
+  env->SetProtoMethod(t, "\x73\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", SetPrivateKey);
 
   t->InstanceTemplate()->SetAccessor(
       env->verify_error_string(),
@@ -4510,18 +4510,18 @@ void DiffieHellman::Initialize(Environment* env, Local<Object> target) {
       attributes,
       AccessorSignature::New(env->isolate(), t));
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"DiffieHellman"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x44\x69\x66\x66\x69\x65\x48\x65\x6c\x6c\x6d\x61\x6e"),
               t->GetFunction());
 
   Local<FunctionTemplate> t2 = env->NewFunctionTemplate(DiffieHellmanGroup);
   t2->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t2, u8"generateKeys", GenerateKeys);
-  env->SetProtoMethod(t2, u8"computeSecret", ComputeSecret);
-  env->SetProtoMethod(t2, u8"getPrime", GetPrime);
-  env->SetProtoMethod(t2, u8"getGenerator", GetGenerator);
-  env->SetProtoMethod(t2, u8"getPublicKey", GetPublicKey);
-  env->SetProtoMethod(t2, u8"getPrivateKey", GetPrivateKey);
+  env->SetProtoMethod(t2, "\x67\x65\x6e\x65\x72\x61\x74\x65\x4b\x65\x79\x73", GenerateKeys);
+  env->SetProtoMethod(t2, "\x63\x6f\x6d\x70\x75\x74\x65\x53\x65\x63\x72\x65\x74", ComputeSecret);
+  env->SetProtoMethod(t2, "\x67\x65\x74\x50\x72\x69\x6d\x65", GetPrime);
+  env->SetProtoMethod(t2, "\x67\x65\x74\x47\x65\x6e\x65\x72\x61\x74\x6f\x72", GetGenerator);
+  env->SetProtoMethod(t2, "\x67\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", GetPublicKey);
+  env->SetProtoMethod(t2, "\x67\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", GetPrivateKey);
 
   t2->InstanceTemplate()->SetAccessor(
       env->verify_error_string(),
@@ -4532,7 +4532,7 @@ void DiffieHellman::Initialize(Environment* env, Local<Object> target) {
       attributes,
       AccessorSignature::New(env->isolate(), t2));
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"DiffieHellmanGroup"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x44\x69\x66\x66\x69\x65\x48\x65\x6c\x6c\x6d\x61\x6e\x47\x72\x6f\x75\x70"),
               t2->GetFunction());
 }
 
@@ -4581,10 +4581,10 @@ void DiffieHellman::DiffieHellmanGroup(
   DiffieHellman* diffieHellman = new DiffieHellman(env, args.This());
 
   if (args.Length() != 1) {
-    return env->ThrowError(u8"Group name argument is mandatory");
+    return env->ThrowError("\x47\x72\x6f\x75\x70\x20\x6e\x61\x6d\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   }
 
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"Group name");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x47\x72\x6f\x75\x70\x20\x6e\x61\x6d\x65");
 
   bool initialized = false;
 
@@ -4600,11 +4600,11 @@ void DiffieHellman::DiffieHellmanGroup(
                                       it->gen,
                                       it->gen_size);
     if (!initialized)
-      env->ThrowError(u8"Initialization failed");
+      env->ThrowError("\x49\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64");
     return;
   }
 
-  env->ThrowError(u8"Unknown group");
+  env->ThrowError("\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x67\x72\x6f\x75\x70");
 }
 
 
@@ -4635,7 +4635,7 @@ void DiffieHellman::New(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (!initialized) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Initialization failed");
+    return ThrowCryptoError(env, ERR_get_error(), "\x49\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64");
   }
 }
 
@@ -4647,11 +4647,11 @@ void DiffieHellman::GenerateKeys(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&diffieHellman, args.Holder());
 
   if (!diffieHellman->initialised_) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Not initialized");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
 
   if (!DH_generate_key(diffieHellman->dh)) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Key generation failed");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4b\x65\x79\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64");
   }
 
   int dataSize = BN_num_bytes(diffieHellman->dh->pub_key);
@@ -4671,7 +4671,7 @@ void DiffieHellman::GetPrime(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&diffieHellman, args.Holder());
 
   if (!diffieHellman->initialised_) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Not initialized");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
 
   int dataSize = BN_num_bytes(diffieHellman->dh->p);
@@ -4690,7 +4690,7 @@ void DiffieHellman::GetGenerator(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&diffieHellman, args.Holder());
 
   if (!diffieHellman->initialised_) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Not initialized");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
 
   int dataSize = BN_num_bytes(diffieHellman->dh->g);
@@ -4709,11 +4709,11 @@ void DiffieHellman::GetPublicKey(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&diffieHellman, args.Holder());
 
   if (!diffieHellman->initialised_) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Not initialized");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
 
   if (diffieHellman->dh->pub_key == nullptr) {
-    return env->ThrowError(u8"No public key - did you forget to generate one?");
+    return env->ThrowError("\x4e\x6f\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x2d\x20\x64\x69\x64\x20\x79\x6f\x75\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x6f\x6e\x65\x3f");
   }
 
   int dataSize = BN_num_bytes(diffieHellman->dh->pub_key);
@@ -4733,11 +4733,11 @@ void DiffieHellman::GetPrivateKey(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&diffieHellman, args.Holder());
 
   if (!diffieHellman->initialised_) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Not initialized");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
 
   if (diffieHellman->dh->priv_key == nullptr) {
-    return env->ThrowError(u8"No private key - did you forget to generate one?");
+    return env->ThrowError("\x4e\x6f\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x2d\x20\x64\x69\x64\x20\x79\x6f\x75\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x6f\x6e\x65\x3f");
   }
 
   int dataSize = BN_num_bytes(diffieHellman->dh->priv_key);
@@ -4757,7 +4757,7 @@ void DiffieHellman::ComputeSecret(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&diffieHellman, args.Holder());
 
   if (!diffieHellman->initialised_) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Not initialized");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
 
   ClearErrorOnReturn clear_error_on_return;
@@ -4765,9 +4765,9 @@ void DiffieHellman::ComputeSecret(const FunctionCallbackInfo<Value>& args) {
   BIGNUM* key = nullptr;
 
   if (args.Length() == 0) {
-    return env->ThrowError(u8"Other party's public key argument is mandatory");
+    return env->ThrowError("\x4f\x74\x68\x65\x72\x20\x70\x61\x72\x74\x79\x27\x73\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   } else {
-    THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Other party's public key");
+    THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x4f\x74\x68\x65\x72\x20\x70\x61\x72\x74\x79\x27\x73\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
     key = BN_bin2bn(
         reinterpret_cast<unsigned char*>(Buffer::Data(args[0])),
         Buffer::Length(args[0]),
@@ -4790,17 +4790,17 @@ void DiffieHellman::ComputeSecret(const FunctionCallbackInfo<Value>& args) {
     delete[] data;
 
     if (!checked) {
-      return ThrowCryptoError(env, ERR_get_error(), u8"Invalid Key");
+      return ThrowCryptoError(env, ERR_get_error(), "\x49\x6e\x76\x61\x6c\x69\x64\x20\x4b\x65\x79");
     } else if (checkResult) {
       if (checkResult & DH_CHECK_PUBKEY_TOO_SMALL) {
-        return env->ThrowError(u8"Supplied key is too small");
+        return env->ThrowError("\x53\x75\x70\x70\x6c\x69\x65\x64\x20\x6b\x65\x79\x20\x69\x73\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c");
       } else if (checkResult & DH_CHECK_PUBKEY_TOO_LARGE) {
-        return env->ThrowError(u8"Supplied key is too large");
+        return env->ThrowError("\x53\x75\x70\x70\x6c\x69\x65\x64\x20\x6b\x65\x79\x20\x69\x73\x20\x74\x6f\x6f\x20\x6c\x61\x72\x67\x65");
       } else {
-        return env->ThrowError(u8"Invalid key");
+        return env->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x6b\x65\x79");
       }
     } else {
-      return env->ThrowError(u8"Invalid key");
+      return env->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x6b\x65\x79");
     }
   }
 
@@ -4828,13 +4828,13 @@ void DiffieHellman::SetPublicKey(const FunctionCallbackInfo<Value>& args) {
   Environment* env = diffieHellman->env();
 
   if (!diffieHellman->initialised_) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Not initialized");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
 
   if (args.Length() == 0) {
-    return env->ThrowError(u8"Public key argument is mandatory");
+    return env->ThrowError("\x50\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   } else {
-    THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Public key");
+    THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x50\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
     diffieHellman->dh->pub_key = BN_bin2bn(
         reinterpret_cast<unsigned char*>(Buffer::Data(args[0])),
         Buffer::Length(args[0]), 0);
@@ -4848,13 +4848,13 @@ void DiffieHellman::SetPrivateKey(const FunctionCallbackInfo<Value>& args) {
   Environment* env = diffieHellman->env();
 
   if (!diffieHellman->initialised_) {
-    return ThrowCryptoError(env, ERR_get_error(), u8"Not initialized");
+    return ThrowCryptoError(env, ERR_get_error(), "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
   }
 
   if (args.Length() == 0) {
-    return env->ThrowError(u8"Private key argument is mandatory");
+    return env->ThrowError("\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
   } else {
-    THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Private key");
+    THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
     diffieHellman->dh->priv_key = BN_bin2bn(
         reinterpret_cast<unsigned char*>(Buffer::Data(args[0])),
         Buffer::Length(args[0]),
@@ -4872,7 +4872,7 @@ void DiffieHellman::VerifyErrorGetter(Local<String> property,
 
   if (!diffieHellman->initialised_)
     return ThrowCryptoError(diffieHellman->env(), ERR_get_error(),
-                            u8"Not initialized");
+                            "\x4e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64");
 
   args.GetReturnValue().Set(diffieHellman->verifyError_);
 }
@@ -4894,14 +4894,14 @@ void ECDH::Initialize(Environment* env, Local<Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, u8"generateKeys", GenerateKeys);
-  env->SetProtoMethod(t, u8"computeSecret", ComputeSecret);
-  env->SetProtoMethod(t, u8"getPublicKey", GetPublicKey);
-  env->SetProtoMethod(t, u8"getPrivateKey", GetPrivateKey);
-  env->SetProtoMethod(t, u8"setPublicKey", SetPublicKey);
-  env->SetProtoMethod(t, u8"setPrivateKey", SetPrivateKey);
+  env->SetProtoMethod(t, "\x67\x65\x6e\x65\x72\x61\x74\x65\x4b\x65\x79\x73", GenerateKeys);
+  env->SetProtoMethod(t, "\x63\x6f\x6d\x70\x75\x74\x65\x53\x65\x63\x72\x65\x74", ComputeSecret);
+  env->SetProtoMethod(t, "\x67\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", GetPublicKey);
+  env->SetProtoMethod(t, "\x67\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", GetPrivateKey);
+  env->SetProtoMethod(t, "\x73\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", SetPublicKey);
+  env->SetProtoMethod(t, "\x73\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", SetPrivateKey);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"ECDH"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x45\x43\x44\x48"),
               t->GetFunction());
 }
 
@@ -4912,16 +4912,16 @@ void ECDH::New(const FunctionCallbackInfo<Value>& args) {
   MarkPopErrorOnReturn mark_pop_error_on_return;
 
   // TODO(indutny): Support raw curves?
-  THROW_AND_RETURN_IF_NOT_STRING(args[0], u8"ECDH curve name");
+  THROW_AND_RETURN_IF_NOT_STRING(args[0], "\x45\x43\x44\x48\x20\x63\x75\x72\x76\x65\x20\x6e\x61\x6d\x65");
   node::Utf8Value curve(env->isolate(), args[0]);
 
   int nid = OBJ_sn2nid(*curve);
   if (nid == NID_undef)
-    return env->ThrowTypeError(u8"First argument should be a valid curve name");
+    return env->ThrowTypeError("\x46\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x76\x61\x6c\x69\x64\x20\x63\x75\x72\x76\x65\x20\x6e\x61\x6d\x65");
 
   EC_KEY* key = EC_KEY_new_by_curve_name(nid);
   if (key == nullptr)
-    return env->ThrowError(u8"Failed to create EC_KEY using curve name");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x45\x43\x5f\x4b\x45\x59\x20\x75\x73\x69\x6e\x67\x20\x63\x75\x72\x76\x65\x20\x6e\x61\x6d\x65");
 
   new ECDH(env, args.This(), key);
 }
@@ -4934,7 +4934,7 @@ void ECDH::GenerateKeys(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&ecdh, args.Holder());
 
   if (!EC_KEY_generate_key(ecdh->key_))
-    return env->ThrowError(u8"Failed to generate EC_KEY");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x45\x43\x5f\x4b\x45\x59");
 }
 
 
@@ -4944,7 +4944,7 @@ EC_POINT* ECDH::BufferToPoint(char* data, size_t len) {
 
   pub = EC_POINT_new(group_);
   if (pub == nullptr) {
-    env()->ThrowError(u8"Failed to allocate EC_POINT for a public key");
+    env()->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x61\x6c\x6c\x6f\x63\x61\x74\x65\x20\x45\x43\x5f\x50\x4f\x49\x4e\x54\x20\x66\x6f\x72\x20\x61\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
     return nullptr;
   }
 
@@ -4955,7 +4955,7 @@ EC_POINT* ECDH::BufferToPoint(char* data, size_t len) {
       len,
       nullptr);
   if (!r) {
-    env()->ThrowError(u8"Failed to translate Buffer to a EC_POINT");
+    env()->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x74\x72\x61\x6e\x73\x6c\x61\x74\x65\x20\x42\x75\x66\x66\x65\x72\x20\x74\x6f\x20\x61\x20\x45\x43\x5f\x50\x4f\x49\x4e\x54");
     goto fatal;
   }
 
@@ -4970,13 +4970,13 @@ EC_POINT* ECDH::BufferToPoint(char* data, size_t len) {
 void ECDH::ComputeSecret(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x44\x61\x74\x61");
 
   ECDH* ecdh;
   ASSIGN_OR_RETURN_UNWRAP(&ecdh, args.Holder());
 
   if (!ecdh->IsKeyPairValid())
-    return env->ThrowError(u8"Invalid key pair");
+    return env->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x6b\x65\x79\x20\x70\x61\x69\x72");
 
   EC_POINT* pub = ecdh->BufferToPoint(Buffer::Data(args[0]),
                                       Buffer::Length(args[0]));
@@ -4993,7 +4993,7 @@ void ECDH::ComputeSecret(const FunctionCallbackInfo<Value>& args) {
   EC_POINT_free(pub);
   if (!r) {
     free(out);
-    return env->ThrowError(u8"Failed to compute ECDH key");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x6f\x6d\x70\x75\x74\x65\x20\x45\x43\x44\x48\x20\x6b\x65\x79");
   }
 
   Local<Object> buf = Buffer::New(env, out, out_len).ToLocalChecked();
@@ -5012,7 +5012,7 @@ void ECDH::GetPublicKey(const FunctionCallbackInfo<Value>& args) {
 
   const EC_POINT* pub = EC_KEY_get0_public_key(ecdh->key_);
   if (pub == nullptr)
-    return env->ThrowError(u8"Failed to get ECDH public key");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x74\x20\x45\x43\x44\x48\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
 
   int size;
   point_conversion_form_t form =
@@ -5020,7 +5020,7 @@ void ECDH::GetPublicKey(const FunctionCallbackInfo<Value>& args) {
 
   size = EC_POINT_point2oct(ecdh->group_, pub, form, nullptr, 0, nullptr);
   if (size == 0)
-    return env->ThrowError(u8"Failed to get public key length");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x74\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x6c\x65\x6e\x67\x74\x68");
 
   unsigned char* out = static_cast<unsigned char*>(node::Malloc(size));
   CHECK_NE(out, nullptr);
@@ -5028,7 +5028,7 @@ void ECDH::GetPublicKey(const FunctionCallbackInfo<Value>& args) {
   int r = EC_POINT_point2oct(ecdh->group_, pub, form, out, size, nullptr);
   if (r != size) {
     free(out);
-    return env->ThrowError(u8"Failed to get public key");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x74\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
   }
 
   Local<Object> buf =
@@ -5045,7 +5045,7 @@ void ECDH::GetPrivateKey(const FunctionCallbackInfo<Value>& args) {
 
   const BIGNUM* b = EC_KEY_get0_private_key(ecdh->key_);
   if (b == nullptr)
-    return env->ThrowError(u8"Failed to get ECDH private key");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x74\x20\x45\x43\x44\x48\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
 
   int size = BN_num_bytes(b);
   unsigned char* out = static_cast<unsigned char*>(node::Malloc(size));
@@ -5053,7 +5053,7 @@ void ECDH::GetPrivateKey(const FunctionCallbackInfo<Value>& args) {
 
   if (size != BN_bn2bin(b, out)) {
     free(out);
-    return env->ThrowError(u8"Failed to convert ECDH private key to Buffer");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x45\x43\x44\x48\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x74\x6f\x20\x42\x75\x66\x66\x65\x72");
   }
 
   Local<Object> buf =
@@ -5068,25 +5068,25 @@ void ECDH::SetPrivateKey(const FunctionCallbackInfo<Value>& args) {
   ECDH* ecdh;
   ASSIGN_OR_RETURN_UNWRAP(&ecdh, args.Holder());
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Private key");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
 
   BIGNUM* priv = BN_bin2bn(
       reinterpret_cast<unsigned char*>(Buffer::Data(args[0].As<Object>())),
       Buffer::Length(args[0].As<Object>()),
       nullptr);
   if (priv == nullptr)
-    return env->ThrowError(u8"Failed to convert Buffer to BN");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x42\x75\x66\x66\x65\x72\x20\x74\x6f\x20\x42\x4e");
 
   if (!ecdh->IsKeyValidForCurve(priv)) {
     BN_free(priv);
-    return env->ThrowError(u8"Private key is not valid for specified curve.");
+    return env->ThrowError("\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x69\x73\x20\x6e\x6f\x74\x20\x76\x61\x6c\x69\x64\x20\x66\x6f\x72\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x63\x75\x72\x76\x65\x2e");
   }
 
   int result = EC_KEY_set_private_key(ecdh->key_, priv);
   BN_free(priv);
 
   if (!result) {
-    return env->ThrowError(u8"Failed to convert BN to a private key");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x42\x4e\x20\x74\x6f\x20\x61\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
   }
 
   // To avoid inconsistency, clear the current public key in-case computing
@@ -5104,12 +5104,12 @@ void ECDH::SetPrivateKey(const FunctionCallbackInfo<Value>& args) {
 
   if (!EC_POINT_mul(ecdh->group_, pub, priv_key, nullptr, nullptr, nullptr)) {
     EC_POINT_free(pub);
-    return env->ThrowError(u8"Failed to generate ECDH public key");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x45\x43\x44\x48\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
   }
 
   if (!EC_KEY_set_public_key(ecdh->key_, pub)) {
     EC_POINT_free(pub);
-    return env->ThrowError(u8"Failed to set generated public key");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x74\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x64\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
   }
 
   EC_POINT_free(pub);
@@ -5122,17 +5122,17 @@ void ECDH::SetPublicKey(const FunctionCallbackInfo<Value>& args) {
   ECDH* ecdh;
   ASSIGN_OR_RETURN_UNWRAP(&ecdh, args.Holder());
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Public key");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x50\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
 
   EC_POINT* pub = ecdh->BufferToPoint(Buffer::Data(args[0].As<Object>()),
                                       Buffer::Length(args[0].As<Object>()));
   if (pub == nullptr)
-    return env->ThrowError(u8"Failed to convert Buffer to EC_POINT");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x42\x75\x66\x66\x65\x72\x20\x74\x6f\x20\x45\x43\x5f\x50\x4f\x49\x4e\x54");
 
   int r = EC_KEY_set_public_key(ecdh->key_, pub);
   EC_POINT_free(pub);
   if (!r)
-    return env->ThrowError(u8"Failed to set EC_POINT as the public key");
+    return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x74\x20\x45\x43\x5f\x50\x4f\x49\x4e\x54\x20\x61\x73\x20\x74\x68\x65\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
 }
 
 
@@ -5182,7 +5182,7 @@ class PBKDF2Request : public AsyncWrap {
         key_(static_cast<char*>(node::Malloc(keylen))),
         iter_(iter) {
     if (key() == nullptr)
-      FatalError(u8"node::PBKDF2Request()u8", u8"Out of Memory");
+      FatalError("\x6e\x6f\x64\x65\x3a\x3a\x50\x42\x4b\x44\x46\x32\x52\x65\x71\x75\x65\x73\x74\x28\x29\x75\x38", "\x4f\x75\x74\x20\x6f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
     Wrap(object, this);
   }
 
@@ -5329,57 +5329,57 @@ void PBKDF2(const FunctionCallbackInfo<Value>& args) {
   Local<Object> obj;
 
   if (args.Length() != 5 && args.Length() != 6) {
-    type_error = u8"Bad parameter";
+    type_error = "\x42\x61\x64\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72";
     goto err;
   }
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Pass phrase");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x50\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65");
   passlen = Buffer::Length(args[0]);
   if (passlen < 0) {
-    type_error = u8"Bad password";
+    type_error = "\x42\x61\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64";
     goto err;
   }
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], u8"Salt");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "\x53\x61\x6c\x74");
 
   pass = static_cast<char*>(node::Malloc(passlen));
   if (pass == nullptr) {
-    FatalError(u8"node::PBKDF2()u8", u8"Out of Memory");
+    FatalError("\x6e\x6f\x64\x65\x3a\x3a\x50\x42\x4b\x44\x46\x32\x28\x29\x75\x38", "\x4f\x75\x74\x20\x6f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
   }
   memcpy(pass, Buffer::Data(args[0]), passlen);
 
   saltlen = Buffer::Length(args[1]);
   if (saltlen < 0) {
-    type_error = u8"Bad salt";
+    type_error = "\x42\x61\x64\x20\x73\x61\x6c\x74";
     goto err;
   }
 
   salt = static_cast<char*>(node::Malloc(saltlen));
   if (salt == nullptr) {
-    FatalError(u8"node::PBKDF2()u8", u8"Out of Memory");
+    FatalError("\x6e\x6f\x64\x65\x3a\x3a\x50\x42\x4b\x44\x46\x32\x28\x29\x75\x38", "\x4f\x75\x74\x20\x6f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
   }
   memcpy(salt, Buffer::Data(args[1]), saltlen);
 
   if (!args[2]->IsNumber()) {
-    type_error = u8"Iterations not a number";
+    type_error = "\x49\x74\x65\x72\x61\x74\x69\x6f\x6e\x73\x20\x6e\x6f\x74\x20\x61\x20\x6e\x75\x6d\x62\x65\x72";
     goto err;
   }
 
   iter = args[2]->Int32Value();
   if (iter < 0) {
-    type_error = u8"Bad iterations";
+    type_error = "\x42\x61\x64\x20\x69\x74\x65\x72\x61\x74\x69\x6f\x6e\x73";
     goto err;
   }
 
   if (!args[3]->IsNumber()) {
-    type_error = u8"Key length not a number";
+    type_error = "\x4b\x65\x79\x20\x6c\x65\x6e\x67\x74\x68\x20\x6e\x6f\x74\x20\x61\x20\x6e\x75\x6d\x62\x65\x72";
     goto err;
   }
 
   raw_keylen = args[3]->NumberValue();
   if (raw_keylen < 0.0 || isnan(raw_keylen) || isinf(raw_keylen) ||
       raw_keylen > INT_MAX) {
-    type_error = u8"Bad key length";
+    type_error = "\x42\x61\x64\x20\x6b\x65\x79\x20\x6c\x65\x6e\x67\x74\x68";
     goto err;
   }
 
@@ -5389,7 +5389,7 @@ void PBKDF2(const FunctionCallbackInfo<Value>& args) {
     node::Utf8Value digest_name(env->isolate(), args[4]);
     digest = EVP_get_digestbyname(*digest_name);
     if (digest == nullptr) {
-      type_error = u8"Bad digest name";
+      type_error = "\x42\x61\x64\x20\x64\x69\x67\x65\x73\x74\x20\x6e\x61\x6d\x65";
       goto err;
     }
   }
@@ -5449,7 +5449,7 @@ class RandomBytesRequest : public AsyncWrap {
         size_(size),
         data_(static_cast<char*>(node::Malloc(size))) {
     if (data() == nullptr)
-      FatalError(u8"node::RandomBytesRequest()u8", u8"Out of Memory");
+      FatalError("\x6e\x6f\x64\x65\x3a\x3a\x52\x61\x6e\x64\x6f\x6d\x42\x79\x74\x65\x73\x52\x65\x71\x75\x65\x73\x74\x28\x29\x75\x38", "\x4f\x75\x74\x20\x6f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
     Wrap(object, this);
   }
 
@@ -5523,7 +5523,7 @@ void RandomBytesWork(uv_work_t* work_req) {
 // don't call this function without a valid HandleScope
 void RandomBytesCheck(RandomBytesRequest* req, Local<Value> argv[2]) {
   if (req->error()) {
-    char errmsg[256] = u8"Operation not supported";
+    char errmsg[256] = "\x4f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64";
 
     if (req->error() != static_cast<unsigned long>(-1))  // NOLINT(runtime/int)
       ERR_error_string_n(req->error(), errmsg, sizeof errmsg);
@@ -5561,18 +5561,18 @@ void RandomBytes(const FunctionCallbackInfo<Value>& args) {
   // maybe allow a buffer to write to? cuts down on object creation
   // when generating random data in a loop
   if (!args[0]->IsUint32()) {
-    return env->ThrowTypeError(u8"size must be a number >= 0");
+    return env->ThrowTypeError("\x73\x69\x7a\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x6e\x75\x6d\x62\x65\x72\x20\x3e\x3d\x20\x30");
   }
 
   const int64_t size = args[0]->IntegerValue();
   if (size < 0 || size > Buffer::kMaxLength)
-    return env->ThrowRangeError(u8"size is not a valid Smi");
+    return env->ThrowRangeError("\x73\x69\x7a\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x20\x76\x61\x6c\x69\x64\x20\x53\x6d\x69");
 
   Local<Object> obj = env->NewInternalFieldObject();
   RandomBytesRequest* req = new RandomBytesRequest(env, obj, size);
 
   if (args[1]->IsFunction()) {
-    obj->Set(FIXED_ONE_BYTE_STRING(args.GetIsolate(), u8"ondone"), args[1]);
+    obj->Set(FIXED_ONE_BYTE_STRING(args.GetIsolate(), "\x6f\x6e\x64\x6f\x6e\x65"), args[1]);
 
     if (env->in_domain())
       obj->Set(env->domain_string(), env->domain_array()->Get(0));
@@ -5601,13 +5601,13 @@ void GetSSLCiphers(const FunctionCallbackInfo<Value>& args) {
 
   SSL_CTX* ctx = SSL_CTX_new(TLSv1_server_method());
   if (ctx == nullptr) {
-    return env->ThrowError(u8"SSL_CTX_new() failed.");
+    return env->ThrowError("\x53\x53\x4c\x5f\x43\x54\x58\x5f\x6e\x65\x77\x28\x29\x20\x66\x61\x69\x6c\x65\x64\x2e");
   }
 
   SSL* ssl = SSL_new(ctx);
   if (ssl == nullptr) {
     SSL_CTX_free(ctx);
-    return env->ThrowError(u8"SSL_new() failed.");
+    return env->ThrowError("\x53\x53\x4c\x5f\x6e\x65\x77\x28\x29\x20\x66\x61\x69\x6c\x65\x64\x2e");
   }
 
   Local<Array> arr = Array::New(env->isolate());
@@ -5724,9 +5724,9 @@ void VerifySpkac(const FunctionCallbackInfo<Value>& args) {
   bool i = false;
 
   if (args.Length() < 1)
-    return env->ThrowTypeError(u8"Data argument is mandatory");
+    return env->ThrowTypeError("\x44\x61\x74\x61\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Data");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x44\x61\x74\x61");
 
   size_t length = Buffer::Length(args[0]);
   if (length == 0)
@@ -5761,7 +5761,7 @@ const char* ExportPublicKey(const char* data, int len) {
   if (PEM_write_bio_PUBKEY(bio, pkey) <= 0)
     goto exit;
 
-  BIO_write(bio, u8"\0", 1);
+  BIO_write(bio, "\x0", 1);
   BUF_MEM* ptr;
   BIO_get_mem_ptr(bio, &ptr);
 
@@ -5786,9 +5786,9 @@ void ExportPublicKey(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return env->ThrowTypeError(u8"Public key argument is mandatory");
+    return env->ThrowTypeError("\x50\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Public key");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x50\x75\x62\x6c\x69\x63\x20\x6b\x65\x79");
 
   size_t length = Buffer::Length(args[0]);
   if (length == 0)
@@ -5829,9 +5829,9 @@ void ExportChallenge(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return env->ThrowTypeError(u8"Challenge argument is mandatory");
+    return env->ThrowTypeError("\x43\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x69\x73\x20\x6d\x61\x6e\x64\x61\x74\x6f\x72\x79");
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"Challenge");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x43\x68\x61\x6c\x6c\x65\x6e\x67\x65");
 
   size_t len = Buffer::Length(args[0]);
   if (len == 0)
@@ -5854,12 +5854,12 @@ void ExportChallenge(const FunctionCallbackInfo<Value>& args) {
 void TimingSafeEqual(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], u8"First argument");
-  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], u8"Second argument");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "\x46\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74");
+  THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "\x53\x65\x63\x6f\x6e\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74");
 
   size_t buf_length = Buffer::Length(args[0]);
   if (buf_length != Buffer::Length(args[1])) {
-    return env->ThrowTypeError(u8"Input buffers must have the same length");
+    return env->ThrowTypeError("\x49\x6e\x70\x75\x74\x20\x62\x75\x66\x66\x65\x72\x73\x20\x6d\x75\x73\x74\x20\x68\x61\x76\x65\x20\x74\x68\x65\x20\x73\x61\x6d\x65\x20\x6c\x65\x6e\x67\x74\x68");
   }
 
   const char* buf1 = Buffer::Data(args[0]);
@@ -5886,7 +5886,7 @@ void InitCryptoOnce() {
     int err = ERR_get_error();
     if (0 != err) {
       fprintf(stderr,
-              u8"openssl config failed: %s\n",
+              "\x6f\x70\x65\x6e\x73\x73\x6c\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x6c\xa2\xa",
               ERR_error_string(err, NULL));
       CHECK_NE(err, 0);
     }
@@ -5908,7 +5908,7 @@ void InitCryptoOnce() {
     }
   }
   if (0 != err) {
-    fprintf(stderr, u8"openssl fips failed: %s\n", ERR_error_string(err, NULL));
+    fprintf(stderr, "openssl fips failed: %s\n", ERR_error_string(err, NULL));
     UNREACHABLE();
   }
 #endif  // NODE_FIPS_MODE
@@ -5940,10 +5940,10 @@ void SetEngine(const FunctionCallbackInfo<Value>& args) {
   // Engine not found, try loading dynamically
   // TODO(mmallick84): undo this conversion
   if (engine == nullptr) {
-    engine = ENGINE_by_id(u8"dynamic");
+    engine = ENGINE_by_id("\x64\x79\x6e\x61\x6d\x69\x63");
     if (engine != nullptr) {
-      if (!ENGINE_ctrl_cmd_string(engine, u8"SO_PATH", *engine_id, 0) ||
-          !ENGINE_ctrl_cmd_string(engine, u8"LOAD", nullptr, 0)) {
+      if (!ENGINE_ctrl_cmd_string(engine, "\x53\x4f\x5f\x50\x41\x54\x48", *engine_id, 0) ||
+          !ENGINE_ctrl_cmd_string(engine, "\x4c\x4f\x41\x44", nullptr, 0)) {
         ENGINE_free(engine);
         engine = nullptr;
       }
@@ -5954,7 +5954,7 @@ void SetEngine(const FunctionCallbackInfo<Value>& args) {
     int err = ERR_get_error();
     if (err == 0) {
       char tmp[1024];
-      snprintf(tmp, sizeof(tmp), u8"Engine \u8"%s\" was not found", *engine_id);
+      snprintf(tmp, sizeof(tmp), "Engine \u8"%s\" was not found", *engine_id);
       return env->ThrowError(tmp);
     } else {
       return ThrowCryptoError(env, err);
@@ -5982,13 +5982,13 @@ void SetFipsCrypto(const FunctionCallbackInfo<Value>& args) {
   bool mode = args[0]->BooleanValue();
   if (force_fips_crypto) {
     return env->ThrowError(
-        u8"Cannot set FIPS mode, it was forced with --force-fips at startup.");
+        "\x43\x61\x6e\x6e\x6f\x74\x20\x73\x65\x74\x20\x46\x49\x50\x53\x20\x6d\x6f\x64\x65\x2c\x20\x69\x74\x20\x77\x61\x73\x20\x66\x6f\x72\x63\x65\x64\x20\x77\x69\x74\x68\x20\x2d\x2d\x66\x6f\x72\x63\x65\x2d\x66\x69\x70\x73\x20\x61\x74\x20\x73\x74\x61\x72\x74\x75\x70\x2e");
   } else if (!FIPS_mode_set(mode)) {
     unsigned long err = ERR_get_error();  // NOLINT(runtime/int)
     return ThrowCryptoError(env, err);
   }
 #else
-  return env->ThrowError(u8"Cannot set FIPS mode in a non-FIPS build.");
+  return env->ThrowError("\x43\x61\x6e\x6e\x6f\x74\x20\x73\x65\x74\x20\x46\x49\x50\x53\x20\x6d\x6f\x64\x65\x20\x69\x6e\x20\x61\x20\x6e\x6f\x6e\x2d\x46\x49\x50\x53\x20\x62\x75\x69\x6c\x64\x2e");
 #endif /* NODE_FIPS_MODE */
 }
 
@@ -6011,34 +6011,34 @@ void InitCrypto(Local<Object> target,
   Sign::Initialize(env, target);
   Verify::Initialize(env, target);
 
-  env->SetMethod(target, u8"certVerifySpkac", VerifySpkac);
-  env->SetMethod(target, u8"certExportPublicKey", ExportPublicKey);
-  env->SetMethod(target, u8"certExportChallenge", ExportChallenge);
+  env->SetMethod(target, "\x63\x65\x72\x74\x56\x65\x72\x69\x66\x79\x53\x70\x6b\x61\x63", VerifySpkac);
+  env->SetMethod(target, "\x63\x65\x72\x74\x45\x78\x70\x6f\x72\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", ExportPublicKey);
+  env->SetMethod(target, "\x63\x65\x72\x74\x45\x78\x70\x6f\x72\x74\x43\x68\x61\x6c\x6c\x65\x6e\x67\x65", ExportChallenge);
 #ifndef OPENSSL_NO_ENGINE
-  env->SetMethod(target, u8"setEngine", SetEngine);
+  env->SetMethod(target, "\x73\x65\x74\x45\x6e\x67\x69\x6e\x65", SetEngine);
 #endif  // !OPENSSL_NO_ENGINE
-  env->SetMethod(target, u8"getFipsCrypto", GetFipsCrypto);
-  env->SetMethod(target, u8"setFipsCrypto", SetFipsCrypto);
-  env->SetMethod(target, u8"PBKDF2", PBKDF2);
-  env->SetMethod(target, u8"randomBytes", RandomBytes);
-  env->SetMethod(target, u8"timingSafeEqual", TimingSafeEqual);
-  env->SetMethod(target, u8"getSSLCiphers", GetSSLCiphers);
-  env->SetMethod(target, u8"getCiphers", GetCiphers);
-  env->SetMethod(target, u8"getHashes", GetHashes);
-  env->SetMethod(target, u8"getCurves", GetCurves);
-  env->SetMethod(target, u8"publicEncrypt",
+  env->SetMethod(target, "\x67\x65\x74\x46\x69\x70\x73\x43\x72\x79\x70\x74\x6f", GetFipsCrypto);
+  env->SetMethod(target, "\x73\x65\x74\x46\x69\x70\x73\x43\x72\x79\x70\x74\x6f", SetFipsCrypto);
+  env->SetMethod(target, "\x50\x42\x4b\x44\x46\x32", PBKDF2);
+  env->SetMethod(target, "\x72\x61\x6e\x64\x6f\x6d\x42\x79\x74\x65\x73", RandomBytes);
+  env->SetMethod(target, "\x74\x69\x6d\x69\x6e\x67\x53\x61\x66\x65\x45\x71\x75\x61\x6c", TimingSafeEqual);
+  env->SetMethod(target, "\x67\x65\x74\x53\x53\x4c\x43\x69\x70\x68\x65\x72\x73", GetSSLCiphers);
+  env->SetMethod(target, "\x67\x65\x74\x43\x69\x70\x68\x65\x72\x73", GetCiphers);
+  env->SetMethod(target, "\x67\x65\x74\x48\x61\x73\x68\x65\x73", GetHashes);
+  env->SetMethod(target, "\x67\x65\x74\x43\x75\x72\x76\x65\x73", GetCurves);
+  env->SetMethod(target, "\x70\x75\x62\x6c\x69\x63\x45\x6e\x63\x72\x79\x70\x74",
                  PublicKeyCipher::Cipher<PublicKeyCipher::kPublic,
                                          EVP_PKEY_encrypt_init,
                                          EVP_PKEY_encrypt>);
-  env->SetMethod(target, u8"privateDecrypt",
+  env->SetMethod(target, "\x70\x72\x69\x76\x61\x74\x65\x44\x65\x63\x72\x79\x70\x74",
                  PublicKeyCipher::Cipher<PublicKeyCipher::kPrivate,
                                          EVP_PKEY_decrypt_init,
                                          EVP_PKEY_decrypt>);
-  env->SetMethod(target, u8"privateEncrypt",
+  env->SetMethod(target, "\x70\x72\x69\x76\x61\x74\x65\x45\x6e\x63\x72\x79\x70\x74",
                  PublicKeyCipher::Cipher<PublicKeyCipher::kPrivate,
                                          EVP_PKEY_sign_init,
                                          EVP_PKEY_sign>);
-  env->SetMethod(target, u8"publicDecrypt",
+  env->SetMethod(target, "\x70\x75\x62\x6c\x69\x63\x44\x65\x63\x72\x79\x70\x74",
                  PublicKeyCipher::Cipher<PublicKeyCipher::kPublic,
                                          EVP_PKEY_verify_recover_init,
                                          EVP_PKEY_verify_recover>);

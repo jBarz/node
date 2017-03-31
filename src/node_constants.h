@@ -7,27 +7,27 @@
 #include "v8.h"
 
 #if HAVE_OPENSSL
-#define DEFAULT_CIPHER_LIST_CORE u8"ECDHE-RSA-AES128-GCM-SHA256:"     \
-                                 u8"ECDHE-ECDSA-AES128-GCM-SHA256:"   \
-                                 u8"ECDHE-RSA-AES256-GCM-SHA384:"     \
-                                 u8"ECDHE-ECDSA-AES256-GCM-SHA384:"   \
-                                 u8"DHE-RSA-AES128-GCM-SHA256:"       \
-                                 u8"ECDHE-RSA-AES128-SHA256:"         \
-                                 u8"DHE-RSA-AES128-SHA256:"           \
-                                 u8"ECDHE-RSA-AES256-SHA384:"         \
-                                 u8"DHE-RSA-AES256-SHA384:"           \
-                                 u8"ECDHE-RSA-AES256-SHA256:"         \
-                                 u8"DHE-RSA-AES256-SHA256:"           \
-                                 u8"HIGH:"                            \
-                                 u8"!aNULL:"                          \
-                                 u8"!eNULL:"                          \
-                                 u8"!EXPORT:"                         \
-                                 u8"!DES:"                            \
-                                 u8"!RC4:"                            \
-                                 u8"!MD5:"                            \
-                                 u8"!PSK:"                            \
-                                 u8"!SRP:"                            \
-                                 u8"!CAMELLIA"
+#define DEFAULT_CIPHER_LIST_CORE "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36\x3a"     \
+                                 "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36\x3a"   \
+                                 "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34\x3a"     \
+                                 "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34\x3a"   \
+                                 "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36\x3a"       \
+                                 "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36\x3a"         \
+                                 "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36\x3a"           \
+                                 "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x33\x38\x34\x3a"         \
+                                 "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x33\x38\x34\x3a"           \
+                                 "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x32\x35\x36\x3a"         \
+                                 "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x32\x35\x36\x3a"           \
+                                 "\x48\x49\x47\x48\x3a"                            \
+                                 "\x21\x61\x4e\x55\x4c\x4c\x3a"                          \
+                                 "\x21\x65\x4e\x55\x4c\x4c\x3a"                          \
+                                 "\x21\x45\x58\x50\x4f\x52\x54\x3a"                         \
+                                 "\x21\x44\x45\x53\x3a"                            \
+                                 "\x21\x52\x43\x34\x3a"                            \
+                                 "\x21\x4d\x44\x35\x3a"                            \
+                                 "\x21\x50\x53\x4b\x3a"                            \
+                                 "\x21\x53\x52\x50\x3a"                            \
+                                 "\x21\x43\x41\x4d\x45\x4c\x4c\x49\x41"
 #endif
 
 namespace node {

@@ -213,7 +213,7 @@ void NODE_V8SYMBOL_ADD(LPCSTR symbol,
   if (events_enabled > 0) {
     wchar_t symbuf[128];
     if (symbol == nullptr) {
-      SETSYMBUF(Lu8"nullptr");
+      SETSYMBUF(L"\x6e\x75\x6c\x6c\x70\x74\x72");
     } else {
       symbol_len = MultiByteToWideChar(CP_ACP,
                                        0,
@@ -222,7 +222,7 @@ void NODE_V8SYMBOL_ADD(LPCSTR symbol,
                                        symbuf,
                                        128);
       if (symbol_len == 0) {
-        SETSYMBUF(Lu8"Invalid");
+        SETSYMBUF(L"\x49\x6e\x76\x61\x6c\x69\x64");
       } else {
         if (symbol_len > 127) {
           symbol_len = 127;

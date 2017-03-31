@@ -352,7 +352,7 @@ void SyncProcessRunner::Initialize(Local<Object> target,
                                    Local<Value> unused,
                                    Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, u8"spawn", Spawn);
+  env->SetMethod(target, "\x73\x70\x61\x77\x6e", Spawn);
 }
 
 
@@ -875,7 +875,7 @@ int SyncProcessRunner::ParseStdioOption(int child_fd,
     return AddStdioInheritFD(child_fd, inherit_fd);
 
   } else {
-    CHECK(0 && u8"invalid child stdio type");
+    CHECK(0 && "\x69\x6e\x76\x61\x6c\x69\x64\x20\x63\x68\x69\x6c\x64\x20\x73\x74\x64\x69\x6f\x20\x74\x79\x70\x65");
     return UV_EINVAL;
   }
 }

@@ -26,16 +26,16 @@ class SignalWrap : public HandleWrap {
     Environment* env = Environment::GetCurrent(context);
     Local<FunctionTemplate> constructor = env->NewFunctionTemplate(New);
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Signal"));
+    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x69\x67\x6e\x61\x6c"));
 
-    env->SetProtoMethod(constructor, u8"close", HandleWrap::Close);
-    env->SetProtoMethod(constructor, u8"ref", HandleWrap::Ref);
-    env->SetProtoMethod(constructor, u8"unref", HandleWrap::Unref);
-    env->SetProtoMethod(constructor, u8"hasRef", HandleWrap::HasRef);
-    env->SetProtoMethod(constructor, u8"start", Start);
-    env->SetProtoMethod(constructor, u8"stop", Stop);
+    env->SetProtoMethod(constructor, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
+    env->SetProtoMethod(constructor, "\x72\x65\x66", HandleWrap::Ref);
+    env->SetProtoMethod(constructor, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
+    env->SetProtoMethod(constructor, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
+    env->SetProtoMethod(constructor, "\x73\x74\x61\x72\x74", Start);
+    env->SetProtoMethod(constructor, "\x73\x74\x6f\x70", Stop);
 
-    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"Signal"),
+    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x69\x67\x6e\x61\x6c"),
                 constructor->GetFunction());
   }
 
@@ -68,7 +68,7 @@ class SignalWrap : public HandleWrap {
     if (signum == SIGPROF) {
       Environment* env = Environment::GetCurrent(args);
       if (env->inspector_agent()->IsStarted()) {
-        fprintf(stderr, u8"process.on(SIGPROF) is reserved while debugging\n");
+        fprintf(stderr, "process.on(SIGPROF) is reserved while debugging\n");
         return;
       }
     }

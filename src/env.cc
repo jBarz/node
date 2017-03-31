@@ -26,7 +26,7 @@ void Environment::PrintSyncTrace() const {
   Local<v8::StackTrace> stack =
       StackTrace::CurrentStackTrace(isolate(), 10, StackTrace::kDetailed);
 
-  fprintf(stderr, u8"(node:%d) WARNING: Detected use of sync API\n", getpid());
+  fprintf(stderr, "(node:%d) WARNING: Detected use of sync API\n", getpid());
 
   for (int i = 0; i < stack->GetFrameCount() - 1; i++) {
     Local<StackFrame> stack_frame = stack->GetFrame(i);
@@ -37,10 +37,10 @@ void Environment::PrintSyncTrace() const {
 
     if (stack_frame->IsEval()) {
       if (stack_frame->GetScriptId() == Message::kNoScriptIdInfo) {
-        fprintf(stderr, u8"    at [eval]:%i:%i\n", line_number, column);
+        fprintf(stderr, "    at [eval]:%i:%i\n", line_number, column);
       } else {
         fprintf(stderr,
-                u8"    at [eval] (%s:%i:%i)\n",
+                "\x20\x20\x20\x20\x61\x74\x20\x5b\x65\x76\x61\x6c\x5d\x20\x28\x6c\xa2\x3a\x6c\x89\x3a\x6c\x89\x29\xa",
                 *script_name,
                 line_number,
                 column);
@@ -49,10 +49,10 @@ void Environment::PrintSyncTrace() const {
     }
 
     if (fn_name_s.length() == 0) {
-      fprintf(stderr, u8"    at %s:%i:%i\n", *script_name, line_number, column);
+      fprintf(stderr, "    at %s:%i:%i\n", *script_name, line_number, column);
     } else {
       fprintf(stderr,
-              u8"    at %s (%s:%i:%i)\n",
+              "\x20\x20\x20\x20\x61\x74\x20\x6c\xa2\x20\x28\x6c\xa2\x3a\x6c\x89\x3a\x6c\x89\x29\xa",
               *fn_name_s,
               *script_name,
               line_number,

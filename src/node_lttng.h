@@ -31,7 +31,7 @@ typedef struct {
   const char* _pad[8];
 } node_lttng_http_server_request_t;
 
-}  // extern u8"C"
+}  // extern "\x43"
 
 namespace node {
 

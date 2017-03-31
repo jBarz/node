@@ -77,7 +77,7 @@ void UDPWrap::Initialize(Local<Object> target,
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"UDP"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x55\x44\x50"));
 
   enum PropertyAttribute attributes =
       static_cast<PropertyAttribute>(v8::ReadOnly | v8::DontDelete);
@@ -88,35 +88,35 @@ void UDPWrap::Initialize(Local<Object> target,
                                      v8::DEFAULT,
                                      attributes);
 
-  env->SetProtoMethod(t, u8"bind", Bind);
-  env->SetProtoMethod(t, u8"send", Send);
-  env->SetProtoMethod(t, u8"bind6", Bind6);
-  env->SetProtoMethod(t, u8"send6", Send6);
-  env->SetProtoMethod(t, u8"close", Close);
-  env->SetProtoMethod(t, u8"recvStart", RecvStart);
-  env->SetProtoMethod(t, u8"recvStop", RecvStop);
-  env->SetProtoMethod(t, u8"getsockname",
+  env->SetProtoMethod(t, "\x62\x69\x6e\x64", Bind);
+  env->SetProtoMethod(t, "\x73\x65\x6e\x64", Send);
+  env->SetProtoMethod(t, "\x62\x69\x6e\x64\x36", Bind6);
+  env->SetProtoMethod(t, "\x73\x65\x6e\x64\x36", Send6);
+  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", Close);
+  env->SetProtoMethod(t, "\x72\x65\x63\x76\x53\x74\x61\x72\x74", RecvStart);
+  env->SetProtoMethod(t, "\x72\x65\x63\x76\x53\x74\x6f\x70", RecvStop);
+  env->SetProtoMethod(t, "\x67\x65\x74\x73\x6f\x63\x6b\x6e\x61\x6d\x65",
                       GetSockOrPeerName<UDPWrap, uv_udp_getsockname>);
-  env->SetProtoMethod(t, u8"addMembership", AddMembership);
-  env->SetProtoMethod(t, u8"dropMembership", DropMembership);
-  env->SetProtoMethod(t, u8"setMulticastTTL", SetMulticastTTL);
-  env->SetProtoMethod(t, u8"setMulticastLoopback", SetMulticastLoopback);
-  env->SetProtoMethod(t, u8"setBroadcast", SetBroadcast);
-  env->SetProtoMethod(t, u8"setTTL", SetTTL);
+  env->SetProtoMethod(t, "\x61\x64\x64\x4d\x65\x6d\x62\x65\x72\x73\x68\x69\x70", AddMembership);
+  env->SetProtoMethod(t, "\x64\x72\x6f\x70\x4d\x65\x6d\x62\x65\x72\x73\x68\x69\x70", DropMembership);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4d\x75\x6c\x74\x69\x63\x61\x73\x74\x54\x54\x4c", SetMulticastTTL);
+  env->SetProtoMethod(t, "\x73\x65\x74\x4d\x75\x6c\x74\x69\x63\x61\x73\x74\x4c\x6f\x6f\x70\x62\x61\x63\x6b", SetMulticastLoopback);
+  env->SetProtoMethod(t, "\x73\x65\x74\x42\x72\x6f\x61\x64\x63\x61\x73\x74", SetBroadcast);
+  env->SetProtoMethod(t, "\x73\x65\x74\x54\x54\x4c", SetTTL);
 
-  env->SetProtoMethod(t, u8"ref", HandleWrap::Ref);
-  env->SetProtoMethod(t, u8"unref", HandleWrap::Unref);
-  env->SetProtoMethod(t, u8"hasRef", HandleWrap::HasRef);
+  env->SetProtoMethod(t, "\x72\x65\x66", HandleWrap::Ref);
+  env->SetProtoMethod(t, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
+  env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"UDP"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x55\x44\x50"), t->GetFunction());
   env->set_udp_constructor_function(t->GetFunction());
 
   // Create FunctionTemplate for SendWrap
   Local<FunctionTemplate> swt =
       FunctionTemplate::New(env->isolate(), NewSendWrap);
   swt->InstanceTemplate()->SetInternalFieldCount(1);
-  swt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), u8"SendWrap"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"SendWrap"),
+  swt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x65\x6e\x64\x57\x72\x61\x70"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x65\x6e\x64\x57\x72\x61\x70"),
               swt->GetFunction());
 }
 
@@ -171,7 +171,7 @@ void UDPWrap::DoBind(const FunctionCallbackInfo<Value>& args, int family) {
     err = uv_ip6_addr(*address, port, reinterpret_cast<sockaddr_in6*>(&addr));
     break;
   default:
-    CHECK(0 && u8"unexpected address family");
+    CHECK(0 && "\x75\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x64\x64\x72\x65\x73\x73\x20\x66\x61\x6d\x69\x6c\x79");
     ABORT();
   }
 
@@ -300,7 +300,7 @@ void UDPWrap::DoSend(const FunctionCallbackInfo<Value>& args, int family) {
     err = uv_ip6_addr(*address, port, reinterpret_cast<sockaddr_in6*>(&addr));
     break;
   default:
-    CHECK(0 && u8"unexpected address family");
+    CHECK(0 && "\x75\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x64\x64\x72\x65\x73\x73\x20\x66\x61\x6d\x69\x6c\x79");
     ABORT();
   }
 
@@ -377,8 +377,8 @@ void UDPWrap::OnAlloc(uv_handle_t* handle,
   buf->len = suggested_size;
 
   if (buf->base == nullptr && suggested_size > 0) {
-    FatalError(u8"node::UDPWrap::OnAlloc(uv_handle_t*, size_t, uv_buf_t*)",
-               u8"Out Of Memory");
+    FatalError("\x6e\x6f\x64\x65\x3a\x3a\x55\x44\x50\x57\x72\x61\x70\x3a\x3a\x4f\x6e\x41\x6c\x6c\x6f\x63\x28\x75\x76\x5f\x68\x61\x6e\x64\x6c\x65\x5f\x74\x2a\x2c\x20\x73\x69\x7a\x65\x5f\x74\x2c\x20\x75\x76\x5f\x62\x75\x66\x5f\x74\x2a\x29",
+               "\x4f\x75\x74\x20\x4f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
   }
 }
 

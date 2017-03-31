@@ -65,13 +65,13 @@ void FSEventWrap::Initialize(Local<Object> target,
                              Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-  auto fsevent_string = FIXED_ONE_BYTE_STRING(env->isolate(), u8"FSEvent");
+  auto fsevent_string = FIXED_ONE_BYTE_STRING(env->isolate(), "\x46\x53\x45\x76\x65\x6e\x74");
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
   t->SetClassName(fsevent_string);
 
-  env->SetProtoMethod(t, u8"start", Start);
-  env->SetProtoMethod(t, u8"close", Close);
+  env->SetProtoMethod(t, "\x73\x74\x61\x72\x74", Start);
+  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", Close);
 
   target->Set(fsevent_string, t->GetFunction());
 }
@@ -91,7 +91,7 @@ void FSEventWrap::Start(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
   CHECK_EQ(wrap->initialized_, false);
 
-  static const char kErrMsg[] = u8"filename must be a string or Buffer";
+  static const char kErrMsg[] = "\x66\x69\x6c\x65\x6e\x61\x6d\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67\x20\x6f\x72\x20\x42\x75\x66\x66\x65\x72";
   if (args.Length() < 1)
     return env->ThrowTypeError(kErrMsg);
 
@@ -154,7 +154,7 @@ void FSEventWrap::OnEvent(uv_fs_event_t* handle, const char* filename,
   } else if (events & UV_CHANGE) {
     event_string = env->change_string();
   } else {
-    CHECK(0 && u8"bad fs events flag");
+    CHECK(0 && "\x62\x61\x64\x20\x66\x73\x20\x65\x76\x65\x6e\x74\x73\x20\x66\x6c\x61\x67");
   }
 
   Local<Value> argv[] = {

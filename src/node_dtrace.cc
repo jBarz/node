@@ -44,17 +44,17 @@ using v8::Value;
 #define SLURP_STRING(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-        u8"expected object for u8" USTR(#obj) u8" to contain string member " USTR(#member)); \
+        "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20\x75\x38" USTR(#obj) "\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x73\x74\x72\x69\x6e\x67\x20\x6d\x65\x6d\x62\x65\x72\x20" USTR(#member)); \
   } \
   node::Utf8Value _##member(env->isolate(), \
       obj->Get(OneByteString(env->isolate(), USTR(#member)))); \
   if ((*(const char **)valp = *_##member) == nullptr) \
-    *(const char **)valp = u8"<unknown>";
+    *(const char **)valp = "\x3c\x75\x6e\x6b\x6e\x6f\x77\x6e\x3e";
 
 #define SLURP_INT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected object for u8" USTR(#obj) u8" to contain integer member " USTR(#member)); \
+      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20\x75\x38" USTR(#obj) "\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x69\x6e\x74\x65\x67\x65\x72\x20\x6d\x65\x6d\x62\x65\x72\x20" USTR(#member)); \
   } \
   *valp = obj->Get(OneByteString(env->isolate(), USTR(#member))) \
       ->ToInteger(env->isolate())->Value();
@@ -62,19 +62,19 @@ using v8::Value;
 #define SLURP_OBJECT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected object for u8" USTR(#obj) u8" to contain object member " USTR(#member)); \
+      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20\x75\x38" USTR(#obj) "\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x6f\x62\x6a\x65\x63\x74\x20\x6d\x65\x6d\x62\x65\x72\x20" USTR(#member)); \
   } \
   *valp = Local<Object>::Cast(obj->Get(OneByteString(env->isolate(), USTR(#member))));
 
 #define SLURP_CONNECTION(arg, conn) \
   if (!(arg)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected argument u8" USTR(#arg) u8" to be a connection object"); \
+      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x75\x38" USTR(#arg) "\x20\x74\x6f\x20\x62\x65\x20\x61\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x6f\x62\x6a\x65\x63\x74"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg); \
   Local<Value> _handle = \
-      (_##conn)->Get(FIXED_ONE_BYTE_STRING(env->isolate(), u8"_handle")); \
+      (_##conn)->Get(FIXED_ONE_BYTE_STRING(env->isolate(), "\x5f\x68\x61\x6e\x64\x6c\x65")); \
   if (_handle->IsObject()) { \
     SLURP_INT(_handle.As<Object>(), fd, &conn.fd); \
   } else { \
@@ -87,7 +87,7 @@ using v8::Value;
 #define SLURP_CONNECTION_HTTP_CLIENT(arg, conn) \
   if (!(arg)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected argument u8" USTR(#arg) u8" to be a connection object"); \
+      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x75\x38" USTR(#arg) "\x20\x74\x6f\x20\x62\x65\x20\x61\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x6f\x62\x6a\x65\x63\x74"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg); \
@@ -99,11 +99,11 @@ using v8::Value;
 #define SLURP_CONNECTION_HTTP_CLIENT_RESPONSE(arg0, arg1, conn) \
   if (!(arg0)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected argument u8" USTR(#arg0) u8" to be a connection object"); \
+      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x75\x38" USTR(#arg0) "\x20\x74\x6f\x20\x62\x65\x20\x61\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x6f\x62\x6a\x65\x63\x74"); \
   } \
   if (!(arg1)->IsObject()) { \
     return env->ThrowError( \
-      u8"expected argument u8" USTR(#arg1) u8" to be a connection object"); \
+      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x75\x38" USTR(#arg1) "\x20\x74\x6f\x20\x62\x65\x20\x61\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x6f\x62\x6a\x65\x63\x74"); \
   } \
   node_dtrace_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg0); \
@@ -150,14 +150,14 @@ void DTRACE_HTTP_SERVER_REQUEST(const FunctionCallbackInfo<Value>& args) {
 
   if (!(headers)->IsObject()) {
     return env->ThrowError(
-      u8"expected object for request to contain string member headers");
+      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20\x72\x65\x71\x75\x65\x73\x74\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x73\x74\x72\x69\x6e\x67\x20\x6d\x65\x6d\x62\x65\x72\x20\x68\x65\x61\x64\x65\x72\x73");
   }
 
   Local<Value> strfwdfor = headers->Get(env->x_forwarded_string());
   node::Utf8Value fwdfor(env->isolate(), strfwdfor);
 
   if (!strfwdfor->IsString() || (req.forwardedFor = *fwdfor) == nullptr)
-    req.forwardedFor = const_cast<char*>(u8"");
+    req.forwardedFor = const_cast<char*>("");
 
   SLURP_CONNECTION(args[1], conn);
   NODE_HTTP_SERVER_REQUEST(&req, &conn, conn.remote, conn.port, req.method, \

@@ -78,7 +78,7 @@ template <typename T> using remove_reference = std::remove_reference<T>;
 #else
 #define LIKELY(expr) expr
 #define UNLIKELY(expr) expr
-#define PRETTY_FUNCTION_NAME u8""
+#define PRETTY_FUNCTION_NAME ""
 #endif
 
 #define USTR(x) u8##x

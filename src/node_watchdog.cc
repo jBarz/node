@@ -14,8 +14,8 @@ Watchdog::Watchdog(v8::Isolate* isolate, uint64_t ms) : isolate_(isolate),
   CHECK(loop_);
   rc = uv_loop_init(loop_);
   if (rc != 0) {
-    FatalError(u8"node::Watchdog::Watchdog()",
-               u8"Failed to initialize uv loop.");
+    FatalError("\x6e\x6f\x64\x65\x3a\x3a\x57\x61\x74\x63\x68\x64\x6f\x67\x3a\x3a\x57\x61\x74\x63\x68\x64\x6f\x67\x28\x29",
+               "\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x20\x75\x76\x20\x6c\x6f\x6f\x70\x2e");
   }
 
   rc = uv_async_init(loop_, &async_, &Watchdog::Async);

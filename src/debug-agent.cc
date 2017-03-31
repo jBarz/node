@@ -153,7 +153,7 @@ void Agent::Stop() {
 
 
 void Agent::WorkerRun() {
-  static const char* argv[] = { u8"nodeu8", u8"--debug-agent" };
+  static const char* argv[] = { "\x6e\x6f\x64\x65\x75\x38", "\x2d\x2d\x64\x65\x62\x75\x67\x2d\x61\x67\x65\x6e\x74" };
   Isolate::CreateParams params;
   ArrayBufferAllocator array_buffer_allocator;
   params.array_buffer_allocator = &array_buffer_allocator;
@@ -204,23 +204,23 @@ void Agent::InitAdaptor(Environment* env) {
   // Create API adaptor
   Local<FunctionTemplate> t = FunctionTemplate::New(isolate);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(String::NewFromUtf8(isolate, u8"DebugAPI"));
+  t->SetClassName(String::NewFromUtf8(isolate, "\x44\x65\x62\x75\x67\x41\x50\x49"));
 
-  NODE_SET_PROTOTYPE_METHOD(t, u8"notifyListen", NotifyListen);
-  NODE_SET_PROTOTYPE_METHOD(t, u8"notifyWait", NotifyWait);
-  NODE_SET_PROTOTYPE_METHOD(t, u8"sendCommand", SendCommand);
+  NODE_SET_PROTOTYPE_METHOD(t, "\x6e\x6f\x74\x69\x66\x79\x4c\x69\x73\x74\x65\x6e", NotifyListen);
+  NODE_SET_PROTOTYPE_METHOD(t, "\x6e\x6f\x74\x69\x66\x79\x57\x61\x69\x74", NotifyWait);
+  NODE_SET_PROTOTYPE_METHOD(t, "\x73\x65\x6e\x64\x43\x6f\x6d\x6d\x61\x6e\x64", SendCommand);
 
   Local<Object> api =
       t->GetFunction()->NewInstance(env->context()).ToLocalChecked();
   api->SetAlignedPointerInInternalField(0, this);
 
-  api->Set(String::NewFromUtf8(isolate, u8"host",
+  api->Set(String::NewFromUtf8(isolate, "\x68\x6f\x73\x74",
                                NewStringType::kNormal).ToLocalChecked(),
            String::NewFromUtf8(isolate, host_.data(), NewStringType::kNormal,
                                host_.size()).ToLocalChecked());
-  api->Set(String::NewFromUtf8(isolate, u8"port"), Integer::New(isolate, port_));
+  api->Set(String::NewFromUtf8(isolate, "\x70\x6f\x72\x74"), Integer::New(isolate, port_));
 
-  env->process_object()->Set(String::NewFromUtf8(isolate, u8"_debugAPI"), api);
+  env->process_object()->Set(String::NewFromUtf8(isolate, "\x5f\x64\x65\x62\x75\x67\x41\x50\x49"), api);
   api_.Reset(env->isolate(), api);
 }
 
@@ -280,7 +280,7 @@ void Agent::ChildSignalCb(uv_async_t* signal) {
     if (msg->data() == nullptr) {
       delete msg;
 
-      MakeCallback(isolate, api, u8"onclose", 0, nullptr);
+      MakeCallback(isolate, api, "\x6f\x6e\x63\x6c\x6f\x73\x65", 0, nullptr);
       break;
     }
 
@@ -300,7 +300,7 @@ void Agent::ChildSignalCb(uv_async_t* signal) {
     // Emit message
     MakeCallback(isolate,
                  api,
-                 u8"onmessage",
+                 "\x6f\x6e\x6d\x65\x73\x73\x61\x67\x65",
                  arraysize(argv),
                  argv);
     delete msg;

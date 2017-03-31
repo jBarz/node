@@ -19,13 +19,13 @@
 
 #define THROW_AND_RETURN_IF_OOB(r)                                          \
   do {                                                                      \
-    if (!(r)) return env->ThrowRangeError(*E2A("out of range index"));            \
+    if (!(r)) return env->ThrowRangeError(*E2A("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78"));            \
   } while (0)
 
 #define THROW_AND_RETURN_UNLESS_BUFFER(env, obj)                            \
   do {                                                                      \
     if (!HasInstance(obj))                                                  \
-      return env->ThrowTypeError(*E2A("argument should be a Buffer"));            \
+      return env->ThrowTypeError(*E2A("\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x42\x75\x66\x66\x65\x72"));            \
   } while (0)
 
 #define SPREAD_ARG(val, name)                                                 \
@@ -559,7 +559,7 @@ void Copy(const FunctionCallbackInfo<Value> &args) {
     return args.GetReturnValue().Set(0);
 
   if (source_start > ts_obj_length)
-    return env->ThrowRangeError(u8"out of range index");
+    return env->ThrowRangeError("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78");
 
   if (source_end - source_start > target_length - target_start)
     source_end = source_start + target_length - target_start;
@@ -610,7 +610,7 @@ void Fill(const FunctionCallbackInfo<Value>& args) {
       enc == UCS2 ? str_obj->Length() * sizeof(uint16_t) : str_obj->Length();
 
   if (enc == HEX && str_length  % 2 != 0)
-    return env->ThrowTypeError(u8"Invalid hex string");
+    return env->ThrowTypeError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x68\x65\x78\x20\x73\x74\x72\x69\x6e\x67");
 
   if (str_length == 0)
     return;
@@ -675,19 +675,19 @@ void StringWrite(const FunctionCallbackInfo<Value>& args) {
   SPREAD_ARG(args.This(), ts_obj);
 
   if (!args[0]->IsString())
-    return env->ThrowTypeError(u8"Argument must be a string");
+    return env->ThrowTypeError("\x41\x72\x67\x75\x6d\x65\x6e\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67");
 
   Local<String> str = args[0]->ToString(env->isolate());
 
   if (encoding == HEX && str->Length() % 2 != 0)
-    return env->ThrowTypeError(u8"Invalid hex string");
+    return env->ThrowTypeError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x68\x65\x78\x20\x73\x74\x72\x69\x6e\x67");
 
   size_t offset;
   size_t max_length;
 
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[1], 0, &offset));
   if (offset > ts_obj_length)
-    return env->ThrowRangeError(u8"Offset is out of bounds");
+    return env->ThrowRangeError("\x4f\x66\x66\x73\x65\x74\x20\x69\x73\x20\x6f\x75\x74\x20\x6f\x66\x20\x62\x6f\x75\x6e\x64\x73");
 
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[2], ts_obj_length - offset,
                                           &max_length));
@@ -903,9 +903,9 @@ void CompareOffset(const FunctionCallbackInfo<Value> &args) {
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[5], ts_obj_length, &source_end));
 
   if (source_start > ts_obj_length)
-    return env->ThrowRangeError(u8"out of range index");
+    return env->ThrowRangeError("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78");
   if (target_start > target_length)
-    return env->ThrowRangeError(u8"out of range index");
+    return env->ThrowRangeError("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78");
 
   CHECK_LE(source_start, source_end);
   CHECK_LE(target_start, target_end);
@@ -1211,23 +1211,23 @@ void SetupBufferJS(const FunctionCallbackInfo<Value>& args) {
   Local<Object> proto = args[0].As<Object>();
   env->set_buffer_prototype_object(proto);
 
-  env->SetMethod(proto, u8"asciiSlice", AsciiSlice);
-  env->SetMethod(proto, u8"base64Slice", Base64Slice);
-  env->SetMethod(proto, u8"latin1Slice", Latin1Slice);
-  env->SetMethod(proto, u8"hexSlice", HexSlice);
-  env->SetMethod(proto, u8"ucs2Slice", Ucs2Slice);
-  env->SetMethod(proto, u8"utf8Slice", Utf8Slice);
-  env->SetMethod(proto, u8"ebcdicSlice", EbcdicSlice);
+  env->SetMethod(proto, "\x61\x73\x63\x69\x69\x53\x6c\x69\x63\x65", AsciiSlice);
+  env->SetMethod(proto, "\x62\x61\x73\x65\x36\x34\x53\x6c\x69\x63\x65", Base64Slice);
+  env->SetMethod(proto, "\x6c\x61\x74\x69\x6e\x31\x53\x6c\x69\x63\x65", Latin1Slice);
+  env->SetMethod(proto, "\x68\x65\x78\x53\x6c\x69\x63\x65", HexSlice);
+  env->SetMethod(proto, "\x75\x63\x73\x32\x53\x6c\x69\x63\x65", Ucs2Slice);
+  env->SetMethod(proto, "\x75\x74\x66\x38\x53\x6c\x69\x63\x65", Utf8Slice);
+  env->SetMethod(proto, "\x65\x62\x63\x64\x69\x63\x53\x6c\x69\x63\x65", EbcdicSlice);
 
-  env->SetMethod(proto, u8"asciiWrite", AsciiWrite);
-  env->SetMethod(proto, u8"base64Write", Base64Write);
-  env->SetMethod(proto, u8"latin1Write", Latin1Write);
-  env->SetMethod(proto, u8"hexWrite", HexWrite);
-  env->SetMethod(proto, u8"ucs2Write", Ucs2Write);
-  env->SetMethod(proto, u8"utf8Write", Utf8Write);
-  env->SetMethod(proto, u8"ebcdicWrite", EbcdicWrite);
+  env->SetMethod(proto, "\x61\x73\x63\x69\x69\x57\x72\x69\x74\x65", AsciiWrite);
+  env->SetMethod(proto, "\x62\x61\x73\x65\x36\x34\x57\x72\x69\x74\x65", Base64Write);
+  env->SetMethod(proto, "\x6c\x61\x74\x69\x6e\x31\x57\x72\x69\x74\x65", Latin1Write);
+  env->SetMethod(proto, "\x68\x65\x78\x57\x72\x69\x74\x65", HexWrite);
+  env->SetMethod(proto, "\x75\x63\x73\x32\x57\x72\x69\x74\x65", Ucs2Write);
+  env->SetMethod(proto, "\x75\x74\x66\x38\x57\x72\x69\x74\x65", Utf8Write);
+  env->SetMethod(proto, "\x65\x62\x63\x64\x69\x63\x57\x72\x69\x74\x65", EbcdicWrite);
 
-  env->SetMethod(proto, u8"copy", Copy);
+  env->SetMethod(proto, "\x63\x6f\x70\x79", Copy);
 
   CHECK(args[1]->IsObject());
   Local<Object> bObj = args[1].As<Object>();
@@ -1239,7 +1239,7 @@ void SetupBufferJS(const FunctionCallbackInfo<Value>& args) {
   Local<ArrayBuffer> array_buffer =
       ArrayBuffer::New(env->isolate(), fields, sizeof(*fields) * fields_count);
 
-  bObj->Set(String::NewFromUtf8(env->isolate(), u8"flags"),
+  bObj->Set(String::NewFromUtf8(env->isolate(), "\x66\x6c\x61\x67\x73"),
             Uint32Array::New(array_buffer, 0, fields_count));
 }
 
@@ -1249,37 +1249,37 @@ void Initialize(Local<Object> target,
                 Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-  env->SetMethod(target, u8"setupBufferJS", SetupBufferJS);
-  env->SetMethod(target, u8"createFromString", CreateFromString);
+  env->SetMethod(target, "\x73\x65\x74\x75\x70\x42\x75\x66\x66\x65\x72\x4a\x53", SetupBufferJS);
+  env->SetMethod(target, "\x63\x72\x65\x61\x74\x65\x46\x72\x6f\x6d\x53\x74\x72\x69\x6e\x67", CreateFromString);
 
-  env->SetMethod(target, u8"byteLengthUtf8", ByteLengthUtf8);
-  env->SetMethod(target, u8"compare", Compare);
-  env->SetMethod(target, u8"compareOffset", CompareOffset);
-  env->SetMethod(target, u8"fill", Fill);
-  env->SetMethod(target, u8"indexOfBuffer", IndexOfBuffer);
-  env->SetMethod(target, u8"indexOfNumber", IndexOfNumber);
-  env->SetMethod(target, u8"indexOfString", IndexOfString);
+  env->SetMethod(target, "\x62\x79\x74\x65\x4c\x65\x6e\x67\x74\x68\x55\x74\x66\x38", ByteLengthUtf8);
+  env->SetMethod(target, "\x63\x6f\x6d\x70\x61\x72\x65", Compare);
+  env->SetMethod(target, "\x63\x6f\x6d\x70\x61\x72\x65\x4f\x66\x66\x73\x65\x74", CompareOffset);
+  env->SetMethod(target, "\x66\x69\x6c\x6c", Fill);
+  env->SetMethod(target, "\x69\x6e\x64\x65\x78\x4f\x66\x42\x75\x66\x66\x65\x72", IndexOfBuffer);
+  env->SetMethod(target, "\x69\x6e\x64\x65\x78\x4f\x66\x4e\x75\x6d\x62\x65\x72", IndexOfNumber);
+  env->SetMethod(target, "\x69\x6e\x64\x65\x78\x4f\x66\x53\x74\x72\x69\x6e\x67", IndexOfString);
 
-  env->SetMethod(target, u8"readDoubleBE", ReadDoubleBE);
-  env->SetMethod(target, u8"readDoubleLE", ReadDoubleLE);
-  env->SetMethod(target, u8"readFloatBE", ReadFloatBE);
-  env->SetMethod(target, u8"readFloatLE", ReadFloatLE);
+  env->SetMethod(target, "\x72\x65\x61\x64\x44\x6f\x75\x62\x6c\x65\x42\x45", ReadDoubleBE);
+  env->SetMethod(target, "\x72\x65\x61\x64\x44\x6f\x75\x62\x6c\x65\x4c\x45", ReadDoubleLE);
+  env->SetMethod(target, "\x72\x65\x61\x64\x46\x6c\x6f\x61\x74\x42\x45", ReadFloatBE);
+  env->SetMethod(target, "\x72\x65\x61\x64\x46\x6c\x6f\x61\x74\x4c\x45", ReadFloatLE);
 
-  env->SetMethod(target, u8"writeDoubleBE", WriteDoubleBE);
-  env->SetMethod(target, u8"writeDoubleLE", WriteDoubleLE);
-  env->SetMethod(target, u8"writeFloatBE", WriteFloatBE);
-  env->SetMethod(target, u8"writeFloatLE", WriteFloatLE);
+  env->SetMethod(target, "\x77\x72\x69\x74\x65\x44\x6f\x75\x62\x6c\x65\x42\x45", WriteDoubleBE);
+  env->SetMethod(target, "\x77\x72\x69\x74\x65\x44\x6f\x75\x62\x6c\x65\x4c\x45", WriteDoubleLE);
+  env->SetMethod(target, "\x77\x72\x69\x74\x65\x46\x6c\x6f\x61\x74\x42\x45", WriteFloatBE);
+  env->SetMethod(target, "\x77\x72\x69\x74\x65\x46\x6c\x6f\x61\x74\x4c\x45", WriteFloatLE);
 
-  env->SetMethod(target, u8"swap16", Swap16);
-  env->SetMethod(target, u8"swap32", Swap32);
-  env->SetMethod(target, u8"swap64", Swap64);
+  env->SetMethod(target, "\x73\x77\x61\x70\x31\x36", Swap16);
+  env->SetMethod(target, "\x73\x77\x61\x70\x33\x32", Swap32);
+  env->SetMethod(target, "\x73\x77\x61\x70\x36\x34", Swap64);
 
   target->Set(env->context(),
-              FIXED_ONE_BYTE_STRING(env->isolate(), u8"kMaxLength"),
+              FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4d\x61\x78\x4c\x65\x6e\x67\x74\x68"),
               Integer::NewFromUnsigned(env->isolate(), kMaxLength)).FromJust();
 
   target->Set(env->context(),
-              FIXED_ONE_BYTE_STRING(env->isolate(), u8"kStringMaxLength"),
+              FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x53\x74\x72\x69\x6e\x67\x4d\x61\x78\x4c\x65\x6e\x67\x74\x68"),
               Integer::New(env->isolate(), String::kMaxLength)).FromJust();
 }
 
