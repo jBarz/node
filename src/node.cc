@@ -326,6 +326,7 @@ inline int GetFirstFlagFrom(const char* format_e, int start = 0) {
 }
 
 
+#ifdef __MVS__
 int VSNPrintFASCII(char* out, int length, const char* format_a, ...) {
   va_list args;
   va_start(args, format_a);
@@ -385,6 +386,7 @@ int SNPrintFASCII(char * out, int length, const char* format_a, ...) {
   va_end(args);
   return ret;
 }
+#endif
 
 static inline const char *errno_string(int errorno) {
 #define ERRNO_CASE(e)  case e: return USTR(#e;)
@@ -1720,7 +1722,11 @@ void AppendExceptionLine(Environment* env,
   arrow[off] = '\xa';
   arrow[off + 1] = '\x0';
 
+#ifdef __MVS__
   Local<String> arrow_str = String::NewFromUtf8(env->isolate(), *E2A(arrow));
+#else
+  Local<String> arrow_str = String::NewFromUtf8(env->isolate(), arrow);
+#endif
 
   const bool can_set_arrow = !arrow_str.IsEmpty() && !err_obj.IsEmpty();
   // If allocating arrow_str failed, print it out. There's not much else to do.
@@ -2560,7 +2566,11 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
   modpending = nullptr;
 
   if (is_dlopen_error) {
+#ifdef __MVS__
     Local<String> errmsg = OneByteString(env->isolate(), *E2A(uv_dlerror(&lib)));
+#else
+    Local<String> errmsg = OneByteString(env->isolate(), uv_dlerror(&lib));
+#endif
     uv_dlclose(&lib);
 #ifdef _WIN32
     // Windows needs to add the filename into the error message
@@ -2791,10 +2801,17 @@ static void Binding(const FunctionCallbackInfo<Value>& args) {
     cache->Set(module, exports);
   } else {
     char errmsg[1024];
+#ifdef __MVS__
     VSNPrintFASCII(errmsg,
              sizeof(errmsg),
              "\x4e\x6f\x20\x73\x75\x63\x68\x20\x6d\x6f\x64\x75\x6c\x65\x3a\x20\x6c\xa2",
              *module_v);
+#else
+    snprintf(errmsg,
+             sizeof(errmsg),
+             "\x4e\x6f\x20\x73\x75\x63\x68\x20\x6d\x6f\x64\x75\x6c\x65\x3a\x20\x6c\xa2",
+             *module_v);
+#endif
     return env->ThrowError(errmsg);
   }
 

@@ -41,7 +41,9 @@ NativeEncodingValue::NativeEncodingValue(Isolate* isolate, Local<Value> value) {
     return;
 
   MakeUtf8String(isolate, value, this);
+#ifdef __MVS__
   __a2e_l(out(), length());
+#endif
 }
 
 
@@ -51,7 +53,9 @@ E2A::E2A(const char* val)
     assert(str_ != NULL);
     memcpy(str_, val, length_);
     str_[length_] = NULL;
+#ifdef __MVS__
     __e2a_l(str_, length_);
+#endif
 }
 
 
@@ -61,7 +65,9 @@ E2A::E2A(const char* val, unsigned len)
     assert(str_ != NULL);
     memcpy(str_, val, length_);
     str_[length_] = NULL;
+#ifdef __MVS__
     __e2a_l(str_, length_);
+#endif
 }
 
 E2A::E2A(const char* prefix, const char* val)
@@ -75,7 +81,9 @@ E2A::E2A(const char* prefix, const char* val)
     memcpy(str_, prefix, prelen);
     memcpy(str_ + prelen, val, vallen);
     str_[length_] = NULL;
+#ifdef __MVS__
     __e2a_l(str_ + prelen, vallen);
+#endif
 }
 
 TwoByteValue::TwoByteValue(Isolate* isolate, Local<Value> value) {

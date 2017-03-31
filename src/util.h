@@ -81,7 +81,11 @@ template <typename T> using remove_reference = std::remove_reference<T>;
 #define PRETTY_FUNCTION_NAME ""
 #endif
 
+#ifdef __MVS__
 #define USTR(x) u8##x
+#else
+#define USTR(x) x
+#endif
 #define STRINGIFY_(x) USTR(#x)
 #define STRINGIFY(x) STRINGIFY_(x)
 

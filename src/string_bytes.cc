@@ -8,7 +8,9 @@
 #include <limits.h>
 #include <string.h>  // memcpy
 #include <vector>
+#ifdef __MVS__
 #include <unistd.h>  // a2e
+#endif
 
 // When creating strings >= this length v8's gc spins up and consumes
 // most of the execution time. For these cases it's more performant to
@@ -303,7 +305,9 @@ size_t StringBytes::Write(Isolate* isolate,
       }
       if (chars_written != nullptr)
         *chars_written = nbytes;
+#ifdef __MVS__
       __a2e_l(buf, nbytes);
+#endif
       break;
 
     case BUFFER:

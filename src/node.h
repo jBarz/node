@@ -73,7 +73,11 @@
 #endif
 
 #undef USTR
+#ifdef __MVS__
 #define USTR(X) u8##X
+#else
+#define USTR(X) X
+#endif
 
 // Forward-declare libuv loop
 struct uv_loop_s;
