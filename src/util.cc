@@ -109,6 +109,9 @@ BufferValue::BufferValue(Isolate* isolate, Local<Value> value) {
 
   if (value->IsString()) {
     MakeUtf8String(isolate, value, this);
+#ifdef __MVS__
+    __a2e_l(out(), length());
+#endif
   } else if (Buffer::HasInstance(value)) {
     const size_t len = Buffer::Length(value);
     // Leave place for the terminating '\0' byte.
