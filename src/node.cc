@@ -1983,7 +1983,11 @@ static void Cwd(const FunctionCallbackInfo<Value>& args) {
   }
 
   Local<String> cwd = String::NewFromUtf8(env->isolate(),
+#ifdef __MVS__
+                                          *E2A(buf, cwd_len),
+#else
                                           buf,
+#endif
                                           String::kNormalString,
                                           cwd_len);
   args.GetReturnValue().Set(cwd);
