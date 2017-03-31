@@ -3373,7 +3373,7 @@ void SetupProcessObject(Environment* env,
   // process.platform
   READONLY_PROPERTY(process,
                     "\x70\x6c\x61\x74\x66\x6f\x72\x6d",
-                    OneByteString(env->isolate(), NODE_PLATFORM));
+                    OneByteString(env->isolate(), *E2A(NODE_PLATFORM)));
 
   // process.release
   Local<Object> release = Object::New(env->isolate());

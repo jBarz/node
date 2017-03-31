@@ -576,6 +576,7 @@
 	    '_POSIX_SOURCE',
 	    '_OPEN_SYS',
 	    '__IBMCPP_TR1__',
+            'NODE_PLATFORM="os390"',
 	    'PATH_MAX=_POSIX_PATH_MAX',
 	  ],
 	  'cflags': [
