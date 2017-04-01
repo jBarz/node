@@ -32,6 +32,7 @@ import imp
 import logging
 import optparse
 import os
+import platform
 import re
 import signal
 import subprocess
@@ -166,6 +167,9 @@ class ProgressIndicator(object):
       self.remaining -= 1
       self.HasRun(output)
       self.lock.release()
+      CleanupResources()
+    CleanupResources()
+
 
 
 def EscapeCommand(command):
@@ -1700,6 +1704,19 @@ def Main():
 
   return result
 
+def CleanupResources():
+ if (platform.system() == 'OS/390'):
+   os.system("for u in `ipcs | grep \"^q.*$(whoami)\" | tr -s ' ' | cut -d' ' -f2`;"
+                "do ipcrm -q $u;"
+             "done")
+   os.system("for u in `ipcs | grep \"^s.*$(whoami)\" | tr -s ' ' | cut -d' ' -f2`;"
+               "do ipcrm -s $u;"
+             "done")
+   os.system("for u in `ps -ecf -o ppid,jobname,pid | grep \" 1 $(whoami)\" | tr -s ' ' | cut -f4 -d' '`;"
+               "do kill -9 $u > /dev/null 2>&1;"
+             "done")
+
 
 if __name__ == '__main__':
   sys.exit(Main())
+  CleanupResources()
