@@ -2642,6 +2642,8 @@ static void OnFatalError(const char* location, const char* message) {
   }
   fflush(stderr);
   V8::ReleaseSystemResources();
+  debugger::Agent::ReleaseSystemResources();
+  uv_sem_destroy(&debug_semaphore);
   ABORT();
 }
 
@@ -3638,6 +3640,8 @@ void SetupProcessObject(Environment* env,
 static void AtProcessExit() {
   uv_tty_reset_mode();
   V8::ReleaseSystemResources();
+  debugger::Agent::ReleaseSystemResources();
+  uv_sem_destroy(&debug_semaphore);
 }
 
 
@@ -3651,6 +3655,8 @@ void SignalExit(int signo) {
   CHECK_EQ(sigaction(signo, &sa, nullptr), 0);
 #endif
   V8::ReleaseSystemResources();
+  debugger::Agent::ReleaseSystemResources();
+  uv_sem_destroy(&debug_semaphore);
   raise(signo);
 }
 
@@ -4891,6 +4897,8 @@ static void StartNodeInstance(void* arg) {
 #ifdef __MVS__
   } else {
     V8::ReleaseSystemResources();
+    debugger::Agent::ReleaseSystemResources();
+    uv_sem_destroy(&debug_semaphore);
     abort();
 #endif
   }
