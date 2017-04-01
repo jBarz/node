@@ -1731,10 +1731,10 @@ void AppendExceptionLine(Environment* env,
   arrow[off + 1] = '\0';
 
 #ifdef __MVS__
-  Local<String> arrow_str = String::NewFromUtf8(env->isolate(), *E2A(arrow));
-#else
-  Local<String> arrow_str = String::NewFromUtf8(env->isolate(), arrow);
+  __e2a_s(arrow);
 #endif
+  
+  Local<String> arrow_str = String::NewFromUtf8(env->isolate(), arrow);
 
   const bool can_set_arrow = !arrow_str.IsEmpty() && !err_obj.IsEmpty();
   // If allocating arrow_str failed, print it out. There's not much else to do.
