@@ -19,13 +19,13 @@
 
 #define THROW_AND_RETURN_IF_OOB(r)                                          \
   do {                                                                      \
-    if (!(r)) return env->ThrowRangeError(*E2A("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78"));            \
+    if (!(r)) return env->ThrowRangeError("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78");            \
   } while (0)
 
 #define THROW_AND_RETURN_UNLESS_BUFFER(env, obj)                            \
   do {                                                                      \
     if (!HasInstance(obj))                                                  \
-      return env->ThrowTypeError(*E2A("\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x42\x75\x66\x66\x65\x72"));            \
+      return env->ThrowTypeError("\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x42\x75\x66\x66\x65\x72");            \
   } while (0)
 
 #define SPREAD_ARG(val, name)                                                 \

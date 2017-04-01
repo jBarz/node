@@ -27,21 +27,21 @@
 #define THROW_AND_RETURN_IF_NOT_STRING_OR_BUFFER(val, prefix)                  \
   do {                                                                         \
     if (!Buffer::HasInstance(val) && !val->IsString()) {                       \
-      return env->ThrowTypeError(*E2A(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67\x20\x6f\x72\x20\x61\x20\x62\x75\x66\x66\x65\x72"));      \
+      return env->ThrowTypeError(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67\x20\x6f\x72\x20\x61\x20\x62\x75\x66\x66\x65\x72");      \
     }                                                                          \
   } while (0)
 
 #define THROW_AND_RETURN_IF_NOT_BUFFER(val, prefix)           \
   do {                                                        \
     if (!Buffer::HasInstance(val)) {                          \
-      return env->ThrowTypeError(*E2A(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x62\x75\x66\x66\x65\x72")); \
+      return env->ThrowTypeError(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x62\x75\x66\x66\x65\x72"); \
     }                                                         \
   } while (0)
 
 #define THROW_AND_RETURN_IF_NOT_STRING(val, prefix)           \
   do {                                                        \
     if (!val->IsString()) {                                   \
-      return env->ThrowTypeError(*E2A(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67")); \
+      return env->ThrowTypeError(prefix, "\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67"); \
     }                                                         \
   } while (0)
 
