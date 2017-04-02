@@ -146,7 +146,7 @@ class ProcessWrap : public HandleWrap {
 
     // options.file
     Local<Value> file_v = js_options->Get(env->file_string());
-    node::Utf8Value file(env->isolate(),
+    node::BufferValue file(env->isolate(),
                          file_v->IsString() ? file_v : Local<Value>());
     if (file.length() > 0) {
       options.file = *file;
@@ -162,7 +162,7 @@ class ProcessWrap : public HandleWrap {
       // Heap allocate to detect errors. +1 is for nullptr.
       options.args = new char*[argc + 1];
       for (int i = 0; i < argc; i++) {
-        node::Utf8Value arg(env->isolate(), js_argv->Get(i));
+        node::BufferValue arg(env->isolate(), js_argv->Get(i));
         options.args[i] = strdup(*arg);
         CHECK_NE(options.args[i], nullptr);
       }
@@ -171,7 +171,7 @@ class ProcessWrap : public HandleWrap {
 
     // options.cwd
     Local<Value> cwd_v = js_options->Get(env->cwd_string());
-    node::Utf8Value cwd(env->isolate(),
+    node::BufferValue cwd(env->isolate(),
                         cwd_v->IsString() ? cwd_v : Local<Value>());
     if (cwd.length() > 0) {
       options.cwd = *cwd;
@@ -184,10 +184,7 @@ class ProcessWrap : public HandleWrap {
       int envc = env_opt->Length();
       options.env = new char*[envc + 1];  // Heap allocated to detect errors.
       for (int i = 0; i < envc; i++) {
-        node::Utf8Value pair(env->isolate(), env_opt->Get(i));
-#ifdef __MVS__
-        __a2e_s(*pair);
-#endif
+        node::BufferValue pair(env->isolate(), env_opt->Get(i));
         options.env[i] = strdup(*pair);
         CHECK_NE(options.env[i], nullptr);
       }
