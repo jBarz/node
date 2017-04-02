@@ -1953,16 +1953,16 @@ NO_RETURN void Assert(const char* const (*args)[4]) {
   char exepath[256];
   size_t exepath_size = sizeof(exepath);
   if (uv_exepath(exepath, &exepath_size))
-    snprintf(exepath, sizeof(exepath), "\x6e\x6f\x64\x65");
+    snprintf(exepath, sizeof(exepath), "node");
 
   char pid[12] = {0};
 #ifndef _WIN32
-  snprintf(pid, sizeof(pid), "\x5b\x6c\xa4\x5d", getpid());
+  snprintf(pid, sizeof(pid), "[%u]", getpid());
 #endif
 
-  fprintf(stderr, "\x6c\xa2\x6c\xa2\x3a\x20\x6c\xa2\x3a\x6c\xa2\x3a\x6c\xa2\x6c\xa2\x20\x41\x73\x73\x65\x72\x74\x69\x6f\x6e\x20\x60\x6c\xa2\x27\x20\x66\x61\x69\x6c\x65\x64\x2e\xa",
+  fprintf(stderr, "%s%s: %s:%s:%s%s Assertion `%s' failed.\n",
           exepath, pid, filename, linenum,
-          function, *function ? "\x3a" : "", message);
+          function, *function ? ":" : "", message);
   fflush(stderr);
 
   Abort();

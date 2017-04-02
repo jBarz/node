@@ -81,19 +81,14 @@ template <typename T> using remove_reference = std::remove_reference<T>;
 #define PRETTY_FUNCTION_NAME ""
 #endif
 
-#ifdef __MVS__
-#define USTR(x) u8##x
-#else
-#define USTR(x) x
-#endif
-#define STRINGIFY_(x) USTR(#x)
+#define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
 
 #define CHECK(expr)                                                           \
   do {                                                                        \
     if (UNLIKELY(!(expr))) {                                                  \
       static const char* const args[] = { __FILE__, STRINGIFY(__LINE__),      \
-                                          USTR(#expr), PRETTY_FUNCTION_NAME };      \
+                                          #expr, PRETTY_FUNCTION_NAME };      \
       node::Assert(&args);                                                    \
     }                                                                         \
   } while (0)
@@ -413,4 +408,5 @@ class E2A {
 }  // namespace node
 
 #endif  // defined(NODE_WANT_INTERNALS) && NODE_WANT_INTERNALS
+
 #endif  // SRC_UTIL_H_
