@@ -1016,7 +1016,11 @@ Local<Value> UVException(Isolate* isolate,
 
   Local<String> js_msg = js_code;
   js_msg = String::Concat(js_msg, FIXED_ONE_BYTE_STRING(isolate, "\x3a\x20"));
+#ifdef __MVS__
+  js_msg = String::Concat(js_msg, OneByteString(isolate, *E2A(msg)));
+#else
   js_msg = String::Concat(js_msg, OneByteString(isolate, msg));
+#endif
   js_msg = String::Concat(js_msg, FIXED_ONE_BYTE_STRING(isolate, "\x2c\x20"));
   js_msg = String::Concat(js_msg, js_syscall);
 
