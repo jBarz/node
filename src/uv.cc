@@ -20,7 +20,11 @@ void ErrName(const FunctionCallbackInfo<Value>& args) {
   if (err >= 0)
     return env->ThrowError("\x65\x72\x72\x20\x3e\x3d\x20\x30");
   const char* name = uv_err_name(err);
+#ifdef __MVS__
+  args.GetReturnValue().Set(OneByteString(env->isolate(), *E2A(name)));
+#else
   args.GetReturnValue().Set(OneByteString(env->isolate(), name));
+#endif
 }
 
 

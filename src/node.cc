@@ -1005,7 +1005,11 @@ Local<Value> UVException(Isolate* isolate,
   if (!msg || !msg[0])
     msg = uv_strerror(errorno);
 
+#ifdef __MVS__
+  Local<String> js_code = OneByteString(isolate, *E2A(uv_err_name(errorno)));
+#else
   Local<String> js_code = OneByteString(isolate, uv_err_name(errorno));
+#endif
   Local<String> js_syscall = OneByteString(isolate, syscall);
   Local<String> js_path;
   Local<String> js_dest;
