@@ -2595,9 +2595,13 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
   }
   if (mp->nm_version != NODE_MODULE_VERSION) {
     char errmsg[1024];
+#ifdef __MVS__
+    __snprintf_a(errmsg,
+#else
     snprintf(errmsg,
+#endif
              sizeof(errmsg),
-             "\x4d\x6f\x64\x75\x6c\x65\x20\x76\x65\x72\x73\x69\x6f\x6e\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\x2e\x20\x45\x78\x70\x65\x63\x74\x65\x64\x20\x6c\x84\x2c\x20\x67\x6f\x74\x20\x6c\x84\x2e",
+             u8"Module version mismatch. Expected %d, got %d.",
              NODE_MODULE_VERSION, mp->nm_version);
 
     // NOTE: `mp` is allocated inside of the shared library's memory, calling
@@ -2785,7 +2789,11 @@ static void Binding(const FunctionCallbackInfo<Value>& args) {
 
   // Append a string to process.moduleLoadList
   char buf[1024];
-  snprintf(buf, sizeof(buf), "\x42\x69\x6e\x64\x69\x6e\x67\x20\x6c\xa2", *module_v);
+#ifdef __MVS__
+  __snprintf_a(buf, sizeof(buf), u8"Binding %s", *module_v);
+#else
+  snprintf(buf, sizeof(buf), "Binding %s", *module_v);
+#endif
 
   Local<Array> modules = env->module_load_list_array();
   uint32_t l = modules->Length();
@@ -2812,16 +2820,13 @@ static void Binding(const FunctionCallbackInfo<Value>& args) {
   } else {
     char errmsg[1024];
 #ifdef __MVS__
-    VSNPrintFASCII(errmsg,
-             sizeof(errmsg),
-             "\x4e\x6f\x20\x73\x75\x63\x68\x20\x6d\x6f\x64\x75\x6c\x65\x3a\x20\x6c\xa2",
-             *module_v);
+    __snprintf_a(errmsg,
 #else
     snprintf(errmsg,
-             sizeof(errmsg),
-             "\x4e\x6f\x20\x73\x75\x63\x68\x20\x6d\x6f\x64\x75\x6c\x65\x3a\x20\x6c\xa2",
-             *module_v);
 #endif
+             sizeof(errmsg),
+             u8"No such module: %s",
+             *module_v);
     return env->ThrowError(errmsg);
   }
 
@@ -2844,9 +2849,13 @@ static void LinkedBinding(const FunctionCallbackInfo<Value>& args) {
 
   if (mod == nullptr) {
     char errmsg[1024];
+#ifdef __MVS__
+    __snprintf_a(errmsg,
+#else
     snprintf(errmsg,
+#endif
              sizeof(errmsg),
-             "\x4e\x6f\x20\x73\x75\x63\x68\x20\x6d\x6f\x64\x75\x6c\x65\x20\x77\x61\x73\x20\x6c\x69\x6e\x6b\x65\x64\x3a\x20\x6c\xa2",
+             u8"No such module was linked: %s",
              *module_name_v);
     return env->ThrowError(errmsg);
   }
