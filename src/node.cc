@@ -247,6 +247,7 @@ static struct {
 
 #ifdef __POSIX__
 static uv_sem_t debug_semaphore;
+static bool debug_semaphore_initialized;
 static const unsigned kMaxSignal = 32;
 #endif
 
@@ -2666,7 +2667,8 @@ static void OnFatalError(const char* location, const char* message) {
   fflush(stderr);
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
-  uv_sem_destroy(&debug_semaphore);
+  if (debug_semaphore_initialized == true)
+    uv_sem_destroy(&debug_semaphore);
   ABORT();
 }
 
@@ -3664,7 +3666,8 @@ static void AtProcessExit() {
   uv_tty_reset_mode();
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
-  uv_sem_destroy(&debug_semaphore);
+  if (debug_semaphore_initialized == true)
+    uv_sem_destroy(&debug_semaphore);
 }
 
 
@@ -3679,7 +3682,8 @@ void SignalExit(int signo) {
 #endif
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
-  uv_sem_destroy(&debug_semaphore);
+  if (debug_semaphore_initialized == true)
+    uv_sem_destroy(&debug_semaphore);
   raise(signo);
 }
 
@@ -4253,6 +4257,7 @@ static int RegisterDebugSignalHandler() {
   // it's not safe to call directly from the signal handler, it can
   // deadlock with the thread it interrupts.
   CHECK_EQ(0, uv_sem_init(&debug_semaphore, 0));
+  debug_semaphore_initialized = true;
   pthread_attr_t attr;
   CHECK_EQ(0, pthread_attr_init(&attr));
   // Don't shrink the thread's stack on FreeBSD.  Said platform decided to
@@ -4922,7 +4927,8 @@ static void StartNodeInstance(void* arg) {
   } else {
     V8::ReleaseSystemResources();
     debugger::Agent::ReleaseSystemResources();
-    uv_sem_destroy(&debug_semaphore);
+    if (debug_semaphore_initialized == true)
+      uv_sem_destroy(&debug_semaphore);
     abort();
 #endif
   }
