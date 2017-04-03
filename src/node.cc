@@ -4880,6 +4880,8 @@ static void StartNodeInstance(void* arg) {
     {
       Environment::AsyncCallbackScope callback_scope(env);
       LoadEnvironment(env);
+      printf("about to exit(0)\n");
+      exit(0);
     }
 
     env->set_trace_sync_io(trace_sync_io);
