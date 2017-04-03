@@ -161,19 +161,19 @@ do {                                                                 \
 } while (0)
 
 
-#define PROXY_CONNECTION "proxy-connection"
-#define CONNECTION "connection"
-#define CONTENT_LENGTH "content-length"
-#define TRANSFER_ENCODING "transfer-encoding"
-#define UPGRADE "upgrade"
-#define CHUNKED "chunked"
-#define KEEP_ALIVE "keep-alive"
-#define CLOSE "close"
+#define PROXY_CONNECTION "\x70\x72\x6f\x78\x79\x2d\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e"
+#define CONNECTION "\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e"
+#define CONTENT_LENGTH "\x63\x6f\x6e\x74\x65\x6e\x74\x2d\x6c\x65\x6e\x67\x74\x68"
+#define TRANSFER_ENCODING "\x74\x72\x61\x6e\x73\x66\x65\x72\x2d\x65\x6e\x63\x6f\x64\x69\x6e\x67"
+#define UPGRADE "\x75\x70\x67\x72\x61\x64\x65"
+#define CHUNKED "\x63\x68\x75\x6e\x6b\x65\x64"
+#define KEEP_ALIVE "\x6b\x65\x65\x70\x2d\x61\x6c\x69\x76\x65"
+#define CLOSE "\x63\x6c\x6f\x73\x65"
 
 
 static const char *method_strings[] =
   {
-#define XX(num, name, string) #string,
+#define XX(num, name, string)  USTR(#string),
   HTTP_METHOD_MAP(XX)
 #undef XX
   };
@@ -196,29 +196,29 @@ static const char tokens[256] = {
 /*  24 can   25 em    26 sub   27 esc   28 fs    29 gs    30 rs    31 us  */
         0,       0,       0,       0,       0,       0,       0,       0,
 /*  32 sp    33  !    34  "    35  #    36  $    37  %    38  &    39  '  */
-        0,      '!',      0,      '#',     '$',     '%',     '&',    '\'',
+        0,      '\x21',      0,      '\x23',     '\x24',     '\x25',     '\x26',    '\x27',
 /*  40  (    41  )    42  *    43  +    44  ,    45  -    46  .    47  /  */
-        0,       0,      '*',     '+',      0,      '-',     '.',      0,
+        0,       0,      '\x2a',     '\x2b',      0,      '\x2d',     '\x2e',      0,
 /*  48  0    49  1    50  2    51  3    52  4    53  5    54  6    55  7  */
-       '0',     '1',     '2',     '3',     '4',     '5',     '6',     '7',
+       '\x30',     '\x31',     '\x32',     '\x33',     '\x34',     '\x35',     '\x36',     '\x37',
 /*  56  8    57  9    58  :    59  ;    60  <    61  =    62  >    63  ?  */
-       '8',     '9',      0,       0,       0,       0,       0,       0,
+       '\x38',     '\x39',      0,       0,       0,       0,       0,       0,
 /*  64  @    65  A    66  B    67  C    68  D    69  E    70  F    71  G  */
-        0,      'a',     'b',     'c',     'd',     'e',     'f',     'g',
+        0,      '\x61',     '\x62',     '\x63',     '\x64',     '\x65',     '\x66',     '\x67',
 /*  72  H    73  I    74  J    75  K    76  L    77  M    78  N    79  O  */
-       'h',     'i',     'j',     'k',     'l',     'm',     'n',     'o',
+       '\x68',     '\x69',     '\x6a',     '\x6b',     '\x6c',     '\x6d',     '\x6e',     '\x6f',
 /*  80  P    81  Q    82  R    83  S    84  T    85  U    86  V    87  W  */
-       'p',     'q',     'r',     's',     't',     'u',     'v',     'w',
+       '\x70',     '\x71',     '\x72',     '\x73',     '\x74',     '\x75',     '\x76',     '\x77',
 /*  88  X    89  Y    90  Z    91  [    92  \    93  ]    94  ^    95  _  */
-       'x',     'y',     'z',      0,       0,       0,      '^',     '_',
+       '\x78',     '\x79',     '\x7a',      0,       0,       0,      '\x5e',     '\x5f',
 /*  96  `    97  a    98  b    99  c   100  d   101  e   102  f   103  g  */
-       '`',     'a',     'b',     'c',     'd',     'e',     'f',     'g',
+       '\x60',     '\x61',     '\x62',     '\x63',     '\x64',     '\x65',     '\x66',     '\x67',
 /* 104  h   105  i   106  j   107  k   108  l   109  m   110  n   111  o  */
-       'h',     'i',     'j',     'k',     'l',     'm',     'n',     'o',
+       '\x68',     '\x69',     '\x6a',     '\x6b',     '\x6c',     '\x6d',     '\x6e',     '\x6f',
 /* 112  p   113  q   114  r   115  s   116  t   117  u   118  v   119  w  */
-       'p',     'q',     'r',     's',     't',     'u',     'v',     'w',
+       '\x70',     '\x71',     '\x72',     '\x73',     '\x74',     '\x75',     '\x76',     '\x77',
 /* 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 del */
-       'x',     'y',     'z',      0,      '|',      0,      '~',       0 };
+       '\x78',     '\x79',     '\x7a',      0,      '\x7c',      0,      '\x7e',       0 };
 
 
 static const int8_t unhex[256] =
@@ -407,32 +407,32 @@ enum http_host_state
 };
 
 /* Macros for character classes; depends on strict-mode  */
-#define CR                  '\r'
-#define LF                  '\n'
+#define CR                  '\xd'
+#define LF                  '\xa'
 #define LOWER(c)            (unsigned char)(c | 0x20)
-#define IS_ALPHA(c)         (LOWER(c) >= 'a' && LOWER(c) <= 'z')
-#define IS_NUM(c)           ((c) >= '0' && (c) <= '9')
+#define IS_ALPHA(c)         (LOWER(c) >= '\x61' && LOWER(c) <= '\x7a')
+#define IS_NUM(c)           ((c) >= '\x30' && (c) <= '\x39')
 #define IS_ALPHANUM(c)      (IS_ALPHA(c) || IS_NUM(c))
-#define IS_HEX(c)           (IS_NUM(c) || (LOWER(c) >= 'a' && LOWER(c) <= 'f'))
-#define IS_MARK(c)          ((c) == '-' || (c) == '_' || (c) == '.' || \
-  (c) == '!' || (c) == '~' || (c) == '*' || (c) == '\'' || (c) == '(' || \
-  (c) == ')')
-#define IS_USERINFO_CHAR(c) (IS_ALPHANUM(c) || IS_MARK(c) || (c) == '%' || \
-  (c) == ';' || (c) == ':' || (c) == '&' || (c) == '=' || (c) == '+' || \
-  (c) == '$' || (c) == ',')
+#define IS_HEX(c)           (IS_NUM(c) || (LOWER(c) >= '\x61' && LOWER(c) <= '\x66'))
+#define IS_MARK(c)          ((c) == '\x2d' || (c) == '\x5f' || (c) == '\x2e' || \
+  (c) == '\x21' || (c) == '\x7e' || (c) == '\x2a' || (c) == '\x27' || (c) == '\x28' || \
+  (c) == '\x29')
+#define IS_USERINFO_CHAR(c) (IS_ALPHANUM(c) || IS_MARK(c) || (c) == '\x25' || \
+  (c) == '\x3b' || (c) == '\x3a' || (c) == '\x26' || (c) == '\x3d' || (c) == '\x2b' || \
+  (c) == '\x24' || (c) == '\x2c')
 
 #define STRICT_TOKEN(c)     (tokens[(unsigned char)c])
 
 #if HTTP_PARSER_STRICT
 #define TOKEN(c)            (tokens[(unsigned char)c])
 #define IS_URL_CHAR(c)      (BIT_AT(normal_url_char, (unsigned char)c))
-#define IS_HOST_CHAR(c)     (IS_ALPHANUM(c) || (c) == '.' || (c) == '-')
+#define IS_HOST_CHAR(c)     (IS_ALPHANUM(c) || (c) == '\x2e' || (c) == '\x2d')
 #else
-#define TOKEN(c)            ((c == ' ') ? ' ' : tokens[(unsigned char)c])
+#define TOKEN(c)            ((c == '\x20') ? '\x20' : tokens[(unsigned char)c])
 #define IS_URL_CHAR(c)                                                         \
   (BIT_AT(normal_url_char, (unsigned char)c) || ((c) & 0x80))
 #define IS_HOST_CHAR(c)                                                        \
-  (IS_ALPHANUM(c) || (c) == '.' || (c) == '-' || (c) == '_')
+  (IS_ALPHANUM(c) || (c) == '\x2e' || (c) == '\x2d' || (c) == '\x5f')
 #endif
 
 /**
@@ -461,7 +461,7 @@ do {                                                                 \
 
 
 /* Map errno values to strings for human-readable output */
-#define HTTP_STRERROR_GEN(n, s) { "HPE_" #n, s },
+#define HTTP_STRERROR_GEN(n, s) { "\x48\x50\x45\x5f"  USTR(#n), s },
 static struct {
   const char *name;
   const char *description;
@@ -486,12 +486,12 @@ int http_message_needs_eof(const http_parser *parser);
 static enum state
 parse_url_char(enum state s, const char ch)
 {
-  if (ch == ' ' || ch == '\r' || ch == '\n') {
+  if (ch == '\x20' || ch == '\xd' || ch == '\xa') {
     return s_dead;
   }
 
 #if HTTP_PARSER_STRICT
-  if (ch == '\t' || ch == '\f') {
+  if (ch == '\x9' || ch == '\xc') {
     return s_dead;
   }
 #endif
@@ -502,7 +502,7 @@ parse_url_char(enum state s, const char ch)
        * All methods except CONNECT are followed by '/' or '*'.
        */
 
-      if (ch == '/' || ch == '*') {
+      if (ch == '\x2f' || ch == '\x2a') {
         return s_req_path;
       }
 
@@ -517,47 +517,47 @@ parse_url_char(enum state s, const char ch)
         return s;
       }
 
-      if (ch == ':') {
+      if (ch == '\x3a') {
         return s_req_schema_slash;
       }
 
       break;
 
     case s_req_schema_slash:
-      if (ch == '/') {
+      if (ch == '\x2f') {
         return s_req_schema_slash_slash;
       }
 
       break;
 
     case s_req_schema_slash_slash:
-      if (ch == '/') {
+      if (ch == '\x2f') {
         return s_req_server_start;
       }
 
       break;
 
     case s_req_server_with_at:
-      if (ch == '@') {
+      if (ch == '\x40') {
         return s_dead;
       }
 
     /* FALLTHROUGH */
     case s_req_server_start:
     case s_req_server:
-      if (ch == '/') {
+      if (ch == '\x2f') {
         return s_req_path;
       }
 
-      if (ch == '?') {
+      if (ch == '\x3f') {
         return s_req_query_string_start;
       }
 
-      if (ch == '@') {
+      if (ch == '\x40') {
         return s_req_server_with_at;
       }
 
-      if (IS_USERINFO_CHAR(ch) || ch == '[' || ch == ']') {
+      if (IS_USERINFO_CHAR(ch) || ch == '\x5b' || ch == '\x5d') {
         return s_req_server;
       }
 
@@ -569,10 +569,10 @@ parse_url_char(enum state s, const char ch)
       }
 
       switch (ch) {
-        case '?':
+        case '\x3f':
           return s_req_query_string_start;
 
-        case '#':
+        case '\x23':
           return s_req_fragment_start;
       }
 
@@ -585,11 +585,11 @@ parse_url_char(enum state s, const char ch)
       }
 
       switch (ch) {
-        case '?':
+        case '\x3f':
           /* allow extra '?' in query string */
           return s_req_query_string;
 
-        case '#':
+        case '\x23':
           return s_req_fragment_start;
       }
 
@@ -601,10 +601,10 @@ parse_url_char(enum state s, const char ch)
       }
 
       switch (ch) {
-        case '?':
+        case '\x3f':
           return s_req_fragment;
 
-        case '#':
+        case '\x23':
           return s;
       }
 
@@ -616,8 +616,8 @@ parse_url_char(enum state s, const char ch)
       }
 
       switch (ch) {
-        case '?':
-        case '#':
+        case '\x3f':
+        case '\x23':
           return s;
       }
 
@@ -725,7 +725,7 @@ reexecute:
         parser->flags = 0;
         parser->content_length = ULLONG_MAX;
 
-        if (ch == 'H') {
+        if (ch == '\x48') {
           UPDATE_STATE(s_res_or_resp_H);
 
           CALLBACK_NOTIFY(message_begin);
@@ -739,11 +739,11 @@ reexecute:
       }
 
       case s_res_or_resp_H:
-        if (ch == 'T') {
+        if (ch == '\x54') {
           parser->type = HTTP_RESPONSE;
           UPDATE_STATE(s_res_HT);
         } else {
-          if (UNLIKELY(ch != 'E')) {
+          if (UNLIKELY(ch != '\x45')) {
             SET_ERRNO(HPE_INVALID_CONSTANT);
             goto error;
           }
@@ -761,7 +761,7 @@ reexecute:
         parser->content_length = ULLONG_MAX;
 
         switch (ch) {
-          case 'H':
+          case '\x48':
             UPDATE_STATE(s_res_H);
             break;
 
@@ -779,39 +779,39 @@ reexecute:
       }
 
       case s_res_H:
-        STRICT_CHECK(ch != 'T');
+        STRICT_CHECK(ch != '\x54');
         UPDATE_STATE(s_res_HT);
         break;
 
       case s_res_HT:
-        STRICT_CHECK(ch != 'T');
+        STRICT_CHECK(ch != '\x54');
         UPDATE_STATE(s_res_HTT);
         break;
 
       case s_res_HTT:
-        STRICT_CHECK(ch != 'P');
+        STRICT_CHECK(ch != '\x50');
         UPDATE_STATE(s_res_HTTP);
         break;
 
       case s_res_HTTP:
-        STRICT_CHECK(ch != '/');
+        STRICT_CHECK(ch != '\x2f');
         UPDATE_STATE(s_res_first_http_major);
         break;
 
       case s_res_first_http_major:
-        if (UNLIKELY(ch < '0' || ch > '9')) {
+        if (UNLIKELY(ch < '\x30' || ch > '\x39')) {
           SET_ERRNO(HPE_INVALID_VERSION);
           goto error;
         }
 
-        parser->http_major = ch - '0';
+        parser->http_major = ch - '\x30';
         UPDATE_STATE(s_res_http_major);
         break;
 
       /* major HTTP version or dot */
       case s_res_http_major:
       {
-        if (ch == '.') {
+        if (ch == '\x2e') {
           UPDATE_STATE(s_res_first_http_minor);
           break;
         }
@@ -822,7 +822,7 @@ reexecute:
         }
 
         parser->http_major *= 10;
-        parser->http_major += ch - '0';
+        parser->http_major += ch - '\x30';
 
         if (UNLIKELY(parser->http_major > 999)) {
           SET_ERRNO(HPE_INVALID_VERSION);
@@ -839,14 +839,14 @@ reexecute:
           goto error;
         }
 
-        parser->http_minor = ch - '0';
+        parser->http_minor = ch - '\x30';
         UPDATE_STATE(s_res_http_minor);
         break;
 
       /* minor HTTP version or end of request line */
       case s_res_http_minor:
       {
-        if (ch == ' ') {
+        if (ch == '\x20') {
           UPDATE_STATE(s_res_first_status_code);
           break;
         }
@@ -857,7 +857,7 @@ reexecute:
         }
 
         parser->http_minor *= 10;
-        parser->http_minor += ch - '0';
+        parser->http_minor += ch - '\x30';
 
         if (UNLIKELY(parser->http_minor > 999)) {
           SET_ERRNO(HPE_INVALID_VERSION);
@@ -870,14 +870,14 @@ reexecute:
       case s_res_first_status_code:
       {
         if (!IS_NUM(ch)) {
-          if (ch == ' ') {
+          if (ch == '\x20') {
             break;
           }
 
           SET_ERRNO(HPE_INVALID_STATUS);
           goto error;
         }
-        parser->status_code = ch - '0';
+        parser->status_code = ch - '\x30';
         UPDATE_STATE(s_res_status_code);
         break;
       }
@@ -886,7 +886,7 @@ reexecute:
       {
         if (!IS_NUM(ch)) {
           switch (ch) {
-            case ' ':
+            case '\x20':
               UPDATE_STATE(s_res_status_start);
               break;
             case CR:
@@ -903,7 +903,7 @@ reexecute:
         }
 
         parser->status_code *= 10;
-        parser->status_code += ch - '0';
+        parser->status_code += ch - '\x30';
 
         if (UNLIKELY(parser->status_code > 999)) {
           SET_ERRNO(HPE_INVALID_STATUS);
@@ -966,23 +966,23 @@ reexecute:
         parser->method = (enum http_method) 0;
         parser->index = 1;
         switch (ch) {
-          case 'A': parser->method = HTTP_ACL; break;
-          case 'B': parser->method = HTTP_BIND; break;
-          case 'C': parser->method = HTTP_CONNECT; /* or COPY, CHECKOUT */ break;
-          case 'D': parser->method = HTTP_DELETE; break;
-          case 'G': parser->method = HTTP_GET; break;
-          case 'H': parser->method = HTTP_HEAD; break;
-          case 'L': parser->method = HTTP_LOCK; /* or LINK */ break;
-          case 'M': parser->method = HTTP_MKCOL; /* or MOVE, MKACTIVITY, MERGE, M-SEARCH, MKCALENDAR */ break;
-          case 'N': parser->method = HTTP_NOTIFY; break;
-          case 'O': parser->method = HTTP_OPTIONS; break;
-          case 'P': parser->method = HTTP_POST;
+          case '\x41': parser->method = HTTP_ACL; break;
+          case '\x42': parser->method = HTTP_BIND; break;
+          case '\x43': parser->method = HTTP_CONNECT; /* or COPY, CHECKOUT */ break;
+          case '\x44': parser->method = HTTP_DELETE; break;
+          case '\x47': parser->method = HTTP_GET; break;
+          case '\x48': parser->method = HTTP_HEAD; break;
+          case '\x4c': parser->method = HTTP_LOCK; /* or LINK */ break;
+          case '\x4d': parser->method = HTTP_MKCOL; /* or MOVE, MKACTIVITY, MERGE, M-SEARCH, MKCALENDAR */ break;
+          case '\x4e': parser->method = HTTP_NOTIFY; break;
+          case '\x4f': parser->method = HTTP_OPTIONS; break;
+          case '\x50': parser->method = HTTP_POST;
             /* or PROPFIND|PROPPATCH|PUT|PATCH|PURGE */
             break;
-          case 'R': parser->method = HTTP_REPORT; /* or REBIND */ break;
-          case 'S': parser->method = HTTP_SUBSCRIBE; /* or SEARCH */ break;
-          case 'T': parser->method = HTTP_TRACE; break;
-          case 'U': parser->method = HTTP_UNLOCK; /* or UNSUBSCRIBE, UNBIND, UNLINK */ break;
+          case '\x52': parser->method = HTTP_REPORT; /* or REBIND */ break;
+          case '\x53': parser->method = HTTP_SUBSCRIBE; /* or SEARCH */ break;
+          case '\x54': parser->method = HTTP_TRACE; break;
+          case '\x55': parser->method = HTTP_UNLOCK; /* or UNSUBSCRIBE, UNBIND, UNLINK */ break;
           default:
             SET_ERRNO(HPE_INVALID_METHOD);
             goto error;
@@ -997,13 +997,13 @@ reexecute:
       case s_req_method:
       {
         const char *matcher;
-        if (UNLIKELY(ch == '\0')) {
+        if (UNLIKELY(ch == '\x0')) {
           SET_ERRNO(HPE_INVALID_METHOD);
           goto error;
         }
 
         matcher = method_strings[parser->method];
-        if (ch == ' ' && matcher[parser->index] == '\0') {
+        if (ch == '\x20' && matcher[parser->index] == '\x0') {
           UPDATE_STATE(s_req_spaces_before_url);
         } else if (ch == matcher[parser->index]) {
           ; /* nada */
@@ -1014,30 +1014,30 @@ reexecute:
             case (HTTP_##meth << 16 | pos << 8 | ch): \
               parser->method = HTTP_##new_meth; break;
 
-            XX(POST,      1, 'U', PUT)
-            XX(POST,      1, 'A', PATCH)
-            XX(CONNECT,   1, 'H', CHECKOUT)
-            XX(CONNECT,   2, 'P', COPY)
-            XX(MKCOL,     1, 'O', MOVE)
-            XX(MKCOL,     1, 'E', MERGE)
-            XX(MKCOL,     2, 'A', MKACTIVITY)
-            XX(MKCOL,     3, 'A', MKCALENDAR)
-            XX(SUBSCRIBE, 1, 'E', SEARCH)
-            XX(REPORT,    2, 'B', REBIND)
-            XX(POST,      1, 'R', PROPFIND)
-            XX(PROPFIND,  4, 'P', PROPPATCH)
-            XX(PUT,       2, 'R', PURGE)
-            XX(LOCK,      1, 'I', LINK)
-            XX(UNLOCK,    2, 'S', UNSUBSCRIBE)
-            XX(UNLOCK,    2, 'B', UNBIND)
-            XX(UNLOCK,    3, 'I', UNLINK)
+            XX(POST,      1, '\x55', PUT)
+            XX(POST,      1, '\x41', PATCH)
+            XX(CONNECT,   1, '\x48', CHECKOUT)
+            XX(CONNECT,   2, '\x50', COPY)
+            XX(MKCOL,     1, '\x4f', MOVE)
+            XX(MKCOL,     1, '\x45', MERGE)
+            XX(MKCOL,     2, '\x41', MKACTIVITY)
+            XX(MKCOL,     3, '\x41', MKCALENDAR)
+            XX(SUBSCRIBE, 1, '\x45', SEARCH)
+            XX(REPORT,    2, '\x42', REBIND)
+            XX(POST,      1, '\x52', PROPFIND)
+            XX(PROPFIND,  4, '\x50', PROPPATCH)
+            XX(PUT,       2, '\x52', PURGE)
+            XX(LOCK,      1, '\x49', LINK)
+            XX(UNLOCK,    2, '\x53', UNSUBSCRIBE)
+            XX(UNLOCK,    2, '\x42', UNBIND)
+            XX(UNLOCK,    3, '\x49', UNLINK)
 #undef XX
 
             default:
               SET_ERRNO(HPE_INVALID_METHOD);
               goto error;
           }
-        } else if (ch == '-' &&
+        } else if (ch == '\x2d' &&
                    parser->index == 1 &&
                    parser->method == HTTP_MKCOL) {
           parser->method = HTTP_MSEARCH;
@@ -1052,7 +1052,7 @@ reexecute:
 
       case s_req_spaces_before_url:
       {
-        if (ch == ' ') break;
+        if (ch == '\x20') break;
 
         MARK(url);
         if (parser->method == HTTP_CONNECT) {
@@ -1075,7 +1075,7 @@ reexecute:
       {
         switch (ch) {
           /* No whitespace allowed here */
-          case ' ':
+          case '\x20':
           case CR:
           case LF:
             SET_ERRNO(HPE_INVALID_URL);
@@ -1100,7 +1100,7 @@ reexecute:
       case s_req_fragment:
       {
         switch (ch) {
-          case ' ':
+          case '\x20':
             UPDATE_STATE(s_req_http_start);
             CALLBACK_DATA(url);
             break;
@@ -1125,10 +1125,10 @@ reexecute:
 
       case s_req_http_start:
         switch (ch) {
-          case 'H':
+          case '\x48':
             UPDATE_STATE(s_req_http_H);
             break;
-          case ' ':
+          case '\x20':
             break;
           default:
             SET_ERRNO(HPE_INVALID_CONSTANT);
@@ -1137,40 +1137,40 @@ reexecute:
         break;
 
       case s_req_http_H:
-        STRICT_CHECK(ch != 'T');
+        STRICT_CHECK(ch != '\x54');
         UPDATE_STATE(s_req_http_HT);
         break;
 
       case s_req_http_HT:
-        STRICT_CHECK(ch != 'T');
+        STRICT_CHECK(ch != '\x54');
         UPDATE_STATE(s_req_http_HTT);
         break;
 
       case s_req_http_HTT:
-        STRICT_CHECK(ch != 'P');
+        STRICT_CHECK(ch != '\x50');
         UPDATE_STATE(s_req_http_HTTP);
         break;
 
       case s_req_http_HTTP:
-        STRICT_CHECK(ch != '/');
+        STRICT_CHECK(ch != '\x2f');
         UPDATE_STATE(s_req_first_http_major);
         break;
 
       /* first digit of major HTTP version */
       case s_req_first_http_major:
-        if (UNLIKELY(ch < '1' || ch > '9')) {
+        if (UNLIKELY(ch < '\x31' || ch > '\x39')) {
           SET_ERRNO(HPE_INVALID_VERSION);
           goto error;
         }
 
-        parser->http_major = ch - '0';
+        parser->http_major = ch - '\x30';
         UPDATE_STATE(s_req_http_major);
         break;
 
       /* major HTTP version or dot */
       case s_req_http_major:
       {
-        if (ch == '.') {
+        if (ch == '\x2e') {
           UPDATE_STATE(s_req_first_http_minor);
           break;
         }
@@ -1181,7 +1181,7 @@ reexecute:
         }
 
         parser->http_major *= 10;
-        parser->http_major += ch - '0';
+        parser->http_major += ch - '\x30';
 
         if (UNLIKELY(parser->http_major > 999)) {
           SET_ERRNO(HPE_INVALID_VERSION);
@@ -1198,7 +1198,7 @@ reexecute:
           goto error;
         }
 
-        parser->http_minor = ch - '0';
+        parser->http_minor = ch - '\x30';
         UPDATE_STATE(s_req_http_minor);
         break;
 
@@ -1223,7 +1223,7 @@ reexecute:
         }
 
         parser->http_minor *= 10;
-        parser->http_minor += ch - '0';
+        parser->http_minor += ch - '\x30';
 
         if (UNLIKELY(parser->http_minor > 999)) {
           SET_ERRNO(HPE_INVALID_VERSION);
@@ -1272,19 +1272,19 @@ reexecute:
         UPDATE_STATE(s_header_field);
 
         switch (c) {
-          case 'c':
+          case '\x63':
             parser->header_state = h_C;
             break;
 
-          case 'p':
+          case '\x70':
             parser->header_state = h_matching_proxy_connection;
             break;
 
-          case 't':
+          case '\x74':
             parser->header_state = h_matching_transfer_encoding;
             break;
 
-          case 'u':
+          case '\x75':
             parser->header_state = h_matching_upgrade;
             break;
 
@@ -1311,21 +1311,21 @@ reexecute:
 
             case h_C:
               parser->index++;
-              parser->header_state = (c == 'o' ? h_CO : h_general);
+              parser->header_state = (c == '\x6f' ? h_CO : h_general);
               break;
 
             case h_CO:
               parser->index++;
-              parser->header_state = (c == 'n' ? h_CON : h_general);
+              parser->header_state = (c == '\x6e' ? h_CON : h_general);
               break;
 
             case h_CON:
               parser->index++;
               switch (c) {
-                case 'n':
+                case '\x6e':
                   parser->header_state = h_matching_connection;
                   break;
-                case 't':
+                case '\x74':
                   parser->header_state = h_matching_content_length;
                   break;
                 default:
@@ -1403,11 +1403,11 @@ reexecute:
             case h_content_length:
             case h_transfer_encoding:
             case h_upgrade:
-              if (ch != ' ') parser->header_state = h_general;
+              if (ch != '\x20') parser->header_state = h_general;
               break;
 
             default:
-              assert(0 && "Unknown header_state");
+              assert(0 && "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x68\x65\x61\x64\x65\x72\x5f\x73\x74\x61\x74\x65");
               break;
           }
         }
@@ -1419,7 +1419,7 @@ reexecute:
           break;
         }
 
-        if (ch == ':') {
+        if (ch == '\x3a') {
           UPDATE_STATE(s_header_value_discard_ws);
           CALLBACK_DATA(header_field);
           break;
@@ -1430,7 +1430,7 @@ reexecute:
       }
 
       case s_header_value_discard_ws:
-        if (ch == ' ' || ch == '\t') break;
+        if (ch == '\x20' || ch == '\x9') break;
 
         if (ch == CR) {
           UPDATE_STATE(s_header_value_discard_ws_almost_done);
@@ -1461,7 +1461,7 @@ reexecute:
 
           case h_transfer_encoding:
             /* looking for 'Transfer-Encoding: chunked' */
-            if ('c' == c) {
+            if ('\x63' == c) {
               parser->header_state = h_matching_transfer_encoding_chunked;
             } else {
               parser->header_state = h_general;
@@ -1474,17 +1474,17 @@ reexecute:
               goto error;
             }
 
-            parser->content_length = ch - '0';
+            parser->content_length = ch - '\x30';
             break;
 
           case h_connection:
             /* looking for 'Connection: keep-alive' */
-            if (c == 'k') {
+            if (c == '\x6b') {
               parser->header_state = h_matching_connection_keep_alive;
             /* looking for 'Connection: close' */
-            } else if (c == 'c') {
+            } else if (c == '\x63') {
               parser->header_state = h_matching_connection_close;
-            } else if (c == 'u') {
+            } else if (c == '\x75') {
               parser->header_state = h_matching_connection_upgrade;
             } else {
               parser->header_state = h_matching_connection_token;
@@ -1558,14 +1558,14 @@ reexecute:
 
             case h_connection:
             case h_transfer_encoding:
-              assert(0 && "Shouldn't get here.");
+              assert(0 && "\x53\x68\x6f\x75\x6c\x64\x6e\x27\x74\x20\x67\x65\x74\x20\x68\x65\x72\x65\x2e");
               break;
 
             case h_content_length:
             {
               uint64_t t;
 
-              if (ch == ' ') break;
+              if (ch == '\x20') break;
 
               if (UNLIKELY(!IS_NUM(ch))) {
                 SET_ERRNO(HPE_INVALID_CONTENT_LENGTH);
@@ -1575,7 +1575,7 @@ reexecute:
 
               t = parser->content_length;
               t *= 10;
-              t += ch - '0';
+              t += ch - '\x30';
 
               /* Overflow? Test against a conservative limit for simplicity. */
               if (UNLIKELY((ULLONG_MAX - 10) / 10 < parser->content_length)) {
@@ -1601,16 +1601,16 @@ reexecute:
 
             case h_matching_connection_token_start:
               /* looking for 'Connection: keep-alive' */
-              if (c == 'k') {
+              if (c == '\x6b') {
                 h_state = h_matching_connection_keep_alive;
               /* looking for 'Connection: close' */
-              } else if (c == 'c') {
+              } else if (c == '\x63') {
                 h_state = h_matching_connection_close;
-              } else if (c == 'u') {
+              } else if (c == '\x75') {
                 h_state = h_matching_connection_upgrade;
               } else if (STRICT_TOKEN(c)) {
                 h_state = h_matching_connection_token;
-              } else if (c == ' ' || c == '\t') {
+              } else if (c == '\x20' || c == '\x9') {
                 /* Skip lws */
               } else {
                 h_state = h_general;
@@ -1650,20 +1650,20 @@ reexecute:
               break;
 
             case h_matching_connection_token:
-              if (ch == ',') {
+              if (ch == '\x2c') {
                 h_state = h_matching_connection_token_start;
                 parser->index = 0;
               }
               break;
 
             case h_transfer_encoding_chunked:
-              if (ch != ' ') h_state = h_general;
+              if (ch != '\x20') h_state = h_general;
               break;
 
             case h_connection_keep_alive:
             case h_connection_close:
             case h_connection_upgrade:
-              if (ch == ',') {
+              if (ch == '\x2c') {
                 if (h_state == h_connection_keep_alive) {
                   parser->flags |= F_CONNECTION_KEEP_ALIVE;
                 } else if (h_state == h_connection_close) {
@@ -1673,7 +1673,7 @@ reexecute:
                 }
                 h_state = h_matching_connection_token_start;
                 parser->index = 0;
-              } else if (ch != ' ') {
+              } else if (ch != '\x20') {
                 h_state = h_matching_connection_token;
               }
               break;
@@ -1706,7 +1706,7 @@ reexecute:
 
       case s_header_value_lws:
       {
-        if (ch == ' ' || ch == '\t') {
+        if (ch == '\x20' || ch == '\x9') {
           UPDATE_STATE(s_header_value_start);
           REEXECUTE();
         }
@@ -1742,7 +1742,7 @@ reexecute:
 
       case s_header_value_discard_lws:
       {
-        if (ch == ' ' || ch == '\t') {
+        if (ch == '\x20' || ch == '\x9') {
           UPDATE_STATE(s_header_value_discard_ws);
           break;
         } else {
@@ -1960,7 +1960,7 @@ reexecute:
         unhex_val = unhex[(unsigned char)ch];
 
         if (unhex_val == -1) {
-          if (ch == ';' || ch == ' ') {
+          if (ch == '\x3b' || ch == '\x20') {
             UPDATE_STATE(s_chunk_parameters);
             break;
           }
@@ -2051,7 +2051,7 @@ reexecute:
         break;
 
       default:
-        assert(0 && "unhandled state");
+        assert(0 && "\x75\x6e\x68\x61\x6e\x64\x6c\x65\x64\x20\x73\x74\x61\x74\x65");
         SET_ERRNO(HPE_INVALID_INTERNAL_STATE);
         goto error;
     }
@@ -2136,7 +2136,7 @@ http_should_keep_alive (const http_parser *parser)
 const char *
 http_method_str (enum http_method m)
 {
-  return ELEM_AT(method_strings, m, "<unknown>");
+  return ELEM_AT(method_strings, m, "\x3c\x75\x6e\x6b\x6e\x6f\x77\x6e\x3e");
 }
 
 
@@ -2174,7 +2174,7 @@ http_parse_host_char(enum http_host_state s, const char ch) {
   switch(s) {
     case s_http_userinfo:
     case s_http_userinfo_start:
-      if (ch == '@') {
+      if (ch == '\x40') {
         return s_http_host_start;
       }
 
@@ -2184,7 +2184,7 @@ http_parse_host_char(enum http_host_state s, const char ch) {
       break;
 
     case s_http_host_start:
-      if (ch == '[') {
+      if (ch == '\x5b') {
         return s_http_host_v6_start;
       }
 
@@ -2201,38 +2201,38 @@ http_parse_host_char(enum http_host_state s, const char ch) {
 
     /* FALLTHROUGH */
     case s_http_host_v6_end:
-      if (ch == ':') {
+      if (ch == '\x3a') {
         return s_http_host_port_start;
       }
 
       break;
 
     case s_http_host_v6:
-      if (ch == ']') {
+      if (ch == '\x5d') {
         return s_http_host_v6_end;
       }
 
     /* FALLTHROUGH */
     case s_http_host_v6_start:
-      if (IS_HEX(ch) || ch == ':' || ch == '.') {
+      if (IS_HEX(ch) || ch == '\x3a' || ch == '\x2e') {
         return s_http_host_v6;
       }
 
-      if (s == s_http_host_v6 && ch == '%') {
+      if (s == s_http_host_v6 && ch == '\x25') {
         return s_http_host_v6_zone_start;
       }
       break;
 
     case s_http_host_v6_zone:
-      if (ch == ']') {
+      if (ch == '\x5d') {
         return s_http_host_v6_end;
       }
 
     /* FALLTHROUGH */
     case s_http_host_v6_zone_start:
       /* RFC 6874 Zone ID consists of 1*( unreserved / pct-encoded) */
-      if (IS_ALPHANUM(ch) || ch == '%' || ch == '.' || ch == '-' || ch == '_' ||
-          ch == '~') {
+      if (IS_ALPHANUM(ch) || ch == '\x25' || ch == '\x2e' || ch == '\x2d' || ch == '\x5f' ||
+          ch == '\x7e') {
         return s_http_host_v6_zone;
       }
       break;
@@ -2391,7 +2391,7 @@ http_parser_parse_url(const char *buf, size_t buflen, int is_connect,
         break;
 
       default:
-        assert(!"Unexpected state");
+        assert(!"\x55\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x73\x74\x61\x74\x65");
         return 1;
     }
 
@@ -2451,7 +2451,7 @@ http_parser_pause(http_parser *parser, int paused) {
       HTTP_PARSER_ERRNO(parser) == HPE_PAUSED) {
     SET_ERRNO((paused) ? HPE_PAUSED : HPE_OK);
   } else {
-    assert(0 && "Attempting to pause parser in error state");
+    assert(0 && "\x41\x74\x74\x65\x6d\x70\x74\x69\x6e\x67\x20\x74\x6f\x20\x70\x61\x75\x73\x65\x20\x70\x61\x72\x73\x65\x72\x20\x69\x6e\x20\x65\x72\x72\x6f\x72\x20\x73\x74\x61\x74\x65");
   }
 }
 
