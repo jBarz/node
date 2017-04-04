@@ -3395,7 +3395,7 @@ void SetupProcessObject(Environment* env,
 #endif
 
   // process.arch
-  READONLY_PROPERTY(process, "\x61\x72\x63\x68", OneByteString(env->isolate(), NODE_ARCH));
+  READONLY_PROPERTY(process, "\x61\x72\x63\x68", OneByteString(env->isolate(), *E2A(NODE_ARCH)));
 
   // process.platform
   READONLY_PROPERTY(process,
