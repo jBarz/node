@@ -92,8 +92,8 @@ int uv__pthread_sigmask(int how, const sigset_t* set, sigset_t* oset);
  * define __GNUC__. They are here to convey to you, dear reader, that these
  * macros are enabled when compiling with clang or icc.
  */
-#if defined(__clang__) ||                                                     \
-    defined(__GNUC__) ||                                                      \
+#if (defined(__clang__) && !defined(__MVS__)) ||                              \
+    (defined(__GNUC__) && !defined(__MVS__)) ||                               \
     defined(__INTEL_COMPILER) ||                                              \
     defined(__SUNPRO_C)
 # define UV_DESTRUCTOR(declaration) __attribute__((destructor)) declaration
