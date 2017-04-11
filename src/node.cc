@@ -251,9 +251,7 @@ static bool debug_semaphore_initialized;
 static const unsigned kMaxSignal = 32;
 #endif
 
-static void PrintString(FILE* out, const char* format, ...) {
-  va_list ap;
-  va_start(ap, format);
+static void PrintString(FILE* out, const char* format, va_list ap) {
 #ifdef _WIN32
   HANDLE stderr_handle = GetStdHandle(STD_ERROR_HANDLE);
 
@@ -284,23 +282,24 @@ static void PrintString(FILE* out, const char* format, ...) {
   char buf[2048];
   __vsnprintf_a(buf, sizeof(buf), format, ap);
   __a2e_s(buf);
-  fprintf(out, buf);
+  fprintf(out, "%s", buf);
 #else
   vfprintf(out, format, ap);
 #endif
-  va_end(ap);
 }
 
 static void PrintOutString(const char* format, ...) {
   va_list ap;
   va_start(ap, format);
   PrintString(stdout, format, ap);
+  va_end(ap);
 }
 
 static void PrintErrorString(const char* format, ...) {
   va_list ap;
   va_start(ap, format);
   PrintString(stderr, format, ap);
+  va_end(ap);
 }
 
 static void CheckImmediate(uv_check_t* handle) {
