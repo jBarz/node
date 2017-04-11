@@ -54,9 +54,9 @@ static void GetHostname(const FunctionCallbackInfo<Value>& args) {
 #endif  // __POSIX__
     return env->ThrowErrnoException(errorno, "\x67\x65\x74\x68\x6f\x73\x74\x6e\x61\x6d\x65");
   }
-  buf[sizeof(buf) - 1] = '\x0';
+  buf[sizeof(buf) - 1] = '\0';
 
-  args.GetReturnValue().Set(OneByteString(env->isolate(), buf));
+  args.GetReturnValue().Set(OneByteString(env->isolate(), *E2A(buf)));
 }
 
 
@@ -74,7 +74,7 @@ static void GetOSType(const FunctionCallbackInfo<Value>& args) {
   rval ="\x57\x69\x6e\x64\x6f\x77\x73\x5f\x4e\x54";
 #endif  // __POSIX__
 
-  args.GetReturnValue().Set(OneByteString(env->isolate(), rval));
+  args.GetReturnValue().Set(OneByteString(env->isolate(), *E2A(rval)));
 }
 
 
@@ -90,7 +90,7 @@ static void GetOSRelease(const FunctionCallbackInfo<Value>& args) {
 # ifdef _AIX
   char release[256];
   snprintf(release, sizeof(release),
-           "\x6c\xa2\x2e\x6c\xa2", info.version, info.release);
+           "%s.%s", info.version, info.release);
   rval = release;
 # else
   rval = info.release;
@@ -108,14 +108,14 @@ static void GetOSRelease(const FunctionCallbackInfo<Value>& args) {
 
   snprintf(release,
            sizeof(release),
-           "\x6c\x84\x2e\x6c\x84\x2e\x6c\x84",
+           "%d.%d.%d",
            static_cast<int>(info.dwMajorVersion),
            static_cast<int>(info.dwMinorVersion),
            static_cast<int>(info.dwBuildNumber));
   rval = release;
 #endif  // __POSIX__
 
-  args.GetReturnValue().Set(OneByteString(env->isolate(), rval));
+  args.GetReturnValue().Set(OneByteString(env->isolate(), *E2A(rval)));
 }
 
 
@@ -146,7 +146,7 @@ static void GetCPUInfo(const FunctionCallbackInfo<Value>& args) {
 
     Local<Object> cpu_info = Object::New(env->isolate());
     cpu_info->Set(env->model_string(),
-                  OneByteString(env->isolate(), ci->model));
+                  OneByteString(env->isolate(), "\0"));
     cpu_info->Set(env->speed_string(),
                   Number::New(env->isolate(), ci->speed));
     cpu_info->Set(env->times_string(), times_info);
@@ -307,7 +307,7 @@ static void GetHomeDirectory(const FunctionCallbackInfo<Value>& args) {
   }
 
   Local<String> home = String::NewFromUtf8(env->isolate(),
-                                           buf,
+                                           *E2A(buf),
                                            String::kNormalString,
                                            len);
   args.GetReturnValue().Set(home);
@@ -336,17 +336,17 @@ static void GetUserInfo(const FunctionCallbackInfo<Value>& args) {
   Local<Value> uid = Number::New(env->isolate(), pwd.uid);
   Local<Value> gid = Number::New(env->isolate(), pwd.gid);
   Local<Value> username = StringBytes::Encode(env->isolate(),
-                                              pwd.username,
+                                              *E2A(pwd.username),
                                               encoding);
   Local<Value> homedir = StringBytes::Encode(env->isolate(),
-                                             pwd.homedir,
+                                             *E2A(pwd.homedir),
                                              encoding);
   Local<Value> shell;
 
   if (pwd.shell == NULL)
     shell = Null(env->isolate());
   else
-    shell = StringBytes::Encode(env->isolate(), pwd.shell, encoding);
+    shell = StringBytes::Encode(env->isolate(), *E2A(pwd.shell), encoding);
 
   uv_os_free_passwd(&pwd);
 
