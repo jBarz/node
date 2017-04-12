@@ -27,6 +27,7 @@ exports.isSunOS = process.platform === 'sunos';
 exports.isFreeBSD = process.platform === 'freebsd';
 exports.isLinux = process.platform === 'linux';
 exports.isOSX = process.platform === 'darwin';
+exports.isZos = process.platform === 'os390';
 
 exports.enoughTestMem = os.totalmem() > 0x40000000; /* 1 Gb */
 
