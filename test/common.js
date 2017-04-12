@@ -478,7 +478,7 @@ exports.nodeProcessAborted = function nodeProcessAborted(exitCode, signal) {
   // greater than 256, and thus the exit code emitted with the 'exit'
   // event is null and the signal is set to either SIGILL, SIGTRAP,
   // or SIGABRT (depending on the compiler).
-  const expectedSignals = ['SIGILL', 'SIGTRAP', 'SIGABRT'];
+  let expectedSignals = ['SIGILL', 'SIGTRAP', 'SIGABRT'];
 
   // On Windows, v8's base::OS::Abort triggers an access violation,
   // which corresponds to exit code 3221225477 (0xC0000005)
