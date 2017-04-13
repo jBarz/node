@@ -994,7 +994,7 @@ static void ReadDir(const FunctionCallbackInfo<Value>& args) {
         return env->ThrowUVException(r, "\x72\x65\x61\x64\x64\x69\x72\x75\x38", "", *path);
 
 #ifdef __MVS__
-      char ebc[strlen(ent.name + 1)];
+      char ebc[strlen(ent.name) + 1];
       strcpy(ebc, ent.name);
       __e2a_s(ebc);
       Local<Value> filename = StringBytes::Encode(env->isolate(),
