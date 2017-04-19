@@ -701,6 +701,7 @@ Local<Array> SyncProcessRunner::BuildOutputArray() {
 int SyncProcessRunner::ParseOptions(Local<Value> js_value) {
   HandleScope scope(env()->isolate());
   int r;
+  int i;
 
   if (!js_value->IsObject())
     return UV_EINVAL;
@@ -735,11 +736,6 @@ int SyncProcessRunner::ParseOptions(Local<Value> js_value) {
       return r;
 
     uv_process_options_.env = reinterpret_cast<char**>(env_buffer_);
-#ifdef __MVS__
-    int i = 0;
-    while (uv_process_options_.env[i] != NULL)
-      __a2e_s(uv_process_options_.env[i++]);
-#endif
   }
   Local<Value> js_uid = js_options->Get(env()->uid_string());
   if (IsSet(js_uid)) {
@@ -953,6 +949,9 @@ int SyncProcessRunner::CopyJsString(Local<Value> js_value,
 
   written = StringBytes::Write(isolate, buffer, -1, js_string, UTF8);
   buffer[written] = '\x0';
+#ifdef __MVS__
+  __a2e_s(buffer);
+#endif
 
   *target = buffer;
   return 0;
@@ -1006,6 +1005,9 @@ int SyncProcessRunner::CopyJsStringArray(Local<Value> js_value,
                                       js_array->Get(i),
                                       UTF8);
     buffer[data_offset++] = '\x0';
+#ifdef __MVS__
+    __a2e_s(buffer);
+#endif
     data_offset = ROUND_UP(data_offset, sizeof(void*));
   }
 
