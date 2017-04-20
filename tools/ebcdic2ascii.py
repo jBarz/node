@@ -10,16 +10,17 @@ NEWLINE             = "(\\n)"
 COMMA               = "(,)"
 OUTSTREAM_OP        = "(<<)"
 UNICODE_PRE         = "u8"
-IGNORE_FUNCTIONS    = "(PrintError|printf|PrintF|VFPrintF|SPrintF|sprintf|vfprintf|feprintf|FePrintF|open|USTR)"
+PRINT_FUNCTIONS     = "(PrintError|printf|PrintF|VFPrintF|SPrintF|sprintf|vfprintf|feprintf|FePrintF|open)"
+USTR_MACRO          = "(USTR)"         
 STRING              = '(".*?(?<!\\\\)")'
 CHAR                = "('.{1,2}')"
 HEX_CHAR            = "('\\\\x[0-9A-Fa-f]{1,2}')"
-IGNORE_STRING       = "#include|#pragma|\s*//|extern\s+\"C\""
+IGNORE_STRING       = "#\s*include|#\s*pragma|\s*//|extern\s+\"C\""
 HEX_ENCODED_STRING  = r'(?:\\x[0-9A-Fa-f]{1,2})+'
 CONCAT              = "(##)"
 STRINGIFY           = "(#{1}\w+)"
 WHITESPACE          = "(\s*)"
-SPLIT_TOKEN_LIST    = [ IGNORE_FUNCTIONS, COMMA, NEWLINE, UNICODE_PRE, OPEN_PAREN, CLOSE_PAREN, OUTSTREAM_OP, STRING, CHAR, HEX_CHAR,  CONCAT, STRINGIFY]
+SPLIT_TOKEN_LIST    = [ PRINT_FUNCTIONS, USTR_MACRO, COMMA, NEWLINE, UNICODE_PRE, OPEN_PAREN, CLOSE_PAREN, OUTSTREAM_OP, STRING, CHAR, HEX_CHAR,  CONCAT, STRINGIFY]
 
 EBCDIC_PRAGMA_START  = re.compile(r'\s*#pragma\s+convert\s*\(\s*\"IBM-1047\"\s*\)|\s*#pragma\s+convert\s*\(\s*\"ibm-1047\"\s*\)')
 EBCDIC_PRAGMA_END    = re.compile(r"\s*#pragma\s+convert\s*\(\s*pop\s*\)")
@@ -38,7 +39,8 @@ STRING_RE             = re.compile(STRING)
 CHAR_RE               = re.compile(CHAR)
 NEWLINE_RE            = re.compile(NEWLINE)
 HEX_ENCODED_STRING_RE = re.compile(HEX_ENCODED_STRING) 
-IGNORE_FUNCTIONS_RE   = re.compile(IGNORE_FUNCTIONS)
+PRINT_FUNCTIONS_RE    = re.compile(PRINT_FUNCTIONS)
+USTR_MACRO_RE         = re.compile(USTR_MACRO)
 STRINGIFY_RE          = re.compile(STRINGIFY)
 OPEN_PAREN_RE         = re.compile(OPEN_PAREN)
 CLOSE_PAREN_RE        = re.compile(CLOSE_PAREN)
@@ -122,15 +124,19 @@ def EncodePrintF(literal):
 def main():
   parser = optparse.OptionParser()
   parser.set_usage("""ebcdic2ascii.py [options] input.cc output.cc 
-   input.cc: C file to be scanned
-   output.cc: String literals found.""")
-  parser.add_option("-u", action="store_true", dest="unicode_support", default = False)
+   input.cc: File to be converted 
+   output.cc: Converted File.""")
+  parser.add_option("-u", action="store_true", dest="unicode_support", default = False, help="convert strings using u8 prefix")
+  parser.add_option("--skip_print", action="store_true", dest="skip_print_strings", default = False, help="skip strings going to snprtinf,printf,output stream")
+
   (options, args) = parser.parse_args()
                     
   Source          = open(args[0], "rt")
   Target          = open(args[1], "at+")
-  print "Processing file:"+args[0]
-  unicode_encode  = options.unicode_support;
+  
+  unicode_encode             = options.unicode_support;
+  skip_print_strings         = options.skip_print_strings; 
+  
   ebcdic_encoding = False
   convert_start = False
   convert_end = False
@@ -161,9 +167,13 @@ def main():
        open_paren = 0
        start_index = 0
        stop_index  = 0
+       
        for index in range(len(tokens_of_interest)):
            token = tokens_of_interest[index]
-           if IGNORE_FUNCTIONS_RE.match(token):
+           if USTR_MACRO_RE.match(token):
+              start_index = index
+              delete = True
+           if skip_print_strings and  PRINT_FUNCTIONS_RE.match(token):
               start_index = index
               delete = True
            if delete and OPEN_PAREN_RE.match(token):
@@ -186,7 +196,7 @@ def main():
        while index < (len(tokens_of_interest)):
            token = tokens_of_interest[index];
            
-           if IGNORE_FUNCTIONS_RE.match(token):
+           if USTR_MACRO_RE.match(token) or (skip_print_strings and PRINT_FUNCTIONS_RE.match(token)):
               if len(delimiters) > 0:
                  (start_index, stop_index) = delimiters.pop();
               token = token
@@ -199,8 +209,8 @@ def main():
               newline = newline + token
               index = index + 1
               continue
-           
-           if OUTSTREAM_OP_RE.match(token):
+            
+           if skip_print_strings and OUTSTREAM_OP_RE.match(token):
               if not ostream_string: 
                 ostream_string = True;
               else:
@@ -216,7 +226,7 @@ def main():
                  if unicode_encode:
                     if not HEX_ENCODED_STRING_RE.match(literal):
                        unicode_literal = "u8" + literal
-                       line = line.replace(literal, unicode_literal)
+                       token = unicode_literal
                  else:
                     encoded_literal = literal[1:len(literal)-1]
                     encoded_literal = re.sub(ESCAPE_RE, EncodeEscapeSeq,encoded_literal)
