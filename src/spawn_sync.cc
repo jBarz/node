@@ -1005,13 +1005,15 @@ int SyncProcessRunner::CopyJsStringArray(Local<Value> js_value,
                                       js_array->Get(i),
                                       UTF8);
     buffer[data_offset++] = '\x0';
-#ifdef __MVS__
-    __a2e_s(buffer);
-#endif
     data_offset = ROUND_UP(data_offset, sizeof(void*));
   }
 
   list[length] = nullptr;
+
+#ifdef __MVS__
+  for (uint32_t i = 0; i < length; i++)
+    __a2e_s(list[i]);
+#endif
 
   *target = buffer;
   return 0;
