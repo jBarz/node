@@ -1459,7 +1459,7 @@ static void Mkdtemp(const FunctionCallbackInfo<Value>& args) {
   if (*tmpl == nullptr)
     return TYPE_ERROR("\x74\x65\x6d\x70\x6c\x61\x74\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67\x20\x6f\x72\x20\x42\x75\x66\x66\x65\x72");
 
-  const enum encoding encoding = ParseEncoding(env->isolate(), args[1], UTF8);
+  const enum encoding encoding = ParseEncoding(env->isolate(), args[1], EBCDIC);
 
   if (args[2]->IsObject()) {
     ASYNC_CALL(mkdtemp, args[2], encoding, *tmpl);
