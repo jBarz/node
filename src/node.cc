@@ -992,7 +992,7 @@ static Local<String> StringFromPath(Isolate* isolate, const char* path) {
   }
 #endif
 
-  return String::NewFromUtf8(isolate, path);
+  return String::NewFromUtf8(isolate, *E2A(path));
 }
 
 

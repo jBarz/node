@@ -14,6 +14,11 @@ const common = require('../common');
 const fs = require('fs');
 const path = require('path');
 
+if (process.platform === 'os390') {
+  common.skip('platform not supported.');
+  return;
+}
+
 common.refreshTmpDir();
 
 const fn = '新建文夹件.txt';

@@ -70,7 +70,7 @@ function rmdirSync(p, originalEr) {
     if (e.code === 'ENOTDIR')
       throw originalEr;
     if (e.code === 'ENOTEMPTY' || e.code === 'EEXIST' || e.code === 'EPERM') {
-      const enc = exports.isLinux ? 'buffer' : 'utf8';
+      const enc = exports.isLinux ? 'buffer' : 'ebcdic';
       fs.readdirSync(p, enc).forEach((f) => {
         if (f instanceof Buffer) {
           const buf = Buffer.concat([Buffer.from(p), Buffer.from(path.sep), f]);

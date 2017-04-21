@@ -767,6 +767,10 @@ done:
   if (pthread_mutex_unlock(&lock))
     abort();
 #endif
+#if defined(__MVS__)
+  for (int idx = 0; idx < req->nbufs; idx++)
+      __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
+#endif
 
   return r;
 }

@@ -647,10 +647,10 @@ Local<Value> StringBytes::Encode(Isolate* isolate,
       break;
 
     case EBCDIC:
-      val = String::NewFromOneByte(isolate,
-                                   (unsigned char*)(*E2A(buf, buflen)),
-                                   String::kNormalString,
-                                   buflen);
+      val = String::NewFromUtf8(isolate,
+                                *E2A(buf, buflen),
+                                String::kNormalString,
+                                buflen);
       break;
 
     case UTF8:

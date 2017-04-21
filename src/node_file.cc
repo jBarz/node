@@ -154,14 +154,6 @@ static void After(uv_fs_t *req) {
   Local<Value> argv[2];
   Local<Value> link;
 
-#ifdef __MVS__
-  if (req->path != NULL)
-      __e2a_s((char *)req->path);
-
-  if (req->new_path != NULL)
-      __e2a_s((char *)req->new_path);
-#endif
-
   if (req->result < 0) {
     // An error happened.
     argv[0] = UVException(env->isolate(),
@@ -235,9 +227,7 @@ static void After(uv_fs_t *req) {
         break;
 
       case UV_FS_READLINK:
-#ifdef __MVS__
-        __e2a_s((char*) req->ptr);
-#endif
+
         link = StringBytes::Encode(env->isolate(),
                                    static_cast<const char*>(req->ptr),
                                    req_wrap->encoding_);
@@ -296,18 +286,13 @@ static void After(uv_fs_t *req) {
               break;
             }
 
+            Local<Value> filename = StringBytes::Encode(env->isolate(),
 #ifdef __MVS__
-            char ebc[strlen(ent.name) + 1];
-            strcpy(ebc, ent.name);
-            __e2a_s(ebc);
-            Local<Value> filename = StringBytes::Encode(env->isolate(),
-                                                        ebc,
-                                                        req_wrap->encoding_);
+                                                        *E2A(ent.name),
 #else
-            Local<Value> filename = StringBytes::Encode(env->isolate(),
                                                         ent.name,
-                                                        req_wrap->encoding_);
 #endif
+                                                        req_wrap->encoding_);
             if (filename.IsEmpty()) {
               argv[0] = UVException(env->isolate(),
                                     UV_EINVAL,
@@ -390,7 +375,7 @@ class fs_req_wrap {
                          __VA_ARGS__,                                         \
                          nullptr);                                            \
   if (err < 0) {                                                              \
-    return env->ThrowUVException(err, USTR(#func), nullptr, path, dest);            \
+    return env->ThrowUVException(err, USTR(#func), nullptr, path, dest);      \
   }                                                                           \
 
 #define SYNC_CALL(func, path, ...)                                            \
@@ -415,7 +400,7 @@ static void Access(const FunctionCallbackInfo<Value>& args) {
   int mode = static_cast<int>(args[1]->Int32Value());
 
   if (args[2]->IsObject()) {
-    ASYNC_CALL(access, args[2], UTF8, *path, mode);
+    ASYNC_CALL(access, args[2], EBCDIC, *path, mode);
   } else {
     SYNC_CALL(access, *path, *path, mode);
   }
@@ -433,7 +418,7 @@ static void Close(const FunctionCallbackInfo<Value>& args) {
   int fd = args[0]->Int32Value();
 
   if (args[1]->IsObject()) {
-    ASYNC_CALL(close, args[1], UTF8, fd)
+    ASYNC_CALL(close, args[1], EBCDIC, fd)
   } else {
     SYNC_CALL(close, 0, fd)
   }
@@ -645,7 +630,7 @@ static void Stat(const FunctionCallbackInfo<Value>& args) {
   ASSERT_PATH(path)
 
   if (args[1]->IsObject()) {
-    ASYNC_CALL(stat, args[1], UTF8, *path)
+    ASYNC_CALL(stat, args[1], EBCDIC, *path)
   } else {
     SYNC_CALL(stat, *path, *path)
     args.GetReturnValue().Set(
@@ -663,7 +648,7 @@ static void LStat(const FunctionCallbackInfo<Value>& args) {
   ASSERT_PATH(path)
 
   if (args[1]->IsObject()) {
-    ASYNC_CALL(lstat, args[1], UTF8, *path)
+    ASYNC_CALL(lstat, args[1], EBCDIC, *path)
   } else {
     SYNC_CALL(lstat, *path, *path)
     args.GetReturnValue().Set(
@@ -682,7 +667,7 @@ static void FStat(const FunctionCallbackInfo<Value>& args) {
   int fd = args[0]->Int32Value();
 
   if (args[1]->IsObject()) {
-    ASYNC_CALL(fstat, args[1], UTF8, fd)
+    ASYNC_CALL(fstat, args[1], EBCDIC, fd)
   } else {
     SYNC_CALL(fstat, 0, fd)
     args.GetReturnValue().Set(
@@ -718,7 +703,7 @@ static void Symlink(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (args[3]->IsObject()) {
-    ASYNC_DEST_CALL(symlink, args[3], *path, UTF8, *target, *path, flags)
+    ASYNC_DEST_CALL(symlink, args[3], *path, EBCDIC, *target, *path, flags)
   } else {
     SYNC_DEST_CALL(symlink, *target, *path, *target, *path, flags)
   }
@@ -740,7 +725,7 @@ static void Link(const FunctionCallbackInfo<Value>& args) {
   ASSERT_PATH(dest)
 
   if (args[2]->IsObject()) {
-    ASYNC_DEST_CALL(link, args[2], *dest, UTF8, *src, *dest)
+    ASYNC_DEST_CALL(link, args[2], *dest, EBCDIC, *src, *dest)
   } else {
     SYNC_DEST_CALL(link, *src, *dest, *src, *dest)
   }
@@ -757,7 +742,7 @@ static void ReadLink(const FunctionCallbackInfo<Value>& args) {
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
 
-  const enum encoding encoding = ParseEncoding(env->isolate(), args[1], UTF8);
+  const enum encoding encoding = ParseEncoding(env->isolate(), args[1], EBCDIC);
 
   Local<Value> callback = Null(env->isolate());
   if (argc == 3)
@@ -767,9 +752,6 @@ static void ReadLink(const FunctionCallbackInfo<Value>& args) {
     ASYNC_CALL(readlink, callback, encoding, *path)
   } else {
     SYNC_CALL(readlink, *path, *path)
-#ifdef __MVS__
-    __e2a_s((char*)SYNC_REQ.ptr);
-#endif
     const char* link_path = static_cast<const char*>(SYNC_REQ.ptr);
     Local<Value> rc = StringBytes::Encode(env->isolate(),
                                           link_path,
@@ -799,7 +781,7 @@ static void Rename(const FunctionCallbackInfo<Value>& args) {
   ASSERT_PATH(new_path)
 
   if (args[2]->IsObject()) {
-    ASYNC_DEST_CALL(rename, args[2], *new_path, UTF8, *old_path, *new_path)
+    ASYNC_DEST_CALL(rename, args[2], *new_path, EBCDIC, *old_path, *new_path)
   } else {
     SYNC_DEST_CALL(rename, *old_path, *new_path, *old_path, *new_path)
   }
@@ -828,7 +810,7 @@ static void FTruncate(const FunctionCallbackInfo<Value>& args) {
   const int64_t len = len_v->IntegerValue();
 
   if (args[2]->IsObject()) {
-    ASYNC_CALL(ftruncate, args[2], UTF8, fd, len)
+    ASYNC_CALL(ftruncate, args[2], EBCDIC, fd, len)
   } else {
     SYNC_CALL(ftruncate, 0, fd, len)
   }
@@ -845,7 +827,7 @@ static void Fdatasync(const FunctionCallbackInfo<Value>& args) {
   int fd = args[0]->Int32Value();
 
   if (args[1]->IsObject()) {
-    ASYNC_CALL(fdatasync, args[1], UTF8, fd)
+    ASYNC_CALL(fdatasync, args[1], EBCDIC, fd)
   } else {
     SYNC_CALL(fdatasync, 0, fd)
   }
@@ -862,7 +844,7 @@ static void Fsync(const FunctionCallbackInfo<Value>& args) {
   int fd = args[0]->Int32Value();
 
   if (args[1]->IsObject()) {
-    ASYNC_CALL(fsync, args[1], UTF8, fd)
+    ASYNC_CALL(fsync, args[1], EBCDIC, fd)
   } else {
     SYNC_CALL(fsync, 0, fd)
   }
@@ -878,7 +860,7 @@ static void Unlink(const FunctionCallbackInfo<Value>& args) {
   ASSERT_PATH(path)
 
   if (args[1]->IsObject()) {
-    ASYNC_CALL(unlink, args[1], UTF8, *path)
+    ASYNC_CALL(unlink, args[1], EBCDIC, *path)
   } else {
     SYNC_CALL(unlink, *path, *path)
   }
@@ -894,7 +876,7 @@ static void RMDir(const FunctionCallbackInfo<Value>& args) {
   ASSERT_PATH(path)
 
   if (args[1]->IsObject()) {
-    ASYNC_CALL(rmdir, args[1], UTF8, *path)
+    ASYNC_CALL(rmdir, args[1], EBCDIC, *path)
   } else {
     SYNC_CALL(rmdir, *path, *path)
   }
@@ -914,7 +896,7 @@ static void MKDir(const FunctionCallbackInfo<Value>& args) {
   int mode = static_cast<int>(args[1]->Int32Value());
 
   if (args[2]->IsObject()) {
-    ASYNC_CALL(mkdir, args[2], UTF8, *path, mode)
+    ASYNC_CALL(mkdir, args[2], EBCDIC, *path, mode)
   } else {
     SYNC_CALL(mkdir, *path, *path, mode)
   }
@@ -931,7 +913,7 @@ static void RealPath(const FunctionCallbackInfo<Value>& args) {
   BufferValue path(env->isolate(), args[0]);
   ASSERT_PATH(path)
 
-  const enum encoding encoding = ParseEncoding(env->isolate(), args[1], UTF8);
+  const enum encoding encoding = ParseEncoding(env->isolate(), args[1], EBCDIC);
 
   Local<Value> callback = Null(env->isolate());
   if (argc == 3)
@@ -993,18 +975,13 @@ static void ReadDir(const FunctionCallbackInfo<Value>& args) {
       if (r != 0)
         return env->ThrowUVException(r, "\x72\x65\x61\x64\x64\x69\x72\x75\x38", "", *path);
 
+      Local<Value> filename = StringBytes::Encode(env->isolate(),
 #ifdef __MVS__
-      char ebc[strlen(ent.name) + 1];
-      strcpy(ebc, ent.name);
-      __e2a_s(ebc);
-      Local<Value> filename = StringBytes::Encode(env->isolate(),
-                                                  ebc,
-                                                  encoding);
+                                                  *E2A(ent.name),
 #else
-      Local<Value> filename = StringBytes::Encode(env->isolate(),
                                                   ent.name,
-                                                  encoding);
 #endif
+                                                  encoding);
       if (filename.IsEmpty()) {
         return env->ThrowUVException(UV_EINVAL,
                                      "\x72\x65\x61\x64\x64\x69\x72",
@@ -1051,7 +1028,7 @@ static void Open(const FunctionCallbackInfo<Value>& args) {
   int mode = static_cast<int>(args[2]->Int32Value());
 
   if (args[3]->IsObject()) {
-    ASYNC_CALL(open, args[3], UTF8, *path, flags, mode)
+    ASYNC_CALL(open, args[3], EBCDIC, *path, flags, mode)
   } else {
     SYNC_CALL(open, *path, *path, flags, mode)
     args.GetReturnValue().Set(SYNC_RESULT);
@@ -1099,7 +1076,7 @@ static void WriteBuffer(const FunctionCallbackInfo<Value>& args) {
   uv_buf_t uvbuf = uv_buf_init(const_cast<char*>(buf), len);
 
   if (req->IsObject()) {
-    ASYNC_CALL(write, req, UTF8, fd, &uvbuf, 1, pos)
+    ASYNC_CALL(write, req, EBCDIC, fd, &uvbuf, 1, pos)
     return;
   }
 
@@ -1138,7 +1115,7 @@ static void WriteBuffers(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (req->IsObject()) {
-    ASYNC_CALL(write, req, UTF8, fd, *iovs, iovs.length(), pos)
+    ASYNC_CALL(write, req, EBCDIC, fd, *iovs, iovs.length(), pos)
     return;
   }
 
@@ -1299,7 +1276,7 @@ static void Chmod(const FunctionCallbackInfo<Value>& args) {
   int mode = static_cast<int>(args[1]->Int32Value());
 
   if (args[2]->IsObject()) {
-    ASYNC_CALL(chmod, args[2], UTF8, *path, mode);
+    ASYNC_CALL(chmod, args[2], EBCDIC, *path, mode);
   } else {
     SYNC_CALL(chmod, *path, *path, mode);
   }
@@ -1323,7 +1300,7 @@ static void FChmod(const FunctionCallbackInfo<Value>& args) {
   int mode = static_cast<int>(args[1]->Int32Value());
 
   if (args[2]->IsObject()) {
-    ASYNC_CALL(fchmod, args[2], UTF8, fd, mode);
+    ASYNC_CALL(fchmod, args[2], EBCDIC, fd, mode);
   } else {
     SYNC_CALL(fchmod, 0, fd, mode);
   }
@@ -1355,7 +1332,7 @@ static void Chown(const FunctionCallbackInfo<Value>& args) {
   uv_gid_t gid = static_cast<uv_gid_t>(args[2]->Uint32Value());
 
   if (args[3]->IsObject()) {
-    ASYNC_CALL(chown, args[3], UTF8, *path, uid, gid);
+    ASYNC_CALL(chown, args[3], EBCDIC, *path, uid, gid);
   } else {
     SYNC_CALL(chown, *path, *path, uid, gid);
   }
@@ -1387,7 +1364,7 @@ static void FChown(const FunctionCallbackInfo<Value>& args) {
   uv_gid_t gid = static_cast<uv_gid_t>(args[2]->Uint32Value());
 
   if (args[3]->IsObject()) {
-    ASYNC_CALL(fchown, args[3], UTF8, fd, uid, gid);
+    ASYNC_CALL(fchown, args[3], EBCDIC, fd, uid, gid);
   } else {
     SYNC_CALL(fchown, 0, fd, uid, gid);
   }
@@ -1416,7 +1393,7 @@ static void UTimes(const FunctionCallbackInfo<Value>& args) {
   const double mtime = static_cast<double>(args[2]->NumberValue());
 
   if (args[3]->IsObject()) {
-    ASYNC_CALL(utime, args[3], UTF8, *path, atime, mtime);
+    ASYNC_CALL(utime, args[3], EBCDIC, *path, atime, mtime);
   } else {
     SYNC_CALL(utime, *path, *path, atime, mtime);
   }
@@ -1444,7 +1421,7 @@ static void FUTimes(const FunctionCallbackInfo<Value>& args) {
   const double mtime = static_cast<double>(args[2]->NumberValue());
 
   if (args[3]->IsObject()) {
-    ASYNC_CALL(futime, args[3], UTF8, fd, atime, mtime);
+    ASYNC_CALL(futime, args[3], EBCDIC, fd, atime, mtime);
   } else {
     SYNC_CALL(futime, 0, fd, atime, mtime);
   }
