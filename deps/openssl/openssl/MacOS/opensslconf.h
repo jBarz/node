@@ -2,7 +2,7 @@
 
 #if !(defined(VMS) || defined(__VMS)) /* VMS uses logical names instead */
 # if defined(HEADER_CRYPTLIB_H) && !defined(OPENSSLDIR)
-#  define OPENSSLDIR "/usr/local/ssl"
+#  define OPENSSLDIR "\x2f\x75\x73\x72\x2f\x6c\x6f\x63\x61\x6c\x2f\x73\x73\x6c"
 # endif
 #endif
 
@@ -26,7 +26,7 @@
  * boxes I have tested - up to %20 faster.
  */
 /*-
- * I don't know what does "most" mean, but declaring "int" is a must on:
+ * I don't know what does "\x6d\x6f\x73\x74" mean, but declaring "\x69\x6e\x74" is a must on:
  * - Intel P6 because partial register stalls are very expensive;
  * - elder Alpha because it lacks byte load/store instructions;
  */

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -82,9 +82,9 @@ int main()
     int err;
     int sig_len;
     unsigned char sig_buf[4096];
-    static char certfile[] = "cert.pem";
-    static char keyfile[] = "key.pem";
-    static char data[] = "I owe you...";
+    static char certfile[] = "\x63\x65\x72\x74\x2e\x70\x65\x6d";
+    static char keyfile[] = "\x6b\x65\x79\x2e\x70\x65\x6d";
+    static char data[] = "\x49\x20\x6f\x77\x65\x20\x79\x6f\x75\x2e\x2e\x2e";
     EVP_MD_CTX md_ctx;
     EVP_PKEY *pkey;
     FILE *fp;
@@ -99,7 +99,7 @@ int main()
 
     /* Read private key */
 
-    fp = fopen(keyfile, "r");
+    fp = fopen(keyfile, "\x72");
     if (fp == NULL)
         exit(1);
     pkey = PEM_read_PrivateKey(fp, NULL, NULL, NULL);
@@ -126,7 +126,7 @@ int main()
 
     /* Read public key */
 
-    fp = fopen(certfile, "r");
+    fp = fopen(certfile, "\x72");
     if (fp == NULL)
         exit(1);
     x509 = PEM_read_X509(fp, NULL, NULL, NULL);
@@ -155,6 +155,6 @@ int main()
         ERR_print_errors_fp(stderr);
         exit(1);
     }
-    printf("Signature Verified Ok.\n");
+    printf("\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x56\x65\x72\x69\x66\x69\x65\x64\x20\x4f\x6b\x2e\xa");
     return (0);
 }

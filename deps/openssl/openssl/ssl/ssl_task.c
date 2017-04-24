@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -88,7 +88,7 @@
  *
  * The data streams are half-duplex read/write and have following functions:
  *   G - Get, requests that up to msg.length bytes of data be returned.  The
- *       data is returned in the next 'C' function response that matches the
+ *       data is returned in the next '\x43' function response that matches the
  *       requesting channel.
  *   P - Put, requests that the first msg.length bytes of msg.data be appended
  *       to the designated stream.
@@ -142,7 +142,7 @@ int verbose = 1;
 #ifdef FIONBIO
 static int s_nbio = 0;
 #endif
-#define TEST_SERVER_CERT "SSL_SERVER_CERTIFICATE"
+#define TEST_SERVER_CERT "\x53\x53\x4c\x5f\x53\x45\x52\x56\x45\x52\x5f\x43\x45\x52\x54\x49\x46\x49\x43\x41\x54\x45"
 /*************************************************************************/
 /* Should have member alignment inhibited */
 struct rpc_msg {
@@ -157,7 +157,7 @@ struct rpc_msg {
 };
 #define RPC_HDR_SIZE (sizeof(struct rpc_msg) - 4092)
 
-static $DESCRIPTOR(sysnet, "SYS$NET");
+static $DESCRIPTOR(sysnet, "\x53\x59\x53\x24\x4e\x45\x54");
 typedef unsigned short io_channel;
 
 struct io_status {
@@ -196,7 +196,7 @@ static int put(io_channel chan, char *buffer, int length)
 
 /***************************************************************************/
 /*
- * Handle operations on the 'G' channel.
+ * Handle operations on the '\x47' channel.
  */
 static int general_request(io_channel chan, struct rpc_msg *msg, int length)
 {
@@ -221,7 +221,7 @@ int main(int argc, char **argv)
      */
     LIB$INIT_TIMER();
     status = SYS$ASSIGN(&sysnet, &chan, 0, 0, 0);
-    printf("status of assign to SYS$NET: %d\n", status);
+    printf("\x73\x74\x61\x74\x75\x73\x20\x6f\x66\x20\x61\x73\x73\x69\x67\x6e\x20\x74\x6f\x20\x53\x59\x53\x24\x4e\x45\x54\x3a\x20\x25\x64\xa", status);
     /*
      * Initialize standard out and error files.
      */
@@ -235,8 +235,8 @@ int main(int argc, char **argv)
      * get the preferred cipher list and other initialization
      */
     if (cipher == NULL)
-        cipher = getenv("SSL_CIPHER");
-    printf("cipher list: %s\n", cipher ? cipher : "{undefined}");
+        cipher = getenv("\x53\x53\x4c\x5f\x43\x49\x50\x48\x45\x52");
+    printf("\x63\x69\x70\x68\x65\x72\x20\x6c\x69\x73\x74\x3a\x20\x25\x73\xa", cipher ? cipher : "\x7b\x75\x6e\x64\x65\x66\x69\x6e\x65\x64\x7d");
 
     SSL_load_error_strings();
     OpenSSL_add_all_algorithms();
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
 
     SSL_CTX_use_certificate_file(s_ctx, TEST_SERVER_CERT, SSL_FILETYPE_PEM);
     SSL_CTX_use_RSAPrivateKey_file(s_ctx, TEST_SERVER_CERT, SSL_FILETYPE_PEM);
-    printf("Loaded server certificate: '%s'\n", TEST_SERVER_CERT);
+    printf("\x4c\x6f\x61\x64\x65\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x3a\x20\x27\x25\x73\x27\xa", TEST_SERVER_CERT);
 
     /*
      * Take commands from client until bad status.
@@ -308,7 +308,7 @@ int doit(io_channel chan, SSL_CTX *s_ctx)
     BIO_set_ssl(s_bio, s_ssl, BIO_CLOSE);
 
     /* We can always do writes */
-    printf("Begin doit main loop\n");
+    printf("\x42\x65\x67\x69\x6e\x20\x64\x6f\x69\x74\x20\x6d\x61\x69\x6e\x20\x6c\x6f\x6f\x70\xa");
     /*
      * Link states: 0-idle, 1-read pending, 2-write pending, 3-closed.
      */
@@ -319,26 +319,26 @@ int doit(io_channel chan, SSL_CTX *s_ctx)
         while (link_state == 0) {
             status = get(chan, (char *)&msg, sizeof(msg), &length);
             if ((status & 1) == 0) {
-                printf("Error in main loop get: %d\n", status);
+                printf("\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x6d\x61\x69\x6e\x20\x6c\x6f\x6f\x70\x20\x67\x65\x74\x3a\x20\x25\x64\xa", status);
                 link_state = 3;
                 break;
             }
             if (length < RPC_HDR_SIZE) {
-                printf("Error in main loop get size: %d\n", length);
+                printf("\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x6d\x61\x69\x6e\x20\x6c\x6f\x6f\x70\x20\x67\x65\x74\x20\x73\x69\x7a\x65\x3a\x20\x25\x64\xa", length);
                 break;
                 link_state = 3;
             }
-            if (msg.channel != 'A') {
-                printf("Error in main loop, unexpected channel: %c\n",
+            if (msg.channel != '\x41') {
+                printf("\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x6d\x61\x69\x6e\x20\x6c\x6f\x6f\x70\x2c\x20\x75\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x63\x68\x61\x6e\x6e\x65\x6c\x3a\x20\x25\x63\xa",
                        msg.channel);
                 break;
                 link_state = 3;
             }
-            if (msg.function == 'G') {
+            if (msg.function == '\x47') {
                 link_state = 1;
-            } else if (msg.function == 'P') {
+            } else if (msg.function == '\x50') {
                 link_state = 2; /* write pending */
-            } else if (msg.function == 'X') {
+            } else if (msg.function == '\x58') {
                 link_state = 3;
             } else {
                 link_state = 3;
@@ -349,8 +349,8 @@ int doit(io_channel chan, SSL_CTX *s_ctx)
             if (i < 0)
                 link_state = 3;
             else {
-                msg.channel = 'A';
-                msg.function = 'C'; /* confirm */
+                msg.channel = '\x41';
+                msg.function = '\x43'; /* confirm */
                 msg.length = i;
                 status = put(chan, (char *)&msg, i + RPC_HDR_SIZE);
                 if ((status & 1) == 0)
@@ -362,8 +362,8 @@ int doit(io_channel chan, SSL_CTX *s_ctx)
             if (i < 0)
                 link_state = 3;
             else {
-                msg.channel = 'A';
-                msg.function = 'C'; /* confirm */
+                msg.channel = '\x41';
+                msg.function = '\x43'; /* confirm */
                 msg.length = 0;
                 status = put(chan, (char *)&msg, RPC_HDR_SIZE);
                 if ((status & 1) == 0)
@@ -372,7 +372,7 @@ int doit(io_channel chan, SSL_CTX *s_ctx)
             }
         }
     }
-    fprintf(stdout, "DONE\n");
+    fprintf(stdout, "\x44\x4f\x4e\x45\xa");
  err:
     /*
      * We have to set the BIO's to NULL otherwise they will be free()ed

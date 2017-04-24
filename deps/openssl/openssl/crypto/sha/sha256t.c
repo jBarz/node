@@ -13,7 +13,7 @@
 #if defined(OPENSSL_NO_SHA) || defined(OPENSSL_NO_SHA256)
 int main(int argc, char *argv[])
 {
-    printf("No SHA256 support\n");
+    printf("\x4e\x6f\x20\x53\x48\x41\x32\x35\x36\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -66,91 +66,91 @@ int main(int argc, char **argv)
     int i;
     EVP_MD_CTX evp;
 
-    fprintf(stdout, "Testing SHA-256 ");
+    fprintf(stdout, "\x54\x65\x73\x74\x69\x6e\x67\x20\x53\x48\x41\x2d\x32\x35\x36\x20");
 
-    EVP_Digest("abc", 3, md, NULL, EVP_sha256(), NULL);
+    EVP_Digest("\x61\x62\x63", 3, md, NULL, EVP_sha256(), NULL);
     if (memcmp(md, app_b1, sizeof(app_b1))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 1 of 3 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x31\x20\x6f\x66\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    EVP_Digest("abcdbcde" "cdefdefg" "efghfghi" "ghijhijk"
-               "ijkljklm" "klmnlmno" "mnopnopq", 56, md, NULL, EVP_sha256(),
+    EVP_Digest("\x61\x62\x63\x64\x62\x63\x64\x65" "\x63\x64\x65\x66\x64\x65\x66\x67" "\x65\x66\x67\x68\x66\x67\x68\x69" "\x67\x68\x69\x6a\x68\x69\x6a\x6b"
+               "\x69\x6a\x6b\x6c\x6a\x6b\x6c\x6d" "\x6b\x6c\x6d\x6e\x6c\x6d\x6e\x6f" "\x6d\x6e\x6f\x70\x6e\x6f\x70\x71", 56, md, NULL, EVP_sha256(),
                NULL);
     if (memcmp(md, app_b2, sizeof(app_b2))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 2 of 3 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x32\x20\x6f\x66\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
     EVP_MD_CTX_init(&evp);
     EVP_DigestInit_ex(&evp, EVP_sha256(), NULL);
     for (i = 0; i < 1000000; i += 160)
-        EVP_DigestUpdate(&evp, "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa",
+        EVP_DigestUpdate(&evp, "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61",
                          (1000000 - i) < 160 ? 1000000 - i : 160);
     EVP_DigestFinal_ex(&evp, md, NULL);
     EVP_MD_CTX_cleanup(&evp);
 
     if (memcmp(md, app_b3, sizeof(app_b3))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 3 of 3 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x33\x20\x6f\x66\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    fprintf(stdout, " passed.\n");
+    fprintf(stdout, "\x20\x70\x61\x73\x73\x65\x64\x2e\xa");
     fflush(stdout);
 
-    fprintf(stdout, "Testing SHA-224 ");
+    fprintf(stdout, "\x54\x65\x73\x74\x69\x6e\x67\x20\x53\x48\x41\x2d\x32\x32\x34\x20");
 
-    EVP_Digest("abc", 3, md, NULL, EVP_sha224(), NULL);
+    EVP_Digest("\x61\x62\x63", 3, md, NULL, EVP_sha224(), NULL);
     if (memcmp(md, addenum_1, sizeof(addenum_1))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 1 of 3 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x31\x20\x6f\x66\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    EVP_Digest("abcdbcde" "cdefdefg" "efghfghi" "ghijhijk"
-               "ijkljklm" "klmnlmno" "mnopnopq", 56, md, NULL, EVP_sha224(),
+    EVP_Digest("\x61\x62\x63\x64\x62\x63\x64\x65" "\x63\x64\x65\x66\x64\x65\x66\x67" "\x65\x66\x67\x68\x66\x67\x68\x69" "\x67\x68\x69\x6a\x68\x69\x6a\x6b"
+               "\x69\x6a\x6b\x6c\x6a\x6b\x6c\x6d" "\x6b\x6c\x6d\x6e\x6c\x6d\x6e\x6f" "\x6d\x6e\x6f\x70\x6e\x6f\x70\x71", 56, md, NULL, EVP_sha224(),
                NULL);
     if (memcmp(md, addenum_2, sizeof(addenum_2))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 2 of 3 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x32\x20\x6f\x66\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
     EVP_MD_CTX_init(&evp);
     EVP_DigestInit_ex(&evp, EVP_sha224(), NULL);
     for (i = 0; i < 1000000; i += 64)
-        EVP_DigestUpdate(&evp, "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa",
+        EVP_DigestUpdate(&evp, "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61",
                          (1000000 - i) < 64 ? 1000000 - i : 64);
     EVP_DigestFinal_ex(&evp, md, NULL);
     EVP_MD_CTX_cleanup(&evp);
 
     if (memcmp(md, addenum_3, sizeof(addenum_3))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 3 of 3 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x33\x20\x6f\x66\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    fprintf(stdout, " passed.\n");
+    fprintf(stdout, "\x20\x70\x61\x73\x73\x65\x64\x2e\xa");
     fflush(stdout);
 
     return 0;

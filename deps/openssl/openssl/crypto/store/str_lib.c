@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -69,12 +69,12 @@
 
 const char *const STORE_object_type_string[STORE_OBJECT_TYPE_NUM + 1] = {
     0,
-    "X.509 Certificate",
-    "X.509 CRL",
-    "Private Key",
-    "Public Key",
-    "Number",
-    "Arbitrary Data"
+    "\x58\x2e\x35\x30\x39\x20\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65",
+    "\x58\x2e\x35\x30\x39\x20\x43\x52\x4c",
+    "\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79",
+    "\x50\x75\x62\x6c\x69\x63\x20\x4b\x65\x79",
+    "\x4e\x75\x6d\x62\x65\x72",
+    "\x41\x72\x62\x69\x74\x72\x61\x72\x79\x20\x44\x61\x74\x61"
 };
 
 const int STORE_param_sizes[STORE_PARAM_TYPE_NUM + 1] = {
@@ -254,7 +254,7 @@ X509 *STORE_get_certificate(STORE *s, OPENSSL_ITEM attributes[],
     CRYPTO_add(&object->data.x509.certificate->references, 1,
                CRYPTO_LOCK_X509);
 #ifdef REF_PRINT
-    REF_PRINT("X509", data);
+    REF_PRINT("\x58\x35\x30\x39", data);
 #endif
     x = object->data.x509.certificate;
     STORE_OBJECT_free(object);
@@ -278,7 +278,7 @@ int STORE_store_certificate(STORE *s, X509 *data, OPENSSL_ITEM attributes[],
 
     CRYPTO_add(&data->references, 1, CRYPTO_LOCK_X509);
 #ifdef REF_PRINT
-    REF_PRINT("X509", data);
+    REF_PRINT("\x58\x35\x30\x39", data);
 #endif
     object->data.x509.certificate = data;
 
@@ -381,7 +381,7 @@ X509 *STORE_list_certificate_next(STORE *s, void *handle)
     CRYPTO_add(&object->data.x509.certificate->references, 1,
                CRYPTO_LOCK_X509);
 #ifdef REF_PRINT
-    REF_PRINT("X509", data);
+    REF_PRINT("\x58\x35\x30\x39", data);
 #endif
     x = object->data.x509.certificate;
     STORE_OBJECT_free(object);
@@ -431,7 +431,7 @@ EVP_PKEY *STORE_generate_key(STORE *s, OPENSSL_ITEM attributes[],
     }
     CRYPTO_add(&object->data.key->references, 1, CRYPTO_LOCK_EVP_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("EVP_PKEY", data);
+    REF_PRINT("\x45\x56\x50\x5f\x50\x4b\x45\x59", data);
 #endif
     pkey = object->data.key;
     STORE_OBJECT_free(object);
@@ -455,7 +455,7 @@ EVP_PKEY *STORE_get_private_key(STORE *s, OPENSSL_ITEM attributes[],
     }
     CRYPTO_add(&object->data.key->references, 1, CRYPTO_LOCK_EVP_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("EVP_PKEY", data);
+    REF_PRINT("\x45\x56\x50\x5f\x50\x4b\x45\x59", data);
 #endif
     pkey = object->data.key;
     STORE_OBJECT_free(object);
@@ -485,7 +485,7 @@ int STORE_store_private_key(STORE *s, EVP_PKEY *data,
 
     CRYPTO_add(&data->references, 1, CRYPTO_LOCK_EVP_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("EVP_PKEY", data);
+    REF_PRINT("\x45\x56\x50\x5f\x50\x4b\x45\x59", data);
 #endif
     object->data.key = data;
 
@@ -589,7 +589,7 @@ EVP_PKEY *STORE_list_private_key_next(STORE *s, void *handle)
     }
     CRYPTO_add(&object->data.key->references, 1, CRYPTO_LOCK_EVP_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("EVP_PKEY", data);
+    REF_PRINT("\x45\x56\x50\x5f\x50\x4b\x45\x59", data);
 #endif
     pkey = object->data.key;
     STORE_OBJECT_free(object);
@@ -639,7 +639,7 @@ EVP_PKEY *STORE_get_public_key(STORE *s, OPENSSL_ITEM attributes[],
     }
     CRYPTO_add(&object->data.key->references, 1, CRYPTO_LOCK_EVP_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("EVP_PKEY", data);
+    REF_PRINT("\x45\x56\x50\x5f\x50\x4b\x45\x59", data);
 #endif
     pkey = object->data.key;
     STORE_OBJECT_free(object);
@@ -669,7 +669,7 @@ int STORE_store_public_key(STORE *s, EVP_PKEY *data,
 
     CRYPTO_add(&data->references, 1, CRYPTO_LOCK_EVP_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("EVP_PKEY", data);
+    REF_PRINT("\x45\x56\x50\x5f\x50\x4b\x45\x59", data);
 #endif
     object->data.key = data;
 
@@ -773,7 +773,7 @@ EVP_PKEY *STORE_list_public_key_next(STORE *s, void *handle)
     }
     CRYPTO_add(&object->data.key->references, 1, CRYPTO_LOCK_EVP_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("EVP_PKEY", data);
+    REF_PRINT("\x45\x56\x50\x5f\x50\x4b\x45\x59", data);
 #endif
     pkey = object->data.key;
     STORE_OBJECT_free(object);
@@ -823,7 +823,7 @@ X509_CRL *STORE_generate_crl(STORE *s, OPENSSL_ITEM attributes[],
     }
     CRYPTO_add(&object->data.crl->references, 1, CRYPTO_LOCK_X509_CRL);
 #ifdef REF_PRINT
-    REF_PRINT("X509_CRL", data);
+    REF_PRINT("\x58\x35\x30\x39\x5f\x43\x52\x4c", data);
 #endif
     crl = object->data.crl;
     STORE_OBJECT_free(object);
@@ -847,7 +847,7 @@ X509_CRL *STORE_get_crl(STORE *s, OPENSSL_ITEM attributes[],
     }
     CRYPTO_add(&object->data.crl->references, 1, CRYPTO_LOCK_X509_CRL);
 #ifdef REF_PRINT
-    REF_PRINT("X509_CRL", data);
+    REF_PRINT("\x58\x35\x30\x39\x5f\x43\x52\x4c", data);
 #endif
     crl = object->data.crl;
     STORE_OBJECT_free(object);
@@ -871,7 +871,7 @@ int STORE_store_crl(STORE *s, X509_CRL *data, OPENSSL_ITEM attributes[],
 
     CRYPTO_add(&data->references, 1, CRYPTO_LOCK_X509_CRL);
 #ifdef REF_PRINT
-    REF_PRINT("X509_CRL", data);
+    REF_PRINT("\x58\x35\x30\x39\x5f\x43\x52\x4c", data);
 #endif
     object->data.crl = data;
 
@@ -952,7 +952,7 @@ X509_CRL *STORE_list_crl_next(STORE *s, void *handle)
     }
     CRYPTO_add(&object->data.crl->references, 1, CRYPTO_LOCK_X509_CRL);
 #ifdef REF_PRINT
-    REF_PRINT("X509_CRL", data);
+    REF_PRINT("\x58\x35\x30\x39\x5f\x43\x52\x4c", data);
 #endif
     crl = object->data.crl;
     STORE_OBJECT_free(object);

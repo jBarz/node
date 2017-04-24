@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -67,9 +67,9 @@ main()
     LHASH *conf;
     long l;
 
-    conf = CONF_load(NULL, "../../apps/openssl.cnf", &l);
+    conf = CONF_load(NULL, "\x2e\x2e\x2f\x2e\x2e\x2f\x61\x70\x70\x73\x2f\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x63\x6e\x66", &l);
     if (conf == NULL) {
-        fprintf(stderr, "error loading config, line %ld\n", l);
+        fprintf(stderr, "\x65\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x63\x6f\x6e\x66\x69\x67\x2c\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\xa", l);
         exit(1);
     }
 
@@ -90,15 +90,15 @@ static void print_conf(CONF_VALUE *cv)
     if (cv->name != NULL)
         return;
 
-    printf("[ %s ]\n", cv->section);
+    printf("\x5b\x20\x25\x73\x20\x5d\xa", cv->section);
     s = (STACK *) cv->value;
 
     for (i = 0; i < sk_num(s); i++) {
         v = (CONF_VALUE *)sk_value(s, i);
-        section = (v->section == NULL) ? "None" : v->section;
-        name = (v->name == NULL) ? "None" : v->name;
-        value = (v->value == NULL) ? "None" : v->value;
-        printf("%s=%s\n", name, value);
+        section = (v->section == NULL) ? "\x4e\x6f\x6e\x65" : v->section;
+        name = (v->name == NULL) ? "\x4e\x6f\x6e\x65" : v->name;
+        value = (v->value == NULL) ? "\x4e\x6f\x6e\x65" : v->value;
+        printf("\x25\x73\x3d\x25\x73\xa", name, value);
     }
-    printf("\n");
+    printf("\xa");
 }

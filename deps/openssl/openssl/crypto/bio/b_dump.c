@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -86,7 +86,7 @@ int BIO_dump_indent_cb(int (*cb) (const void *data, size_t len, void *u),
     trc = 0;
 
 #ifdef TRUNCATE
-    for (; (len > 0) && ((s[len - 1] == ' ') || (s[len - 1] == '\0')); len--)
+    for (; (len > 0) && ((s[len - 1] == '\x20') || (s[len - 1] == '\x0')); len--)
         trc++;
 #endif
 
@@ -95,9 +95,9 @@ int BIO_dump_indent_cb(int (*cb) (const void *data, size_t len, void *u),
     if (indent) {
         if (indent > 128)
             indent = 128;
-        memset(str, ' ', indent);
+        memset(str, '\x20', indent);
     }
-    str[indent] = '\0';
+    str[indent] = '\x0';
 
     dump_width = DUMP_WIDTH_LESS_INDENT(indent);
     rows = (len / dump_width);
@@ -105,35 +105,35 @@ int BIO_dump_indent_cb(int (*cb) (const void *data, size_t len, void *u),
         rows++;
     for (i = 0; i < rows; i++) {
         BUF_strlcpy(buf, str, sizeof buf);
-        BIO_snprintf(tmp, sizeof tmp, "%04x - ", i * dump_width);
+        BIO_snprintf(tmp, sizeof tmp, "\x25\x30\x34\x78\x20\x2d\x20", i * dump_width);
         BUF_strlcat(buf, tmp, sizeof buf);
         for (j = 0; j < dump_width; j++) {
             if (((i * dump_width) + j) >= len) {
-                BUF_strlcat(buf, "   ", sizeof buf);
+                BUF_strlcat(buf, "\x20\x20\x20", sizeof buf);
             } else {
                 ch = ((unsigned char)*(s + i * dump_width + j)) & 0xff;
-                BIO_snprintf(tmp, sizeof tmp, "%02x%c", ch,
-                             j == 7 ? '-' : ' ');
+                BIO_snprintf(tmp, sizeof tmp, "\x25\x30\x32\x78\x25\x63", ch,
+                             j == 7 ? '\x2d' : '\x20');
                 BUF_strlcat(buf, tmp, sizeof buf);
             }
         }
-        BUF_strlcat(buf, "  ", sizeof buf);
+        BUF_strlcat(buf, "\x20\x20", sizeof buf);
         for (j = 0; j < dump_width; j++) {
             if (((i * dump_width) + j) >= len)
                 break;
             ch = ((unsigned char)*(s + i * dump_width + j)) & 0xff;
 #ifndef CHARSET_EBCDIC
-            BIO_snprintf(tmp, sizeof tmp, "%c",
-                         ((ch >= ' ') && (ch <= '~')) ? ch : '.');
+            BIO_snprintf(tmp, sizeof tmp, "\x25\x63",
+                         ((ch >= '\x20') && (ch <= '\x7e')) ? ch : '\x2e');
 #else
-            BIO_snprintf(tmp, sizeof tmp, "%c",
-                         ((ch >= os_toascii[' ']) && (ch <= os_toascii['~']))
+            BIO_snprintf(tmp, sizeof tmp, "\x25\x63",
+                         ((ch >= os_toascii['\x20']) && (ch <= os_toascii['\x7e']))
                          ? os_toebcdic[ch]
-                         : '.');
+                         : '\x2e');
 #endif
             BUF_strlcat(buf, tmp, sizeof buf);
         }
-        BUF_strlcat(buf, "\n", sizeof buf);
+        BUF_strlcat(buf, "\xa", sizeof buf);
         /*
          * if this is the last call then update the ddt_dump thing so that we
          * will move the selection point in the debug window
@@ -142,7 +142,7 @@ int BIO_dump_indent_cb(int (*cb) (const void *data, size_t len, void *u),
     }
 #ifdef TRUNCATE
     if (trc > 0) {
-        BIO_snprintf(buf, sizeof buf, "%s%04x - <SPACES/NULS>\n", str,
+        BIO_snprintf(buf, sizeof buf, "\x25\x73\x25\x30\x34\x78\x20\x2d\x20\x3c\x53\x50\x41\x43\x45\x53\x2f\x4e\x55\x4c\x53\x3e\xa", str,
                      len + trc);
         ret += cb((void *)buf, strlen(buf), u);
     }
@@ -192,17 +192,17 @@ int BIO_hex_string(BIO *out, int indent, int width, unsigned char *data,
 
     for (i = 0; i < datalen - 1; i++) {
         if (i && !j)
-            BIO_printf(out, "%*s", indent, "");
+            BIO_printf(out, "\x25\x2a\x73", indent, "");
 
-        BIO_printf(out, "%02X:", data[i]);
+        BIO_printf(out, "\x25\x30\x32\x58\x3a", data[i]);
 
         j = (j + 1) % width;
         if (!j)
-            BIO_printf(out, "\n");
+            BIO_printf(out, "\xa");
     }
 
     if (i && !j)
-        BIO_printf(out, "%*s", indent, "");
-    BIO_printf(out, "%02X", data[datalen - 1]);
+        BIO_printf(out, "\x25\x2a\x73", indent, "");
+    BIO_printf(out, "\x25\x30\x32\x58", data[datalen - 1]);
     return 1;
 }

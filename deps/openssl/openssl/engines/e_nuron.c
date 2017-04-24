@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -77,7 +77,7 @@
 #ifndef OPENSSL_NO_HW
 # ifndef OPENSSL_NO_HW_NURON
 
-#  define NURON_LIB_NAME "nuron engine"
+#  define NURON_LIB_NAME "\x6e\x75\x72\x6f\x6e\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "e_nuron_err.c"
 
 static const char *NURON_LIBNAME = NULL;
@@ -85,7 +85,7 @@ static const char *get_NURON_LIBNAME(void)
 {
     if (NURON_LIBNAME)
         return NURON_LIBNAME;
-    return "nuronssl";
+    return "\x6e\x75\x72\x6f\x6e\x73\x73\x6c";
 }
 
 static void free_NURON_LIBNAME(void)
@@ -101,14 +101,14 @@ static long set_NURON_LIBNAME(const char *name)
     return (((NURON_LIBNAME = BUF_strdup(name)) != NULL) ? 1 : 0);
 }
 
-static const char *NURON_F1 = "nuron_mod_exp";
+static const char *NURON_F1 = "\x6e\x75\x72\x6f\x6e\x5f\x6d\x6f\x64\x5f\x65\x78\x70";
 
 /* The definitions for control commands specific to this engine */
 #  define NURON_CMD_SO_PATH               ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN nuron_cmd_defns[] = {
     {NURON_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'nuronssl' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x6e\x75\x72\x6f\x6e\x73\x73\x6c\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
@@ -267,7 +267,7 @@ static int nuron_mod_exp_dh(const DH *dh, BIGNUM *r,
 
 #  ifndef OPENSSL_NO_RSA
 static RSA_METHOD nuron_rsa = {
-    "Nuron RSA method",
+    "\x4e\x75\x72\x6f\x6e\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     NULL,
@@ -286,7 +286,7 @@ static RSA_METHOD nuron_rsa = {
 
 #  ifndef OPENSSL_NO_DSA
 static DSA_METHOD nuron_dsa = {
-    "Nuron DSA method",
+    "\x4e\x75\x72\x6f\x6e\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* dsa_do_sign */
     NULL,                       /* dsa_sign_setup */
     NULL,                       /* dsa_do_verify */
@@ -303,7 +303,7 @@ static DSA_METHOD nuron_dsa = {
 
 #  ifndef OPENSSL_NO_DH
 static DH_METHOD nuron_dh = {
-    "Nuron DH method",
+    "\x4e\x75\x72\x6f\x6e\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     nuron_mod_exp_dh,
@@ -316,8 +316,8 @@ static DH_METHOD nuron_dh = {
 #  endif
 
 /* Constants used when creating the ENGINE */
-static const char *engine_nuron_id = "nuron";
-static const char *engine_nuron_name = "Nuron hardware engine support";
+static const char *engine_nuron_id = "\x6e\x75\x72\x6f\x6e";
+static const char *engine_nuron_name = "\x4e\x75\x72\x6f\x6e\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /*
  * This internal function is used by ENGINE_nuron() and possibly by the

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -70,10 +70,10 @@ main()
 #ifdef USE_WIN32
     CONF_set_default_method(CONF_WIN32);
 #endif
-    conf = CONF_load(NULL, "ssleay.cnf", &eline);
+    conf = CONF_load(NULL, "\x73\x73\x6c\x65\x61\x79\x2e\x63\x6e\x66", &eline);
     if (conf == NULL) {
         ERR_load_crypto_strings();
-        printf("unable to load configuration, line %ld\n", eline);
+        printf("\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x63\x6f\x6e\x66\x69\x67\x75\x72\x61\x74\x69\x6f\x6e\x2c\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\xa", eline);
         ERR_print_errors_fp(stderr);
         exit(1);
     }
@@ -81,16 +81,16 @@ main()
     lh_node_stats(conf, stdout);
     lh_node_usage_stats(conf, stdout);
 
-    s = CONF_get_string(conf, NULL, "init2");
-    printf("init2=%s\n", (s == NULL) ? "NULL" : s);
+    s = CONF_get_string(conf, NULL, "\x69\x6e\x69\x74\x32");
+    printf("\x69\x6e\x69\x74\x32\x3d\x25\x73\xa", (s == NULL) ? "\x4e\x55\x4c\x4c" : s);
 
-    s = CONF_get_string(conf, NULL, "cipher1");
-    printf("cipher1=%s\n", (s == NULL) ? "NULL" : s);
+    s = CONF_get_string(conf, NULL, "\x63\x69\x70\x68\x65\x72\x31");
+    printf("\x63\x69\x70\x68\x65\x72\x31\x3d\x25\x73\xa", (s == NULL) ? "\x4e\x55\x4c\x4c" : s);
 
-    s = CONF_get_string(conf, "s_client", "cipher1");
-    printf("s_client:cipher1=%s\n", (s == NULL) ? "NULL" : s);
+    s = CONF_get_string(conf, "\x73\x5f\x63\x6c\x69\x65\x6e\x74", "\x63\x69\x70\x68\x65\x72\x31");
+    printf("\x73\x5f\x63\x6c\x69\x65\x6e\x74\x3a\x63\x69\x70\x68\x65\x72\x31\x3d\x25\x73\xa", (s == NULL) ? "\x4e\x55\x4c\x4c" : s);
 
-    printf("---------------------------- DUMP ------------------------\n");
+    printf("\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x20\x44\x55\x4d\x50\x20\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\xa");
     CONF_dump_fp(conf, stdout);
 
     exit(0);

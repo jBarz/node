@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -71,9 +71,9 @@
 
 main()
 {
-    fprintf(stderr, "rc4\n");
+    fprintf(stderr, "\x72\x63\x34\xa");
     rc4();
-    fprintf(stderr, "cfb des\n");
+    fprintf(stderr, "\x63\x66\x62\x20\x64\x65\x73\xa");
     des();
 }
 
@@ -82,9 +82,9 @@ int des()
     des_key_schedule ks;
     des_cblock iv, key;
     int num;
-    static char *keystr = "01234567";
-    static char *in1 = "0123456789ABCEDFdata 12345";
-    static char *in2 = "9876543210abcdefdata 12345";
+    static char *keystr = "\x30\x31\x32\x33\x34\x35\x36\x37";
+    static char *in1 = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x45\x44\x46\x64\x61\x74\x61\x20\x31\x32\x33\x34\x35";
+    static char *in2 = "\x39\x38\x37\x36\x35\x34\x33\x32\x31\x30\x61\x62\x63\x64\x65\x66\x64\x61\x74\x61\x20\x31\x32\x33\x34\x35";
     unsigned char out[100];
     int i;
 
@@ -94,39 +94,39 @@ int des()
     memset(iv, 0, 8);
     des_cfb64_encrypt(in1, out, 26, ks, (des_cblock *)iv, &num, 1);
     for (i = 0; i < 26; i++)
-        fprintf(stderr, "%02X ", out[i]);
-    fprintf(stderr, "\n");
+        fprintf(stderr, "\x25\x30\x32\x58\x20", out[i]);
+    fprintf(stderr, "\xa");
 
     num = 0;
     memset(iv, 0, 8);
     des_cfb64_encrypt(in2, out, 26, ks, (des_cblock *)iv, &num, 1);
     for (i = 0; i < 26; i++)
-        fprintf(stderr, "%02X ", out[i]);
-    fprintf(stderr, "\n");
+        fprintf(stderr, "\x25\x30\x32\x58\x20", out[i]);
+    fprintf(stderr, "\xa");
 }
 
 int rc4()
 {
-    static char *keystr = "0123456789abcdef";
+    static char *keystr = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x61\x62\x63\x64\x65\x66";
     RC4_KEY key;
     unsigned char in[100], out[100];
     int i;
 
     RC4_set_key(&key, 16, keystr);
-    in[0] = '\0';
-    strcpy(in, "0123456789ABCEDFdata 12345");
+    in[0] = '\x0';
+    strcpy(in, "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x45\x44\x46\x64\x61\x74\x61\x20\x31\x32\x33\x34\x35");
     RC4(key, 26, in, out);
 
     for (i = 0; i < 26; i++)
-        fprintf(stderr, "%02X ", out[i]);
-    fprintf(stderr, "\n");
+        fprintf(stderr, "\x25\x30\x32\x58\x20", out[i]);
+    fprintf(stderr, "\xa");
 
     RC4_set_key(&key, 16, keystr);
-    in[0] = '\0';
-    strcpy(in, "9876543210abcdefdata 12345");
+    in[0] = '\x0';
+    strcpy(in, "\x39\x38\x37\x36\x35\x34\x33\x32\x31\x30\x61\x62\x63\x64\x65\x66\x64\x61\x74\x61\x20\x31\x32\x33\x34\x35");
     RC4(key, 26, in, out);
 
     for (i = 0; i < 26; i++)
-        fprintf(stderr, "%02X ", out[i]);
-    fprintf(stderr, "\n");
+        fprintf(stderr, "\x25\x30\x32\x58\x20", out[i]);
+    fprintf(stderr, "\xa");
 }

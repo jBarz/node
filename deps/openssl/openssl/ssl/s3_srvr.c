@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,7 +111,7 @@
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
  *
- * Portions of the attached software ("Contribution") are developed by
+ * Portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") are developed by
  * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
  *
  * The Contribution is licensed pursuant to the OpenSSL open source
@@ -124,12 +124,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -141,7 +141,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -1163,13 +1163,13 @@ int ssl3_get_client_hello(SSL *s)
         id = s->session->cipher->id;
 
 #ifdef CIPHER_DEBUG
-        fprintf(stderr, "client sent %d ciphers\n",
+        fprintf(stderr, "\x63\x6c\x69\x65\x6e\x74\x20\x73\x65\x6e\x74\x20\x25\x64\x20\x63\x69\x70\x68\x65\x72\x73\xa",
                 sk_SSL_CIPHER_num(ciphers));
 #endif
         for (i = 0; i < sk_SSL_CIPHER_num(ciphers); i++) {
             c = sk_SSL_CIPHER_value(ciphers, i);
 #ifdef CIPHER_DEBUG
-            fprintf(stderr, "client [%2d of %2d]:%s\n",
+            fprintf(stderr, "\x63\x6c\x69\x65\x6e\x74\x20\x5b\x25\x32\x64\x20\x6f\x66\x20\x25\x32\x64\x5d\x3a\x25\x73\xa",
                     i, sk_SSL_CIPHER_num(ciphers), SSL_CIPHER_get_name(c));
 #endif
             if (c->id == id) {
@@ -2016,7 +2016,7 @@ int ssl3_send_server_key_exchange(SSL *s)
                     p += 2;
                 }
 #ifdef SSL_DEBUG
-                fprintf(stderr, "Using hash %s\n", EVP_MD_name(md));
+                fprintf(stderr, "\x55\x73\x69\x6e\x67\x20\x68\x61\x73\x68\x20\x25\x73\xa", EVP_MD_name(md));
 #endif
                 if (EVP_SignInit_ex(&md_ctx, md, NULL) <= 0
                         || EVP_SignUpdate(&md_ctx, &(s->s3->client_random[0]),
@@ -2499,10 +2499,10 @@ int ssl3_get_client_key_exchange(SSL *s)
         if ((krb5rc = kssl_sget_tkt(kssl_ctx, &enc_ticket, &ttimes,
                                     &kssl_err)) != 0) {
 # ifdef KSSL_DEBUG
-            fprintf(stderr, "kssl_sget_tkt rtn %d [%d]\n",
+            fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x73\x67\x65\x74\x5f\x74\x6b\x74\x20\x72\x74\x6e\x20\x25\x64\x20\x5b\x25\x64\x5d\xa",
                     krb5rc, kssl_err.reason);
             if (kssl_err.text)
-                fprintf(stderr, "kssl_err text= %s\n", kssl_err.text);
+                fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x65\x72\x72\x20\x74\x65\x78\x74\x3d\x20\x25\x73\xa", kssl_err.text);
 # endif                         /* KSSL_DEBUG */
             SSLerr(SSL_F_SSL3_GET_CLIENT_KEY_EXCHANGE, kssl_err.reason);
             goto err;
@@ -2515,10 +2515,10 @@ int ssl3_get_client_key_exchange(SSL *s)
         if ((krb5rc = kssl_check_authent(kssl_ctx, &authenticator,
                                          &authtime, &kssl_err)) != 0) {
 # ifdef KSSL_DEBUG
-            fprintf(stderr, "kssl_check_authent rtn %d [%d]\n",
+            fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x63\x68\x65\x63\x6b\x5f\x61\x75\x74\x68\x65\x6e\x74\x20\x72\x74\x6e\x20\x25\x64\x20\x5b\x25\x64\x5d\xa",
                     krb5rc, kssl_err.reason);
             if (kssl_err.text)
-                fprintf(stderr, "kssl_err text= %s\n", kssl_err.text);
+                fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x65\x72\x72\x20\x74\x65\x78\x74\x3d\x20\x25\x73\xa", kssl_err.text);
 # endif                         /* KSSL_DEBUG */
             SSLerr(SSL_F_SSL3_GET_CLIENT_KEY_EXCHANGE, kssl_err.reason);
             goto err;
@@ -3048,7 +3048,7 @@ int ssl3_get_cert_verify(SSL *s)
                 goto f_err;
             }
 #ifdef SSL_DEBUG
-            fprintf(stderr, "USING TLSv1.2 HASH %s\n", EVP_MD_name(md));
+            fprintf(stderr, "\x55\x53\x49\x4e\x47\x20\x54\x4c\x53\x76\x31\x2e\x32\x20\x48\x41\x53\x48\x20\x25\x73\xa", EVP_MD_name(md));
 #endif
             p += 2;
             n -= 2;
@@ -3078,7 +3078,7 @@ int ssl3_get_cert_verify(SSL *s)
             goto f_err;
         }
 #ifdef SSL_DEBUG
-        fprintf(stderr, "Using TLS 1.2 with client verify alg %s\n",
+        fprintf(stderr, "\x55\x73\x69\x6e\x67\x20\x54\x4c\x53\x20\x31\x2e\x32\x20\x77\x69\x74\x68\x20\x63\x6c\x69\x65\x6e\x74\x20\x76\x65\x72\x69\x66\x79\x20\x61\x6c\x67\x20\x25\x73\xa",
                 EVP_MD_name(md));
 #endif
         if (!EVP_VerifyInit_ex(&mctx, md, NULL)
@@ -3154,7 +3154,7 @@ int ssl3_get_cert_verify(SSL *s)
             goto f_err;
         }
         if (i != 64) {
-            fprintf(stderr, "GOST signature length is %d", i);
+            fprintf(stderr, "\x47\x4f\x53\x54\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x6c\x65\x6e\x67\x74\x68\x20\x69\x73\x20\x25\x64", i);
         }
         for (idx = 0; idx < 64; idx++) {
             signature[63 - idx] = p[idx];

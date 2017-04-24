@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -127,94 +127,94 @@ static void err_load_strings(int lib, ERR_STRING_DATA *str);
 static void ERR_STATE_free(ERR_STATE *s);
 #ifndef OPENSSL_NO_ERR
 static ERR_STRING_DATA ERR_str_libraries[] = {
-    {ERR_PACK(ERR_LIB_NONE, 0, 0), "unknown library"},
-    {ERR_PACK(ERR_LIB_SYS, 0, 0), "system library"},
-    {ERR_PACK(ERR_LIB_BN, 0, 0), "bignum routines"},
-    {ERR_PACK(ERR_LIB_RSA, 0, 0), "rsa routines"},
-    {ERR_PACK(ERR_LIB_DH, 0, 0), "Diffie-Hellman routines"},
-    {ERR_PACK(ERR_LIB_EVP, 0, 0), "digital envelope routines"},
-    {ERR_PACK(ERR_LIB_BUF, 0, 0), "memory buffer routines"},
-    {ERR_PACK(ERR_LIB_OBJ, 0, 0), "object identifier routines"},
-    {ERR_PACK(ERR_LIB_PEM, 0, 0), "PEM routines"},
-    {ERR_PACK(ERR_LIB_DSA, 0, 0), "dsa routines"},
-    {ERR_PACK(ERR_LIB_X509, 0, 0), "x509 certificate routines"},
-    {ERR_PACK(ERR_LIB_ASN1, 0, 0), "asn1 encoding routines"},
-    {ERR_PACK(ERR_LIB_CONF, 0, 0), "configuration file routines"},
-    {ERR_PACK(ERR_LIB_CRYPTO, 0, 0), "common libcrypto routines"},
-    {ERR_PACK(ERR_LIB_EC, 0, 0), "elliptic curve routines"},
-    {ERR_PACK(ERR_LIB_SSL, 0, 0), "SSL routines"},
-    {ERR_PACK(ERR_LIB_BIO, 0, 0), "BIO routines"},
-    {ERR_PACK(ERR_LIB_PKCS7, 0, 0), "PKCS7 routines"},
-    {ERR_PACK(ERR_LIB_X509V3, 0, 0), "X509 V3 routines"},
-    {ERR_PACK(ERR_LIB_PKCS12, 0, 0), "PKCS12 routines"},
-    {ERR_PACK(ERR_LIB_RAND, 0, 0), "random number generator"},
-    {ERR_PACK(ERR_LIB_DSO, 0, 0), "DSO support routines"},
-    {ERR_PACK(ERR_LIB_TS, 0, 0), "time stamp routines"},
-    {ERR_PACK(ERR_LIB_ENGINE, 0, 0), "engine routines"},
-    {ERR_PACK(ERR_LIB_OCSP, 0, 0), "OCSP routines"},
-    {ERR_PACK(ERR_LIB_FIPS, 0, 0), "FIPS routines"},
-    {ERR_PACK(ERR_LIB_CMS, 0, 0), "CMS routines"},
-    {ERR_PACK(ERR_LIB_HMAC, 0, 0), "HMAC routines"},
+    {ERR_PACK(ERR_LIB_NONE, 0, 0), "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6c\x69\x62\x72\x61\x72\x79"},
+    {ERR_PACK(ERR_LIB_SYS, 0, 0), "\x73\x79\x73\x74\x65\x6d\x20\x6c\x69\x62\x72\x61\x72\x79"},
+    {ERR_PACK(ERR_LIB_BN, 0, 0), "\x62\x69\x67\x6e\x75\x6d\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_RSA, 0, 0), "\x72\x73\x61\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_DH, 0, 0), "\x44\x69\x66\x66\x69\x65\x2d\x48\x65\x6c\x6c\x6d\x61\x6e\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_EVP, 0, 0), "\x64\x69\x67\x69\x74\x61\x6c\x20\x65\x6e\x76\x65\x6c\x6f\x70\x65\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_BUF, 0, 0), "\x6d\x65\x6d\x6f\x72\x79\x20\x62\x75\x66\x66\x65\x72\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_OBJ, 0, 0), "\x6f\x62\x6a\x65\x63\x74\x20\x69\x64\x65\x6e\x74\x69\x66\x69\x65\x72\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_PEM, 0, 0), "\x50\x45\x4d\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_DSA, 0, 0), "\x64\x73\x61\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_X509, 0, 0), "\x78\x35\x30\x39\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_ASN1, 0, 0), "\x61\x73\x6e\x31\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_CONF, 0, 0), "\x63\x6f\x6e\x66\x69\x67\x75\x72\x61\x74\x69\x6f\x6e\x20\x66\x69\x6c\x65\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_CRYPTO, 0, 0), "\x63\x6f\x6d\x6d\x6f\x6e\x20\x6c\x69\x62\x63\x72\x79\x70\x74\x6f\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_EC, 0, 0), "\x65\x6c\x6c\x69\x70\x74\x69\x63\x20\x63\x75\x72\x76\x65\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_SSL, 0, 0), "\x53\x53\x4c\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_BIO, 0, 0), "\x42\x49\x4f\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_PKCS7, 0, 0), "\x50\x4b\x43\x53\x37\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_X509V3, 0, 0), "\x58\x35\x30\x39\x20\x56\x33\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_PKCS12, 0, 0), "\x50\x4b\x43\x53\x31\x32\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_RAND, 0, 0), "\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72"},
+    {ERR_PACK(ERR_LIB_DSO, 0, 0), "\x44\x53\x4f\x20\x73\x75\x70\x70\x6f\x72\x74\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_TS, 0, 0), "\x74\x69\x6d\x65\x20\x73\x74\x61\x6d\x70\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_ENGINE, 0, 0), "\x65\x6e\x67\x69\x6e\x65\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_OCSP, 0, 0), "\x4f\x43\x53\x50\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_FIPS, 0, 0), "\x46\x49\x50\x53\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_CMS, 0, 0), "\x43\x4d\x53\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
+    {ERR_PACK(ERR_LIB_HMAC, 0, 0), "\x48\x4d\x41\x43\x20\x72\x6f\x75\x74\x69\x6e\x65\x73"},
     {0, NULL},
 };
 
 static ERR_STRING_DATA ERR_str_functs[] = {
-    {ERR_PACK(0, SYS_F_FOPEN, 0), "fopen"},
-    {ERR_PACK(0, SYS_F_CONNECT, 0), "connect"},
-    {ERR_PACK(0, SYS_F_GETSERVBYNAME, 0), "getservbyname"},
-    {ERR_PACK(0, SYS_F_SOCKET, 0), "socket"},
-    {ERR_PACK(0, SYS_F_IOCTLSOCKET, 0), "ioctlsocket"},
-    {ERR_PACK(0, SYS_F_BIND, 0), "bind"},
-    {ERR_PACK(0, SYS_F_LISTEN, 0), "listen"},
-    {ERR_PACK(0, SYS_F_ACCEPT, 0), "accept"},
+    {ERR_PACK(0, SYS_F_FOPEN, 0), "\x66\x6f\x70\x65\x6e"},
+    {ERR_PACK(0, SYS_F_CONNECT, 0), "\x63\x6f\x6e\x6e\x65\x63\x74"},
+    {ERR_PACK(0, SYS_F_GETSERVBYNAME, 0), "\x67\x65\x74\x73\x65\x72\x76\x62\x79\x6e\x61\x6d\x65"},
+    {ERR_PACK(0, SYS_F_SOCKET, 0), "\x73\x6f\x63\x6b\x65\x74"},
+    {ERR_PACK(0, SYS_F_IOCTLSOCKET, 0), "\x69\x6f\x63\x74\x6c\x73\x6f\x63\x6b\x65\x74"},
+    {ERR_PACK(0, SYS_F_BIND, 0), "\x62\x69\x6e\x64"},
+    {ERR_PACK(0, SYS_F_LISTEN, 0), "\x6c\x69\x73\x74\x65\x6e"},
+    {ERR_PACK(0, SYS_F_ACCEPT, 0), "\x61\x63\x63\x65\x70\x74"},
 # ifdef OPENSSL_SYS_WINDOWS
-    {ERR_PACK(0, SYS_F_WSASTARTUP, 0), "WSAstartup"},
+    {ERR_PACK(0, SYS_F_WSASTARTUP, 0), "\x57\x53\x41\x73\x74\x61\x72\x74\x75\x70"},
 # endif
-    {ERR_PACK(0, SYS_F_OPENDIR, 0), "opendir"},
-    {ERR_PACK(0, SYS_F_FREAD, 0), "fread"},
+    {ERR_PACK(0, SYS_F_OPENDIR, 0), "\x6f\x70\x65\x6e\x64\x69\x72"},
+    {ERR_PACK(0, SYS_F_FREAD, 0), "\x66\x72\x65\x61\x64"},
     {0, NULL},
 };
 
 static ERR_STRING_DATA ERR_str_reasons[] = {
-    {ERR_R_SYS_LIB, "system lib"},
-    {ERR_R_BN_LIB, "BN lib"},
-    {ERR_R_RSA_LIB, "RSA lib"},
-    {ERR_R_DH_LIB, "DH lib"},
-    {ERR_R_EVP_LIB, "EVP lib"},
-    {ERR_R_BUF_LIB, "BUF lib"},
-    {ERR_R_OBJ_LIB, "OBJ lib"},
-    {ERR_R_PEM_LIB, "PEM lib"},
-    {ERR_R_DSA_LIB, "DSA lib"},
-    {ERR_R_X509_LIB, "X509 lib"},
-    {ERR_R_ASN1_LIB, "ASN1 lib"},
-    {ERR_R_CONF_LIB, "CONF lib"},
-    {ERR_R_CRYPTO_LIB, "CRYPTO lib"},
-    {ERR_R_EC_LIB, "EC lib"},
-    {ERR_R_SSL_LIB, "SSL lib"},
-    {ERR_R_BIO_LIB, "BIO lib"},
-    {ERR_R_PKCS7_LIB, "PKCS7 lib"},
-    {ERR_R_X509V3_LIB, "X509V3 lib"},
-    {ERR_R_PKCS12_LIB, "PKCS12 lib"},
-    {ERR_R_RAND_LIB, "RAND lib"},
-    {ERR_R_DSO_LIB, "DSO lib"},
-    {ERR_R_ENGINE_LIB, "ENGINE lib"},
-    {ERR_R_OCSP_LIB, "OCSP lib"},
-    {ERR_R_TS_LIB, "TS lib"},
+    {ERR_R_SYS_LIB, "\x73\x79\x73\x74\x65\x6d\x20\x6c\x69\x62"},
+    {ERR_R_BN_LIB, "\x42\x4e\x20\x6c\x69\x62"},
+    {ERR_R_RSA_LIB, "\x52\x53\x41\x20\x6c\x69\x62"},
+    {ERR_R_DH_LIB, "\x44\x48\x20\x6c\x69\x62"},
+    {ERR_R_EVP_LIB, "\x45\x56\x50\x20\x6c\x69\x62"},
+    {ERR_R_BUF_LIB, "\x42\x55\x46\x20\x6c\x69\x62"},
+    {ERR_R_OBJ_LIB, "\x4f\x42\x4a\x20\x6c\x69\x62"},
+    {ERR_R_PEM_LIB, "\x50\x45\x4d\x20\x6c\x69\x62"},
+    {ERR_R_DSA_LIB, "\x44\x53\x41\x20\x6c\x69\x62"},
+    {ERR_R_X509_LIB, "\x58\x35\x30\x39\x20\x6c\x69\x62"},
+    {ERR_R_ASN1_LIB, "\x41\x53\x4e\x31\x20\x6c\x69\x62"},
+    {ERR_R_CONF_LIB, "\x43\x4f\x4e\x46\x20\x6c\x69\x62"},
+    {ERR_R_CRYPTO_LIB, "\x43\x52\x59\x50\x54\x4f\x20\x6c\x69\x62"},
+    {ERR_R_EC_LIB, "\x45\x43\x20\x6c\x69\x62"},
+    {ERR_R_SSL_LIB, "\x53\x53\x4c\x20\x6c\x69\x62"},
+    {ERR_R_BIO_LIB, "\x42\x49\x4f\x20\x6c\x69\x62"},
+    {ERR_R_PKCS7_LIB, "\x50\x4b\x43\x53\x37\x20\x6c\x69\x62"},
+    {ERR_R_X509V3_LIB, "\x58\x35\x30\x39\x56\x33\x20\x6c\x69\x62"},
+    {ERR_R_PKCS12_LIB, "\x50\x4b\x43\x53\x31\x32\x20\x6c\x69\x62"},
+    {ERR_R_RAND_LIB, "\x52\x41\x4e\x44\x20\x6c\x69\x62"},
+    {ERR_R_DSO_LIB, "\x44\x53\x4f\x20\x6c\x69\x62"},
+    {ERR_R_ENGINE_LIB, "\x45\x4e\x47\x49\x4e\x45\x20\x6c\x69\x62"},
+    {ERR_R_OCSP_LIB, "\x4f\x43\x53\x50\x20\x6c\x69\x62"},
+    {ERR_R_TS_LIB, "\x54\x53\x20\x6c\x69\x62"},
 
-    {ERR_R_NESTED_ASN1_ERROR, "nested asn1 error"},
-    {ERR_R_BAD_ASN1_OBJECT_HEADER, "bad asn1 object header"},
-    {ERR_R_BAD_GET_ASN1_OBJECT_CALL, "bad get asn1 object call"},
-    {ERR_R_EXPECTING_AN_ASN1_SEQUENCE, "expecting an asn1 sequence"},
-    {ERR_R_ASN1_LENGTH_MISMATCH, "asn1 length mismatch"},
-    {ERR_R_MISSING_ASN1_EOS, "missing asn1 eos"},
+    {ERR_R_NESTED_ASN1_ERROR, "\x6e\x65\x73\x74\x65\x64\x20\x61\x73\x6e\x31\x20\x65\x72\x72\x6f\x72"},
+    {ERR_R_BAD_ASN1_OBJECT_HEADER, "\x62\x61\x64\x20\x61\x73\x6e\x31\x20\x6f\x62\x6a\x65\x63\x74\x20\x68\x65\x61\x64\x65\x72"},
+    {ERR_R_BAD_GET_ASN1_OBJECT_CALL, "\x62\x61\x64\x20\x67\x65\x74\x20\x61\x73\x6e\x31\x20\x6f\x62\x6a\x65\x63\x74\x20\x63\x61\x6c\x6c"},
+    {ERR_R_EXPECTING_AN_ASN1_SEQUENCE, "\x65\x78\x70\x65\x63\x74\x69\x6e\x67\x20\x61\x6e\x20\x61\x73\x6e\x31\x20\x73\x65\x71\x75\x65\x6e\x63\x65"},
+    {ERR_R_ASN1_LENGTH_MISMATCH, "\x61\x73\x6e\x31\x20\x6c\x65\x6e\x67\x74\x68\x20\x6d\x69\x73\x6d\x61\x74\x63\x68"},
+    {ERR_R_MISSING_ASN1_EOS, "\x6d\x69\x73\x73\x69\x6e\x67\x20\x61\x73\x6e\x31\x20\x65\x6f\x73"},
 
-    {ERR_R_FATAL, "fatal"},
-    {ERR_R_MALLOC_FAILURE, "malloc failure"},
+    {ERR_R_FATAL, "\x66\x61\x74\x61\x6c"},
+    {ERR_R_MALLOC_FAILURE, "\x6d\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {ERR_R_SHOULD_NOT_HAVE_BEEN_CALLED,
-     "called a function you should not call"},
-    {ERR_R_PASSED_NULL_PARAMETER, "passed a null parameter"},
-    {ERR_R_INTERNAL_ERROR, "internal error"},
-    {ERR_R_DISABLED, "called a function that was disabled at compile-time"},
+     "\x63\x61\x6c\x6c\x65\x64\x20\x61\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e\x20\x79\x6f\x75\x20\x73\x68\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x63\x61\x6c\x6c"},
+    {ERR_R_PASSED_NULL_PARAMETER, "\x70\x61\x73\x73\x65\x64\x20\x61\x20\x6e\x75\x6c\x6c\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72"},
+    {ERR_R_INTERNAL_ERROR, "\x69\x6e\x74\x65\x72\x6e\x61\x6c\x20\x65\x72\x72\x6f\x72"},
+    {ERR_R_DISABLED, "\x63\x61\x6c\x6c\x65\x64\x20\x61\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e\x20\x74\x68\x61\x74\x20\x77\x61\x73\x20\x64\x69\x73\x61\x62\x6c\x65\x64\x20\x61\x74\x20\x63\x6f\x6d\x70\x69\x6c\x65\x2d\x74\x69\x6d\x65"},
 
     {0, NULL},
 };
@@ -359,7 +359,7 @@ static LHASH_OF(ERR_STRING_DATA) *int_err_get(int create)
 
     CRYPTO_w_lock(CRYPTO_LOCK_ERR);
     if (!int_error_hash && create) {
-        CRYPTO_push_info("int_err_get (err.c)");
+        CRYPTO_push_info("\x69\x6e\x74\x5f\x65\x72\x72\x5f\x67\x65\x74\x20\x28\x65\x72\x72\x2e\x63\x29");
         int_error_hash = lh_ERR_STRING_DATA_new();
         CRYPTO_pop_info();
     }
@@ -451,7 +451,7 @@ static LHASH_OF(ERR_STATE) *int_thread_get(int create)
 
     CRYPTO_w_lock(CRYPTO_LOCK_ERR);
     if (!int_thread_hash && create) {
-        CRYPTO_push_info("int_thread_get (err.c)");
+        CRYPTO_push_info("\x69\x6e\x74\x5f\x74\x68\x72\x65\x61\x64\x5f\x67\x65\x74\x20\x28\x65\x72\x72\x2e\x63\x29");
         int_thread_hash = lh_ERR_STATE_new();
         CRYPTO_pop_info();
     }
@@ -473,13 +473,13 @@ static void int_thread_release(LHASH_OF(ERR_STATE) **hash)
     i = CRYPTO_add(&int_thread_hash_references, -1, CRYPTO_LOCK_ERR);
 
 #ifdef REF_PRINT
-    fprintf(stderr, "%4d:%s\n", int_thread_hash_references, "ERR");
+    fprintf(stderr, "\x25\x34\x64\x3a\x25\x73\xa", int_thread_hash_references, "\x45\x52\x52");
 #endif
     if (i > 0)
         return;
 #ifdef REF_CHECK
     if (i < 0) {
-        fprintf(stderr, "int_thread_release, bad reference count\n");
+        fprintf(stderr, "\x69\x6e\x74\x5f\x74\x68\x72\x65\x61\x64\x5f\x72\x65\x6c\x65\x61\x73\x65\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
         abort();                /* ok */
     }
 #endif
@@ -602,12 +602,12 @@ static void build_SYS_str_reasons(void)
             char *src = strerror(i);
             if (src != NULL) {
                 strncpy(*dest, src, sizeof *dest);
-                (*dest)[sizeof *dest - 1] = '\0';
+                (*dest)[sizeof *dest - 1] = '\x0';
                 str->string = *dest;
             }
         }
         if (str->string == NULL)
-            str->string = "unknown";
+            str->string = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
     }
 
     /*
@@ -710,16 +710,16 @@ void ERR_put_error(int lib, int func, int reason, const char *file, int line)
      * in the form "*POSIX(/etc/passwd)". This dirty hack strips them to
      * something sensible. @@@ We shouldn't modify a const string, though.
      */
-    if (strncmp(file, "*POSIX(", sizeof("*POSIX(") - 1) == 0) {
+    if (strncmp(file, "\x2a\x50\x4f\x53\x49\x58\x28", sizeof("\x2a\x50\x4f\x53\x49\x58\x28") - 1) == 0) {
         char *end;
 
         /* Skip the "*POSIX(" prefix */
-        file += sizeof("*POSIX(") - 1;
+        file += sizeof("\x2a\x50\x4f\x53\x49\x58\x28") - 1;
         end = &file[strlen(file) - 1];
-        if (*end == ')')
-            *end = '\0';
+        if (*end == '\x29')
+            *end = '\x0';
         /* Optional: use the basename of the path only. */
-        if ((end = strrchr(file, '/')) != NULL)
+        if ((end = strrchr(file, '\x2f')) != NULL)
             file = &end[1];
     }
 #endif
@@ -834,7 +834,7 @@ static unsigned long get_error_values(int inc, int top, const char **file,
 
     if ((file != NULL) && (line != NULL)) {
         if (es->err_file[i] == NULL) {
-            *file = "NA";
+            *file = "\x4e\x41";
             if (line != NULL)
                 *line = 0;
         } else {
@@ -880,13 +880,13 @@ void ERR_error_string_n(unsigned long e, char *buf, size_t len)
     rs = ERR_reason_error_string(e);
 
     if (ls == NULL)
-        BIO_snprintf(lsbuf, sizeof(lsbuf), "lib(%lu)", l);
+        BIO_snprintf(lsbuf, sizeof(lsbuf), "\x6c\x69\x62\x28\x25\x6c\x75\x29", l);
     if (fs == NULL)
-        BIO_snprintf(fsbuf, sizeof(fsbuf), "func(%lu)", f);
+        BIO_snprintf(fsbuf, sizeof(fsbuf), "\x66\x75\x6e\x63\x28\x25\x6c\x75\x29", f);
     if (rs == NULL)
-        BIO_snprintf(rsbuf, sizeof(rsbuf), "reason(%lu)", r);
+        BIO_snprintf(rsbuf, sizeof(rsbuf), "\x72\x65\x61\x73\x6f\x6e\x28\x25\x6c\x75\x29", r);
 
-    BIO_snprintf(buf, len, "error:%08lX:%s:%s:%s", e, ls ? ls : lsbuf,
+    BIO_snprintf(buf, len, "\x65\x72\x72\x6f\x72\x3a\x25\x30\x38\x6c\x58\x3a\x25\x73\x3a\x25\x73\x3a\x25\x73", e, ls ? ls : lsbuf,
                  fs ? fs : fsbuf, rs ? rs : rsbuf);
     if (strlen(buf) == len - 1) {
         /*
@@ -899,14 +899,14 @@ void ERR_error_string_n(unsigned long e, char *buf, size_t len)
             char *s = buf;
 
             for (i = 0; i < NUM_COLONS; i++) {
-                char *colon = strchr(s, ':');
+                char *colon = strchr(s, '\x3a');
                 if (colon == NULL || colon > &buf[len - 1] - NUM_COLONS + i) {
                     /*
                      * set colon no. i at last possible position (buf[len-1]
                      * is the terminating 0)
                      */
                     colon = &buf[len - 1] - NUM_COLONS + i;
-                    *colon = ':';
+                    *colon = '\x3a';
                 }
                 s = colon + 1;
             }
@@ -1092,7 +1092,7 @@ void ERR_add_error_vdata(int num, va_list args)
     str = OPENSSL_malloc(s + 1);
     if (str == NULL)
         return;
-    str[0] = '\0';
+    str[0] = '\x0';
 
     n = 0;
     for (i = 0; i < num; i++) {

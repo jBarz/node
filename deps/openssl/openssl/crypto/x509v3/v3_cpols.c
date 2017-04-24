@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -162,10 +162,10 @@ static STACK_OF(POLICYINFO) *r2i_certpol(X509V3_EXT_METHOD *method,
             goto err;
         }
         pstr = cnf->name;
-        if (!strcmp(pstr, "ia5org")) {
+        if (!strcmp(pstr, "\x69\x61\x35\x6f\x72\x67")) {
             ia5org = 1;
             continue;
-        } else if (*pstr == '@') {
+        } else if (*pstr == '\x40') {
             STACK_OF(CONF_VALUE) *polsect;
             polsect = X509V3_get_section(ctx, pstr + 1);
             if (!polsect) {
@@ -217,7 +217,7 @@ static POLICYINFO *policy_section(X509V3_CTX *ctx,
         goto merr;
     for (i = 0; i < sk_CONF_VALUE_num(polstrs); i++) {
         cnf = sk_CONF_VALUE_value(polstrs, i);
-        if (!strcmp(cnf->name, "policyIdentifier")) {
+        if (!strcmp(cnf->name, "\x70\x6f\x6c\x69\x63\x79\x49\x64\x65\x6e\x74\x69\x66\x69\x65\x72")) {
             ASN1_OBJECT *pobj;
             if (!(pobj = OBJ_txt2obj(cnf->value, 0))) {
                 X509V3err(X509V3_F_POLICY_SECTION,
@@ -227,7 +227,7 @@ static POLICYINFO *policy_section(X509V3_CTX *ctx,
             }
             pol->policyid = pobj;
 
-        } else if (!name_cmp(cnf->name, "CPS")) {
+        } else if (!name_cmp(cnf->name, "\x43\x50\x53")) {
             if (!pol->qualifiers)
                 pol->qualifiers = sk_POLICYQUALINFO_new_null();
             if (!(qual = POLICYQUALINFO_new()))
@@ -243,9 +243,9 @@ static POLICYINFO *policy_section(X509V3_CTX *ctx,
             if (!ASN1_STRING_set(qual->d.cpsuri, cnf->value,
                                  strlen(cnf->value)))
                 goto merr;
-        } else if (!name_cmp(cnf->name, "userNotice")) {
+        } else if (!name_cmp(cnf->name, "\x75\x73\x65\x72\x4e\x6f\x74\x69\x63\x65")) {
             STACK_OF(CONF_VALUE) *unot;
-            if (*cnf->value != '@') {
+            if (*cnf->value != '\x40') {
                 X509V3err(X509V3_F_POLICY_SECTION,
                           X509V3_R_EXPECTED_A_SECTION_NAME);
                 X509V3_conf_err(cnf);
@@ -307,13 +307,13 @@ static POLICYQUALINFO *notice_section(X509V3_CTX *ctx,
     qual->d.usernotice = not;
     for (i = 0; i < sk_CONF_VALUE_num(unot); i++) {
         cnf = sk_CONF_VALUE_value(unot, i);
-        if (!strcmp(cnf->name, "explicitText")) {
+        if (!strcmp(cnf->name, "\x65\x78\x70\x6c\x69\x63\x69\x74\x54\x65\x78\x74")) {
             if (!(not->exptext = M_ASN1_VISIBLESTRING_new()))
                 goto merr;
             if (!ASN1_STRING_set(not->exptext, cnf->value,
                                  strlen(cnf->value)))
                 goto merr;
-        } else if (!strcmp(cnf->name, "organization")) {
+        } else if (!strcmp(cnf->name, "\x6f\x72\x67\x61\x6e\x69\x7a\x61\x74\x69\x6f\x6e")) {
             NOTICEREF *nref;
             if (!not->noticeref) {
                 if (!(nref = NOTICEREF_new()))
@@ -328,7 +328,7 @@ static POLICYQUALINFO *notice_section(X509V3_CTX *ctx,
             if (!ASN1_STRING_set(nref->organization, cnf->value,
                                  strlen(cnf->value)))
                 goto merr;
-        } else if (!strcmp(cnf->name, "noticeNumbers")) {
+        } else if (!strcmp(cnf->name, "\x6e\x6f\x74\x69\x63\x65\x4e\x75\x6d\x62\x65\x72\x73")) {
             NOTICEREF *nref;
             STACK_OF(CONF_VALUE) *nos;
             if (!not->noticeref) {
@@ -405,9 +405,9 @@ static int i2r_certpol(X509V3_EXT_METHOD *method, STACK_OF(POLICYINFO) *pol,
     /* First print out the policy OIDs */
     for (i = 0; i < sk_POLICYINFO_num(pol); i++) {
         pinfo = sk_POLICYINFO_value(pol, i);
-        BIO_printf(out, "%*sPolicy: ", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x50\x6f\x6c\x69\x63\x79\x3a\x20", indent, "");
         i2a_ASN1_OBJECT(out, pinfo->policyid);
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
         if (pinfo->qualifiers)
             print_qualifiers(out, pinfo->qualifiers, indent + 2);
     }
@@ -423,20 +423,20 @@ static void print_qualifiers(BIO *out, STACK_OF(POLICYQUALINFO) *quals,
         qualinfo = sk_POLICYQUALINFO_value(quals, i);
         switch (OBJ_obj2nid(qualinfo->pqualid)) {
         case NID_id_qt_cps:
-            BIO_printf(out, "%*sCPS: %s\n", indent, "",
+            BIO_printf(out, "\x25\x2a\x73\x43\x50\x53\x3a\x20\x25\x73\xa", indent, "",
                        qualinfo->d.cpsuri->data);
             break;
 
         case NID_id_qt_unotice:
-            BIO_printf(out, "%*sUser Notice:\n", indent, "");
+            BIO_printf(out, "\x25\x2a\x73\x55\x73\x65\x72\x20\x4e\x6f\x74\x69\x63\x65\x3a\xa", indent, "");
             print_notice(out, qualinfo->d.usernotice, indent + 2);
             break;
 
         default:
-            BIO_printf(out, "%*sUnknown Qualifier: ", indent + 2, "");
+            BIO_printf(out, "\x25\x2a\x73\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x51\x75\x61\x6c\x69\x66\x69\x65\x72\x3a\x20", indent + 2, "");
 
             i2a_ASN1_OBJECT(out, qualinfo->pqualid);
-            BIO_puts(out, "\n");
+            BIO_puts(out, "\xa");
             break;
         }
     }
@@ -448,24 +448,24 @@ static void print_notice(BIO *out, USERNOTICE *notice, int indent)
     if (notice->noticeref) {
         NOTICEREF *ref;
         ref = notice->noticeref;
-        BIO_printf(out, "%*sOrganization: %s\n", indent, "",
+        BIO_printf(out, "\x25\x2a\x73\x4f\x72\x67\x61\x6e\x69\x7a\x61\x74\x69\x6f\x6e\x3a\x20\x25\x73\xa", indent, "",
                    ref->organization->data);
-        BIO_printf(out, "%*sNumber%s: ", indent, "",
-                   sk_ASN1_INTEGER_num(ref->noticenos) > 1 ? "s" : "");
+        BIO_printf(out, "\x25\x2a\x73\x4e\x75\x6d\x62\x65\x72\x25\x73\x3a\x20", indent, "",
+                   sk_ASN1_INTEGER_num(ref->noticenos) > 1 ? "\x73" : "");
         for (i = 0; i < sk_ASN1_INTEGER_num(ref->noticenos); i++) {
             ASN1_INTEGER *num;
             char *tmp;
             num = sk_ASN1_INTEGER_value(ref->noticenos, i);
             if (i)
-                BIO_puts(out, ", ");
+                BIO_puts(out, "\x2c\x20");
             tmp = i2s_ASN1_INTEGER(NULL, num);
             BIO_puts(out, tmp);
             OPENSSL_free(tmp);
         }
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     }
     if (notice->exptext)
-        BIO_printf(out, "%*sExplicit Text: %s\n", indent, "",
+        BIO_printf(out, "\x25\x2a\x73\x45\x78\x70\x6c\x69\x63\x69\x74\x20\x54\x65\x78\x74\x3a\x20\x25\x73\xa", indent, "",
                    notice->exptext->data);
 }
 
@@ -473,16 +473,16 @@ void X509_POLICY_NODE_print(BIO *out, X509_POLICY_NODE *node, int indent)
 {
     const X509_POLICY_DATA *dat = node->data;
 
-    BIO_printf(out, "%*sPolicy: ", indent, "");
+    BIO_printf(out, "\x25\x2a\x73\x50\x6f\x6c\x69\x63\x79\x3a\x20", indent, "");
 
     i2a_ASN1_OBJECT(out, dat->valid_policy);
-    BIO_puts(out, "\n");
-    BIO_printf(out, "%*s%s\n", indent + 2, "",
-               node_data_critical(dat) ? "Critical" : "Non Critical");
+    BIO_puts(out, "\xa");
+    BIO_printf(out, "\x25\x2a\x73\x25\x73\xa", indent + 2, "",
+               node_data_critical(dat) ? "\x43\x72\x69\x74\x69\x63\x61\x6c" : "\x4e\x6f\x6e\x20\x43\x72\x69\x74\x69\x63\x61\x6c");
     if (dat->qualifier_set)
         print_qualifiers(out, dat->qualifier_set, indent + 2);
     else
-        BIO_printf(out, "%*sNo Qualifiers\n", indent + 2, "");
+        BIO_printf(out, "\x25\x2a\x73\x4e\x6f\x20\x51\x75\x61\x6c\x69\x66\x69\x65\x72\x73\xa", indent + 2, "");
 }
 
 

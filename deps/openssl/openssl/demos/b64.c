@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -104,35 +104,35 @@ char **argv;
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-e") == 0)
+        if (strcmp(*argv, "\x2d\x65") == 0)
             enc = 1;
-        if (strcmp(*argv, "-in") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             inf = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outf = *(++argv);
-        } else if (strcmp(*argv, "-d") == 0)
+        } else if (strcmp(*argv, "\x2d\x64") == 0)
             enc = 0;
-        else if (strcmp(*argv, "-v") == 0)
+        else if (strcmp(*argv, "\x2d\x76") == 0)
             verbose = 1;
-        else if (strcmp(*argv, "-debug") == 0)
+        else if (strcmp(*argv, "\x2d\x64\x65\x62\x75\x67") == 0)
             debug = 1;
-        else if (strcmp(*argv, "-bufsize") == 0) {
+        else if (strcmp(*argv, "\x2d\x62\x75\x66\x73\x69\x7a\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             bufsize = (unsigned char *)*(++argv);
         } else {
-            BIO_printf(bio_err, "unknown option '%s'\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x27\x25\x73\x27\xa", *argv);
  bad:
-            BIO_printf(bio_err, "options are\n");
-            BIO_printf(bio_err, "%-14s input file\n", "-in <file>");
-            BIO_printf(bio_err, "%-14s output file\n", "-out <file>");
-            BIO_printf(bio_err, "%-14s encode\n", "-e");
-            BIO_printf(bio_err, "%-14s decode\n", "-d");
-            BIO_printf(bio_err, "%-14s buffer size\n", "-bufsize <n>");
+            BIO_printf(bio_err, "\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+            BIO_printf(bio_err, "\x25\x2d\x31\x34\x73\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa", "\x2d\x69\x6e\x20\x3c\x66\x69\x6c\x65\x3e");
+            BIO_printf(bio_err, "\x25\x2d\x31\x34\x73\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa", "\x2d\x6f\x75\x74\x20\x3c\x66\x69\x6c\x65\x3e");
+            BIO_printf(bio_err, "\x25\x2d\x31\x34\x73\x20\x65\x6e\x63\x6f\x64\x65\xa", "\x2d\x65");
+            BIO_printf(bio_err, "\x25\x2d\x31\x34\x73\x20\x64\x65\x63\x6f\x64\x65\xa", "\x2d\x64");
+            BIO_printf(bio_err, "\x25\x2d\x31\x34\x73\x20\x62\x75\x66\x66\x65\x72\x20\x73\x69\x7a\x65\xa", "\x2d\x62\x75\x66\x73\x69\x7a\x65\x20\x3c\x6e\x3e");
 
             goto end;
         }
@@ -146,16 +146,16 @@ char **argv;
 
         for (n = 0; *bufsize; bufsize++) {
             i = *bufsize;
-            if ((i <= '9') && (i >= '0'))
-                n = n * 10 + i - '0';
-            else if (i == 'k') {
+            if ((i <= '\x39') && (i >= '\x30'))
+                n = n * 10 + i - '\x30';
+            else if (i == '\x6b') {
                 n *= 1024;
                 bufsize++;
                 break;
             }
         }
-        if (*bufsize != '\0') {
-            BIO_printf(bio_err, "invalid 'bufsize' specified.\n");
+        if (*bufsize != '\x0') {
+            BIO_printf(bio_err, "\x69\x6e\x76\x61\x6c\x69\x64\x20\x27\x62\x75\x66\x73\x69\x7a\x65\x27\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x2e\xa");
             goto end;
         }
 
@@ -165,13 +165,13 @@ char **argv;
 
         bsize = (int)n;
         if (verbose)
-            BIO_printf(bio_err, "bufsize=%d\n", bsize);
+            BIO_printf(bio_err, "\x62\x75\x66\x73\x69\x7a\x65\x3d\x25\x64\xa", bsize);
     }
 
     strbuf = OPENSSL_malloc(SIZE);
     buff = (unsigned char *)OPENSSL_malloc(EVP_ENCODE_LENGTH(bsize));
     if ((buff == NULL) || (strbuf == NULL)) {
-        BIO_printf(bio_err, "OPENSSL_malloc failure\n");
+        BIO_printf(bio_err, "\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x6d\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
         goto end;
     }
 
@@ -227,7 +227,7 @@ char **argv;
         if (inl <= 0)
             break;
         if (BIO_write(wbio, (char *)buff, inl) != inl) {
-            BIO_printf(bio_err, "error writing output file\n");
+            BIO_printf(bio_err, "\x65\x72\x72\x6f\x72\x20\x77\x72\x69\x74\x69\x6e\x67\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
             goto end;
         }
     }
@@ -235,8 +235,8 @@ char **argv;
 
     ret = 0;
     if (verbose) {
-        BIO_printf(bio_err, "bytes read   :%8ld\n", BIO_number_read(in));
-        BIO_printf(bio_err, "bytes written:%8ld\n", BIO_number_written(out));
+        BIO_printf(bio_err, "\x62\x79\x74\x65\x73\x20\x72\x65\x61\x64\x20\x20\x20\x3a\x25\x38\x6c\x64\xa", BIO_number_read(in));
+        BIO_printf(bio_err, "\x62\x79\x74\x65\x73\x20\x77\x72\x69\x74\x74\x65\x6e\x3a\x25\x38\x6c\x64\xa", BIO_number_written(out));
     }
  end:
     if (strbuf != NULL)

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -113,13 +113,13 @@ int BIO_free(BIO *a)
 
     i = CRYPTO_add(&a->references, -1, CRYPTO_LOCK_BIO);
 #ifdef REF_PRINT
-    REF_PRINT("BIO", a);
+    REF_PRINT("\x42\x49\x4f", a);
 #endif
     if (i > 0)
         return (1);
 #ifdef REF_CHECK
     if (i < 0) {
-        fprintf(stderr, "BIO_free, bad reference count\n");
+        fprintf(stderr, "\x42\x49\x4f\x5f\x66\x72\x65\x65\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
         abort();
     }
 #endif
@@ -314,7 +314,7 @@ int BIO_indent(BIO *b, int indent, int max)
     if (indent > max)
         indent = max;
     while (indent--)
-        if (BIO_puts(b, " ") != 1)
+        if (BIO_puts(b, "\x20") != 1)
             return 0;
     return 1;
 }

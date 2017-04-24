@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -335,7 +335,7 @@ int BN_mod_exp_recp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
     }
 
     start = 1;                  /* This is used to avoid multiplication etc
-                                 * when there is only the value '1' in the
+                                 * when there is only the value '\x31' in the
                                  * buffer. */
     wvalue = 0;                 /* The 'value' of the window */
     wstart = bits - 1;          /* The top bit of the window */
@@ -482,7 +482,7 @@ int BN_mod_exp_mont(BIGNUM *rr, const BIGNUM *a, const BIGNUM *p,
     }
 
     start = 1;                  /* This is used to avoid multiplication etc
-                                 * when there is only the value '1' in the
+                                 * when there is only the value '\x31' in the
                                  * buffer. */
     wvalue = 0;                 /* The 'value' of the window */
     wstart = bits - 1;          /* The top bit of the window */
@@ -1231,7 +1231,7 @@ int BN_mod_exp_mont_word(BIGNUM *rr, BN_ULONG a, const BIGNUM *p,
         return (0);
     }
     if (m->top == 1)
-        a %= m->d[0];           /* make sure that 'a' is reduced */
+        a %= m->d[0];           /* make sure that '\x61' is reduced */
 
     bits = BN_num_bits(p);
     if (bits == 0) {
@@ -1271,7 +1271,7 @@ int BN_mod_exp_mont_word(BIGNUM *rr, BN_ULONG a, const BIGNUM *p,
     /* bits-1 >= 0 */
 
     /* The result is accumulated in the product r*w. */
-    w = a;                      /* bit 'bits-1' of 'p' is always set */
+    w = a;                      /* bit 'bits-1' of '\x70' is always set */
     for (b = bits - 2; b >= 0; b--) {
         /* First, square r*w. */
         next_w = w * w;
@@ -1393,7 +1393,7 @@ int BN_mod_exp_simple(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
     }
 
     start = 1;                  /* This is used to avoid multiplication etc
-                                 * when there is only the value '1' in the
+                                 * when there is only the value '\x31' in the
                                  * buffer. */
     wvalue = 0;                 /* The 'value' of the window */
     wstart = bits - 1;          /* The top bit of the window */

@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,68 +70,68 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_PKCS12,0,reason)
 
 static ERR_STRING_DATA PKCS12_str_functs[] = {
-    {ERR_FUNC(PKCS12_F_PARSE_BAG), "PARSE_BAG"},
-    {ERR_FUNC(PKCS12_F_PARSE_BAGS), "PARSE_BAGS"},
-    {ERR_FUNC(PKCS12_F_PKCS12_ADD_FRIENDLYNAME), "PKCS12_ADD_FRIENDLYNAME"},
+    {ERR_FUNC(PKCS12_F_PARSE_BAG), "\x50\x41\x52\x53\x45\x5f\x42\x41\x47"},
+    {ERR_FUNC(PKCS12_F_PARSE_BAGS), "\x50\x41\x52\x53\x45\x5f\x42\x41\x47\x53"},
+    {ERR_FUNC(PKCS12_F_PKCS12_ADD_FRIENDLYNAME), "\x50\x4b\x43\x53\x31\x32\x5f\x41\x44\x44\x5f\x46\x52\x49\x45\x4e\x44\x4c\x59\x4e\x41\x4d\x45"},
     {ERR_FUNC(PKCS12_F_PKCS12_ADD_FRIENDLYNAME_ASC),
-     "PKCS12_add_friendlyname_asc"},
+     "\x50\x4b\x43\x53\x31\x32\x5f\x61\x64\x64\x5f\x66\x72\x69\x65\x6e\x64\x6c\x79\x6e\x61\x6d\x65\x5f\x61\x73\x63"},
     {ERR_FUNC(PKCS12_F_PKCS12_ADD_FRIENDLYNAME_UNI),
-     "PKCS12_add_friendlyname_uni"},
-    {ERR_FUNC(PKCS12_F_PKCS12_ADD_LOCALKEYID), "PKCS12_add_localkeyid"},
-    {ERR_FUNC(PKCS12_F_PKCS12_CREATE), "PKCS12_create"},
-    {ERR_FUNC(PKCS12_F_PKCS12_GEN_MAC), "PKCS12_gen_mac"},
-    {ERR_FUNC(PKCS12_F_PKCS12_INIT), "PKCS12_init"},
-    {ERR_FUNC(PKCS12_F_PKCS12_ITEM_DECRYPT_D2I), "PKCS12_item_decrypt_d2i"},
-    {ERR_FUNC(PKCS12_F_PKCS12_ITEM_I2D_ENCRYPT), "PKCS12_item_i2d_encrypt"},
-    {ERR_FUNC(PKCS12_F_PKCS12_ITEM_PACK_SAFEBAG), "PKCS12_item_pack_safebag"},
-    {ERR_FUNC(PKCS12_F_PKCS12_KEY_GEN_ASC), "PKCS12_key_gen_asc"},
-    {ERR_FUNC(PKCS12_F_PKCS12_KEY_GEN_UNI), "PKCS12_key_gen_uni"},
-    {ERR_FUNC(PKCS12_F_PKCS12_MAKE_KEYBAG), "PKCS12_MAKE_KEYBAG"},
-    {ERR_FUNC(PKCS12_F_PKCS12_MAKE_SHKEYBAG), "PKCS12_MAKE_SHKEYBAG"},
-    {ERR_FUNC(PKCS12_F_PKCS12_NEWPASS), "PKCS12_newpass"},
-    {ERR_FUNC(PKCS12_F_PKCS12_PACK_P7DATA), "PKCS12_pack_p7data"},
-    {ERR_FUNC(PKCS12_F_PKCS12_PACK_P7ENCDATA), "PKCS12_pack_p7encdata"},
-    {ERR_FUNC(PKCS12_F_PKCS12_PARSE), "PKCS12_parse"},
-    {ERR_FUNC(PKCS12_F_PKCS12_PBE_CRYPT), "PKCS12_pbe_crypt"},
-    {ERR_FUNC(PKCS12_F_PKCS12_PBE_KEYIVGEN), "PKCS12_PBE_keyivgen"},
-    {ERR_FUNC(PKCS12_F_PKCS12_SETUP_MAC), "PKCS12_setup_mac"},
-    {ERR_FUNC(PKCS12_F_PKCS12_SET_MAC), "PKCS12_set_mac"},
-    {ERR_FUNC(PKCS12_F_PKCS12_UNPACK_AUTHSAFES), "PKCS12_unpack_authsafes"},
-    {ERR_FUNC(PKCS12_F_PKCS12_UNPACK_P7DATA), "PKCS12_unpack_p7data"},
-    {ERR_FUNC(PKCS12_F_PKCS12_VERIFY_MAC), "PKCS12_verify_mac"},
-    {ERR_FUNC(PKCS12_F_PKCS8_ADD_KEYUSAGE), "PKCS8_add_keyusage"},
-    {ERR_FUNC(PKCS12_F_PKCS8_ENCRYPT), "PKCS8_encrypt"},
+     "\x50\x4b\x43\x53\x31\x32\x5f\x61\x64\x64\x5f\x66\x72\x69\x65\x6e\x64\x6c\x79\x6e\x61\x6d\x65\x5f\x75\x6e\x69"},
+    {ERR_FUNC(PKCS12_F_PKCS12_ADD_LOCALKEYID), "\x50\x4b\x43\x53\x31\x32\x5f\x61\x64\x64\x5f\x6c\x6f\x63\x61\x6c\x6b\x65\x79\x69\x64"},
+    {ERR_FUNC(PKCS12_F_PKCS12_CREATE), "\x50\x4b\x43\x53\x31\x32\x5f\x63\x72\x65\x61\x74\x65"},
+    {ERR_FUNC(PKCS12_F_PKCS12_GEN_MAC), "\x50\x4b\x43\x53\x31\x32\x5f\x67\x65\x6e\x5f\x6d\x61\x63"},
+    {ERR_FUNC(PKCS12_F_PKCS12_INIT), "\x50\x4b\x43\x53\x31\x32\x5f\x69\x6e\x69\x74"},
+    {ERR_FUNC(PKCS12_F_PKCS12_ITEM_DECRYPT_D2I), "\x50\x4b\x43\x53\x31\x32\x5f\x69\x74\x65\x6d\x5f\x64\x65\x63\x72\x79\x70\x74\x5f\x64\x32\x69"},
+    {ERR_FUNC(PKCS12_F_PKCS12_ITEM_I2D_ENCRYPT), "\x50\x4b\x43\x53\x31\x32\x5f\x69\x74\x65\x6d\x5f\x69\x32\x64\x5f\x65\x6e\x63\x72\x79\x70\x74"},
+    {ERR_FUNC(PKCS12_F_PKCS12_ITEM_PACK_SAFEBAG), "\x50\x4b\x43\x53\x31\x32\x5f\x69\x74\x65\x6d\x5f\x70\x61\x63\x6b\x5f\x73\x61\x66\x65\x62\x61\x67"},
+    {ERR_FUNC(PKCS12_F_PKCS12_KEY_GEN_ASC), "\x50\x4b\x43\x53\x31\x32\x5f\x6b\x65\x79\x5f\x67\x65\x6e\x5f\x61\x73\x63"},
+    {ERR_FUNC(PKCS12_F_PKCS12_KEY_GEN_UNI), "\x50\x4b\x43\x53\x31\x32\x5f\x6b\x65\x79\x5f\x67\x65\x6e\x5f\x75\x6e\x69"},
+    {ERR_FUNC(PKCS12_F_PKCS12_MAKE_KEYBAG), "\x50\x4b\x43\x53\x31\x32\x5f\x4d\x41\x4b\x45\x5f\x4b\x45\x59\x42\x41\x47"},
+    {ERR_FUNC(PKCS12_F_PKCS12_MAKE_SHKEYBAG), "\x50\x4b\x43\x53\x31\x32\x5f\x4d\x41\x4b\x45\x5f\x53\x48\x4b\x45\x59\x42\x41\x47"},
+    {ERR_FUNC(PKCS12_F_PKCS12_NEWPASS), "\x50\x4b\x43\x53\x31\x32\x5f\x6e\x65\x77\x70\x61\x73\x73"},
+    {ERR_FUNC(PKCS12_F_PKCS12_PACK_P7DATA), "\x50\x4b\x43\x53\x31\x32\x5f\x70\x61\x63\x6b\x5f\x70\x37\x64\x61\x74\x61"},
+    {ERR_FUNC(PKCS12_F_PKCS12_PACK_P7ENCDATA), "\x50\x4b\x43\x53\x31\x32\x5f\x70\x61\x63\x6b\x5f\x70\x37\x65\x6e\x63\x64\x61\x74\x61"},
+    {ERR_FUNC(PKCS12_F_PKCS12_PARSE), "\x50\x4b\x43\x53\x31\x32\x5f\x70\x61\x72\x73\x65"},
+    {ERR_FUNC(PKCS12_F_PKCS12_PBE_CRYPT), "\x50\x4b\x43\x53\x31\x32\x5f\x70\x62\x65\x5f\x63\x72\x79\x70\x74"},
+    {ERR_FUNC(PKCS12_F_PKCS12_PBE_KEYIVGEN), "\x50\x4b\x43\x53\x31\x32\x5f\x50\x42\x45\x5f\x6b\x65\x79\x69\x76\x67\x65\x6e"},
+    {ERR_FUNC(PKCS12_F_PKCS12_SETUP_MAC), "\x50\x4b\x43\x53\x31\x32\x5f\x73\x65\x74\x75\x70\x5f\x6d\x61\x63"},
+    {ERR_FUNC(PKCS12_F_PKCS12_SET_MAC), "\x50\x4b\x43\x53\x31\x32\x5f\x73\x65\x74\x5f\x6d\x61\x63"},
+    {ERR_FUNC(PKCS12_F_PKCS12_UNPACK_AUTHSAFES), "\x50\x4b\x43\x53\x31\x32\x5f\x75\x6e\x70\x61\x63\x6b\x5f\x61\x75\x74\x68\x73\x61\x66\x65\x73"},
+    {ERR_FUNC(PKCS12_F_PKCS12_UNPACK_P7DATA), "\x50\x4b\x43\x53\x31\x32\x5f\x75\x6e\x70\x61\x63\x6b\x5f\x70\x37\x64\x61\x74\x61"},
+    {ERR_FUNC(PKCS12_F_PKCS12_VERIFY_MAC), "\x50\x4b\x43\x53\x31\x32\x5f\x76\x65\x72\x69\x66\x79\x5f\x6d\x61\x63"},
+    {ERR_FUNC(PKCS12_F_PKCS8_ADD_KEYUSAGE), "\x50\x4b\x43\x53\x38\x5f\x61\x64\x64\x5f\x6b\x65\x79\x75\x73\x61\x67\x65"},
+    {ERR_FUNC(PKCS12_F_PKCS8_ENCRYPT), "\x50\x4b\x43\x53\x38\x5f\x65\x6e\x63\x72\x79\x70\x74"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA PKCS12_str_reasons[] = {
-    {ERR_REASON(PKCS12_R_CANT_PACK_STRUCTURE), "cant pack structure"},
-    {ERR_REASON(PKCS12_R_CONTENT_TYPE_NOT_DATA), "content type not data"},
-    {ERR_REASON(PKCS12_R_DECODE_ERROR), "decode error"},
-    {ERR_REASON(PKCS12_R_ENCODE_ERROR), "encode error"},
-    {ERR_REASON(PKCS12_R_ENCRYPT_ERROR), "encrypt error"},
+    {ERR_REASON(PKCS12_R_CANT_PACK_STRUCTURE), "\x63\x61\x6e\x74\x20\x70\x61\x63\x6b\x20\x73\x74\x72\x75\x63\x74\x75\x72\x65"},
+    {ERR_REASON(PKCS12_R_CONTENT_TYPE_NOT_DATA), "\x63\x6f\x6e\x74\x65\x6e\x74\x20\x74\x79\x70\x65\x20\x6e\x6f\x74\x20\x64\x61\x74\x61"},
+    {ERR_REASON(PKCS12_R_DECODE_ERROR), "\x64\x65\x63\x6f\x64\x65\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_ENCODE_ERROR), "\x65\x6e\x63\x6f\x64\x65\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_ENCRYPT_ERROR), "\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72"},
     {ERR_REASON(PKCS12_R_ERROR_SETTING_ENCRYPTED_DATA_TYPE),
-     "error setting encrypted data type"},
-    {ERR_REASON(PKCS12_R_INVALID_NULL_ARGUMENT), "invalid null argument"},
+     "\x65\x72\x72\x6f\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x65\x6e\x63\x72\x79\x70\x74\x65\x64\x20\x64\x61\x74\x61\x20\x74\x79\x70\x65"},
+    {ERR_REASON(PKCS12_R_INVALID_NULL_ARGUMENT), "\x69\x6e\x76\x61\x6c\x69\x64\x20\x6e\x75\x6c\x6c\x20\x61\x72\x67\x75\x6d\x65\x6e\x74"},
     {ERR_REASON(PKCS12_R_INVALID_NULL_PKCS12_POINTER),
-     "invalid null pkcs12 pointer"},
-    {ERR_REASON(PKCS12_R_IV_GEN_ERROR), "iv gen error"},
-    {ERR_REASON(PKCS12_R_KEY_GEN_ERROR), "key gen error"},
-    {ERR_REASON(PKCS12_R_MAC_ABSENT), "mac absent"},
-    {ERR_REASON(PKCS12_R_MAC_GENERATION_ERROR), "mac generation error"},
-    {ERR_REASON(PKCS12_R_MAC_SETUP_ERROR), "mac setup error"},
-    {ERR_REASON(PKCS12_R_MAC_STRING_SET_ERROR), "mac string set error"},
-    {ERR_REASON(PKCS12_R_MAC_VERIFY_ERROR), "mac verify error"},
-    {ERR_REASON(PKCS12_R_MAC_VERIFY_FAILURE), "mac verify failure"},
-    {ERR_REASON(PKCS12_R_PARSE_ERROR), "parse error"},
+     "\x69\x6e\x76\x61\x6c\x69\x64\x20\x6e\x75\x6c\x6c\x20\x70\x6b\x63\x73\x31\x32\x20\x70\x6f\x69\x6e\x74\x65\x72"},
+    {ERR_REASON(PKCS12_R_IV_GEN_ERROR), "\x69\x76\x20\x67\x65\x6e\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_KEY_GEN_ERROR), "\x6b\x65\x79\x20\x67\x65\x6e\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_MAC_ABSENT), "\x6d\x61\x63\x20\x61\x62\x73\x65\x6e\x74"},
+    {ERR_REASON(PKCS12_R_MAC_GENERATION_ERROR), "\x6d\x61\x63\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_MAC_SETUP_ERROR), "\x6d\x61\x63\x20\x73\x65\x74\x75\x70\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_MAC_STRING_SET_ERROR), "\x6d\x61\x63\x20\x73\x74\x72\x69\x6e\x67\x20\x73\x65\x74\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_MAC_VERIFY_ERROR), "\x6d\x61\x63\x20\x76\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_MAC_VERIFY_FAILURE), "\x6d\x61\x63\x20\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {ERR_REASON(PKCS12_R_PARSE_ERROR), "\x70\x61\x72\x73\x65\x20\x65\x72\x72\x6f\x72"},
     {ERR_REASON(PKCS12_R_PKCS12_ALGOR_CIPHERINIT_ERROR),
-     "pkcs12 algor cipherinit error"},
+     "\x70\x6b\x63\x73\x31\x32\x20\x61\x6c\x67\x6f\x72\x20\x63\x69\x70\x68\x65\x72\x69\x6e\x69\x74\x20\x65\x72\x72\x6f\x72"},
     {ERR_REASON(PKCS12_R_PKCS12_CIPHERFINAL_ERROR),
-     "pkcs12 cipherfinal error"},
-    {ERR_REASON(PKCS12_R_PKCS12_PBE_CRYPT_ERROR), "pkcs12 pbe crypt error"},
+     "\x70\x6b\x63\x73\x31\x32\x20\x63\x69\x70\x68\x65\x72\x66\x69\x6e\x61\x6c\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(PKCS12_R_PKCS12_PBE_CRYPT_ERROR), "\x70\x6b\x63\x73\x31\x32\x20\x70\x62\x65\x20\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72"},
     {ERR_REASON(PKCS12_R_UNKNOWN_DIGEST_ALGORITHM),
-     "unknown digest algorithm"},
-    {ERR_REASON(PKCS12_R_UNSUPPORTED_PKCS12_MODE), "unsupported pkcs12 mode"},
+     "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x64\x69\x67\x65\x73\x74\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d"},
+    {ERR_REASON(PKCS12_R_UNSUPPORTED_PKCS12_MODE), "\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x70\x6b\x63\x73\x31\x32\x20\x6d\x6f\x64\x65"},
     {0, NULL}
 };
 

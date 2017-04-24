@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -66,7 +66,7 @@
 #undef BUFSIZE
 #define BUFSIZE 512
 
-const char TXT_DB_version[] = "TXT_DB" OPENSSL_VERSION_PTEXT;
+const char TXT_DB_version[] = "\x54\x58\x54\x5f\x44\x42" OPENSSL_VERSION_PTEXT;
 
 TXT_DB *TXT_DB_read(BIO *in, int num)
 {
@@ -103,7 +103,7 @@ TXT_DB *TXT_DB_read(BIO *in, int num)
     }
 
     add = (num + 1) * sizeof(char *);
-    buf->data[size - 1] = '\0';
+    buf->data[size - 1] = '\x0';
     offset = 0;
     for (;;) {
         if (offset != 0) {
@@ -111,19 +111,19 @@ TXT_DB *TXT_DB_read(BIO *in, int num)
             if (!BUF_MEM_grow_clean(buf, size))
                 goto err;
         }
-        buf->data[offset] = '\0';
+        buf->data[offset] = '\x0';
         BIO_gets(in, &(buf->data[offset]), size - offset);
         ln++;
-        if (buf->data[offset] == '\0')
+        if (buf->data[offset] == '\x0')
             break;
-        if ((offset == 0) && (buf->data[0] == '#'))
+        if ((offset == 0) && (buf->data[0] == '\x23'))
             continue;
         i = strlen(&(buf->data[offset]));
         offset += i;
-        if (buf->data[offset - 1] != '\n')
+        if (buf->data[offset - 1] != '\xa')
             continue;
         else {
-            buf->data[offset - 1] = '\0'; /* blat the '\n' */
+            buf->data[offset - 1] = '\x0'; /* blat the '\xa' */
             if (!(p = OPENSSL_malloc(add + offset)))
                 goto err;
             offset = 0;
@@ -137,13 +137,13 @@ TXT_DB *TXT_DB_read(BIO *in, int num)
 
         esc = 0;
         for (;;) {
-            if (*f == '\0')
+            if (*f == '\x0')
                 break;
-            if (*f == '\t') {
+            if (*f == '\x9') {
                 if (esc)
                     p--;
                 else {
-                    *(p++) = '\0';
+                    *(p++) = '\x0';
                     f++;
                     if (n >= num)
                         break;
@@ -151,15 +151,15 @@ TXT_DB *TXT_DB_read(BIO *in, int num)
                     continue;
                 }
             }
-            esc = (*f == '\\');
+            esc = (*f == '\x5c');
             *(p++) = *(f++);
         }
-        *(p++) = '\0';
-        if ((n != num) || (*f != '\0')) {
+        *(p++) = '\x0';
+        if ((n != num) || (*f != '\x0')) {
 #if !defined(OPENSSL_NO_STDIO) && !defined(OPENSSL_SYS_WIN16) /* temporary
                                                                * fix :-( */
             fprintf(stderr,
-                    "wrong number of fields on line %ld (looking for field %d, got %d, '%s' left)\n",
+                    "\x77\x72\x6f\x6e\x67\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x66\x69\x65\x6c\x64\x73\x20\x6f\x6e\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\x20\x28\x6c\x6f\x6f\x6b\x69\x6e\x67\x20\x66\x6f\x72\x20\x66\x69\x65\x6c\x64\x20\x25\x64\x2c\x20\x67\x6f\x74\x20\x25\x64\x2c\x20\x27\x25\x73\x27\x20\x6c\x65\x66\x74\x29\xa",
                     ln, num, n, f);
 #endif
             er = 2;
@@ -169,7 +169,7 @@ TXT_DB *TXT_DB_read(BIO *in, int num)
         if (!sk_OPENSSL_PSTRING_push(ret->data, pp)) {
 #if !defined(OPENSSL_NO_STDIO) && !defined(OPENSSL_SYS_WIN16) /* temporary
                                                                * fix :-( */
-            fprintf(stderr, "failure in sk_push\n");
+            fprintf(stderr, "\x66\x61\x69\x6c\x75\x72\x65\x20\x69\x6e\x20\x73\x6b\x5f\x70\x75\x73\x68\xa");
 #endif
             er = 2;
             goto err;
@@ -181,7 +181,7 @@ TXT_DB *TXT_DB_read(BIO *in, int num)
     if (er) {
 #if !defined(OPENSSL_NO_STDIO) && !defined(OPENSSL_SYS_WIN16)
         if (er == 1)
-            fprintf(stderr, "OPENSSL_malloc failure\n");
+            fprintf(stderr, "\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x6d\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
 #endif
         if (ret != NULL) {
             if (ret->data != NULL)
@@ -281,15 +281,15 @@ long TXT_DB_write(BIO *out, TXT_DB *db)
             f = pp[j];
             if (f != NULL)
                 for (;;) {
-                    if (*f == '\0')
+                    if (*f == '\x0')
                         break;
-                    if (*f == '\t')
-                        *(p++) = '\\';
+                    if (*f == '\x9')
+                        *(p++) = '\x5c';
                     *(p++) = *(f++);
                 }
-            *(p++) = '\t';
+            *(p++) = '\x9';
         }
-        p[-1] = '\n';
+        p[-1] = '\xa';
         j = p - buf->data;
         if (BIO_write(out, buf->data, (int)j) != j)
             goto err;

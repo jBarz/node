@@ -31,7 +31,7 @@ static int tls_dump_puts(BIO *bp, const char *str);
 
 static BIO_METHOD method_tls_dump = {
     BIO_TYPE_TLS_DUMP_FILTER,
-    "TLS dump filter",
+    "\x54\x4c\x53\x20\x64\x75\x6d\x70\x20\x66\x69\x6c\x74\x65\x72",
     tls_dump_write,
     tls_dump_read,
     tls_dump_puts,
@@ -98,74 +98,74 @@ static void dump_data(const char *data, int len)
     int rem, i, content, reclen, msglen, fragoff, fraglen, epoch;
     unsigned char *rec;
 
-    printf("---- START OF PACKET ----\n");
+    printf("\x2d\x2d\x2d\x2d\x20\x53\x54\x41\x52\x54\x20\x4f\x46\x20\x50\x41\x43\x4b\x45\x54\x20\x2d\x2d\x2d\x2d\xa");
 
     rem = len;
     rec = (unsigned char *)data;
 
     while (rem > 0) {
         if (rem != len)
-            printf("*\n");
-        printf("*---- START OF RECORD ----\n");
+            printf("\x2a\xa");
+        printf("\x2a\x2d\x2d\x2d\x2d\x20\x53\x54\x41\x52\x54\x20\x4f\x46\x20\x52\x45\x43\x4f\x52\x44\x20\x2d\x2d\x2d\x2d\xa");
         if (rem < DTLS1_RT_HEADER_LENGTH) {
-            printf("*---- RECORD TRUNCATED ----\n");
+            printf("\x2a\x2d\x2d\x2d\x2d\x20\x52\x45\x43\x4f\x52\x44\x20\x54\x52\x55\x4e\x43\x41\x54\x45\x44\x20\x2d\x2d\x2d\x2d\xa");
             break;
         }
         content = rec[RECORD_CONTENT_TYPE];
-        printf("** Record Content-type: %d\n", content);
-        printf("** Record Version: %02x%02x\n",
+        printf("\x2a\x2a\x20\x52\x65\x63\x6f\x72\x64\x20\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x74\x79\x70\x65\x3a\x20\x25\x64\xa", content);
+        printf("\x2a\x2a\x20\x52\x65\x63\x6f\x72\x64\x20\x56\x65\x72\x73\x69\x6f\x6e\x3a\x20\x25\x30\x32\x78\x25\x30\x32\x78\xa",
                rec[RECORD_VERSION_HI], rec[RECORD_VERSION_LO]);
         epoch = (rec[RECORD_EPOCH_HI] << 8) | rec[RECORD_EPOCH_LO];
-        printf("** Record Epoch: %d\n", epoch);
-        printf("** Record Sequence: ");
+        printf("\x2a\x2a\x20\x52\x65\x63\x6f\x72\x64\x20\x45\x70\x6f\x63\x68\x3a\x20\x25\x64\xa", epoch);
+        printf("\x2a\x2a\x20\x52\x65\x63\x6f\x72\x64\x20\x53\x65\x71\x75\x65\x6e\x63\x65\x3a\x20");
         for (i = RECORD_SEQUENCE_START; i <= RECORD_SEQUENCE_END; i++)
-            printf("%02x", rec[i]);
+            printf("\x25\x30\x32\x78", rec[i]);
         reclen = (rec[RECORD_LEN_HI] << 8) | rec[RECORD_LEN_LO];
-        printf("\n** Record Length: %d\n", reclen);
+        printf("\xa\x2a\x2a\x20\x52\x65\x63\x6f\x72\x64\x20\x4c\x65\x6e\x67\x74\x68\x3a\x20\x25\x64\xa", reclen);
 
         /* Now look at message */
         rec += DTLS1_RT_HEADER_LENGTH;
         rem -= DTLS1_RT_HEADER_LENGTH;
         if (content == SSL3_RT_HANDSHAKE) {
-            printf("**---- START OF HANDSHAKE MESSAGE FRAGMENT ----\n");
+            printf("\x2a\x2a\x2d\x2d\x2d\x2d\x20\x53\x54\x41\x52\x54\x20\x4f\x46\x20\x48\x41\x4e\x44\x53\x48\x41\x4b\x45\x20\x4d\x45\x53\x53\x41\x47\x45\x20\x46\x52\x41\x47\x4d\x45\x4e\x54\x20\x2d\x2d\x2d\x2d\xa");
             if (epoch > 0) {
-                printf("**---- HANDSHAKE MESSAGE FRAGMENT ENCRYPTED ----\n");
+                printf("\x2a\x2a\x2d\x2d\x2d\x2d\x20\x48\x41\x4e\x44\x53\x48\x41\x4b\x45\x20\x4d\x45\x53\x53\x41\x47\x45\x20\x46\x52\x41\x47\x4d\x45\x4e\x54\x20\x45\x4e\x43\x52\x59\x50\x54\x45\x44\x20\x2d\x2d\x2d\x2d\xa");
             } else if (rem < DTLS1_HM_HEADER_LENGTH
                     || reclen < DTLS1_HM_HEADER_LENGTH) {
-                printf("**---- HANDSHAKE MESSAGE FRAGMENT TRUNCATED ----\n");
+                printf("\x2a\x2a\x2d\x2d\x2d\x2d\x20\x48\x41\x4e\x44\x53\x48\x41\x4b\x45\x20\x4d\x45\x53\x53\x41\x47\x45\x20\x46\x52\x41\x47\x4d\x45\x4e\x54\x20\x54\x52\x55\x4e\x43\x41\x54\x45\x44\x20\x2d\x2d\x2d\x2d\xa");
             } else {
-                printf("*** Message Type: %d\n", rec[MSG_TYPE]);
+                printf("\x2a\x2a\x2a\x20\x4d\x65\x73\x73\x61\x67\x65\x20\x54\x79\x70\x65\x3a\x20\x25\x64\xa", rec[MSG_TYPE]);
                 msglen = (rec[MSG_LEN_HI] << 16) | (rec[MSG_LEN_MID] << 8)
                          | rec[MSG_LEN_LO];
-                printf("*** Message Length: %d\n", msglen);
-                printf("*** Message sequence: %d\n",
+                printf("\x2a\x2a\x2a\x20\x4d\x65\x73\x73\x61\x67\x65\x20\x4c\x65\x6e\x67\x74\x68\x3a\x20\x25\x64\xa", msglen);
+                printf("\x2a\x2a\x2a\x20\x4d\x65\x73\x73\x61\x67\x65\x20\x73\x65\x71\x75\x65\x6e\x63\x65\x3a\x20\x25\x64\xa",
                        (rec[MSG_SEQ_HI] << 8) | rec[MSG_SEQ_LO]);
                 fragoff = (rec[MSG_FRAG_OFF_HI] << 16)
                           | (rec[MSG_FRAG_OFF_MID] << 8)
                           | rec[MSG_FRAG_OFF_LO];
-                printf("*** Message Fragment offset: %d\n", fragoff);
+                printf("\x2a\x2a\x2a\x20\x4d\x65\x73\x73\x61\x67\x65\x20\x46\x72\x61\x67\x6d\x65\x6e\x74\x20\x6f\x66\x66\x73\x65\x74\x3a\x20\x25\x64\xa", fragoff);
                 fraglen = (rec[MSG_FRAG_LEN_HI] << 16)
                           | (rec[MSG_FRAG_LEN_MID] << 8)
                           | rec[MSG_FRAG_LEN_LO];
-                printf("*** Message Fragment len: %d\n", fraglen);
+                printf("\x2a\x2a\x2a\x20\x4d\x65\x73\x73\x61\x67\x65\x20\x46\x72\x61\x67\x6d\x65\x6e\x74\x20\x6c\x65\x6e\x3a\x20\x25\x64\xa", fraglen);
                 if (fragoff + fraglen > msglen)
-                    printf("***---- HANDSHAKE MESSAGE FRAGMENT INVALID ----\n");
+                    printf("\x2a\x2a\x2a\x2d\x2d\x2d\x2d\x20\x48\x41\x4e\x44\x53\x48\x41\x4b\x45\x20\x4d\x45\x53\x53\x41\x47\x45\x20\x46\x52\x41\x47\x4d\x45\x4e\x54\x20\x49\x4e\x56\x41\x4c\x49\x44\x20\x2d\x2d\x2d\x2d\xa");
                 else if(reclen < fraglen)
-                    printf("**---- HANDSHAKE MESSAGE FRAGMENT TRUNCATED ----\n");
+                    printf("\x2a\x2a\x2d\x2d\x2d\x2d\x20\x48\x41\x4e\x44\x53\x48\x41\x4b\x45\x20\x4d\x45\x53\x53\x41\x47\x45\x20\x46\x52\x41\x47\x4d\x45\x4e\x54\x20\x54\x52\x55\x4e\x43\x41\x54\x45\x44\x20\x2d\x2d\x2d\x2d\xa");
                 else
-                    printf("**---- END OF HANDSHAKE MESSAGE FRAGMENT ----\n");
+                    printf("\x2a\x2a\x2d\x2d\x2d\x2d\x20\x45\x4e\x44\x20\x4f\x46\x20\x48\x41\x4e\x44\x53\x48\x41\x4b\x45\x20\x4d\x45\x53\x53\x41\x47\x45\x20\x46\x52\x41\x47\x4d\x45\x4e\x54\x20\x2d\x2d\x2d\x2d\xa");
             }
         }
         if (rem < reclen) {
-            printf("*---- RECORD TRUNCATED ----\n");
+            printf("\x2a\x2d\x2d\x2d\x2d\x20\x52\x45\x43\x4f\x52\x44\x20\x54\x52\x55\x4e\x43\x41\x54\x45\x44\x20\x2d\x2d\x2d\x2d\xa");
             rem = 0;
         } else {
             rec += reclen;
             rem -= reclen;
-            printf("*---- END OF RECORD ----\n");
+            printf("\x2a\x2d\x2d\x2d\x2d\x20\x45\x4e\x44\x20\x4f\x46\x20\x52\x45\x43\x4f\x52\x44\x20\x2d\x2d\x2d\x2d\xa");
         }
     }
-    printf("---- END OF PACKET ----\n\n");
+    printf("\x2d\x2d\x2d\x2d\x20\x45\x4e\x44\x20\x4f\x46\x20\x50\x41\x43\x4b\x45\x54\x20\x2d\x2d\x2d\x2d\xa\xa");
     fflush(stdout);
 }
 
@@ -286,7 +286,7 @@ static int mempacket_test_puts(BIO *bp, const char *str);
 
 static BIO_METHOD method_mempacket_test = {
     BIO_TYPE_MEMPACKET_TEST,
-    "Mem Packet Test",
+    "\x4d\x65\x6d\x20\x50\x61\x63\x6b\x65\x74\x20\x54\x65\x73\x74",
     mempacket_test_write,
     mempacket_test_read,
     mempacket_test_puts,
@@ -550,21 +550,21 @@ int create_ssl_ctx_pair(const SSL_METHOD *sm, const SSL_METHOD *cm,
     serverctx = SSL_CTX_new(sm);
     clientctx = SSL_CTX_new(cm);
     if (serverctx == NULL || clientctx == NULL) {
-        printf("Failed to create SSL_CTX\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x53\x53\x4c\x5f\x43\x54\x58\xa");
         goto err;
     }
 
     if (SSL_CTX_use_certificate_file(serverctx, certfile,
                                      SSL_FILETYPE_PEM) <= 0) {
-        printf("Failed to load server certificate\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
         goto err;
     }
     if (SSL_CTX_use_PrivateKey_file(serverctx, privkeyfile,
                                     SSL_FILETYPE_PEM) <= 0) {
-        printf("Failed to load server private key\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\xa");
     }
     if (SSL_CTX_check_private_key(serverctx) <= 0) {
-        printf("Failed to check private key\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x68\x65\x63\x6b\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\xa");
         goto err;
     }
 
@@ -593,7 +593,7 @@ int create_ssl_objects(SSL_CTX *serverctx, SSL_CTX *clientctx, SSL **sssl,
     clientssl = SSL_new(clientctx);
 
     if (serverssl == NULL || clientssl == NULL) {
-        printf("Failed to create SSL object\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x53\x53\x4c\x20\x6f\x62\x6a\x65\x63\x74\xa");
         goto error;
     }
 
@@ -605,7 +605,7 @@ int create_ssl_objects(SSL_CTX *serverctx, SSL_CTX *clientctx, SSL **sssl,
         c_to_s_bio = BIO_new(BIO_s_mem());
     }
     if (s_to_c_bio == NULL || c_to_s_bio == NULL) {
-        printf("Failed to create mem BIOs\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x6d\x65\x6d\x20\x42\x49\x4f\x73\xa");
         goto error;
     }
 
@@ -614,7 +614,7 @@ int create_ssl_objects(SSL_CTX *serverctx, SSL_CTX *clientctx, SSL **sssl,
     if (c_to_s_fbio != NULL)
         c_to_s_bio = BIO_push(c_to_s_fbio, c_to_s_bio);
     if (s_to_c_bio == NULL || c_to_s_bio == NULL) {
-        printf("Failed to create chained BIOs\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x63\x68\x61\x69\x6e\x65\x64\x20\x42\x49\x4f\x73\xa");
         goto error;
     }
 
@@ -662,7 +662,7 @@ int create_ssl_connection(SSL *serverssl, SSL *clientssl)
         }
 
         if (retc <= 0 && err != SSL_ERROR_WANT_READ) {
-            printf("SSL_connect() failed %d, %d\n", retc, err);
+            printf("\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74\x28\x29\x20\x66\x61\x69\x6c\x65\x64\x20\x25\x64\x2c\x20\x25\x64\xa", retc, err);
             return 0;
         }
 
@@ -674,11 +674,11 @@ int create_ssl_connection(SSL *serverssl, SSL *clientssl)
         }
 
         if (rets <= 0 && err != SSL_ERROR_WANT_READ) {
-            printf("SSL_accept() failed %d, %d\n", retc, err);
+            printf("\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x28\x29\x20\x66\x61\x69\x6c\x65\x64\x20\x25\x64\x2c\x20\x25\x64\xa", retc, err);
             return 0;
         }
         if (++abortctr == MAXLOOPS) {
-            printf("No progress made\n");
+            printf("\x4e\x6f\x20\x70\x72\x6f\x67\x72\x65\x73\x73\x20\x6d\x61\x64\x65\xa");
             return 0;
         }
     } while (retc <=0 || rets <= 0);

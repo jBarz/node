@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -116,7 +116,7 @@
 # include <openssl/evp.h>
 # include <openssl/md5.h>
 
-const char ssl2_version_str[] = "SSLv2" OPENSSL_VERSION_PTEXT;
+const char ssl2_version_str[] = "\x53\x53\x4c\x76\x32" OPENSSL_VERSION_PTEXT;
 
 # define SSL2_NUM_CIPHERS (sizeof(ssl2_ciphers)/sizeof(SSL_CIPHER))
 
@@ -331,7 +331,7 @@ int ssl2_new(SSL *s)
     memset(s2, 0, sizeof *s2);
 
 # if SSL2_MAX_RECORD_LENGTH_3_BYTE_HEADER + 3 > SSL2_MAX_RECORD_LENGTH_2_BYTE_HEADER + 2
-#  error "assertion failed"
+#  error "\x61\x73\x73\x65\x72\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64"
 # endif
 
     if ((s2->rbuf =
@@ -464,14 +464,14 @@ int ssl2_generate_key_material(SSL *s)
     unsigned int i;
     EVP_MD_CTX ctx;
     unsigned char *km;
-    unsigned char c = '0';
+    unsigned char c = '\x30';
     const EVP_MD *md5;
     int md_size;
 
     md5 = EVP_md5();
 
 # ifdef CHARSET_EBCDIC
-    c = os_toascii['0'];        /* Must be an ASCII '0', not EBCDIC '0', see
+    c = os_toascii['\x30'];        /* Must be an ASCII '\x30', not EBCDIC '\x30', see
                                  * SSLv2 docu */
 # endif
     EVP_MD_CTX_init(&ctx);

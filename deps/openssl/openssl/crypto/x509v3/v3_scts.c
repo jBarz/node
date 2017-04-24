@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -144,9 +144,9 @@ static void tls12_signature_print(BIO *out, const unsigned char hash_alg,
             nid = NID_ecdsa_with_SHA256;
     }
     if (nid == NID_undef)
-        BIO_printf(out, "%02X%02X", hash_alg, sig_alg);
+        BIO_printf(out, "\x25\x30\x32\x58\x25\x30\x32\x58", hash_alg, sig_alg);
     else
-        BIO_printf(out, "%s", OBJ_nid2ln(nid));
+        BIO_printf(out, "\x25\x73", OBJ_nid2ln(nid));
 }
 
 static void timestamp_print(BIO *out, SCT_TIMESTAMP timestamp)
@@ -161,7 +161,7 @@ static void timestamp_print(BIO *out, SCT_TIMESTAMP timestamp)
      * Note GeneralizedTime from ASN1_GENERALIZETIME_adj is always 15
      * characters long with a final Z. Update it with fractional seconds.
      */
-    BIO_snprintf(genstr, sizeof(genstr), "%.14s.%03dZ",
+    BIO_snprintf(genstr, sizeof(genstr), "\x25\x2e\x31\x34\x73\x2e\x25\x30\x33\x64\x5a",
                  ASN1_STRING_data(gen), (unsigned int)(timestamp % 1000));
     ASN1_GENERALIZEDTIME_set_string(gen, genstr);
     ASN1_GENERALIZEDTIME_print(out, gen);
@@ -298,36 +298,36 @@ static int i2r_SCT_LIST(X509V3_EXT_METHOD *method, STACK_OF(SCT) *sct_list,
     for (i = 0; i < sk_SCT_num(sct_list);) {
         sct = sk_SCT_value(sct_list, i);
 
-        BIO_printf(out, "%*sSigned Certificate Timestamp:", indent, "");
-        BIO_printf(out, "\n%*sVersion   : ", indent + 4, "");
+        BIO_printf(out, "\x25\x2a\x73\x53\x69\x67\x6e\x65\x64\x20\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x54\x69\x6d\x65\x73\x74\x61\x6d\x70\x3a", indent, "");
+        BIO_printf(out, "\xa\x25\x2a\x73\x56\x65\x72\x73\x69\x6f\x6e\x20\x20\x20\x3a\x20", indent + 4, "");
 
         if (sct->version == 0) { /* SCT v1 */
-            BIO_printf(out, "v1(0)");
+            BIO_printf(out, "\x76\x31\x28\x30\x29");
 
-            BIO_printf(out, "\n%*sLog ID    : ", indent + 4, "");
+            BIO_printf(out, "\xa\x25\x2a\x73\x4c\x6f\x67\x20\x49\x44\x20\x20\x20\x20\x3a\x20", indent + 4, "");
             BIO_hex_string(out, indent + 16, 16, sct->logid, sct->logidlen);
 
-            BIO_printf(out, "\n%*sTimestamp : ", indent + 4, "");
+            BIO_printf(out, "\xa\x25\x2a\x73\x54\x69\x6d\x65\x73\x74\x61\x6d\x70\x20\x3a\x20", indent + 4, "");
             timestamp_print(out, sct->timestamp);
 
-            BIO_printf(out, "\n%*sExtensions: ", indent + 4, "");
+            BIO_printf(out, "\xa\x25\x2a\x73\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x3a\x20", indent + 4, "");
             if (sct->extlen == 0)
-                BIO_printf(out, "none");
+                BIO_printf(out, "\x6e\x6f\x6e\x65");
             else
                 BIO_hex_string(out, indent + 16, 16, sct->ext, sct->extlen);
 
-            BIO_printf(out, "\n%*sSignature : ", indent + 4, "");
+            BIO_printf(out, "\xa\x25\x2a\x73\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x3a\x20", indent + 4, "");
             tls12_signature_print(out, sct->hash_alg, sct->sig_alg);
-            BIO_printf(out, "\n%*s            ", indent + 4, "");
+            BIO_printf(out, "\xa\x25\x2a\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20", indent + 4, "");
             BIO_hex_string(out, indent + 16, 16, sct->sig, sct->siglen);
         } else {                /* Unknown version */
 
-            BIO_printf(out, "unknown\n%*s", indent + 16, "");
+            BIO_printf(out, "\x75\x6e\x6b\x6e\x6f\x77\x6e\xa\x25\x2a\x73", indent + 16, "");
             BIO_hex_string(out, indent + 16, 16, sct->sct, sct->sctlen);
         }
 
         if (++i < sk_SCT_num(sct_list))
-            BIO_printf(out, "\n");
+            BIO_printf(out, "\xa");
     }
 
     return 1;

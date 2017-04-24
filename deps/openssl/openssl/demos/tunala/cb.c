@@ -29,16 +29,16 @@ void cb_ssl_info(const SSL *s, int where, int ret)
         return;
 
     w = where & ~SSL_ST_MASK;
-    str1 = (w & SSL_ST_CONNECT ? "SSL_connect" : (w & SSL_ST_ACCEPT ?
-                                                  "SSL_accept" :
-                                                  "undefined")), str2 =
+    str1 = (w & SSL_ST_CONNECT ? "\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74" : (w & SSL_ST_ACCEPT ?
+                                                  "\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74" :
+                                                  "\x75\x6e\x64\x65\x66\x69\x6e\x65\x64")), str2 =
         SSL_state_string_long(s);
 
     if (where & SSL_CB_LOOP)
-        fprintf(fp_cb_ssl_info, "(%s) %s\n", str1, str2);
+        fprintf(fp_cb_ssl_info, "\x28\x25\x73\x29\x20\x25\x73\xa", str1, str2);
     else if (where & SSL_CB_EXIT) {
         if (ret == 0)
-            fprintf(fp_cb_ssl_info, "(%s) failed in %s\n", str1, str2);
+            fprintf(fp_cb_ssl_info, "\x28\x25\x73\x29\x20\x66\x61\x69\x6c\x65\x64\x20\x69\x6e\x20\x25\x73\xa", str1, str2);
         /*
          * In a non-blocking model, we get a few of these "error"s simply
          * because we're calling "reads" and "writes" on the state-machine
@@ -48,7 +48,7 @@ void cb_ssl_info(const SSL *s, int where, int ret)
          */
 # if 0
         else if (ret < 0)
-            fprintf(fp_cb_ssl_info, "%s:error in %s\n", str1, str2);
+            fprintf(fp_cb_ssl_info, "\x25\x73\x3a\x65\x72\x72\x6f\x72\x20\x69\x6e\x20\x25\x73\xa", str1, str2);
 # endif
     }
 }
@@ -59,13 +59,13 @@ void cb_ssl_info_set_output(FILE *fp)
 }
 
 static const char *int_reason_no_issuer =
-    "X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT";
-static const char *int_reason_not_yet = "X509_V_ERR_CERT_NOT_YET_VALID";
+    "\x58\x35\x30\x39\x5f\x56\x5f\x45\x52\x52\x5f\x55\x4e\x41\x42\x4c\x45\x5f\x54\x4f\x5f\x47\x45\x54\x5f\x49\x53\x53\x55\x45\x52\x5f\x43\x45\x52\x54";
+static const char *int_reason_not_yet = "\x58\x35\x30\x39\x5f\x56\x5f\x45\x52\x52\x5f\x43\x45\x52\x54\x5f\x4e\x4f\x54\x5f\x59\x45\x54\x5f\x56\x41\x4c\x49\x44";
 static const char *int_reason_before =
-    "X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD";
-static const char *int_reason_expired = "X509_V_ERR_CERT_HAS_EXPIRED";
+    "\x58\x35\x30\x39\x5f\x56\x5f\x45\x52\x52\x5f\x45\x52\x52\x4f\x52\x5f\x49\x4e\x5f\x43\x45\x52\x54\x5f\x4e\x4f\x54\x5f\x42\x45\x46\x4f\x52\x45\x5f\x46\x49\x45\x4c\x44";
+static const char *int_reason_expired = "\x58\x35\x30\x39\x5f\x56\x5f\x45\x52\x52\x5f\x43\x45\x52\x54\x5f\x48\x41\x53\x5f\x45\x58\x50\x49\x52\x45\x44";
 static const char *int_reason_after =
-    "X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD";
+    "\x58\x35\x30\x39\x5f\x56\x5f\x45\x52\x52\x5f\x45\x52\x52\x4f\x52\x5f\x49\x4e\x5f\x43\x45\x52\x54\x5f\x4e\x4f\x54\x5f\x41\x46\x54\x45\x52\x5f\x46\x49\x45\x4c\x44";
 
 /* Stolen wholesale from apps/s_cb.c :-) And since then, mutilated ... */
 int cb_ssl_verify(int ok, X509_STORE_CTX *ctx)
@@ -82,7 +82,7 @@ int cb_ssl_verify(int ok, X509_STORE_CTX *ctx)
     err = X509_STORE_CTX_get_error(ctx);
     depth = X509_STORE_CTX_get_error_depth(ctx);
 
-    buf1[0] = buf2[0] = '\0';
+    buf1[0] = buf2[0] = '\x0';
     /* Fill buf1 */
     X509_NAME_oneline(X509_get_subject_name(err_cert), buf1, 256);
     /* Fill buf2 */
@@ -107,19 +107,19 @@ int cb_ssl_verify(int ok, X509_STORE_CTX *ctx)
 
     if ((cb_ssl_verify_level == 1) && ok)
         return ok;
-    fprintf(fp_cb_ssl_verify, "chain-depth=%d, ", depth);
+    fprintf(fp_cb_ssl_verify, "\x63\x68\x61\x69\x6e\x2d\x64\x65\x70\x74\x68\x3d\x25\x64\x2c\x20", depth);
     if (reason)
-        fprintf(fp_cb_ssl_verify, "error=%s\n", reason);
+        fprintf(fp_cb_ssl_verify, "\x65\x72\x72\x6f\x72\x3d\x25\x73\xa", reason);
     else
-        fprintf(fp_cb_ssl_verify, "error=%d\n", err);
+        fprintf(fp_cb_ssl_verify, "\x65\x72\x72\x6f\x72\x3d\x25\x64\xa", err);
     if (cb_ssl_verify_level < 3)
         return ok;
-    fprintf(fp_cb_ssl_verify, "--> subject = %s\n", buf1);
-    fprintf(fp_cb_ssl_verify, "--> issuer  = %s\n", buf2);
+    fprintf(fp_cb_ssl_verify, "\x2d\x2d\x3e\x20\x73\x75\x62\x6a\x65\x63\x74\x20\x3d\x20\x25\x73\xa", buf1);
+    fprintf(fp_cb_ssl_verify, "\x2d\x2d\x3e\x20\x69\x73\x73\x75\x65\x72\x20\x20\x3d\x20\x25\x73\xa", buf2);
     if (!ok)
-        fprintf(fp_cb_ssl_verify, "--> verify error:num=%d:%s\n", err,
+        fprintf(fp_cb_ssl_verify, "\x2d\x2d\x3e\x20\x76\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72\x3a\x6e\x75\x6d\x3d\x25\x64\x3a\x25\x73\xa", err,
                 X509_verify_cert_error_string(err));
-    fprintf(fp_cb_ssl_verify, "--> verify return:%d\n", ok);
+    fprintf(fp_cb_ssl_verify, "\x2d\x2d\x3e\x20\x76\x65\x72\x69\x66\x79\x20\x72\x65\x74\x75\x72\x6e\x3a\x25\x64\xa", ok);
     return ok;
 }
 

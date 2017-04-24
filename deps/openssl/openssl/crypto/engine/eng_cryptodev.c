@@ -228,7 +228,7 @@ static int open_dev_crypto(void)
     static int fd = -1;
 
     if (fd == -1) {
-        if ((fd = open("/dev/crypto", O_RDWR, 0)) == -1)
+        if ((fd = open("\x2f\x64\x65\x76\x2f\x63\x72\x79\x70\x74\x6f", O_RDWR, 0)) == -1)
             return (-1);
         /* close on exec */
         if (fcntl(fd, F_SETFD, 1) == -1) {
@@ -295,7 +295,7 @@ static int get_cryptodev_ciphers(const int **cnids)
         return (0);
     }
     memset(&sess, 0, sizeof(sess));
-    sess.key = (caddr_t) "123456789abcdefghijklmno";
+    sess.key = (caddr_t) "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f";
 
     for (i = 0; ciphers[i].id && count < CRYPTO_ALGORITHM_MAX; i++) {
         if (ciphers[i].nid == NID_undef)
@@ -334,7 +334,7 @@ static int get_cryptodev_digests(const int **cnids)
         return (0);
     }
     memset(&sess, 0, sizeof(sess));
-    sess.mackey = (caddr_t) "123456789abcdefghijklmno";
+    sess.mackey = (caddr_t) "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f";
     for (i = 0; digests[i].id && count < CRYPTO_ALGORITHM_MAX; i++) {
         if (digests[i].nid == NID_undef)
             continue;
@@ -767,14 +767,14 @@ static int cryptodev_digest_init(EVP_MD_CTX *ctx)
     int digest;
 
     if ((digest = digest_nid_to_cryptodev(ctx->digest->type)) == NID_undef) {
-        printf("cryptodev_digest_init: Can't get digest \n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x69\x6e\x69\x74\x3a\x20\x43\x61\x6e\x27\x74\x20\x67\x65\x74\x20\x64\x69\x67\x65\x73\x74\x20\xa");
         return (0);
     }
 
     memset(state, 0, sizeof(struct dev_crypto_state));
 
     if ((state->d_fd = get_dev_crypto()) < 0) {
-        printf("cryptodev_digest_init: Can't get Dev \n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x69\x6e\x69\x74\x3a\x20\x43\x61\x6e\x27\x74\x20\x67\x65\x74\x20\x44\x65\x76\x20\xa");
         return (0);
     }
 
@@ -785,7 +785,7 @@ static int cryptodev_digest_init(EVP_MD_CTX *ctx)
     if (ioctl(state->d_fd, CIOCGSESSION, sess) < 0) {
         put_dev_crypto(state->d_fd);
         state->d_fd = -1;
-        printf("cryptodev_digest_init: Open session failed\n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x69\x6e\x69\x74\x3a\x20\x4f\x70\x65\x6e\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64\xa");
         return (0);
     }
 
@@ -800,7 +800,7 @@ static int cryptodev_digest_update(EVP_MD_CTX *ctx, const void *data,
     struct session_op *sess = &state->d_sess;
 
     if (!data || state->d_fd < 0) {
-        printf("cryptodev_digest_update: illegal inputs \n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x75\x70\x64\x61\x74\x65\x3a\x20\x69\x6c\x6c\x65\x67\x61\x6c\x20\x69\x6e\x70\x75\x74\x73\x20\xa");
         return (0);
     }
 
@@ -814,7 +814,7 @@ static int cryptodev_digest_update(EVP_MD_CTX *ctx, const void *data,
             OPENSSL_realloc(state->mac_data, state->mac_len + count);
 
         if (!state->mac_data) {
-            printf("cryptodev_digest_update: realloc failed\n");
+            printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x75\x70\x64\x61\x74\x65\x3a\x20\x72\x65\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x65\x64\xa");
             return (0);
         }
 
@@ -833,7 +833,7 @@ static int cryptodev_digest_update(EVP_MD_CTX *ctx, const void *data,
     cryp.dst = NULL;
     cryp.mac = (caddr_t) state->digest_res;
     if (ioctl(state->d_fd, CIOCCRYPT, &cryp) < 0) {
-        printf("cryptodev_digest_update: digest failed\n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x75\x70\x64\x61\x74\x65\x3a\x20\x64\x69\x67\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
         return (0);
     }
     return (1);
@@ -848,7 +848,7 @@ static int cryptodev_digest_final(EVP_MD_CTX *ctx, unsigned char *md)
     int ret = 1;
 
     if (!md || state->d_fd < 0) {
-        printf("cryptodev_digest_final: illegal input\n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x66\x69\x6e\x61\x6c\x3a\x20\x69\x6c\x6c\x65\x67\x61\x6c\x20\x69\x6e\x70\x75\x74\xa");
         return (0);
     }
 
@@ -862,7 +862,7 @@ static int cryptodev_digest_final(EVP_MD_CTX *ctx, unsigned char *md)
         cryp.dst = NULL;
         cryp.mac = (caddr_t) md;
         if (ioctl(state->d_fd, CIOCCRYPT, &cryp) < 0) {
-            printf("cryptodev_digest_final: digest failed\n");
+            printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x66\x69\x6e\x61\x6c\x3a\x20\x64\x69\x67\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
             return (0);
         }
 
@@ -884,7 +884,7 @@ static int cryptodev_digest_cleanup(EVP_MD_CTX *ctx)
         return 0;
 
     if (state->d_fd < 0) {
-        printf("cryptodev_digest_cleanup: illegal input\n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x63\x6c\x65\x61\x6e\x75\x70\x3a\x20\x69\x6c\x6c\x65\x67\x61\x6c\x20\x69\x6e\x70\x75\x74\xa");
         return (0);
     }
 
@@ -895,7 +895,7 @@ static int cryptodev_digest_cleanup(EVP_MD_CTX *ctx)
     }
 
     if (ioctl(state->d_fd, CIOCFSESSION, &sess->ses) < 0) {
-        printf("cryptodev_digest_cleanup: failed to close session\n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x63\x6c\x65\x61\x6e\x75\x70\x3a\x20\x66\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x6c\x6f\x73\x65\x20\x73\x65\x73\x73\x69\x6f\x6e\xa");
         ret = 0;
     } else {
         ret = 1;
@@ -931,7 +931,7 @@ static int cryptodev_digest_copy(EVP_MD_CTX *to, const EVP_MD_CTX *from)
     if (ioctl(dstate->d_fd, CIOCGSESSION, sess) < 0) {
         put_dev_crypto(dstate->d_fd);
         dstate->d_fd = -1;
-        printf("cryptodev_digest_init: Open session failed\n");
+        printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x69\x6e\x69\x74\x3a\x20\x4f\x70\x65\x6e\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64\xa");
         return (0);
     }
 
@@ -940,7 +940,7 @@ static int cryptodev_digest_copy(EVP_MD_CTX *to, const EVP_MD_CTX *from)
         if (fstate->mac_data != NULL) {
             dstate->mac_data = OPENSSL_malloc(fstate->mac_len);
             if (dstate->mac_data == NULL) {
-                printf("cryptodev_digest_init: malloc failed\n");
+                printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x69\x6e\x69\x74\x3a\x20\x6d\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x65\x64\xa");
                 return 0;
             }
             memcpy(dstate->mac_data, fstate->mac_data, fstate->mac_len);
@@ -1146,12 +1146,12 @@ cryptodev_bn_mod_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
 
     if (cryptodev_asym(&kop, BN_num_bytes(m), r, 0, NULL)) {
         const RSA_METHOD *meth = RSA_PKCS1_SSLeay();
-        printf("OCF asym process failed, Running in software\n");
+        printf("\x4f\x43\x46\x20\x61\x73\x79\x6d\x20\x70\x72\x6f\x63\x65\x73\x73\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x52\x75\x6e\x6e\x69\x6e\x67\x20\x69\x6e\x20\x73\x6f\x66\x74\x77\x61\x72\x65\xa");
         ret = meth->bn_mod_exp(r, a, p, m, ctx, in_mont);
 
     } else if (ECANCELED == kop.crk_status) {
         const RSA_METHOD *meth = RSA_PKCS1_SSLeay();
-        printf("OCF hardware operation cancelled. Running in Software\n");
+        printf("\x4f\x43\x46\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x63\x61\x6e\x63\x65\x6c\x6c\x65\x64\x2e\x20\x52\x75\x6e\x6e\x69\x6e\x67\x20\x69\x6e\x20\x53\x6f\x66\x74\x77\x61\x72\x65\xa");
         ret = meth->bn_mod_exp(r, a, p, m, ctx, in_mont);
     }
     /* else cryptodev operation worked ok ==> ret = 1 */
@@ -1202,12 +1202,12 @@ cryptodev_rsa_mod_exp(BIGNUM *r0, const BIGNUM *I, RSA *rsa, BN_CTX *ctx)
 
     if (cryptodev_asym(&kop, BN_num_bytes(rsa->n), r0, 0, NULL)) {
         const RSA_METHOD *meth = RSA_PKCS1_SSLeay();
-        printf("OCF asym process failed, running in Software\n");
+        printf("\x4f\x43\x46\x20\x61\x73\x79\x6d\x20\x70\x72\x6f\x63\x65\x73\x73\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x72\x75\x6e\x6e\x69\x6e\x67\x20\x69\x6e\x20\x53\x6f\x66\x74\x77\x61\x72\x65\xa");
         ret = (*meth->rsa_mod_exp) (r0, I, rsa, ctx);
 
     } else if (ECANCELED == kop.crk_status) {
         const RSA_METHOD *meth = RSA_PKCS1_SSLeay();
-        printf("OCF hardware operation cancelled. Running in Software\n");
+        printf("\x4f\x43\x46\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x63\x61\x6e\x63\x65\x6c\x6c\x65\x64\x2e\x20\x52\x75\x6e\x6e\x69\x6e\x67\x20\x69\x6e\x20\x53\x6f\x66\x74\x77\x61\x72\x65\xa");
         ret = (*meth->rsa_mod_exp) (r0, I, rsa, ctx);
     }
     /* else cryptodev operation worked ok ==> ret = 1 */
@@ -1218,7 +1218,7 @@ cryptodev_rsa_mod_exp(BIGNUM *r0, const BIGNUM *I, RSA *rsa, BN_CTX *ctx)
 }
 
 static RSA_METHOD cryptodev_rsa = {
-    "cryptodev RSA method",
+    "\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* rsa_pub_enc */
     NULL,                       /* rsa_pub_dec */
     NULL,                       /* rsa_priv_enc */
@@ -1367,7 +1367,7 @@ cryptodev_dsa_verify(const unsigned char *dgst, int dlen,
 }
 
 static DSA_METHOD cryptodev_dsa = {
-    "cryptodev DSA method",
+    "\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,                       /* dsa_sign_setup */
     NULL,
@@ -1430,7 +1430,7 @@ cryptodev_dh_compute_key(unsigned char *key, const BIGNUM *pub_key, DH *dh)
 }
 
 static DH_METHOD cryptodev_dh = {
-    "cryptodev DH method",
+    "\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* cryptodev_dh_generate_key */
     NULL,
     NULL,
@@ -1454,9 +1454,9 @@ cryptodev_ctrl(ENGINE *e, int cmd, long i, void *p, void (*f) (void))
     switch (cmd) {
     default:
 # ifdef HAVE_SYSLOG_R
-        syslog_r(LOG_ERR, &sd, "cryptodev_ctrl: unknown command %d", cmd);
+        syslog_r(LOG_ERR, &sd, "\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x63\x74\x72\x6c\x3a\x20\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x25\x64", cmd);
 # else
-        syslog(LOG_ERR, "cryptodev_ctrl: unknown command %d", cmd);
+        syslog(LOG_ERR, "\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x63\x74\x72\x6c\x3a\x20\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x25\x64", cmd);
 # endif
         break;
     }
@@ -1485,8 +1485,8 @@ void ENGINE_load_cryptodev(void)
     }
     put_dev_crypto(fd);
 
-    if (!ENGINE_set_id(engine, "cryptodev") ||
-        !ENGINE_set_name(engine, "BSD cryptodev engine") ||
+    if (!ENGINE_set_id(engine, "\x63\x72\x79\x70\x74\x6f\x64\x65\x76") ||
+        !ENGINE_set_name(engine, "\x42\x53\x44\x20\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x20\x65\x6e\x67\x69\x6e\x65") ||
         !ENGINE_set_ciphers(engine, cryptodev_engine_ciphers) ||
         !ENGINE_set_digests(engine, cryptodev_engine_digests) ||
         !ENGINE_set_ctrl_function(engine, cryptodev_ctrl) ||

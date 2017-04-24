@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -58,12 +58,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -75,7 +75,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -110,111 +110,111 @@ int SSL_SESSION_print(BIO *bp, const SSL_SESSION *x)
 
     if (x == NULL)
         goto err;
-    if (BIO_puts(bp, "SSL-Session:\n") <= 0)
+    if (BIO_puts(bp, "\x53\x53\x4c\x2d\x53\x65\x73\x73\x69\x6f\x6e\x3a\xa") <= 0)
         goto err;
     if (x->ssl_version == SSL2_VERSION)
-        s = "SSLv2";
+        s = "\x53\x53\x4c\x76\x32";
     else if (x->ssl_version == SSL3_VERSION)
-        s = "SSLv3";
+        s = "\x53\x53\x4c\x76\x33";
     else if (x->ssl_version == TLS1_2_VERSION)
-        s = "TLSv1.2";
+        s = "\x54\x4c\x53\x76\x31\x2e\x32";
     else if (x->ssl_version == TLS1_1_VERSION)
-        s = "TLSv1.1";
+        s = "\x54\x4c\x53\x76\x31\x2e\x31";
     else if (x->ssl_version == TLS1_VERSION)
-        s = "TLSv1";
+        s = "\x54\x4c\x53\x76\x31";
     else if (x->ssl_version == DTLS1_VERSION)
-        s = "DTLSv1";
+        s = "\x44\x54\x4c\x53\x76\x31";
     else if (x->ssl_version == DTLS1_2_VERSION)
-        s = "DTLSv1.2";
+        s = "\x44\x54\x4c\x53\x76\x31\x2e\x32";
     else if (x->ssl_version == DTLS1_BAD_VER)
-        s = "DTLSv1-bad";
+        s = "\x44\x54\x4c\x53\x76\x31\x2d\x62\x61\x64";
     else
-        s = "unknown";
-    if (BIO_printf(bp, "    Protocol  : %s\n", s) <= 0)
+        s = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
+    if (BIO_printf(bp, "\x20\x20\x20\x20\x50\x72\x6f\x74\x6f\x63\x6f\x6c\x20\x20\x3a\x20\x25\x73\xa", s) <= 0)
         goto err;
 
     if (x->cipher == NULL) {
         if (((x->cipher_id) & 0xff000000) == 0x02000000) {
             if (BIO_printf
-                (bp, "    Cipher    : %06lX\n", x->cipher_id & 0xffffff) <= 0)
+                (bp, "\x20\x20\x20\x20\x43\x69\x70\x68\x65\x72\x20\x20\x20\x20\x3a\x20\x25\x30\x36\x6c\x58\xa", x->cipher_id & 0xffffff) <= 0)
                 goto err;
         } else {
             if (BIO_printf
-                (bp, "    Cipher    : %04lX\n", x->cipher_id & 0xffff) <= 0)
+                (bp, "\x20\x20\x20\x20\x43\x69\x70\x68\x65\x72\x20\x20\x20\x20\x3a\x20\x25\x30\x34\x6c\x58\xa", x->cipher_id & 0xffff) <= 0)
                 goto err;
         }
     } else {
         if (BIO_printf
-            (bp, "    Cipher    : %s\n",
-             ((x->cipher == NULL) ? "unknown" : x->cipher->name)) <= 0)
+            (bp, "\x20\x20\x20\x20\x43\x69\x70\x68\x65\x72\x20\x20\x20\x20\x3a\x20\x25\x73\xa",
+             ((x->cipher == NULL) ? "\x75\x6e\x6b\x6e\x6f\x77\x6e" : x->cipher->name)) <= 0)
             goto err;
     }
-    if (BIO_puts(bp, "    Session-ID: ") <= 0)
+    if (BIO_puts(bp, "\x20\x20\x20\x20\x53\x65\x73\x73\x69\x6f\x6e\x2d\x49\x44\x3a\x20") <= 0)
         goto err;
     for (i = 0; i < x->session_id_length; i++) {
-        if (BIO_printf(bp, "%02X", x->session_id[i]) <= 0)
+        if (BIO_printf(bp, "\x25\x30\x32\x58", x->session_id[i]) <= 0)
             goto err;
     }
-    if (BIO_puts(bp, "\n    Session-ID-ctx: ") <= 0)
+    if (BIO_puts(bp, "\xa\x20\x20\x20\x20\x53\x65\x73\x73\x69\x6f\x6e\x2d\x49\x44\x2d\x63\x74\x78\x3a\x20") <= 0)
         goto err;
     for (i = 0; i < x->sid_ctx_length; i++) {
-        if (BIO_printf(bp, "%02X", x->sid_ctx[i]) <= 0)
+        if (BIO_printf(bp, "\x25\x30\x32\x58", x->sid_ctx[i]) <= 0)
             goto err;
     }
-    if (BIO_puts(bp, "\n    Master-Key: ") <= 0)
+    if (BIO_puts(bp, "\xa\x20\x20\x20\x20\x4d\x61\x73\x74\x65\x72\x2d\x4b\x65\x79\x3a\x20") <= 0)
         goto err;
     for (i = 0; i < (unsigned int)x->master_key_length; i++) {
-        if (BIO_printf(bp, "%02X", x->master_key[i]) <= 0)
+        if (BIO_printf(bp, "\x25\x30\x32\x58", x->master_key[i]) <= 0)
             goto err;
     }
-    if (BIO_puts(bp, "\n    Key-Arg   : ") <= 0)
+    if (BIO_puts(bp, "\xa\x20\x20\x20\x20\x4b\x65\x79\x2d\x41\x72\x67\x20\x20\x20\x3a\x20") <= 0)
         goto err;
     if (x->key_arg_length == 0) {
-        if (BIO_puts(bp, "None") <= 0)
+        if (BIO_puts(bp, "\x4e\x6f\x6e\x65") <= 0)
             goto err;
     } else
         for (i = 0; i < x->key_arg_length; i++) {
-            if (BIO_printf(bp, "%02X", x->key_arg[i]) <= 0)
+            if (BIO_printf(bp, "\x25\x30\x32\x58", x->key_arg[i]) <= 0)
                 goto err;
         }
 #ifndef OPENSSL_NO_KRB5
-    if (BIO_puts(bp, "\n    Krb5 Principal: ") <= 0)
+    if (BIO_puts(bp, "\xa\x20\x20\x20\x20\x4b\x72\x62\x35\x20\x50\x72\x69\x6e\x63\x69\x70\x61\x6c\x3a\x20") <= 0)
         goto err;
     if (x->krb5_client_princ_len == 0) {
-        if (BIO_puts(bp, "None") <= 0)
+        if (BIO_puts(bp, "\x4e\x6f\x6e\x65") <= 0)
             goto err;
     } else
         for (i = 0; i < x->krb5_client_princ_len; i++) {
-            if (BIO_printf(bp, "%02X", x->krb5_client_princ[i]) <= 0)
+            if (BIO_printf(bp, "\x25\x30\x32\x58", x->krb5_client_princ[i]) <= 0)
                 goto err;
         }
 #endif                          /* OPENSSL_NO_KRB5 */
 #ifndef OPENSSL_NO_PSK
-    if (BIO_puts(bp, "\n    PSK identity: ") <= 0)
+    if (BIO_puts(bp, "\xa\x20\x20\x20\x20\x50\x53\x4b\x20\x69\x64\x65\x6e\x74\x69\x74\x79\x3a\x20") <= 0)
         goto err;
-    if (BIO_printf(bp, "%s", x->psk_identity ? x->psk_identity : "None") <= 0)
+    if (BIO_printf(bp, "\x25\x73", x->psk_identity ? x->psk_identity : "\x4e\x6f\x6e\x65") <= 0)
         goto err;
-    if (BIO_puts(bp, "\n    PSK identity hint: ") <= 0)
+    if (BIO_puts(bp, "\xa\x20\x20\x20\x20\x50\x53\x4b\x20\x69\x64\x65\x6e\x74\x69\x74\x79\x20\x68\x69\x6e\x74\x3a\x20") <= 0)
         goto err;
     if (BIO_printf
-        (bp, "%s", x->psk_identity_hint ? x->psk_identity_hint : "None") <= 0)
+        (bp, "\x25\x73", x->psk_identity_hint ? x->psk_identity_hint : "\x4e\x6f\x6e\x65") <= 0)
         goto err;
 #endif
 #ifndef OPENSSL_NO_SRP
-    if (BIO_puts(bp, "\n    SRP username: ") <= 0)
+    if (BIO_puts(bp, "\xa\x20\x20\x20\x20\x53\x52\x50\x20\x75\x73\x65\x72\x6e\x61\x6d\x65\x3a\x20") <= 0)
         goto err;
-    if (BIO_printf(bp, "%s", x->srp_username ? x->srp_username : "None") <= 0)
+    if (BIO_printf(bp, "\x25\x73", x->srp_username ? x->srp_username : "\x4e\x6f\x6e\x65") <= 0)
         goto err;
 #endif
 #ifndef OPENSSL_NO_TLSEXT
     if (x->tlsext_tick_lifetime_hint) {
         if (BIO_printf(bp,
-                       "\n    TLS session ticket lifetime hint: %ld (seconds)",
+                       "\xa\x20\x20\x20\x20\x54\x4c\x53\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x63\x6b\x65\x74\x20\x6c\x69\x66\x65\x74\x69\x6d\x65\x20\x68\x69\x6e\x74\x3a\x20\x25\x6c\x64\x20\x28\x73\x65\x63\x6f\x6e\x64\x73\x29",
                        x->tlsext_tick_lifetime_hint) <= 0)
             goto err;
     }
     if (x->tlsext_tick) {
-        if (BIO_puts(bp, "\n    TLS session ticket:\n") <= 0)
+        if (BIO_puts(bp, "\xa\x20\x20\x20\x20\x54\x4c\x53\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x63\x6b\x65\x74\x3a\xa") <= 0)
             goto err;
         if (BIO_dump_indent(bp, (char *)x->tlsext_tick, x->tlsext_ticklen, 4)
             <= 0)
@@ -228,31 +228,31 @@ int SSL_SESSION_print(BIO *bp, const SSL_SESSION *x)
 
         ssl_cipher_get_evp(x, NULL, NULL, NULL, NULL, &comp);
         if (comp == NULL) {
-            if (BIO_printf(bp, "\n    Compression: %d", x->compress_meth) <=
+            if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x43\x6f\x6d\x70\x72\x65\x73\x73\x69\x6f\x6e\x3a\x20\x25\x64", x->compress_meth) <=
                 0)
                 goto err;
         } else {
             if (BIO_printf
-                (bp, "\n    Compression: %d (%s)", comp->id,
+                (bp, "\xa\x20\x20\x20\x20\x43\x6f\x6d\x70\x72\x65\x73\x73\x69\x6f\x6e\x3a\x20\x25\x64\x20\x28\x25\x73\x29", comp->id,
                  comp->method->name) <= 0)
                 goto err;
         }
     }
 #endif
     if (x->time != 0L) {
-        if (BIO_printf(bp, "\n    Start Time: %ld", x->time) <= 0)
+        if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x53\x74\x61\x72\x74\x20\x54\x69\x6d\x65\x3a\x20\x25\x6c\x64", x->time) <= 0)
             goto err;
     }
     if (x->timeout != 0L) {
-        if (BIO_printf(bp, "\n    Timeout   : %ld (sec)", x->timeout) <= 0)
+        if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x54\x69\x6d\x65\x6f\x75\x74\x20\x20\x20\x3a\x20\x25\x6c\x64\x20\x28\x73\x65\x63\x29", x->timeout) <= 0)
             goto err;
     }
-    if (BIO_puts(bp, "\n") <= 0)
+    if (BIO_puts(bp, "\xa") <= 0)
         goto err;
 
-    if (BIO_puts(bp, "    Verify return code: ") <= 0)
+    if (BIO_puts(bp, "\x20\x20\x20\x20\x56\x65\x72\x69\x66\x79\x20\x72\x65\x74\x75\x72\x6e\x20\x63\x6f\x64\x65\x3a\x20") <= 0)
         goto err;
-    if (BIO_printf(bp, "%ld (%s)\n", x->verify_result,
+    if (BIO_printf(bp, "\x25\x6c\x64\x20\x28\x25\x73\x29\xa", x->verify_result,
                    X509_verify_cert_error_string(x->verify_result)) <= 0)
         goto err;
 

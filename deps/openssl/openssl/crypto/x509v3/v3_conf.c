@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -93,7 +93,7 @@ X509_EXTENSION *X509V3_EXT_nconf(CONF *conf, X509V3_CTX *ctx, char *name,
     ret = do_ext_nconf(conf, ctx, OBJ_sn2nid(name), crit, value);
     if (!ret) {
         X509V3err(X509V3_F_X509V3_EXT_NCONF, X509V3_R_ERROR_IN_EXTENSION);
-        ERR_add_error_data(4, "name=", name, ", value=", value);
+        ERR_add_error_data(4, "\x6e\x61\x6d\x65\x3d", name, "\x2c\x20\x76\x61\x6c\x75\x65\x3d", value);
     }
     return ret;
 }
@@ -131,21 +131,21 @@ static X509_EXTENSION *do_ext_nconf(CONF *conf, X509V3_CTX *ctx, int ext_nid,
     }
     /* Now get internal extension representation based on type */
     if (method->v2i) {
-        if (*value == '@')
+        if (*value == '\x40')
             nval = NCONF_get_section(conf, value + 1);
         else
             nval = X509V3_parse_list(value);
         if (nval == NULL || sk_CONF_VALUE_num(nval) <= 0) {
             X509V3err(X509V3_F_DO_EXT_NCONF,
                       X509V3_R_INVALID_EXTENSION_STRING);
-            ERR_add_error_data(4, "name=", OBJ_nid2sn(ext_nid), ",section=",
+            ERR_add_error_data(4, "\x6e\x61\x6d\x65\x3d", OBJ_nid2sn(ext_nid), "\x2c\x73\x65\x63\x74\x69\x6f\x6e\x3d",
                                value);
-            if (*value != '@')
+            if (*value != '\x40')
                 sk_CONF_VALUE_free(nval);
             return NULL;
         }
         ext_struc = method->v2i(method, ctx, nval);
-        if (*value != '@')
+        if (*value != '\x40')
             sk_CONF_VALUE_pop_free(nval, X509V3_conf_free);
         if (!ext_struc)
             return NULL;
@@ -162,7 +162,7 @@ static X509_EXTENSION *do_ext_nconf(CONF *conf, X509V3_CTX *ctx, int ext_nid,
     } else {
         X509V3err(X509V3_F_DO_EXT_NCONF,
                   X509V3_R_EXTENSION_SETTING_NOT_SUPPORTED);
-        ERR_add_error_data(2, "name=", OBJ_nid2sn(ext_nid));
+        ERR_add_error_data(2, "\x6e\x61\x6d\x65\x3d", OBJ_nid2sn(ext_nid));
         return NULL;
     }
 
@@ -231,7 +231,7 @@ X509_EXTENSION *X509V3_EXT_i2d(int ext_nid, int crit, void *ext_struc)
 static int v3_check_critical(char **value)
 {
     char *p = *value;
-    if ((strlen(p) < 9) || strncmp(p, "critical,", 9))
+    if ((strlen(p) < 9) || strncmp(p, "\x63\x72\x69\x74\x69\x63\x61\x6c\x2c", 9))
         return 0;
     p += 9;
     while (isspace((unsigned char)*p))
@@ -245,10 +245,10 @@ static int v3_check_generic(char **value)
 {
     int gen_type = 0;
     char *p = *value;
-    if ((strlen(p) >= 4) && !strncmp(p, "DER:", 4)) {
+    if ((strlen(p) >= 4) && !strncmp(p, "\x44\x45\x52\x3a", 4)) {
         p += 4;
         gen_type = 1;
-    } else if ((strlen(p) >= 5) && !strncmp(p, "ASN1:", 5)) {
+    } else if ((strlen(p) >= 5) && !strncmp(p, "\x41\x53\x4e\x31\x3a", 5)) {
         p += 5;
         gen_type = 2;
     } else
@@ -273,7 +273,7 @@ static X509_EXTENSION *v3_generic_extension(const char *ext, char *value,
     if (!(obj = OBJ_txt2obj(ext, 0))) {
         X509V3err(X509V3_F_V3_GENERIC_EXTENSION,
                   X509V3_R_EXTENSION_NAME_ERROR);
-        ERR_add_error_data(2, "name=", ext);
+        ERR_add_error_data(2, "\x6e\x61\x6d\x65\x3d", ext);
         goto err;
     }
 
@@ -285,7 +285,7 @@ static X509_EXTENSION *v3_generic_extension(const char *ext, char *value,
     if (ext_der == NULL) {
         X509V3err(X509V3_F_V3_GENERIC_EXTENSION,
                   X509V3_R_EXTENSION_VALUE_ERROR);
-        ERR_add_error_data(2, "value=", value);
+        ERR_add_error_data(2, "\x76\x61\x6c\x75\x65\x3d", value);
         goto err;
     }
 

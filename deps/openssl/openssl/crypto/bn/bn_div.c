@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -153,10 +153,10 @@ int BN_div(BIGNUM *dv, BIGNUM *rem, const BIGNUM *m, const BIGNUM *d,
 #    undef bn_div_words
 #    define bn_div_words(n0,n1,d0)                \
         ({  asm volatile (                      \
-                "divl   %4"                     \
-                : "=a"(q), "=d"(rem)            \
-                : "a"(n1), "d"(n0), "r"(d0)     \
-                : "cc");                        \
+                "\x64\x69\x76\x6c\x20\x20\x20\x25\x34"                     \
+                : "\x3d\x61"(q), "\x3d\x64"(rem)            \
+                : "\x61"(n1), "\x64"(n0), "\x72"(d0)     \
+                : "\x63\x63");                        \
             q;                                  \
         })
 #    define REMAINDER_IS_ALREADY_CALCULATED
@@ -168,10 +168,10 @@ int BN_div(BIGNUM *dv, BIGNUM *rem, const BIGNUM *m, const BIGNUM *d,
 #    undef bn_div_words
 #    define bn_div_words(n0,n1,d0)                \
         ({  asm volatile (                      \
-                "divq   %4"                     \
-                : "=a"(q), "=d"(rem)            \
-                : "a"(n1), "d"(n0), "r"(d0)     \
-                : "cc");                        \
+                "\x64\x69\x76\x71\x20\x20\x20\x25\x34"                     \
+                : "\x3d\x61"(q), "\x3d\x64"(rem)            \
+                : "\x61"(n1), "\x64"(n0), "\x72"(d0)     \
+                : "\x63\x63");                        \
             q;                                  \
         })
 #    define REMAINDER_IS_ALREADY_CALCULATED

@@ -23,7 +23,7 @@
 void test_process_init(int fd, int client_p, void *apparg)
 {
     fprintf(stderr,
-            "test_process_init(fd = %d, client_p = %d, apparg = %p)\n", fd,
+            "\x74\x65\x73\x74\x5f\x70\x72\x6f\x63\x65\x73\x73\x5f\x69\x6e\x69\x74\x28\x66\x64\x20\x3d\x20\x25\x64\x2c\x20\x63\x6c\x69\x65\x6e\x74\x5f\x70\x20\x3d\x20\x25\x64\x2c\x20\x61\x70\x70\x61\x72\x67\x20\x3d\x20\x25\x70\x29\xa", fd,
             client_p, apparg);
 }
 
@@ -44,26 +44,26 @@ int main(int argc, char *argv[])
     int tls = 0;
     char infobuf[TLS_INFO_SIZE + 1];
 
-    if (argc > 1 && argv[1][0] == '-') {
-        fputs("Usage: test [port]                   -- server\n"
-              "       test num.num.num.num [port]   -- client\n", stderr);
+    if (argc > 1 && argv[1][0] == '\x2d') {
+        fputs("\x55\x73\x61\x67\x65\x3a\x20\x74\x65\x73\x74\x20\x5b\x70\x6f\x72\x74\x5d\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x2d\x20\x73\x65\x72\x76\x65\x72\xa"
+              "\x20\x20\x20\x20\x20\x20\x20\x74\x65\x73\x74\x20\x6e\x75\x6d\x2e\x6e\x75\x6d\x2e\x6e\x75\x6d\x2e\x6e\x75\x6d\x20\x5b\x70\x6f\x72\x74\x5d\x20\x20\x20\x2d\x2d\x20\x63\x6c\x69\x65\x6e\x74\xa", stderr);
         exit(1);
     }
 
     if (argc > 1) {
-        if (strchr(argv[1], '.')) {
+        if (strchr(argv[1], '\x2e')) {
             client_p = 1;
         }
     }
 
-    fputs(client_p ? "Client\n" : "Server\n", stderr);
+    fputs(client_p ? "\x43\x6c\x69\x65\x6e\x74\xa" : "\x53\x65\x72\x76\x65\x72\xa", stderr);
 
     {
         struct tls_create_ctx_args a = tls_create_ctx_defaultargs();
         a.client_p = client_p;
-        a.certificate_file = "cert.pem";
-        a.key_file = "cert.pem";
-        a.ca_file = "cacerts.pem";
+        a.certificate_file = "\x63\x65\x72\x74\x2e\x70\x65\x6d";
+        a.key_file = "\x63\x65\x72\x74\x2e\x70\x65\x6d";
+        a.ca_file = "\x63\x61\x63\x65\x72\x74\x73\x2e\x70\x65\x6d";
 
         ctx = tls_create_ctx(a, NULL);
         if (ctx == NULL)
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
     s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (s == -1) {
-        perror("socket");
+        perror("\x73\x6f\x63\x6b\x65\x74");
         exit(1);
     }
 
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
         addr.sin_family = AF_INET;
         assert(argc > 1);
         if (argc > 2)
-            sscanf(argv[2], "%d", &port);
+            sscanf(argv[2], "\x25\x64", &port);
         else
             port = C_PORT;
         addr.sin_port = htons(port);
@@ -91,11 +91,11 @@ int main(int argc, char *argv[])
 
         r = connect(s, &addr, addr_len);
         if (r != 0) {
-            perror("connect");
+            perror("\x63\x6f\x6e\x6e\x65\x63\x74");
             exit(1);
         }
         fd = s;
-        fprintf(stderr, "Connect (fd = %d).\n", fd);
+        fprintf(stderr, "\x43\x6f\x6e\x6e\x65\x63\x74\x20\x28\x66\x64\x20\x3d\x20\x25\x64\x29\x2e\xa", fd);
     } else {
         /* server */
         {
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 
             r = setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&i, sizeof i);
             if (r == -1) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 exit(1);
             }
         }
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
             size_t addr_len = sizeof addr;
 
             if (argc > 1)
-                sscanf(argv[1], "%d", &port);
+                sscanf(argv[1], "\x25\x64", &port);
             else
                 port = L_PORT;
             addr.sin_family = AF_INET;
@@ -122,36 +122,36 @@ int main(int argc, char *argv[])
 
             r = bind(s, &addr, addr_len);
             if (r != 0) {
-                perror("bind");
+                perror("\x62\x69\x6e\x64");
                 exit(1);
             }
         }
 
         r = listen(s, 1);
         if (r == -1) {
-            perror("listen");
+            perror("\x6c\x69\x73\x74\x65\x6e");
             exit(1);
         }
 
-        fprintf(stderr, "Listening at port %i.\n", port);
+        fprintf(stderr, "\x4c\x69\x73\x74\x65\x6e\x69\x6e\x67\x20\x61\x74\x20\x70\x6f\x72\x74\x20\x25\x69\x2e\xa", port);
 
         fd = accept(s, NULL, 0);
         if (fd == -1) {
-            perror("accept");
+            perror("\x61\x63\x63\x65\x70\x74");
             exit(1);
         }
 
-        fprintf(stderr, "Accept (fd = %d).\n", fd);
+        fprintf(stderr, "\x41\x63\x63\x65\x70\x74\x20\x28\x66\x64\x20\x3d\x20\x25\x64\x29\x2e\xa", fd);
     }
 
-    conn_in = fdopen(fd, "r");
+    conn_in = fdopen(fd, "\x72");
     if (conn_in == NULL) {
-        perror("fdopen");
+        perror("\x66\x64\x6f\x70\x65\x6e");
         exit(1);
     }
-    conn_out = fdopen(fd, "w");
+    conn_out = fdopen(fd, "\x77");
     if (conn_out == NULL) {
-        perror("fdopen");
+        perror("\x66\x64\x6f\x70\x65\x6e");
         exit(1);
     }
 
@@ -159,32 +159,32 @@ int main(int argc, char *argv[])
     setvbuf(conn_out, NULL, _IOLBF, 256);
 
     while (fgets(buf, sizeof buf, stdin) != NULL) {
-        if (buf[0] == 'W') {
-            fprintf(conn_out, "%.*s\r\n", (int)(strlen(buf + 1) - 1),
+        if (buf[0] == '\x57') {
+            fprintf(conn_out, "\x25\x2e\x2a\x73\xd\xa", (int)(strlen(buf + 1) - 1),
                     buf + 1);
-            fprintf(stderr, ">>> %.*s\n", (int)(strlen(buf + 1) - 1),
+            fprintf(stderr, "\x3e\x3e\x3e\x20\x25\x2e\x2a\x73\xa", (int)(strlen(buf + 1) - 1),
                     buf + 1);
-        } else if (buf[0] == 'C') {
-            fprintf(stderr, "Closing.\n");
+        } else if (buf[0] == '\x43') {
+            fprintf(stderr, "\x43\x6c\x6f\x73\x69\x6e\x67\x2e\xa");
             fclose(conn_in);
             fclose(conn_out);
             exit(0);
-        } else if (buf[0] == 'R') {
+        } else if (buf[0] == '\x52') {
             int lines = 0;
 
-            sscanf(buf + 1, "%d", &lines);
+            sscanf(buf + 1, "\x25\x64", &lines);
             do {
                 if (fgets(buf, sizeof buf, conn_in) == NULL) {
                     if (ferror(conn_in)) {
-                        fprintf(stderr, "ERROR\n");
+                        fprintf(stderr, "\x45\x52\x52\x4f\x52\xa");
                         exit(1);
                     }
-                    fprintf(stderr, "CLOSED\n");
+                    fprintf(stderr, "\x43\x4c\x4f\x53\x45\x44\xa");
                     return 0;
                 }
-                fprintf(stderr, "<<< %s", buf);
+                fprintf(stderr, "\x3c\x3c\x3c\x20\x25\x73", buf);
             } while (--lines > 0);
-        } else if (buf[0] == 'T') {
+        } else if (buf[0] == '\x54') {
             int infofd;
 
             tls++;
@@ -198,30 +198,30 @@ int main(int argc, char *argv[])
             }
             assert(r != 1);
             if (r != 0) {
-                fprintf(stderr, "tls_start_proxy failed: %d\n", r);
+                fprintf(stderr, "\x74\x6c\x73\x5f\x73\x74\x61\x72\x74\x5f\x70\x72\x6f\x78\x79\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x25\x64\xa", r);
                 switch (r) {
                 case -1:
-                    fputs("socketpair", stderr);
+                    fputs("\x73\x6f\x63\x6b\x65\x74\x70\x61\x69\x72", stderr);
                     break;
                 case 2:
-                    fputs("FD_SETSIZE exceeded", stderr);
+                    fputs("\x46\x44\x5f\x53\x45\x54\x53\x49\x5a\x45\x20\x65\x78\x63\x65\x65\x64\x65\x64", stderr);
                     break;
                 case -3:
-                    fputs("pipe", stderr);
+                    fputs("\x70\x69\x70\x65", stderr);
                     break;
                 case -4:
-                    fputs("fork", stderr);
+                    fputs("\x66\x6f\x72\x6b", stderr);
                     break;
                 case -5:
-                    fputs("dup2", stderr);
+                    fputs("\x64\x75\x70\x32", stderr);
                     break;
                 default:
-                    fputs("?", stderr);
+                    fputs("\x3f", stderr);
                 }
                 if (r < 0)
                     perror("");
                 else
-                    fputc('\n', stderr);
+                    fputc('\xa', stderr);
                 exit(1);
             }
 
@@ -230,18 +230,18 @@ int main(int argc, char *argv[])
                 const char *info = infobuf;
                 const char *eol;
 
-                infobuf[r] = '\0';
-                while ((eol = strchr(info, '\n')) != NULL) {
-                    fprintf(stderr, "+++ `%.*s'\n", eol - info, info);
+                infobuf[r] = '\x0';
+                while ((eol = strchr(info, '\xa')) != NULL) {
+                    fprintf(stderr, "\x2b\x2b\x2b\x20\x60\x25\x2e\x2a\x73\x27\xa", eol - info, info);
                     info = eol + 1;
                 }
                 close(infofd);
             }
         } else {
-            fprintf(stderr, "W...  write line to network\n"
-                    "R[n]  read line (n lines) from network\n"
-                    "C     close\n"
-                    "T     start %sTLS proxy\n", tls ? "another " : "");
+            fprintf(stderr, "\x57\x2e\x2e\x2e\x20\x20\x77\x72\x69\x74\x65\x20\x6c\x69\x6e\x65\x20\x74\x6f\x20\x6e\x65\x74\x77\x6f\x72\x6b\xa"
+                    "\x52\x5b\x6e\x5d\x20\x20\x72\x65\x61\x64\x20\x6c\x69\x6e\x65\x20\x28\x6e\x20\x6c\x69\x6e\x65\x73\x29\x20\x66\x72\x6f\x6d\x20\x6e\x65\x74\x77\x6f\x72\x6b\xa"
+                    "\x43\x20\x20\x20\x20\x20\x63\x6c\x6f\x73\x65\xa"
+                    "\x54\x20\x20\x20\x20\x20\x73\x74\x61\x72\x74\x20\x25\x73\x54\x4c\x53\x20\x70\x72\x6f\x78\x79\xa", tls ? "\x61\x6e\x6f\x74\x68\x65\x72\x20" : "");
         }
     }
     return 0;

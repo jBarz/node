@@ -36,13 +36,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -101,21 +101,21 @@
 #  define PUTU32(p,v) (*((u32 *)(p)) = SWAP((v)))
 # elif defined(__GNUC__) && __GNUC__>=2
 #  if defined(__i386) || defined(__x86_64)
-#   define RightRotate(x,s) ({u32 ret; asm ("rorl %1,%0":"=r"(ret):"I"(s),"0"(x):"cc"); ret; })
-#   define LeftRotate(x,s)  ({u32 ret; asm ("roll %1,%0":"=r"(ret):"I"(s),"0"(x):"cc"); ret; })
+#   define RightRotate(x,s) ({u32 ret; asm ("\x72\x6f\x72\x6c\x20\x25\x31\x2c\x25\x30":"\x3d\x72"(ret):"\x49"(s),"\x30"(x):"\x63\x63"); ret; })
+#   define LeftRotate(x,s)  ({u32 ret; asm ("\x72\x6f\x6c\x6c\x20\x25\x31\x2c\x25\x30":"\x3d\x72"(ret):"\x49"(s),"\x30"(x):"\x63\x63"); ret; })
 #   if defined(B_ENDIAN)        /* stratus.com does it */
 #    define GETU32(p)   (*(u32 *)(p))
 #    define PUTU32(p,v) (*(u32 *)(p)=(v))
 #   else
-#    define GETU32(p)   ({u32 r=*(const u32 *)(p); asm("bswapl %0":"=r"(r):"0"(r)); r; })
-#    define PUTU32(p,v) ({u32 r=(v); asm("bswapl %0":"=r"(r):"0"(r)); *(u32 *)(p)=r; })
+#    define GETU32(p)   ({u32 r=*(const u32 *)(p); asm("\x62\x73\x77\x61\x70\x6c\x20\x25\x30":"\x3d\x72"(r):"\x30"(r)); r; })
+#    define PUTU32(p,v) ({u32 r=(v); asm("\x62\x73\x77\x61\x70\x6c\x20\x25\x30":"\x3d\x72"(r):"\x30"(r)); *(u32 *)(p)=r; })
 #   endif
 #  elif defined(_ARCH_PPC) || defined(_ARCH_PPC64) || \
         defined(__powerpc) || defined(__ppc__) || defined(__powerpc64__)
-#   define LeftRotate(x,s)  ({u32 ret; asm ("rlwinm %0,%1,%2,0,31":"=r"(ret):"r"(x),"I"(s)); ret; })
+#   define LeftRotate(x,s)  ({u32 ret; asm ("\x72\x6c\x77\x69\x6e\x6d\x20\x25\x30\x2c\x25\x31\x2c\x25\x32\x2c\x30\x2c\x33\x31":"\x3d\x72"(ret):"\x72"(x),"\x49"(s)); ret; })
 #   define RightRotate(x,s) LeftRotate(x,(32-s))
 #  elif defined(__s390x__)
-#   define LeftRotate(x,s)  ({u32 ret; asm ("rll %0,%1,%2":"=r"(ret):"r"(x),"I"(s)); ret; })
+#   define LeftRotate(x,s)  ({u32 ret; asm ("\x72\x6c\x6c\x20\x25\x30\x2c\x25\x31\x2c\x25\x32":"\x3d\x72"(ret):"\x72"(x),"\x49"(s)); ret; })
 #   define RightRotate(x,s) LeftRotate(x,(32-s))
 #   define GETU32(p)   (*(u32 *)(p))
 #   define PUTU32(p,v) (*(u32 *)(p)=(v))
@@ -477,7 +477,7 @@ int Camellia_Ekeygen(int keyBitLength, const u8 *rawKey, KEY_TABLE_TYPE k)
      */
 }
 
-void Camellia_EncryptBlock_Rounds(int grandRounds, const u8 plaintext[],
+void Camellia_EncryptBlock_Rounds(int grandRounds, const u8  plaintext[],
                                   const KEY_TABLE_TYPE keyTable,
                                   u8 ciphertext[])
 {

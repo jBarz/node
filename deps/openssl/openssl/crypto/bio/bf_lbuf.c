@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -78,7 +78,7 @@ static long linebuffer_callback_ctrl(BIO *h, int cmd, bio_info_cb *fp);
 
 static BIO_METHOD methods_linebuffer = {
     BIO_TYPE_LINEBUFFER,
-    "linebuffer",
+    "\x6c\x69\x6e\x65\x62\x75\x66\x66\x65\x72",
     linebuffer_write,
     linebuffer_read,
     linebuffer_puts,
@@ -167,8 +167,8 @@ static int linebuffer_write(BIO *b, const char *in, int inl)
     do {
         const char *p;
 
-        for (p = in; p < in + inl && *p != '\n'; p++) ;
-        if (*p == '\n') {
+        for (p = in; p < in + inl && *p != '\xa'; p++) ;
+        if (*p == '\xa') {
             p++;
             foundnl = 1;
         } else
@@ -199,7 +199,7 @@ static int linebuffer_write(BIO *b, const char *in, int inl)
                 }
             }
 #if 0
-            BIO_write(b->next_bio, "<*<", 3);
+            BIO_write(b->next_bio, "\x3c\x2a\x3c", 3);
 #endif
             i = BIO_write(b->next_bio, ctx->obuf, ctx->obuf_len);
             if (i <= 0) {
@@ -207,7 +207,7 @@ static int linebuffer_write(BIO *b, const char *in, int inl)
                 BIO_copy_next_retry(b);
 
 #if 0
-                BIO_write(b->next_bio, ">*>", 3);
+                BIO_write(b->next_bio, "\x3e\x2a\x3e", 3);
 #endif
                 if (i < 0)
                     return ((num > 0) ? num : i);
@@ -215,7 +215,7 @@ static int linebuffer_write(BIO *b, const char *in, int inl)
                     return (num);
             }
 #if 0
-            BIO_write(b->next_bio, ">*>", 3);
+            BIO_write(b->next_bio, "\x3e\x2a\x3e", 3);
 #endif
             if (i < ctx->obuf_len)
                 memmove(ctx->obuf, ctx->obuf + i, ctx->obuf_len - i);
@@ -228,13 +228,13 @@ static int linebuffer_write(BIO *b, const char *in, int inl)
          */
         if ((foundnl || p - in > ctx->obuf_size) && p - in > 0) {
 #if 0
-            BIO_write(b->next_bio, "<*<", 3);
+            BIO_write(b->next_bio, "\x3c\x2a\x3c", 3);
 #endif
             i = BIO_write(b->next_bio, in, p - in);
             if (i <= 0) {
                 BIO_copy_next_retry(b);
 #if 0
-                BIO_write(b->next_bio, ">*>", 3);
+                BIO_write(b->next_bio, "\x3e\x2a\x3e", 3);
 #endif
                 if (i < 0)
                     return ((num > 0) ? num : i);
@@ -242,7 +242,7 @@ static int linebuffer_write(BIO *b, const char *in, int inl)
                     return (num);
             }
 #if 0
-            BIO_write(b->next_bio, ">*>", 3);
+            BIO_write(b->next_bio, "\x3e\x2a\x3e", 3);
 #endif
             num += i;
             in += i;
@@ -331,7 +331,7 @@ static long linebuffer_ctrl(BIO *b, int cmd, long num, void *ptr)
             if (ctx->obuf_len > 0) {
                 r = BIO_write(b->next_bio, ctx->obuf, ctx->obuf_len);
 #if 0
-                fprintf(stderr, "FLUSH %3d -> %3d\n", ctx->obuf_len, r);
+                fprintf(stderr, "\x46\x4c\x55\x53\x48\x20\x25\x33\x64\x20\x2d\x3e\x20\x25\x33\x64\xa", ctx->obuf_len, r);
 #endif
                 BIO_copy_next_retry(b);
                 if (r <= 0)

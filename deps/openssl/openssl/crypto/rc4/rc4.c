@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -63,11 +63,11 @@
 #include <openssl/evp.h>
 
 char *usage[] = {
-    "usage: rc4 args\n",
-    "\n",
-    " -in arg         - input file - default stdin\n",
-    " -out arg        - output file - default stdout\n",
-    " -key key        - password\n",
+    "\x75\x73\x61\x67\x65\x3a\x20\x72\x63\x34\x20\x61\x72\x67\x73\xa",
+    "\xa",
+    "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x74\x64\x69\x6e\xa",
+    "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x74\x64\x6f\x75\x74\xa",
+    "\x20\x2d\x6b\x65\x79\x20\x6b\x65\x79\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa",
     NULL
 };
 
@@ -84,20 +84,20 @@ int main(int argc, char *argv[])
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-in") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-key") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79") == 0) {
             if (--argc < 1)
                 goto bad;
             keystr = *(++argv);
         } else {
-            fprintf(stderr, "unknown option %s\n", *argv);
+            fprintf(stderr, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badops = 1;
             break;
         }
@@ -108,16 +108,16 @@ int main(int argc, char *argv[])
     if (badops) {
  bad:
         for (pp = usage; (*pp != NULL); pp++)
-            fprintf(stderr, "%s", *pp);
+            fprintf(stderr, "\x25\x73", *pp);
         exit(1);
     }
 
     if (infile == NULL)
         in = stdin;
     else {
-        in = fopen(infile, "r");
+        in = fopen(infile, "\x72");
         if (in == NULL) {
-            perror("open");
+            perror("\x6f\x70\x65\x6e");
             exit(1);
         }
 
@@ -125,9 +125,9 @@ int main(int argc, char *argv[])
     if (outfile == NULL)
         out = stdout;
     else {
-        out = fopen(outfile, "w");
+        out = fopen(outfile, "\x77");
         if (out == NULL) {
-            perror("open");
+            perror("\x6f\x70\x65\x6e");
             exit(1);
         }
     }
@@ -142,10 +142,10 @@ int main(int argc, char *argv[])
 #endif
 
     if (keystr == NULL) {       /* get key */
-        i = EVP_read_pw_string(buf, BUFSIZ, "Enter RC4 password:", 0);
+        i = EVP_read_pw_string(buf, BUFSIZ, "\x45\x6e\x74\x65\x72\x20\x52\x43\x34\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x3a", 0);
         if (i != 0) {
             OPENSSL_cleanse(buf, BUFSIZ);
-            fprintf(stderr, "bad password read\n");
+            fprintf(stderr, "\x62\x61\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x72\x65\x61\x64\xa");
             exit(1);
         }
         keystr = buf;
@@ -161,14 +161,14 @@ int main(int argc, char *argv[])
         if (i == 0)
             break;
         if (i < 0) {
-            perror("read");
+            perror("\x72\x65\x61\x64");
             exit(1);
         }
         RC4(&key, (unsigned int)i, (unsigned char *)buf,
             (unsigned char *)buf);
         i = fwrite(buf, (unsigned int)i, 1, out);
         if (i != 1) {
-            perror("write");
+            perror("\x77\x72\x69\x74\x65");
             exit(1);
         }
     }

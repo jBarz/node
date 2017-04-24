@@ -14,30 +14,30 @@
  */
 # if defined(WIN32)
 
-#  define CCA_LIB_NAME "CSUNSAPI"
+#  define CCA_LIB_NAME "\x43\x53\x55\x4e\x53\x41\x50\x49"
 
-#  define CSNDPKX   "CSNDPKX_32"
-#  define CSNDKRR   "CSNDKRR_32"
-#  define CSNDPKE   "CSNDPKE_32"
-#  define CSNDPKD   "CSNDPKD_32"
-#  define CSNDDSV   "CSNDDSV_32"
-#  define CSNDDSG   "CSNDDSG_32"
-#  define CSNBRNG   "CSNBRNG_32"
+#  define CSNDPKX   "\x43\x53\x4e\x44\x50\x4b\x58\x5f\x33\x32"
+#  define CSNDKRR   "\x43\x53\x4e\x44\x4b\x52\x52\x5f\x33\x32"
+#  define CSNDPKE   "\x43\x53\x4e\x44\x50\x4b\x45\x5f\x33\x32"
+#  define CSNDPKD   "\x43\x53\x4e\x44\x50\x4b\x44\x5f\x33\x32"
+#  define CSNDDSV   "\x43\x53\x4e\x44\x44\x53\x56\x5f\x33\x32"
+#  define CSNDDSG   "\x43\x53\x4e\x44\x44\x53\x47\x5f\x33\x32"
+#  define CSNBRNG   "\x43\x53\x4e\x42\x52\x4e\x47\x5f\x33\x32"
 
 #  define SECURITYAPI __stdcall
 # else
     /*
      * Fixme!! Find out the values of these constants for other platforms.
      */
-#  define CCA_LIB_NAME "CSUNSAPI"
+#  define CCA_LIB_NAME "\x43\x53\x55\x4e\x53\x41\x50\x49"
 
-#  define CSNDPKX   "CSNDPKX"
-#  define CSNDKRR   "CSNDKRR"
-#  define CSNDPKE   "CSNDPKE"
-#  define CSNDPKD   "CSNDPKD"
-#  define CSNDDSV   "CSNDDSV"
-#  define CSNDDSG   "CSNDDSG"
-#  define CSNBRNG   "CSNBRNG"
+#  define CSNDPKX   "\x43\x53\x4e\x44\x50\x4b\x58"
+#  define CSNDKRR   "\x43\x53\x4e\x44\x4b\x52\x52"
+#  define CSNDPKE   "\x43\x53\x4e\x44\x50\x4b\x45"
+#  define CSNDPKD   "\x43\x53\x4e\x44\x50\x4b\x44"
+#  define CSNDDSV   "\x43\x53\x4e\x44\x44\x53\x56"
+#  define CSNDDSG   "\x43\x53\x4e\x44\x44\x53\x47"
+#  define CSNBRNG   "\x43\x53\x4e\x42\x52\x4e\x47"
 
 #  define SECURITYAPI
 # endif

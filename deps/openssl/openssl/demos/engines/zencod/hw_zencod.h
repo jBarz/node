@@ -1,7 +1,7 @@
 /* File : /crypto/engine/vendor_defns/hw_zencod.h */
 /* ====================================================================
  * Written by Donnat Frederic (frederic.donnat@zencod.com) from ZENCOD
- * for "zencod" ENGINE integration in OpenSSL project.
+ * for "\x7a\x65\x6e\x63\x6f\x64" ENGINE integration in OpenSSL project.
  */
 
 #ifndef        _HW_ZENCOD_H_

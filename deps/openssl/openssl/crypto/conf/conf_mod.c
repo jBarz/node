@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -65,8 +65,8 @@
 #include <openssl/dso.h>
 #include <openssl/x509.h>
 
-#define DSO_mod_init_name "OPENSSL_init"
-#define DSO_mod_finish_name "OPENSSL_finish"
+#define DSO_mod_init_name "\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x69\x6e\x69\x74"
+#define DSO_mod_finish_name "\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x66\x69\x6e\x69\x73\x68"
 
 /*
  * This structure contains a data about supported modules. entries in this
@@ -135,7 +135,7 @@ int CONF_modules_load(const CONF *cnf, const char *appname,
         vsection = NCONF_get_string(cnf, NULL, appname);
 
     if (!appname || (!vsection && (flags & CONF_MFLAGS_DEFAULT_SECTION)))
-        vsection = NCONF_get_string(cnf, NULL, "openssl_conf");
+        vsection = NCONF_get_string(cnf, NULL, "\x6f\x70\x65\x6e\x73\x73\x6c\x5f\x63\x6f\x6e\x66");
 
     if (!vsection) {
         ERR_clear_error();
@@ -210,7 +210,7 @@ static int module_run(const CONF *cnf, char *name, char *value,
     if (!md) {
         if (!(flags & CONF_MFLAGS_SILENT)) {
             CONFerr(CONF_F_MODULE_RUN, CONF_R_UNKNOWN_MODULE_NAME);
-            ERR_add_error_data(2, "module=", name);
+            ERR_add_error_data(2, "\x6d\x6f\x64\x75\x6c\x65\x3d", name);
         }
         return -1;
     }
@@ -221,9 +221,9 @@ static int module_run(const CONF *cnf, char *name, char *value,
         if (!(flags & CONF_MFLAGS_SILENT)) {
             char rcode[DECIMAL_SIZE(ret) + 1];
             CONFerr(CONF_F_MODULE_RUN, CONF_R_MODULE_INITIALIZATION_ERROR);
-            BIO_snprintf(rcode, sizeof rcode, "%-8d", ret);
-            ERR_add_error_data(6, "module=", name, ", value=", value,
-                               ", retcode=", rcode);
+            BIO_snprintf(rcode, sizeof rcode, "\x25\x2d\x38\x64", ret);
+            ERR_add_error_data(6, "\x6d\x6f\x64\x75\x6c\x65\x3d", name, "\x2c\x20\x76\x61\x6c\x75\x65\x3d", value,
+                               "\x2c\x20\x72\x65\x74\x63\x6f\x64\x65\x3d", rcode);
         }
     }
 
@@ -241,7 +241,7 @@ static CONF_MODULE *module_load_dso(const CONF *cnf, char *name, char *value,
     int errcode = 0;
     CONF_MODULE *md;
     /* Look for alternative path in module section */
-    path = NCONF_get_string(cnf, value, "path");
+    path = NCONF_get_string(cnf, value, "\x70\x61\x74\x68");
     if (!path) {
         ERR_clear_error();
         path = name;
@@ -269,7 +269,7 @@ static CONF_MODULE *module_load_dso(const CONF *cnf, char *name, char *value,
     if (dso)
         DSO_free(dso);
     CONFerr(CONF_F_MODULE_LOAD_DSO, errcode);
-    ERR_add_error_data(4, "module=", name, ", path=", path);
+    ERR_add_error_data(4, "\x6d\x6f\x64\x75\x6c\x65\x3d", name, "\x2c\x20\x70\x61\x74\x68\x3d", path);
     return NULL;
 }
 
@@ -315,7 +315,7 @@ static CONF_MODULE *module_find(char *name)
     CONF_MODULE *tmod;
     int i, nchar;
     char *p;
-    p = strrchr(name, '.');
+    p = strrchr(name, '\x2e');
 
     if (p)
         nchar = p - name;
@@ -530,7 +530,7 @@ char *CONF_get1_default_config_file(void)
     char *file;
     int len;
 
-    file = getenv("OPENSSL_CONF");
+    file = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x43\x4f\x4e\x46");
     if (file)
         return BUF_strdup(file);
 
@@ -546,7 +546,7 @@ char *CONF_get1_default_config_file(void)
         return NULL;
     BUF_strlcpy(file, X509_get_default_cert_area(), len + 1);
 #ifndef OPENSSL_SYS_VMS
-    BUF_strlcat(file, "/", len + 1);
+    BUF_strlcat(file, "\x2f", len + 1);
 #endif
     BUF_strlcat(file, OPENSSL_CONF, len + 1);
 

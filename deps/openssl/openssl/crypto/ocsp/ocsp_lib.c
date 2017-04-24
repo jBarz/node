@@ -192,24 +192,24 @@ int OCSP_parse_url(const char *url, char **phost, char **pport, char **ppath,
         goto mem_err;
 
     /* Check for initial colon */
-    p = strchr(buf, ':');
+    p = strchr(buf, '\x3a');
 
     if (!p)
         goto parse_err;
 
-    *(p++) = '\0';
+    *(p++) = '\x0';
 
-    if (!strcmp(buf, "http")) {
+    if (!strcmp(buf, "\x68\x74\x74\x70")) {
         *pssl = 0;
-        port = "80";
-    } else if (!strcmp(buf, "https")) {
+        port = "\x38\x30";
+    } else if (!strcmp(buf, "\x68\x74\x74\x70\x73")) {
         *pssl = 1;
-        port = "443";
+        port = "\x34\x34\x33";
     } else
         goto parse_err;
 
     /* Check for double slash */
-    if ((p[0] != '/') || (p[1] != '/'))
+    if ((p[0] != '\x2f') || (p[1] != '\x2f'))
         goto parse_err;
 
     p += 2;
@@ -218,32 +218,32 @@ int OCSP_parse_url(const char *url, char **phost, char **pport, char **ppath,
 
     /* Check for trailing part of path */
 
-    p = strchr(p, '/');
+    p = strchr(p, '\x2f');
 
     if (!p)
-        *ppath = BUF_strdup("/");
+        *ppath = BUF_strdup("\x2f");
     else {
         *ppath = BUF_strdup(p);
         /* Set start of path to 0 so hostname is valid */
-        *p = '\0';
+        *p = '\x0';
     }
 
     if (!*ppath)
         goto mem_err;
 
     p = host;
-    if (host[0] == '[') {
+    if (host[0] == '\x5b') {
         /* ipv6 literal */
         host++;
-        p = strchr(host, ']');
+        p = strchr(host, '\x5d');
         if (!p)
             goto parse_err;
-        *p = '\0';
+        *p = '\x0';
         p++;
     }
 
     /* Look for optional ':' for port number */
-    if ((p = strchr(p, ':'))) {
+    if ((p = strchr(p, '\x3a'))) {
         *p = 0;
         port = p + 1;
     }

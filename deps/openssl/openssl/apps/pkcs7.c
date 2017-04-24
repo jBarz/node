@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -111,39 +111,39 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-inform") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             informat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-outform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             outformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-in") == 0) {
+        } else if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-noout") == 0)
+        } else if (strcmp(*argv, "\x2d\x6e\x6f\x6f\x75\x74") == 0)
             noout = 1;
-        else if (strcmp(*argv, "-text") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x65\x78\x74") == 0)
             text = 1;
-        else if (strcmp(*argv, "-print") == 0)
+        else if (strcmp(*argv, "\x2d\x70\x72\x69\x6e\x74") == 0)
             p7_print = 1;
-        else if (strcmp(*argv, "-print_certs") == 0)
+        else if (strcmp(*argv, "\x2d\x70\x72\x69\x6e\x74\x5f\x63\x65\x72\x74\x73") == 0)
             print_certs = 1;
 #ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*argv, "-engine") == 0) {
+        else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine = *(++argv);
         }
 #endif
         else {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badops = 1;
             break;
         }
@@ -153,20 +153,20 @@ int MAIN(int argc, char **argv)
 
     if (badops) {
  bad:
-        BIO_printf(bio_err, "%s [options] <infile >outfile\n", prog);
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, " -inform arg   input format - DER or PEM\n");
-        BIO_printf(bio_err, " -outform arg  output format - DER or PEM\n");
-        BIO_printf(bio_err, " -in arg       input file\n");
-        BIO_printf(bio_err, " -out arg      output file\n");
+        BIO_printf(bio_err, "\x25\x73\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\x20\x3c\x69\x6e\x66\x69\x6c\x65\x20\x3e\x6f\x75\x74\x66\x69\x6c\x65\xa", prog);
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x44\x45\x52\x20\x6f\x72\x20\x50\x45\x4d\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x75\x74\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x44\x45\x52\x20\x6f\x72\x20\x50\x45\x4d\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   " -print_certs  print any certs or crl in the input\n");
+                   "\x20\x2d\x70\x72\x69\x6e\x74\x5f\x63\x65\x72\x74\x73\x20\x20\x70\x72\x69\x6e\x74\x20\x61\x6e\x79\x20\x63\x65\x72\x74\x73\x20\x6f\x72\x20\x63\x72\x6c\x20\x69\x6e\x20\x74\x68\x65\x20\x69\x6e\x70\x75\x74\xa");
         BIO_printf(bio_err,
-                   " -text         print full details of certificates\n");
-        BIO_printf(bio_err, " -noout        don't output encoded data\n");
+                   "\x20\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x72\x69\x6e\x74\x20\x66\x75\x6c\x6c\x20\x64\x65\x74\x61\x69\x6c\x73\x20\x6f\x66\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6e\x6f\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x6f\x75\x74\x70\x75\x74\x20\x65\x6e\x63\x6f\x64\x65\x64\x20\x64\x61\x74\x61\xa");
 #ifndef OPENSSL_NO_ENGINE
         BIO_printf(bio_err,
-                   " -engine e     use engine e, possibly a hardware device.\n");
+                   "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 #endif
         ret = 1;
         goto end;
@@ -187,7 +187,7 @@ int MAIN(int argc, char **argv)
         BIO_set_fp(in, stdin, BIO_NOCLOSE);
     else {
         if (BIO_read_filename(in, infile) <= 0) {
-            BIO_printf(bio_err, "unable to load input file\n");
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -198,11 +198,11 @@ int MAIN(int argc, char **argv)
     else if (informat == FORMAT_PEM)
         p7 = PEM_read_bio_PKCS7(in, NULL, NULL, NULL);
     else {
-        BIO_printf(bio_err, "bad input format specified for pkcs7 object\n");
+        BIO_printf(bio_err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x70\x6b\x63\x73\x37\x20\x6f\x62\x6a\x65\x63\x74\xa");
         goto end;
     }
     if (p7 == NULL) {
-        BIO_printf(bio_err, "unable to load PKCS7 object\n");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x50\x4b\x43\x53\x37\x20\x6f\x62\x6a\x65\x63\x74\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -259,7 +259,7 @@ int MAIN(int argc, char **argv)
 
                 if (!noout)
                     PEM_write_bio_X509(out, x);
-                BIO_puts(out, "\n");
+                BIO_puts(out, "\xa");
             }
         }
         if (crls != NULL) {
@@ -272,7 +272,7 @@ int MAIN(int argc, char **argv)
 
                 if (!noout)
                     PEM_write_bio_X509_CRL(out, crl);
-                BIO_puts(out, "\n");
+                BIO_puts(out, "\xa");
             }
         }
 
@@ -286,12 +286,12 @@ int MAIN(int argc, char **argv)
         else if (outformat == FORMAT_PEM)
             i = PEM_write_bio_PKCS7(out, p7);
         else {
-            BIO_printf(bio_err, "bad output format specified for outfile\n");
+            BIO_printf(bio_err, "\x62\x61\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6f\x75\x74\x66\x69\x6c\x65\xa");
             goto end;
         }
 
         if (!i) {
-            BIO_printf(bio_err, "unable to write pkcs7 object\n");
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x70\x6b\x63\x73\x37\x20\x6f\x62\x6a\x65\x63\x74\xa");
             ERR_print_errors(bio_err);
             goto end;
         }

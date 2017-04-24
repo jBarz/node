@@ -514,13 +514,13 @@ static BIGNUM bn_generator_2 = {
 };
 
 static SRP_gN knowngN[] = {
-    {"8192", &bn_generator_19, &bn_group_8192},
-    {"6144", &bn_generator_5, &bn_group_6144},
-    {"4096", &bn_generator_5, &bn_group_4096},
-    {"3072", &bn_generator_5, &bn_group_3072},
-    {"2048", &bn_generator_2, &bn_group_2048},
-    {"1536", &bn_generator_2, &bn_group_1536},
-    {"1024", &bn_generator_2, &bn_group_1024},
+    {"\x38\x31\x39\x32", &bn_generator_19, &bn_group_8192},
+    {"\x36\x31\x34\x34", &bn_generator_5, &bn_group_6144},
+    {"\x34\x30\x39\x36", &bn_generator_5, &bn_group_4096},
+    {"\x33\x30\x37\x32", &bn_generator_5, &bn_group_3072},
+    {"\x32\x30\x34\x38", &bn_generator_2, &bn_group_2048},
+    {"\x31\x35\x33\x36", &bn_generator_2, &bn_group_1536},
+    {"\x31\x30\x32\x34", &bn_generator_2, &bn_group_1024},
 };
 
 #define KNOWN_GN_NUMBER sizeof(knowngN) / sizeof(SRP_gN)

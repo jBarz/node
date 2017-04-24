@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -101,38 +101,38 @@ int MAIN(int argc, char **argv)
     badopt = 0;
     i = 0;
     while (!badopt && argv[++i] != NULL) {
-        if (strcmp(argv[i], "-out") == 0) {
+        if (strcmp(argv[i], "\x2d\x6f\x75\x74") == 0) {
             if ((argv[i + 1] != NULL) && (outfile == NULL))
                 outfile = argv[++i];
             else
                 badopt = 1;
         }
 #ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(argv[i], "-engine") == 0) {
+        else if (strcmp(argv[i], "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if ((argv[i + 1] != NULL) && (engine == NULL))
                 engine = argv[++i];
             else
                 badopt = 1;
         }
 #endif
-        else if (strcmp(argv[i], "-rand") == 0) {
+        else if (strcmp(argv[i], "\x2d\x72\x61\x6e\x64") == 0) {
             if ((argv[i + 1] != NULL) && (inrand == NULL))
                 inrand = argv[++i];
             else
                 badopt = 1;
-        } else if (strcmp(argv[i], "-base64") == 0) {
+        } else if (strcmp(argv[i], "\x2d\x62\x61\x73\x65\x36\x34") == 0) {
             if (!base64)
                 base64 = 1;
             else
                 badopt = 1;
-        } else if (strcmp(argv[i], "-hex") == 0) {
+        } else if (strcmp(argv[i], "\x2d\x68\x65\x78") == 0) {
             if (!hex)
                 hex = 1;
             else
                 badopt = 1;
         } else if (isdigit((unsigned char)argv[i][0])) {
             if (num < 0) {
-                r = sscanf(argv[i], "%d", &num);
+                r = sscanf(argv[i], "\x25\x64", &num);
                 if (r == 0 || num < 0)
                     badopt = 1;
             } else
@@ -148,24 +148,24 @@ int MAIN(int argc, char **argv)
         badopt = 1;
 
     if (badopt) {
-        BIO_printf(bio_err, "Usage: rand [options] num\n");
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, "-out file             - write to file\n");
+        BIO_printf(bio_err, "\x55\x73\x61\x67\x65\x3a\x20\x72\x61\x6e\x64\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\x20\x6e\x75\x6d\xa");
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x2d\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x77\x72\x69\x74\x65\x20\x74\x6f\x20\x66\x69\x6c\x65\xa");
 #ifndef OPENSSL_NO_ENGINE
         BIO_printf(bio_err,
-                   "-engine e             - use engine e, possibly a hardware device.\n");
+                   "\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 #endif
-        BIO_printf(bio_err, "-rand file%cfile%c... - seed PRNG from files\n",
+        BIO_printf(bio_err, "\x2d\x72\x61\x6e\x64\x20\x66\x69\x6c\x65\x25\x63\x66\x69\x6c\x65\x25\x63\x2e\x2e\x2e\x20\x2d\x20\x73\x65\x65\x64\x20\x50\x52\x4e\x47\x20\x66\x72\x6f\x6d\x20\x66\x69\x6c\x65\x73\xa",
                    LIST_SEPARATOR_CHAR, LIST_SEPARATOR_CHAR);
-        BIO_printf(bio_err, "-base64               - base64 encode output\n");
-        BIO_printf(bio_err, "-hex                  - hex encode output\n");
+        BIO_printf(bio_err, "\x2d\x62\x61\x73\x65\x36\x34\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x62\x61\x73\x65\x36\x34\x20\x65\x6e\x63\x6f\x64\x65\x20\x6f\x75\x74\x70\x75\x74\xa");
+        BIO_printf(bio_err, "\x2d\x68\x65\x78\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x68\x65\x78\x20\x65\x6e\x63\x6f\x64\x65\x20\x6f\x75\x74\x70\x75\x74\xa");
         goto err;
     }
     e = setup_engine(bio_err, engine, 0);
 
     app_RAND_load_file(NULL, bio_err, (inrand != NULL));
     if (inrand != NULL)
-        BIO_printf(bio_err, "%ld semi-random bytes loaded\n",
+        BIO_printf(bio_err, "\x25\x6c\x64\x20\x73\x65\x6d\x69\x2d\x72\x61\x6e\x64\x6f\x6d\x20\x62\x79\x74\x65\x73\x20\x6c\x6f\x61\x64\x65\x64\xa",
                    app_RAND_load_files(inrand));
 
     out = BIO_new(BIO_s_file());
@@ -206,12 +206,12 @@ int MAIN(int argc, char **argv)
             BIO_write(out, buf, chunk);
         else {
             for (i = 0; i < chunk; i++)
-                BIO_printf(out, "%02x", buf[i]);
+                BIO_printf(out, "\x25\x30\x32\x78", buf[i]);
         }
         num -= chunk;
     }
     if (hex)
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     (void)BIO_flush(out);
 
     app_RAND_write_file(NULL, bio_err);

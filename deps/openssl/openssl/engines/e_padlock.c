@@ -89,7 +89,7 @@
 #    define DYNAMIC_ENGINE
 #   endif
 #  else
-#   error "Only OpenSSL >= 0.9.7 is supported"
+#   error "\x4f\x6e\x6c\x79\x20\x4f\x70\x65\x6e\x53\x53\x4c\x20\x3e\x3d\x20\x30\x2e\x39\x2e\x37\x20\x69\x73\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64"
 #  endif
 
 /*
@@ -158,7 +158,7 @@ static int padlock_ciphers(ENGINE *e, const EVP_CIPHER **cipher,
 #   endif
 
 /* Engine names */
-static const char *padlock_id = "padlock";
+static const char *padlock_id = "\x70\x61\x64\x6c\x6f\x63\x6b";
 static char padlock_name[100];
 
 /* Available features */
@@ -183,9 +183,9 @@ static int padlock_bind_helper(ENGINE *e)
 
     /* Generate a nice engine name with available features */
     BIO_snprintf(padlock_name, sizeof(padlock_name),
-                 "VIA PadLock (%s, %s)",
-                 padlock_use_rng ? "RNG" : "no-RNG",
-                 padlock_use_ace ? "ACE" : "no-ACE");
+                 "\x56\x49\x41\x20\x50\x61\x64\x4c\x6f\x63\x6b\x20\x28\x25\x73\x2c\x20\x25\x73\x29",
+                 padlock_use_rng ? "\x52\x4e\x47" : "\x6e\x6f\x2d\x52\x4e\x47",
+                 padlock_use_ace ? "\x41\x43\x45" : "\x6e\x6f\x2d\x41\x43\x45");
 
     /* Register everything or return with an error */
     if (!ENGINE_set_id(e, padlock_id) ||
@@ -250,7 +250,7 @@ static int padlock_bind_fn(ENGINE *e, const char *id)
 IMPLEMENT_DYNAMIC_CHECK_FN()
     IMPLEMENT_DYNAMIC_BIND_FN(padlock_bind_fn)
 #   endif                       /* DYNAMIC_ENGINE */
-/* ===== Here comes the "real" engine ===== */
+/* ===== Here comes the "\x72\x65\x61\x6c" engine ===== */
 #   ifndef OPENSSL_NO_AES
 /* Some AES-related constants */
 #    define AES_BLOCK_SIZE          16
@@ -321,18 +321,18 @@ static int padlock_insn_cpuid_available(void)
      * We're checking if the bit #21 of EFLAGS can be toggled. If yes =
      * CPUID is available.
      */
-    asm volatile ("pushf\n"
-                  "popl %%eax\n"
-                  "xorl $0x200000, %%eax\n"
-                  "movl %%eax, %%ecx\n"
-                  "andl $0x200000, %%ecx\n"
-                  "pushl %%eax\n"
-                  "popf\n"
-                  "pushf\n"
-                  "popl %%eax\n"
-                  "andl $0x200000, %%eax\n"
-                  "xorl %%eax, %%ecx\n"
-                  "movl %%ecx, %0\n":"=r" (result)::"eax", "ecx");
+    asm volatile ("\x70\x75\x73\x68\x66\xa"
+                  "\x70\x6f\x70\x6c\x20\x25\x25\x65\x61\x78\xa"
+                  "\x78\x6f\x72\x6c\x20\x24\x30\x78\x32\x30\x30\x30\x30\x30\x2c\x20\x25\x25\x65\x61\x78\xa"
+                  "\x6d\x6f\x76\x6c\x20\x25\x25\x65\x61\x78\x2c\x20\x25\x25\x65\x63\x78\xa"
+                  "\x61\x6e\x64\x6c\x20\x24\x30\x78\x32\x30\x30\x30\x30\x30\x2c\x20\x25\x25\x65\x63\x78\xa"
+                  "\x70\x75\x73\x68\x6c\x20\x25\x25\x65\x61\x78\xa"
+                  "\x70\x6f\x70\x66\xa"
+                  "\x70\x75\x73\x68\x66\xa"
+                  "\x70\x6f\x70\x6c\x20\x25\x25\x65\x61\x78\xa"
+                  "\x61\x6e\x64\x6c\x20\x24\x30\x78\x32\x30\x30\x30\x30\x30\x2c\x20\x25\x25\x65\x61\x78\xa"
+                  "\x78\x6f\x72\x6c\x20\x25\x25\x65\x61\x78\x2c\x20\x25\x25\x65\x63\x78\xa"
+                  "\x6d\x6f\x76\x6c\x20\x25\x25\x65\x63\x78\x2c\x20\x25\x30\xa":"\x3d\x72" (result)::"\x65\x61\x78", "\x65\x63\x78");
 
     return (result == 0);
 }
@@ -352,25 +352,25 @@ static int padlock_available(void)
     /* Are we running on the Centaur (VIA) CPU? */
     eax = 0x00000000;
     vendor_string[12] = 0;
-    asm volatile ("pushl  %%ebx\n"
-                  "cpuid\n"
-                  "movl   %%ebx,(%%edi)\n"
-                  "movl   %%edx,4(%%edi)\n"
-                  "movl   %%ecx,8(%%edi)\n"
-                  "popl   %%ebx":"+a" (eax):"D"(vendor_string):"ecx", "edx");
-    if (strcmp(vendor_string, "CentaurHauls") != 0)
+    asm volatile ("\x70\x75\x73\x68\x6c\x20\x20\x25\x25\x65\x62\x78\xa"
+                  "\x63\x70\x75\x69\x64\xa"
+                  "\x6d\x6f\x76\x6c\x20\x20\x20\x25\x25\x65\x62\x78\x2c\x28\x25\x25\x65\x64\x69\x29\xa"
+                  "\x6d\x6f\x76\x6c\x20\x20\x20\x25\x25\x65\x64\x78\x2c\x34\x28\x25\x25\x65\x64\x69\x29\xa"
+                  "\x6d\x6f\x76\x6c\x20\x20\x20\x25\x25\x65\x63\x78\x2c\x38\x28\x25\x25\x65\x64\x69\x29\xa"
+                  "\x70\x6f\x70\x6c\x20\x20\x20\x25\x25\x65\x62\x78":"\x2b\x61" (eax):"\x44"(vendor_string):"\x65\x63\x78", "\x65\x64\x78");
+    if (strcmp(vendor_string, "\x43\x65\x6e\x74\x61\x75\x72\x48\x61\x75\x6c\x73") != 0)
         return 0;
 
     /* Check for Centaur Extended Feature Flags presence */
     eax = 0xC0000000;
-    asm volatile ("pushl %%ebx; cpuid; popl %%ebx":"+a" (eax)::"ecx", "edx");
+    asm volatile ("\x70\x75\x73\x68\x6c\x20\x25\x25\x65\x62\x78\x3b\x20\x63\x70\x75\x69\x64\x3b\x20\x70\x6f\x70\x6c\x20\x25\x25\x65\x62\x78":"\x2b\x61" (eax)::"\x65\x63\x78", "\x65\x64\x78");
     if (eax < 0xC0000001)
         return 0;
 
     /* Read the Centaur Extended Feature Flags */
     eax = 0xC0000001;
-    asm volatile ("pushl %%ebx; cpuid; popl %%ebx":"+a" (eax),
-                  "=d"(edx)::"ecx");
+    asm volatile ("\x70\x75\x73\x68\x6c\x20\x25\x25\x65\x62\x78\x3b\x20\x63\x70\x75\x69\x64\x3b\x20\x70\x6f\x70\x6c\x20\x25\x25\x65\x62\x78":"\x2b\x61" (eax),
+                  "\x3d\x64"(edx)::"\x65\x63\x78");
 
     /* Fill up some flags */
     padlock_use_ace = ((edx & (0x3 << 6)) == (0x3 << 6));
@@ -388,7 +388,7 @@ static inline void padlock_bswapl(AES_KEY *ks)
     unsigned int *key = ks->rd_key;
 
     while (i--) {
-        asm volatile ("bswapl %0":"+r" (*key));
+        asm volatile ("\x62\x73\x77\x61\x70\x6c\x20\x25\x30":"\x2b\x72" (*key));
         key++;
     }
 }
@@ -401,7 +401,7 @@ static inline void padlock_bswapl(AES_KEY *ks)
  */
 static inline void padlock_reload_key(void)
 {
-    asm volatile ("pushfl; popfl");
+    asm volatile ("\x70\x75\x73\x68\x66\x6c\x3b\x20\x70\x6f\x70\x66\x6c");
 }
 
 #    ifndef OPENSSL_NO_AES
@@ -416,16 +416,16 @@ static inline void padlock_reload_key(void)
  */
 static inline void padlock_verify_context(struct padlock_cipher_data *cdata)
 {
-    asm volatile ("pushfl\n"
-                  "       btl     $30,(%%esp)\n"
-                  "       jnc     1f\n"
-                  "       cmpl    %2,%1\n"
-                  "       je      1f\n"
-                  "       popfl\n"
-                  "       subl    $4,%%esp\n"
-                  "1:     addl    $4,%%esp\n"
-                  "       movl    %2,%0":"+m" (padlock_saved_context)
-                  :"r"(padlock_saved_context), "r"(cdata):"cc");
+    asm volatile ("\x70\x75\x73\x68\x66\x6c\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x62\x74\x6c\x20\x20\x20\x20\x20\x24\x33\x30\x2c\x28\x25\x25\x65\x73\x70\x29\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6a\x6e\x63\x20\x20\x20\x20\x20\x31\x66\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x63\x6d\x70\x6c\x20\x20\x20\x20\x25\x32\x2c\x25\x31\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6a\x65\x20\x20\x20\x20\x20\x20\x31\x66\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x70\x6f\x70\x66\x6c\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x73\x75\x62\x6c\x20\x20\x20\x20\x24\x34\x2c\x25\x25\x65\x73\x70\xa"
+                  "\x31\x3a\x20\x20\x20\x20\x20\x61\x64\x64\x6c\x20\x20\x20\x20\x24\x34\x2c\x25\x25\x65\x73\x70\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6d\x6f\x76\x6c\x20\x20\x20\x20\x25\x32\x2c\x25\x30":"\x2b\x6d" (padlock_saved_context)
+                  :"\x72"(padlock_saved_context), "\x72"(cdata):"\x63\x63");
 }
 
 /* Template for padlock_xcrypt_* modes */
@@ -438,35 +438,35 @@ static inline void *name(size_t cnt,            \
         struct padlock_cipher_data *cdata,      \
         void *out, const void *inp)             \
 {       void *iv;                               \
-        asm volatile ( "pushl   %%ebx\n"        \
-                "       leal    16(%0),%%edx\n" \
-                "       leal    32(%0),%%ebx\n" \
-                        rep_xcrypt "\n"         \
-                "       popl    %%ebx"          \
-                : "=a"(iv), "=c"(cnt), "=D"(out), "=S"(inp) \
-                : "0"(cdata), "1"(cnt), "2"(out), "3"(inp)  \
-                : "edx", "cc", "memory");       \
+        asm volatile ( "\x70\x75\x73\x68\x6c\x20\x20\x20\x25\x25\x65\x62\x78\xa"        \
+                "\x20\x20\x20\x20\x20\x20\x20\x6c\x65\x61\x6c\x20\x20\x20\x20\x31\x36\x28\x25\x30\x29\x2c\x25\x25\x65\x64\x78\xa" \
+                "\x20\x20\x20\x20\x20\x20\x20\x6c\x65\x61\x6c\x20\x20\x20\x20\x33\x32\x28\x25\x30\x29\x2c\x25\x25\x65\x62\x78\xa" \
+                        rep_xcrypt "\xa"         \
+                "\x20\x20\x20\x20\x20\x20\x20\x70\x6f\x70\x6c\x20\x20\x20\x20\x25\x25\x65\x62\x78"          \
+                : "\x3d\x61"(iv), "\x3d\x63"(cnt), "\x3d\x44"(out), "\x3d\x53"(inp) \
+                : "\x30"(cdata), "\x31"(cnt), "\x32"(out), "\x33"(inp)  \
+                : "\x65\x64\x78", "\x63\x63", "\x6d\x65\x6d\x6f\x72\x79");       \
         return iv;                              \
 }
 
 /* Generate all functions with appropriate opcodes */
 /* rep xcryptecb */
-PADLOCK_XCRYPT_ASM(padlock_xcrypt_ecb, ".byte 0xf3,0x0f,0xa7,0xc8")
+PADLOCK_XCRYPT_ASM(padlock_xcrypt_ecb, "\x2e\x62\x79\x74\x65\x20\x30\x78\x66\x33\x2c\x30\x78\x30\x66\x2c\x30\x78\x61\x37\x2c\x30\x78\x63\x38")
 /* rep xcryptcbc */
-    PADLOCK_XCRYPT_ASM(padlock_xcrypt_cbc, ".byte 0xf3,0x0f,0xa7,0xd0")
+    PADLOCK_XCRYPT_ASM(padlock_xcrypt_cbc, "\x2e\x62\x79\x74\x65\x20\x30\x78\x66\x33\x2c\x30\x78\x30\x66\x2c\x30\x78\x61\x37\x2c\x30\x78\x64\x30")
 /* rep xcryptcfb */
-    PADLOCK_XCRYPT_ASM(padlock_xcrypt_cfb, ".byte 0xf3,0x0f,0xa7,0xe0")
+    PADLOCK_XCRYPT_ASM(padlock_xcrypt_cfb, "\x2e\x62\x79\x74\x65\x20\x30\x78\x66\x33\x2c\x30\x78\x30\x66\x2c\x30\x78\x61\x37\x2c\x30\x78\x65\x30")
 /* rep xcryptofb */
-    PADLOCK_XCRYPT_ASM(padlock_xcrypt_ofb, ".byte 0xf3,0x0f,0xa7,0xe8")
+    PADLOCK_XCRYPT_ASM(padlock_xcrypt_ofb, "\x2e\x62\x79\x74\x65\x20\x30\x78\x66\x33\x2c\x30\x78\x30\x66\x2c\x30\x78\x61\x37\x2c\x30\x78\x65\x38")
 #    endif
 /* The RNG call itself */
 static inline unsigned int padlock_xstore(void *addr, unsigned int edx_in)
 {
     unsigned int eax_out;
 
-    asm volatile (".byte 0x0f,0xa7,0xc0" /* xstore */
-                  :"=a" (eax_out), "=m"(*(unsigned *)addr)
-                  :"D"(addr), "d"(edx_in)
+    asm volatile ("\x2e\x62\x79\x74\x65\x20\x30\x78\x30\x66\x2c\x30\x78\x61\x37\x2c\x30\x78\x63\x30" /* xstore */
+                  :"\x3d\x61" (eax_out), "\x3d\x6d"(*(unsigned *)addr)
+                  :"\x44"(addr), "\x64"(edx_in)
         );
 
     return eax_out;
@@ -907,7 +907,7 @@ padlock_aes_cipher_omnivorous(EVP_CIPHER_CTX *ctx, unsigned char *out_arg,
 #     define PADLOCK_CHUNK  512 /* Must be a power of 2 larger than 16 */
 #    endif
 #    if PADLOCK_CHUNK<16 || PADLOCK_CHUNK&(PADLOCK_CHUNK-1)
-#     error "insane PADLOCK_CHUNK..."
+#     error "\x69\x6e\x73\x61\x6e\x65\x20\x50\x41\x44\x4c\x4f\x43\x4b\x5f\x43\x48\x55\x4e\x4b\x2e\x2e\x2e"
 #    endif
 
 /*

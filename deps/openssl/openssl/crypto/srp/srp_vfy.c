@@ -24,13 +24,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,7 +70,7 @@
 # define MAX_LEN 2500
 
 static char b64table[] =
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz./";
+    "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a\x2e\x2f";
 
 /*
  * the following two conversion routines have been inspired by code from
@@ -86,7 +86,7 @@ static int t_fromb64(unsigned char *a, size_t alen, const char *src)
     int i, j;
     int size;
 
-    while (*src && (*src == ' ' || *src == '\t' || *src == '\n'))
+    while (*src && (*src == '\x20' || *src == '\x9' || *src == '\xa'))
         ++src;
     size = strlen(src);
     if (alen > INT_MAX || size > (int)alen)
@@ -184,7 +184,7 @@ static char *t_tob64(char *dst, const unsigned char *src, int size)
         }
     }
 
-    *dst++ = '\0';
+    *dst++ = '\x0';
     return olddst;
 }
 
@@ -604,7 +604,7 @@ char *SRP_create_verifier(const char *user, const char *pass, char **salt,
         if (!(len = t_fromb64(tmp, sizeof(tmp), g)))
             goto err;
         g_bn = BN_bin2bn(tmp, len, NULL);
-        defgNid = "*";
+        defgNid = "\x2a";
     } else {
         SRP_gN *gN = SRP_get_gN_by_id(g, NULL);
         if (gN == NULL)

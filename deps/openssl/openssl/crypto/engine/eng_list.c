@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -357,7 +357,7 @@ ENGINE *ENGINE_by_id(const char *id)
 #if 0
     if (iterator == NULL) {
         ENGINEerr(ENGINE_F_ENGINE_BY_ID, ENGINE_R_NO_SUCH_ENGINE);
-        ERR_add_error_data(2, "id=", id);
+        ERR_add_error_data(2, "\x69\x64\x3d", id);
     }
     return iterator;
 #else
@@ -367,28 +367,28 @@ ENGINE *ENGINE_by_id(const char *id)
     /*
      * Prevent infinite recusrion if we're looking for the dynamic engine.
      */
-    if (strcmp(id, "dynamic")) {
+    if (strcmp(id, "\x64\x79\x6e\x61\x6d\x69\x63")) {
 # ifdef OPENSSL_SYS_VMS
-        if ((load_dir = getenv("OPENSSL_ENGINES")) == 0)
-            load_dir = "SSLROOT:[ENGINES]";
+        if ((load_dir = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x45\x4e\x47\x49\x4e\x45\x53")) == 0)
+            load_dir = "\x53\x53\x4c\x52\x4f\x4f\x54\x3a\x5b\x45\x4e\x47\x49\x4e\x45\x53\x5d";
 # else
-        if ((load_dir = getenv("OPENSSL_ENGINES")) == 0)
+        if ((load_dir = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x45\x4e\x47\x49\x4e\x45\x53")) == 0)
             load_dir = ENGINESDIR;
 # endif
-        iterator = ENGINE_by_id("dynamic");
-        if (!iterator || !ENGINE_ctrl_cmd_string(iterator, "ID", id, 0) ||
-            !ENGINE_ctrl_cmd_string(iterator, "DIR_LOAD", "2", 0) ||
-            !ENGINE_ctrl_cmd_string(iterator, "DIR_ADD",
+        iterator = ENGINE_by_id("\x64\x79\x6e\x61\x6d\x69\x63");
+        if (!iterator || !ENGINE_ctrl_cmd_string(iterator, "\x49\x44", id, 0) ||
+            !ENGINE_ctrl_cmd_string(iterator, "\x44\x49\x52\x5f\x4c\x4f\x41\x44", "\x32", 0) ||
+            !ENGINE_ctrl_cmd_string(iterator, "\x44\x49\x52\x5f\x41\x44\x44",
                                     load_dir, 0) ||
-            !ENGINE_ctrl_cmd_string(iterator, "LIST_ADD", "1", 0) ||
-            !ENGINE_ctrl_cmd_string(iterator, "LOAD", NULL, 0))
+            !ENGINE_ctrl_cmd_string(iterator, "\x4c\x49\x53\x54\x5f\x41\x44\x44", "\x31", 0) ||
+            !ENGINE_ctrl_cmd_string(iterator, "\x4c\x4f\x41\x44", NULL, 0))
             goto notfound;
         return iterator;
     }
  notfound:
     ENGINE_free(iterator);
     ENGINEerr(ENGINE_F_ENGINE_BY_ID, ENGINE_R_NO_SUCH_ENGINE);
-    ERR_add_error_data(2, "id=", id);
+    ERR_add_error_data(2, "\x69\x64\x3d", id);
     return NULL;
     /* EEK! Experimental code ends */
 #endif

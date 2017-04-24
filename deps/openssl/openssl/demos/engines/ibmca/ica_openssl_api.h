@@ -153,11 +153,11 @@ icaRandomNumberGenerate(ICA_ADAPTER_HANDLE hAdapterHandle,
  */
 
 # if (_AIX)
-static const char *IBMCA_LIBNAME = "/lib/libica.a(shr.o)";
+static const char *IBMCA_LIBNAME = "\x2f\x6c\x69\x62\x2f\x6c\x69\x62\x69\x63\x61\x2e\x61\x28\x73\x68\x72\x2e\x6f\x29";
 # elif (WIN32)
-static const char *IBMCA_LIBNAME = "cryptica";
+static const char *IBMCA_LIBNAME = "\x63\x72\x79\x70\x74\x69\x63\x61";
 # else
-static const char *IBMCA_LIBNAME = "ica";
+static const char *IBMCA_LIBNAME = "\x69\x63\x61";
 # endif
 
 # if (WIN32)

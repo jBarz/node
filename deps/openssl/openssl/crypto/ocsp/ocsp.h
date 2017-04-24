@@ -275,11 +275,11 @@ typedef struct ocsp_response_data_st {
  *      certs                [0] EXPLICIT SEQUENCE OF Certificate OPTIONAL }
  */
   /*
-   * Note 1: The value for "signature" is specified in the OCSP rfc2560 as
+   * Note 1: The value for "\x73\x69\x67\x6e\x61\x74\x75\x72\x65" is specified in the OCSP rfc2560 as
    * follows: "The value for the signature SHALL be computed on the hash of
    * the DER encoding ResponseData." This means that you must hash the
    * DER-encoded tbsResponseData, and then run it through a crypto-signing
-   * function, which will (at least w/RSA) do a hash-'n'-private-encrypt
+   * function, which will (at least w/RSA) do a hash-'\x6e'-private-encrypt
    * operation.  This seems a bit odd, but that's the spec.  Also note that
    * the data structures do not leave anywhere to independently specify the
    * algorithm used for the initial hash. So, we look at the
@@ -344,8 +344,8 @@ typedef struct ocsp_service_locator_st {
     STACK_OF(ACCESS_DESCRIPTION) *locator;
 } OCSP_SERVICELOC;
 
-# define PEM_STRING_OCSP_REQUEST "OCSP REQUEST"
-# define PEM_STRING_OCSP_RESPONSE "OCSP RESPONSE"
+# define PEM_STRING_OCSP_REQUEST "\x4f\x43\x53\x50\x20\x52\x45\x51\x55\x45\x53\x54"
+# define PEM_STRING_OCSP_RESPONSE "\x4f\x43\x53\x50\x20\x52\x45\x53\x50\x4f\x4e\x53\x45"
 
 # define d2i_OCSP_REQUEST_bio(bp,p) ASN1_d2i_bio_of(OCSP_REQUEST,OCSP_REQUEST_new,d2i_OCSP_REQUEST,bp,p)
 

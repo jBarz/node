@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -71,7 +71,7 @@ int i2d_PKCS7_bio_stream(BIO *out, PKCS7 *p7, BIO *in, int flags)
 int PEM_write_bio_PKCS7_stream(BIO *out, PKCS7 *p7, BIO *in, int flags)
 {
     return PEM_write_bio_ASN1_stream(out, (ASN1_VALUE *)p7, in, flags,
-                                     "PKCS7", ASN1_ITEM_rptr(PKCS7));
+                                     "\x50\x4b\x43\x53\x37", ASN1_ITEM_rptr(PKCS7));
 }
 
 int SMIME_write_PKCS7(BIO *bio, PKCS7 *p7, BIO *data, int flags)

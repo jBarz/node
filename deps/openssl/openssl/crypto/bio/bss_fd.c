@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -109,7 +109,7 @@ static int fd_free(BIO *data);
 int BIO_fd_should_retry(int s);
 
 static BIO_METHOD methods_fdp = {
-    BIO_TYPE_FD, "file descriptor",
+    BIO_TYPE_FD, "\x66\x69\x6c\x65\x20\x64\x65\x73\x63\x72\x69\x70\x74\x6f\x72",
     fd_write,
     fd_read,
     fd_puts,
@@ -253,12 +253,12 @@ static int fd_gets(BIO *bp, char *buf, int size)
     char *ptr = buf;
     char *end = buf + size - 1;
 
-    while ((ptr < end) && (fd_read(bp, ptr, 1) > 0) && (ptr[0] != '\n'))
+    while ((ptr < end) && (fd_read(bp, ptr, 1) > 0) && (ptr[0] != '\xa'))
         ptr++;
 
-    ptr[0] = '\0';
+    ptr[0] = '\x0';
 
-    if (buf[0] != '\0')
+    if (buf[0] != '\x0')
         ret = strlen(buf);
     return (ret);
 }

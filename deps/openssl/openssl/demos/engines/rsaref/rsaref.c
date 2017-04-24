@@ -17,7 +17,7 @@
 #include <openssl/bn.h>
 #include <openssl/engine.h>
 
-#define RSAREF_LIB_NAME "rsaref engine"
+#define RSAREF_LIB_NAME "\x72\x73\x61\x72\x65\x66\x20\x65\x6e\x67\x69\x6e\x65"
 #include "rsaref_err.c"
 
 /*****************************************************************************
@@ -27,8 +27,8 @@
 /*****************************************************************************
  * Constants used when creating the ENGINE
  **/
-static const char *engine_rsaref_id = "rsaref";
-static const char *engine_rsaref_name = "RSAref engine support";
+static const char *engine_rsaref_id = "\x72\x73\x61\x72\x65\x66";
+static const char *engine_rsaref_name = "\x52\x53\x41\x72\x65\x66\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /*****************************************************************************
  * Functions to handle the engine
@@ -66,7 +66,7 @@ static int rsaref_mod_exp(BIGNUM *r0, const BIGNUM *I, RSA *rsa);
  * Our RSA method
  **/
 static RSA_METHOD rsaref_rsa = {
-    "RSAref PKCS#1 RSA",
+    "\x52\x53\x41\x72\x65\x66\x20\x50\x4b\x43\x53\x23\x31\x20\x52\x53\x41",
     rsaref_public_encrypt,
     rsaref_public_decrypt,
     rsaref_private_encrypt,

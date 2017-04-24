@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -78,27 +78,27 @@ int main(int argc, char **argv)
     X509V3_add_standard_extensions();
     ERR_load_crypto_strings();
     if (!argv[1]) {
-        fprintf(stderr, "Usage: v3conf cert.pem [file.cnf]\n");
+        fprintf(stderr, "\x55\x73\x61\x67\x65\x3a\x20\x76\x33\x63\x6f\x6e\x66\x20\x63\x65\x72\x74\x2e\x70\x65\x6d\x20\x5b\x66\x69\x6c\x65\x2e\x63\x6e\x66\x5d\xa");
         exit(1);
     }
     conf_file = argv[2];
     if (!conf_file)
-        conf_file = "test.cnf";
-    conf = CONF_load(NULL, "test.cnf", NULL);
+        conf_file = "\x74\x65\x73\x74\x2e\x63\x6e\x66";
+    conf = CONF_load(NULL, "\x74\x65\x73\x74\x2e\x63\x6e\x66", NULL);
     if (!conf) {
-        fprintf(stderr, "Error opening Config file %s\n", conf_file);
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x43\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x25\x73\xa", conf_file);
         ERR_print_errors_fp(stderr);
         exit(1);
     }
 
-    inf = fopen(argv[1], "r");
+    inf = fopen(argv[1], "\x72");
     if (!inf) {
-        fprintf(stderr, "Can't open certificate file %s\n", argv[1]);
+        fprintf(stderr, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65\x20\x25\x73\xa", argv[1]);
         exit(1);
     }
     cert = PEM_read_X509(inf, NULL, NULL);
     if (!cert) {
-        fprintf(stderr, "Error reading certificate file %s\n", argv[1]);
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65\x20\x25\x73\xa", argv[1]);
         exit(1);
     }
     fclose(inf);
@@ -106,23 +106,23 @@ int main(int argc, char **argv)
     sk_pop_free(cert->cert_info->extensions, X509_EXTENSION_free);
     cert->cert_info->extensions = NULL;
 
-    if (!X509V3_EXT_add_conf(conf, NULL, "test_section", cert)) {
-        fprintf(stderr, "Error adding extensions\n");
+    if (!X509V3_EXT_add_conf(conf, NULL, "\x74\x65\x73\x74\x5f\x73\x65\x63\x74\x69\x6f\x6e", cert)) {
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x61\x64\x64\x69\x6e\x67\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\xa");
         ERR_print_errors_fp(stderr);
         exit(1);
     }
 
     count = X509_get_ext_count(cert);
-    printf("%d extensions\n", count);
+    printf("\x25\x64\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\xa", count);
     for (i = 0; i < count; i++) {
         ext = X509_get_ext(cert, i);
-        printf("%s", OBJ_nid2ln(OBJ_obj2nid(ext->object)));
+        printf("\x25\x73", OBJ_nid2ln(OBJ_obj2nid(ext->object)));
         if (ext->critical)
-            printf(",critical:\n");
+            printf("\x2c\x63\x72\x69\x74\x69\x63\x61\x6c\x3a\xa");
         else
-            printf(":\n");
+            printf("\x3a\xa");
         X509V3_EXT_print_fp(stdout, ext, 0, 0);
-        printf("\n");
+        printf("\xa");
 
     }
     return 0;

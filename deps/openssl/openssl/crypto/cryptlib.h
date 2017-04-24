@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -81,18 +81,18 @@ extern "C" {
 
 # ifndef OPENSSL_SYS_VMS
 #  define X509_CERT_AREA          OPENSSLDIR
-#  define X509_CERT_DIR           OPENSSLDIR "/certs"
-#  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
-#  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
+#  define X509_CERT_DIR           OPENSSLDIR "\x2f\x63\x65\x72\x74\x73"
+#  define X509_CERT_FILE          OPENSSLDIR "\x2f\x63\x65\x72\x74\x2e\x70\x65\x6d"
+#  define X509_PRIVATE_DIR        OPENSSLDIR "\x2f\x70\x72\x69\x76\x61\x74\x65"
 # else
-#  define X509_CERT_AREA          "SSLROOT:[000000]"
-#  define X509_CERT_DIR           "SSLCERTS:"
-#  define X509_CERT_FILE          "SSLCERTS:cert.pem"
-#  define X509_PRIVATE_DIR        "SSLPRIVATE:"
+#  define X509_CERT_AREA          "\x53\x53\x4c\x52\x4f\x4f\x54\x3a\x5b\x30\x30\x30\x30\x30\x30\x5d"
+#  define X509_CERT_DIR           "\x53\x53\x4c\x43\x45\x52\x54\x53\x3a"
+#  define X509_CERT_FILE          "\x53\x53\x4c\x43\x45\x52\x54\x53\x3a\x63\x65\x72\x74\x2e\x70\x65\x6d"
+#  define X509_PRIVATE_DIR        "\x53\x53\x4c\x50\x52\x49\x56\x41\x54\x45\x3a"
 # endif
 
-# define X509_CERT_DIR_EVP        "SSL_CERT_DIR"
-# define X509_CERT_FILE_EVP       "SSL_CERT_FILE"
+# define X509_CERT_DIR_EVP        "\x53\x53\x4c\x5f\x43\x45\x52\x54\x5f\x44\x49\x52"
+# define X509_CERT_FILE_EVP       "\x53\x53\x4c\x5f\x43\x45\x52\x54\x5f\x46\x49\x4c\x45"
 
 /* size of string representations */
 # define DECIMAL_SIZE(type)      ((sizeof(type)*8+2)/3+1)

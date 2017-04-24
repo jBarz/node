@@ -49,16 +49,16 @@ int main(int argc, char **argv)
 
 static void callback(int p, int n, void *arg)
 {
-    char c = 'B';
+    char c = '\x42';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     fputc(c, stderr);
 }
 
@@ -91,9 +91,9 @@ int mkreq(X509_REQ **req, EVP_PKEY **pkeyp, int bits, int serial, int days)
      * string type and performing checks on its length. Normally we'd check
      * the return value for errors...
      */
-    X509_NAME_add_entry_by_txt(name, "C", MBSTRING_ASC, "UK", -1, -1, 0);
-    X509_NAME_add_entry_by_txt(name, "CN",
-                               MBSTRING_ASC, "OpenSSL Group", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "\x43", MBSTRING_ASC, "\x55\x4b", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "\x43\x4e",
+                               MBSTRING_ASC, "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x47\x72\x6f\x75\x70", -1, -1, 0);
 
 #ifdef REQUEST_EXTENSIONS
     /*
@@ -111,25 +111,25 @@ int mkreq(X509_REQ **req, EVP_PKEY **pkeyp, int bits, int serial, int days)
     exts = sk_X509_EXTENSION_new_null();
     /* Standard extenions */
 
-    add_ext(exts, NID_key_usage, "critical,digitalSignature,keyEncipherment");
+    add_ext(exts, NID_key_usage, "\x63\x72\x69\x74\x69\x63\x61\x6c\x2c\x64\x69\x67\x69\x74\x61\x6c\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x2c\x6b\x65\x79\x45\x6e\x63\x69\x70\x68\x65\x72\x6d\x65\x6e\x74");
 
     /*
      * This is a typical use for request extensions: requesting a value for
      * subject alternative name.
      */
 
-    add_ext(exts, NID_subject_alt_name, "email:steve@openssl.org");
+    add_ext(exts, NID_subject_alt_name, "\x65\x6d\x61\x69\x6c\x3a\x73\x74\x65\x76\x65\x40\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x6f\x72\x67");
 
     /* Some Netscape specific extensions */
-    add_ext(exts, NID_netscape_cert_type, "client,email");
+    add_ext(exts, NID_netscape_cert_type, "\x63\x6c\x69\x65\x6e\x74\x2c\x65\x6d\x61\x69\x6c");
 
 # ifdef CUSTOM_EXT
     /* Maybe even add our own extension based on existing */
     {
         int nid;
-        nid = OBJ_create("1.2.3.4", "MyAlias", "My Test Alias Extension");
+        nid = OBJ_create("\x31\x2e\x32\x2e\x33\x2e\x34", "\x4d\x79\x41\x6c\x69\x61\x73", "\x4d\x79\x20\x54\x65\x73\x74\x20\x41\x6c\x69\x61\x73\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e");
         X509V3_EXT_add_alias(nid, NID_netscape_comment);
-        add_ext(x, nid, "example comment alias");
+        add_ext(x, nid, "\x65\x78\x61\x6d\x70\x6c\x65\x20\x63\x6f\x6d\x6d\x65\x6e\x74\x20\x61\x6c\x69\x61\x73");
     }
 # endif
 

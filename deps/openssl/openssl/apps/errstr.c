@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -84,7 +84,7 @@ int MAIN(int argc, char **argv)
 
     SSL_load_error_strings();
 
-    if ((argc > 1) && (strcmp(argv[1], "-stats") == 0)) {
+    if ((argc > 1) && (strcmp(argv[1], "\x2d\x73\x74\x61\x74\x73") == 0)) {
         BIO *out = NULL;
 
         out = BIO_new(BIO_s_file());
@@ -107,12 +107,12 @@ int MAIN(int argc, char **argv)
     }
 
     for (i = 1; i < argc; i++) {
-        if (sscanf(argv[i], "%lx", &l)) {
+        if (sscanf(argv[i], "\x25\x6c\x78", &l)) {
             ERR_error_string_n(l, buf, sizeof buf);
-            printf("%s\n", buf);
+            printf("\x25\x73\xa", buf);
         } else {
-            printf("%s: bad error code\n", argv[i]);
-            printf("usage: errstr [-stats] <errno> ...\n");
+            printf("\x25\x73\x3a\x20\x62\x61\x64\x20\x65\x72\x72\x6f\x72\x20\x63\x6f\x64\x65\xa", argv[i]);
+            printf("\x75\x73\x61\x67\x65\x3a\x20\x65\x72\x72\x73\x74\x72\x20\x5b\x2d\x73\x74\x61\x74\x73\x5d\x20\x3c\x65\x72\x72\x6e\x6f\x3e\x20\x2e\x2e\x2e\xa");
             ret++;
         }
     }

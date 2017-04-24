@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -127,8 +127,8 @@ static EVP_PKEY *openssl_load_privkey(ENGINE *eng, const char *key_id,
 #endif
 
 /* The constants used when creating the ENGINE */
-static const char *engine_openssl_id = "openssl";
-static const char *engine_openssl_name = "Software engine support";
+static const char *engine_openssl_id = "\x6f\x70\x65\x6e\x73\x73\x6c";
+static const char *engine_openssl_name = "\x53\x6f\x66\x74\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /*
  * This internal function is used by ENGINE_openssl() and possibly by the
@@ -244,7 +244,7 @@ static int test_rc4_init_key(EVP_CIPHER_CTX *ctx, const unsigned char *key,
                              const unsigned char *iv, int enc)
 {
 # ifdef TEST_ENG_OPENSSL_RC4_P_INIT
-    fprintf(stderr, "(TEST_ENG_OPENSSL_RC4) test_init_key() called\n");
+    fprintf(stderr, "\x28\x54\x45\x53\x54\x5f\x45\x4e\x47\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x52\x43\x34\x29\x20\x74\x65\x73\x74\x5f\x69\x6e\x69\x74\x5f\x6b\x65\x79\x28\x29\x20\x63\x61\x6c\x6c\x65\x64\xa");
 # endif
     memcpy(&test(ctx)->key[0], key, EVP_CIPHER_CTX_key_length(ctx));
     RC4_set_key(&test(ctx)->ks, EVP_CIPHER_CTX_key_length(ctx),
@@ -256,7 +256,7 @@ static int test_rc4_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
                            const unsigned char *in, size_t inl)
 {
 # ifdef TEST_ENG_OPENSSL_RC4_P_CIPHER
-    fprintf(stderr, "(TEST_ENG_OPENSSL_RC4) test_cipher() called\n");
+    fprintf(stderr, "\x28\x54\x45\x53\x54\x5f\x45\x4e\x47\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x52\x43\x34\x29\x20\x74\x65\x73\x74\x5f\x63\x69\x70\x68\x65\x72\x28\x29\x20\x63\x61\x6c\x6c\x65\x64\xa");
 # endif
     RC4(&test(ctx)->ks, inl, in, out);
     return 1;
@@ -305,8 +305,8 @@ static int openssl_ciphers(ENGINE *e, const EVP_CIPHER **cipher,
         *cipher = &test_r4_40_cipher;
     else {
 # ifdef TEST_ENG_OPENSSL_RC4_OTHERS
-        fprintf(stderr, "(TEST_ENG_OPENSSL_RC4) returning NULL for "
-                "nid %d\n", nid);
+        fprintf(stderr, "\x28\x54\x45\x53\x54\x5f\x45\x4e\x47\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x52\x43\x34\x29\x20\x72\x65\x74\x75\x72\x6e\x69\x6e\x67\x20\x4e\x55\x4c\x4c\x20\x66\x6f\x72\x20"
+                "\x6e\x69\x64\x20\x25\x64\xa", nid);
 # endif
         *cipher = NULL;
         return 0;
@@ -324,7 +324,7 @@ static int test_digest_nids_number = 1;
 static int test_sha1_init(EVP_MD_CTX *ctx)
 {
 # ifdef TEST_ENG_OPENSSL_SHA_P_INIT
-    fprintf(stderr, "(TEST_ENG_OPENSSL_SHA) test_sha1_init() called\n");
+    fprintf(stderr, "\x28\x54\x45\x53\x54\x5f\x45\x4e\x47\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x53\x48\x41\x29\x20\x74\x65\x73\x74\x5f\x73\x68\x61\x31\x5f\x69\x6e\x69\x74\x28\x29\x20\x63\x61\x6c\x6c\x65\x64\xa");
 # endif
     return SHA1_Init(ctx->md_data);
 }
@@ -332,7 +332,7 @@ static int test_sha1_init(EVP_MD_CTX *ctx)
 static int test_sha1_update(EVP_MD_CTX *ctx, const void *data, size_t count)
 {
 # ifdef TEST_ENG_OPENSSL_SHA_P_UPDATE
-    fprintf(stderr, "(TEST_ENG_OPENSSL_SHA) test_sha1_update() called\n");
+    fprintf(stderr, "\x28\x54\x45\x53\x54\x5f\x45\x4e\x47\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x53\x48\x41\x29\x20\x74\x65\x73\x74\x5f\x73\x68\x61\x31\x5f\x75\x70\x64\x61\x74\x65\x28\x29\x20\x63\x61\x6c\x6c\x65\x64\xa");
 # endif
     return SHA1_Update(ctx->md_data, data, count);
 }
@@ -340,7 +340,7 @@ static int test_sha1_update(EVP_MD_CTX *ctx, const void *data, size_t count)
 static int test_sha1_final(EVP_MD_CTX *ctx, unsigned char *md)
 {
 # ifdef TEST_ENG_OPENSSL_SHA_P_FINAL
-    fprintf(stderr, "(TEST_ENG_OPENSSL_SHA) test_sha1_final() called\n");
+    fprintf(stderr, "\x28\x54\x45\x53\x54\x5f\x45\x4e\x47\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x53\x48\x41\x29\x20\x74\x65\x73\x74\x5f\x73\x68\x61\x31\x5f\x66\x69\x6e\x61\x6c\x28\x29\x20\x63\x61\x6c\x6c\x65\x64\xa");
 # endif
     return SHA1_Final(md, ctx->md_data);
 }
@@ -373,8 +373,8 @@ static int openssl_digests(ENGINE *e, const EVP_MD **digest,
         *digest = &test_sha_md;
     else {
 # ifdef TEST_ENG_OPENSSL_SHA_OTHERS
-        fprintf(stderr, "(TEST_ENG_OPENSSL_SHA) returning NULL for "
-                "nid %d\n", nid);
+        fprintf(stderr, "\x28\x54\x45\x53\x54\x5f\x45\x4e\x47\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x53\x48\x41\x29\x20\x72\x65\x74\x75\x72\x6e\x69\x6e\x67\x20\x4e\x55\x4c\x4c\x20\x66\x6f\x72\x20"
+                "\x6e\x69\x64\x20\x25\x64\xa", nid);
 # endif
         *digest = NULL;
         return 0;
@@ -390,9 +390,9 @@ static EVP_PKEY *openssl_load_privkey(ENGINE *eng, const char *key_id,
 {
     BIO *in;
     EVP_PKEY *key;
-    fprintf(stderr, "(TEST_ENG_OPENSSL_PKEY)Loading Private key %s\n",
+    fprintf(stderr, "\x28\x54\x45\x53\x54\x5f\x45\x4e\x47\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x50\x4b\x45\x59\x29\x4c\x6f\x61\x64\x69\x6e\x67\x20\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x25\x73\xa",
             key_id);
-    in = BIO_new_file(key_id, "r");
+    in = BIO_new_file(key_id, "\x72");
     if (!in)
         return NULL;
     key = PEM_read_bio_PrivateKey(in, NULL, 0, NULL);

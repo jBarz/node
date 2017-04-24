@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -88,10 +88,10 @@ static int def_dump(const CONF *conf, BIO *bp);
 static int def_is_number(const CONF *conf, char c);
 static int def_to_int(const CONF *conf, char c);
 
-const char CONF_def_version[] = "CONF_def" OPENSSL_VERSION_PTEXT;
+const char CONF_def_version[] = "\x43\x4f\x4e\x46\x5f\x64\x65\x66" OPENSSL_VERSION_PTEXT;
 
 static CONF_METHOD default_method = {
-    "OpenSSL default",
+    "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x64\x65\x66\x61\x75\x6c\x74",
     def_create,
     def_init_default,
     def_destroy,
@@ -104,7 +104,7 @@ static CONF_METHOD default_method = {
 };
 
 static CONF_METHOD WIN32_method = {
-    "WIN32",
+    "\x57\x49\x4e\x33\x32",
     def_create,
     def_init_WIN32,
     def_destroy,
@@ -186,9 +186,9 @@ static int def_load(CONF *conf, const char *name, long *line)
     BIO *in = NULL;
 
 #ifdef OPENSSL_SYS_VMS
-    in = BIO_new_file(name, "r");
+    in = BIO_new_file(name, "\x72");
 #else
-    in = BIO_new_file(name, "rb");
+    in = BIO_new_file(name, "\x72\x62");
 #endif
     if (in == NULL) {
         if (ERR_GET_REASON(ERR_peek_last_error()) == BIO_R_NO_SUCH_FILE)
@@ -225,7 +225,7 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
         goto err;
     }
 
-    section = BUF_strdup("default");
+    section = BUF_strdup("\x64\x65\x66\x61\x75\x6c\x74");
     if (section == NULL) {
         CONFerr(CONF_F_DEF_LOAD_BIO, ERR_R_MALLOC_FAILURE);
         goto err;
@@ -250,15 +250,15 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
             goto err;
         }
         p = &(buff->data[bufnum]);
-        *p = '\0';
+        *p = '\x0';
         BIO_gets(in, p, CONFBUFSIZE - 1);
-        p[CONFBUFSIZE - 1] = '\0';
+        p[CONFBUFSIZE - 1] = '\x0';
         ii = i = strlen(p);
         if (i == 0 && !again)
             break;
         again = 0;
         while (i > 0) {
-            if ((p[i - 1] != '\r') && (p[i - 1] != '\n'))
+            if ((p[i - 1] != '\xd') && (p[i - 1] != '\xa'))
                 break;
             else
                 i--;
@@ -269,7 +269,7 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
         if (ii && i == ii)
             again = 1;          /* long line */
         else {
-            p[i] = '\0';
+            p[i] = '\x0';
             eline++;            /* another input line */
         }
 
@@ -300,7 +300,7 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
         s = eat_ws(conf, buf);
         if (IS_EOF(conf, *s))
             continue;           /* blank line */
-        if (*s == '[') {
+        if (*s == '\x5b') {
             char *ss;
 
             s++;
@@ -309,8 +309,8 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
  again:
             end = eat_alpha_numeric(conf, ss);
             p = eat_ws(conf, end);
-            if (*p != ']') {
-                if (*p != '\0' && ss != p) {
+            if (*p != '\x5d') {
+                if (*p != '\x0' && ss != p) {
                     ss = p;
                     goto again;
                 }
@@ -318,7 +318,7 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
                         CONF_R_MISSING_CLOSE_SQUARE_BRACKET);
                 goto err;
             }
-            *end = '\0';
+            *end = '\x0';
             if (!str_copy(conf, NULL, &section, start))
                 goto err;
             if ((sv = _CONF_get_section(conf, section)) == NULL)
@@ -333,19 +333,19 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
             pname = s;
             psection = NULL;
             end = eat_alpha_numeric(conf, s);
-            if ((end[0] == ':') && (end[1] == ':')) {
-                *end = '\0';
+            if ((end[0] == '\x3a') && (end[1] == '\x3a')) {
+                *end = '\x0';
                 end += 2;
                 psection = pname;
                 pname = end;
                 end = eat_alpha_numeric(conf, end);
             }
             p = eat_ws(conf, end);
-            if (*p != '=') {
+            if (*p != '\x3d') {
                 CONFerr(CONF_F_DEF_LOAD_BIO, CONF_R_MISSING_EQUAL_SIGN);
                 goto err;
             }
-            *end = '\0';
+            *end = '\x0';
             p++;
             start = eat_ws(conf, p);
             while (!IS_EOF(conf, *p))
@@ -354,7 +354,7 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
             while ((p != start) && (IS_WS(conf, *p)))
                 p--;
             p++;
-            *p = '\0';
+            *p = '\x0';
 
             if (!(v = (CONF_VALUE *)OPENSSL_malloc(sizeof(CONF_VALUE)))) {
                 CONFerr(CONF_F_DEF_LOAD_BIO, ERR_R_MALLOC_FAILURE);
@@ -417,8 +417,8 @@ static int def_load_bio(CONF *conf, BIO *in, long *line)
         OPENSSL_free(section);
     if (line != NULL)
         *line = eline;
-    BIO_snprintf(btmp, sizeof btmp, "%ld", eline);
-    ERR_add_error_data(2, "line ", btmp);
+    BIO_snprintf(btmp, sizeof btmp, "\x25\x6c\x64", eline);
+    ERR_add_error_data(2, "\x6c\x69\x6e\x65\x20", btmp);
     if ((h != conf->data) && (conf->data != NULL)) {
         CONF_free(conf->data);
         conf->data = NULL;
@@ -438,7 +438,7 @@ static void clear_comments(CONF *conf, char *p)
 {
     for (;;) {
         if (IS_FCOMMENT(conf, *p)) {
-            *p = '\0';
+            *p = '\x0';
             return;
         }
         if (!IS_WS(conf, *p)) {
@@ -449,7 +449,7 @@ static void clear_comments(CONF *conf, char *p)
 
     for (;;) {
         if (IS_COMMENT(conf, *p)) {
-            *p = '\0';
+            *p = '\x0';
             return;
         }
         if (IS_DQUOTE(conf, *p)) {
@@ -518,25 +518,25 @@ static int str_copy(CONF *conf, char *section, char **pto, char *from)
             v = *(from++);
             if (IS_EOF(conf, v))
                 break;
-            else if (v == 'r')
-                v = '\r';
-            else if (v == 'n')
-                v = '\n';
-            else if (v == 'b')
-                v = '\b';
-            else if (v == 't')
-                v = '\t';
+            else if (v == '\x72')
+                v = '\xd';
+            else if (v == '\x6e')
+                v = '\xa';
+            else if (v == '\x62')
+                v = '\x8';
+            else if (v == '\x74')
+                v = '\x9';
             buf->data[to++] = v;
         } else if (IS_EOF(conf, *from))
             break;
-        else if (*from == '$') {
+        else if (*from == '\x24') {
             /* try to expand it */
             rrp = NULL;
             s = &(from[1]);
-            if (*s == '{')
-                q = '}';
-            else if (*s == '(')
-                q = ')';
+            if (*s == '\x7b')
+                q = '\x7d';
+            else if (*s == '\x28')
+                q = '\x29';
             else
                 q = 0;
 
@@ -546,18 +546,18 @@ static int str_copy(CONF *conf, char *section, char **pto, char *from)
             e = np = s;
             while (IS_ALPHA_NUMERIC(conf, *e))
                 e++;
-            if ((e[0] == ':') && (e[1] == ':')) {
+            if ((e[0] == '\x3a') && (e[1] == '\x3a')) {
                 cp = np;
                 rrp = e;
                 rr = *e;
-                *rrp = '\0';
+                *rrp = '\x0';
                 e += 2;
                 np = e;
                 while (IS_ALPHA_NUMERIC(conf, *e))
                     e++;
             }
             r = *e;
-            *e = '\0';
+            *e = '\x0';
             rp = e;
             if (q) {
                 if (r != q) {
@@ -608,7 +608,7 @@ static int str_copy(CONF *conf, char *section, char **pto, char *from)
         } else
             buf->data[to++] = *(from++);
     }
-    buf->data[to] = '\0';
+    buf->data[to] = '\x0';
     if (*pto != NULL)
         OPENSSL_free(*pto);
     *pto = buf->data;
@@ -681,9 +681,9 @@ static char *scan_dquote(CONF *conf, char *p)
 static void dump_value_doall_arg(CONF_VALUE *a, BIO *out)
 {
     if (a->name)
-        BIO_printf(out, "[%s] %s=%s\n", a->section, a->name, a->value);
+        BIO_printf(out, "\x5b\x25\x73\x5d\x20\x25\x73\x3d\x25\x73\xa", a->section, a->name, a->value);
     else
-        BIO_printf(out, "[[%s]]\n", a->section);
+        BIO_printf(out, "\x5b\x5b\x25\x73\x5d\x5d\xa", a->section);
 }
 
 static IMPLEMENT_LHASH_DOALL_ARG_FN(dump_value, CONF_VALUE, BIO)
@@ -702,5 +702,5 @@ static int def_is_number(const CONF *conf, char c)
 
 static int def_to_int(const CONF *conf, char c)
 {
-    return c - '0';
+    return c - '\x30';
 }

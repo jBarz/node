@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -84,75 +84,75 @@
 #define PROG x509_main
 
 #undef POSTFIX
-#define POSTFIX ".srl"
+#define POSTFIX "\x2e\x73\x72\x6c"
 #define DEF_DAYS        30
 
 static const char *x509_usage[] = {
-    "usage: x509 args\n",
-    " -inform arg     - input format - default PEM (one of DER, NET or PEM)\n",
-    " -outform arg    - output format - default PEM (one of DER, NET or PEM)\n",
-    " -keyform arg    - private key format - default PEM\n",
-    " -CAform arg     - CA format - default PEM\n",
-    " -CAkeyform arg  - CA key format - default PEM\n",
-    " -in arg         - input file - default stdin\n",
-    " -out arg        - output file - default stdout\n",
-    " -passin arg     - private key password source\n",
-    " -serial         - print serial number value\n",
-    " -subject_hash   - print subject hash value\n",
+    "\x75\x73\x61\x67\x65\x3a\x20\x78\x35\x30\x39\x20\x61\x72\x67\x73\xa",
+    "\x20\x2d\x69\x6e\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x20\x2d\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\x20\x28\x6f\x6e\x65\x20\x6f\x66\x20\x44\x45\x52\x2c\x20\x4e\x45\x54\x20\x6f\x72\x20\x50\x45\x4d\x29\xa",
+    "\x20\x2d\x6f\x75\x74\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\x20\x28\x6f\x6e\x65\x20\x6f\x66\x20\x44\x45\x52\x2c\x20\x4e\x45\x54\x20\x6f\x72\x20\x50\x45\x4d\x29\xa",
+    "\x20\x2d\x6b\x65\x79\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\xa",
+    "\x20\x2d\x43\x41\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x20\x2d\x20\x43\x41\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\xa",
+    "\x20\x2d\x43\x41\x6b\x65\x79\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x2d\x20\x43\x41\x20\x6b\x65\x79\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\xa",
+    "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x74\x64\x69\x6e\xa",
+    "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x74\x64\x6f\x75\x74\xa",
+    "\x20\x2d\x70\x61\x73\x73\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x73\x6f\x75\x72\x63\x65\xa",
+    "\x20\x2d\x73\x65\x72\x69\x61\x6c\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x73\x65\x72\x69\x61\x6c\x20\x6e\x75\x6d\x62\x65\x72\x20\x76\x61\x6c\x75\x65\xa",
+    "\x20\x2d\x73\x75\x62\x6a\x65\x63\x74\x5f\x68\x61\x73\x68\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x73\x75\x62\x6a\x65\x63\x74\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65\xa",
 #ifndef OPENSSL_NO_MD5
-    " -subject_hash_old   - print old-style (MD5) subject hash value\n",
+    "\x20\x2d\x73\x75\x62\x6a\x65\x63\x74\x5f\x68\x61\x73\x68\x5f\x6f\x6c\x64\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x6f\x6c\x64\x2d\x73\x74\x79\x6c\x65\x20\x28\x4d\x44\x35\x29\x20\x73\x75\x62\x6a\x65\x63\x74\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65\xa",
 #endif
-    " -issuer_hash    - print issuer hash value\n",
+    "\x20\x2d\x69\x73\x73\x75\x65\x72\x5f\x68\x61\x73\x68\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x69\x73\x73\x75\x65\x72\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65\xa",
 #ifndef OPENSSL_NO_MD5
-    " -issuer_hash_old    - print old-style (MD5) issuer hash value\n",
+    "\x20\x2d\x69\x73\x73\x75\x65\x72\x5f\x68\x61\x73\x68\x5f\x6f\x6c\x64\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x6f\x6c\x64\x2d\x73\x74\x79\x6c\x65\x20\x28\x4d\x44\x35\x29\x20\x69\x73\x73\x75\x65\x72\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65\xa",
 #endif
-    " -hash           - synonym for -subject_hash\n",
-    " -subject        - print subject DN\n",
-    " -issuer         - print issuer DN\n",
-    " -email          - print email address(es)\n",
-    " -startdate      - notBefore field\n",
-    " -enddate        - notAfter field\n",
-    " -purpose        - print out certificate purposes\n",
-    " -dates          - both Before and After dates\n",
-    " -modulus        - print the RSA key modulus\n",
-    " -pubkey         - output the public key\n",
-    " -fingerprint    - print the certificate fingerprint\n",
-    " -alias          - output certificate alias\n",
-    " -noout          - no certificate output\n",
-    " -ocspid         - print OCSP hash values for the subject name and public key\n",
-    " -ocsp_uri       - print OCSP Responder URL(s)\n",
-    " -trustout       - output a \"trusted\" certificate\n",
-    " -clrtrust       - clear all trusted purposes\n",
-    " -clrreject      - clear all rejected purposes\n",
-    " -addtrust arg   - trust certificate for a given purpose\n",
-    " -addreject arg  - reject certificate for a given purpose\n",
-    " -setalias arg   - set certificate alias\n",
-    " -days arg       - How long till expiry of a signed certificate - def 30 days\n",
-    " -checkend arg   - check whether the cert expires in the next arg seconds\n",
-    "                   exit 1 if so, 0 if not\n",
-    " -signkey arg    - self sign cert with arg\n",
-    " -x509toreq      - output a certification request object\n",
-    " -req            - input is a certificate request, sign and output.\n",
-    " -CA arg         - set the CA certificate, must be PEM format.\n",
-    " -CAkey arg      - set the CA key, must be PEM format\n",
-    "                   missing, it is assumed to be in the CA file.\n",
-    " -CAcreateserial - create serial number file if it does not exist\n",
-    " -CAserial arg   - serial file\n",
-    " -set_serial     - serial number to use\n",
-    " -text           - print the certificate in text form\n",
-    " -C              - print out C code forms\n",
-    " -md2/-md5/-sha1/-mdc2 - digest to use\n",
-    " -extfile        - configuration file with X509V3 extensions to add\n",
-    " -extensions     - section from config file with X509V3 extensions to add\n",
-    " -clrext         - delete extensions before signing and input certificate\n",
-    " -nameopt arg    - various certificate name options\n",
+    "\x20\x2d\x68\x61\x73\x68\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x73\x79\x6e\x6f\x6e\x79\x6d\x20\x66\x6f\x72\x20\x2d\x73\x75\x62\x6a\x65\x63\x74\x5f\x68\x61\x73\x68\xa",
+    "\x20\x2d\x73\x75\x62\x6a\x65\x63\x74\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x73\x75\x62\x6a\x65\x63\x74\x20\x44\x4e\xa",
+    "\x20\x2d\x69\x73\x73\x75\x65\x72\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x69\x73\x73\x75\x65\x72\x20\x44\x4e\xa",
+    "\x20\x2d\x65\x6d\x61\x69\x6c\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x65\x6d\x61\x69\x6c\x20\x61\x64\x64\x72\x65\x73\x73\x28\x65\x73\x29\xa",
+    "\x20\x2d\x73\x74\x61\x72\x74\x64\x61\x74\x65\x20\x20\x20\x20\x20\x20\x2d\x20\x6e\x6f\x74\x42\x65\x66\x6f\x72\x65\x20\x66\x69\x65\x6c\x64\xa",
+    "\x20\x2d\x65\x6e\x64\x64\x61\x74\x65\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6e\x6f\x74\x41\x66\x74\x65\x72\x20\x66\x69\x65\x6c\x64\xa",
+    "\x20\x2d\x70\x75\x72\x70\x6f\x73\x65\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x6f\x75\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x70\x75\x72\x70\x6f\x73\x65\x73\xa",
+    "\x20\x2d\x64\x61\x74\x65\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x62\x6f\x74\x68\x20\x42\x65\x66\x6f\x72\x65\x20\x61\x6e\x64\x20\x41\x66\x74\x65\x72\x20\x64\x61\x74\x65\x73\xa",
+    "\x20\x2d\x6d\x6f\x64\x75\x6c\x75\x73\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x74\x68\x65\x20\x52\x53\x41\x20\x6b\x65\x79\x20\x6d\x6f\x64\x75\x6c\x75\x73\xa",
+    "\x20\x2d\x70\x75\x62\x6b\x65\x79\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x74\x68\x65\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa",
+    "\x20\x2d\x66\x69\x6e\x67\x65\x72\x70\x72\x69\x6e\x74\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x74\x68\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6e\x67\x65\x72\x70\x72\x69\x6e\x74\xa",
+    "\x20\x2d\x61\x6c\x69\x61\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x61\x6c\x69\x61\x73\xa",
+    "\x20\x2d\x6e\x6f\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6e\x6f\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6f\x75\x74\x70\x75\x74\xa",
+    "\x20\x2d\x6f\x63\x73\x70\x69\x64\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x4f\x43\x53\x50\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65\x73\x20\x66\x6f\x72\x20\x74\x68\x65\x20\x73\x75\x62\x6a\x65\x63\x74\x20\x6e\x61\x6d\x65\x20\x61\x6e\x64\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa",
+    "\x20\x2d\x6f\x63\x73\x70\x5f\x75\x72\x69\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x4f\x43\x53\x50\x20\x52\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x55\x52\x4c\x28\x73\x29\xa",
+    "\x20\x2d\x74\x72\x75\x73\x74\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x61\x20\x22\x74\x72\x75\x73\x74\x65\x64\x22\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa",
+    "\x20\x2d\x63\x6c\x72\x74\x72\x75\x73\x74\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x63\x6c\x65\x61\x72\x20\x61\x6c\x6c\x20\x74\x72\x75\x73\x74\x65\x64\x20\x70\x75\x72\x70\x6f\x73\x65\x73\xa",
+    "\x20\x2d\x63\x6c\x72\x72\x65\x6a\x65\x63\x74\x20\x20\x20\x20\x20\x20\x2d\x20\x63\x6c\x65\x61\x72\x20\x61\x6c\x6c\x20\x72\x65\x6a\x65\x63\x74\x65\x64\x20\x70\x75\x72\x70\x6f\x73\x65\x73\xa",
+    "\x20\x2d\x61\x64\x64\x74\x72\x75\x73\x74\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x74\x72\x75\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x6f\x72\x20\x61\x20\x67\x69\x76\x65\x6e\x20\x70\x75\x72\x70\x6f\x73\x65\xa",
+    "\x20\x2d\x61\x64\x64\x72\x65\x6a\x65\x63\x74\x20\x61\x72\x67\x20\x20\x2d\x20\x72\x65\x6a\x65\x63\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x6f\x72\x20\x61\x20\x67\x69\x76\x65\x6e\x20\x70\x75\x72\x70\x6f\x73\x65\xa",
+    "\x20\x2d\x73\x65\x74\x61\x6c\x69\x61\x73\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x73\x65\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x61\x6c\x69\x61\x73\xa",
+    "\x20\x2d\x64\x61\x79\x73\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x48\x6f\x77\x20\x6c\x6f\x6e\x67\x20\x74\x69\x6c\x6c\x20\x65\x78\x70\x69\x72\x79\x20\x6f\x66\x20\x61\x20\x73\x69\x67\x6e\x65\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x2d\x20\x64\x65\x66\x20\x33\x30\x20\x64\x61\x79\x73\xa",
+    "\x20\x2d\x63\x68\x65\x63\x6b\x65\x6e\x64\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x63\x68\x65\x63\x6b\x20\x77\x68\x65\x74\x68\x65\x72\x20\x74\x68\x65\x20\x63\x65\x72\x74\x20\x65\x78\x70\x69\x72\x65\x73\x20\x69\x6e\x20\x74\x68\x65\x20\x6e\x65\x78\x74\x20\x61\x72\x67\x20\x73\x65\x63\x6f\x6e\x64\x73\xa",
+    "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x78\x69\x74\x20\x31\x20\x69\x66\x20\x73\x6f\x2c\x20\x30\x20\x69\x66\x20\x6e\x6f\x74\xa",
+    "\x20\x2d\x73\x69\x67\x6e\x6b\x65\x79\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x73\x65\x6c\x66\x20\x73\x69\x67\x6e\x20\x63\x65\x72\x74\x20\x77\x69\x74\x68\x20\x61\x72\x67\xa",
+    "\x20\x2d\x78\x35\x30\x39\x74\x6f\x72\x65\x71\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x61\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x69\x6f\x6e\x20\x72\x65\x71\x75\x65\x73\x74\x20\x6f\x62\x6a\x65\x63\x74\xa",
+    "\x20\x2d\x72\x65\x71\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x69\x6e\x70\x75\x74\x20\x69\x73\x20\x61\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x2c\x20\x73\x69\x67\x6e\x20\x61\x6e\x64\x20\x6f\x75\x74\x70\x75\x74\x2e\xa",
+    "\x20\x2d\x43\x41\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x73\x65\x74\x20\x74\x68\x65\x20\x43\x41\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x2c\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x50\x45\x4d\x20\x66\x6f\x72\x6d\x61\x74\x2e\xa",
+    "\x20\x2d\x43\x41\x6b\x65\x79\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x2d\x20\x73\x65\x74\x20\x74\x68\x65\x20\x43\x41\x20\x6b\x65\x79\x2c\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x50\x45\x4d\x20\x66\x6f\x72\x6d\x61\x74\xa",
+    "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6d\x69\x73\x73\x69\x6e\x67\x2c\x20\x69\x74\x20\x69\x73\x20\x61\x73\x73\x75\x6d\x65\x64\x20\x74\x6f\x20\x62\x65\x20\x69\x6e\x20\x74\x68\x65\x20\x43\x41\x20\x66\x69\x6c\x65\x2e\xa",
+    "\x20\x2d\x43\x41\x63\x72\x65\x61\x74\x65\x73\x65\x72\x69\x61\x6c\x20\x2d\x20\x63\x72\x65\x61\x74\x65\x20\x73\x65\x72\x69\x61\x6c\x20\x6e\x75\x6d\x62\x65\x72\x20\x66\x69\x6c\x65\x20\x69\x66\x20\x69\x74\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x65\x78\x69\x73\x74\xa",
+    "\x20\x2d\x43\x41\x73\x65\x72\x69\x61\x6c\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x73\x65\x72\x69\x61\x6c\x20\x66\x69\x6c\x65\xa",
+    "\x20\x2d\x73\x65\x74\x5f\x73\x65\x72\x69\x61\x6c\x20\x20\x20\x20\x20\x2d\x20\x73\x65\x72\x69\x61\x6c\x20\x6e\x75\x6d\x62\x65\x72\x20\x74\x6f\x20\x75\x73\x65\xa",
+    "\x20\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x74\x68\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x69\x6e\x20\x74\x65\x78\x74\x20\x66\x6f\x72\x6d\xa",
+    "\x20\x2d\x43\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x6f\x75\x74\x20\x43\x20\x63\x6f\x64\x65\x20\x66\x6f\x72\x6d\x73\xa",
+    "\x20\x2d\x6d\x64\x32\x2f\x2d\x6d\x64\x35\x2f\x2d\x73\x68\x61\x31\x2f\x2d\x6d\x64\x63\x32\x20\x2d\x20\x64\x69\x67\x65\x73\x74\x20\x74\x6f\x20\x75\x73\x65\xa",
+    "\x20\x2d\x65\x78\x74\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x63\x6f\x6e\x66\x69\x67\x75\x72\x61\x74\x69\x6f\x6e\x20\x66\x69\x6c\x65\x20\x77\x69\x74\x68\x20\x58\x35\x30\x39\x56\x33\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x20\x74\x6f\x20\x61\x64\x64\xa",
+    "\x20\x2d\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x20\x20\x20\x20\x20\x2d\x20\x73\x65\x63\x74\x69\x6f\x6e\x20\x66\x72\x6f\x6d\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x77\x69\x74\x68\x20\x58\x35\x30\x39\x56\x33\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x20\x74\x6f\x20\x61\x64\x64\xa",
+    "\x20\x2d\x63\x6c\x72\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x64\x65\x6c\x65\x74\x65\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x20\x62\x65\x66\x6f\x72\x65\x20\x73\x69\x67\x6e\x69\x6e\x67\x20\x61\x6e\x64\x20\x69\x6e\x70\x75\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa",
+    "\x20\x2d\x6e\x61\x6d\x65\x6f\x70\x74\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x76\x61\x72\x69\x6f\x75\x73\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6e\x61\x6d\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\xa",
 #ifndef OPENSSL_NO_ENGINE
-    " -engine e       - use engine e, possibly a hardware device.\n",
+    "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa",
 #endif
-    " -certopt arg    - various certificate text options\n",
-    " -checkhost host - check certificate matches \"host\"\n",
-    " -checkemail email - check certificate matches \"email\"\n",
-    " -checkip ipaddr - check certificate matches \"ipaddr\"\n",
+    "\x20\x2d\x63\x65\x72\x74\x6f\x70\x74\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x76\x61\x72\x69\x6f\x75\x73\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x74\x65\x78\x74\x20\x6f\x70\x74\x69\x6f\x6e\x73\xa",
+    "\x20\x2d\x63\x68\x65\x63\x6b\x68\x6f\x73\x74\x20\x68\x6f\x73\x74\x20\x2d\x20\x63\x68\x65\x63\x6b\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6d\x61\x74\x63\x68\x65\x73\x20\x22\x68\x6f\x73\x74\x22\xa",
+    "\x20\x2d\x63\x68\x65\x63\x6b\x65\x6d\x61\x69\x6c\x20\x65\x6d\x61\x69\x6c\x20\x2d\x20\x63\x68\x65\x63\x6b\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6d\x61\x74\x63\x68\x65\x73\x20\x22\x65\x6d\x61\x69\x6c\x22\xa",
+    "\x20\x2d\x63\x68\x65\x63\x6b\x69\x70\x20\x69\x70\x61\x64\x64\x72\x20\x2d\x20\x63\x68\x65\x63\x6b\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6d\x61\x74\x63\x68\x65\x73\x20\x22\x69\x70\x61\x64\x64\x72\x22\xa",
     NULL
 };
 
@@ -252,30 +252,30 @@ int MAIN(int argc, char **argv)
     argv++;
     num = 0;
     while (argc >= 1) {
-        if (strcmp(*argv, "-inform") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             informat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-outform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             outformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-keyform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             keyformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-req") == 0) {
+        } else if (strcmp(*argv, "\x2d\x72\x65\x71") == 0) {
             reqfile = 1;
             need_rand = 1;
-        } else if (strcmp(*argv, "-CAform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             CAformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-CAkeyform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x6b\x65\x79\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             CAkeyformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-sigopt") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x69\x67\x6f\x70\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!sigopts)
@@ -284,208 +284,208 @@ int MAIN(int argc, char **argv)
                 goto bad;
         }
 #ifdef OPENSSL_SSL_DEBUG_BROKEN_PROTOCOL
-        else if (strcmp(*argv, "-force_version") == 0) {
+        else if (strcmp(*argv, "\x2d\x66\x6f\x72\x63\x65\x5f\x76\x65\x72\x73\x69\x6f\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             force_version = atoi(*(++argv)) - 1;
         }
 #endif
-        else if (strcmp(*argv, "-days") == 0) {
+        else if (strcmp(*argv, "\x2d\x64\x61\x79\x73") == 0) {
             if (--argc < 1)
                 goto bad;
             days = atoi(*(++argv));
             if (days == 0) {
-                BIO_printf(bio_err, "bad number of days\n");
+                BIO_printf(bio_err, "\x62\x61\x64\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x64\x61\x79\x73\xa");
                 goto bad;
             }
-        } else if (strcmp(*argv, "-passin") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x61\x73\x73\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             passargin = *(++argv);
-        } else if (strcmp(*argv, "-extfile") == 0) {
+        } else if (strcmp(*argv, "\x2d\x65\x78\x74\x66\x69\x6c\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             extfile = *(++argv);
-        } else if (strcmp(*argv, "-extensions") == 0) {
+        } else if (strcmp(*argv, "\x2d\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73") == 0) {
             if (--argc < 1)
                 goto bad;
             extsect = *(++argv);
-        } else if (strcmp(*argv, "-in") == 0) {
+        } else if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-signkey") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x69\x67\x6e\x6b\x65\x79") == 0) {
             if (--argc < 1)
                 goto bad;
             keyfile = *(++argv);
             sign_flag = ++num;
             need_rand = 1;
-        } else if (strcmp(*argv, "-CA") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41") == 0) {
             if (--argc < 1)
                 goto bad;
             CAfile = *(++argv);
             CA_flag = ++num;
             need_rand = 1;
-        } else if (strcmp(*argv, "-CAkey") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x6b\x65\x79") == 0) {
             if (--argc < 1)
                 goto bad;
             CAkeyfile = *(++argv);
-        } else if (strcmp(*argv, "-CAserial") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x73\x65\x72\x69\x61\x6c") == 0) {
             if (--argc < 1)
                 goto bad;
             CAserial = *(++argv);
-        } else if (strcmp(*argv, "-set_serial") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x65\x74\x5f\x73\x65\x72\x69\x61\x6c") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!(sno = s2i_ASN1_INTEGER(NULL, *(++argv))))
                 goto bad;
-        } else if (strcmp(*argv, "-force_pubkey") == 0) {
+        } else if (strcmp(*argv, "\x2d\x66\x6f\x72\x63\x65\x5f\x70\x75\x62\x6b\x65\x79") == 0) {
             if (--argc < 1)
                 goto bad;
             fkeyfile = *(++argv);
-        } else if (strcmp(*argv, "-addtrust") == 0) {
+        } else if (strcmp(*argv, "\x2d\x61\x64\x64\x74\x72\x75\x73\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!(objtmp = OBJ_txt2obj(*(++argv), 0))) {
-                BIO_printf(bio_err, "Invalid trust object value %s\n", *argv);
+                BIO_printf(bio_err, "\x49\x6e\x76\x61\x6c\x69\x64\x20\x74\x72\x75\x73\x74\x20\x6f\x62\x6a\x65\x63\x74\x20\x76\x61\x6c\x75\x65\x20\x25\x73\xa", *argv);
                 goto bad;
             }
             if (!trust)
                 trust = sk_ASN1_OBJECT_new_null();
             sk_ASN1_OBJECT_push(trust, objtmp);
             trustout = 1;
-        } else if (strcmp(*argv, "-addreject") == 0) {
+        } else if (strcmp(*argv, "\x2d\x61\x64\x64\x72\x65\x6a\x65\x63\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!(objtmp = OBJ_txt2obj(*(++argv), 0))) {
                 BIO_printf(bio_err,
-                           "Invalid reject object value %s\n", *argv);
+                           "\x49\x6e\x76\x61\x6c\x69\x64\x20\x72\x65\x6a\x65\x63\x74\x20\x6f\x62\x6a\x65\x63\x74\x20\x76\x61\x6c\x75\x65\x20\x25\x73\xa", *argv);
                 goto bad;
             }
             if (!reject)
                 reject = sk_ASN1_OBJECT_new_null();
             sk_ASN1_OBJECT_push(reject, objtmp);
             trustout = 1;
-        } else if (strcmp(*argv, "-setalias") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x65\x74\x61\x6c\x69\x61\x73") == 0) {
             if (--argc < 1)
                 goto bad;
             alias = *(++argv);
             trustout = 1;
-        } else if (strcmp(*argv, "-certopt") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x65\x72\x74\x6f\x70\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!set_cert_ex(&certflag, *(++argv)))
                 goto bad;
-        } else if (strcmp(*argv, "-nameopt") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6e\x61\x6d\x65\x6f\x70\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!set_name_ex(&nmflag, *(++argv)))
                 goto bad;
         }
 #ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*argv, "-engine") == 0) {
+        else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine = *(++argv);
         }
 #endif
-        else if (strcmp(*argv, "-C") == 0)
+        else if (strcmp(*argv, "\x2d\x43") == 0)
             C = ++num;
-        else if (strcmp(*argv, "-email") == 0)
+        else if (strcmp(*argv, "\x2d\x65\x6d\x61\x69\x6c") == 0)
             email = ++num;
-        else if (strcmp(*argv, "-ocsp_uri") == 0)
+        else if (strcmp(*argv, "\x2d\x6f\x63\x73\x70\x5f\x75\x72\x69") == 0)
             ocsp_uri = ++num;
-        else if (strcmp(*argv, "-serial") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x65\x72\x69\x61\x6c") == 0)
             serial = ++num;
-        else if (strcmp(*argv, "-next_serial") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x65\x78\x74\x5f\x73\x65\x72\x69\x61\x6c") == 0)
             next_serial = ++num;
-        else if (strcmp(*argv, "-modulus") == 0)
+        else if (strcmp(*argv, "\x2d\x6d\x6f\x64\x75\x6c\x75\x73") == 0)
             modulus = ++num;
-        else if (strcmp(*argv, "-pubkey") == 0)
+        else if (strcmp(*argv, "\x2d\x70\x75\x62\x6b\x65\x79") == 0)
             pubkey = ++num;
-        else if (strcmp(*argv, "-x509toreq") == 0)
+        else if (strcmp(*argv, "\x2d\x78\x35\x30\x39\x74\x6f\x72\x65\x71") == 0)
             x509req = ++num;
-        else if (strcmp(*argv, "-text") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x65\x78\x74") == 0)
             text = ++num;
-        else if (strcmp(*argv, "-hash") == 0
-                 || strcmp(*argv, "-subject_hash") == 0)
+        else if (strcmp(*argv, "\x2d\x68\x61\x73\x68") == 0
+                 || strcmp(*argv, "\x2d\x73\x75\x62\x6a\x65\x63\x74\x5f\x68\x61\x73\x68") == 0)
             subject_hash = ++num;
 #ifndef OPENSSL_NO_MD5
-        else if (strcmp(*argv, "-subject_hash_old") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x75\x62\x6a\x65\x63\x74\x5f\x68\x61\x73\x68\x5f\x6f\x6c\x64") == 0)
             subject_hash_old = ++num;
 #endif
-        else if (strcmp(*argv, "-issuer_hash") == 0)
+        else if (strcmp(*argv, "\x2d\x69\x73\x73\x75\x65\x72\x5f\x68\x61\x73\x68") == 0)
             issuer_hash = ++num;
 #ifndef OPENSSL_NO_MD5
-        else if (strcmp(*argv, "-issuer_hash_old") == 0)
+        else if (strcmp(*argv, "\x2d\x69\x73\x73\x75\x65\x72\x5f\x68\x61\x73\x68\x5f\x6f\x6c\x64") == 0)
             issuer_hash_old = ++num;
 #endif
-        else if (strcmp(*argv, "-subject") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x75\x62\x6a\x65\x63\x74") == 0)
             subject = ++num;
-        else if (strcmp(*argv, "-issuer") == 0)
+        else if (strcmp(*argv, "\x2d\x69\x73\x73\x75\x65\x72") == 0)
             issuer = ++num;
-        else if (strcmp(*argv, "-fingerprint") == 0)
+        else if (strcmp(*argv, "\x2d\x66\x69\x6e\x67\x65\x72\x70\x72\x69\x6e\x74") == 0)
             fingerprint = ++num;
-        else if (strcmp(*argv, "-dates") == 0) {
+        else if (strcmp(*argv, "\x2d\x64\x61\x74\x65\x73") == 0) {
             startdate = ++num;
             enddate = ++num;
-        } else if (strcmp(*argv, "-purpose") == 0)
+        } else if (strcmp(*argv, "\x2d\x70\x75\x72\x70\x6f\x73\x65") == 0)
             pprint = ++num;
-        else if (strcmp(*argv, "-startdate") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x74\x61\x72\x74\x64\x61\x74\x65") == 0)
             startdate = ++num;
-        else if (strcmp(*argv, "-enddate") == 0)
+        else if (strcmp(*argv, "\x2d\x65\x6e\x64\x64\x61\x74\x65") == 0)
             enddate = ++num;
-        else if (strcmp(*argv, "-checkend") == 0) {
+        else if (strcmp(*argv, "\x2d\x63\x68\x65\x63\x6b\x65\x6e\x64") == 0) {
             if (--argc < 1)
                 goto bad;
             checkoffset = atoi(*(++argv));
             checkend = 1;
-        } else if (strcmp(*argv, "-checkhost") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x68\x65\x63\x6b\x68\x6f\x73\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             checkhost = *(++argv);
-        } else if (strcmp(*argv, "-checkemail") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x68\x65\x63\x6b\x65\x6d\x61\x69\x6c") == 0) {
             if (--argc < 1)
                 goto bad;
             checkemail = *(++argv);
-        } else if (strcmp(*argv, "-checkip") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x68\x65\x63\x6b\x69\x70") == 0) {
             if (--argc < 1)
                 goto bad;
             checkip = *(++argv);
-        } else if (strcmp(*argv, "-noout") == 0)
+        } else if (strcmp(*argv, "\x2d\x6e\x6f\x6f\x75\x74") == 0)
             noout = ++num;
-        else if (strcmp(*argv, "-trustout") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x72\x75\x73\x74\x6f\x75\x74") == 0)
             trustout = 1;
-        else if (strcmp(*argv, "-clrtrust") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x6c\x72\x74\x72\x75\x73\x74") == 0)
             clrtrust = ++num;
-        else if (strcmp(*argv, "-clrreject") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x6c\x72\x72\x65\x6a\x65\x63\x74") == 0)
             clrreject = ++num;
-        else if (strcmp(*argv, "-alias") == 0)
+        else if (strcmp(*argv, "\x2d\x61\x6c\x69\x61\x73") == 0)
             aliasout = ++num;
-        else if (strcmp(*argv, "-CAcreateserial") == 0)
+        else if (strcmp(*argv, "\x2d\x43\x41\x63\x72\x65\x61\x74\x65\x73\x65\x72\x69\x61\x6c") == 0)
             CA_createserial = ++num;
-        else if (strcmp(*argv, "-clrext") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x6c\x72\x65\x78\x74") == 0)
             clrext = 1;
 #if 1                           /* stay backwards-compatible with 0.9.5; this
                                  * should go away soon */
-        else if (strcmp(*argv, "-crlext") == 0) {
-            BIO_printf(bio_err, "use -clrext instead of -crlext\n");
+        else if (strcmp(*argv, "\x2d\x63\x72\x6c\x65\x78\x74") == 0) {
+            BIO_printf(bio_err, "\x75\x73\x65\x20\x2d\x63\x6c\x72\x65\x78\x74\x20\x69\x6e\x73\x74\x65\x61\x64\x20\x6f\x66\x20\x2d\x63\x72\x6c\x65\x78\x74\xa");
             clrext = 1;
         }
 #endif
-        else if (strcmp(*argv, "-ocspid") == 0)
+        else if (strcmp(*argv, "\x2d\x6f\x63\x73\x70\x69\x64") == 0)
             ocspid = ++num;
-        else if (strcmp(*argv, "-badsig") == 0)
+        else if (strcmp(*argv, "\x2d\x62\x61\x64\x73\x69\x67") == 0)
             badsig = 1;
         else if ((md_alg = EVP_get_digestbyname(*argv + 1))) {
             /* ok */
             digest = md_alg;
         } else {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badops = 1;
             break;
         }
@@ -496,7 +496,7 @@ int MAIN(int argc, char **argv)
     if (badops) {
  bad:
         for (pp = x509_usage; (*pp != NULL); pp++)
-            BIO_printf(bio_err, "%s", *pp);
+            BIO_printf(bio_err, "\x25\x73", *pp);
         goto end;
     }
     e = setup_engine(bio_err, engine, 0);
@@ -507,7 +507,7 @@ int MAIN(int argc, char **argv)
     ERR_load_crypto_strings();
 
     if (!app_passwd(bio_err, passargin, NULL, &passin, NULL)) {
-        BIO_printf(bio_err, "Error getting password\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa");
         goto end;
     }
 
@@ -518,7 +518,7 @@ int MAIN(int argc, char **argv)
 
     if (fkeyfile) {
         fkey = load_pubkey(bio_err, fkeyfile, keyformat, 0,
-                           NULL, e, "Forced key");
+                           NULL, e, "\x46\x6f\x72\x63\x65\x64\x20\x6b\x65\x79");
         if (fkey == NULL)
             goto end;
     }
@@ -527,7 +527,7 @@ int MAIN(int argc, char **argv)
         CAkeyfile = CAfile;
     } else if ((CA_flag) && (CAkeyfile == NULL)) {
         BIO_printf(bio_err,
-                   "need to specify a CAkey if using the CA command\n");
+                   "\x6e\x65\x65\x64\x20\x74\x6f\x20\x73\x70\x65\x63\x69\x66\x79\x20\x61\x20\x43\x41\x6b\x65\x79\x20\x69\x66\x20\x75\x73\x69\x6e\x67\x20\x74\x68\x65\x20\x43\x41\x20\x63\x6f\x6d\x6d\x61\x6e\x64\xa");
         goto end;
     }
 
@@ -538,25 +538,25 @@ int MAIN(int argc, char **argv)
         if (!NCONF_load(extconf, extfile, &errorline)) {
             if (errorline <= 0)
                 BIO_printf(bio_err,
-                           "error loading the config file '%s'\n", extfile);
+                           "\x65\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x74\x68\x65\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x27\x25\x73\x27\xa", extfile);
             else
                 BIO_printf(bio_err,
-                           "error on line %ld of config file '%s'\n",
+                           "\x65\x72\x72\x6f\x72\x20\x6f\x6e\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\x20\x6f\x66\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x27\x25\x73\x27\xa",
                            errorline, extfile);
             goto end;
         }
         if (!extsect) {
-            extsect = NCONF_get_string(extconf, "default", "extensions");
+            extsect = NCONF_get_string(extconf, "\x64\x65\x66\x61\x75\x6c\x74", "\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73");
             if (!extsect) {
                 ERR_clear_error();
-                extsect = "default";
+                extsect = "\x64\x65\x66\x61\x75\x6c\x74";
             }
         }
         X509V3_set_ctx_test(&ctx2);
         X509V3_set_nconf(&ctx2, extconf);
         if (!X509V3_EXT_add_nconf(extconf, &ctx2, extsect, NULL)) {
             BIO_printf(bio_err,
-                       "Error Loading extension section %s\n", extsect);
+                       "\x45\x72\x72\x6f\x72\x20\x4c\x6f\x61\x64\x69\x6e\x67\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x20\x73\x65\x63\x74\x69\x6f\x6e\x20\x25\x73\xa", extsect);
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -567,7 +567,7 @@ int MAIN(int argc, char **argv)
         BIO *in;
 
         if (!sign_flag && !CA_flag) {
-            BIO_printf(bio_err, "We need a private key to sign with\n");
+            BIO_printf(bio_err, "\x57\x65\x20\x6e\x65\x65\x64\x20\x61\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x74\x6f\x20\x73\x69\x67\x6e\x20\x77\x69\x74\x68\xa");
             goto end;
         }
         in = BIO_new(BIO_s_file());
@@ -598,29 +598,29 @@ int MAIN(int argc, char **argv)
             (req->req_info->pubkey->public_key == NULL) ||
             (req->req_info->pubkey->public_key->data == NULL)) {
             BIO_printf(bio_err,
-                       "The certificate request appears to corrupted\n");
-            BIO_printf(bio_err, "It does not contain a public key\n");
+                       "\x54\x68\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x61\x70\x70\x65\x61\x72\x73\x20\x74\x6f\x20\x63\x6f\x72\x72\x75\x70\x74\x65\x64\xa");
+            BIO_printf(bio_err, "\x49\x74\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x61\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
             goto end;
         }
         if ((pkey = X509_REQ_get_pubkey(req)) == NULL) {
-            BIO_printf(bio_err, "error unpacking public key\n");
+            BIO_printf(bio_err, "\x65\x72\x72\x6f\x72\x20\x75\x6e\x70\x61\x63\x6b\x69\x6e\x67\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
             goto end;
         }
         i = X509_REQ_verify(req, pkey);
         EVP_PKEY_free(pkey);
         if (i < 0) {
-            BIO_printf(bio_err, "Signature verification error\n");
+            BIO_printf(bio_err, "\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x76\x65\x72\x69\x66\x69\x63\x61\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
         if (i == 0) {
             BIO_printf(bio_err,
-                       "Signature did not match the certificate request\n");
+                       "\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x64\x69\x64\x20\x6e\x6f\x74\x20\x6d\x61\x74\x63\x68\x20\x74\x68\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\xa");
             goto end;
         } else
-            BIO_printf(bio_err, "Signature ok\n");
+            BIO_printf(bio_err, "\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x6f\x6b\xa");
 
-        print_name(bio_err, "subject=", X509_REQ_get_subject_name(req),
+        print_name(bio_err, "\x73\x75\x62\x6a\x65\x63\x74\x3d", X509_REQ_get_subject_name(req),
                    nmflag);
 
         if ((x = X509_new()) == NULL)
@@ -652,18 +652,18 @@ int MAIN(int argc, char **argv)
             EVP_PKEY_free(pkey);
         }
     } else
-        x = load_cert(bio_err, infile, informat, NULL, e, "Certificate");
+        x = load_cert(bio_err, infile, informat, NULL, e, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
 
     if (x == NULL)
         goto end;
     if (CA_flag) {
-        xca = load_cert(bio_err, CAfile, CAformat, NULL, e, "CA Certificate");
+        xca = load_cert(bio_err, CAfile, CAformat, NULL, e, "\x43\x41\x20\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
         if (xca == NULL)
             goto end;
     }
 
     if (!noout || text || next_serial) {
-        OBJ_create("2.99999.3", "SET.ex3", "SET x509v3 extension 3");
+        OBJ_create("\x32\x2e\x39\x39\x39\x39\x39\x2e\x33", "\x53\x45\x54\x2e\x65\x78\x33", "\x53\x45\x54\x20\x78\x35\x30\x39\x76\x33\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x20\x33");
 
         out = BIO_new(BIO_s_file());
         if (out == NULL) {
@@ -711,15 +711,15 @@ int MAIN(int argc, char **argv)
     if (num) {
         for (i = 1; i <= num; i++) {
             if (issuer == i) {
-                print_name(STDout, "issuer= ",
+                print_name(STDout, "\x69\x73\x73\x75\x65\x72\x3d\x20",
                            X509_get_issuer_name(x), nmflag);
             } else if (subject == i) {
-                print_name(STDout, "subject= ",
+                print_name(STDout, "\x73\x75\x62\x6a\x65\x63\x74\x3d\x20",
                            X509_get_subject_name(x), nmflag);
             } else if (serial == i) {
-                BIO_printf(STDout, "serial=");
+                BIO_printf(STDout, "\x73\x65\x72\x69\x61\x6c\x3d");
                 i2a_ASN1_INTEGER(STDout, X509_get_serialNumber(x));
-                BIO_printf(STDout, "\n");
+                BIO_printf(STDout, "\xa");
             } else if (next_serial == i) {
                 BIGNUM *bnser;
                 ASN1_INTEGER *ser;
@@ -735,7 +735,7 @@ int MAIN(int argc, char **argv)
                 BN_free(bnser);
                 i2a_ASN1_INTEGER(out, ser);
                 ASN1_INTEGER_free(ser);
-                BIO_puts(out, "\n");
+                BIO_puts(out, "\xa");
             } else if ((email == i) || (ocsp_uri == i)) {
                 int j;
                 STACK_OF(OPENSSL_STRING) *emlst;
@@ -744,36 +744,36 @@ int MAIN(int argc, char **argv)
                 else
                     emlst = X509_get1_ocsp(x);
                 for (j = 0; j < sk_OPENSSL_STRING_num(emlst); j++)
-                    BIO_printf(STDout, "%s\n",
+                    BIO_printf(STDout, "\x25\x73\xa",
                                sk_OPENSSL_STRING_value(emlst, j));
                 X509_email_free(emlst);
             } else if (aliasout == i) {
                 unsigned char *alstr;
                 alstr = X509_alias_get0(x, NULL);
                 if (alstr)
-                    BIO_printf(STDout, "%s\n", alstr);
+                    BIO_printf(STDout, "\x25\x73\xa", alstr);
                 else
-                    BIO_puts(STDout, "<No Alias>\n");
+                    BIO_puts(STDout, "\x3c\x4e\x6f\x20\x41\x6c\x69\x61\x73\x3e\xa");
             } else if (subject_hash == i) {
-                BIO_printf(STDout, "%08lx\n", X509_subject_name_hash(x));
+                BIO_printf(STDout, "\x25\x30\x38\x6c\x78\xa", X509_subject_name_hash(x));
             }
 #ifndef OPENSSL_NO_MD5
             else if (subject_hash_old == i) {
-                BIO_printf(STDout, "%08lx\n", X509_subject_name_hash_old(x));
+                BIO_printf(STDout, "\x25\x30\x38\x6c\x78\xa", X509_subject_name_hash_old(x));
             }
 #endif
             else if (issuer_hash == i) {
-                BIO_printf(STDout, "%08lx\n", X509_issuer_name_hash(x));
+                BIO_printf(STDout, "\x25\x30\x38\x6c\x78\xa", X509_issuer_name_hash(x));
             }
 #ifndef OPENSSL_NO_MD5
             else if (issuer_hash_old == i) {
-                BIO_printf(STDout, "%08lx\n", X509_issuer_name_hash_old(x));
+                BIO_printf(STDout, "\x25\x30\x38\x6c\x78\xa", X509_issuer_name_hash_old(x));
             }
 #endif
             else if (pprint == i) {
                 X509_PURPOSE *ptmp;
                 int j;
-                BIO_printf(STDout, "Certificate purposes:\n");
+                BIO_printf(STDout, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x70\x75\x72\x70\x6f\x73\x65\x73\x3a\xa");
                 for (j = 0; j < X509_PURPOSE_get_count(); j++) {
                     ptmp = X509_PURPOSE_get0(j);
                     purpose_print(STDout, x, ptmp);
@@ -783,11 +783,11 @@ int MAIN(int argc, char **argv)
 
                 pkey = X509_get_pubkey(x);
                 if (pkey == NULL) {
-                    BIO_printf(bio_err, "Modulus=unavailable\n");
+                    BIO_printf(bio_err, "\x4d\x6f\x64\x75\x6c\x75\x73\x3d\x75\x6e\x61\x76\x61\x69\x6c\x61\x62\x6c\x65\xa");
                     ERR_print_errors(bio_err);
                     goto end;
                 }
-                BIO_printf(STDout, "Modulus=");
+                BIO_printf(STDout, "\x4d\x6f\x64\x75\x6c\x75\x73\x3d");
 #ifndef OPENSSL_NO_RSA
                 if (pkey->type == EVP_PKEY_RSA)
                     BN_print(STDout, pkey->pkey.rsa->n);
@@ -798,15 +798,15 @@ int MAIN(int argc, char **argv)
                     BN_print(STDout, pkey->pkey.dsa->pub_key);
                 else
 #endif
-                    BIO_printf(STDout, "Wrong Algorithm type");
-                BIO_printf(STDout, "\n");
+                    BIO_printf(STDout, "\x57\x72\x6f\x6e\x67\x20\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x74\x79\x70\x65");
+                BIO_printf(STDout, "\xa");
                 EVP_PKEY_free(pkey);
             } else if (pubkey == i) {
                 EVP_PKEY *pkey;
 
                 pkey = X509_get_pubkey(x);
                 if (pkey == NULL) {
-                    BIO_printf(bio_err, "Error getting public key\n");
+                    BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
                     ERR_print_errors(bio_err);
                     goto end;
                 }
@@ -818,69 +818,69 @@ int MAIN(int argc, char **argv)
                 int y, z;
 
                 X509_NAME_oneline(X509_get_subject_name(x), buf, sizeof buf);
-                BIO_printf(STDout, "/* subject:%s */\n", buf);
+                BIO_printf(STDout, "\x2f\x2a\x20\x73\x75\x62\x6a\x65\x63\x74\x3a\x25\x73\x20\x2a\x2f\xa", buf);
                 m = X509_NAME_oneline(X509_get_issuer_name(x), buf,
                                       sizeof buf);
-                BIO_printf(STDout, "/* issuer :%s */\n", buf);
+                BIO_printf(STDout, "\x2f\x2a\x20\x69\x73\x73\x75\x65\x72\x20\x3a\x25\x73\x20\x2a\x2f\xa", buf);
 
                 z = i2d_X509(x, NULL);
                 m = OPENSSL_malloc(z);
                 if (!m) {
-                    BIO_printf(bio_err, "Out of memory\n");
+                    BIO_printf(bio_err, "\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
                     ERR_print_errors(bio_err);
                     goto end;
                 }
 
                 d = (unsigned char *)m;
                 z = i2d_X509_NAME(X509_get_subject_name(x), &d);
-                BIO_printf(STDout, "unsigned char XXX_subject_name[%d]={\n",
+                BIO_printf(STDout, "\x75\x6e\x73\x69\x67\x6e\x65\x64\x20\x63\x68\x61\x72\x20\x58\x58\x58\x5f\x73\x75\x62\x6a\x65\x63\x74\x5f\x6e\x61\x6d\x65\x5b\x25\x64\x5d\x3d\x7b\xa",
                            z);
                 d = (unsigned char *)m;
                 for (y = 0; y < z; y++) {
-                    BIO_printf(STDout, "0x%02X,", d[y]);
+                    BIO_printf(STDout, "\x30\x78\x25\x30\x32\x58\x2c", d[y]);
                     if ((y & 0x0f) == 0x0f)
-                        BIO_printf(STDout, "\n");
+                        BIO_printf(STDout, "\xa");
                 }
                 if (y % 16 != 0)
-                    BIO_printf(STDout, "\n");
-                BIO_printf(STDout, "};\n");
+                    BIO_printf(STDout, "\xa");
+                BIO_printf(STDout, "\x7d\x3b\xa");
 
                 z = i2d_X509_PUBKEY(X509_get_X509_PUBKEY(x), &d);
-                BIO_printf(STDout, "unsigned char XXX_public_key[%d]={\n", z);
+                BIO_printf(STDout, "\x75\x6e\x73\x69\x67\x6e\x65\x64\x20\x63\x68\x61\x72\x20\x58\x58\x58\x5f\x70\x75\x62\x6c\x69\x63\x5f\x6b\x65\x79\x5b\x25\x64\x5d\x3d\x7b\xa", z);
                 d = (unsigned char *)m;
                 for (y = 0; y < z; y++) {
-                    BIO_printf(STDout, "0x%02X,", d[y]);
+                    BIO_printf(STDout, "\x30\x78\x25\x30\x32\x58\x2c", d[y]);
                     if ((y & 0x0f) == 0x0f)
-                        BIO_printf(STDout, "\n");
+                        BIO_printf(STDout, "\xa");
                 }
                 if (y % 16 != 0)
-                    BIO_printf(STDout, "\n");
-                BIO_printf(STDout, "};\n");
+                    BIO_printf(STDout, "\xa");
+                BIO_printf(STDout, "\x7d\x3b\xa");
 
                 z = i2d_X509(x, &d);
-                BIO_printf(STDout, "unsigned char XXX_certificate[%d]={\n",
+                BIO_printf(STDout, "\x75\x6e\x73\x69\x67\x6e\x65\x64\x20\x63\x68\x61\x72\x20\x58\x58\x58\x5f\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x5b\x25\x64\x5d\x3d\x7b\xa",
                            z);
                 d = (unsigned char *)m;
                 for (y = 0; y < z; y++) {
-                    BIO_printf(STDout, "0x%02X,", d[y]);
+                    BIO_printf(STDout, "\x30\x78\x25\x30\x32\x58\x2c", d[y]);
                     if ((y & 0x0f) == 0x0f)
-                        BIO_printf(STDout, "\n");
+                        BIO_printf(STDout, "\xa");
                 }
                 if (y % 16 != 0)
-                    BIO_printf(STDout, "\n");
-                BIO_printf(STDout, "};\n");
+                    BIO_printf(STDout, "\xa");
+                BIO_printf(STDout, "\x7d\x3b\xa");
 
                 OPENSSL_free(m);
             } else if (text == i) {
                 X509_print_ex(STDout, x, nmflag, certflag);
             } else if (startdate == i) {
-                BIO_puts(STDout, "notBefore=");
+                BIO_puts(STDout, "\x6e\x6f\x74\x42\x65\x66\x6f\x72\x65\x3d");
                 ASN1_TIME_print(STDout, X509_get_notBefore(x));
-                BIO_puts(STDout, "\n");
+                BIO_puts(STDout, "\xa");
             } else if (enddate == i) {
-                BIO_puts(STDout, "notAfter=");
+                BIO_puts(STDout, "\x6e\x6f\x74\x41\x66\x74\x65\x72\x3d");
                 ASN1_TIME_print(STDout, X509_get_notAfter(x));
-                BIO_puts(STDout, "\n");
+                BIO_puts(STDout, "\xa");
             } else if (fingerprint == i) {
                 int j;
                 unsigned int n;
@@ -891,24 +891,24 @@ int MAIN(int argc, char **argv)
                     fdig = EVP_sha1();
 
                 if (!X509_digest(x, fdig, md, &n)) {
-                    BIO_printf(bio_err, "out of memory\n");
+                    BIO_printf(bio_err, "\x6f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
                     goto end;
                 }
-                BIO_printf(STDout, "%s Fingerprint=",
+                BIO_printf(STDout, "\x25\x73\x20\x46\x69\x6e\x67\x65\x72\x70\x72\x69\x6e\x74\x3d",
                            OBJ_nid2sn(EVP_MD_type(fdig)));
                 for (j = 0; j < (int)n; j++) {
-                    BIO_printf(STDout, "%02X%c", md[j], (j + 1 == (int)n)
-                               ? '\n' : ':');
+                    BIO_printf(STDout, "\x25\x30\x32\x58\x25\x63", md[j], (j + 1 == (int)n)
+                               ? '\xa' : '\x3a');
                 }
             }
 
             /* should be in the library */
             else if ((sign_flag == i) && (x509req == 0)) {
-                BIO_printf(bio_err, "Getting Private key\n");
+                BIO_printf(bio_err, "\x47\x65\x74\x74\x69\x6e\x67\x20\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\xa");
                 if (Upkey == NULL) {
                     Upkey = load_key(bio_err,
                                      keyfile, keyformat, 0,
-                                     passin, e, "Private key");
+                                     passin, e, "\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
                     if (Upkey == NULL)
                         goto end;
                 }
@@ -917,11 +917,11 @@ int MAIN(int argc, char **argv)
                 if (!sign(x, Upkey, days, clrext, digest, extconf, extsect))
                     goto end;
             } else if (CA_flag == i) {
-                BIO_printf(bio_err, "Getting CA Private Key\n");
+                BIO_printf(bio_err, "\x47\x65\x74\x74\x69\x6e\x67\x20\x43\x41\x20\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79\xa");
                 if (CAkeyfile != NULL) {
                     CApkey = load_key(bio_err,
                                       CAkeyfile, CAkeyformat,
-                                      0, passin, e, "CA Private Key");
+                                      0, passin, e, "\x43\x41\x20\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79");
                     if (CApkey == NULL)
                         goto end;
                 }
@@ -935,19 +935,19 @@ int MAIN(int argc, char **argv)
             } else if (x509req == i) {
                 EVP_PKEY *pk;
 
-                BIO_printf(bio_err, "Getting request Private Key\n");
+                BIO_printf(bio_err, "\x47\x65\x74\x74\x69\x6e\x67\x20\x72\x65\x71\x75\x65\x73\x74\x20\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79\xa");
                 if (keyfile == NULL) {
-                    BIO_printf(bio_err, "no request key file specified\n");
+                    BIO_printf(bio_err, "\x6e\x6f\x20\x72\x65\x71\x75\x65\x73\x74\x20\x6b\x65\x79\x20\x66\x69\x6c\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
                     goto end;
                 } else {
                     pk = load_key(bio_err,
                                   keyfile, keyformat, 0,
-                                  passin, e, "request key");
+                                  passin, e, "\x72\x65\x71\x75\x65\x73\x74\x20\x6b\x65\x79");
                     if (pk == NULL)
                         goto end;
                 }
 
-                BIO_printf(bio_err, "Generating certificate request\n");
+                BIO_printf(bio_err, "\x47\x65\x6e\x65\x72\x61\x74\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\xa");
 
                 rq = X509_to_X509_REQ(x, pk, digest);
                 EVP_PKEY_free(pk);
@@ -970,10 +970,10 @@ int MAIN(int argc, char **argv)
         time_t tcheck = time(NULL) + checkoffset;
 
         if (X509_cmp_time(X509_get_notAfter(x), &tcheck) < 0) {
-            BIO_printf(out, "Certificate will expire\n");
+            BIO_printf(out, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x77\x69\x6c\x6c\x20\x65\x78\x70\x69\x72\x65\xa");
             ret = 1;
         } else {
-            BIO_printf(out, "Certificate will not expire\n");
+            BIO_printf(out, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x77\x69\x6c\x6c\x20\x6e\x6f\x74\x20\x65\x78\x70\x69\x72\x65\xa");
             ret = 0;
         }
         goto end;
@@ -1007,11 +1007,11 @@ int MAIN(int argc, char **argv)
 
         i = ASN1_item_i2d_bio(ASN1_ITEM_rptr(NETSCAPE_X509), out, &nx);
     } else {
-        BIO_printf(bio_err, "bad output format specified for outfile\n");
+        BIO_printf(bio_err, "\x62\x61\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6f\x75\x74\x66\x69\x6c\x65\xa");
         goto end;
     }
     if (!i) {
-        BIO_printf(bio_err, "unable to write certificate\n");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -1056,14 +1056,14 @@ static ASN1_INTEGER *x509_load_serial(char *CAfile, char *serialfile,
            : (strlen(serialfile))) + 1;
     buf = OPENSSL_malloc(len);
     if (buf == NULL) {
-        BIO_printf(bio_err, "out of mem\n");
+        BIO_printf(bio_err, "\x6f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\xa");
         goto end;
     }
     if (serialfile == NULL) {
         BUF_strlcpy(buf, CAfile, len);
         for (p = buf; *p; p++)
-            if (*p == '.') {
-                *p = '\0';
+            if (*p == '\x2e') {
+                *p = '\x0';
                 break;
             }
         BUF_strlcat(buf, POSTFIX, len);
@@ -1075,7 +1075,7 @@ static ASN1_INTEGER *x509_load_serial(char *CAfile, char *serialfile,
         goto end;
 
     if (!BN_add_word(serial, 1)) {
-        BIO_printf(bio_err, "add_word failure\n");
+        BIO_printf(bio_err, "\x61\x64\x64\x5f\x77\x6f\x72\x64\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
         goto end;
     }
 
@@ -1103,14 +1103,14 @@ static int x509_certify(X509_STORE *ctx, char *CAfile, const EVP_MD *digest,
 
     upkey = X509_get_pubkey(xca);
     if (upkey == NULL)  {
-        BIO_printf(bio_err, "Error obtaining CA X509 public key\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6f\x62\x74\x61\x69\x6e\x69\x6e\x67\x20\x43\x41\x20\x58\x35\x30\x39\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
         goto end;
     }
     EVP_PKEY_copy_parameters(upkey, pkey);
     EVP_PKEY_free(upkey);
 
     if (!X509_STORE_CTX_init(&xsc, ctx, x, NULL)) {
-        BIO_printf(bio_err, "Error initialising X509 store\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x69\x6e\x67\x20\x58\x35\x30\x39\x20\x73\x74\x6f\x72\x65\xa");
         goto end;
     }
     if (sno)
@@ -1131,7 +1131,7 @@ static int x509_certify(X509_STORE *ctx, char *CAfile, const EVP_MD *digest,
 
     if (!X509_check_private_key(xca, pkey)) {
         BIO_printf(bio_err,
-                   "CA certificate and CA private key do not match\n");
+                   "\x43\x41\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x61\x6e\x64\x20\x43\x41\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x64\x6f\x20\x6e\x6f\x74\x20\x6d\x61\x74\x63\x68\xa");
         goto end;
     }
 
@@ -1197,13 +1197,13 @@ static int MS_CALLBACK callb(int ok, X509_STORE_CTX *ctx)
      */
     if (ok) {
         BIO_printf(bio_err,
-                   "error with certificate to be certified - should be self signed\n");
+                   "\x65\x72\x72\x6f\x72\x20\x77\x69\x74\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x74\x6f\x20\x62\x65\x20\x63\x65\x72\x74\x69\x66\x69\x65\x64\x20\x2d\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x73\x65\x6c\x66\x20\x73\x69\x67\x6e\x65\x64\xa");
         return 0;
     } else {
         err_cert = X509_STORE_CTX_get_current_cert(ctx);
         print_name(bio_err, NULL, X509_get_subject_name(err_cert), 0);
         BIO_printf(bio_err,
-                   "error with certificate - error %d at depth %d\n%s\n", err,
+                   "\x65\x72\x72\x6f\x72\x20\x77\x69\x74\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x2d\x20\x65\x72\x72\x6f\x72\x20\x25\x64\x20\x61\x74\x20\x64\x65\x70\x74\x68\x20\x25\x64\xa\x25\x73\xa", err,
                    X509_STORE_CTX_get_error_depth(ctx),
                    X509_verify_cert_error_string(err));
         return 1;
@@ -1266,13 +1266,13 @@ static int purpose_print(BIO *bio, X509 *cert, X509_PURPOSE *pt)
     pname = X509_PURPOSE_get0_name(pt);
     for (i = 0; i < 2; i++) {
         idret = X509_check_purpose(cert, id, i);
-        BIO_printf(bio, "%s%s : ", pname, i ? " CA" : "");
+        BIO_printf(bio, "\x25\x73\x25\x73\x20\x3a\x20", pname, i ? "\x20\x43\x41" : "");
         if (idret == 1)
-            BIO_printf(bio, "Yes\n");
+            BIO_printf(bio, "\x59\x65\x73\xa");
         else if (idret == 0)
-            BIO_printf(bio, "No\n");
+            BIO_printf(bio, "\x4e\x6f\xa");
         else
-            BIO_printf(bio, "Yes (WARNING code=%d)\n", idret);
+            BIO_printf(bio, "\x59\x65\x73\x20\x28\x57\x41\x52\x4e\x49\x4e\x47\x20\x63\x6f\x64\x65\x3d\x25\x64\x29\xa", idret);
     }
     return 1;
 }

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -88,7 +88,7 @@ int X509_NAME_get_text_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, char *buf,
     if (buf == NULL)
         return (data->length);
     memcpy(buf, data->data, i);
-    buf[i] = '\0';
+    buf[i] = '\x0';
     return (i);
 }
 
@@ -293,7 +293,7 @@ X509_NAME_ENTRY *X509_NAME_ENTRY_create_by_txt(X509_NAME_ENTRY **ne,
     if (obj == NULL) {
         X509err(X509_F_X509_NAME_ENTRY_CREATE_BY_TXT,
                 X509_R_INVALID_FIELD_NAME);
-        ERR_add_error_data(2, "name=", field);
+        ERR_add_error_data(2, "\x6e\x61\x6d\x65\x3d", field);
         return (NULL);
     }
     nentry = X509_NAME_ENTRY_create_by_OBJ(ne, obj, type, bytes, len);

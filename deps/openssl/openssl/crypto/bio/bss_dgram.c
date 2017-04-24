@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -127,7 +127,7 @@ static void get_current_time(struct timeval *t);
 
 static BIO_METHOD methods_dgramp = {
     BIO_TYPE_DGRAM,
-    "datagram socket",
+    "\x64\x61\x74\x61\x67\x72\x61\x6d\x20\x73\x6f\x63\x6b\x65\x74",
     dgram_write,
     dgram_read,
     dgram_puts,
@@ -141,7 +141,7 @@ static BIO_METHOD methods_dgramp = {
 # ifndef OPENSSL_NO_SCTP
 static BIO_METHOD methods_dgramp_sctp = {
     BIO_TYPE_DGRAM_SCTP,
-    "datagram sctp socket",
+    "\x64\x61\x74\x61\x67\x72\x61\x6d\x20\x73\x63\x74\x70\x20\x73\x6f\x63\x6b\x65\x74",
     dgram_sctp_write,
     dgram_sctp_read,
     dgram_sctp_puts,
@@ -284,7 +284,7 @@ static void dgram_adjust_rcv_timeout(BIO *b)
         sz.i = sizeof(timeout);
         if (getsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO,
                        (void *)&timeout, &sz.i) < 0) {
-            perror("getsockopt");
+            perror("\x67\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
         } else {
             data->socket_timeout.tv_sec = timeout / 1000;
             data->socket_timeout.tv_usec = (timeout % 1000) * 1000;
@@ -293,7 +293,7 @@ static void dgram_adjust_rcv_timeout(BIO *b)
         sz.i = sizeof(data->socket_timeout);
         if (getsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO,
                        &(data->socket_timeout), (void *)&sz) < 0) {
-            perror("getsockopt");
+            perror("\x67\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
         } else if (sizeof(sz.s) != sizeof(sz.i) && sz.i == 0)
             OPENSSL_assert(sz.s <= sizeof(data->socket_timeout));
 #  endif
@@ -329,12 +329,12 @@ static void dgram_adjust_rcv_timeout(BIO *b)
             timeout = timeleft.tv_sec * 1000 + timeleft.tv_usec / 1000;
             if (setsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO,
                            (void *)&timeout, sizeof(timeout)) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
             }
 #  else
             if (setsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO, &timeleft,
                            sizeof(struct timeval)) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
             }
 #  endif
         }
@@ -354,13 +354,13 @@ static void dgram_reset_rcv_timeout(BIO *b)
             data->socket_timeout.tv_usec / 1000;
         if (setsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO,
                        (void *)&timeout, sizeof(timeout)) < 0) {
-            perror("setsockopt");
+            perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
         }
 #  else
         if (setsockopt
             (b->num, SOL_SOCKET, SO_RCVTIMEO, &(data->socket_timeout),
              sizeof(struct timeval)) < 0) {
-            perror("setsockopt");
+            perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
         }
 #  endif
     }
@@ -557,7 +557,7 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
         to = (struct sockaddr *)ptr;
 # if 0
         if (connect(b->num, to, sizeof(struct sockaddr)) < 0) {
-            perror("connect");
+            perror("\x63\x6f\x6e\x6e\x65\x63\x74");
             ret = 0;
         } else {
 # endif
@@ -592,14 +592,14 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
             sockopt_val = IP_PMTUDISC_DO;
             if ((ret = setsockopt(b->num, IPPROTO_IP, IP_MTU_DISCOVER,
                                   &sockopt_val, sizeof(sockopt_val))) < 0)
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
             break;
 #  if OPENSSL_USE_IPV6 && defined(IPV6_MTU_DISCOVER) && defined(IPV6_PMTUDISC_DO)
         case AF_INET6:
             sockopt_val = IPV6_PMTUDISC_DO;
             if ((ret = setsockopt(b->num, IPPROTO_IPV6, IPV6_MTU_DISCOVER,
                                   &sockopt_val, sizeof(sockopt_val))) < 0)
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
             break;
 #  endif
         default:
@@ -755,14 +755,14 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
             int timeout = tv->tv_sec * 1000 + tv->tv_usec / 1000;
             if (setsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO,
                            (void *)&timeout, sizeof(timeout)) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             }
         }
 #  else
         if (setsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO, ptr,
                        sizeof(struct timeval)) < 0) {
-            perror("setsockopt");
+            perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
             ret = -1;
         }
 #  endif
@@ -782,7 +782,7 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
             sz.i = sizeof(timeout);
             if (getsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO,
                            (void *)&timeout, &sz.i) < 0) {
-                perror("getsockopt");
+                perror("\x67\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             } else {
                 tv->tv_sec = timeout / 1000;
@@ -793,7 +793,7 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
             sz.i = sizeof(struct timeval);
             if (getsockopt(b->num, SOL_SOCKET, SO_RCVTIMEO,
                            ptr, (void *)&sz) < 0) {
-                perror("getsockopt");
+                perror("\x67\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             } else if (sizeof(sz.s) != sizeof(sz.i) && sz.i == 0) {
                 OPENSSL_assert(sz.s <= sizeof(struct timeval));
@@ -812,14 +812,14 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
             int timeout = tv->tv_sec * 1000 + tv->tv_usec / 1000;
             if (setsockopt(b->num, SOL_SOCKET, SO_SNDTIMEO,
                            (void *)&timeout, sizeof(timeout)) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             }
         }
 #  else
         if (setsockopt(b->num, SOL_SOCKET, SO_SNDTIMEO, ptr,
                        sizeof(struct timeval)) < 0) {
-            perror("setsockopt");
+            perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
             ret = -1;
         }
 #  endif
@@ -839,7 +839,7 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
             sz.i = sizeof(timeout);
             if (getsockopt(b->num, SOL_SOCKET, SO_SNDTIMEO,
                            (void *)&timeout, &sz.i) < 0) {
-                perror("getsockopt");
+                perror("\x67\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             } else {
                 tv->tv_sec = timeout / 1000;
@@ -850,7 +850,7 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
             sz.i = sizeof(struct timeval);
             if (getsockopt(b->num, SOL_SOCKET, SO_SNDTIMEO,
                            ptr, (void *)&sz) < 0) {
-                perror("getsockopt");
+                perror("\x67\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             } else if (sizeof(sz.s) != sizeof(sz.i) && sz.i == 0) {
                 OPENSSL_assert(sz.s <= sizeof(struct timeval));
@@ -892,21 +892,21 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
 # if defined(IP_DONTFRAG)
             if ((ret = setsockopt(b->num, IPPROTO_IP, IP_DONTFRAG,
                                   &sockopt_val, sizeof(sockopt_val))) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             }
 # elif defined(OPENSSL_SYS_LINUX) && defined(IP_MTU_DISCOVER) && defined (IP_PMTUDISC_PROBE)
             if ((sockopt_val = num ? IP_PMTUDISC_PROBE : IP_PMTUDISC_DONT),
                 (ret = setsockopt(b->num, IPPROTO_IP, IP_MTU_DISCOVER,
                                   &sockopt_val, sizeof(sockopt_val))) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             }
 # elif defined(OPENSSL_SYS_WINDOWS) && defined(IP_DONTFRAGMENT)
             if ((ret = setsockopt(b->num, IPPROTO_IP, IP_DONTFRAGMENT,
                                   (const char *)&sockopt_val,
                                   sizeof(sockopt_val))) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             }
 # else
@@ -919,14 +919,14 @@ static long dgram_ctrl(BIO *b, int cmd, long num, void *ptr)
             if ((ret = setsockopt(b->num, IPPROTO_IPV6, IPV6_DONTFRAG,
                                   (const void *)&sockopt_val,
                                   sizeof(sockopt_val))) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             }
 #  elif defined(OPENSSL_SYS_LINUX) && defined(IPV6_MTUDISCOVER)
             if ((sockopt_val = num ? IP_PMTUDISC_PROBE : IP_PMTUDISC_DONT),
                 (ret = setsockopt(b->num, IPPROTO_IPV6, IPV6_MTU_DISCOVER,
                                   &sockopt_val, sizeof(sockopt_val))) < 0) {
-                perror("setsockopt");
+                perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
                 ret = -1;
             }
 #  else

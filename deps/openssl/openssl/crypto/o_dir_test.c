@@ -39,11 +39,11 @@
 #include "o_dir.h"
 
 #if defined OPENSSL_SYS_UNIX || defined OPENSSL_SYS_WIN32 || defined OPENSSL_SYS_WINCE
-# define CURRDIR "."
+# define CURRDIR "\x2e"
 #elif defined OPENSSL_SYS_VMS
-# define CURRDIR "SYS$DISK:[]"
+# define CURRDIR "\x53\x59\x53\x24\x44\x49\x53\x4b\x3a\x5b\x5d"
 #else
-# error "No supported platform defined!"
+# error "\x4e\x6f\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x70\x6c\x61\x74\x66\x6f\x72\x6d\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 
 int main()
@@ -52,16 +52,16 @@ int main()
     const char *result;
 
     while ((result = OPENSSL_DIR_read(&ctx, CURRDIR)) != NULL) {
-        printf("%s\n", result);
+        printf("\x25\x73\xa", result);
     }
 
     if (errno) {
-        perror("test_dir");
+        perror("\x74\x65\x73\x74\x5f\x64\x69\x72");
         exit(1);
     }
 
     if (!OPENSSL_DIR_end(&ctx)) {
-        perror("test_dir");
+        perror("\x74\x65\x73\x74\x5f\x64\x69\x72");
         exit(2);
     }
     exit(0);

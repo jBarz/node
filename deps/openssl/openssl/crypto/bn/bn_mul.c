@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -97,7 +97,7 @@ BN_ULONG bn_sub_part_words(BN_ULONG *r,
 
     if (dl < 0) {
 # ifdef BN_COUNT
-        fprintf(stderr, "  bn_sub_part_words %d + %d (dl < 0, c = %d)\n", cl,
+        fprintf(stderr, "\x20\x20\x62\x6e\x5f\x73\x75\x62\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3c\x20\x30\x2c\x20\x63\x20\x3d\x20\x25\x64\x29\xa", cl,
                 dl, c);
 # endif
         for (;;) {
@@ -135,7 +135,7 @@ BN_ULONG bn_sub_part_words(BN_ULONG *r,
     } else {
         int save_dl = dl;
 # ifdef BN_COUNT
-        fprintf(stderr, "  bn_sub_part_words %d + %d (dl > 0, c = %d)\n", cl,
+        fprintf(stderr, "\x20\x20\x62\x6e\x5f\x73\x75\x62\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3e\x20\x30\x2c\x20\x63\x20\x3d\x20\x25\x64\x29\xa", cl,
                 dl, c);
 # endif
         while (c) {
@@ -173,7 +173,7 @@ BN_ULONG bn_sub_part_words(BN_ULONG *r,
         }
         if (dl > 0) {
 # ifdef BN_COUNT
-            fprintf(stderr, "  bn_sub_part_words %d + %d (dl > 0, c == 0)\n",
+            fprintf(stderr, "\x20\x20\x62\x6e\x5f\x73\x75\x62\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3e\x20\x30\x2c\x20\x63\x20\x3d\x3d\x20\x30\x29\xa",
                     cl, dl);
 # endif
             if (save_dl > dl) {
@@ -197,7 +197,7 @@ BN_ULONG bn_sub_part_words(BN_ULONG *r,
         }
         if (dl > 0) {
 # ifdef BN_COUNT
-            fprintf(stderr, "  bn_sub_part_words %d + %d (dl > 0, copy)\n",
+            fprintf(stderr, "\x20\x20\x62\x6e\x5f\x73\x75\x62\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3e\x20\x30\x2c\x20\x63\x6f\x70\x79\x29\xa",
                     cl, dl);
 # endif
             for (;;) {
@@ -242,7 +242,7 @@ BN_ULONG bn_add_part_words(BN_ULONG *r,
     if (dl < 0) {
         int save_dl = dl;
 #ifdef BN_COUNT
-        fprintf(stderr, "  bn_add_part_words %d + %d (dl < 0, c = %d)\n", cl,
+        fprintf(stderr, "\x20\x20\x62\x6e\x5f\x61\x64\x64\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3c\x20\x30\x2c\x20\x63\x20\x3d\x20\x25\x64\x29\xa", cl,
                 dl, c);
 #endif
         while (c) {
@@ -276,7 +276,7 @@ BN_ULONG bn_add_part_words(BN_ULONG *r,
         }
         if (dl < 0) {
 #ifdef BN_COUNT
-            fprintf(stderr, "  bn_add_part_words %d + %d (dl < 0, c == 0)\n",
+            fprintf(stderr, "\x20\x20\x62\x6e\x5f\x61\x64\x64\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3c\x20\x30\x2c\x20\x63\x20\x3d\x3d\x20\x30\x29\xa",
                     cl, dl);
 #endif
             if (save_dl < dl) {
@@ -300,7 +300,7 @@ BN_ULONG bn_add_part_words(BN_ULONG *r,
         }
         if (dl < 0) {
 #ifdef BN_COUNT
-            fprintf(stderr, "  bn_add_part_words %d + %d (dl < 0, copy)\n",
+            fprintf(stderr, "\x20\x20\x62\x6e\x5f\x61\x64\x64\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3c\x20\x30\x2c\x20\x63\x6f\x70\x79\x29\xa",
                     cl, dl);
 #endif
             for (;;) {
@@ -324,7 +324,7 @@ BN_ULONG bn_add_part_words(BN_ULONG *r,
     } else {
         int save_dl = dl;
 #ifdef BN_COUNT
-        fprintf(stderr, "  bn_add_part_words %d + %d (dl > 0)\n", cl, dl);
+        fprintf(stderr, "\x20\x20\x62\x6e\x5f\x61\x64\x64\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3e\x20\x30\x29\xa", cl, dl);
 #endif
         while (c) {
             t = (a[0] + c) & BN_MASK2;
@@ -356,7 +356,7 @@ BN_ULONG bn_add_part_words(BN_ULONG *r,
             r += 4;
         }
 #ifdef BN_COUNT
-        fprintf(stderr, "  bn_add_part_words %d + %d (dl > 0, c == 0)\n", cl,
+        fprintf(stderr, "\x20\x20\x62\x6e\x5f\x61\x64\x64\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3e\x20\x30\x2c\x20\x63\x20\x3d\x3d\x20\x30\x29\xa", cl,
                 dl);
 #endif
         if (dl > 0) {
@@ -381,7 +381,7 @@ BN_ULONG bn_add_part_words(BN_ULONG *r,
         }
         if (dl > 0) {
 #ifdef BN_COUNT
-            fprintf(stderr, "  bn_add_part_words %d + %d (dl > 0, copy)\n",
+            fprintf(stderr, "\x20\x20\x62\x6e\x5f\x61\x64\x64\x5f\x70\x61\x72\x74\x5f\x77\x6f\x72\x64\x73\x20\x25\x64\x20\x2b\x20\x25\x64\x20\x28\x64\x6c\x20\x3e\x20\x30\x2c\x20\x63\x6f\x70\x79\x29\xa",
                     cl, dl);
 #endif
             for (;;) {
@@ -433,7 +433,7 @@ void bn_mul_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n2,
     BN_ULONG ln, lo, *p;
 
 # ifdef BN_COUNT
-    fprintf(stderr, " bn_mul_recursive %d%+d * %d%+d\n", n2, dna, n2, dnb);
+    fprintf(stderr, "\x20\x62\x6e\x5f\x6d\x75\x6c\x5f\x72\x65\x63\x75\x72\x73\x69\x76\x65\x20\x25\x64\x25\x2b\x64\x20\x2a\x20\x25\x64\x25\x2b\x64\xa", n2, dna, n2, dnb);
 # endif
 # ifdef BN_MUL_COMBA
 #  if 0
@@ -582,7 +582,7 @@ void bn_mul_part_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n,
     BN_ULONG ln, lo, *p;
 
 # ifdef BN_COUNT
-    fprintf(stderr, " bn_mul_part_recursive (%d%+d) * (%d%+d)\n",
+    fprintf(stderr, "\x20\x62\x6e\x5f\x6d\x75\x6c\x5f\x70\x61\x72\x74\x5f\x72\x65\x63\x75\x72\x73\x69\x76\x65\x20\x28\x25\x64\x25\x2b\x64\x29\x20\x2a\x20\x28\x25\x64\x25\x2b\x64\x29\xa",
             n, tna, n, tnb);
 # endif
     if (n < 8) {
@@ -742,7 +742,7 @@ void bn_mul_low_recursive(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n2,
     int n = n2 / 2;
 
 # ifdef BN_COUNT
-    fprintf(stderr, " bn_mul_low_recursive %d * %d\n", n2, n2);
+    fprintf(stderr, "\x20\x62\x6e\x5f\x6d\x75\x6c\x5f\x6c\x6f\x77\x5f\x72\x65\x63\x75\x72\x73\x69\x76\x65\x20\x25\x64\x20\x2a\x20\x25\x64\xa", n2, n2);
 # endif
 
     bn_mul_recursive(r, a, b, n, 0, 0, &(t[0]));
@@ -774,7 +774,7 @@ void bn_mul_high(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, BN_ULONG *l, int n2,
     BN_ULONG ll, lc, *lp, *mp;
 
 # ifdef BN_COUNT
-    fprintf(stderr, " bn_mul_high %d * %d\n", n2, n2);
+    fprintf(stderr, "\x20\x62\x6e\x5f\x6d\x75\x6c\x5f\x68\x69\x67\x68\x20\x25\x64\x20\x2a\x20\x25\x64\xa", n2, n2);
 # endif
     n = n2 / 2;
 
@@ -948,7 +948,7 @@ int BN_mul(BIGNUM *r, const BIGNUM *a, const BIGNUM *b, BN_CTX *ctx)
 #endif
 
 #ifdef BN_COUNT
-    fprintf(stderr, "BN_mul %d * %d\n", a->top, b->top);
+    fprintf(stderr, "\x42\x4e\x5f\x6d\x75\x6c\x20\x25\x64\x20\x2a\x20\x25\x64\xa", a->top, b->top);
 #endif
 
     bn_check_top(a);
@@ -1098,7 +1098,7 @@ void bn_mul_normal(BN_ULONG *r, BN_ULONG *a, int na, BN_ULONG *b, int nb)
     BN_ULONG *rr;
 
 #ifdef BN_COUNT
-    fprintf(stderr, " bn_mul_normal %d * %d\n", na, nb);
+    fprintf(stderr, "\x20\x62\x6e\x5f\x6d\x75\x6c\x5f\x6e\x6f\x72\x6d\x61\x6c\x20\x25\x64\x20\x2a\x20\x25\x64\xa", na, nb);
 #endif
 
     if (na < nb) {
@@ -1142,7 +1142,7 @@ void bn_mul_normal(BN_ULONG *r, BN_ULONG *a, int na, BN_ULONG *b, int nb)
 void bn_mul_low_normal(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n)
 {
 #ifdef BN_COUNT
-    fprintf(stderr, " bn_mul_low_normal %d * %d\n", n, n);
+    fprintf(stderr, "\x20\x62\x6e\x5f\x6d\x75\x6c\x5f\x6c\x6f\x77\x5f\x6e\x6f\x72\x6d\x61\x6c\x20\x25\x64\x20\x2a\x20\x25\x64\xa", n, n);
 #endif
     bn_mul_words(r, a, n, b[0]);
 

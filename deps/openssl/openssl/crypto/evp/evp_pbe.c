@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -134,14 +134,14 @@ int main(int argc, char **argv)
 
     for (i = 0; i < sizeof(builtin_pbe) / sizeof(EVP_PBE_CTL); i++) {
         tpbe = builtin_pbe + i;
-        fprintf(stderr, "%d %d %s ", tpbe->pbe_type, tpbe->pbe_nid,
+        fprintf(stderr, "\x25\x64\x20\x25\x64\x20\x25\x73\x20", tpbe->pbe_type, tpbe->pbe_nid,
                 OBJ_nid2sn(tpbe->pbe_nid));
         if (EVP_PBE_find(tpbe->pbe_type, tpbe->pbe_nid,
                          &nid_cipher, &nid_md, 0))
-            fprintf(stderr, "Found %s %s\n",
+            fprintf(stderr, "\x46\x6f\x75\x6e\x64\x20\x25\x73\x20\x25\x73\xa",
                     OBJ_nid2sn(nid_cipher), OBJ_nid2sn(nid_md));
         else
-            fprintf(stderr, "Find ERROR!!\n");
+            fprintf(stderr, "\x46\x69\x6e\x64\x20\x45\x52\x52\x4f\x52\x21\x21\xa");
     }
 
     return 0;
@@ -161,10 +161,10 @@ int EVP_PBE_CipherInit(ASN1_OBJECT *pbe_obj, const char *pass, int passlen,
         char obj_tmp[80];
         EVPerr(EVP_F_EVP_PBE_CIPHERINIT, EVP_R_UNKNOWN_PBE_ALGORITHM);
         if (!pbe_obj)
-            BUF_strlcpy(obj_tmp, "NULL", sizeof obj_tmp);
+            BUF_strlcpy(obj_tmp, "\x4e\x55\x4c\x4c", sizeof obj_tmp);
         else
             i2t_ASN1_OBJECT(obj_tmp, sizeof obj_tmp, pbe_obj);
-        ERR_add_error_data(2, "TYPE=", obj_tmp);
+        ERR_add_error_data(2, "\x54\x59\x50\x45\x3d", obj_tmp);
         return 0;
     }
 

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,7 +111,7 @@
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
  *
- * Portions of the attached software ("Contribution") are developed by
+ * Portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") are developed by
  * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
  *
  * The Contribution is licensed pursuant to the OpenSSL open source
@@ -124,12 +124,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -141,7 +141,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -157,7 +157,7 @@
 # include <openssl/dh.h>
 #endif
 
-const char ssl3_version_str[] = "SSLv3" OPENSSL_VERSION_PTEXT;
+const char ssl3_version_str[] = "\x53\x53\x4c\x76\x33" OPENSSL_VERSION_PTEXT;
 
 #define SSL3_NUM_CIPHERS        (sizeof(ssl3_ciphers)/sizeof(SSL_CIPHER))
 
@@ -1551,7 +1551,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
 
     {
      1,
-     "GOST94-GOST89-GOST89",
+     "\x47\x4f\x53\x54\x39\x34\x2d\x47\x4f\x53\x54\x38\x39\x2d\x47\x4f\x53\x54\x38\x39",
      0x3000080,
      SSL_kGOST,
      SSL_aGOST94,
@@ -1564,7 +1564,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
      256},
     {
      1,
-     "GOST2001-GOST89-GOST89",
+     "\x47\x4f\x53\x54\x32\x30\x30\x31\x2d\x47\x4f\x53\x54\x38\x39\x2d\x47\x4f\x53\x54\x38\x39",
      0x3000081,
      SSL_kGOST,
      SSL_aGOST01,
@@ -1577,7 +1577,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
      256},
     {
      1,
-     "GOST94-NULL-GOST94",
+     "\x47\x4f\x53\x54\x39\x34\x2d\x4e\x55\x4c\x4c\x2d\x47\x4f\x53\x54\x39\x34",
      0x3000082,
      SSL_kGOST,
      SSL_aGOST94,
@@ -1590,7 +1590,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
      0},
     {
      1,
-     "GOST2001-NULL-GOST94",
+     "\x47\x4f\x53\x54\x32\x30\x30\x31\x2d\x4e\x55\x4c\x4c\x2d\x47\x4f\x53\x54\x39\x34",
      0x3000083,
      SSL_kGOST,
      SSL_aGOST01,
@@ -2064,7 +2064,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
 #ifdef OPENSSL_SSL_DEBUG_BROKEN_PROTOCOL
     {
      1,
-     "SCSV",
+     "\x53\x43\x53\x56",
      SSL3_CK_SCSV,
      0,
      0,
@@ -2892,7 +2892,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
 /* Cipher FF00 */
     {
      1,
-     "GOST-MD5",
+     "\x47\x4f\x53\x54\x2d\x4d\x44\x35",
      0x0300ff00,
      SSL_kRSA,
      SSL_aRSA,
@@ -2906,7 +2906,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
      },
     {
      1,
-     "GOST-GOST94",
+     "\x47\x4f\x53\x54\x2d\x47\x4f\x53\x54\x39\x34",
      0x0300ff01,
      SSL_kRSA,
      SSL_aRSA,
@@ -2919,7 +2919,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
      256},
     {
      1,
-     "GOST-GOST89MAC",
+     "\x47\x4f\x53\x54\x2d\x47\x4f\x53\x54\x38\x39\x4d\x41\x43",
      0x0300ff02,
      SSL_kRSA,
      SSL_aRSA,
@@ -2932,7 +2932,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
      256},
     {
      1,
-     "GOST-GOST89STREAM",
+     "\x47\x4f\x53\x54\x2d\x47\x4f\x53\x54\x38\x39\x53\x54\x52\x45\x41\x4d",
      0x0300ff03,
      SSL_kRSA,
      SSL_aRSA,
@@ -4063,7 +4063,7 @@ const SSL_CIPHER *ssl3_get_cipher_by_char(const unsigned char *p)
     cp = OBJ_bsearch_ssl_cipher_id(&c, ssl3_ciphers, SSL3_NUM_CIPHERS);
 #ifdef DEBUG_PRINT_UNKNOWN_CIPHERSUITES
     if (cp == NULL)
-        fprintf(stderr, "Unknown cipher ID %x\n", (p[0] << 8) | p[1]);
+        fprintf(stderr, "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x69\x70\x68\x65\x72\x20\x49\x44\x20\x25\x78\xa", (p[0] << 8) | p[1]);
 #endif
     return cp;
 }
@@ -4106,17 +4106,17 @@ SSL_CIPHER *ssl3_choose_cipher(SSL *s, STACK_OF(SSL_CIPHER) *clnt,
 #endif
 
 #ifdef CIPHER_DEBUG
-    fprintf(stderr, "Server has %d from %p:\n", sk_SSL_CIPHER_num(srvr),
+    fprintf(stderr, "\x53\x65\x72\x76\x65\x72\x20\x68\x61\x73\x20\x25\x64\x20\x66\x72\x6f\x6d\x20\x25\x70\x3a\xa", sk_SSL_CIPHER_num(srvr),
             (void *)srvr);
     for (i = 0; i < sk_SSL_CIPHER_num(srvr); ++i) {
         c = sk_SSL_CIPHER_value(srvr, i);
-        fprintf(stderr, "%p:%s\n", (void *)c, c->name);
+        fprintf(stderr, "\x25\x70\x3a\x25\x73\xa", (void *)c, c->name);
     }
-    fprintf(stderr, "Client sent %d from %p:\n", sk_SSL_CIPHER_num(clnt),
+    fprintf(stderr, "\x43\x6c\x69\x65\x6e\x74\x20\x73\x65\x6e\x74\x20\x25\x64\x20\x66\x72\x6f\x6d\x20\x25\x70\x3a\xa", sk_SSL_CIPHER_num(clnt),
             (void *)clnt);
     for (i = 0; i < sk_SSL_CIPHER_num(clnt); ++i) {
         c = sk_SSL_CIPHER_value(clnt, i);
-        fprintf(stderr, "%p:%s\n", (void *)c, c->name);
+        fprintf(stderr, "\x25\x70\x3a\x25\x73\xa", (void *)c, c->name);
     }
 #endif
 
@@ -4176,13 +4176,13 @@ SSL_CIPHER *ssl3_choose_cipher(SSL *s, STACK_OF(SSL_CIPHER) *clnt,
         if (SSL_C_IS_EXPORT(c)) {
             ok = (alg_k & emask_k) && (alg_a & emask_a);
 #ifdef CIPHER_DEBUG
-            fprintf(stderr, "%d:[%08lX:%08lX:%08lX:%08lX]%p:%s (export)\n",
+            fprintf(stderr, "\x25\x64\x3a\x5b\x25\x30\x38\x6c\x58\x3a\x25\x30\x38\x6c\x58\x3a\x25\x30\x38\x6c\x58\x3a\x25\x30\x38\x6c\x58\x5d\x25\x70\x3a\x25\x73\x20\x28\x65\x78\x70\x6f\x72\x74\x29\xa",
                     ok, alg_k, alg_a, emask_k, emask_a, (void *)c, c->name);
 #endif
         } else {
             ok = (alg_k & mask_k) && (alg_a & mask_a);
 #ifdef CIPHER_DEBUG
-            fprintf(stderr, "%d:[%08lX:%08lX:%08lX:%08lX]%p:%s\n", ok, alg_k,
+            fprintf(stderr, "\x25\x64\x3a\x5b\x25\x30\x38\x6c\x58\x3a\x25\x30\x38\x6c\x58\x3a\x25\x30\x38\x6c\x58\x3a\x25\x30\x38\x6c\x58\x5d\x25\x70\x3a\x25\x73\xa", ok, alg_k,
                     alg_a, mask_k, mask_a, (void *)c, c->name);
 #endif
         }

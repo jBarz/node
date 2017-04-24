@@ -566,7 +566,7 @@ void cryptopro_key_meshing(gost_ctx * ctx, unsigned char *iv)
 {
     unsigned char newkey[32], newiv[8];
     /* Set static keymeshing key */
-    /* "Decrypt" key with keymeshing key */
+    /* "\x44\x65\x63\x72\x79\x70\x74" key with keymeshing key */
     gost_dec(ctx, CryptoProKeyMeshingKey, newkey, 4);
     /* set new key */
     gost_key(ctx, newkey);

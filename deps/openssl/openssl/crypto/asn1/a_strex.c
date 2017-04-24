@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -130,13 +130,13 @@ static int do_esc_char(unsigned long c, unsigned char flags, char *do_quotes,
     if (c > 0xffffffffL)
         return -1;
     if (c > 0xffff) {
-        BIO_snprintf(tmphex, sizeof tmphex, "\\W%08lX", c);
+        BIO_snprintf(tmphex, sizeof tmphex, "\x5c\x57\x25\x30\x38\x6c\x58", c);
         if (!io_ch(arg, tmphex, 10))
             return -1;
         return 10;
     }
     if (c > 0xff) {
-        BIO_snprintf(tmphex, sizeof tmphex, "\\U%04lX", c);
+        BIO_snprintf(tmphex, sizeof tmphex, "\x5c\x55\x25\x30\x34\x6c\x58", c);
         if (!io_ch(arg, tmphex, 6))
             return -1;
         return 6;
@@ -162,7 +162,7 @@ static int do_esc_char(unsigned long c, unsigned char flags, char *do_quotes,
         return 2;
     }
     if (chflgs & (ASN1_STRFLGS_ESC_CTRL | ASN1_STRFLGS_ESC_MSB)) {
-        BIO_snprintf(tmphex, 11, "\\%02X", chtmp);
+        BIO_snprintf(tmphex, 11, "\x5c\x25\x30\x32\x58", chtmp);
         if (!io_ch(arg, tmphex, 3))
             return -1;
         return 3;
@@ -171,7 +171,7 @@ static int do_esc_char(unsigned long c, unsigned char flags, char *do_quotes,
      * If we get this far and do any escaping at all must escape the escape
      * character itself: backslash.
      */
-    if (chtmp == '\\' && flags & ESC_FLAGS) {
+    if (chtmp == '\x5c' && flags & ESC_FLAGS) {
         if (!io_ch(arg, "\\\\", 2))
             return -1;
         return 2;
@@ -268,7 +268,7 @@ static int do_buf(unsigned char *buf, int buflen,
 static int do_hex_dump(char_io *io_ch, void *arg, unsigned char *buf,
                        int buflen)
 {
-    static const char hexdig[] = "0123456789ABCDEF";
+    static const char hexdig[] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
     unsigned char *p, *q;
     char hextmp[2];
     if (arg) {
@@ -302,7 +302,7 @@ static int do_dump(unsigned long lflags, char_io *io_ch, void *arg,
     unsigned char *der_buf, *p;
     int outlen, der_len;
 
-    if (!io_ch(arg, "#", 1))
+    if (!io_ch(arg, "\x23", 1))
         return -1;
     /* If we don't dump DER encoding just dump content octets */
     if (!(lflags & ASN1_STRFLGS_DUMP_DER)) {
@@ -368,7 +368,7 @@ static int do_print_ex(char_io *io_ch, void *arg, unsigned long lflags,
         const char *tagname;
         tagname = ASN1_tag2str(type);
         outlen += strlen(tagname);
-        if (!io_ch(arg, tagname, outlen) || !io_ch(arg, ":", 1))
+        if (!io_ch(arg, tagname, outlen) || !io_ch(arg, "\x3a", 1))
             return -1;
         outlen++;
     }
@@ -419,11 +419,11 @@ static int do_print_ex(char_io *io_ch, void *arg, unsigned long lflags,
         outlen += 2;
     if (!arg)
         return outlen;
-    if (quotes && !io_ch(arg, "\"", 1))
+    if (quotes && !io_ch(arg, "\x22", 1))
         return -1;
     if (do_buf(str->data, str->length, type, flags, NULL, io_ch, arg) < 0)
         return -1;
-    if (quotes && !io_ch(arg, "\"", 1))
+    if (quotes && !io_ch(arg, "\x22", 1))
         return -1;
     return outlen;
 }
@@ -434,7 +434,7 @@ static int do_indent(char_io *io_ch, void *arg, int indent)
 {
     int i;
     for (i = 0; i < indent; i++)
-        if (!io_ch(arg, " ", 1))
+        if (!io_ch(arg, "\x20", 1))
             return 0;
     return 1;
 }
@@ -462,32 +462,32 @@ static int do_name_ex(char_io *io_ch, void *arg, X509_NAME *n,
         return -1;
     switch (flags & XN_FLAG_SEP_MASK) {
     case XN_FLAG_SEP_MULTILINE:
-        sep_dn = "\n";
+        sep_dn = "\xa";
         sep_dn_len = 1;
-        sep_mv = " + ";
+        sep_mv = "\x20\x2b\x20";
         sep_mv_len = 3;
         break;
 
     case XN_FLAG_SEP_COMMA_PLUS:
-        sep_dn = ",";
+        sep_dn = "\x2c";
         sep_dn_len = 1;
-        sep_mv = "+";
+        sep_mv = "\x2b";
         sep_mv_len = 1;
         indent = 0;
         break;
 
     case XN_FLAG_SEP_CPLUS_SPC:
-        sep_dn = ", ";
+        sep_dn = "\x2c\x20";
         sep_dn_len = 2;
-        sep_mv = " + ";
+        sep_mv = "\x20\x2b\x20";
         sep_mv_len = 3;
         indent = 0;
         break;
 
     case XN_FLAG_SEP_SPLUS_SPC:
-        sep_dn = "; ";
+        sep_dn = "\x3b\x20";
         sep_dn_len = 2;
-        sep_mv = " + ";
+        sep_mv = "\x20\x2b\x20";
         sep_mv_len = 3;
         indent = 0;
         break;
@@ -497,10 +497,10 @@ static int do_name_ex(char_io *io_ch, void *arg, X509_NAME *n,
     }
 
     if (flags & XN_FLAG_SPC_EQ) {
-        sep_eq = " = ";
+        sep_eq = "\x20\x3d\x20";
         sep_eq_len = 3;
     } else {
-        sep_eq = "=";
+        sep_eq = "\x3d";
         sep_eq_len = 1;
     }
 

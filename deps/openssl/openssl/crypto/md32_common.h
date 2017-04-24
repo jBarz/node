@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -112,31 +112,31 @@
 #include <openssl/crypto.h>
 
 #if !defined(DATA_ORDER_IS_BIG_ENDIAN) && !defined(DATA_ORDER_IS_LITTLE_ENDIAN)
-# error "DATA_ORDER must be defined!"
+# error "\x44\x41\x54\x41\x5f\x4f\x52\x44\x45\x52\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 
 #ifndef HASH_CBLOCK
-# error "HASH_CBLOCK must be defined!"
+# error "\x48\x41\x53\x48\x5f\x43\x42\x4c\x4f\x43\x4b\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 #ifndef HASH_LONG
-# error "HASH_LONG must be defined!"
+# error "\x48\x41\x53\x48\x5f\x4c\x4f\x4e\x47\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 #ifndef HASH_CTX
-# error "HASH_CTX must be defined!"
+# error "\x48\x41\x53\x48\x5f\x43\x54\x58\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 
 #ifndef HASH_UPDATE
-# error "HASH_UPDATE must be defined!"
+# error "\x48\x41\x53\x48\x5f\x55\x50\x44\x41\x54\x45\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 #ifndef HASH_TRANSFORM
-# error "HASH_TRANSFORM must be defined!"
+# error "\x48\x41\x53\x48\x5f\x54\x52\x41\x4e\x53\x46\x4f\x52\x4d\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 #ifndef HASH_FINAL
-# error "HASH_FINAL must be defined!"
+# error "\x48\x41\x53\x48\x5f\x46\x49\x4e\x41\x4c\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 
 #ifndef HASH_BLOCK_DATA_ORDER
-# error "HASH_BLOCK_DATA_ORDER must be defined!"
+# error "\x48\x41\x53\x48\x5f\x42\x4c\x4f\x43\x4b\x5f\x44\x41\x54\x41\x5f\x4f\x52\x44\x45\x52\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #endif
 
 /*
@@ -167,26 +167,26 @@
 #  if defined(__i386) || defined(__i386__) || defined(__x86_64) || defined(__x86_64__)
 #   define ROTATE(a,n)  ({ register unsigned int ret;   \
                                 asm (                   \
-                                "roll %1,%0"            \
-                                : "=r"(ret)             \
-                                : "I"(n), "0"((unsigned int)(a))        \
-                                : "cc");                \
+                                "\x72\x6f\x6c\x6c\x20\x25\x31\x2c\x25\x30"            \
+                                : "\x3d\x72"(ret)             \
+                                : "\x49"(n), "\x30"((unsigned int)(a))        \
+                                : "\x63\x63");                \
                            ret;                         \
                         })
 #  elif defined(_ARCH_PPC) || defined(_ARCH_PPC64) || \
         defined(__powerpc) || defined(__ppc__) || defined(__powerpc64__)
 #   define ROTATE(a,n)  ({ register unsigned int ret;   \
                                 asm (                   \
-                                "rlwinm %0,%1,%2,0,31"  \
-                                : "=r"(ret)             \
-                                : "r"(a), "I"(n));      \
+                                "\x72\x6c\x77\x69\x6e\x6d\x20\x25\x30\x2c\x25\x31\x2c\x25\x32\x2c\x30\x2c\x33\x31"  \
+                                : "\x3d\x72"(ret)             \
+                                : "\x72"(a), "\x49"(n));      \
                            ret;                         \
                         })
 #  elif defined(__s390x__)
 #   define ROTATE(a,n) ({ register unsigned int ret;    \
-                                asm ("rll %0,%1,%2"     \
-                                : "=r"(ret)             \
-                                : "r"(a), "I"(n));      \
+                                asm ("\x72\x6c\x6c\x20\x25\x30\x2c\x25\x31\x2c\x25\x32"     \
+                                : "\x3d\x72"(ret)             \
+                                : "\x72"(a), "\x49"(n));      \
                           ret;                          \
                         })
 #  endif
@@ -211,24 +211,24 @@
      * unaligned data without raising an exception.
      */
 #     define HOST_c2l(c,l)        ({ unsigned int r=*((const unsigned int *)(c)); \
-                                   asm ("bswapl %0":"=r"(r):"0"(r));    \
+                                   asm ("\x62\x73\x77\x61\x70\x6c\x20\x25\x30":"\x3d\x72"(r):"\x30"(r));    \
                                    (c)+=4; (l)=r;                       })
 #     define HOST_l2c(l,c)        ({ unsigned int r=(l);                  \
-                                   asm ("bswapl %0":"=r"(r):"0"(r));    \
+                                   asm ("\x62\x73\x77\x61\x70\x6c\x20\x25\x30":"\x3d\x72"(r):"\x30"(r));    \
                                    *((unsigned int *)(c))=r; (c)+=4; r; })
 #    endif
 #   elif defined(__aarch64__)
 #    if defined(__BYTE_ORDER__)
 #     if defined(__ORDER_LITTLE_ENDIAN__) && __BYTE_ORDER__==__ORDER_LITTLE_ENDIAN__
 #      define HOST_c2l(c,l)      ({ unsigned int r;              \
-                                   asm ("rev    %w0,%w1"        \
-                                        :"=r"(r)                \
-                                        :"r"(*((const unsigned int *)(c))));\
+                                   asm ("\x72\x65\x76\x20\x20\x20\x20\x25\x77\x30\x2c\x25\x77\x31"        \
+                                        :"\x3d\x72"(r)                \
+                                        :"\x72"(*((const unsigned int *)(c))));\
                                    (c)+=4; (l)=r;               })
 #      define HOST_l2c(l,c)      ({ unsigned int r;              \
-                                   asm ("rev    %w0,%w1"        \
-                                        :"=r"(r)                \
-                                        :"r"((unsigned int)(l)));\
+                                   asm ("\x72\x65\x76\x20\x20\x20\x20\x25\x77\x30\x2c\x25\x77\x31"        \
+                                        :"\x3d\x72"(r)                \
+                                        :"\x72"((unsigned int)(l)));\
                                    *((unsigned int *)(c))=r; (c)+=4; r; })
 #     elif defined(__ORDER_BIG_ENDIAN__) && __BYTE_ORDER__==__ORDER_BIG_ENDIAN__
 #      define HOST_c2l(c,l)      ((l)=*((const unsigned int *)(c)), (c)+=4, (l))
@@ -262,11 +262,11 @@
 # ifndef PEDANTIC
 #  if defined(__GNUC__) && __GNUC__>=2 && !defined(OPENSSL_NO_ASM) && !defined(OPENSSL_NO_INLINE_ASM)
 #   if defined(__s390x__)
-#    define HOST_c2l(c,l)        ({ asm ("lrv    %0,%1"                  \
-                                   :"=d"(l) :"m"(*(const unsigned int *)(c)));\
+#    define HOST_c2l(c,l)        ({ asm ("\x6c\x72\x76\x20\x20\x20\x20\x25\x30\x2c\x25\x31"                  \
+                                   :"\x3d\x64"(l) :"\x6d"(*(const unsigned int *)(c)));\
                                    (c)+=4; (l);                         })
-#    define HOST_l2c(l,c)        ({ asm ("strv   %1,%0"                  \
-                                   :"=m"(*(unsigned int *)(c)) :"d"(l));\
+#    define HOST_l2c(l,c)        ({ asm ("\x73\x74\x72\x76\x20\x20\x20\x25\x31\x2c\x25\x30"                  \
+                                   :"\x3d\x6d"(*(unsigned int *)(c)) :"\x64"(l));\
                                    (c)+=4; (l);                         })
 #   endif
 #  endif
@@ -395,7 +395,7 @@ int HASH_FINAL(unsigned char *md, HASH_CTX *c)
     OPENSSL_cleanse(p, HASH_CBLOCK);
 
 #ifndef HASH_MAKE_STRING
-# error "HASH_MAKE_STRING must be defined!"
+# error "\x48\x41\x53\x48\x5f\x4d\x41\x4b\x45\x5f\x53\x54\x52\x49\x4e\x47\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x21"
 #else
     HASH_MAKE_STRING(c, md);
 #endif

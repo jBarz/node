@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -112,7 +112,7 @@ static int dlfcn_pathbyaddr(void *addr, char *path, int sz);
 static void *dlfcn_globallookup(const char *name);
 
 static DSO_METHOD dso_meth_dlfcn = {
-    "OpenSSL 'dlfcn' shared library method",
+    "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x27\x64\x6c\x66\x63\x6e\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79\x20\x6d\x65\x74\x68\x6f\x64",
     dlfcn_load,
     dlfcn_unload,
     dlfcn_bind_var,
@@ -185,7 +185,7 @@ static int dlfcn_load(DSO *dso)
     ptr = dlopen(filename, flags);
     if (ptr == NULL) {
         DSOerr(DSO_F_DLFCN_LOAD, DSO_R_LOAD_FAILED);
-        ERR_add_error_data(4, "filename(", filename, "): ", dlerror());
+        ERR_add_error_data(4, "\x66\x69\x6c\x65\x6e\x61\x6d\x65\x28", filename, "\x29\x3a\x20", dlerror());
         goto err;
     }
     if (!sk_void_push(dso->meth_data, (char *)ptr)) {
@@ -247,7 +247,7 @@ static void *dlfcn_bind_var(DSO *dso, const char *symname)
     sym = dlsym(ptr, symname);
     if (sym == NULL) {
         DSOerr(DSO_F_DLFCN_BIND_VAR, DSO_R_SYM_FAILURE);
-        ERR_add_error_data(4, "symname(", symname, "): ", dlerror());
+        ERR_add_error_data(4, "\x73\x79\x6d\x6e\x61\x6d\x65\x28", symname, "\x29\x3a\x20", dlerror());
         return (NULL);
     }
     return (sym);
@@ -277,7 +277,7 @@ static DSO_FUNC_TYPE dlfcn_bind_func(DSO *dso, const char *symname)
     u.dlret = dlsym(ptr, symname);
     if (u.dlret == NULL) {
         DSOerr(DSO_F_DLFCN_BIND_FUNC, DSO_R_SYM_FAILURE);
-        ERR_add_error_data(4, "symname(", symname, "): ", dlerror());
+        ERR_add_error_data(4, "\x73\x79\x6d\x6e\x61\x6d\x65\x28", symname, "\x29\x3a\x20", dlerror());
         return (NULL);
     }
     return u.sym;
@@ -296,7 +296,7 @@ static char *dlfcn_merger(DSO *dso, const char *filespec1,
      * If the first file specification is a rooted path, it rules. same goes
      * if the second file specification is missing.
      */
-    if (!filespec2 || (filespec1 != NULL && filespec1[0] == '/')) {
+    if (!filespec2 || (filespec1 != NULL && filespec1[0] == '\x2f')) {
         merged = OPENSSL_malloc(strlen(filespec1) + 1);
         if (!merged) {
             DSOerr(DSO_F_DLFCN_MERGER, ERR_R_MALLOC_FAILURE);
@@ -327,7 +327,7 @@ static char *dlfcn_merger(DSO *dso, const char *filespec1,
         spec2len = strlen(filespec2);
         len = spec2len + strlen(filespec1);
 
-        if (spec2len && filespec2[spec2len - 1] == '/') {
+        if (spec2len && filespec2[spec2len - 1] == '\x2f') {
             spec2len--;
             len--;
         }
@@ -337,17 +337,17 @@ static char *dlfcn_merger(DSO *dso, const char *filespec1,
             return (NULL);
         }
         strcpy(merged, filespec2);
-        merged[spec2len] = '/';
+        merged[spec2len] = '\x2f';
         strcpy(&merged[spec2len + 1], filespec1);
     }
     return (merged);
 }
 
 # ifdef OPENSSL_SYS_MACOSX
-#  define DSO_ext ".dylib"
+#  define DSO_ext "\x2e\x64\x79\x6c\x69\x62"
 #  define DSO_extlen 6
 # else
-#  define DSO_ext ".so"
+#  define DSO_ext "\x2e\x73\x6f"
 #  define DSO_extlen 3
 # endif
 
@@ -358,12 +358,12 @@ static char *dlfcn_name_converter(DSO *dso, const char *filename)
 
     len = strlen(filename);
     rsize = len + 1;
-    transform = (strstr(filename, "/") == NULL);
+    transform = (strstr(filename, "\x2f") == NULL);
     if (transform) {
         /* We will convert this to "%s.so" or "lib%s.so" etc */
-        rsize += DSO_extlen;    /* The length of ".so" */
+        rsize += DSO_extlen;    /* The length of "\x2e\x73\x6f" */
         if ((DSO_flags(dso) & DSO_FLAG_NAME_TRANSLATION_EXT_ONLY) == 0)
-            rsize += 3;         /* The length of "lib" */
+            rsize += 3;         /* The length of "\x6c\x69\x62" */
     }
     translated = OPENSSL_malloc(rsize);
     if (translated == NULL) {
@@ -372,11 +372,11 @@ static char *dlfcn_name_converter(DSO *dso, const char *filename)
     }
     if (transform) {
         if ((DSO_flags(dso) & DSO_FLAG_NAME_TRANSLATION_EXT_ONLY) == 0)
-            sprintf(translated, "lib%s" DSO_ext, filename);
+            sprintf(translated, "\x6c\x69\x62\x25\x73" DSO_ext, filename);
         else
-            sprintf(translated, "%s" DSO_ext, filename);
+            sprintf(translated, "\x25\x73" DSO_ext, filename);
     } else
-        sprintf(translated, "%s", filename);
+        sprintf(translated, "\x25\x73", filename);
     return (translated);
 }
 
@@ -446,7 +446,7 @@ static int dlfcn_pathbyaddr(void *addr, char *path, int sz)
         return len;
     }
 
-    ERR_add_error_data(2, "dlfcn_pathbyaddr(): ", dlerror());
+    ERR_add_error_data(2, "\x64\x6c\x66\x63\x6e\x5f\x70\x61\x74\x68\x62\x79\x61\x64\x64\x72\x28\x29\x3a\x20", dlerror());
 # endif
     return -1;
 }

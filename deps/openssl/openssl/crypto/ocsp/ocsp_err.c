@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,68 +70,68 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_OCSP,0,reason)
 
 static ERR_STRING_DATA OCSP_str_functs[] = {
-    {ERR_FUNC(OCSP_F_ASN1_STRING_ENCODE), "ASN1_STRING_encode"},
-    {ERR_FUNC(OCSP_F_D2I_OCSP_NONCE), "D2I_OCSP_NONCE"},
-    {ERR_FUNC(OCSP_F_OCSP_BASIC_ADD1_STATUS), "OCSP_basic_add1_status"},
-    {ERR_FUNC(OCSP_F_OCSP_BASIC_SIGN), "OCSP_basic_sign"},
-    {ERR_FUNC(OCSP_F_OCSP_BASIC_VERIFY), "OCSP_basic_verify"},
-    {ERR_FUNC(OCSP_F_OCSP_CERT_ID_NEW), "OCSP_cert_id_new"},
-    {ERR_FUNC(OCSP_F_OCSP_CHECK_DELEGATED), "OCSP_CHECK_DELEGATED"},
-    {ERR_FUNC(OCSP_F_OCSP_CHECK_IDS), "OCSP_CHECK_IDS"},
-    {ERR_FUNC(OCSP_F_OCSP_CHECK_ISSUER), "OCSP_CHECK_ISSUER"},
-    {ERR_FUNC(OCSP_F_OCSP_CHECK_VALIDITY), "OCSP_check_validity"},
-    {ERR_FUNC(OCSP_F_OCSP_MATCH_ISSUERID), "OCSP_MATCH_ISSUERID"},
-    {ERR_FUNC(OCSP_F_OCSP_PARSE_URL), "OCSP_parse_url"},
-    {ERR_FUNC(OCSP_F_OCSP_REQUEST_SIGN), "OCSP_request_sign"},
-    {ERR_FUNC(OCSP_F_OCSP_REQUEST_VERIFY), "OCSP_request_verify"},
-    {ERR_FUNC(OCSP_F_OCSP_RESPONSE_GET1_BASIC), "OCSP_response_get1_basic"},
-    {ERR_FUNC(OCSP_F_OCSP_SENDREQ_BIO), "OCSP_sendreq_bio"},
-    {ERR_FUNC(OCSP_F_OCSP_SENDREQ_NBIO), "OCSP_sendreq_nbio"},
-    {ERR_FUNC(OCSP_F_PARSE_HTTP_LINE1), "PARSE_HTTP_LINE1"},
-    {ERR_FUNC(OCSP_F_REQUEST_VERIFY), "REQUEST_VERIFY"},
+    {ERR_FUNC(OCSP_F_ASN1_STRING_ENCODE), "\x41\x53\x4e\x31\x5f\x53\x54\x52\x49\x4e\x47\x5f\x65\x6e\x63\x6f\x64\x65"},
+    {ERR_FUNC(OCSP_F_D2I_OCSP_NONCE), "\x44\x32\x49\x5f\x4f\x43\x53\x50\x5f\x4e\x4f\x4e\x43\x45"},
+    {ERR_FUNC(OCSP_F_OCSP_BASIC_ADD1_STATUS), "\x4f\x43\x53\x50\x5f\x62\x61\x73\x69\x63\x5f\x61\x64\x64\x31\x5f\x73\x74\x61\x74\x75\x73"},
+    {ERR_FUNC(OCSP_F_OCSP_BASIC_SIGN), "\x4f\x43\x53\x50\x5f\x62\x61\x73\x69\x63\x5f\x73\x69\x67\x6e"},
+    {ERR_FUNC(OCSP_F_OCSP_BASIC_VERIFY), "\x4f\x43\x53\x50\x5f\x62\x61\x73\x69\x63\x5f\x76\x65\x72\x69\x66\x79"},
+    {ERR_FUNC(OCSP_F_OCSP_CERT_ID_NEW), "\x4f\x43\x53\x50\x5f\x63\x65\x72\x74\x5f\x69\x64\x5f\x6e\x65\x77"},
+    {ERR_FUNC(OCSP_F_OCSP_CHECK_DELEGATED), "\x4f\x43\x53\x50\x5f\x43\x48\x45\x43\x4b\x5f\x44\x45\x4c\x45\x47\x41\x54\x45\x44"},
+    {ERR_FUNC(OCSP_F_OCSP_CHECK_IDS), "\x4f\x43\x53\x50\x5f\x43\x48\x45\x43\x4b\x5f\x49\x44\x53"},
+    {ERR_FUNC(OCSP_F_OCSP_CHECK_ISSUER), "\x4f\x43\x53\x50\x5f\x43\x48\x45\x43\x4b\x5f\x49\x53\x53\x55\x45\x52"},
+    {ERR_FUNC(OCSP_F_OCSP_CHECK_VALIDITY), "\x4f\x43\x53\x50\x5f\x63\x68\x65\x63\x6b\x5f\x76\x61\x6c\x69\x64\x69\x74\x79"},
+    {ERR_FUNC(OCSP_F_OCSP_MATCH_ISSUERID), "\x4f\x43\x53\x50\x5f\x4d\x41\x54\x43\x48\x5f\x49\x53\x53\x55\x45\x52\x49\x44"},
+    {ERR_FUNC(OCSP_F_OCSP_PARSE_URL), "\x4f\x43\x53\x50\x5f\x70\x61\x72\x73\x65\x5f\x75\x72\x6c"},
+    {ERR_FUNC(OCSP_F_OCSP_REQUEST_SIGN), "\x4f\x43\x53\x50\x5f\x72\x65\x71\x75\x65\x73\x74\x5f\x73\x69\x67\x6e"},
+    {ERR_FUNC(OCSP_F_OCSP_REQUEST_VERIFY), "\x4f\x43\x53\x50\x5f\x72\x65\x71\x75\x65\x73\x74\x5f\x76\x65\x72\x69\x66\x79"},
+    {ERR_FUNC(OCSP_F_OCSP_RESPONSE_GET1_BASIC), "\x4f\x43\x53\x50\x5f\x72\x65\x73\x70\x6f\x6e\x73\x65\x5f\x67\x65\x74\x31\x5f\x62\x61\x73\x69\x63"},
+    {ERR_FUNC(OCSP_F_OCSP_SENDREQ_BIO), "\x4f\x43\x53\x50\x5f\x73\x65\x6e\x64\x72\x65\x71\x5f\x62\x69\x6f"},
+    {ERR_FUNC(OCSP_F_OCSP_SENDREQ_NBIO), "\x4f\x43\x53\x50\x5f\x73\x65\x6e\x64\x72\x65\x71\x5f\x6e\x62\x69\x6f"},
+    {ERR_FUNC(OCSP_F_PARSE_HTTP_LINE1), "\x50\x41\x52\x53\x45\x5f\x48\x54\x54\x50\x5f\x4c\x49\x4e\x45\x31"},
+    {ERR_FUNC(OCSP_F_REQUEST_VERIFY), "\x52\x45\x51\x55\x45\x53\x54\x5f\x56\x45\x52\x49\x46\x59"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA OCSP_str_reasons[] = {
-    {ERR_REASON(OCSP_R_BAD_DATA), "bad data"},
-    {ERR_REASON(OCSP_R_CERTIFICATE_VERIFY_ERROR), "certificate verify error"},
-    {ERR_REASON(OCSP_R_DIGEST_ERR), "digest err"},
+    {ERR_REASON(OCSP_R_BAD_DATA), "\x62\x61\x64\x20\x64\x61\x74\x61"},
+    {ERR_REASON(OCSP_R_CERTIFICATE_VERIFY_ERROR), "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x76\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(OCSP_R_DIGEST_ERR), "\x64\x69\x67\x65\x73\x74\x20\x65\x72\x72"},
     {ERR_REASON(OCSP_R_ERROR_IN_NEXTUPDATE_FIELD),
-     "error in nextupdate field"},
+     "\x65\x72\x72\x6f\x72\x20\x69\x6e\x20\x6e\x65\x78\x74\x75\x70\x64\x61\x74\x65\x20\x66\x69\x65\x6c\x64"},
     {ERR_REASON(OCSP_R_ERROR_IN_THISUPDATE_FIELD),
-     "error in thisupdate field"},
-    {ERR_REASON(OCSP_R_ERROR_PARSING_URL), "error parsing url"},
+     "\x65\x72\x72\x6f\x72\x20\x69\x6e\x20\x74\x68\x69\x73\x75\x70\x64\x61\x74\x65\x20\x66\x69\x65\x6c\x64"},
+    {ERR_REASON(OCSP_R_ERROR_PARSING_URL), "\x65\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x75\x72\x6c"},
     {ERR_REASON(OCSP_R_MISSING_OCSPSIGNING_USAGE),
-     "missing ocspsigning usage"},
+     "\x6d\x69\x73\x73\x69\x6e\x67\x20\x6f\x63\x73\x70\x73\x69\x67\x6e\x69\x6e\x67\x20\x75\x73\x61\x67\x65"},
     {ERR_REASON(OCSP_R_NEXTUPDATE_BEFORE_THISUPDATE),
-     "nextupdate before thisupdate"},
-    {ERR_REASON(OCSP_R_NOT_BASIC_RESPONSE), "not basic response"},
-    {ERR_REASON(OCSP_R_NO_CERTIFICATES_IN_CHAIN), "no certificates in chain"},
-    {ERR_REASON(OCSP_R_NO_CONTENT), "no content"},
-    {ERR_REASON(OCSP_R_NO_PUBLIC_KEY), "no public key"},
-    {ERR_REASON(OCSP_R_NO_RESPONSE_DATA), "no response data"},
-    {ERR_REASON(OCSP_R_NO_REVOKED_TIME), "no revoked time"},
+     "\x6e\x65\x78\x74\x75\x70\x64\x61\x74\x65\x20\x62\x65\x66\x6f\x72\x65\x20\x74\x68\x69\x73\x75\x70\x64\x61\x74\x65"},
+    {ERR_REASON(OCSP_R_NOT_BASIC_RESPONSE), "\x6e\x6f\x74\x20\x62\x61\x73\x69\x63\x20\x72\x65\x73\x70\x6f\x6e\x73\x65"},
+    {ERR_REASON(OCSP_R_NO_CERTIFICATES_IN_CHAIN), "\x6e\x6f\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x69\x6e\x20\x63\x68\x61\x69\x6e"},
+    {ERR_REASON(OCSP_R_NO_CONTENT), "\x6e\x6f\x20\x63\x6f\x6e\x74\x65\x6e\x74"},
+    {ERR_REASON(OCSP_R_NO_PUBLIC_KEY), "\x6e\x6f\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79"},
+    {ERR_REASON(OCSP_R_NO_RESPONSE_DATA), "\x6e\x6f\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x64\x61\x74\x61"},
+    {ERR_REASON(OCSP_R_NO_REVOKED_TIME), "\x6e\x6f\x20\x72\x65\x76\x6f\x6b\x65\x64\x20\x74\x69\x6d\x65"},
     {ERR_REASON(OCSP_R_PRIVATE_KEY_DOES_NOT_MATCH_CERTIFICATE),
-     "private key does not match certificate"},
-    {ERR_REASON(OCSP_R_REQUEST_NOT_SIGNED), "request not signed"},
+     "\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x6d\x61\x74\x63\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65"},
+    {ERR_REASON(OCSP_R_REQUEST_NOT_SIGNED), "\x72\x65\x71\x75\x65\x73\x74\x20\x6e\x6f\x74\x20\x73\x69\x67\x6e\x65\x64"},
     {ERR_REASON(OCSP_R_RESPONSE_CONTAINS_NO_REVOCATION_DATA),
-     "response contains no revocation data"},
-    {ERR_REASON(OCSP_R_ROOT_CA_NOT_TRUSTED), "root ca not trusted"},
-    {ERR_REASON(OCSP_R_SERVER_READ_ERROR), "server read error"},
-    {ERR_REASON(OCSP_R_SERVER_RESPONSE_ERROR), "server response error"},
+     "\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x63\x6f\x6e\x74\x61\x69\x6e\x73\x20\x6e\x6f\x20\x72\x65\x76\x6f\x63\x61\x74\x69\x6f\x6e\x20\x64\x61\x74\x61"},
+    {ERR_REASON(OCSP_R_ROOT_CA_NOT_TRUSTED), "\x72\x6f\x6f\x74\x20\x63\x61\x20\x6e\x6f\x74\x20\x74\x72\x75\x73\x74\x65\x64"},
+    {ERR_REASON(OCSP_R_SERVER_READ_ERROR), "\x73\x65\x72\x76\x65\x72\x20\x72\x65\x61\x64\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(OCSP_R_SERVER_RESPONSE_ERROR), "\x73\x65\x72\x76\x65\x72\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x65\x72\x72\x6f\x72"},
     {ERR_REASON(OCSP_R_SERVER_RESPONSE_PARSE_ERROR),
-     "server response parse error"},
-    {ERR_REASON(OCSP_R_SERVER_WRITE_ERROR), "server write error"},
-    {ERR_REASON(OCSP_R_SIGNATURE_FAILURE), "signature failure"},
+     "\x73\x65\x72\x76\x65\x72\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x70\x61\x72\x73\x65\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(OCSP_R_SERVER_WRITE_ERROR), "\x73\x65\x72\x76\x65\x72\x20\x77\x72\x69\x74\x65\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(OCSP_R_SIGNATURE_FAILURE), "\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {ERR_REASON(OCSP_R_SIGNER_CERTIFICATE_NOT_FOUND),
-     "signer certificate not found"},
-    {ERR_REASON(OCSP_R_STATUS_EXPIRED), "status expired"},
-    {ERR_REASON(OCSP_R_STATUS_NOT_YET_VALID), "status not yet valid"},
-    {ERR_REASON(OCSP_R_STATUS_TOO_OLD), "status too old"},
-    {ERR_REASON(OCSP_R_UNKNOWN_MESSAGE_DIGEST), "unknown message digest"},
-    {ERR_REASON(OCSP_R_UNKNOWN_NID), "unknown nid"},
+     "\x73\x69\x67\x6e\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6e\x6f\x74\x20\x66\x6f\x75\x6e\x64"},
+    {ERR_REASON(OCSP_R_STATUS_EXPIRED), "\x73\x74\x61\x74\x75\x73\x20\x65\x78\x70\x69\x72\x65\x64"},
+    {ERR_REASON(OCSP_R_STATUS_NOT_YET_VALID), "\x73\x74\x61\x74\x75\x73\x20\x6e\x6f\x74\x20\x79\x65\x74\x20\x76\x61\x6c\x69\x64"},
+    {ERR_REASON(OCSP_R_STATUS_TOO_OLD), "\x73\x74\x61\x74\x75\x73\x20\x74\x6f\x6f\x20\x6f\x6c\x64"},
+    {ERR_REASON(OCSP_R_UNKNOWN_MESSAGE_DIGEST), "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x64\x69\x67\x65\x73\x74"},
+    {ERR_REASON(OCSP_R_UNKNOWN_NID), "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6e\x69\x64"},
     {ERR_REASON(OCSP_R_UNSUPPORTED_REQUESTORNAME_TYPE),
-     "unsupported requestorname type"},
+     "\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x72\x65\x71\x75\x65\x73\x74\x6f\x72\x6e\x61\x6d\x65\x20\x74\x79\x70\x65"},
     {0, NULL}
 };
 

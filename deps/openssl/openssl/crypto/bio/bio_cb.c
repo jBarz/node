@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -76,61 +76,61 @@ long MS_CALLBACK BIO_debug_callback(BIO *bio, int cmd, const char *argp,
     if (BIO_CB_RETURN & cmd)
         r = ret;
 
-    len = BIO_snprintf(buf,sizeof buf,"BIO[%p]: ",(void *)bio);
+    len = BIO_snprintf(buf,sizeof buf,"\x42\x49\x4f\x5b\x25\x70\x5d\x3a\x20",(void *)bio);
 
     p = buf + len;
     p_maxlen = sizeof(buf) - len;
 
     switch (cmd) {
     case BIO_CB_FREE:
-        BIO_snprintf(p, p_maxlen, "Free - %s\n", bio->method->name);
+        BIO_snprintf(p, p_maxlen, "\x46\x72\x65\x65\x20\x2d\x20\x25\x73\xa", bio->method->name);
         break;
     case BIO_CB_READ:
         if (bio->method->type & BIO_TYPE_DESCRIPTOR)
-            BIO_snprintf(p, p_maxlen, "read(%d,%lu) - %s fd=%d\n",
+            BIO_snprintf(p, p_maxlen, "\x72\x65\x61\x64\x28\x25\x64\x2c\x25\x6c\x75\x29\x20\x2d\x20\x25\x73\x20\x66\x64\x3d\x25\x64\xa",
                          bio->num, (unsigned long)argi,
                          bio->method->name, bio->num);
         else
-            BIO_snprintf(p, p_maxlen, "read(%d,%lu) - %s\n",
+            BIO_snprintf(p, p_maxlen, "\x72\x65\x61\x64\x28\x25\x64\x2c\x25\x6c\x75\x29\x20\x2d\x20\x25\x73\xa",
                          bio->num, (unsigned long)argi, bio->method->name);
         break;
     case BIO_CB_WRITE:
         if (bio->method->type & BIO_TYPE_DESCRIPTOR)
-            BIO_snprintf(p, p_maxlen, "write(%d,%lu) - %s fd=%d\n",
+            BIO_snprintf(p, p_maxlen, "\x77\x72\x69\x74\x65\x28\x25\x64\x2c\x25\x6c\x75\x29\x20\x2d\x20\x25\x73\x20\x66\x64\x3d\x25\x64\xa",
                          bio->num, (unsigned long)argi,
                          bio->method->name, bio->num);
         else
-            BIO_snprintf(p, p_maxlen, "write(%d,%lu) - %s\n",
+            BIO_snprintf(p, p_maxlen, "\x77\x72\x69\x74\x65\x28\x25\x64\x2c\x25\x6c\x75\x29\x20\x2d\x20\x25\x73\xa",
                          bio->num, (unsigned long)argi, bio->method->name);
         break;
     case BIO_CB_PUTS:
-        BIO_snprintf(p, p_maxlen, "puts() - %s\n", bio->method->name);
+        BIO_snprintf(p, p_maxlen, "\x70\x75\x74\x73\x28\x29\x20\x2d\x20\x25\x73\xa", bio->method->name);
         break;
     case BIO_CB_GETS:
-        BIO_snprintf(p, p_maxlen, "gets(%lu) - %s\n", (unsigned long)argi,
+        BIO_snprintf(p, p_maxlen, "\x67\x65\x74\x73\x28\x25\x6c\x75\x29\x20\x2d\x20\x25\x73\xa", (unsigned long)argi,
                      bio->method->name);
         break;
     case BIO_CB_CTRL:
-        BIO_snprintf(p, p_maxlen, "ctrl(%lu) - %s\n", (unsigned long)argi,
+        BIO_snprintf(p, p_maxlen, "\x63\x74\x72\x6c\x28\x25\x6c\x75\x29\x20\x2d\x20\x25\x73\xa", (unsigned long)argi,
                      bio->method->name);
         break;
     case BIO_CB_RETURN | BIO_CB_READ:
-        BIO_snprintf(p, p_maxlen, "read return %ld\n", ret);
+        BIO_snprintf(p, p_maxlen, "\x72\x65\x61\x64\x20\x72\x65\x74\x75\x72\x6e\x20\x25\x6c\x64\xa", ret);
         break;
     case BIO_CB_RETURN | BIO_CB_WRITE:
-        BIO_snprintf(p, p_maxlen, "write return %ld\n", ret);
+        BIO_snprintf(p, p_maxlen, "\x77\x72\x69\x74\x65\x20\x72\x65\x74\x75\x72\x6e\x20\x25\x6c\x64\xa", ret);
         break;
     case BIO_CB_RETURN | BIO_CB_GETS:
-        BIO_snprintf(p, p_maxlen, "gets return %ld\n", ret);
+        BIO_snprintf(p, p_maxlen, "\x67\x65\x74\x73\x20\x72\x65\x74\x75\x72\x6e\x20\x25\x6c\x64\xa", ret);
         break;
     case BIO_CB_RETURN | BIO_CB_PUTS:
-        BIO_snprintf(p, p_maxlen, "puts return %ld\n", ret);
+        BIO_snprintf(p, p_maxlen, "\x70\x75\x74\x73\x20\x72\x65\x74\x75\x72\x6e\x20\x25\x6c\x64\xa", ret);
         break;
     case BIO_CB_RETURN | BIO_CB_CTRL:
-        BIO_snprintf(p, p_maxlen, "ctrl return %ld\n", ret);
+        BIO_snprintf(p, p_maxlen, "\x63\x74\x72\x6c\x20\x72\x65\x74\x75\x72\x6e\x20\x25\x6c\x64\xa", ret);
         break;
     default:
-        BIO_snprintf(p, p_maxlen, "bio callback - unknown type (%d)\n", cmd);
+        BIO_snprintf(p, p_maxlen, "\x62\x69\x6f\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b\x20\x2d\x20\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x74\x79\x70\x65\x20\x28\x25\x64\x29\xa", cmd);
         break;
     }
 

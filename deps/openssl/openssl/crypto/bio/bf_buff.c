@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -73,7 +73,7 @@ static long buffer_callback_ctrl(BIO *h, int cmd, bio_info_cb *fp);
 
 static BIO_METHOD methods_buffer = {
     BIO_TYPE_BUFFER,
-    "buffer",
+    "\x62\x75\x66\x66\x65\x72",
     buffer_write,
     buffer_read,
     buffer_puts,
@@ -314,7 +314,7 @@ static long buffer_ctrl(BIO *b, int cmd, long num, void *ptr)
         ret = 0;
         p1 = ctx->ibuf;
         for (i = 0; i < ctx->ibuf_len; i++) {
-            if (p1[ctx->ibuf_off + i] == '\n')
+            if (p1[ctx->ibuf_off + i] == '\xa')
                 ret++;
         }
         break;
@@ -415,7 +415,7 @@ static long buffer_ctrl(BIO *b, int cmd, long num, void *ptr)
                 r = BIO_write(b->next_bio,
                               &(ctx->obuf[ctx->obuf_off]), ctx->obuf_len);
 #if 0
-                fprintf(stderr, "FLUSH [%3d] %3d -> %3d\n", ctx->obuf_off,
+                fprintf(stderr, "\x46\x4c\x55\x53\x48\x20\x5b\x25\x33\x64\x5d\x20\x25\x33\x64\x20\x2d\x3e\x20\x25\x33\x64\xa", ctx->obuf_off,
                         ctx->obuf_len, r);
 #endif
                 BIO_copy_next_retry(b);
@@ -471,7 +471,7 @@ static int buffer_gets(BIO *b, char *buf, int size)
     char *p;
 
     ctx = (BIO_F_BUFFER_CTX *)b->ptr;
-    size--;                     /* reserve space for a '\0' */
+    size--;                     /* reserve space for a '\x0' */
     BIO_clear_retry_flags(b);
 
     for (;;) {
@@ -480,7 +480,7 @@ static int buffer_gets(BIO *b, char *buf, int size)
             flag = 0;
             for (i = 0; (i < ctx->ibuf_len) && (i < size); i++) {
                 *(buf++) = p[i];
-                if (p[i] == '\n') {
+                if (p[i] == '\xa') {
                     flag = 1;
                     i++;
                     break;
@@ -491,7 +491,7 @@ static int buffer_gets(BIO *b, char *buf, int size)
             ctx->ibuf_len -= i;
             ctx->ibuf_off += i;
             if (flag || size == 0) {
-                *buf = '\0';
+                *buf = '\x0';
                 return (num);
             }
         } else {                /* read another chunk */
@@ -499,7 +499,7 @@ static int buffer_gets(BIO *b, char *buf, int size)
             i = BIO_read(b->next_bio, ctx->ibuf, ctx->ibuf_size);
             if (i <= 0) {
                 BIO_copy_next_retry(b);
-                *buf = '\0';
+                *buf = '\x0';
                 if (i < 0)
                     return ((num > 0) ? num : i);
                 if (i == 0)

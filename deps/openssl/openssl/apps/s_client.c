@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,12 +111,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -128,7 +128,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -194,13 +194,13 @@ typedef unsigned int u_int;
  * #define SSL_HOST_NAME "www.netscape.com"
  */
 /*
- * #define SSL_HOST_NAME "193.118.187.102"
+ * #define SSL_HOST_NAME "\x31\x39\x33\x2e\x31\x31\x38\x2e\x31\x38\x37\x2e\x31\x30\x32"
  */
-#define SSL_HOST_NAME   "localhost"
+#define SSL_HOST_NAME   "\x6c\x6f\x63\x61\x6c\x68\x6f\x73\x74"
 
 /* no default cert. */
 /*
- * #define TEST_CERT "client.pem"
+ * #define TEST_CERT "\x63\x6c\x69\x65\x6e\x74\x2e\x70\x65\x6d"
  */
 
 #undef BUFSIZZ
@@ -240,7 +240,7 @@ static int c_no_rand_screen = 0;
 
 #ifndef OPENSSL_NO_PSK
 /* Default PSK identity and key */
-static char *psk_identity = "Client_identity";
+static char *psk_identity = "\x43\x6c\x69\x65\x6e\x74\x5f\x69\x64\x65\x6e\x74\x69\x74\x79";
 /*
  * char *psk_key=NULL; by default PSK is not used
  */
@@ -255,35 +255,35 @@ static unsigned int psk_client_cb(SSL *ssl, const char *hint, char *identity,
     unsigned char *key;
 
     if (c_debug)
-        BIO_printf(bio_c_out, "psk_client_cb\n");
+        BIO_printf(bio_c_out, "\x70\x73\x6b\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x63\x62\xa");
     if (!hint) {
         /* no ServerKeyExchange message */
         if (c_debug)
             BIO_printf(bio_c_out,
-                       "NULL received PSK identity hint, continuing anyway\n");
+                       "\x4e\x55\x4c\x4c\x20\x72\x65\x63\x65\x69\x76\x65\x64\x20\x50\x53\x4b\x20\x69\x64\x65\x6e\x74\x69\x74\x79\x20\x68\x69\x6e\x74\x2c\x20\x63\x6f\x6e\x74\x69\x6e\x75\x69\x6e\x67\x20\x61\x6e\x79\x77\x61\x79\xa");
     } else if (c_debug)
-        BIO_printf(bio_c_out, "Received PSK identity hint '%s'\n", hint);
+        BIO_printf(bio_c_out, "\x52\x65\x63\x65\x69\x76\x65\x64\x20\x50\x53\x4b\x20\x69\x64\x65\x6e\x74\x69\x74\x79\x20\x68\x69\x6e\x74\x20\x27\x25\x73\x27\xa", hint);
 
     /*
      * lookup PSK identity and PSK key based on the given identity hint here
      */
-    ret = BIO_snprintf(identity, max_identity_len, "%s", psk_identity);
+    ret = BIO_snprintf(identity, max_identity_len, "\x25\x73", psk_identity);
     if (ret < 0 || (unsigned int)ret > max_identity_len)
         goto out_err;
     if (c_debug)
-        BIO_printf(bio_c_out, "created identity '%s' len=%d\n", identity,
+        BIO_printf(bio_c_out, "\x63\x72\x65\x61\x74\x65\x64\x20\x69\x64\x65\x6e\x74\x69\x74\x79\x20\x27\x25\x73\x27\x20\x6c\x65\x6e\x3d\x25\x64\xa", identity,
                    ret);
 
     /* convert the PSK key to binary */
     key = string_to_hex(psk_key, &key_len);
     if (key == NULL) {
-        BIO_printf(bio_err, "Could not convert PSK key '%s' to buffer\n",
+        BIO_printf(bio_err, "\x43\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x50\x53\x4b\x20\x6b\x65\x79\x20\x27\x25\x73\x27\x20\x74\x6f\x20\x62\x75\x66\x66\x65\x72\xa",
                    psk_key);
         return 0;
     }
     if ((unsigned long)key_len > (unsigned long)max_psk_len) {
         BIO_printf(bio_err,
-                   "psk buffer of callback is too small (%d) for key (%ld)\n",
+                   "\x70\x73\x6b\x20\x62\x75\x66\x66\x65\x72\x20\x6f\x66\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b\x20\x69\x73\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c\x20\x28\x25\x64\x29\x20\x66\x6f\x72\x20\x6b\x65\x79\x20\x28\x25\x6c\x64\x29\xa",
                    max_psk_len, key_len);
         OPENSSL_free(key);
         return 0;
@@ -293,168 +293,168 @@ static unsigned int psk_client_cb(SSL *ssl, const char *hint, char *identity,
     OPENSSL_free(key);
 
     if (c_debug)
-        BIO_printf(bio_c_out, "created PSK len=%ld\n", key_len);
+        BIO_printf(bio_c_out, "\x63\x72\x65\x61\x74\x65\x64\x20\x50\x53\x4b\x20\x6c\x65\x6e\x3d\x25\x6c\x64\xa", key_len);
 
     return key_len;
  out_err:
     if (c_debug)
-        BIO_printf(bio_err, "Error in PSK client callback\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x50\x53\x4b\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b\xa");
     return 0;
 }
 #endif
 
 static void sc_usage(void)
 {
-    BIO_printf(bio_err, "usage: s_client args\n");
-    BIO_printf(bio_err, "\n");
-    BIO_printf(bio_err, " -host host     - use -connect instead\n");
-    BIO_printf(bio_err, " -port port     - use -connect instead\n");
+    BIO_printf(bio_err, "\x75\x73\x61\x67\x65\x3a\x20\x73\x5f\x63\x6c\x69\x65\x6e\x74\x20\x61\x72\x67\x73\xa");
+    BIO_printf(bio_err, "\xa");
+    BIO_printf(bio_err, "\x20\x2d\x68\x6f\x73\x74\x20\x68\x6f\x73\x74\x20\x20\x20\x20\x20\x2d\x20\x75\x73\x65\x20\x2d\x63\x6f\x6e\x6e\x65\x63\x74\x20\x69\x6e\x73\x74\x65\x61\x64\xa");
+    BIO_printf(bio_err, "\x20\x2d\x70\x6f\x72\x74\x20\x70\x6f\x72\x74\x20\x20\x20\x20\x20\x2d\x20\x75\x73\x65\x20\x2d\x63\x6f\x6e\x6e\x65\x63\x74\x20\x69\x6e\x73\x74\x65\x61\x64\xa");
     BIO_printf(bio_err,
-               " -connect host:port - who to connect to (default is %s:%s)\n",
+               "\x20\x2d\x63\x6f\x6e\x6e\x65\x63\x74\x20\x68\x6f\x73\x74\x3a\x70\x6f\x72\x74\x20\x2d\x20\x77\x68\x6f\x20\x74\x6f\x20\x63\x6f\x6e\x6e\x65\x63\x74\x20\x74\x6f\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x69\x73\x20\x25\x73\x3a\x25\x73\x29\xa",
                SSL_HOST_NAME, PORT_STR);
     BIO_printf(bio_err,
-               " -verify_hostname host - check peer certificate matches \"host\"\n");
+               "\x20\x2d\x76\x65\x72\x69\x66\x79\x5f\x68\x6f\x73\x74\x6e\x61\x6d\x65\x20\x68\x6f\x73\x74\x20\x2d\x20\x63\x68\x65\x63\x6b\x20\x70\x65\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6d\x61\x74\x63\x68\x65\x73\x20\x22\x68\x6f\x73\x74\x22\xa");
     BIO_printf(bio_err,
-               " -verify_email email - check peer certificate matches \"email\"\n");
+               "\x20\x2d\x76\x65\x72\x69\x66\x79\x5f\x65\x6d\x61\x69\x6c\x20\x65\x6d\x61\x69\x6c\x20\x2d\x20\x63\x68\x65\x63\x6b\x20\x70\x65\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6d\x61\x74\x63\x68\x65\x73\x20\x22\x65\x6d\x61\x69\x6c\x22\xa");
     BIO_printf(bio_err,
-               " -verify_ip ipaddr - check peer certificate matches \"ipaddr\"\n");
+               "\x20\x2d\x76\x65\x72\x69\x66\x79\x5f\x69\x70\x20\x69\x70\x61\x64\x64\x72\x20\x2d\x20\x63\x68\x65\x63\x6b\x20\x70\x65\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6d\x61\x74\x63\x68\x65\x73\x20\x22\x69\x70\x61\x64\x64\x72\x22\xa");
 
     BIO_printf(bio_err,
-               " -verify arg   - turn on peer certificate verification\n");
+               "\x20\x2d\x76\x65\x72\x69\x66\x79\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x74\x75\x72\x6e\x20\x6f\x6e\x20\x70\x65\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x76\x65\x72\x69\x66\x69\x63\x61\x74\x69\x6f\x6e\xa");
     BIO_printf(bio_err,
-               " -verify_return_error - return verification errors\n");
+               "\x20\x2d\x76\x65\x72\x69\x66\x79\x5f\x72\x65\x74\x75\x72\x6e\x5f\x65\x72\x72\x6f\x72\x20\x2d\x20\x72\x65\x74\x75\x72\x6e\x20\x76\x65\x72\x69\x66\x69\x63\x61\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72\x73\xa");
     BIO_printf(bio_err,
-               " -cert arg     - certificate file to use, PEM format assumed\n");
+               "\x20\x2d\x63\x65\x72\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x2d\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65\x20\x74\x6f\x20\x75\x73\x65\x2c\x20\x50\x45\x4d\x20\x66\x6f\x72\x6d\x61\x74\x20\x61\x73\x73\x75\x6d\x65\x64\xa");
     BIO_printf(bio_err,
-               " -certform arg - certificate format (PEM or DER) PEM default\n");
+               "\x20\x2d\x63\x65\x72\x74\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x2d\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x6f\x72\x6d\x61\x74\x20\x28\x50\x45\x4d\x20\x6f\x72\x20\x44\x45\x52\x29\x20\x50\x45\x4d\x20\x64\x65\x66\x61\x75\x6c\x74\xa");
     BIO_printf(bio_err,
-               " -key arg      - Private key file to use, in cert file if\n");
-    BIO_printf(bio_err, "                 not specified but cert file is.\n");
+               "\x20\x2d\x6b\x65\x79\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x2d\x20\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x66\x69\x6c\x65\x20\x74\x6f\x20\x75\x73\x65\x2c\x20\x69\x6e\x20\x63\x65\x72\x74\x20\x66\x69\x6c\x65\x20\x69\x66\xa");
+    BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6e\x6f\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x62\x75\x74\x20\x63\x65\x72\x74\x20\x66\x69\x6c\x65\x20\x69\x73\x2e\xa");
     BIO_printf(bio_err,
-               " -keyform arg  - key format (PEM or DER) PEM default\n");
+               "\x20\x2d\x6b\x65\x79\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x2d\x20\x6b\x65\x79\x20\x66\x6f\x72\x6d\x61\x74\x20\x28\x50\x45\x4d\x20\x6f\x72\x20\x44\x45\x52\x29\x20\x50\x45\x4d\x20\x64\x65\x66\x61\x75\x6c\x74\xa");
     BIO_printf(bio_err,
-               " -pass arg     - private key file pass phrase source\n");
-    BIO_printf(bio_err, " -CApath arg   - PEM format directory of CA's\n");
-    BIO_printf(bio_err, " -CAfile arg   - PEM format file of CA's\n");
+               "\x20\x2d\x70\x61\x73\x73\x20\x61\x72\x67\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa");
+    BIO_printf(bio_err, "\x20\x2d\x43\x41\x70\x61\x74\x68\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x50\x45\x4d\x20\x66\x6f\x72\x6d\x61\x74\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x20\x6f\x66\x20\x43\x41\x27\x73\xa");
+    BIO_printf(bio_err, "\x20\x2d\x43\x41\x66\x69\x6c\x65\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x50\x45\x4d\x20\x66\x6f\x72\x6d\x61\x74\x20\x66\x69\x6c\x65\x20\x6f\x66\x20\x43\x41\x27\x73\xa");
     BIO_printf(bio_err,
-               " -no_alt_chains - only ever use the first certificate chain found\n");
+               "\x20\x2d\x6e\x6f\x5f\x61\x6c\x74\x5f\x63\x68\x61\x69\x6e\x73\x20\x2d\x20\x6f\x6e\x6c\x79\x20\x65\x76\x65\x72\x20\x75\x73\x65\x20\x74\x68\x65\x20\x66\x69\x72\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x63\x68\x61\x69\x6e\x20\x66\x6f\x75\x6e\x64\xa");
     BIO_printf(bio_err,
-               " -reconnect    - Drop and re-make the connection with the same Session-ID\n");
+               "\x20\x2d\x72\x65\x63\x6f\x6e\x6e\x65\x63\x74\x20\x20\x20\x20\x2d\x20\x44\x72\x6f\x70\x20\x61\x6e\x64\x20\x72\x65\x2d\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x77\x69\x74\x68\x20\x74\x68\x65\x20\x73\x61\x6d\x65\x20\x53\x65\x73\x73\x69\x6f\x6e\x2d\x49\x44\xa");
     BIO_printf(bio_err,
-               " -pause        - sleep(1) after each read(2) and write(2) system call\n");
+               "\x20\x2d\x70\x61\x75\x73\x65\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x73\x6c\x65\x65\x70\x28\x31\x29\x20\x61\x66\x74\x65\x72\x20\x65\x61\x63\x68\x20\x72\x65\x61\x64\x28\x32\x29\x20\x61\x6e\x64\x20\x77\x72\x69\x74\x65\x28\x32\x29\x20\x73\x79\x73\x74\x65\x6d\x20\x63\x61\x6c\x6c\xa");
     BIO_printf(bio_err,
-               " -prexit       - print session information even on connection failure\n");
+               "\x20\x2d\x70\x72\x65\x78\x69\x74\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x69\x6e\x66\x6f\x72\x6d\x61\x74\x69\x6f\x6e\x20\x65\x76\x65\x6e\x20\x6f\x6e\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
     BIO_printf(bio_err,
-               " -showcerts    - show all certificates in the chain\n");
-    BIO_printf(bio_err, " -debug        - extra output\n");
+               "\x20\x2d\x73\x68\x6f\x77\x63\x65\x72\x74\x73\x20\x20\x20\x20\x2d\x20\x73\x68\x6f\x77\x20\x61\x6c\x6c\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x69\x6e\x20\x74\x68\x65\x20\x63\x68\x61\x69\x6e\xa");
+    BIO_printf(bio_err, "\x20\x2d\x64\x65\x62\x75\x67\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x65\x78\x74\x72\x61\x20\x6f\x75\x74\x70\x75\x74\xa");
 #ifdef WATT32
-    BIO_printf(bio_err, " -wdebug       - WATT-32 tcp debugging\n");
+    BIO_printf(bio_err, "\x20\x2d\x77\x64\x65\x62\x75\x67\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x57\x41\x54\x54\x2d\x33\x32\x20\x74\x63\x70\x20\x64\x65\x62\x75\x67\x67\x69\x6e\x67\xa");
 #endif
-    BIO_printf(bio_err, " -msg          - Show protocol messages\n");
-    BIO_printf(bio_err, " -nbio_test    - more ssl protocol testing\n");
-    BIO_printf(bio_err, " -state        - print the 'ssl' states\n");
+    BIO_printf(bio_err, "\x20\x2d\x6d\x73\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x53\x68\x6f\x77\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x20\x6d\x65\x73\x73\x61\x67\x65\x73\xa");
+    BIO_printf(bio_err, "\x20\x2d\x6e\x62\x69\x6f\x5f\x74\x65\x73\x74\x20\x20\x20\x20\x2d\x20\x6d\x6f\x72\x65\x20\x73\x73\x6c\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x20\x74\x65\x73\x74\x69\x6e\x67\xa");
+    BIO_printf(bio_err, "\x20\x2d\x73\x74\x61\x74\x65\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x74\x68\x65\x20\x27\x73\x73\x6c\x27\x20\x73\x74\x61\x74\x65\x73\xa");
 #ifdef FIONBIO
-    BIO_printf(bio_err, " -nbio         - Run with non-blocking IO\n");
+    BIO_printf(bio_err, "\x20\x2d\x6e\x62\x69\x6f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x52\x75\x6e\x20\x77\x69\x74\x68\x20\x6e\x6f\x6e\x2d\x62\x6c\x6f\x63\x6b\x69\x6e\x67\x20\x49\x4f\xa");
 #endif
     BIO_printf(bio_err,
-               " -crlf         - convert LF from terminal into CRLF\n");
-    BIO_printf(bio_err, " -quiet        - no s_client output\n");
+               "\x20\x2d\x63\x72\x6c\x66\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x4c\x46\x20\x66\x72\x6f\x6d\x20\x74\x65\x72\x6d\x69\x6e\x61\x6c\x20\x69\x6e\x74\x6f\x20\x43\x52\x4c\x46\xa");
+    BIO_printf(bio_err, "\x20\x2d\x71\x75\x69\x65\x74\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6e\x6f\x20\x73\x5f\x63\x6c\x69\x65\x6e\x74\x20\x6f\x75\x74\x70\x75\x74\xa");
     BIO_printf(bio_err,
-               " -ign_eof      - ignore input eof (default when -quiet)\n");
-    BIO_printf(bio_err, " -no_ign_eof   - don't ignore input eof\n");
+               "\x20\x2d\x69\x67\x6e\x5f\x65\x6f\x66\x20\x20\x20\x20\x20\x20\x2d\x20\x69\x67\x6e\x6f\x72\x65\x20\x69\x6e\x70\x75\x74\x20\x65\x6f\x66\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x77\x68\x65\x6e\x20\x2d\x71\x75\x69\x65\x74\x29\xa");
+    BIO_printf(bio_err, "\x20\x2d\x6e\x6f\x5f\x69\x67\x6e\x5f\x65\x6f\x66\x20\x20\x20\x2d\x20\x64\x6f\x6e\x27\x74\x20\x69\x67\x6e\x6f\x72\x65\x20\x69\x6e\x70\x75\x74\x20\x65\x6f\x66\xa");
 #ifndef OPENSSL_NO_PSK
-    BIO_printf(bio_err, " -psk_identity arg - PSK identity\n");
-    BIO_printf(bio_err, " -psk arg      - PSK in hex (without 0x)\n");
+    BIO_printf(bio_err, "\x20\x2d\x70\x73\x6b\x5f\x69\x64\x65\x6e\x74\x69\x74\x79\x20\x61\x72\x67\x20\x2d\x20\x50\x53\x4b\x20\x69\x64\x65\x6e\x74\x69\x74\x79\xa");
+    BIO_printf(bio_err, "\x20\x2d\x70\x73\x6b\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x2d\x20\x50\x53\x4b\x20\x69\x6e\x20\x68\x65\x78\x20\x28\x77\x69\x74\x68\x6f\x75\x74\x20\x30\x78\x29\xa");
 # ifndef OPENSSL_NO_JPAKE
-    BIO_printf(bio_err, " -jpake arg    - JPAKE secret to use\n");
+    BIO_printf(bio_err, "\x20\x2d\x6a\x70\x61\x6b\x65\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x4a\x50\x41\x4b\x45\x20\x73\x65\x63\x72\x65\x74\x20\x74\x6f\x20\x75\x73\x65\xa");
 # endif
 #endif
 #ifndef OPENSSL_NO_SRP
     BIO_printf(bio_err,
-               " -srpuser user     - SRP authentification for 'user'\n");
-    BIO_printf(bio_err, " -srppass arg      - password for 'user'\n");
+               "\x20\x2d\x73\x72\x70\x75\x73\x65\x72\x20\x75\x73\x65\x72\x20\x20\x20\x20\x20\x2d\x20\x53\x52\x50\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x66\x69\x63\x61\x74\x69\x6f\x6e\x20\x66\x6f\x72\x20\x27\x75\x73\x65\x72\x27\xa");
+    BIO_printf(bio_err, "\x20\x2d\x73\x72\x70\x70\x61\x73\x73\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x66\x6f\x72\x20\x27\x75\x73\x65\x72\x27\xa");
     BIO_printf(bio_err,
-               " -srp_lateuser     - SRP username into second ClientHello message\n");
+               "\x20\x2d\x73\x72\x70\x5f\x6c\x61\x74\x65\x75\x73\x65\x72\x20\x20\x20\x20\x20\x2d\x20\x53\x52\x50\x20\x75\x73\x65\x72\x6e\x61\x6d\x65\x20\x69\x6e\x74\x6f\x20\x73\x65\x63\x6f\x6e\x64\x20\x43\x6c\x69\x65\x6e\x74\x48\x65\x6c\x6c\x6f\x20\x6d\x65\x73\x73\x61\x67\x65\xa");
     BIO_printf(bio_err,
-               " -srp_moregroups   - Tolerate other than the known g N values.\n");
+               "\x20\x2d\x73\x72\x70\x5f\x6d\x6f\x72\x65\x67\x72\x6f\x75\x70\x73\x20\x20\x20\x2d\x20\x54\x6f\x6c\x65\x72\x61\x74\x65\x20\x6f\x74\x68\x65\x72\x20\x74\x68\x61\x6e\x20\x74\x68\x65\x20\x6b\x6e\x6f\x77\x6e\x20\x67\x20\x4e\x20\x76\x61\x6c\x75\x65\x73\x2e\xa");
     BIO_printf(bio_err,
-               " -srp_strength int - minimal length in bits for N (default %d).\n",
+               "\x20\x2d\x73\x72\x70\x5f\x73\x74\x72\x65\x6e\x67\x74\x68\x20\x69\x6e\x74\x20\x2d\x20\x6d\x69\x6e\x69\x6d\x61\x6c\x20\x6c\x65\x6e\x67\x74\x68\x20\x69\x6e\x20\x62\x69\x74\x73\x20\x66\x6f\x72\x20\x4e\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x25\x64\x29\x2e\xa",
                SRP_MINIMAL_N);
 #endif
-    BIO_printf(bio_err, " -ssl2         - just use SSLv2\n");
+    BIO_printf(bio_err, "\x20\x2d\x73\x73\x6c\x32\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6a\x75\x73\x74\x20\x75\x73\x65\x20\x53\x53\x4c\x76\x32\xa");
 #ifndef OPENSSL_NO_SSL3_METHOD
-    BIO_printf(bio_err, " -ssl3         - just use SSLv3\n");
+    BIO_printf(bio_err, "\x20\x2d\x73\x73\x6c\x33\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6a\x75\x73\x74\x20\x75\x73\x65\x20\x53\x53\x4c\x76\x33\xa");
 #endif
-    BIO_printf(bio_err, " -tls1_2       - just use TLSv1.2\n");
-    BIO_printf(bio_err, " -tls1_1       - just use TLSv1.1\n");
-    BIO_printf(bio_err, " -tls1         - just use TLSv1\n");
-    BIO_printf(bio_err, " -dtls1        - just use DTLSv1\n");
-    BIO_printf(bio_err, " -fallback_scsv - send TLS_FALLBACK_SCSV\n");
-    BIO_printf(bio_err, " -mtu          - set the link layer MTU\n");
+    BIO_printf(bio_err, "\x20\x2d\x74\x6c\x73\x31\x5f\x32\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6a\x75\x73\x74\x20\x75\x73\x65\x20\x54\x4c\x53\x76\x31\x2e\x32\xa");
+    BIO_printf(bio_err, "\x20\x2d\x74\x6c\x73\x31\x5f\x31\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6a\x75\x73\x74\x20\x75\x73\x65\x20\x54\x4c\x53\x76\x31\x2e\x31\xa");
+    BIO_printf(bio_err, "\x20\x2d\x74\x6c\x73\x31\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6a\x75\x73\x74\x20\x75\x73\x65\x20\x54\x4c\x53\x76\x31\xa");
+    BIO_printf(bio_err, "\x20\x2d\x64\x74\x6c\x73\x31\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6a\x75\x73\x74\x20\x75\x73\x65\x20\x44\x54\x4c\x53\x76\x31\xa");
+    BIO_printf(bio_err, "\x20\x2d\x66\x61\x6c\x6c\x62\x61\x63\x6b\x5f\x73\x63\x73\x76\x20\x2d\x20\x73\x65\x6e\x64\x20\x54\x4c\x53\x5f\x46\x41\x4c\x4c\x42\x41\x43\x4b\x5f\x53\x43\x53\x56\xa");
+    BIO_printf(bio_err, "\x20\x2d\x6d\x74\x75\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x73\x65\x74\x20\x74\x68\x65\x20\x6c\x69\x6e\x6b\x20\x6c\x61\x79\x65\x72\x20\x4d\x54\x55\xa");
     BIO_printf(bio_err,
-               " -no_tls1_2/-no_tls1_1/-no_tls1/-no_ssl3/-no_ssl2 - turn off that protocol\n");
+               "\x20\x2d\x6e\x6f\x5f\x74\x6c\x73\x31\x5f\x32\x2f\x2d\x6e\x6f\x5f\x74\x6c\x73\x31\x5f\x31\x2f\x2d\x6e\x6f\x5f\x74\x6c\x73\x31\x2f\x2d\x6e\x6f\x5f\x73\x73\x6c\x33\x2f\x2d\x6e\x6f\x5f\x73\x73\x6c\x32\x20\x2d\x20\x74\x75\x72\x6e\x20\x6f\x66\x66\x20\x74\x68\x61\x74\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\xa");
     BIO_printf(bio_err,
-               " -bugs         - Switch on all SSL implementation bug workarounds\n");
+               "\x20\x2d\x62\x75\x67\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x53\x77\x69\x74\x63\x68\x20\x6f\x6e\x20\x61\x6c\x6c\x20\x53\x53\x4c\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x61\x74\x69\x6f\x6e\x20\x62\x75\x67\x20\x77\x6f\x72\x6b\x61\x72\x6f\x75\x6e\x64\x73\xa");
     BIO_printf(bio_err,
-               " -cipher       - preferred cipher to use, use the 'openssl ciphers'\n");
+               "\x20\x2d\x63\x69\x70\x68\x65\x72\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x65\x66\x65\x72\x72\x65\x64\x20\x63\x69\x70\x68\x65\x72\x20\x74\x6f\x20\x75\x73\x65\x2c\x20\x75\x73\x65\x20\x74\x68\x65\x20\x27\x6f\x70\x65\x6e\x73\x73\x6c\x20\x63\x69\x70\x68\x65\x72\x73\x27\xa");
     BIO_printf(bio_err,
-               "                 command to see what is available\n");
+               "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x74\x6f\x20\x73\x65\x65\x20\x77\x68\x61\x74\x20\x69\x73\x20\x61\x76\x61\x69\x6c\x61\x62\x6c\x65\xa");
     BIO_printf(bio_err,
-               " -starttls prot - use the STARTTLS command before starting TLS\n");
+               "\x20\x2d\x73\x74\x61\x72\x74\x74\x6c\x73\x20\x70\x72\x6f\x74\x20\x2d\x20\x75\x73\x65\x20\x74\x68\x65\x20\x53\x54\x41\x52\x54\x54\x4c\x53\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x62\x65\x66\x6f\x72\x65\x20\x73\x74\x61\x72\x74\x69\x6e\x67\x20\x54\x4c\x53\xa");
     BIO_printf(bio_err,
-               "                 for those protocols that support it, where\n");
+               "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x66\x6f\x72\x20\x74\x68\x6f\x73\x65\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x73\x20\x74\x68\x61\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x20\x69\x74\x2c\x20\x77\x68\x65\x72\x65\xa");
     BIO_printf(bio_err,
-               "                 'prot' defines which one to assume.  Currently,\n");
+               "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x27\x70\x72\x6f\x74\x27\x20\x64\x65\x66\x69\x6e\x65\x73\x20\x77\x68\x69\x63\x68\x20\x6f\x6e\x65\x20\x74\x6f\x20\x61\x73\x73\x75\x6d\x65\x2e\x20\x20\x43\x75\x72\x72\x65\x6e\x74\x6c\x79\x2c\xa");
     BIO_printf(bio_err,
-               "                 only \"smtp\", \"pop3\", \"imap\", \"ftp\" and \"xmpp\"\n");
-    BIO_printf(bio_err, "                 are supported.\n");
+               "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x6e\x6c\x79\x20\x22\x73\x6d\x74\x70\x22\x2c\x20\x22\x70\x6f\x70\x33\x22\x2c\x20\x22\x69\x6d\x61\x70\x22\x2c\x20\x22\x66\x74\x70\x22\x20\x61\x6e\x64\x20\x22\x78\x6d\x70\x70\x22\xa");
+    BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x61\x72\x65\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x2e\xa");
 #ifndef OPENSSL_NO_ENGINE
     BIO_printf(bio_err,
-               " -engine id    - Initialise and use the specified engine\n");
+               "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x69\x64\x20\x20\x20\x20\x2d\x20\x49\x6e\x69\x74\x69\x61\x6c\x69\x73\x65\x20\x61\x6e\x64\x20\x75\x73\x65\x20\x74\x68\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x65\x6e\x67\x69\x6e\x65\xa");
 #endif
-    BIO_printf(bio_err, " -rand file%cfile%c...\n", LIST_SEPARATOR_CHAR,
+    BIO_printf(bio_err, "\x20\x2d\x72\x61\x6e\x64\x20\x66\x69\x6c\x65\x25\x63\x66\x69\x6c\x65\x25\x63\x2e\x2e\x2e\xa", LIST_SEPARATOR_CHAR,
                LIST_SEPARATOR_CHAR);
-    BIO_printf(bio_err, " -sess_out arg - file to write SSL session to\n");
-    BIO_printf(bio_err, " -sess_in arg  - file to read SSL session from\n");
+    BIO_printf(bio_err, "\x20\x2d\x73\x65\x73\x73\x5f\x6f\x75\x74\x20\x61\x72\x67\x20\x2d\x20\x66\x69\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x53\x53\x4c\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x6f\xa");
+    BIO_printf(bio_err, "\x20\x2d\x73\x65\x73\x73\x5f\x69\x6e\x20\x61\x72\x67\x20\x20\x2d\x20\x66\x69\x6c\x65\x20\x74\x6f\x20\x72\x65\x61\x64\x20\x53\x53\x4c\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x66\x72\x6f\x6d\xa");
 #ifndef OPENSSL_NO_TLSEXT
     BIO_printf(bio_err,
-               " -servername host  - Set TLS extension servername in ClientHello\n");
+               "\x20\x2d\x73\x65\x72\x76\x65\x72\x6e\x61\x6d\x65\x20\x68\x6f\x73\x74\x20\x20\x2d\x20\x53\x65\x74\x20\x54\x4c\x53\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x20\x73\x65\x72\x76\x65\x72\x6e\x61\x6d\x65\x20\x69\x6e\x20\x43\x6c\x69\x65\x6e\x74\x48\x65\x6c\x6c\x6f\xa");
     BIO_printf(bio_err,
-               " -tlsextdebug      - hex dump of all TLS extensions received\n");
+               "\x20\x2d\x74\x6c\x73\x65\x78\x74\x64\x65\x62\x75\x67\x20\x20\x20\x20\x20\x20\x2d\x20\x68\x65\x78\x20\x64\x75\x6d\x70\x20\x6f\x66\x20\x61\x6c\x6c\x20\x54\x4c\x53\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x20\x72\x65\x63\x65\x69\x76\x65\x64\xa");
     BIO_printf(bio_err,
-               " -status           - request certificate status from server\n");
+               "\x20\x2d\x73\x74\x61\x74\x75\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x72\x65\x71\x75\x65\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x74\x61\x74\x75\x73\x20\x66\x72\x6f\x6d\x20\x73\x65\x72\x76\x65\x72\xa");
     BIO_printf(bio_err,
-               " -no_ticket        - disable use of RFC4507bis session tickets\n");
+               "\x20\x2d\x6e\x6f\x5f\x74\x69\x63\x6b\x65\x74\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x64\x69\x73\x61\x62\x6c\x65\x20\x75\x73\x65\x20\x6f\x66\x20\x52\x46\x43\x34\x35\x30\x37\x62\x69\x73\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x63\x6b\x65\x74\x73\xa");
     BIO_printf(bio_err,
-               " -serverinfo types - send empty ClientHello extensions (comma-separated numbers)\n");
+               "\x20\x2d\x73\x65\x72\x76\x65\x72\x69\x6e\x66\x6f\x20\x74\x79\x70\x65\x73\x20\x2d\x20\x73\x65\x6e\x64\x20\x65\x6d\x70\x74\x79\x20\x43\x6c\x69\x65\x6e\x74\x48\x65\x6c\x6c\x6f\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x20\x28\x63\x6f\x6d\x6d\x61\x2d\x73\x65\x70\x61\x72\x61\x74\x65\x64\x20\x6e\x75\x6d\x62\x65\x72\x73\x29\xa");
     BIO_printf(bio_err,
-               " -curves arg       - Elliptic curves to advertise (colon-separated list)\n");
+               "\x20\x2d\x63\x75\x72\x76\x65\x73\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x45\x6c\x6c\x69\x70\x74\x69\x63\x20\x63\x75\x72\x76\x65\x73\x20\x74\x6f\x20\x61\x64\x76\x65\x72\x74\x69\x73\x65\x20\x28\x63\x6f\x6c\x6f\x6e\x2d\x73\x65\x70\x61\x72\x61\x74\x65\x64\x20\x6c\x69\x73\x74\x29\xa");
     BIO_printf(bio_err,
-               " -sigalgs arg      - Signature algorithms to support (colon-separated list)\n");
+               "\x20\x2d\x73\x69\x67\x61\x6c\x67\x73\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x2d\x20\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x73\x20\x74\x6f\x20\x73\x75\x70\x70\x6f\x72\x74\x20\x28\x63\x6f\x6c\x6f\x6e\x2d\x73\x65\x70\x61\x72\x61\x74\x65\x64\x20\x6c\x69\x73\x74\x29\xa");
     BIO_printf(bio_err,
-               " -client_sigalgs arg - Signature algorithms to support for client\n");
+               "\x20\x2d\x63\x6c\x69\x65\x6e\x74\x5f\x73\x69\x67\x61\x6c\x67\x73\x20\x61\x72\x67\x20\x2d\x20\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x73\x20\x74\x6f\x20\x73\x75\x70\x70\x6f\x72\x74\x20\x66\x6f\x72\x20\x63\x6c\x69\x65\x6e\x74\xa");
     BIO_printf(bio_err,
-               "                       certificate authentication (colon-separated list)\n");
+               "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e\x20\x28\x63\x6f\x6c\x6f\x6e\x2d\x73\x65\x70\x61\x72\x61\x74\x65\x64\x20\x6c\x69\x73\x74\x29\xa");
 #endif
 #ifndef OPENSSL_NO_NEXTPROTONEG
     BIO_printf(bio_err,
-               " -nextprotoneg arg - enable NPN extension, considering named protocols supported (comma-separated list)\n");
+               "\x20\x2d\x6e\x65\x78\x74\x70\x72\x6f\x74\x6f\x6e\x65\x67\x20\x61\x72\x67\x20\x2d\x20\x65\x6e\x61\x62\x6c\x65\x20\x4e\x50\x4e\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x2c\x20\x63\x6f\x6e\x73\x69\x64\x65\x72\x69\x6e\x67\x20\x6e\x61\x6d\x65\x64\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x73\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x28\x63\x6f\x6d\x6d\x61\x2d\x73\x65\x70\x61\x72\x61\x74\x65\x64\x20\x6c\x69\x73\x74\x29\xa");
 #endif
     BIO_printf(bio_err,
-               " -alpn arg         - enable ALPN extension, considering named protocols supported (comma-separated list)\n");
+               "\x20\x2d\x61\x6c\x70\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x65\x6e\x61\x62\x6c\x65\x20\x41\x4c\x50\x4e\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x2c\x20\x63\x6f\x6e\x73\x69\x64\x65\x72\x69\x6e\x67\x20\x6e\x61\x6d\x65\x64\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x73\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x28\x63\x6f\x6d\x6d\x61\x2d\x73\x65\x70\x61\x72\x61\x74\x65\x64\x20\x6c\x69\x73\x74\x29\xa");
     BIO_printf(bio_err,
-               " -legacy_renegotiation - enable use of legacy renegotiation (dangerous)\n");
+               "\x20\x2d\x6c\x65\x67\x61\x63\x79\x5f\x72\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x69\x6f\x6e\x20\x2d\x20\x65\x6e\x61\x62\x6c\x65\x20\x75\x73\x65\x20\x6f\x66\x20\x6c\x65\x67\x61\x63\x79\x20\x72\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x69\x6f\x6e\x20\x28\x64\x61\x6e\x67\x65\x72\x6f\x75\x73\x29\xa");
 #ifndef OPENSSL_NO_SRTP
     BIO_printf(bio_err,
-               " -use_srtp profiles - Offer SRTP key management with a colon-separated profile list\n");
+               "\x20\x2d\x75\x73\x65\x5f\x73\x72\x74\x70\x20\x70\x72\x6f\x66\x69\x6c\x65\x73\x20\x2d\x20\x4f\x66\x66\x65\x72\x20\x53\x52\x54\x50\x20\x6b\x65\x79\x20\x6d\x61\x6e\x61\x67\x65\x6d\x65\x6e\x74\x20\x77\x69\x74\x68\x20\x61\x20\x63\x6f\x6c\x6f\x6e\x2d\x73\x65\x70\x61\x72\x61\x74\x65\x64\x20\x70\x72\x6f\x66\x69\x6c\x65\x20\x6c\x69\x73\x74\xa");
 #endif
     BIO_printf(bio_err,
-               " -keymatexport label   - Export keying material using label\n");
+               "\x20\x2d\x6b\x65\x79\x6d\x61\x74\x65\x78\x70\x6f\x72\x74\x20\x6c\x61\x62\x65\x6c\x20\x20\x20\x2d\x20\x45\x78\x70\x6f\x72\x74\x20\x6b\x65\x79\x69\x6e\x67\x20\x6d\x61\x74\x65\x72\x69\x61\x6c\x20\x75\x73\x69\x6e\x67\x20\x6c\x61\x62\x65\x6c\xa");
     BIO_printf(bio_err,
-               " -keymatexportlen len  - Export len bytes of keying material (default 20)\n");
+               "\x20\x2d\x6b\x65\x79\x6d\x61\x74\x65\x78\x70\x6f\x72\x74\x6c\x65\x6e\x20\x6c\x65\x6e\x20\x20\x2d\x20\x45\x78\x70\x6f\x72\x74\x20\x6c\x65\x6e\x20\x62\x79\x74\x65\x73\x20\x6f\x66\x20\x6b\x65\x79\x69\x6e\x67\x20\x6d\x61\x74\x65\x72\x69\x61\x6c\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x32\x30\x29\xa");
 #ifdef OPENSSL_SYS_WINDOWS
     BIO_printf(bio_err,
-               " -no_rand_screen  - Do not use RAND_screen() to initialize random state\n");
+               "\x20\x2d\x6e\x6f\x5f\x72\x61\x6e\x64\x5f\x73\x63\x72\x65\x65\x6e\x20\x20\x2d\x20\x44\x6f\x20\x6e\x6f\x74\x20\x75\x73\x65\x20\x52\x41\x4e\x44\x5f\x73\x63\x72\x65\x65\x6e\x28\x29\x20\x74\x6f\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x73\x74\x61\x74\x65\xa");
 #endif
 }
 
@@ -473,7 +473,7 @@ static int MS_CALLBACK ssl_servername_cb(SSL *s, int *ad, void *arg)
     if (SSL_get_servername_type(s) != -1)
         p->ack = !SSL_session_reused(s) && hn != NULL;
     else
-        BIO_printf(bio_err, "Can't use SSL_get_servername\n");
+        BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x75\x73\x65\x20\x53\x53\x4c\x5f\x67\x65\x74\x5f\x73\x65\x72\x76\x65\x72\x6e\x61\x6d\x65\xa");
 
     return SSL_TLSEXT_ERR_OK;
 }
@@ -540,12 +540,12 @@ static int MS_CALLBACK ssl_srp_verify_param_cb(SSL *s, void *arg)
     if (!(N = SSL_get_srp_N(s)) || !(g = SSL_get_srp_g(s)))
         return 0;
     if (srp_arg->debug || srp_arg->msg || srp_arg->amp == 1) {
-        BIO_printf(bio_err, "SRP parameters:\n");
-        BIO_printf(bio_err, "\tN=");
+        BIO_printf(bio_err, "\x53\x52\x50\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x3a\xa");
+        BIO_printf(bio_err, "\x9\x4e\x3d");
         BN_print(bio_err, N);
-        BIO_printf(bio_err, "\n\tg=");
+        BIO_printf(bio_err, "\xa\x9\x67\x3d");
         BN_print(bio_err, g);
-        BIO_printf(bio_err, "\n");
+        BIO_printf(bio_err, "\xa");
     }
 
     if (SRP_check_known_gN_param(g, N))
@@ -554,7 +554,7 @@ static int MS_CALLBACK ssl_srp_verify_param_cb(SSL *s, void *arg)
     if (srp_arg->amp == 1) {
         if (srp_arg->debug)
             BIO_printf(bio_err,
-                       "SRP param N and g are not known params, going to check deeper.\n");
+                       "\x53\x52\x50\x20\x70\x61\x72\x61\x6d\x20\x4e\x20\x61\x6e\x64\x20\x67\x20\x61\x72\x65\x20\x6e\x6f\x74\x20\x6b\x6e\x6f\x77\x6e\x20\x70\x61\x72\x61\x6d\x73\x2c\x20\x67\x6f\x69\x6e\x67\x20\x74\x6f\x20\x63\x68\x65\x63\x6b\x20\x64\x65\x65\x70\x65\x72\x2e\xa");
 
         /*
          * The srp_moregroups is a real debugging feature. Implementors
@@ -564,7 +564,7 @@ static int MS_CALLBACK ssl_srp_verify_param_cb(SSL *s, void *arg)
         if (BN_num_bits(g) <= BN_BITS && srp_Verify_N_and_g(N, g))
             return 1;
     }
-    BIO_printf(bio_err, "SRP param N and g rejected.\n");
+    BIO_printf(bio_err, "\x53\x52\x50\x20\x70\x61\x72\x61\x6d\x20\x4e\x20\x61\x6e\x64\x20\x67\x20\x72\x65\x6a\x65\x63\x74\x65\x64\x2e\xa");
     return 0;
 }
 
@@ -578,18 +578,18 @@ static char *MS_CALLBACK ssl_give_srp_client_pwd_cb(SSL *s, void *arg)
     int l;
 
     if (!pass) {
-        BIO_printf(bio_err, "Malloc failure\n");
+        BIO_printf(bio_err, "\x4d\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
         return NULL;
     }
 
     cb_tmp.password = (char *)srp_arg->srppassin;
-    cb_tmp.prompt_info = "SRP user";
+    cb_tmp.prompt_info = "\x53\x52\x50\x20\x75\x73\x65\x72";
     if ((l = password_callback(pass, PWD_STRLEN, 0, &cb_tmp)) < 0) {
-        BIO_printf(bio_err, "Can't read Password\n");
+        BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x72\x65\x61\x64\x20\x50\x61\x73\x73\x77\x6f\x72\x64\xa");
         OPENSSL_free(pass);
         return NULL;
     }
-    *(pass + l) = '\0';
+    *(pass + l) = '\x0';
 
     return pass;
 }
@@ -618,14 +618,14 @@ static int next_proto_cb(SSL *s, unsigned char **out, unsigned char *outlen,
     if (!c_quiet) {
         /* We can assume that |in| is syntactically valid. */
         unsigned i;
-        BIO_printf(bio_c_out, "Protocols advertised by server: ");
+        BIO_printf(bio_c_out, "\x50\x72\x6f\x74\x6f\x63\x6f\x6c\x73\x20\x61\x64\x76\x65\x72\x74\x69\x73\x65\x64\x20\x62\x79\x20\x73\x65\x72\x76\x65\x72\x3a\x20");
         for (i = 0; i < inlen;) {
             if (i)
-                BIO_write(bio_c_out, ", ", 2);
+                BIO_write(bio_c_out, "\x2c\x20", 2);
             BIO_write(bio_c_out, &in[i + 1], in[i]);
             i += in[i] + 1;
         }
-        BIO_write(bio_c_out, "\n", 1);
+        BIO_write(bio_c_out, "\xa", 1);
     }
 
     ctx->status =
@@ -648,7 +648,7 @@ static int serverinfo_cli_parse_cb(SSL *s, unsigned int ext_type,
     ext_buf[3] = inlen & 0xFF;
     memcpy(ext_buf + 4, in, inlen);
 
-    BIO_snprintf(pem_name, sizeof(pem_name), "SERVERINFO FOR EXTENSION %d",
+    BIO_snprintf(pem_name, sizeof(pem_name), "\x53\x45\x52\x56\x45\x52\x49\x4e\x46\x4f\x20\x46\x4f\x52\x20\x45\x58\x54\x45\x4e\x53\x49\x4f\x4e\x20\x25\x64",
                  ext_type);
     PEM_write_bio(bio_c_out, pem_name, "", ext_buf, 4 + inlen);
     return 1;
@@ -783,7 +783,7 @@ int MAIN(int argc, char **argv)
     if (((cbuf = OPENSSL_malloc(BUFSIZZ)) == NULL) ||
         ((sbuf = OPENSSL_malloc(BUFSIZZ)) == NULL) ||
         ((mbuf = OPENSSL_malloc(BUFSIZZ)) == NULL)) {
-        BIO_printf(bio_err, "out of memory\n");
+        BIO_printf(bio_err, "\x6f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
         goto end;
     }
 
@@ -796,51 +796,51 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-host") == 0) {
+        if (strcmp(*argv, "\x2d\x68\x6f\x73\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             host = *(++argv);
-        } else if (strcmp(*argv, "-port") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x6f\x72\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             port = atoi(*(++argv));
             if (port == 0)
                 goto bad;
-        } else if (strcmp(*argv, "-connect") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x6f\x6e\x6e\x65\x63\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!extract_host_port(*(++argv), &host, NULL, &port))
                 goto bad;
-        } else if (strcmp(*argv, "-verify") == 0) {
+        } else if (strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79") == 0) {
             verify = SSL_VERIFY_PEER;
             if (--argc < 1)
                 goto bad;
             verify_depth = atoi(*(++argv));
             if (!c_quiet)
-                BIO_printf(bio_err, "verify depth is %d\n", verify_depth);
-        } else if (strcmp(*argv, "-cert") == 0) {
+                BIO_printf(bio_err, "\x76\x65\x72\x69\x66\x79\x20\x64\x65\x70\x74\x68\x20\x69\x73\x20\x25\x64\xa", verify_depth);
+        } else if (strcmp(*argv, "\x2d\x63\x65\x72\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             cert_file = *(++argv);
-        } else if (strcmp(*argv, "-CRL") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x52\x4c") == 0) {
             if (--argc < 1)
                 goto bad;
             crl_file = *(++argv);
-        } else if (strcmp(*argv, "-crl_download") == 0)
+        } else if (strcmp(*argv, "\x2d\x63\x72\x6c\x5f\x64\x6f\x77\x6e\x6c\x6f\x61\x64") == 0)
             crl_download = 1;
-        else if (strcmp(*argv, "-sess_out") == 0) {
+        else if (strcmp(*argv, "\x2d\x73\x65\x73\x73\x5f\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             sess_out = *(++argv);
-        } else if (strcmp(*argv, "-sess_in") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x65\x73\x73\x5f\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             sess_in = *(++argv);
-        } else if (strcmp(*argv, "-certform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x65\x72\x74\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             cert_format = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-CRLform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x52\x4c\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             crl_format = str2fmt(*(++argv));
@@ -848,11 +848,11 @@ int MAIN(int argc, char **argv)
             if (badarg)
                 goto bad;
             continue;
-        } else if (strcmp(*argv, "-verify_return_error") == 0)
+        } else if (strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79\x5f\x72\x65\x74\x75\x72\x6e\x5f\x65\x72\x72\x6f\x72") == 0)
             verify_return_error = 1;
-        else if (strcmp(*argv, "-verify_quiet") == 0)
+        else if (strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79\x5f\x71\x75\x69\x65\x74") == 0)
             verify_quiet = 1;
-        else if (strcmp(*argv, "-brief") == 0) {
+        else if (strcmp(*argv, "\x2d\x62\x72\x69\x65\x66") == 0) {
             c_brief = 1;
             verify_quiet = 1;
             c_quiet = 1;
@@ -865,54 +865,54 @@ int MAIN(int argc, char **argv)
             if (badarg)
                 goto bad;
             continue;
-        } else if (strcmp(*argv, "-prexit") == 0)
+        } else if (strcmp(*argv, "\x2d\x70\x72\x65\x78\x69\x74") == 0)
             prexit = 1;
-        else if (strcmp(*argv, "-crlf") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x72\x6c\x66") == 0)
             crlf = 1;
-        else if (strcmp(*argv, "-quiet") == 0) {
+        else if (strcmp(*argv, "\x2d\x71\x75\x69\x65\x74") == 0) {
             c_quiet = 1;
             c_ign_eof = 1;
-        } else if (strcmp(*argv, "-ign_eof") == 0)
+        } else if (strcmp(*argv, "\x2d\x69\x67\x6e\x5f\x65\x6f\x66") == 0)
             c_ign_eof = 1;
-        else if (strcmp(*argv, "-no_ign_eof") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x6f\x5f\x69\x67\x6e\x5f\x65\x6f\x66") == 0)
             c_ign_eof = 0;
-        else if (strcmp(*argv, "-pause") == 0)
+        else if (strcmp(*argv, "\x2d\x70\x61\x75\x73\x65") == 0)
             c_Pause = 1;
-        else if (strcmp(*argv, "-debug") == 0)
+        else if (strcmp(*argv, "\x2d\x64\x65\x62\x75\x67") == 0)
             c_debug = 1;
 #ifndef OPENSSL_NO_TLSEXT
-        else if (strcmp(*argv, "-tlsextdebug") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x6c\x73\x65\x78\x74\x64\x65\x62\x75\x67") == 0)
             c_tlsextdebug = 1;
-        else if (strcmp(*argv, "-status") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x74\x61\x74\x75\x73") == 0)
             c_status_req = 1;
 #endif
 #ifdef WATT32
-        else if (strcmp(*argv, "-wdebug") == 0)
+        else if (strcmp(*argv, "\x2d\x77\x64\x65\x62\x75\x67") == 0)
             dbug_init();
 #endif
-        else if (strcmp(*argv, "-msg") == 0)
+        else if (strcmp(*argv, "\x2d\x6d\x73\x67") == 0)
             c_msg = 1;
-        else if (strcmp(*argv, "-msgfile") == 0) {
+        else if (strcmp(*argv, "\x2d\x6d\x73\x67\x66\x69\x6c\x65") == 0) {
             if (--argc < 1)
                 goto bad;
-            bio_c_msg = BIO_new_file(*(++argv), "w");
+            bio_c_msg = BIO_new_file(*(++argv), "\x77");
         }
 #ifndef OPENSSL_NO_SSL_TRACE
-        else if (strcmp(*argv, "-trace") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x72\x61\x63\x65") == 0)
             c_msg = 2;
 #endif
-        else if (strcmp(*argv, "-showcerts") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x68\x6f\x77\x63\x65\x72\x74\x73") == 0)
             c_showcerts = 1;
-        else if (strcmp(*argv, "-nbio_test") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x62\x69\x6f\x5f\x74\x65\x73\x74") == 0)
             nbio_test = 1;
-        else if (strcmp(*argv, "-state") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x74\x61\x74\x65") == 0)
             state = 1;
 #ifndef OPENSSL_NO_PSK
-        else if (strcmp(*argv, "-psk_identity") == 0) {
+        else if (strcmp(*argv, "\x2d\x70\x73\x6b\x5f\x69\x64\x65\x6e\x74\x69\x74\x79") == 0) {
             if (--argc < 1)
                 goto bad;
             psk_identity = *(++argv);
-        } else if (strcmp(*argv, "-psk") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x73\x6b") == 0) {
             size_t j;
 
             if (--argc < 1)
@@ -921,142 +921,142 @@ int MAIN(int argc, char **argv)
             for (j = 0; j < strlen(psk_key); j++) {
                 if (isxdigit((unsigned char)psk_key[j]))
                     continue;
-                BIO_printf(bio_err, "Not a hex number '%s'\n", *argv);
+                BIO_printf(bio_err, "\x4e\x6f\x74\x20\x61\x20\x68\x65\x78\x20\x6e\x75\x6d\x62\x65\x72\x20\x27\x25\x73\x27\xa", *argv);
                 goto bad;
             }
         }
 #endif
 #ifndef OPENSSL_NO_SRP
-        else if (strcmp(*argv, "-srpuser") == 0) {
+        else if (strcmp(*argv, "\x2d\x73\x72\x70\x75\x73\x65\x72") == 0) {
             if (--argc < 1)
                 goto bad;
             srp_arg.srplogin = *(++argv);
             meth = TLSv1_client_method();
-        } else if (strcmp(*argv, "-srppass") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x72\x70\x70\x61\x73\x73") == 0) {
             if (--argc < 1)
                 goto bad;
             srppass = *(++argv);
             meth = TLSv1_client_method();
-        } else if (strcmp(*argv, "-srp_strength") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x72\x70\x5f\x73\x74\x72\x65\x6e\x67\x74\x68") == 0) {
             if (--argc < 1)
                 goto bad;
             srp_arg.strength = atoi(*(++argv));
-            BIO_printf(bio_err, "SRP minimal length for N is %d\n",
+            BIO_printf(bio_err, "\x53\x52\x50\x20\x6d\x69\x6e\x69\x6d\x61\x6c\x20\x6c\x65\x6e\x67\x74\x68\x20\x66\x6f\x72\x20\x4e\x20\x69\x73\x20\x25\x64\xa",
                        srp_arg.strength);
             meth = TLSv1_client_method();
-        } else if (strcmp(*argv, "-srp_lateuser") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x72\x70\x5f\x6c\x61\x74\x65\x75\x73\x65\x72") == 0) {
             srp_lateuser = 1;
             meth = TLSv1_client_method();
-        } else if (strcmp(*argv, "-srp_moregroups") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x72\x70\x5f\x6d\x6f\x72\x65\x67\x72\x6f\x75\x70\x73") == 0) {
             srp_arg.amp = 1;
             meth = TLSv1_client_method();
         }
 #endif
 #ifndef OPENSSL_NO_SSL2
-        else if (strcmp(*argv, "-ssl2") == 0) {
+        else if (strcmp(*argv, "\x2d\x73\x73\x6c\x32") == 0) {
             meth = SSLv2_client_method();
             prot_opt++;
         }
 #endif
 #ifndef OPENSSL_NO_SSL3_METHOD
-        else if (strcmp(*argv, "-ssl3") == 0) {
+        else if (strcmp(*argv, "\x2d\x73\x73\x6c\x33") == 0) {
             meth = SSLv3_client_method();
             prot_opt++;
         }
 #endif
 #ifndef OPENSSL_NO_TLS1
-        else if (strcmp(*argv, "-tls1_2") == 0) {
+        else if (strcmp(*argv, "\x2d\x74\x6c\x73\x31\x5f\x32") == 0) {
             meth = TLSv1_2_client_method();
             prot_opt++;
-        } else if (strcmp(*argv, "-tls1_1") == 0) {
+        } else if (strcmp(*argv, "\x2d\x74\x6c\x73\x31\x5f\x31") == 0) {
             meth = TLSv1_1_client_method();
             prot_opt++;
-        } else if (strcmp(*argv, "-tls1") == 0) {
+        } else if (strcmp(*argv, "\x2d\x74\x6c\x73\x31") == 0) {
             meth = TLSv1_client_method();
             prot_opt++;
         }
 #endif
 #ifndef OPENSSL_NO_DTLS1
-        else if (strcmp(*argv, "-dtls") == 0) {
+        else if (strcmp(*argv, "\x2d\x64\x74\x6c\x73") == 0) {
             meth = DTLS_client_method();
             socket_type = SOCK_DGRAM;
             prot_opt++;
-        } else if (strcmp(*argv, "-dtls1") == 0) {
+        } else if (strcmp(*argv, "\x2d\x64\x74\x6c\x73\x31") == 0) {
             meth = DTLSv1_client_method();
             socket_type = SOCK_DGRAM;
             prot_opt++;
-        } else if (strcmp(*argv, "-dtls1_2") == 0) {
+        } else if (strcmp(*argv, "\x2d\x64\x74\x6c\x73\x31\x5f\x32") == 0) {
             meth = DTLSv1_2_client_method();
             socket_type = SOCK_DGRAM;
             prot_opt++;
-        } else if (strcmp(*argv, "-timeout") == 0)
+        } else if (strcmp(*argv, "\x2d\x74\x69\x6d\x65\x6f\x75\x74") == 0)
             enable_timeouts = 1;
-        else if (strcmp(*argv, "-mtu") == 0) {
+        else if (strcmp(*argv, "\x2d\x6d\x74\x75") == 0) {
             if (--argc < 1)
                 goto bad;
             socket_mtu = atol(*(++argv));
         }
 #endif
-        else if (strcmp(*argv, "-fallback_scsv") == 0) {
+        else if (strcmp(*argv, "\x2d\x66\x61\x6c\x6c\x62\x61\x63\x6b\x5f\x73\x63\x73\x76") == 0) {
             fallback_scsv = 1;
-        } else if (strcmp(*argv, "-keyform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             key_format = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-pass") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x61\x73\x73") == 0) {
             if (--argc < 1)
                 goto bad;
             passarg = *(++argv);
-        } else if (strcmp(*argv, "-cert_chain") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x65\x72\x74\x5f\x63\x68\x61\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             chain_file = *(++argv);
-        } else if (strcmp(*argv, "-key") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79") == 0) {
             if (--argc < 1)
                 goto bad;
             key_file = *(++argv);
-        } else if (strcmp(*argv, "-reconnect") == 0) {
+        } else if (strcmp(*argv, "\x2d\x72\x65\x63\x6f\x6e\x6e\x65\x63\x74") == 0) {
             reconnect = 5;
-        } else if (strcmp(*argv, "-CApath") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x70\x61\x74\x68") == 0) {
             if (--argc < 1)
                 goto bad;
             CApath = *(++argv);
-        } else if (strcmp(*argv, "-chainCApath") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x68\x61\x69\x6e\x43\x41\x70\x61\x74\x68") == 0) {
             if (--argc < 1)
                 goto bad;
             chCApath = *(++argv);
-        } else if (strcmp(*argv, "-verifyCApath") == 0) {
+        } else if (strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79\x43\x41\x70\x61\x74\x68") == 0) {
             if (--argc < 1)
                 goto bad;
             vfyCApath = *(++argv);
-        } else if (strcmp(*argv, "-build_chain") == 0)
+        } else if (strcmp(*argv, "\x2d\x62\x75\x69\x6c\x64\x5f\x63\x68\x61\x69\x6e") == 0)
             build_chain = 1;
-        else if (strcmp(*argv, "-CAfile") == 0) {
+        else if (strcmp(*argv, "\x2d\x43\x41\x66\x69\x6c\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             CAfile = *(++argv);
-        } else if (strcmp(*argv, "-chainCAfile") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x68\x61\x69\x6e\x43\x41\x66\x69\x6c\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             chCAfile = *(++argv);
-        } else if (strcmp(*argv, "-verifyCAfile") == 0) {
+        } else if (strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79\x43\x41\x66\x69\x6c\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             vfyCAfile = *(++argv);
         }
 #ifndef OPENSSL_NO_TLSEXT
 # ifndef OPENSSL_NO_NEXTPROTONEG
-        else if (strcmp(*argv, "-nextprotoneg") == 0) {
+        else if (strcmp(*argv, "\x2d\x6e\x65\x78\x74\x70\x72\x6f\x74\x6f\x6e\x65\x67") == 0) {
             if (--argc < 1)
                 goto bad;
             next_proto_neg_in = *(++argv);
         }
 # endif
-        else if (strcmp(*argv, "-alpn") == 0) {
+        else if (strcmp(*argv, "\x2d\x61\x6c\x70\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             alpn_in = *(++argv);
-        } else if (strcmp(*argv, "-serverinfo") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x65\x72\x76\x65\x72\x69\x6e\x66\x6f") == 0) {
             char *c;
             int start = 0;
             int len;
@@ -1067,7 +1067,7 @@ int MAIN(int argc, char **argv)
             serverinfo_types_count = 0;
             len = strlen(c);
             for (i = 0; i <= len; ++i) {
-                if (i == len || c[i] == ',') {
+                if (i == len || c[i] == '\x2c') {
                     serverinfo_types[serverinfo_types_count]
                         = atoi(c + start);
                     serverinfo_types_count++;
@@ -1079,45 +1079,45 @@ int MAIN(int argc, char **argv)
         }
 #endif
 #ifdef FIONBIO
-        else if (strcmp(*argv, "-nbio") == 0) {
+        else if (strcmp(*argv, "\x2d\x6e\x62\x69\x6f") == 0) {
             c_nbio = 1;
         }
 #endif
-        else if (strcmp(*argv, "-starttls") == 0) {
+        else if (strcmp(*argv, "\x2d\x73\x74\x61\x72\x74\x74\x6c\x73") == 0) {
             if (--argc < 1)
                 goto bad;
             ++argv;
-            if (strcmp(*argv, "smtp") == 0)
+            if (strcmp(*argv, "\x73\x6d\x74\x70") == 0)
                 starttls_proto = PROTO_SMTP;
-            else if (strcmp(*argv, "pop3") == 0)
+            else if (strcmp(*argv, "\x70\x6f\x70\x33") == 0)
                 starttls_proto = PROTO_POP3;
-            else if (strcmp(*argv, "imap") == 0)
+            else if (strcmp(*argv, "\x69\x6d\x61\x70") == 0)
                 starttls_proto = PROTO_IMAP;
-            else if (strcmp(*argv, "ftp") == 0)
+            else if (strcmp(*argv, "\x66\x74\x70") == 0)
                 starttls_proto = PROTO_FTP;
-            else if (strcmp(*argv, "xmpp") == 0)
+            else if (strcmp(*argv, "\x78\x6d\x70\x70") == 0)
                 starttls_proto = PROTO_XMPP;
             else
                 goto bad;
         }
 #ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*argv, "-engine") == 0) {
+        else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine_id = *(++argv);
-        } else if (strcmp(*argv, "-ssl_client_engine") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x73\x6c\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             ssl_client_engine_id = *(++argv);
         }
 #endif
-        else if (strcmp(*argv, "-rand") == 0) {
+        else if (strcmp(*argv, "\x2d\x72\x61\x6e\x64") == 0) {
             if (--argc < 1)
                 goto bad;
             inrand = *(++argv);
         }
 #ifndef OPENSSL_NO_TLSEXT
-        else if (strcmp(*argv, "-servername") == 0) {
+        else if (strcmp(*argv, "\x2d\x73\x65\x72\x76\x65\x72\x6e\x61\x6d\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             servername = *(++argv);
@@ -1125,35 +1125,35 @@ int MAIN(int argc, char **argv)
         }
 #endif
 #ifndef OPENSSL_NO_JPAKE
-        else if (strcmp(*argv, "-jpake") == 0) {
+        else if (strcmp(*argv, "\x2d\x6a\x70\x61\x6b\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             jpake_secret = *++argv;
         }
 #endif
 #ifndef OPENSSL_NO_SRTP
-        else if (strcmp(*argv, "-use_srtp") == 0) {
+        else if (strcmp(*argv, "\x2d\x75\x73\x65\x5f\x73\x72\x74\x70") == 0) {
             if (--argc < 1)
                 goto bad;
             srtp_profiles = *(++argv);
         }
 #endif
-        else if (strcmp(*argv, "-keymatexport") == 0) {
+        else if (strcmp(*argv, "\x2d\x6b\x65\x79\x6d\x61\x74\x65\x78\x70\x6f\x72\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             keymatexportlabel = *(++argv);
-        } else if (strcmp(*argv, "-keymatexportlen") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79\x6d\x61\x74\x65\x78\x70\x6f\x72\x74\x6c\x65\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             keymatexportlen = atoi(*(++argv));
             if (keymatexportlen == 0)
                 goto bad;
 #ifdef OPENSSL_SYS_WINDOWS
-        } else if (strcmp(*argv, "-no_rand_screen") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6e\x6f\x5f\x72\x61\x6e\x64\x5f\x73\x63\x72\x65\x65\x6e") == 0) {
           c_no_rand_screen = 1;
 #endif
         } else {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badop = 1;
             break;
         }
@@ -1168,21 +1168,21 @@ int MAIN(int argc, char **argv)
 #if !defined(OPENSSL_NO_JPAKE) && !defined(OPENSSL_NO_PSK)
     if (jpake_secret) {
         if (psk_key) {
-            BIO_printf(bio_err, "Can't use JPAKE and PSK together\n");
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x75\x73\x65\x20\x4a\x50\x41\x4b\x45\x20\x61\x6e\x64\x20\x50\x53\x4b\x20\x74\x6f\x67\x65\x74\x68\x65\x72\xa");
             goto end;
         }
-        psk_identity = "JPAKE";
+        psk_identity = "\x4a\x50\x41\x4b\x45";
     }
 #endif
 
     if (prot_opt > 1) {
-        BIO_printf(bio_err, "Cannot supply multiple protocol flags\n");
+        BIO_printf(bio_err, "\x43\x61\x6e\x6e\x6f\x74\x20\x73\x75\x70\x70\x6c\x79\x20\x6d\x75\x6c\x74\x69\x70\x6c\x65\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x20\x66\x6c\x61\x67\x73\xa");
         goto end;
     }
 
     if (prot_opt == 1 && no_prot_opt) {
-        BIO_printf(bio_err, "Cannot supply both a protocol flag and "
-                            "\"-no_<prot>\"\n");
+        BIO_printf(bio_err, "\x43\x61\x6e\x6e\x6f\x74\x20\x73\x75\x70\x70\x6c\x79\x20\x62\x6f\x74\x68\x20\x61\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x20\x66\x6c\x61\x67\x20\x61\x6e\x64\x20"
+                            "\x22\x2d\x6e\x6f\x5f\x3c\x70\x72\x6f\x74\x3e\x22\xa");
         goto end;
     }
 
@@ -1195,7 +1195,7 @@ int MAIN(int argc, char **argv)
         next_proto.data =
             next_protos_parse(&next_proto.len, next_proto_neg_in);
         if (next_proto.data == NULL) {
-            BIO_printf(bio_err, "Error parsing -nextprotoneg argument\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x2d\x6e\x65\x78\x74\x70\x72\x6f\x74\x6f\x6e\x65\x67\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\xa");
             goto end;
         }
     } else
@@ -1207,13 +1207,13 @@ int MAIN(int argc, char **argv)
     if (ssl_client_engine_id) {
         ssl_client_engine = ENGINE_by_id(ssl_client_engine_id);
         if (!ssl_client_engine) {
-            BIO_printf(bio_err, "Error getting client auth engine\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x63\x6c\x69\x65\x6e\x74\x20\x61\x75\x74\x68\x20\x65\x6e\x67\x69\x6e\x65\xa");
             goto end;
         }
     }
 #endif
     if (!app_passwd(bio_err, passarg, NULL, &pass, NULL)) {
-        BIO_printf(bio_err, "Error getting password\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa");
         goto end;
     }
 
@@ -1223,7 +1223,7 @@ int MAIN(int argc, char **argv)
     if (key_file) {
 
         key = load_key(bio_err, key_file, key_format, 0, pass, e,
-                       "client certificate private key file");
+                       "\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x66\x69\x6c\x65");
         if (!key) {
             ERR_print_errors(bio_err);
             goto end;
@@ -1233,7 +1233,7 @@ int MAIN(int argc, char **argv)
 
     if (cert_file) {
         cert = load_cert(bio_err, cert_file, cert_format,
-                         NULL, e, "client certificate file");
+                         NULL, e, "\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65");
 
         if (!cert) {
             ERR_print_errors(bio_err);
@@ -1243,7 +1243,7 @@ int MAIN(int argc, char **argv)
 
     if (chain_file) {
         chain = load_certs(bio_err, chain_file, FORMAT_PEM,
-                           NULL, e, "client certificate chain");
+                           NULL, e, "\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x63\x68\x61\x69\x6e");
         if (!chain)
             goto end;
     }
@@ -1252,13 +1252,13 @@ int MAIN(int argc, char **argv)
         X509_CRL *crl;
         crl = load_crl(crl_file, crl_format);
         if (!crl) {
-            BIO_puts(bio_err, "Error loading CRL\n");
+            BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x43\x52\x4c\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
         crls = sk_X509_CRL_new_null();
         if (!crls || !sk_X509_CRL_push(crls, crl)) {
-            BIO_puts(bio_err, "Error adding CRL\n");
+            BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x61\x64\x64\x69\x6e\x67\x20\x43\x52\x4c\xa");
             ERR_print_errors(bio_err);
             X509_CRL_free(crl);
             goto end;
@@ -1271,10 +1271,10 @@ int MAIN(int argc, char **argv)
     if (!app_RAND_load_file(NULL, bio_err, ++c_no_rand_screen) && inrand == NULL
         && !RAND_status()) {
         BIO_printf(bio_err,
-                   "warning, not much extra random data, consider using the -rand option\n");
+                   "\x77\x61\x72\x6e\x69\x6e\x67\x2c\x20\x6e\x6f\x74\x20\x6d\x75\x63\x68\x20\x65\x78\x74\x72\x61\x20\x72\x61\x6e\x64\x6f\x6d\x20\x64\x61\x74\x61\x2c\x20\x63\x6f\x6e\x73\x69\x64\x65\x72\x20\x75\x73\x69\x6e\x67\x20\x74\x68\x65\x20\x2d\x72\x61\x6e\x64\x20\x6f\x70\x74\x69\x6f\x6e\xa");
     }
     if (inrand != NULL)
-        BIO_printf(bio_err, "%ld semi-random bytes loaded\n",
+        BIO_printf(bio_err, "\x25\x6c\x64\x20\x73\x65\x6d\x69\x2d\x72\x61\x6e\x64\x6f\x6d\x20\x62\x79\x74\x65\x73\x20\x6c\x6f\x61\x64\x65\x64\xa",
                    app_RAND_load_files(inrand));
 
     if (bio_c_out == NULL) {
@@ -1289,7 +1289,7 @@ int MAIN(int argc, char **argv)
     }
 #ifndef OPENSSL_NO_SRP
     if (!app_passwd(bio_err, srppass, NULL, &srp_arg.srppassin, NULL)) {
-        BIO_printf(bio_err, "Error getting password\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa");
         goto end;
     }
 #endif
@@ -1310,14 +1310,14 @@ int MAIN(int argc, char **argv)
 
     if (!ssl_load_stores(ctx, vfyCApath, vfyCAfile, chCApath, chCAfile,
                          crls, crl_download)) {
-        BIO_printf(bio_err, "Error loading store locations\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x73\x74\x6f\x72\x65\x20\x6c\x6f\x63\x61\x74\x69\x6f\x6e\x73\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
 #ifndef OPENSSL_NO_ENGINE
     if (ssl_client_engine) {
         if (!SSL_CTX_set_client_cert_engine(ctx, ssl_client_engine)) {
-            BIO_puts(bio_err, "Error setting client auth engine\n");
+            BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x63\x6c\x69\x65\x6e\x74\x20\x61\x75\x74\x68\x20\x65\x6e\x67\x69\x6e\x65\xa");
             ERR_print_errors(bio_err);
             ENGINE_free(ssl_client_engine);
             goto end;
@@ -1335,7 +1335,7 @@ int MAIN(int argc, char **argv)
     {
         if (c_debug)
             BIO_printf(bio_c_out,
-                       "PSK key given or JPAKE in use, setting client callback\n");
+                       "\x50\x53\x4b\x20\x6b\x65\x79\x20\x67\x69\x76\x65\x6e\x20\x6f\x72\x20\x4a\x50\x41\x4b\x45\x20\x69\x6e\x20\x75\x73\x65\x2c\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b\xa");
         SSL_CTX_set_psk_client_callback(ctx, psk_client_cb);
     }
 #endif
@@ -1356,7 +1356,7 @@ int MAIN(int argc, char **argv)
         unsigned char *alpn = next_protos_parse(&alpn_len, alpn_in);
 
         if (alpn == NULL) {
-            BIO_printf(bio_err, "Error parsing -alpn argument\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x2d\x61\x6c\x70\x6e\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\xa");
             goto end;
         }
         SSL_CTX_set_alpn_protos(ctx, alpn, alpn_len);
@@ -1376,7 +1376,7 @@ int MAIN(int argc, char **argv)
         SSL_CTX_set_info_callback(ctx, apps_ssl_info_callback);
 #if 0
     else
-        SSL_CTX_set_cipher_list(ctx, getenv("SSL_CIPHER"));
+        SSL_CTX_set_cipher_list(ctx, getenv("\x53\x53\x4c\x5f\x43\x49\x50\x48\x45\x52"));
 #endif
 
     SSL_CTX_set_verify(ctx, verify, verify_callback);
@@ -1402,7 +1402,7 @@ int MAIN(int argc, char **argv)
 # ifndef OPENSSL_NO_SRP
     if (srp_arg.srplogin) {
         if (!srp_lateuser && !SSL_CTX_set_srp_username(ctx, srp_arg.srplogin)) {
-            BIO_printf(bio_err, "Unable to set SRP username\n");
+            BIO_printf(bio_err, "\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x73\x65\x74\x20\x53\x52\x50\x20\x75\x73\x65\x72\x6e\x61\x6d\x65\xa");
             goto end;
         }
         srp_arg.msg = c_msg;
@@ -1420,16 +1420,16 @@ int MAIN(int argc, char **argv)
     con = SSL_new(ctx);
     if (sess_in) {
         SSL_SESSION *sess;
-        BIO *stmp = BIO_new_file(sess_in, "r");
+        BIO *stmp = BIO_new_file(sess_in, "\x72");
         if (!stmp) {
-            BIO_printf(bio_err, "Can't open session file %s\n", sess_in);
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x66\x69\x6c\x65\x20\x25\x73\xa", sess_in);
             ERR_print_errors(bio_err);
             goto end;
         }
         sess = PEM_read_bio_SSL_SESSION(stmp, NULL, 0, NULL);
         BIO_free(stmp);
         if (!sess) {
-            BIO_printf(bio_err, "Can't open session file %s\n", sess_in);
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x66\x69\x6c\x65\x20\x25\x73\xa", sess_in);
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -1443,7 +1443,7 @@ int MAIN(int argc, char **argv)
 #ifndef OPENSSL_NO_TLSEXT
     if (servername != NULL) {
         if (!SSL_set_tlsext_host_name(con, servername)) {
-            BIO_printf(bio_err, "Unable to set TLS servername extension.\n");
+            BIO_printf(bio_err, "\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x73\x65\x74\x20\x54\x4c\x53\x20\x73\x65\x72\x76\x65\x72\x6e\x61\x6d\x65\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x2e\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -1455,26 +1455,26 @@ int MAIN(int argc, char **argv)
         kssl_ctx_setstring(kctx, KSSL_SERVER, host);
     }
 #endif                          /* OPENSSL_NO_KRB5 */
-/*      SSL_set_cipher_list(con,"RC4-MD5"); */
+/*      SSL_set_cipher_list(con,"\x52\x43\x34\x2d\x4d\x44\x35"); */
 #if 0
 # ifdef TLSEXT_TYPE_opaque_prf_input
-    SSL_set_tlsext_opaque_prf_input(con, "Test client", 11);
+    SSL_set_tlsext_opaque_prf_input(con, "\x54\x65\x73\x74\x20\x63\x6c\x69\x65\x6e\x74", 11);
 # endif
 #endif
 
  re_start:
 
     if (init_client(&s, host, port, socket_type) == 0) {
-        BIO_printf(bio_err, "connect:errno=%d\n", get_last_socket_error());
+        BIO_printf(bio_err, "\x63\x6f\x6e\x6e\x65\x63\x74\x3a\x65\x72\x72\x6e\x6f\x3d\x25\x64\xa", get_last_socket_error());
         SHUTDOWN(s);
         goto end;
     }
-    BIO_printf(bio_c_out, "CONNECTED(%08X)\n", s);
+    BIO_printf(bio_c_out, "\x43\x4f\x4e\x4e\x45\x43\x54\x45\x44\x28\x25\x30\x38\x58\x29\xa", s);
 
 #ifdef FIONBIO
     if (c_nbio) {
         unsigned long l = 1;
-        BIO_printf(bio_c_out, "turning on non blocking io\n");
+        BIO_printf(bio_c_out, "\x74\x75\x72\x6e\x69\x6e\x67\x20\x6f\x6e\x20\x6e\x6f\x6e\x20\x62\x6c\x6f\x63\x6b\x69\x6e\x67\x20\x69\x6f\xa");
         if (BIO_socket_ioctl(s, FIONBIO, &l) < 0) {
             ERR_print_errors(bio_err);
             goto end;
@@ -1488,7 +1488,7 @@ int MAIN(int argc, char **argv)
 
         sbio = BIO_new_dgram(s, BIO_NOCLOSE);
         if (getsockname(s, &peer, (void *)&peerlen) < 0) {
-            BIO_printf(bio_err, "getsockname:errno=%d\n",
+            BIO_printf(bio_err, "\x67\x65\x74\x73\x6f\x63\x6b\x6e\x61\x6d\x65\x3a\x65\x72\x72\x6e\x6f\x3d\x25\x64\xa",
                        get_last_socket_error());
             SHUTDOWN(s);
             goto end;
@@ -1508,14 +1508,14 @@ int MAIN(int argc, char **argv)
 
         if (socket_mtu) {
             if (socket_mtu < DTLS_get_link_min_mtu(con)) {
-                BIO_printf(bio_err, "MTU too small. Must be at least %ld\n",
+                BIO_printf(bio_err, "\x4d\x54\x55\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c\x2e\x20\x4d\x75\x73\x74\x20\x62\x65\x20\x61\x74\x20\x6c\x65\x61\x73\x74\x20\x25\x6c\x64\xa",
                            DTLS_get_link_min_mtu(con));
                 BIO_free(sbio);
                 goto shut;
             }
             SSL_set_options(con, SSL_OP_NO_QUERY_MTU);
             if (!DTLS_set_link_mtu(con, socket_mtu)) {
-                BIO_printf(bio_err, "Failed to set MTU\n");
+                BIO_printf(bio_err, "\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x74\x20\x4d\x54\x55\xa");
                 BIO_free(sbio);
                 goto shut;
             }
@@ -1561,7 +1561,7 @@ int MAIN(int argc, char **argv)
             OCSP_RESPID *id = OCSP_RESPID_new();
             id->value.byKey = ASN1_OCTET_STRING_new();
             id->type = V_OCSP_RESPID_KEY;
-            ASN1_STRING_set(id->value.byKey, "Hello World", -1);
+            ASN1_STRING_set(id->value.byKey, "\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64", -1);
             sk_OCSP_RESPID_push(ids, id);
             SSL_set_tlsext_status_ids(con, ids);
         }
@@ -1609,29 +1609,29 @@ int MAIN(int argc, char **argv)
         do {
             mbuf_len = BIO_gets(fbio, mbuf, BUFSIZZ);
         }
-        while (mbuf_len > 3 && mbuf[3] == '-');
+        while (mbuf_len > 3 && mbuf[3] == '\x2d');
         /* STARTTLS command requires EHLO... */
-        BIO_printf(fbio, "EHLO openssl.client.net\r\n");
+        BIO_printf(fbio, "\x45\x48\x4c\x4f\x20\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x63\x6c\x69\x65\x6e\x74\x2e\x6e\x65\x74\xd\xa");
         (void)BIO_flush(fbio);
         /* wait for multi-line response to end EHLO SMTP response */
         do {
             mbuf_len = BIO_gets(fbio, mbuf, BUFSIZZ);
-            if (strstr(mbuf, "STARTTLS"))
+            if (strstr(mbuf, "\x53\x54\x41\x52\x54\x54\x4c\x53"))
                 foundit = 1;
         }
-        while (mbuf_len > 3 && mbuf[3] == '-');
+        while (mbuf_len > 3 && mbuf[3] == '\x2d');
         (void)BIO_flush(fbio);
         BIO_pop(fbio);
         BIO_free(fbio);
         if (!foundit)
             BIO_printf(bio_err,
-                       "didn't found starttls in server response,"
-                       " try anyway...\n");
-        BIO_printf(sbio, "STARTTLS\r\n");
+                       "\x64\x69\x64\x6e\x27\x74\x20\x66\x6f\x75\x6e\x64\x20\x73\x74\x61\x72\x74\x74\x6c\x73\x20\x69\x6e\x20\x73\x65\x72\x76\x65\x72\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x2c"
+                       "\x20\x74\x72\x79\x20\x61\x6e\x79\x77\x61\x79\x2e\x2e\x2e\xa");
+        BIO_printf(sbio, "\x53\x54\x41\x52\x54\x54\x4c\x53\xd\xa");
         BIO_read(sbio, sbuf, BUFSIZZ);
     } else if (starttls_proto == PROTO_POP3) {
         BIO_read(sbio, mbuf, BUFSIZZ);
-        BIO_printf(sbio, "STLS\r\n");
+        BIO_printf(sbio, "\x53\x54\x4c\x53\xd\xa");
         BIO_read(sbio, sbuf, BUFSIZZ);
     } else if (starttls_proto == PROTO_IMAP) {
         int foundit = 0;
@@ -1639,23 +1639,23 @@ int MAIN(int argc, char **argv)
         BIO_push(fbio, sbio);
         BIO_gets(fbio, mbuf, BUFSIZZ);
         /* STARTTLS command requires CAPABILITY... */
-        BIO_printf(fbio, ". CAPABILITY\r\n");
+        BIO_printf(fbio, "\x2e\x20\x43\x41\x50\x41\x42\x49\x4c\x49\x54\x59\xd\xa");
         (void)BIO_flush(fbio);
         /* wait for multi-line CAPABILITY response */
         do {
             mbuf_len = BIO_gets(fbio, mbuf, BUFSIZZ);
-            if (strstr(mbuf, "STARTTLS"))
+            if (strstr(mbuf, "\x53\x54\x41\x52\x54\x54\x4c\x53"))
                 foundit = 1;
         }
-        while (mbuf_len > 3 && mbuf[0] != '.');
+        while (mbuf_len > 3 && mbuf[0] != '\x2e');
         (void)BIO_flush(fbio);
         BIO_pop(fbio);
         BIO_free(fbio);
         if (!foundit)
             BIO_printf(bio_err,
-                       "didn't found STARTTLS in server response,"
-                       " try anyway...\n");
-        BIO_printf(sbio, ". STARTTLS\r\n");
+                       "\x64\x69\x64\x6e\x27\x74\x20\x66\x6f\x75\x6e\x64\x20\x53\x54\x41\x52\x54\x54\x4c\x53\x20\x69\x6e\x20\x73\x65\x72\x76\x65\x72\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x2c"
+                       "\x20\x74\x72\x79\x20\x61\x6e\x79\x77\x61\x79\x2e\x2e\x2e\xa");
+        BIO_printf(sbio, "\x2e\x20\x53\x54\x41\x52\x54\x54\x4c\x53\xd\xa");
         BIO_read(sbio, sbuf, BUFSIZZ);
     } else if (starttls_proto == PROTO_FTP) {
         BIO *fbio = BIO_new(BIO_f_buffer());
@@ -1664,32 +1664,32 @@ int MAIN(int argc, char **argv)
         do {
             mbuf_len = BIO_gets(fbio, mbuf, BUFSIZZ);
         }
-        while (mbuf_len > 3 && mbuf[3] == '-');
+        while (mbuf_len > 3 && mbuf[3] == '\x2d');
         (void)BIO_flush(fbio);
         BIO_pop(fbio);
         BIO_free(fbio);
-        BIO_printf(sbio, "AUTH TLS\r\n");
+        BIO_printf(sbio, "\x41\x55\x54\x48\x20\x54\x4c\x53\xd\xa");
         BIO_read(sbio, sbuf, BUFSIZZ);
     }
     if (starttls_proto == PROTO_XMPP) {
         int seen = 0;
-        BIO_printf(sbio, "<stream:stream "
-                   "xmlns:stream='http://etherx.jabber.org/streams' "
-                   "xmlns='jabber:client' to='%s' version='1.0'>", host);
+        BIO_printf(sbio, "\x3c\x73\x74\x72\x65\x61\x6d\x3a\x73\x74\x72\x65\x61\x6d\x20"
+                   "\x78\x6d\x6c\x6e\x73\x3a\x73\x74\x72\x65\x61\x6d\x3d\x27\x68\x74\x74\x70\x3a\x2f\x2f\x65\x74\x68\x65\x72\x78\x2e\x6a\x61\x62\x62\x65\x72\x2e\x6f\x72\x67\x2f\x73\x74\x72\x65\x61\x6d\x73\x27\x20"
+                   "\x78\x6d\x6c\x6e\x73\x3d\x27\x6a\x61\x62\x62\x65\x72\x3a\x63\x6c\x69\x65\x6e\x74\x27\x20\x74\x6f\x3d\x27\x25\x73\x27\x20\x76\x65\x72\x73\x69\x6f\x6e\x3d\x27\x31\x2e\x30\x27\x3e", host);
         seen = BIO_read(sbio, mbuf, BUFSIZZ);
         mbuf[seen] = 0;
         while (!strstr
-               (mbuf, "<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'")) {
-            if (strstr(mbuf, "/stream:features>"))
+               (mbuf, "\x3c\x73\x74\x61\x72\x74\x74\x6c\x73\x20\x78\x6d\x6c\x6e\x73\x3d\x27\x75\x72\x6e\x3a\x69\x65\x74\x66\x3a\x70\x61\x72\x61\x6d\x73\x3a\x78\x6d\x6c\x3a\x6e\x73\x3a\x78\x6d\x70\x70\x2d\x74\x6c\x73\x27")) {
+            if (strstr(mbuf, "\x2f\x73\x74\x72\x65\x61\x6d\x3a\x66\x65\x61\x74\x75\x72\x65\x73\x3e"))
                 goto shut;
             seen = BIO_read(sbio, mbuf, BUFSIZZ);
             mbuf[seen] = 0;
         }
         BIO_printf(sbio,
-                   "<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>");
+                   "\x3c\x73\x74\x61\x72\x74\x74\x6c\x73\x20\x78\x6d\x6c\x6e\x73\x3d\x27\x75\x72\x6e\x3a\x69\x65\x74\x66\x3a\x70\x61\x72\x61\x6d\x73\x3a\x78\x6d\x6c\x3a\x6e\x73\x3a\x78\x6d\x70\x70\x2d\x74\x6c\x73\x27\x2f\x3e");
         seen = BIO_read(sbio, sbuf, BUFSIZZ);
         sbuf[seen] = 0;
-        if (!strstr(sbuf, "<proceed"))
+        if (!strstr(sbuf, "\x3c\x70\x72\x6f\x63\x65\x65\x64"))
             goto shut;
         mbuf[0] = 0;
     }
@@ -1716,22 +1716,22 @@ int MAIN(int argc, char **argv)
 # ifndef OPENSSL_NO_TLSEXT
                 if (servername != NULL && !SSL_session_reused(con)) {
                     BIO_printf(bio_c_out,
-                               "Server did %sacknowledge servername extension.\n",
-                               tlsextcbp.ack ? "" : "not ");
+                               "\x53\x65\x72\x76\x65\x72\x20\x64\x69\x64\x20\x25\x73\x61\x63\x6b\x6e\x6f\x77\x6c\x65\x64\x67\x65\x20\x73\x65\x72\x76\x65\x72\x6e\x61\x6d\x65\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x2e\xa",
+                               tlsextcbp.ack ? "" : "\x6e\x6f\x74\x20");
                 }
 # endif
 #endif
                 if (sess_out) {
-                    BIO *stmp = BIO_new_file(sess_out, "w");
+                    BIO *stmp = BIO_new_file(sess_out, "\x77");
                     if (stmp) {
                         PEM_write_bio_SSL_SESSION(stmp, SSL_get_session(con));
                         BIO_free(stmp);
                     } else
-                        BIO_printf(bio_err, "Error writing session file %s\n",
+                        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x77\x72\x69\x74\x69\x6e\x67\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x66\x69\x6c\x65\x20\x25\x73\xa",
                                    sess_out);
                 }
                 if (c_brief) {
-                    BIO_puts(bio_err, "CONNECTION ESTABLISHED\n");
+                    BIO_puts(bio_err, "\x43\x4f\x4e\x4e\x45\x43\x54\x49\x4f\x4e\x20\x45\x53\x54\x41\x42\x4c\x49\x53\x48\x45\x44\xa");
                     print_ssl_summary(bio_err, con);
                 }
 
@@ -1740,7 +1740,7 @@ int MAIN(int argc, char **argv)
                     full_log--;
 
                 if (starttls_proto) {
-                    BIO_printf(bio_err, "%s", mbuf);
+                    BIO_printf(bio_err, "\x25\x73", mbuf);
                     /* We don't need to know any more */
                     starttls_proto = PROTO_OFF;
                 }
@@ -1748,7 +1748,7 @@ int MAIN(int argc, char **argv)
                 if (reconnect) {
                     reconnect--;
                     BIO_printf(bio_c_out,
-                               "drop connection and then reconnect\n");
+                               "\x64\x72\x6f\x70\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x61\x6e\x64\x20\x74\x68\x65\x6e\x20\x72\x65\x63\x6f\x6e\x6e\x65\x63\x74\xa");
                     SSL_shutdown(con);
                     SSL_set_connect_state(con);
                     SHUTDOWN(SSL_get_fd(con));
@@ -1857,7 +1857,7 @@ int MAIN(int argc, char **argv)
                        NULL, timeoutp);
 #endif
             if (i < 0) {
-                BIO_printf(bio_err, "bad select %d\n",
+                BIO_printf(bio_err, "\x62\x61\x64\x20\x73\x65\x6c\x65\x63\x74\x20\x25\x64\xa",
                            get_last_socket_error());
                 goto shut;
                 /* goto end; */
@@ -1866,7 +1866,7 @@ int MAIN(int argc, char **argv)
 
         if ((SSL_version(con) == DTLS1_VERSION)
             && DTLSv1_handle_timeout(con) > 0) {
-            BIO_printf(bio_err, "TIMEOUT occured\n");
+            BIO_printf(bio_err, "\x54\x49\x4d\x45\x4f\x55\x54\x20\x6f\x63\x63\x75\x72\x65\x64\xa");
         }
 
         if (!ssl_pending && FD_ISSET(SSL_get_fd(con), &writefds)) {
@@ -1888,22 +1888,22 @@ int MAIN(int argc, char **argv)
                 }
                 break;
             case SSL_ERROR_WANT_WRITE:
-                BIO_printf(bio_c_out, "write W BLOCK\n");
+                BIO_printf(bio_c_out, "\x77\x72\x69\x74\x65\x20\x57\x20\x42\x4c\x4f\x43\x4b\xa");
                 write_ssl = 1;
                 read_tty = 0;
                 break;
             case SSL_ERROR_WANT_READ:
-                BIO_printf(bio_c_out, "write R BLOCK\n");
+                BIO_printf(bio_c_out, "\x77\x72\x69\x74\x65\x20\x52\x20\x42\x4c\x4f\x43\x4b\xa");
                 write_tty = 0;
                 read_ssl = 1;
                 write_ssl = 0;
                 break;
             case SSL_ERROR_WANT_X509_LOOKUP:
-                BIO_printf(bio_c_out, "write X BLOCK\n");
+                BIO_printf(bio_c_out, "\x77\x72\x69\x74\x65\x20\x58\x20\x42\x4c\x4f\x43\x4b\xa");
                 break;
             case SSL_ERROR_ZERO_RETURN:
                 if (cbuf_len != 0) {
-                    BIO_printf(bio_c_out, "shutdown\n");
+                    BIO_printf(bio_c_out, "\x73\x68\x75\x74\x64\x6f\x77\x6e\xa");
                     ret = 0;
                     goto shut;
                 } else {
@@ -1914,7 +1914,7 @@ int MAIN(int argc, char **argv)
 
             case SSL_ERROR_SYSCALL:
                 if ((k != 0) || (cbuf_len != 0)) {
-                    BIO_printf(bio_err, "write:errno=%d\n",
+                    BIO_printf(bio_err, "\x77\x72\x69\x74\x65\x3a\x65\x72\x72\x6e\x6f\x3d\x25\x64\xa",
                                get_last_socket_error());
                     goto shut;
                 } else {
@@ -1940,7 +1940,7 @@ int MAIN(int argc, char **argv)
             i = raw_write_stdout(&(sbuf[sbuf_off]), sbuf_len);
 
             if (i <= 0) {
-                BIO_printf(bio_c_out, "DONE\n");
+                BIO_printf(bio_c_out, "\x44\x4f\x4e\x45\xa");
                 ret = 0;
                 goto shut;
                 /* goto end; */
@@ -1969,7 +1969,7 @@ int MAIN(int argc, char **argv)
             k = SSL_read(con, sbuf, 16);
             {
                 char zbuf[10240];
-                printf("read=%d pending=%d peek=%d\n", k, SSL_pending(con),
+                printf("\x72\x65\x61\x64\x3d\x25\x64\x20\x70\x65\x6e\x64\x69\x6e\x67\x3d\x25\x64\x20\x70\x65\x65\x6b\x3d\x25\x64\xa", k, SSL_pending(con),
                        SSL_peek(con, zbuf, 10240));
             }
 #endif
@@ -1985,29 +1985,29 @@ int MAIN(int argc, char **argv)
                 write_tty = 1;
                 break;
             case SSL_ERROR_WANT_WRITE:
-                BIO_printf(bio_c_out, "read W BLOCK\n");
+                BIO_printf(bio_c_out, "\x72\x65\x61\x64\x20\x57\x20\x42\x4c\x4f\x43\x4b\xa");
                 write_ssl = 1;
                 read_tty = 0;
                 break;
             case SSL_ERROR_WANT_READ:
-                BIO_printf(bio_c_out, "read R BLOCK\n");
+                BIO_printf(bio_c_out, "\x72\x65\x61\x64\x20\x52\x20\x42\x4c\x4f\x43\x4b\xa");
                 write_tty = 0;
                 read_ssl = 1;
                 if ((read_tty == 0) && (write_ssl == 0))
                     write_ssl = 1;
                 break;
             case SSL_ERROR_WANT_X509_LOOKUP:
-                BIO_printf(bio_c_out, "read X BLOCK\n");
+                BIO_printf(bio_c_out, "\x72\x65\x61\x64\x20\x58\x20\x42\x4c\x4f\x43\x4b\xa");
                 break;
             case SSL_ERROR_SYSCALL:
                 ret = get_last_socket_error();
                 if (c_brief)
-                    BIO_puts(bio_err, "CONNECTION CLOSED BY SERVER\n");
+                    BIO_puts(bio_err, "\x43\x4f\x4e\x4e\x45\x43\x54\x49\x4f\x4e\x20\x43\x4c\x4f\x53\x45\x44\x20\x42\x59\x20\x53\x45\x52\x56\x45\x52\xa");
                 else
-                    BIO_printf(bio_err, "read:errno=%d\n", ret);
+                    BIO_printf(bio_err, "\x72\x65\x61\x64\x3a\x65\x72\x72\x6e\x6f\x3d\x25\x64\xa", ret);
                 goto shut;
             case SSL_ERROR_ZERO_RETURN:
-                BIO_printf(bio_c_out, "closed\n");
+                BIO_printf(bio_c_out, "\x63\x6c\x6f\x73\x65\x64\xa");
                 ret = 0;
                 goto shut;
             case SSL_ERROR_SSL:
@@ -2039,34 +2039,34 @@ int MAIN(int argc, char **argv)
                 lf_num = 0;
                 /* both loops are skipped when i <= 0 */
                 for (j = 0; j < i; j++)
-                    if (cbuf[j] == '\n')
+                    if (cbuf[j] == '\xa')
                         lf_num++;
                 for (j = i - 1; j >= 0; j--) {
                     cbuf[j + lf_num] = cbuf[j];
-                    if (cbuf[j] == '\n') {
+                    if (cbuf[j] == '\xa') {
                         lf_num--;
                         i++;
-                        cbuf[j + lf_num] = '\r';
+                        cbuf[j + lf_num] = '\xd';
                     }
                 }
                 assert(lf_num == 0);
             } else
                 i = raw_read_stdin(cbuf, BUFSIZZ);
 
-            if ((!c_ign_eof) && ((i <= 0) || (cbuf[0] == 'Q'))) {
-                BIO_printf(bio_err, "DONE\n");
+            if ((!c_ign_eof) && ((i <= 0) || (cbuf[0] == '\x51'))) {
+                BIO_printf(bio_err, "\x44\x4f\x4e\x45\xa");
                 ret = 0;
                 goto shut;
             }
 
-            if ((!c_ign_eof) && (cbuf[0] == 'R')) {
-                BIO_printf(bio_err, "RENEGOTIATING\n");
+            if ((!c_ign_eof) && (cbuf[0] == '\x52')) {
+                BIO_printf(bio_err, "\x52\x45\x4e\x45\x47\x4f\x54\x49\x41\x54\x49\x4e\x47\xa");
                 SSL_renegotiate(con);
                 cbuf_len = 0;
             }
 #ifndef OPENSSL_NO_HEARTBEATS
-            else if ((!c_ign_eof) && (cbuf[0] == 'B')) {
-                BIO_printf(bio_err, "HEARTBEATING\n");
+            else if ((!c_ign_eof) && (cbuf[0] == '\x42')) {
+                BIO_printf(bio_err, "\x48\x45\x41\x52\x54\x42\x45\x41\x54\x49\x4e\x47\xa");
                 SSL_heartbeat(con);
                 cbuf_len = 0;
             }
@@ -2155,7 +2155,7 @@ static void print_stuff(BIO *bio, SSL *s, int full)
 {
     X509 *peer = NULL;
     char *p;
-    static const char *space = "                ";
+    static const char *space = "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20";
     char buf[BUFSIZ];
     STACK_OF(X509) *sk;
     STACK_OF(X509_NAME) *sk2;
@@ -2174,45 +2174,45 @@ static void print_stuff(BIO *bio, SSL *s, int full)
         if (sk != NULL) {
             got_a_chain = 1;    /* we don't have it for SSL2 (yet) */
 
-            BIO_printf(bio, "---\nCertificate chain\n");
+            BIO_printf(bio, "\x2d\x2d\x2d\xaC\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x63\x68\x61\x69\x6e\xa");
             for (i = 0; i < sk_X509_num(sk); i++) {
                 X509_NAME_oneline(X509_get_subject_name(sk_X509_value(sk, i)),
                                   buf, sizeof buf);
-                BIO_printf(bio, "%2d s:%s\n", i, buf);
+                BIO_printf(bio, "\x25\x32\x64\x20\x73\x3a\x25\x73\xa", i, buf);
                 X509_NAME_oneline(X509_get_issuer_name(sk_X509_value(sk, i)),
                                   buf, sizeof buf);
-                BIO_printf(bio, "   i:%s\n", buf);
+                BIO_printf(bio, "\x20\x20\x20\x69\x3a\x25\x73\xa", buf);
                 if (c_showcerts)
                     PEM_write_bio_X509(bio, sk_X509_value(sk, i));
             }
         }
 
-        BIO_printf(bio, "---\n");
+        BIO_printf(bio, "\x2d\x2d\x2d\xa");
         peer = SSL_get_peer_certificate(s);
         if (peer != NULL) {
-            BIO_printf(bio, "Server certificate\n");
+            BIO_printf(bio, "\x53\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
 
             /* Redundant if we showed the whole chain */
             if (!(c_showcerts && got_a_chain))
                 PEM_write_bio_X509(bio, peer);
             X509_NAME_oneline(X509_get_subject_name(peer), buf, sizeof buf);
-            BIO_printf(bio, "subject=%s\n", buf);
+            BIO_printf(bio, "\x73\x75\x62\x6a\x65\x63\x74\x3d\x25\x73\xa", buf);
             X509_NAME_oneline(X509_get_issuer_name(peer), buf, sizeof buf);
-            BIO_printf(bio, "issuer=%s\n", buf);
+            BIO_printf(bio, "\x69\x73\x73\x75\x65\x72\x3d\x25\x73\xa", buf);
         } else
-            BIO_printf(bio, "no peer certificate available\n");
+            BIO_printf(bio, "\x6e\x6f\x20\x70\x65\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x61\x76\x61\x69\x6c\x61\x62\x6c\x65\xa");
 
         sk2 = SSL_get_client_CA_list(s);
         if ((sk2 != NULL) && (sk_X509_NAME_num(sk2) > 0)) {
-            BIO_printf(bio, "---\nAcceptable client certificate CA names\n");
+            BIO_printf(bio, "\x2d\x2d\x2d\xaA\x63\x63\x65\x70\x74\x61\x62\x6c\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x43\x41\x20\x6e\x61\x6d\x65\x73\xa");
             for (i = 0; i < sk_X509_NAME_num(sk2); i++) {
                 xn = sk_X509_NAME_value(sk2, i);
                 X509_NAME_oneline(xn, buf, sizeof(buf));
                 BIO_write(bio, buf, strlen(buf));
-                BIO_write(bio, "\n", 1);
+                BIO_write(bio, "\xa", 1);
             }
         } else {
-            BIO_printf(bio, "---\nNo client certificate CA names sent\n");
+            BIO_printf(bio, "\x2d\x2d\x2d\xa\x4e\x6f\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x43\x41\x20\x6e\x61\x6d\x65\x73\x20\x73\x65\x6e\x74\xa");
         }
         p = SSL_get_shared_ciphers(s, buf, sizeof buf);
         if (p != NULL) {
@@ -2223,51 +2223,51 @@ static void print_stuff(BIO *bio, SSL *s, int full)
              */
 
             BIO_printf(bio,
-                       "---\nCiphers common between both SSL endpoints:\n");
+                       "\x2d\x2d\x2d\xaC\x69\x70\x68\x65\x72\x73\x20\x63\x6f\x6d\x6d\x6f\x6e\x20\x62\x65\x74\x77\x65\x65\x6e\x20\x62\x6f\x74\x68\x20\x53\x53\x4c\x20\x65\x6e\x64\x70\x6f\x69\x6e\x74\x73\x3a\xa");
             j = i = 0;
             while (*p) {
-                if (*p == ':') {
+                if (*p == '\x3a') {
                     BIO_write(bio, space, 15 - j % 25);
                     i++;
                     j = 0;
-                    BIO_write(bio, ((i % 3) ? " " : "\n"), 1);
+                    BIO_write(bio, ((i % 3) ? "\x20" : "\xa"), 1);
                 } else {
                     BIO_write(bio, p, 1);
                     j++;
                 }
                 p++;
             }
-            BIO_write(bio, "\n", 1);
+            BIO_write(bio, "\xa", 1);
         }
 
         ssl_print_sigalgs(bio, s);
         ssl_print_tmp_key(bio, s);
 
         BIO_printf(bio,
-                   "---\nSSL handshake has read %ld bytes and written %ld bytes\n",
+                   "\x2d\x2d\x2d\xa\x53\x53\x4c\x20\x68\x61\x6e\x64\x73\x68\x61\x6b\x65\x20\x68\x61\x73\x20\x72\x65\x61\x64\x20\x25\x6c\x64\x20\x62\x79\x74\x65\x73\x20\x61\x6e\x64\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x25\x6c\x64\x20\x62\x79\x74\x65\x73\xa",
                    BIO_number_read(SSL_get_rbio(s)),
                    BIO_number_written(SSL_get_wbio(s)));
     }
-    BIO_printf(bio, (SSL_cache_hit(s) ? "---\nReused, " : "---\nNew, "));
+    BIO_printf(bio, (SSL_cache_hit(s) ? "\x2d\x2d\x2d\xa\x52\x65\x75\x73\x65\x64\x2c\x20" : "\x2d\x2d\x2d\xa\x4e\x65\x77\x2c\x20"));
     c = SSL_get_current_cipher(s);
-    BIO_printf(bio, "%s, Cipher is %s\n",
+    BIO_printf(bio, "\x25\x73\x2c\x20\x43\x69\x70\x68\x65\x72\x20\x69\x73\x20\x25\x73\xa",
                SSL_CIPHER_get_version(c), SSL_CIPHER_get_name(c));
     if (peer != NULL) {
         EVP_PKEY *pktmp;
         pktmp = X509_get_pubkey(peer);
-        BIO_printf(bio, "Server public key is %d bit\n",
+        BIO_printf(bio, "\x53\x65\x72\x76\x65\x72\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x69\x73\x20\x25\x64\x20\x62\x69\x74\xa",
                    EVP_PKEY_bits(pktmp));
         EVP_PKEY_free(pktmp);
     }
-    BIO_printf(bio, "Secure Renegotiation IS%s supported\n",
-               SSL_get_secure_renegotiation_support(s) ? "" : " NOT");
+    BIO_printf(bio, "\x53\x65\x63\x75\x72\x65\x20\x52\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x69\x6f\x6e\x20\x49\x53\x25\x73\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\xa",
+               SSL_get_secure_renegotiation_support(s) ? "" : "\x20\x4e\x4f\x54");
 #ifndef OPENSSL_NO_COMP
     comp = SSL_get_current_compression(s);
     expansion = SSL_get_current_expansion(s);
-    BIO_printf(bio, "Compression: %s\n",
-               comp ? SSL_COMP_get_name(comp) : "NONE");
-    BIO_printf(bio, "Expansion: %s\n",
-               expansion ? SSL_COMP_get_name(expansion) : "NONE");
+    BIO_printf(bio, "\x43\x6f\x6d\x70\x72\x65\x73\x73\x69\x6f\x6e\x3a\x20\x25\x73\xa",
+               comp ? SSL_COMP_get_name(comp) : "\x4e\x4f\x4e\x45");
+    BIO_printf(bio, "\x45\x78\x70\x61\x6e\x73\x69\x6f\x6e\x3a\x20\x25\x73\xa",
+               expansion ? SSL_COMP_get_name(expansion) : "\x4e\x4f\x4e\x45");
 #endif
 
 #ifdef SSL_DEBUG
@@ -2278,7 +2278,7 @@ static void print_stuff(BIO *bio, SSL *s, int full)
         socklen_t ladd_size = sizeof(ladd);
         sock = SSL_get_fd(s);
         getsockname(sock, (struct sockaddr *)&ladd, &ladd_size);
-        BIO_printf(bio_c_out, "LOCAL PORT is %u\n", ntohs(ladd.sin_port));
+        BIO_printf(bio_c_out, "\x4c\x4f\x43\x41\x4c\x20\x50\x4f\x52\x54\x20\x69\x73\x20\x25\x75\xa", ntohs(ladd.sin_port));
     }
 #endif
 
@@ -2288,9 +2288,9 @@ static void print_stuff(BIO *bio, SSL *s, int full)
         const unsigned char *proto;
         unsigned int proto_len;
         SSL_get0_next_proto_negotiated(s, &proto, &proto_len);
-        BIO_printf(bio, "Next protocol: (%d) ", next_proto.status);
+        BIO_printf(bio, "\x4e\x65\x78\x74\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x3a\x20\x28\x25\x64\x29\x20", next_proto.status);
         BIO_write(bio, proto, proto_len);
-        BIO_write(bio, "\n", 1);
+        BIO_write(bio, "\xa", 1);
     }
 # endif
     {
@@ -2298,11 +2298,11 @@ static void print_stuff(BIO *bio, SSL *s, int full)
         unsigned int proto_len;
         SSL_get0_alpn_selected(s, &proto, &proto_len);
         if (proto_len > 0) {
-            BIO_printf(bio, "ALPN protocol: ");
+            BIO_printf(bio, "\x41\x4c\x50\x4e\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x3a\x20");
             BIO_write(bio, proto, proto_len);
-            BIO_write(bio, "\n", 1);
+            BIO_write(bio, "\xa", 1);
         } else
-            BIO_printf(bio, "No ALPN negotiated\n");
+            BIO_printf(bio, "\x4e\x6f\x20\x41\x4c\x50\x4e\x20\x6e\x65\x67\x6f\x74\x69\x61\x74\x65\x64\xa");
     }
 #endif
 
@@ -2312,16 +2312,16 @@ static void print_stuff(BIO *bio, SSL *s, int full)
             SSL_get_selected_srtp_profile(s);
 
         if (srtp_profile)
-            BIO_printf(bio, "SRTP Extension negotiated, profile=%s\n",
+            BIO_printf(bio, "\x53\x52\x54\x50\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x20\x6e\x65\x67\x6f\x74\x69\x61\x74\x65\x64\x2c\x20\x70\x72\x6f\x66\x69\x6c\x65\x3d\x25\x73\xa",
                        srtp_profile->name);
     }
 #endif
 
     SSL_SESSION_print(bio, SSL_get_session(s));
     if (keymatexportlabel != NULL) {
-        BIO_printf(bio, "Keying material exporter:\n");
-        BIO_printf(bio, "    Label: '%s'\n", keymatexportlabel);
-        BIO_printf(bio, "    Length: %i bytes\n", keymatexportlen);
+        BIO_printf(bio, "\x4b\x65\x79\x69\x6e\x67\x20\x6d\x61\x74\x65\x72\x69\x61\x6c\x20\x65\x78\x70\x6f\x72\x74\x65\x72\x3a\xa");
+        BIO_printf(bio, "\x20\x20\x20\x20\x4c\x61\x62\x65\x6c\x3a\x20\x27\x25\x73\x27\xa", keymatexportlabel);
+        BIO_printf(bio, "\x20\x20\x20\x20\x4c\x65\x6e\x67\x74\x68\x3a\x20\x25\x69\x20\x62\x79\x74\x65\x73\xa", keymatexportlen);
         exportedkeymat = OPENSSL_malloc(keymatexportlen);
         if (exportedkeymat != NULL) {
             if (!SSL_export_keying_material(s, exportedkeymat,
@@ -2329,17 +2329,17 @@ static void print_stuff(BIO *bio, SSL *s, int full)
                                             keymatexportlabel,
                                             strlen(keymatexportlabel),
                                             NULL, 0, 0)) {
-                BIO_printf(bio, "    Error\n");
+                BIO_printf(bio, "\x20\x20\x20\x20\x45\x72\x72\x6f\x72\xa");
             } else {
-                BIO_printf(bio, "    Keying material: ");
+                BIO_printf(bio, "\x20\x20\x20\x20\x4b\x65\x79\x69\x6e\x67\x20\x6d\x61\x74\x65\x72\x69\x61\x6c\x3a\x20");
                 for (i = 0; i < keymatexportlen; i++)
-                    BIO_printf(bio, "%02X", exportedkeymat[i]);
-                BIO_printf(bio, "\n");
+                    BIO_printf(bio, "\x25\x30\x32\x58", exportedkeymat[i]);
+                BIO_printf(bio, "\xa");
             }
             OPENSSL_free(exportedkeymat);
         }
     }
-    BIO_printf(bio, "---\n");
+    BIO_printf(bio, "\x2d\x2d\x2d\xa");
     if (peer != NULL)
         X509_free(peer);
     /* flush, or debugging output gets mixed with http response */
@@ -2354,20 +2354,20 @@ static int ocsp_resp_cb(SSL *s, void *arg)
     int len;
     OCSP_RESPONSE *rsp;
     len = SSL_get_tlsext_status_ocsp_resp(s, &p);
-    BIO_puts(arg, "OCSP response: ");
+    BIO_puts(arg, "\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x3a\x20");
     if (!p) {
-        BIO_puts(arg, "no response sent\n");
+        BIO_puts(arg, "\x6e\x6f\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x73\x65\x6e\x74\xa");
         return 1;
     }
     rsp = d2i_OCSP_RESPONSE(NULL, &p, len);
     if (!rsp) {
-        BIO_puts(arg, "response parse error\n");
+        BIO_puts(arg, "\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x70\x61\x72\x73\x65\x20\x65\x72\x72\x6f\x72\xa");
         BIO_dump_indent(arg, (char *)p, len, 4);
         return 0;
     }
-    BIO_puts(arg, "\n======================================\n");
+    BIO_puts(arg, "\xa\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\xa");
     OCSP_RESPONSE_print(arg, rsp, 0);
-    BIO_puts(arg, "======================================\n");
+    BIO_puts(arg, "\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\x3d\xa");
     OCSP_RESPONSE_free(rsp);
     return 1;
 }

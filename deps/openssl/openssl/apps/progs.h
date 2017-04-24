@@ -63,304 +63,304 @@ typedef struct {
 DECLARE_LHASH_OF(FUNCTION);
 
 FUNCTION functions[] = {
-    {FUNC_TYPE_GENERAL, "verify", verify_main},
-    {FUNC_TYPE_GENERAL, "asn1parse", asn1parse_main},
-    {FUNC_TYPE_GENERAL, "req", req_main},
-    {FUNC_TYPE_GENERAL, "dgst", dgst_main},
+    {FUNC_TYPE_GENERAL, "\x76\x65\x72\x69\x66\x79", verify_main},
+    {FUNC_TYPE_GENERAL, "\x61\x73\x6e\x31\x70\x61\x72\x73\x65", asn1parse_main},
+    {FUNC_TYPE_GENERAL, "\x72\x65\x71", req_main},
+    {FUNC_TYPE_GENERAL, "\x64\x67\x73\x74", dgst_main},
 #ifndef OPENSSL_NO_DH
-    {FUNC_TYPE_GENERAL, "dh", dh_main},
+    {FUNC_TYPE_GENERAL, "\x64\x68", dh_main},
 #endif
 #ifndef OPENSSL_NO_DH
-    {FUNC_TYPE_GENERAL, "dhparam", dhparam_main},
+    {FUNC_TYPE_GENERAL, "\x64\x68\x70\x61\x72\x61\x6d", dhparam_main},
 #endif
-    {FUNC_TYPE_GENERAL, "enc", enc_main},
-    {FUNC_TYPE_GENERAL, "passwd", passwd_main},
+    {FUNC_TYPE_GENERAL, "\x65\x6e\x63", enc_main},
+    {FUNC_TYPE_GENERAL, "\x70\x61\x73\x73\x77\x64", passwd_main},
 #ifndef OPENSSL_NO_DH
-    {FUNC_TYPE_GENERAL, "gendh", gendh_main},
+    {FUNC_TYPE_GENERAL, "\x67\x65\x6e\x64\x68", gendh_main},
 #endif
-    {FUNC_TYPE_GENERAL, "errstr", errstr_main},
-    {FUNC_TYPE_GENERAL, "ca", ca_main},
-    {FUNC_TYPE_GENERAL, "crl", crl_main},
+    {FUNC_TYPE_GENERAL, "\x65\x72\x72\x73\x74\x72", errstr_main},
+    {FUNC_TYPE_GENERAL, "\x63\x61", ca_main},
+    {FUNC_TYPE_GENERAL, "\x63\x72\x6c", crl_main},
 #ifndef OPENSSL_NO_RSA
-    {FUNC_TYPE_GENERAL, "rsa", rsa_main},
+    {FUNC_TYPE_GENERAL, "\x72\x73\x61", rsa_main},
 #endif
 #ifndef OPENSSL_NO_RSA
-    {FUNC_TYPE_GENERAL, "rsautl", rsautl_main},
+    {FUNC_TYPE_GENERAL, "\x72\x73\x61\x75\x74\x6c", rsautl_main},
 #endif
 #ifndef OPENSSL_NO_DSA
-    {FUNC_TYPE_GENERAL, "dsa", dsa_main},
+    {FUNC_TYPE_GENERAL, "\x64\x73\x61", dsa_main},
 #endif
 #ifndef OPENSSL_NO_DSA
-    {FUNC_TYPE_GENERAL, "dsaparam", dsaparam_main},
+    {FUNC_TYPE_GENERAL, "\x64\x73\x61\x70\x61\x72\x61\x6d", dsaparam_main},
 #endif
 #ifndef OPENSSL_NO_EC
-    {FUNC_TYPE_GENERAL, "ec", ec_main},
+    {FUNC_TYPE_GENERAL, "\x65\x63", ec_main},
 #endif
 #ifndef OPENSSL_NO_EC
-    {FUNC_TYPE_GENERAL, "ecparam", ecparam_main},
+    {FUNC_TYPE_GENERAL, "\x65\x63\x70\x61\x72\x61\x6d", ecparam_main},
 #endif
-    {FUNC_TYPE_GENERAL, "x509", x509_main},
+    {FUNC_TYPE_GENERAL, "\x78\x35\x30\x39", x509_main},
 #ifndef OPENSSL_NO_RSA
-    {FUNC_TYPE_GENERAL, "genrsa", genrsa_main},
+    {FUNC_TYPE_GENERAL, "\x67\x65\x6e\x72\x73\x61", genrsa_main},
 #endif
 #ifndef OPENSSL_NO_DSA
-    {FUNC_TYPE_GENERAL, "gendsa", gendsa_main},
+    {FUNC_TYPE_GENERAL, "\x67\x65\x6e\x64\x73\x61", gendsa_main},
 #endif
-    {FUNC_TYPE_GENERAL, "genpkey", genpkey_main},
+    {FUNC_TYPE_GENERAL, "\x67\x65\x6e\x70\x6b\x65\x79", genpkey_main},
 #if !defined(OPENSSL_NO_SOCK)
-    {FUNC_TYPE_GENERAL, "s_server", s_server_main},
+    {FUNC_TYPE_GENERAL, "\x73\x5f\x73\x65\x72\x76\x65\x72", s_server_main},
 #endif
 #if !defined(OPENSSL_NO_SOCK)
-    {FUNC_TYPE_GENERAL, "s_client", s_client_main},
+    {FUNC_TYPE_GENERAL, "\x73\x5f\x63\x6c\x69\x65\x6e\x74", s_client_main},
 #endif
 #ifndef OPENSSL_NO_SPEED
-    {FUNC_TYPE_GENERAL, "speed", speed_main},
+    {FUNC_TYPE_GENERAL, "\x73\x70\x65\x65\x64", speed_main},
 #endif
 #if !defined(OPENSSL_NO_SOCK)
-    {FUNC_TYPE_GENERAL, "s_time", s_time_main},
+    {FUNC_TYPE_GENERAL, "\x73\x5f\x74\x69\x6d\x65", s_time_main},
 #endif
-    {FUNC_TYPE_GENERAL, "version", version_main},
-    {FUNC_TYPE_GENERAL, "pkcs7", pkcs7_main},
+    {FUNC_TYPE_GENERAL, "\x76\x65\x72\x73\x69\x6f\x6e", version_main},
+    {FUNC_TYPE_GENERAL, "\x70\x6b\x63\x73\x37", pkcs7_main},
 #ifndef OPENSSL_NO_CMS
-    {FUNC_TYPE_GENERAL, "cms", cms_main},
+    {FUNC_TYPE_GENERAL, "\x63\x6d\x73", cms_main},
 #endif
-    {FUNC_TYPE_GENERAL, "crl2pkcs7", crl2pkcs7_main},
-    {FUNC_TYPE_GENERAL, "sess_id", sess_id_main},
+    {FUNC_TYPE_GENERAL, "\x63\x72\x6c\x32\x70\x6b\x63\x73\x37", crl2pkcs7_main},
+    {FUNC_TYPE_GENERAL, "\x73\x65\x73\x73\x5f\x69\x64", sess_id_main},
 #if !defined(OPENSSL_NO_SOCK)
-    {FUNC_TYPE_GENERAL, "ciphers", ciphers_main},
+    {FUNC_TYPE_GENERAL, "\x63\x69\x70\x68\x65\x72\x73", ciphers_main},
 #endif
-    {FUNC_TYPE_GENERAL, "nseq", nseq_main},
+    {FUNC_TYPE_GENERAL, "\x6e\x73\x65\x71", nseq_main},
 #if !defined(OPENSSL_NO_DES) && !defined(OPENSSL_NO_SHA1)
-    {FUNC_TYPE_GENERAL, "pkcs12", pkcs12_main},
+    {FUNC_TYPE_GENERAL, "\x70\x6b\x63\x73\x31\x32", pkcs12_main},
 #endif
-    {FUNC_TYPE_GENERAL, "pkcs8", pkcs8_main},
-    {FUNC_TYPE_GENERAL, "pkey", pkey_main},
-    {FUNC_TYPE_GENERAL, "pkeyparam", pkeyparam_main},
-    {FUNC_TYPE_GENERAL, "pkeyutl", pkeyutl_main},
-    {FUNC_TYPE_GENERAL, "spkac", spkac_main},
-    {FUNC_TYPE_GENERAL, "smime", smime_main},
-    {FUNC_TYPE_GENERAL, "rand", rand_main},
+    {FUNC_TYPE_GENERAL, "\x70\x6b\x63\x73\x38", pkcs8_main},
+    {FUNC_TYPE_GENERAL, "\x70\x6b\x65\x79", pkey_main},
+    {FUNC_TYPE_GENERAL, "\x70\x6b\x65\x79\x70\x61\x72\x61\x6d", pkeyparam_main},
+    {FUNC_TYPE_GENERAL, "\x70\x6b\x65\x79\x75\x74\x6c", pkeyutl_main},
+    {FUNC_TYPE_GENERAL, "\x73\x70\x6b\x61\x63", spkac_main},
+    {FUNC_TYPE_GENERAL, "\x73\x6d\x69\x6d\x65", smime_main},
+    {FUNC_TYPE_GENERAL, "\x72\x61\x6e\x64", rand_main},
 #ifndef OPENSSL_NO_ENGINE
-    {FUNC_TYPE_GENERAL, "engine", engine_main},
+    {FUNC_TYPE_GENERAL, "\x65\x6e\x67\x69\x6e\x65", engine_main},
 #endif
 #ifndef OPENSSL_NO_OCSP
-    {FUNC_TYPE_GENERAL, "ocsp", ocsp_main},
+    {FUNC_TYPE_GENERAL, "\x6f\x63\x73\x70", ocsp_main},
 #endif
-    {FUNC_TYPE_GENERAL, "prime", prime_main},
-    {FUNC_TYPE_GENERAL, "ts", ts_main},
+    {FUNC_TYPE_GENERAL, "\x70\x72\x69\x6d\x65", prime_main},
+    {FUNC_TYPE_GENERAL, "\x74\x73", ts_main},
 #ifndef OPENSSL_NO_SRP
-    {FUNC_TYPE_GENERAL, "srp", srp_main},
+    {FUNC_TYPE_GENERAL, "\x73\x72\x70", srp_main},
 #endif
 #ifndef OPENSSL_NO_MD2
-    {FUNC_TYPE_MD, "md2", dgst_main},
+    {FUNC_TYPE_MD, "\x6d\x64\x32", dgst_main},
 #endif
 #ifndef OPENSSL_NO_MD4
-    {FUNC_TYPE_MD, "md4", dgst_main},
+    {FUNC_TYPE_MD, "\x6d\x64\x34", dgst_main},
 #endif
 #ifndef OPENSSL_NO_MD5
-    {FUNC_TYPE_MD, "md5", dgst_main},
+    {FUNC_TYPE_MD, "\x6d\x64\x35", dgst_main},
 #endif
 #ifndef OPENSSL_NO_SHA
-    {FUNC_TYPE_MD, "sha", dgst_main},
+    {FUNC_TYPE_MD, "\x73\x68\x61", dgst_main},
 #endif
 #ifndef OPENSSL_NO_SHA1
-    {FUNC_TYPE_MD, "sha1", dgst_main},
+    {FUNC_TYPE_MD, "\x73\x68\x61\x31", dgst_main},
 #endif
 #ifndef OPENSSL_NO_MDC2
-    {FUNC_TYPE_MD, "mdc2", dgst_main},
+    {FUNC_TYPE_MD, "\x6d\x64\x63\x32", dgst_main},
 #endif
 #ifndef OPENSSL_NO_RMD160
-    {FUNC_TYPE_MD, "rmd160", dgst_main},
+    {FUNC_TYPE_MD, "\x72\x6d\x64\x31\x36\x30", dgst_main},
 #endif
 #ifndef OPENSSL_NO_AES
-    {FUNC_TYPE_CIPHER, "aes-128-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x61\x65\x73\x2d\x31\x32\x38\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_AES
-    {FUNC_TYPE_CIPHER, "aes-128-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x61\x65\x73\x2d\x31\x32\x38\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_AES
-    {FUNC_TYPE_CIPHER, "aes-192-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x61\x65\x73\x2d\x31\x39\x32\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_AES
-    {FUNC_TYPE_CIPHER, "aes-192-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x61\x65\x73\x2d\x31\x39\x32\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_AES
-    {FUNC_TYPE_CIPHER, "aes-256-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x61\x65\x73\x2d\x32\x35\x36\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_AES
-    {FUNC_TYPE_CIPHER, "aes-256-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x61\x65\x73\x2d\x32\x35\x36\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAMELLIA
-    {FUNC_TYPE_CIPHER, "camellia-128-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x32\x38\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAMELLIA
-    {FUNC_TYPE_CIPHER, "camellia-128-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x32\x38\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAMELLIA
-    {FUNC_TYPE_CIPHER, "camellia-192-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x39\x32\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAMELLIA
-    {FUNC_TYPE_CIPHER, "camellia-192-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x39\x32\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAMELLIA
-    {FUNC_TYPE_CIPHER, "camellia-256-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x32\x35\x36\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAMELLIA
-    {FUNC_TYPE_CIPHER, "camellia-256-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x32\x35\x36\x2d\x65\x63\x62", enc_main},
 #endif
-    {FUNC_TYPE_CIPHER, "base64", enc_main},
+    {FUNC_TYPE_CIPHER, "\x62\x61\x73\x65\x36\x34", enc_main},
 #ifdef ZLIB
-    {FUNC_TYPE_CIPHER, "zlib", enc_main},
+    {FUNC_TYPE_CIPHER, "\x7a\x6c\x69\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des3", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x33", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "desx", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x78", enc_main},
 #endif
 #ifndef OPENSSL_NO_IDEA
-    {FUNC_TYPE_CIPHER, "idea", enc_main},
+    {FUNC_TYPE_CIPHER, "\x69\x64\x65\x61", enc_main},
 #endif
 #ifndef OPENSSL_NO_SEED
-    {FUNC_TYPE_CIPHER, "seed", enc_main},
+    {FUNC_TYPE_CIPHER, "\x73\x65\x65\x64", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC4
-    {FUNC_TYPE_CIPHER, "rc4", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x34", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC4
-    {FUNC_TYPE_CIPHER, "rc4-40", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x34\x2d\x34\x30", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC2
-    {FUNC_TYPE_CIPHER, "rc2", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x32", enc_main},
 #endif
 #ifndef OPENSSL_NO_BF
-    {FUNC_TYPE_CIPHER, "bf", enc_main},
+    {FUNC_TYPE_CIPHER, "\x62\x66", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAST
-    {FUNC_TYPE_CIPHER, "cast", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x73\x74", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC5
-    {FUNC_TYPE_CIPHER, "rc5", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x35", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ede", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x64\x65", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ede3", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x64\x65\x33", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ede-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x64\x65\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ede3-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x64\x65\x33\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ede-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x64\x65\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ede3-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x64\x65\x33\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x6f\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ede-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x64\x65\x2d\x6f\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_DES
-    {FUNC_TYPE_CIPHER, "des-ede3-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x64\x65\x73\x2d\x65\x64\x65\x33\x2d\x6f\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_IDEA
-    {FUNC_TYPE_CIPHER, "idea-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x69\x64\x65\x61\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_IDEA
-    {FUNC_TYPE_CIPHER, "idea-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x69\x64\x65\x61\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_IDEA
-    {FUNC_TYPE_CIPHER, "idea-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x69\x64\x65\x61\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_IDEA
-    {FUNC_TYPE_CIPHER, "idea-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x69\x64\x65\x61\x2d\x6f\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_SEED
-    {FUNC_TYPE_CIPHER, "seed-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x73\x65\x65\x64\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_SEED
-    {FUNC_TYPE_CIPHER, "seed-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x73\x65\x65\x64\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_SEED
-    {FUNC_TYPE_CIPHER, "seed-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x73\x65\x65\x64\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_SEED
-    {FUNC_TYPE_CIPHER, "seed-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x73\x65\x65\x64\x2d\x6f\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC2
-    {FUNC_TYPE_CIPHER, "rc2-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x32\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC2
-    {FUNC_TYPE_CIPHER, "rc2-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x32\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC2
-    {FUNC_TYPE_CIPHER, "rc2-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x32\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC2
-    {FUNC_TYPE_CIPHER, "rc2-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x32\x2d\x6f\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC2
-    {FUNC_TYPE_CIPHER, "rc2-64-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x32\x2d\x36\x34\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC2
-    {FUNC_TYPE_CIPHER, "rc2-40-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x32\x2d\x34\x30\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_BF
-    {FUNC_TYPE_CIPHER, "bf-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x62\x66\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_BF
-    {FUNC_TYPE_CIPHER, "bf-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x62\x66\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_BF
-    {FUNC_TYPE_CIPHER, "bf-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x62\x66\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_BF
-    {FUNC_TYPE_CIPHER, "bf-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x62\x66\x2d\x6f\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAST
-    {FUNC_TYPE_CIPHER, "cast5-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x73\x74\x35\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAST
-    {FUNC_TYPE_CIPHER, "cast5-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x73\x74\x35\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAST
-    {FUNC_TYPE_CIPHER, "cast5-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x73\x74\x35\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAST
-    {FUNC_TYPE_CIPHER, "cast5-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x73\x74\x35\x2d\x6f\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_CAST
-    {FUNC_TYPE_CIPHER, "cast-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x63\x61\x73\x74\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC5
-    {FUNC_TYPE_CIPHER, "rc5-cbc", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x35\x2d\x63\x62\x63", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC5
-    {FUNC_TYPE_CIPHER, "rc5-ecb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x35\x2d\x65\x63\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC5
-    {FUNC_TYPE_CIPHER, "rc5-cfb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x35\x2d\x63\x66\x62", enc_main},
 #endif
 #ifndef OPENSSL_NO_RC5
-    {FUNC_TYPE_CIPHER, "rc5-ofb", enc_main},
+    {FUNC_TYPE_CIPHER, "\x72\x63\x35\x2d\x6f\x66\x62", enc_main},
 #endif
     {0, NULL, NULL}
 };

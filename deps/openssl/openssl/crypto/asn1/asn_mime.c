@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -73,16 +73,16 @@
  */
 
 typedef struct {
-    char *param_name;           /* Param name e.g. "micalg" */
-    char *param_value;          /* Param value e.g. "sha1" */
+    char *param_name;           /* Param name e.g. "\x6d\x69\x63\x61\x6c\x67" */
+    char *param_value;          /* Param value e.g. "\x73\x68\x61\x31" */
 } MIME_PARAM;
 
 DECLARE_STACK_OF(MIME_PARAM)
 IMPLEMENT_STACK_OF(MIME_PARAM)
 
 typedef struct {
-    char *name;                 /* Name of line e.g. "content-type" */
-    char *value;                /* Value of line e.g. "text/plain" */
+    char *name;                 /* Name of line e.g. "\x63\x6f\x6e\x74\x65\x6e\x74\x2d\x74\x79\x70\x65" */
+    char *value;                /* Value of line e.g. "\x74\x65\x78\x74\x2f\x70\x6c\x61\x69\x6e" */
     STACK_OF(MIME_PARAM) *params; /* Zero or more parameters */
 } MIME_HEADER;
 
@@ -172,9 +172,9 @@ int PEM_write_bio_ASN1_stream(BIO *out, ASN1_VALUE *val, BIO *in, int flags,
                               const char *hdr, const ASN1_ITEM *it)
 {
     int r;
-    BIO_printf(out, "-----BEGIN %s-----\n", hdr);
+    BIO_printf(out, "\x2d\x2d\x2d\x2d\x2d\x42\x45\x47\x49\x4e\x20\x25\x73\x2d\x2d\x2d\x2d\x2d\xa", hdr);
     r = B64_write_ASN1(out, val, in, flags, it);
-    BIO_printf(out, "-----END %s-----\n", hdr);
+    BIO_printf(out, "\x2d\x2d\x2d\x2d\x2d\x45\x4e\x44\x20\x25\x73\x2d\x2d\x2d\x2d\x2d\xa", hdr);
     return r;
 }
 
@@ -206,7 +206,7 @@ static int asn1_write_micalg(BIO *out, STACK_OF(X509_ALGOR) *mdalgs)
     write_comma = 0;
     for (i = 0; i < sk_X509_ALGOR_num(mdalgs); i++) {
         if (write_comma)
-            BIO_write(out, ",", 1);
+            BIO_write(out, "\x2c", 1);
         write_comma = 1;
         md_nid = OBJ_obj2nid(sk_X509_ALGOR_value(mdalgs, i)->algorithm);
         md = EVP_get_digestbynid(md_nid);
@@ -224,27 +224,27 @@ static int asn1_write_micalg(BIO *out, STACK_OF(X509_ALGOR) *mdalgs)
         }
         switch (md_nid) {
         case NID_sha1:
-            BIO_puts(out, "sha1");
+            BIO_puts(out, "\x73\x68\x61\x31");
             break;
 
         case NID_md5:
-            BIO_puts(out, "md5");
+            BIO_puts(out, "\x6d\x64\x35");
             break;
 
         case NID_sha256:
-            BIO_puts(out, "sha-256");
+            BIO_puts(out, "\x73\x68\x61\x2d\x32\x35\x36");
             break;
 
         case NID_sha384:
-            BIO_puts(out, "sha-384");
+            BIO_puts(out, "\x73\x68\x61\x2d\x33\x38\x34");
             break;
 
         case NID_sha512:
-            BIO_puts(out, "sha-512");
+            BIO_puts(out, "\x73\x68\x61\x2d\x35\x31\x32");
             break;
 
         case NID_id_GostR3411_94:
-            BIO_puts(out, "gostr3411-94");
+            BIO_puts(out, "\x67\x6f\x73\x74\x72\x33\x34\x31\x31\x2d\x39\x34");
             goto err;
             break;
 
@@ -252,7 +252,7 @@ static int asn1_write_micalg(BIO *out, STACK_OF(X509_ALGOR) *mdalgs)
             if (have_unknown)
                 write_comma = 0;
             else {
-                BIO_puts(out, "unknown");
+                BIO_puts(out, "\x75\x6e\x6b\x6e\x6f\x77\x6e");
                 have_unknown = 1;
             }
             break;
@@ -275,17 +275,17 @@ int SMIME_write_ASN1(BIO *bio, ASN1_VALUE *val, BIO *data, int flags,
 {
     char bound[33], c;
     int i;
-    const char *mime_prefix, *mime_eol, *cname = "smime.p7m";
+    const char *mime_prefix, *mime_eol, *cname = "\x73\x6d\x69\x6d\x65\x2e\x70\x37\x6d";
     const char *msg_type = NULL;
     if (flags & SMIME_OLDMIME)
-        mime_prefix = "application/x-pkcs7-";
+        mime_prefix = "\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x78\x2d\x70\x6b\x63\x73\x37\x2d";
     else
-        mime_prefix = "application/pkcs7-";
+        mime_prefix = "\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x70\x6b\x63\x73\x37\x2d";
 
     if (flags & SMIME_CRLFEOL)
-        mime_eol = "\r\n";
+        mime_eol = "\xd\xa";
     else
-        mime_eol = "\n";
+        mime_eol = "\xa";
     if ((flags & SMIME_DETACHED) && data) {
         /* We want multipart/signed */
         /* Generate a random boundary */
@@ -294,36 +294,36 @@ int SMIME_write_ASN1(BIO *bio, ASN1_VALUE *val, BIO *data, int flags,
         for (i = 0; i < 32; i++) {
             c = bound[i] & 0xf;
             if (c < 10)
-                c += '0';
+                c += '\x30';
             else
-                c += 'A' - 10;
+                c += '\x41' - 10;
             bound[i] = c;
         }
         bound[32] = 0;
-        BIO_printf(bio, "MIME-Version: 1.0%s", mime_eol);
-        BIO_printf(bio, "Content-Type: multipart/signed;");
-        BIO_printf(bio, " protocol=\"%ssignature\";", mime_prefix);
-        BIO_puts(bio, " micalg=\"");
+        BIO_printf(bio, "\x4d\x49\x4d\x45\x2d\x56\x65\x72\x73\x69\x6f\x6e\x3a\x20\x31\x2e\x30\x25\x73", mime_eol);
+        BIO_printf(bio, "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x79\x70\x65\x3a\x20\x6d\x75\x6c\x74\x69\x70\x61\x72\x74\x2f\x73\x69\x67\x6e\x65\x64\x3b");
+        BIO_printf(bio, "\x20\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x3d\x22\x25\x73\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x22\x3b", mime_prefix);
+        BIO_puts(bio, "\x20\x6d\x69\x63\x61\x6c\x67\x3d\x22");
         asn1_write_micalg(bio, mdalgs);
-        BIO_printf(bio, "\"; boundary=\"----%s\"%s%s",
+        BIO_printf(bio, "\x22\x3b\x20\x62\x6f\x75\x6e\x64\x61\x72\x79\x3d\x22\x2d\x2d\x2d\x2d\x25\x73\x22\x25\x73\x25\x73",
                    bound, mime_eol, mime_eol);
-        BIO_printf(bio, "This is an S/MIME signed message%s%s",
+        BIO_printf(bio, "\x54\x68\x69\x73\x20\x69\x73\x20\x61\x6e\x20\x53\x2f\x4d\x49\x4d\x45\x20\x73\x69\x67\x6e\x65\x64\x20\x6d\x65\x73\x73\x61\x67\x65\x25\x73\x25\x73",
                    mime_eol, mime_eol);
         /* Now write out the first part */
-        BIO_printf(bio, "------%s%s", bound, mime_eol);
+        BIO_printf(bio, "\x2d\x2d\x2d\x2d\x2d\x2d\x25\x73\x25\x73", bound, mime_eol);
         if (!asn1_output_data(bio, data, val, flags, it))
             return 0;
-        BIO_printf(bio, "%s------%s%s", mime_eol, bound, mime_eol);
+        BIO_printf(bio, "\x25\x73\x2d\x2d\x2d\x2d\x2d\x2d\x25\x73\x25\x73", mime_eol, bound, mime_eol);
 
         /* Headers for signature */
 
-        BIO_printf(bio, "Content-Type: %ssignature;", mime_prefix);
-        BIO_printf(bio, " name=\"smime.p7s\"%s", mime_eol);
-        BIO_printf(bio, "Content-Transfer-Encoding: base64%s", mime_eol);
-        BIO_printf(bio, "Content-Disposition: attachment;");
-        BIO_printf(bio, " filename=\"smime.p7s\"%s%s", mime_eol, mime_eol);
+        BIO_printf(bio, "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x79\x70\x65\x3a\x20\x25\x73\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x3b", mime_prefix);
+        BIO_printf(bio, "\x20\x6e\x61\x6d\x65\x3d\x22\x73\x6d\x69\x6d\x65\x2e\x70\x37\x73\x22\x25\x73", mime_eol);
+        BIO_printf(bio, "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x72\x61\x6e\x73\x66\x65\x72\x2d\x45\x6e\x63\x6f\x64\x69\x6e\x67\x3a\x20\x62\x61\x73\x65\x36\x34\x25\x73", mime_eol);
+        BIO_printf(bio, "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x44\x69\x73\x70\x6f\x73\x69\x74\x69\x6f\x6e\x3a\x20\x61\x74\x74\x61\x63\x68\x6d\x65\x6e\x74\x3b");
+        BIO_printf(bio, "\x20\x66\x69\x6c\x65\x6e\x61\x6d\x65\x3d\x22\x73\x6d\x69\x6d\x65\x2e\x70\x37\x73\x22\x25\x73\x25\x73", mime_eol, mime_eol);
         B64_write_ASN1(bio, val, NULL, 0, it);
-        BIO_printf(bio, "%s------%s--%s%s", mime_eol, bound,
+        BIO_printf(bio, "\x25\x73\x2d\x2d\x2d\x2d\x2d\x2d\x25\x73\x2d\x2d\x25\x73\x25\x73", mime_eol, bound,
                    mime_eol, mime_eol);
         return 1;
     }
@@ -331,31 +331,31 @@ int SMIME_write_ASN1(BIO *bio, ASN1_VALUE *val, BIO *data, int flags,
     /* Determine smime-type header */
 
     if (ctype_nid == NID_pkcs7_enveloped)
-        msg_type = "enveloped-data";
+        msg_type = "\x65\x6e\x76\x65\x6c\x6f\x70\x65\x64\x2d\x64\x61\x74\x61";
     else if (ctype_nid == NID_pkcs7_signed) {
         if (econt_nid == NID_id_smime_ct_receipt)
-            msg_type = "signed-receipt";
+            msg_type = "\x73\x69\x67\x6e\x65\x64\x2d\x72\x65\x63\x65\x69\x70\x74";
         else if (sk_X509_ALGOR_num(mdalgs) >= 0)
-            msg_type = "signed-data";
+            msg_type = "\x73\x69\x67\x6e\x65\x64\x2d\x64\x61\x74\x61";
         else
-            msg_type = "certs-only";
+            msg_type = "\x63\x65\x72\x74\x73\x2d\x6f\x6e\x6c\x79";
     } else if (ctype_nid == NID_id_smime_ct_compressedData) {
-        msg_type = "compressed-data";
-        cname = "smime.p7z";
+        msg_type = "\x63\x6f\x6d\x70\x72\x65\x73\x73\x65\x64\x2d\x64\x61\x74\x61";
+        cname = "\x73\x6d\x69\x6d\x65\x2e\x70\x37\x7a";
     }
     /* MIME headers */
-    BIO_printf(bio, "MIME-Version: 1.0%s", mime_eol);
-    BIO_printf(bio, "Content-Disposition: attachment;");
-    BIO_printf(bio, " filename=\"%s\"%s", cname, mime_eol);
-    BIO_printf(bio, "Content-Type: %smime;", mime_prefix);
+    BIO_printf(bio, "\x4d\x49\x4d\x45\x2d\x56\x65\x72\x73\x69\x6f\x6e\x3a\x20\x31\x2e\x30\x25\x73", mime_eol);
+    BIO_printf(bio, "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x44\x69\x73\x70\x6f\x73\x69\x74\x69\x6f\x6e\x3a\x20\x61\x74\x74\x61\x63\x68\x6d\x65\x6e\x74\x3b");
+    BIO_printf(bio, "\x20\x66\x69\x6c\x65\x6e\x61\x6d\x65\x3d\x22\x25\x73\x22\x25\x73", cname, mime_eol);
+    BIO_printf(bio, "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x79\x70\x65\x3a\x20\x25\x73\x6d\x69\x6d\x65\x3b", mime_prefix);
     if (msg_type)
-        BIO_printf(bio, " smime-type=%s;", msg_type);
-    BIO_printf(bio, " name=\"%s\"%s", cname, mime_eol);
-    BIO_printf(bio, "Content-Transfer-Encoding: base64%s%s",
+        BIO_printf(bio, "\x20\x73\x6d\x69\x6d\x65\x2d\x74\x79\x70\x65\x3d\x25\x73\x3b", msg_type);
+    BIO_printf(bio, "\x20\x6e\x61\x6d\x65\x3d\x22\x25\x73\x22\x25\x73", cname, mime_eol);
+    BIO_printf(bio, "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x72\x61\x6e\x73\x66\x65\x72\x2d\x45\x6e\x63\x6f\x64\x69\x6e\x67\x3a\x20\x62\x61\x73\x65\x36\x34\x25\x73\x25\x73",
                mime_eol, mime_eol);
     if (!B64_write_ASN1(bio, val, data, flags, it))
         return 0;
-    BIO_printf(bio, "%s", mime_eol);
+    BIO_printf(bio, "\x25\x73", mime_eol);
     return 1;
 }
 
@@ -435,7 +435,7 @@ ASN1_VALUE *SMIME_read_ASN1(BIO *bio, BIO **bcont, const ASN1_ITEM *it)
         return NULL;
     }
 
-    if (!(hdr = mime_hdr_find(headers, "content-type")) || !hdr->value) {
+    if (!(hdr = mime_hdr_find(headers, "\x63\x6f\x6e\x74\x65\x6e\x74\x2d\x74\x79\x70\x65")) || !hdr->value) {
         sk_MIME_HEADER_pop_free(headers, mime_hdr_free);
         ASN1err(ASN1_F_SMIME_READ_ASN1, ASN1_R_NO_CONTENT_TYPE);
         return NULL;
@@ -443,9 +443,9 @@ ASN1_VALUE *SMIME_read_ASN1(BIO *bio, BIO **bcont, const ASN1_ITEM *it)
 
     /* Handle multipart/signed */
 
-    if (!strcmp(hdr->value, "multipart/signed")) {
+    if (!strcmp(hdr->value, "\x6d\x75\x6c\x74\x69\x70\x61\x72\x74\x2f\x73\x69\x67\x6e\x65\x64")) {
         /* Split into two parts */
-        prm = mime_param_find(hdr, "boundary");
+        prm = mime_param_find(hdr, "\x62\x6f\x75\x6e\x64\x61\x72\x79");
         if (!prm || !prm->param_value) {
             sk_MIME_HEADER_pop_free(headers, mime_hdr_free);
             ASN1err(ASN1_F_SMIME_READ_ASN1, ASN1_R_NO_MULTIPART_BOUNDARY);
@@ -470,16 +470,16 @@ ASN1_VALUE *SMIME_read_ASN1(BIO *bio, BIO **bcont, const ASN1_ITEM *it)
 
         /* Get content type */
 
-        if (!(hdr = mime_hdr_find(headers, "content-type")) || !hdr->value) {
+        if (!(hdr = mime_hdr_find(headers, "\x63\x6f\x6e\x74\x65\x6e\x74\x2d\x74\x79\x70\x65")) || !hdr->value) {
             sk_MIME_HEADER_pop_free(headers, mime_hdr_free);
             ASN1err(ASN1_F_SMIME_READ_ASN1, ASN1_R_NO_SIG_CONTENT_TYPE);
             return NULL;
         }
 
-        if (strcmp(hdr->value, "application/x-pkcs7-signature") &&
-            strcmp(hdr->value, "application/pkcs7-signature")) {
+        if (strcmp(hdr->value, "\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x78\x2d\x70\x6b\x63\x73\x37\x2d\x73\x69\x67\x6e\x61\x74\x75\x72\x65") &&
+            strcmp(hdr->value, "\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x70\x6b\x63\x73\x37\x2d\x73\x69\x67\x6e\x61\x74\x75\x72\x65")) {
             ASN1err(ASN1_F_SMIME_READ_ASN1, ASN1_R_SIG_INVALID_MIME_TYPE);
-            ERR_add_error_data(2, "type: ", hdr->value);
+            ERR_add_error_data(2, "\x74\x79\x70\x65\x3a\x20", hdr->value);
             sk_MIME_HEADER_pop_free(headers, mime_hdr_free);
             sk_BIO_pop_free(parts, BIO_vfree);
             return NULL;
@@ -503,10 +503,10 @@ ASN1_VALUE *SMIME_read_ASN1(BIO *bio, BIO **bcont, const ASN1_ITEM *it)
 
     /* OK, if not multipart/signed try opaque signature */
 
-    if (strcmp(hdr->value, "application/x-pkcs7-mime") &&
-        strcmp(hdr->value, "application/pkcs7-mime")) {
+    if (strcmp(hdr->value, "\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x78\x2d\x70\x6b\x63\x73\x37\x2d\x6d\x69\x6d\x65") &&
+        strcmp(hdr->value, "\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x70\x6b\x63\x73\x37\x2d\x6d\x69\x6d\x65")) {
         ASN1err(ASN1_F_SMIME_READ_ASN1, ASN1_R_INVALID_MIME_TYPE);
-        ERR_add_error_data(2, "type: ", hdr->value);
+        ERR_add_error_data(2, "\x74\x79\x70\x65\x3a\x20", hdr->value);
         sk_MIME_HEADER_pop_free(headers, mime_hdr_free);
         return NULL;
     }
@@ -541,13 +541,13 @@ int SMIME_crlf_copy(BIO *in, BIO *out, int flags)
             BIO_write(out, linebuf, len);
     } else {
         if (flags & SMIME_TEXT)
-            BIO_printf(out, "Content-Type: text/plain\r\n\r\n");
+            BIO_printf(out, "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x79\x70\x65\x3a\x20\x74\x65\x78\x74\x2f\x70\x6c\x61\x69\x6e\xd\xa\xd\xa");
         while ((len = BIO_gets(in, linebuf, MAX_SMLEN)) > 0) {
             eol = strip_eol(linebuf, &len);
             if (len)
                 BIO_write(out, linebuf, len);
             if (eol)
-                BIO_write(out, "\r\n", 2);
+                BIO_write(out, "\xd\xa", 2);
         }
     }
     (void)BIO_flush(out);
@@ -568,14 +568,14 @@ int SMIME_text(BIO *in, BIO *out)
         ASN1err(ASN1_F_SMIME_TEXT, ASN1_R_MIME_PARSE_ERROR);
         return 0;
     }
-    if (!(hdr = mime_hdr_find(headers, "content-type")) || !hdr->value) {
+    if (!(hdr = mime_hdr_find(headers, "\x63\x6f\x6e\x74\x65\x6e\x74\x2d\x74\x79\x70\x65")) || !hdr->value) {
         ASN1err(ASN1_F_SMIME_TEXT, ASN1_R_MIME_NO_CONTENT_TYPE);
         sk_MIME_HEADER_pop_free(headers, mime_hdr_free);
         return 0;
     }
-    if (strcmp(hdr->value, "text/plain")) {
+    if (strcmp(hdr->value, "\x74\x65\x78\x74\x2f\x70\x6c\x61\x69\x6e")) {
         ASN1err(ASN1_F_SMIME_TEXT, ASN1_R_INVALID_MIME_TYPE);
-        ERR_add_error_data(2, "type: ", hdr->value);
+        ERR_add_error_data(2, "\x74\x79\x70\x65\x3a\x20", hdr->value);
         sk_MIME_HEADER_pop_free(headers, mime_hdr_free);
         return 0;
     }
@@ -627,7 +627,7 @@ static int multi_split(BIO *bio, char *bound, STACK_OF(BIO) **ret)
                     return 1;
                 BIO_set_mem_eof_return(bpart, 0);
             } else if (eol)
-                BIO_write(bpart, "\r\n", 2);
+                BIO_write(bpart, "\xd\xa", 2);
             eol = next_eol;
             if (len)
                 BIO_write(bpart, linebuf, len);
@@ -666,7 +666,7 @@ static STACK_OF(MIME_HEADER) *mime_parse_hdr(BIO *bio)
             state = MIME_START;
         ntmp = NULL;
         /* Go through all characters */
-        for (p = linebuf, q = linebuf; (c = *p) && (c != '\r') && (c != '\n');
+        for (p = linebuf, q = linebuf; (c = *p) && (c != '\xd') && (c != '\xa');
              p++) {
 
             /*
@@ -676,7 +676,7 @@ static STACK_OF(MIME_HEADER) *mime_parse_hdr(BIO *bio)
 
             switch (state) {
             case MIME_START:
-                if (c == ':') {
+                if (c == '\x3a') {
                     state = MIME_TYPE;
                     *p = 0;
                     ntmp = strip_ends(q);
@@ -685,28 +685,28 @@ static STACK_OF(MIME_HEADER) *mime_parse_hdr(BIO *bio)
                 break;
 
             case MIME_TYPE:
-                if (c == ';') {
-                    mime_debug("Found End Value\n");
+                if (c == '\x3b') {
+                    mime_debug("\x46\x6f\x75\x6e\x64\x20\x45\x6e\x64\x20\x56\x61\x6c\x75\x65\xa");
                     *p = 0;
                     mhdr = mime_hdr_new(ntmp, strip_ends(q));
                     sk_MIME_HEADER_push(headers, mhdr);
                     ntmp = NULL;
                     q = p + 1;
                     state = MIME_NAME;
-                } else if (c == '(') {
+                } else if (c == '\x28') {
                     save_state = state;
                     state = MIME_COMMENT;
                 }
                 break;
 
             case MIME_COMMENT:
-                if (c == ')') {
+                if (c == '\x29') {
                     state = save_state;
                 }
                 break;
 
             case MIME_NAME:
-                if (c == '=') {
+                if (c == '\x3d') {
                     state = MIME_VALUE;
                     *p = 0;
                     ntmp = strip_ends(q);
@@ -715,24 +715,24 @@ static STACK_OF(MIME_HEADER) *mime_parse_hdr(BIO *bio)
                 break;
 
             case MIME_VALUE:
-                if (c == ';') {
+                if (c == '\x3b') {
                     state = MIME_NAME;
                     *p = 0;
                     mime_hdr_addparam(mhdr, ntmp, strip_ends(q));
                     ntmp = NULL;
                     q = p + 1;
-                } else if (c == '"') {
-                    mime_debug("Found Quote\n");
+                } else if (c == '\x22') {
+                    mime_debug("\x46\x6f\x75\x6e\x64\x20\x51\x75\x6f\x74\x65\xa");
                     state = MIME_QUOTE;
-                } else if (c == '(') {
+                } else if (c == '\x28') {
                     save_state = state;
                     state = MIME_COMMENT;
                 }
                 break;
 
             case MIME_QUOTE:
-                if (c == '"') {
-                    mime_debug("Found Match Quote\n");
+                if (c == '\x22') {
+                    mime_debug("\x46\x6f\x75\x6e\x64\x20\x4d\x61\x74\x63\x68\x20\x51\x75\x6f\x74\x65\xa");
                     state = MIME_VALUE;
                 }
                 break;
@@ -763,7 +763,7 @@ static char *strip_start(char *name)
     char *p, c;
     /* Look for first non white space or quote */
     for (p = name; (c = *p); p++) {
-        if (c == '"') {
+        if (c == '\x22') {
             /* Next char is start of string if non null */
             if (p[1])
                 return p + 1;
@@ -785,7 +785,7 @@ static char *strip_end(char *name)
     /* Look for first non white space or quote */
     for (p = name + strlen(name) - 1; p >= name; p--) {
         c = *p;
-        if (c == '"') {
+        if (c == '\x22') {
             if (p - 1 == name)
                 return NULL;
             *p = 0;
@@ -949,8 +949,8 @@ static int mime_bound_check(char *line, int linelen, char *bound, int blen)
     if (blen + 2 > linelen)
         return 0;
     /* Check for part boundary */
-    if (!strncmp(line, "--", 2) && !strncmp(line + 2, bound, blen)) {
-        if (!strncmp(line + blen + 2, "--", 2))
+    if (!strncmp(line, "\x2d\x2d", 2) && !strncmp(line + 2, bound, blen)) {
+        if (!strncmp(line + blen + 2, "\x2d\x2d", 2))
             return 2;
         else
             return 1;
@@ -966,9 +966,9 @@ static int strip_eol(char *linebuf, int *plen)
     p = linebuf + len - 1;
     for (p = linebuf + len - 1; len > 0; len--, p--) {
         c = *p;
-        if (c == '\n')
+        if (c == '\xa')
             is_eol = 1;
-        else if (c != '\r')
+        else if (c != '\xd')
             break;
     }
     *plen = len;

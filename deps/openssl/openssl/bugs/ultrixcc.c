@@ -23,19 +23,19 @@ int a;
 {
     switch (a & 7) {
     case 7:
-        printf("7\n");
+        printf("\x37\xa");
     case 6:
-        printf("6\n");
+        printf("\x36\xa");
     case 5:
-        printf("5\n");
+        printf("\x35\xa");
     case 4:
-        printf("4\n");
+        printf("\x34\xa");
     case 3:
-        printf("3\n");
+        printf("\x33\xa");
     case 2:
-        printf("2\n");
+        printf("\x32\xa");
     case 1:
-        printf("1\n");
+        printf("\x31\xa");
 #ifdef FIX_BUG
     case 0:
         ;

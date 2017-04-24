@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -129,10 +129,10 @@ int app_RAND_load_file(const char *file, BIO *bio_e, int dont_warn)
      * -no_rand_screen option in s_client
      */
     if (dont_warn != 2) {
-      BIO_printf(bio_e, "Loading 'screen' into random state -");
+      BIO_printf(bio_e, "\x4c\x6f\x61\x64\x69\x6e\x67\x20\x27\x73\x63\x72\x65\x65\x6e\x27\x20\x69\x6e\x74\x6f\x20\x72\x61\x6e\x64\x6f\x6d\x20\x73\x74\x61\x74\x65\x20\x2d");
       BIO_flush(bio_e);
       RAND_screen();
-      BIO_printf(bio_e, " done\n");
+      BIO_printf(bio_e, "\x20\x64\x6f\x6e\x65\xa");
     }
 #endif
 
@@ -149,16 +149,16 @@ int app_RAND_load_file(const char *file, BIO *bio_e, int dont_warn)
     if (file == NULL || !RAND_load_file(file, -1)) {
         if (RAND_status() == 0) {
             if (!dont_warn) {
-                BIO_printf(bio_e, "unable to load 'random state'\n");
+                BIO_printf(bio_e, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x27\x72\x61\x6e\x64\x6f\x6d\x20\x73\x74\x61\x74\x65\x27\xa");
                 BIO_printf(bio_e,
-                           "This means that the random number generator has not been seeded\n");
-                BIO_printf(bio_e, "with much random data.\n");
+                           "\x54\x68\x69\x73\x20\x6d\x65\x61\x6e\x73\x20\x74\x68\x61\x74\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x68\x61\x73\x20\x6e\x6f\x74\x20\x62\x65\x65\x6e\x20\x73\x65\x65\x64\x65\x64\xa");
+                BIO_printf(bio_e, "\x77\x69\x74\x68\x20\x6d\x75\x63\x68\x20\x72\x61\x6e\x64\x6f\x6d\x20\x64\x61\x74\x61\x2e\xa");
                 if (consider_randfile) { /* explanation does not apply when a
                                           * file is explicitly named */
                     BIO_printf(bio_e,
-                               "Consider setting the RANDFILE environment variable to point at a file that\n");
+                               "\x43\x6f\x6e\x73\x69\x64\x65\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x74\x68\x65\x20\x52\x41\x4e\x44\x46\x49\x4c\x45\x20\x65\x6e\x76\x69\x72\x6f\x6e\x6d\x65\x6e\x74\x20\x76\x61\x72\x69\x61\x62\x6c\x65\x20\x74\x6f\x20\x70\x6f\x69\x6e\x74\x20\x61\x74\x20\x61\x20\x66\x69\x6c\x65\x20\x74\x68\x61\x74\xa");
                     BIO_printf(bio_e,
-                               "'random' data can be kept in (the file will be overwritten).\n");
+                               "\x27\x72\x61\x6e\x64\x6f\x6d\x27\x20\x64\x61\x74\x61\x20\x63\x61\x6e\x20\x62\x65\x20\x6b\x65\x70\x74\x20\x69\x6e\x20\x28\x74\x68\x65\x20\x66\x69\x6c\x65\x20\x77\x69\x6c\x6c\x20\x62\x65\x20\x6f\x76\x65\x72\x77\x72\x69\x74\x74\x65\x6e\x29\x2e\xa");
                 }
             }
             return 0;
@@ -177,13 +177,13 @@ long app_RAND_load_files(char *name)
 
     for (;;) {
         last = 0;
-        for (p = name; ((*p != '\0') && (*p != LIST_SEPARATOR_CHAR)); p++) ;
-        if (*p == '\0')
+        for (p = name; ((*p != '\x0') && (*p != LIST_SEPARATOR_CHAR)); p++) ;
+        if (*p == '\x0')
             last = 1;
-        *p = '\0';
+        *p = '\x0';
         n = name;
         name = p + 1;
-        if (*n == '\0')
+        if (*n == '\x0')
             break;
 
         egd = RAND_egd(n);
@@ -214,7 +214,7 @@ int app_RAND_write_file(const char *file, BIO *bio_e)
     if (file == NULL)
         file = RAND_file_name(buffer, sizeof buffer);
     if (file == NULL || !RAND_write_file(file)) {
-        BIO_printf(bio_e, "unable to write 'random state'\n");
+        BIO_printf(bio_e, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x27\x72\x61\x6e\x64\x6f\x6d\x20\x73\x74\x61\x74\x65\x27\xa");
         return 0;
     }
     return 1;

@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     OpenSSL_add_all_algorithms();
     ERR_load_crypto_strings();
 
-    tbio = BIO_new_file("signer.pem", "r");
+    tbio = BIO_new_file("\x73\x69\x67\x6e\x65\x72\x2e\x70\x65\x6d", "\x72");
 
     if (!tbio)
         goto err;
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
     BIO_free(tbio);
 
-    tbio = BIO_new_file("signer2.pem", "r");
+    tbio = BIO_new_file("\x73\x69\x67\x6e\x65\x72\x32\x2e\x70\x65\x6d", "\x72");
 
     if (!tbio)
         goto err;
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     if (!scert2 || !skey2)
         goto err;
 
-    in = BIO_new_file("sign.txt", "r");
+    in = BIO_new_file("\x73\x69\x67\x6e\x2e\x74\x78\x74", "\x72");
 
     if (!in)
         goto err;
@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     if (!PKCS7_sign_add_signer(p7, scert2, skey2, NULL, 0))
         goto err;
 
-    out = BIO_new_file("smout.txt", "w");
+    out = BIO_new_file("\x73\x6d\x6f\x75\x74\x2e\x74\x78\x74", "\x77");
     if (!out)
         goto err;
 
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
  err:
 
     if (ret) {
-        fprintf(stderr, "Error Signing Data\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x53\x69\x67\x6e\x69\x6e\x67\x20\x44\x61\x74\x61\xa");
         ERR_print_errors_fp(stderr);
     }
 

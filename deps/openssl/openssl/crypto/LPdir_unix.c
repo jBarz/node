@@ -79,7 +79,7 @@ const char *LP_find_file(LP_DIR_CTX **ctx, const char *directory)
             errno = ENOMEM;
             return 0;
         }
-        memset(*ctx, '\0', sizeof(LP_DIR_CTX));
+        memset(*ctx, '\x0', sizeof(LP_DIR_CTX));
 
         (*ctx)->dir = opendir(directory);
         if ((*ctx)->dir == NULL) {
@@ -98,7 +98,7 @@ const char *LP_find_file(LP_DIR_CTX **ctx, const char *directory)
 
     strncpy((*ctx)->entry_name, direntry->d_name,
             sizeof((*ctx)->entry_name) - 1);
-    (*ctx)->entry_name[sizeof((*ctx)->entry_name) - 1] = '\0';
+    (*ctx)->entry_name[sizeof((*ctx)->entry_name) - 1] = '\x0';
     return (*ctx)->entry_name;
 }
 

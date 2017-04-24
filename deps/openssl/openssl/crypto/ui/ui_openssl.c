@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -288,7 +288,7 @@ static void (*savsig[NX509_SIG]) (int);
 
 #ifdef OPENSSL_SYS_VMS
 static struct IOSB iosb;
-static $DESCRIPTOR(terminal, "TT");
+static $DESCRIPTOR(terminal, "\x54\x54");
 static long tty_orig[3], tty_new[3]; /* XXX Is there any guarantee that this
                                       * will always suffice for the actual
                                       * structures? */
@@ -323,7 +323,7 @@ static int noecho_console(UI *ui);
 static int close_console(UI *ui);
 
 static UI_METHOD ui_openssl = {
-    "OpenSSL default user interface",
+    "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x75\x73\x65\x72\x20\x69\x6e\x74\x65\x72\x66\x61\x63\x65",
     open_console,
     write_string,
     NULL,                       /* No flusher is needed for command lines */
@@ -375,14 +375,14 @@ static int read_string(UI *ui, UI_STRING *uis)
                                  UI_get_input_flags(uis) & UI_INPUT_FLAG_ECHO,
                                  1);
     case UIT_VERIFY:
-        fprintf(tty_out, "Verifying - %s", UI_get0_output_string(uis));
+        fprintf(tty_out, "\x56\x65\x72\x69\x66\x79\x69\x6e\x67\x20\x2d\x20\x25\x73", UI_get0_output_string(uis));
         fflush(tty_out);
         if ((ok = read_string_inner(ui, uis,
                                     UI_get_input_flags(uis) &
                                     UI_INPUT_FLAG_ECHO, 1)) <= 0)
             return ok;
         if (strcmp(UI_get0_result_string(uis), UI_get0_test_string(uis)) != 0) {
-            fprintf(tty_out, "Verify failure\n");
+            fprintf(tty_out, "\x56\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
             fflush(tty_out);
             return 0;
         }
@@ -403,7 +403,7 @@ static int read_till_nl(FILE *in)
     do {
         if (!fgets(buf, SIZE, in))
             return 0;
-    } while (strchr(buf, '\n') == NULL);
+    } while (strchr(buf, '\xa') == NULL);
     return 1;
 }
 
@@ -430,7 +430,7 @@ static int read_string_inner(UI *ui, UI_STRING *uis, int echo, int strip_nl)
         goto error;
     ps = 2;
 
-    result[0] = '\0';
+    result[0] = '\x0';
 # ifdef OPENSSL_SYS_MSDOS
     if (!echo) {
         noecho_fgets(result, maxsize, tty_in);
@@ -446,9 +446,9 @@ static int read_string_inner(UI *ui, UI_STRING *uis, int echo, int strip_nl)
         goto error;
     if (ferror(tty_in))
         goto error;
-    if ((p = (char *)strchr(result, '\n')) != NULL) {
+    if ((p = (char *)strchr(result, '\xa')) != NULL) {
         if (strip_nl)
-            *p = '\0';
+            *p = '\x0';
     } else if (!read_till_nl(tty_in))
         goto error;
     if (UI_set_result(ui, uis, result) >= 0)
@@ -458,7 +458,7 @@ static int read_string_inner(UI *ui, UI_STRING *uis, int echo, int strip_nl)
     if (intr_signal == SIGINT)
         ok = -1;
     if (!echo)
-        fprintf(tty_out, "\n");
+        fprintf(tty_out, "\xa");
     if (ps >= 2 && !echo && !echo_console(ui))
         ok = 0;
 
@@ -483,13 +483,13 @@ static int open_console(UI *ui)
     tty_out = stderr;
 #else
 # ifdef OPENSSL_SYS_MSDOS
-#  define DEV_TTY "con"
+#  define DEV_TTY "\x63\x6f\x6e"
 # else
-#  define DEV_TTY "/dev/tty"
+#  define DEV_TTY "\x2f\x64\x65\x76\x2f\x74\x74\x79"
 # endif
-    if ((tty_in = fopen(DEV_TTY, "r")) == NULL)
+    if ((tty_in = fopen(DEV_TTY, "\x72")) == NULL)
         tty_in = stdin;
-    if ((tty_out = fopen(DEV_TTY, "w")) == NULL)
+    if ((tty_out = fopen(DEV_TTY, "\x77")) == NULL)
         tty_out = stderr;
 #endif
 
@@ -697,7 +697,7 @@ static int noecho_fgets(char *buf, int size, FILE *tty)
     p = buf;
     for (;;) {
         if (size == 0) {
-            *p = '\0';
+            *p = '\x0';
             break;
         }
         size--;
@@ -708,11 +708,11 @@ static int noecho_fgets(char *buf, int size, FILE *tty)
 # else
         i = getch();
 # endif
-        if (i == '\r')
-            i = '\n';
+        if (i == '\xd')
+            i = '\xa';
         *(p++) = i;
-        if (i == '\n') {
-            *p = '\0';
+        if (i == '\xa') {
+            *p = '\x0';
             break;
         }
     }

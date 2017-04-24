@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -119,58 +119,58 @@ STACK_OF(CONF_VALUE) *i2v_GENERAL_NAME(X509V3_EXT_METHOD *method,
     int i;
     switch (gen->type) {
     case GEN_OTHERNAME:
-        X509V3_add_value("othername", "<unsupported>", &ret);
+        X509V3_add_value("\x6f\x74\x68\x65\x72\x6e\x61\x6d\x65", "\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e", &ret);
         break;
 
     case GEN_X400:
-        X509V3_add_value("X400Name", "<unsupported>", &ret);
+        X509V3_add_value("\x58\x34\x30\x30\x4e\x61\x6d\x65", "\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e", &ret);
         break;
 
     case GEN_EDIPARTY:
-        X509V3_add_value("EdiPartyName", "<unsupported>", &ret);
+        X509V3_add_value("\x45\x64\x69\x50\x61\x72\x74\x79\x4e\x61\x6d\x65", "\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e", &ret);
         break;
 
     case GEN_EMAIL:
-        X509V3_add_value_uchar("email", gen->d.ia5->data, &ret);
+        X509V3_add_value_uchar("\x65\x6d\x61\x69\x6c", gen->d.ia5->data, &ret);
         break;
 
     case GEN_DNS:
-        X509V3_add_value_uchar("DNS", gen->d.ia5->data, &ret);
+        X509V3_add_value_uchar("\x44\x4e\x53", gen->d.ia5->data, &ret);
         break;
 
     case GEN_URI:
-        X509V3_add_value_uchar("URI", gen->d.ia5->data, &ret);
+        X509V3_add_value_uchar("\x55\x52\x49", gen->d.ia5->data, &ret);
         break;
 
     case GEN_DIRNAME:
         X509_NAME_oneline(gen->d.dirn, oline, 256);
-        X509V3_add_value("DirName", oline, &ret);
+        X509V3_add_value("\x44\x69\x72\x4e\x61\x6d\x65", oline, &ret);
         break;
 
     case GEN_IPADD:
         p = gen->d.ip->data;
         if (gen->d.ip->length == 4)
             BIO_snprintf(oline, sizeof oline,
-                         "%d.%d.%d.%d", p[0], p[1], p[2], p[3]);
+                         "\x25\x64\x2e\x25\x64\x2e\x25\x64\x2e\x25\x64", p[0], p[1], p[2], p[3]);
         else if (gen->d.ip->length == 16) {
             oline[0] = 0;
             for (i = 0; i < 8; i++) {
-                BIO_snprintf(htmp, sizeof htmp, "%X", p[0] << 8 | p[1]);
+                BIO_snprintf(htmp, sizeof htmp, "\x25\x58", p[0] << 8 | p[1]);
                 p += 2;
                 strcat(oline, htmp);
                 if (i != 7)
-                    strcat(oline, ":");
+                    strcat(oline, "\x3a");
             }
         } else {
-            X509V3_add_value("IP Address", "<invalid>", &ret);
+            X509V3_add_value("\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73", "\x3c\x69\x6e\x76\x61\x6c\x69\x64\x3e", &ret);
             break;
         }
-        X509V3_add_value("IP Address", oline, &ret);
+        X509V3_add_value("\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73", oline, &ret);
         break;
 
     case GEN_RID:
         i2t_ASN1_OBJECT(oline, 256, gen->d.rid);
-        X509V3_add_value("Registered ID", oline, &ret);
+        X509V3_add_value("\x52\x65\x67\x69\x73\x74\x65\x72\x65\x64\x20\x49\x44", oline, &ret);
         break;
     }
     return ret;
@@ -182,54 +182,54 @@ int GENERAL_NAME_print(BIO *out, GENERAL_NAME *gen)
     int i;
     switch (gen->type) {
     case GEN_OTHERNAME:
-        BIO_printf(out, "othername:<unsupported>");
+        BIO_printf(out, "\x6f\x74\x68\x65\x72\x6e\x61\x6d\x65\x3a\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e");
         break;
 
     case GEN_X400:
-        BIO_printf(out, "X400Name:<unsupported>");
+        BIO_printf(out, "\x58\x34\x30\x30\x4e\x61\x6d\x65\x3a\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e");
         break;
 
     case GEN_EDIPARTY:
         /* Maybe fix this: it is supported now */
-        BIO_printf(out, "EdiPartyName:<unsupported>");
+        BIO_printf(out, "\x45\x64\x69\x50\x61\x72\x74\x79\x4e\x61\x6d\x65\x3a\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e");
         break;
 
     case GEN_EMAIL:
-        BIO_printf(out, "email:%s", gen->d.ia5->data);
+        BIO_printf(out, "\x65\x6d\x61\x69\x6c\x3a\x25\x73", gen->d.ia5->data);
         break;
 
     case GEN_DNS:
-        BIO_printf(out, "DNS:%s", gen->d.ia5->data);
+        BIO_printf(out, "\x44\x4e\x53\x3a\x25\x73", gen->d.ia5->data);
         break;
 
     case GEN_URI:
-        BIO_printf(out, "URI:%s", gen->d.ia5->data);
+        BIO_printf(out, "\x55\x52\x49\x3a\x25\x73", gen->d.ia5->data);
         break;
 
     case GEN_DIRNAME:
-        BIO_printf(out, "DirName: ");
+        BIO_printf(out, "\x44\x69\x72\x4e\x61\x6d\x65\x3a\x20");
         X509_NAME_print_ex(out, gen->d.dirn, 0, XN_FLAG_ONELINE);
         break;
 
     case GEN_IPADD:
         p = gen->d.ip->data;
         if (gen->d.ip->length == 4)
-            BIO_printf(out, "IP Address:%d.%d.%d.%d", p[0], p[1], p[2], p[3]);
+            BIO_printf(out, "\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73\x3a\x25\x64\x2e\x25\x64\x2e\x25\x64\x2e\x25\x64", p[0], p[1], p[2], p[3]);
         else if (gen->d.ip->length == 16) {
-            BIO_printf(out, "IP Address");
+            BIO_printf(out, "\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73");
             for (i = 0; i < 8; i++) {
-                BIO_printf(out, ":%X", p[0] << 8 | p[1]);
+                BIO_printf(out, "\x3a\x25\x58", p[0] << 8 | p[1]);
                 p += 2;
             }
-            BIO_puts(out, "\n");
+            BIO_puts(out, "\xa");
         } else {
-            BIO_printf(out, "IP Address:<invalid>");
+            BIO_printf(out, "\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73\x3a\x3c\x69\x6e\x76\x61\x6c\x69\x64\x3e");
             break;
         }
         break;
 
     case GEN_RID:
-        BIO_printf(out, "Registered ID");
+        BIO_printf(out, "\x52\x65\x67\x69\x73\x74\x65\x72\x65\x64\x20\x49\x44");
         i2a_ASN1_OBJECT(out, gen->d.rid);
         break;
     }
@@ -249,8 +249,8 @@ static GENERAL_NAMES *v2i_issuer_alt(X509V3_EXT_METHOD *method,
     }
     for (i = 0; i < sk_CONF_VALUE_num(nval); i++) {
         cnf = sk_CONF_VALUE_value(nval, i);
-        if (!name_cmp(cnf->name, "issuer") && cnf->value &&
-            !strcmp(cnf->value, "copy")) {
+        if (!name_cmp(cnf->name, "\x69\x73\x73\x75\x65\x72") && cnf->value &&
+            !strcmp(cnf->value, "\x63\x6f\x70\x79")) {
             if (!copy_issuer(ctx, gens))
                 goto err;
         } else {
@@ -318,12 +318,12 @@ static GENERAL_NAMES *v2i_subject_alt(X509V3_EXT_METHOD *method,
     }
     for (i = 0; i < sk_CONF_VALUE_num(nval); i++) {
         cnf = sk_CONF_VALUE_value(nval, i);
-        if (!name_cmp(cnf->name, "email") && cnf->value &&
-            !strcmp(cnf->value, "copy")) {
+        if (!name_cmp(cnf->name, "\x65\x6d\x61\x69\x6c") && cnf->value &&
+            !strcmp(cnf->value, "\x63\x6f\x70\x79")) {
             if (!copy_email(ctx, gens, 0))
                 goto err;
-        } else if (!name_cmp(cnf->name, "email") && cnf->value &&
-                   !strcmp(cnf->value, "move")) {
+        } else if (!name_cmp(cnf->name, "\x65\x6d\x61\x69\x6c") && cnf->value &&
+                   !strcmp(cnf->value, "\x6d\x6f\x76\x65")) {
             if (!copy_email(ctx, gens, 1))
                 goto err;
         } else {
@@ -460,7 +460,7 @@ GENERAL_NAME *a2i_GENERAL_NAME(GENERAL_NAME *out,
             ASN1_OBJECT *obj;
             if (!(obj = OBJ_txt2obj(value, 0))) {
                 X509V3err(X509V3_F_A2I_GENERAL_NAME, X509V3_R_BAD_OBJECT);
-                ERR_add_error_data(2, "value=", value);
+                ERR_add_error_data(2, "\x76\x61\x6c\x75\x65\x3d", value);
                 goto err;
             }
             gen->d.rid = obj;
@@ -474,7 +474,7 @@ GENERAL_NAME *a2i_GENERAL_NAME(GENERAL_NAME *out,
             gen->d.ip = a2i_IPADDRESS(value);
         if (gen->d.ip == NULL) {
             X509V3err(X509V3_F_A2I_GENERAL_NAME, X509V3_R_BAD_IP_ADDRESS);
-            ERR_add_error_data(2, "value=", value);
+            ERR_add_error_data(2, "\x76\x61\x6c\x75\x65\x3d", value);
             goto err;
         }
         break;
@@ -532,23 +532,23 @@ GENERAL_NAME *v2i_GENERAL_NAME_ex(GENERAL_NAME *out,
         return NULL;
     }
 
-    if (!name_cmp(name, "email"))
+    if (!name_cmp(name, "\x65\x6d\x61\x69\x6c"))
         type = GEN_EMAIL;
-    else if (!name_cmp(name, "URI"))
+    else if (!name_cmp(name, "\x55\x52\x49"))
         type = GEN_URI;
-    else if (!name_cmp(name, "DNS"))
+    else if (!name_cmp(name, "\x44\x4e\x53"))
         type = GEN_DNS;
-    else if (!name_cmp(name, "RID"))
+    else if (!name_cmp(name, "\x52\x49\x44"))
         type = GEN_RID;
-    else if (!name_cmp(name, "IP"))
+    else if (!name_cmp(name, "\x49\x50"))
         type = GEN_IPADD;
-    else if (!name_cmp(name, "dirName"))
+    else if (!name_cmp(name, "\x64\x69\x72\x4e\x61\x6d\x65"))
         type = GEN_DIRNAME;
-    else if (!name_cmp(name, "otherName"))
+    else if (!name_cmp(name, "\x6f\x74\x68\x65\x72\x4e\x61\x6d\x65"))
         type = GEN_OTHERNAME;
     else {
         X509V3err(X509V3_F_V2I_GENERAL_NAME_EX, X509V3_R_UNSUPPORTED_OPTION);
-        ERR_add_error_data(2, "name=", name);
+        ERR_add_error_data(2, "\x6e\x61\x6d\x65\x3d", name);
         return NULL;
     }
 
@@ -560,7 +560,7 @@ static int do_othername(GENERAL_NAME *gen, char *value, X509V3_CTX *ctx)
 {
     char *objtmp = NULL, *p;
     int objlen;
-    if (!(p = strchr(value, ';')))
+    if (!(p = strchr(value, '\x3b')))
         return 0;
     if (!(gen->d.otherName = OTHERNAME_new()))
         return 0;
@@ -594,7 +594,7 @@ static int do_dirname(GENERAL_NAME *gen, char *value, X509V3_CTX *ctx)
     sk = X509V3_get_section(ctx, value);
     if (!sk) {
         X509V3err(X509V3_F_DO_DIRNAME, X509V3_R_SECTION_NOT_FOUND);
-        ERR_add_error_data(2, "section=", value);
+        ERR_add_error_data(2, "\x73\x65\x63\x74\x69\x6f\x6e\x3d", value);
         goto err;
     }
     /* FIXME: should allow other character types... */

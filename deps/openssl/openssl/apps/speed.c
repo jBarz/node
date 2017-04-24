@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -58,7 +58,7 @@
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
  *
- * Portions of the attached software ("Contribution") are developed by
+ * Portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") are developed by
  * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
  *
  * The Contribution is licensed pursuant to the OpenSSL open source
@@ -250,13 +250,13 @@ static int do_multi(int multi);
 # define MAX_ECDH_SIZE 256
 
 static const char *names[ALGOR_NUM] = {
-    "md2", "mdc2", "md4", "md5", "hmac(md5)", "sha1", "rmd160", "rc4",
-    "des cbc", "des ede3", "idea cbc", "seed cbc",
-    "rc2 cbc", "rc5-32/12 cbc", "blowfish cbc", "cast cbc",
-    "aes-128 cbc", "aes-192 cbc", "aes-256 cbc",
-    "camellia-128 cbc", "camellia-192 cbc", "camellia-256 cbc",
-    "evp", "sha256", "sha512", "whirlpool",
-    "aes-128 ige", "aes-192 ige", "aes-256 ige", "ghash"
+    "\x6d\x64\x32", "\x6d\x64\x63\x32", "\x6d\x64\x34", "\x6d\x64\x35", "\x68\x6d\x61\x63\x28\x6d\x64\x35\x29", "\x73\x68\x61\x31", "\x72\x6d\x64\x31\x36\x30", "\x72\x63\x34",
+    "\x64\x65\x73\x20\x63\x62\x63", "\x64\x65\x73\x20\x65\x64\x65\x33", "\x69\x64\x65\x61\x20\x63\x62\x63", "\x73\x65\x65\x64\x20\x63\x62\x63",
+    "\x72\x63\x32\x20\x63\x62\x63", "\x72\x63\x35\x2d\x33\x32\x2f\x31\x32\x20\x63\x62\x63", "\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x63\x62\x63", "\x63\x61\x73\x74\x20\x63\x62\x63",
+    "\x61\x65\x73\x2d\x31\x32\x38\x20\x63\x62\x63", "\x61\x65\x73\x2d\x31\x39\x32\x20\x63\x62\x63", "\x61\x65\x73\x2d\x32\x35\x36\x20\x63\x62\x63",
+    "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x32\x38\x20\x63\x62\x63", "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x39\x32\x20\x63\x62\x63", "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x32\x35\x36\x20\x63\x62\x63",
+    "\x65\x76\x70", "\x73\x68\x61\x32\x35\x36", "\x73\x68\x61\x35\x31\x32", "\x77\x68\x69\x72\x6c\x70\x6f\x6f\x6c",
+    "\x61\x65\x73\x2d\x31\x32\x38\x20\x69\x67\x65", "\x61\x65\x73\x2d\x31\x39\x32\x20\x69\x67\x65", "\x61\x65\x73\x2d\x32\x35\x36\x20\x69\x67\x65", "\x67\x68\x61\x73\x68"
 };
 
 static double results[ALGOR_NUM][SIZE_NUM];
@@ -277,7 +277,7 @@ static double ecdh_results[EC_NUM][1];
 
 # if defined(OPENSSL_NO_DSA) && !(defined(OPENSSL_NO_ECDSA) && defined(OPENSSL_NO_ECDH))
 static const char rnd_seed[] =
-    "string to make the random number generator think it has entropy";
+    "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 static int rnd_fake = 0;
 # endif
 
@@ -331,7 +331,7 @@ static double Time_F(int s)
         thr = CreateThread(NULL, 4096, sleepy, NULL, 0, NULL);
         if (thr == NULL) {
             DWORD ret = GetLastError();
-            BIO_printf(bio_err, "unable to CreateThread (%d)", ret);
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x43\x72\x65\x61\x74\x65\x54\x68\x72\x65\x61\x64\x20\x28\x25\x64\x29", ret);
             ExitProcess(ret);
         }
         CloseHandle(thr);       /* detach the thread */
@@ -591,23 +591,23 @@ int MAIN(int argc, char **argv)
     };
     static const char *test_curves_names[EC_NUM] = {
         /* Prime Curves */
-        "secp160r1",
-        "nistp192",
-        "nistp224",
-        "nistp256",
-        "nistp384",
-        "nistp521",
+        "\x73\x65\x63\x70\x31\x36\x30\x72\x31",
+        "\x6e\x69\x73\x74\x70\x31\x39\x32",
+        "\x6e\x69\x73\x74\x70\x32\x32\x34",
+        "\x6e\x69\x73\x74\x70\x32\x35\x36",
+        "\x6e\x69\x73\x74\x70\x33\x38\x34",
+        "\x6e\x69\x73\x74\x70\x35\x32\x31",
         /* Binary Curves */
-        "nistk163",
-        "nistk233",
-        "nistk283",
-        "nistk409",
-        "nistk571",
-        "nistb163",
-        "nistb233",
-        "nistb283",
-        "nistb409",
-        "nistb571"
+        "\x6e\x69\x73\x74\x6b\x31\x36\x33",
+        "\x6e\x69\x73\x74\x6b\x32\x33\x33",
+        "\x6e\x69\x73\x74\x6b\x32\x38\x33",
+        "\x6e\x69\x73\x74\x6b\x34\x30\x39",
+        "\x6e\x69\x73\x74\x6b\x35\x37\x31",
+        "\x6e\x69\x73\x74\x62\x31\x36\x33",
+        "\x6e\x69\x73\x74\x62\x32\x33\x33",
+        "\x6e\x69\x73\x74\x62\x32\x38\x33",
+        "\x6e\x69\x73\x74\x62\x34\x30\x39",
+        "\x6e\x69\x73\x74\x62\x35\x37\x31"
     };
     static int test_curves_bits[EC_NUM] = {
         160, 192, 224, 256, 384, 521,
@@ -683,11 +683,11 @@ int MAIN(int argc, char **argv)
         goto end;
 
     if ((buf = (unsigned char *)OPENSSL_malloc((int)BUFSIZE)) == NULL) {
-        BIO_printf(bio_err, "out of memory\n");
+        BIO_printf(bio_err, "\x6f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
         goto end;
     }
     if ((buf2 = (unsigned char *)OPENSSL_malloc((int)BUFSIZE)) == NULL) {
-        BIO_printf(bio_err, "out of memory\n");
+        BIO_printf(bio_err, "\x6f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
         goto end;
     }
 
@@ -714,15 +714,15 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc) {
-        if ((argc > 0) && (strcmp(*argv, "-elapsed") == 0)) {
+        if ((argc > 0) && (strcmp(*argv, "\x2d\x65\x6c\x61\x70\x73\x65\x64") == 0)) {
             usertime = 0;
             j--;                /* Otherwise, -elapsed gets confused with an
                                  * algorithm. */
-        } else if ((argc > 0) && (strcmp(*argv, "-evp") == 0)) {
+        } else if ((argc > 0) && (strcmp(*argv, "\x2d\x65\x76\x70") == 0)) {
             argc--;
             argv++;
             if (argc == 0) {
-                BIO_printf(bio_err, "no EVP given\n");
+                BIO_printf(bio_err, "\x6e\x6f\x20\x45\x56\x50\x20\x67\x69\x76\x65\x6e\xa");
                 goto end;
             }
             evp_cipher = EVP_get_cipherbyname(*argv);
@@ -730,22 +730,22 @@ int MAIN(int argc, char **argv)
                 evp_md = EVP_get_digestbyname(*argv);
             }
             if (!evp_cipher && !evp_md) {
-                BIO_printf(bio_err, "%s is an unknown cipher or digest\n",
+                BIO_printf(bio_err, "\x25\x73\x20\x69\x73\x20\x61\x6e\x20\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x69\x70\x68\x65\x72\x20\x6f\x72\x20\x64\x69\x67\x65\x73\x74\xa",
                            *argv);
                 goto end;
             }
             doit[D_EVP] = 1;
-        } else if (argc > 0 && !strcmp(*argv, "-decrypt")) {
+        } else if (argc > 0 && !strcmp(*argv, "\x2d\x64\x65\x63\x72\x79\x70\x74")) {
             decrypt = 1;
             j--;                /* Otherwise, -elapsed gets confused with an
                                  * algorithm. */
         }
 # ifndef OPENSSL_NO_ENGINE
-        else if ((argc > 0) && (strcmp(*argv, "-engine") == 0)) {
+        else if ((argc > 0) && (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0)) {
             argc--;
             argv++;
             if (argc == 0) {
-                BIO_printf(bio_err, "no engine given\n");
+                BIO_printf(bio_err, "\x6e\x6f\x20\x65\x6e\x67\x69\x6e\x65\x20\x67\x69\x76\x65\x6e\xa");
                 goto end;
             }
             e = setup_engine(bio_err, *argv, 0);
@@ -758,221 +758,221 @@ int MAIN(int argc, char **argv)
         }
 # endif
 # ifndef NO_FORK
-        else if ((argc > 0) && (strcmp(*argv, "-multi") == 0)) {
+        else if ((argc > 0) && (strcmp(*argv, "\x2d\x6d\x75\x6c\x74\x69") == 0)) {
             argc--;
             argv++;
             if (argc == 0) {
-                BIO_printf(bio_err, "no multi count given\n");
+                BIO_printf(bio_err, "\x6e\x6f\x20\x6d\x75\x6c\x74\x69\x20\x63\x6f\x75\x6e\x74\x20\x67\x69\x76\x65\x6e\xa");
                 goto end;
             }
             multi = atoi(argv[0]);
             if (multi <= 0) {
-                BIO_printf(bio_err, "bad multi count\n");
+                BIO_printf(bio_err, "\x62\x61\x64\x20\x6d\x75\x6c\x74\x69\x20\x63\x6f\x75\x6e\x74\xa");
                 goto end;
             }
             j--;                /* Otherwise, -mr gets confused with an
                                  * algorithm. */
         }
 # endif
-        else if (argc > 0 && !strcmp(*argv, "-mr")) {
+        else if (argc > 0 && !strcmp(*argv, "\x2d\x6d\x72")) {
             mr = 1;
             j--;                /* Otherwise, -mr gets confused with an
                                  * algorithm. */
-        } else if (argc > 0 && !strcmp(*argv, "-mb")) {
+        } else if (argc > 0 && !strcmp(*argv, "\x2d\x6d\x62")) {
             multiblock = 1;
             j--;
         } else
 # ifndef OPENSSL_NO_MD2
-        if (strcmp(*argv, "md2") == 0)
+        if (strcmp(*argv, "\x6d\x64\x32") == 0)
             doit[D_MD2] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_MDC2
-        if (strcmp(*argv, "mdc2") == 0)
+        if (strcmp(*argv, "\x6d\x64\x63\x32") == 0)
             doit[D_MDC2] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_MD4
-        if (strcmp(*argv, "md4") == 0)
+        if (strcmp(*argv, "\x6d\x64\x34") == 0)
             doit[D_MD4] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_MD5
-        if (strcmp(*argv, "md5") == 0)
+        if (strcmp(*argv, "\x6d\x64\x35") == 0)
             doit[D_MD5] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_MD5
-        if (strcmp(*argv, "hmac") == 0)
+        if (strcmp(*argv, "\x68\x6d\x61\x63") == 0)
             doit[D_HMAC] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_SHA
-        if (strcmp(*argv, "sha1") == 0)
+        if (strcmp(*argv, "\x73\x68\x61\x31") == 0)
             doit[D_SHA1] = 1;
-        else if (strcmp(*argv, "sha") == 0)
+        else if (strcmp(*argv, "\x73\x68\x61") == 0)
             doit[D_SHA1] = 1, doit[D_SHA256] = 1, doit[D_SHA512] = 1;
         else
 #  ifndef OPENSSL_NO_SHA256
-        if (strcmp(*argv, "sha256") == 0)
+        if (strcmp(*argv, "\x73\x68\x61\x32\x35\x36") == 0)
             doit[D_SHA256] = 1;
         else
 #  endif
 #  ifndef OPENSSL_NO_SHA512
-        if (strcmp(*argv, "sha512") == 0)
+        if (strcmp(*argv, "\x73\x68\x61\x35\x31\x32") == 0)
             doit[D_SHA512] = 1;
         else
 #  endif
 # endif
 # ifndef OPENSSL_NO_WHIRLPOOL
-        if (strcmp(*argv, "whirlpool") == 0)
+        if (strcmp(*argv, "\x77\x68\x69\x72\x6c\x70\x6f\x6f\x6c") == 0)
             doit[D_WHIRLPOOL] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_RIPEMD
-        if (strcmp(*argv, "ripemd") == 0)
+        if (strcmp(*argv, "\x72\x69\x70\x65\x6d\x64") == 0)
             doit[D_RMD160] = 1;
-        else if (strcmp(*argv, "rmd160") == 0)
+        else if (strcmp(*argv, "\x72\x6d\x64\x31\x36\x30") == 0)
             doit[D_RMD160] = 1;
-        else if (strcmp(*argv, "ripemd160") == 0)
+        else if (strcmp(*argv, "\x72\x69\x70\x65\x6d\x64\x31\x36\x30") == 0)
             doit[D_RMD160] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_RC4
-        if (strcmp(*argv, "rc4") == 0)
+        if (strcmp(*argv, "\x72\x63\x34") == 0)
             doit[D_RC4] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_DES
-        if (strcmp(*argv, "des-cbc") == 0)
+        if (strcmp(*argv, "\x64\x65\x73\x2d\x63\x62\x63") == 0)
             doit[D_CBC_DES] = 1;
-        else if (strcmp(*argv, "des-ede3") == 0)
+        else if (strcmp(*argv, "\x64\x65\x73\x2d\x65\x64\x65\x33") == 0)
             doit[D_EDE3_DES] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_AES
-        if (strcmp(*argv, "aes-128-cbc") == 0)
+        if (strcmp(*argv, "\x61\x65\x73\x2d\x31\x32\x38\x2d\x63\x62\x63") == 0)
             doit[D_CBC_128_AES] = 1;
-        else if (strcmp(*argv, "aes-192-cbc") == 0)
+        else if (strcmp(*argv, "\x61\x65\x73\x2d\x31\x39\x32\x2d\x63\x62\x63") == 0)
             doit[D_CBC_192_AES] = 1;
-        else if (strcmp(*argv, "aes-256-cbc") == 0)
+        else if (strcmp(*argv, "\x61\x65\x73\x2d\x32\x35\x36\x2d\x63\x62\x63") == 0)
             doit[D_CBC_256_AES] = 1;
-        else if (strcmp(*argv, "aes-128-ige") == 0)
+        else if (strcmp(*argv, "\x61\x65\x73\x2d\x31\x32\x38\x2d\x69\x67\x65") == 0)
             doit[D_IGE_128_AES] = 1;
-        else if (strcmp(*argv, "aes-192-ige") == 0)
+        else if (strcmp(*argv, "\x61\x65\x73\x2d\x31\x39\x32\x2d\x69\x67\x65") == 0)
             doit[D_IGE_192_AES] = 1;
-        else if (strcmp(*argv, "aes-256-ige") == 0)
+        else if (strcmp(*argv, "\x61\x65\x73\x2d\x32\x35\x36\x2d\x69\x67\x65") == 0)
             doit[D_IGE_256_AES] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_CAMELLIA
-        if (strcmp(*argv, "camellia-128-cbc") == 0)
+        if (strcmp(*argv, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x32\x38\x2d\x63\x62\x63") == 0)
             doit[D_CBC_128_CML] = 1;
-        else if (strcmp(*argv, "camellia-192-cbc") == 0)
+        else if (strcmp(*argv, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x39\x32\x2d\x63\x62\x63") == 0)
             doit[D_CBC_192_CML] = 1;
-        else if (strcmp(*argv, "camellia-256-cbc") == 0)
+        else if (strcmp(*argv, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x32\x35\x36\x2d\x63\x62\x63") == 0)
             doit[D_CBC_256_CML] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_RSA
 #  if 0                         /* was: #ifdef RSAref */
-        if (strcmp(*argv, "rsaref") == 0) {
+        if (strcmp(*argv, "\x72\x73\x61\x72\x65\x66") == 0) {
             RSA_set_default_openssl_method(RSA_PKCS1_RSAref());
             j--;
         } else
 #  endif
 #  ifndef RSA_NULL
-        if (strcmp(*argv, "openssl") == 0) {
+        if (strcmp(*argv, "\x6f\x70\x65\x6e\x73\x73\x6c") == 0) {
             RSA_set_default_method(RSA_PKCS1_SSLeay());
             j--;
         } else
 #  endif
 # endif                         /* !OPENSSL_NO_RSA */
-        if (strcmp(*argv, "dsa512") == 0)
+        if (strcmp(*argv, "\x64\x73\x61\x35\x31\x32") == 0)
             dsa_doit[R_DSA_512] = 2;
-        else if (strcmp(*argv, "dsa1024") == 0)
+        else if (strcmp(*argv, "\x64\x73\x61\x31\x30\x32\x34") == 0)
             dsa_doit[R_DSA_1024] = 2;
-        else if (strcmp(*argv, "dsa2048") == 0)
+        else if (strcmp(*argv, "\x64\x73\x61\x32\x30\x34\x38") == 0)
             dsa_doit[R_DSA_2048] = 2;
-        else if (strcmp(*argv, "rsa512") == 0)
+        else if (strcmp(*argv, "\x72\x73\x61\x35\x31\x32") == 0)
             rsa_doit[R_RSA_512] = 2;
-        else if (strcmp(*argv, "rsa1024") == 0)
+        else if (strcmp(*argv, "\x72\x73\x61\x31\x30\x32\x34") == 0)
             rsa_doit[R_RSA_1024] = 2;
-        else if (strcmp(*argv, "rsa2048") == 0)
+        else if (strcmp(*argv, "\x72\x73\x61\x32\x30\x34\x38") == 0)
             rsa_doit[R_RSA_2048] = 2;
-        else if (strcmp(*argv, "rsa4096") == 0)
+        else if (strcmp(*argv, "\x72\x73\x61\x34\x30\x39\x36") == 0)
             rsa_doit[R_RSA_4096] = 2;
         else
 # ifndef OPENSSL_NO_RC2
-        if (strcmp(*argv, "rc2-cbc") == 0)
+        if (strcmp(*argv, "\x72\x63\x32\x2d\x63\x62\x63") == 0)
             doit[D_CBC_RC2] = 1;
-        else if (strcmp(*argv, "rc2") == 0)
+        else if (strcmp(*argv, "\x72\x63\x32") == 0)
             doit[D_CBC_RC2] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_RC5
-        if (strcmp(*argv, "rc5-cbc") == 0)
+        if (strcmp(*argv, "\x72\x63\x35\x2d\x63\x62\x63") == 0)
             doit[D_CBC_RC5] = 1;
-        else if (strcmp(*argv, "rc5") == 0)
+        else if (strcmp(*argv, "\x72\x63\x35") == 0)
             doit[D_CBC_RC5] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_IDEA
-        if (strcmp(*argv, "idea-cbc") == 0)
+        if (strcmp(*argv, "\x69\x64\x65\x61\x2d\x63\x62\x63") == 0)
             doit[D_CBC_IDEA] = 1;
-        else if (strcmp(*argv, "idea") == 0)
+        else if (strcmp(*argv, "\x69\x64\x65\x61") == 0)
             doit[D_CBC_IDEA] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_SEED
-        if (strcmp(*argv, "seed-cbc") == 0)
+        if (strcmp(*argv, "\x73\x65\x65\x64\x2d\x63\x62\x63") == 0)
             doit[D_CBC_SEED] = 1;
-        else if (strcmp(*argv, "seed") == 0)
+        else if (strcmp(*argv, "\x73\x65\x65\x64") == 0)
             doit[D_CBC_SEED] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_BF
-        if (strcmp(*argv, "bf-cbc") == 0)
+        if (strcmp(*argv, "\x62\x66\x2d\x63\x62\x63") == 0)
             doit[D_CBC_BF] = 1;
-        else if (strcmp(*argv, "blowfish") == 0)
+        else if (strcmp(*argv, "\x62\x6c\x6f\x77\x66\x69\x73\x68") == 0)
             doit[D_CBC_BF] = 1;
-        else if (strcmp(*argv, "bf") == 0)
+        else if (strcmp(*argv, "\x62\x66") == 0)
             doit[D_CBC_BF] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_CAST
-        if (strcmp(*argv, "cast-cbc") == 0)
+        if (strcmp(*argv, "\x63\x61\x73\x74\x2d\x63\x62\x63") == 0)
             doit[D_CBC_CAST] = 1;
-        else if (strcmp(*argv, "cast") == 0)
+        else if (strcmp(*argv, "\x63\x61\x73\x74") == 0)
             doit[D_CBC_CAST] = 1;
-        else if (strcmp(*argv, "cast5") == 0)
+        else if (strcmp(*argv, "\x63\x61\x73\x74\x35") == 0)
             doit[D_CBC_CAST] = 1;
         else
 # endif
 # ifndef OPENSSL_NO_DES
-        if (strcmp(*argv, "des") == 0) {
+        if (strcmp(*argv, "\x64\x65\x73") == 0) {
             doit[D_CBC_DES] = 1;
             doit[D_EDE3_DES] = 1;
         } else
 # endif
 # ifndef OPENSSL_NO_AES
-        if (strcmp(*argv, "aes") == 0) {
+        if (strcmp(*argv, "\x61\x65\x73") == 0) {
             doit[D_CBC_128_AES] = 1;
             doit[D_CBC_192_AES] = 1;
             doit[D_CBC_256_AES] = 1;
-        } else if (strcmp(*argv, "ghash") == 0) {
+        } else if (strcmp(*argv, "\x67\x68\x61\x73\x68") == 0) {
             doit[D_GHASH] = 1;
         } else
 # endif
 # ifndef OPENSSL_NO_CAMELLIA
-        if (strcmp(*argv, "camellia") == 0) {
+        if (strcmp(*argv, "\x63\x61\x6d\x65\x6c\x6c\x69\x61") == 0) {
             doit[D_CBC_128_CML] = 1;
             doit[D_CBC_192_CML] = 1;
             doit[D_CBC_256_CML] = 1;
         } else
 # endif
 # ifndef OPENSSL_NO_RSA
-        if (strcmp(*argv, "rsa") == 0) {
+        if (strcmp(*argv, "\x72\x73\x61") == 0) {
             rsa_doit[R_RSA_512] = 1;
             rsa_doit[R_RSA_1024] = 1;
             rsa_doit[R_RSA_2048] = 1;
@@ -980,243 +980,243 @@ int MAIN(int argc, char **argv)
         } else
 # endif
 # ifndef OPENSSL_NO_DSA
-        if (strcmp(*argv, "dsa") == 0) {
+        if (strcmp(*argv, "\x64\x73\x61") == 0) {
             dsa_doit[R_DSA_512] = 1;
             dsa_doit[R_DSA_1024] = 1;
             dsa_doit[R_DSA_2048] = 1;
         } else
 # endif
 # ifndef OPENSSL_NO_ECDSA
-        if (strcmp(*argv, "ecdsap160") == 0)
+        if (strcmp(*argv, "\x65\x63\x64\x73\x61\x70\x31\x36\x30") == 0)
             ecdsa_doit[R_EC_P160] = 2;
-        else if (strcmp(*argv, "ecdsap192") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x70\x31\x39\x32") == 0)
             ecdsa_doit[R_EC_P192] = 2;
-        else if (strcmp(*argv, "ecdsap224") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x70\x32\x32\x34") == 0)
             ecdsa_doit[R_EC_P224] = 2;
-        else if (strcmp(*argv, "ecdsap256") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x70\x32\x35\x36") == 0)
             ecdsa_doit[R_EC_P256] = 2;
-        else if (strcmp(*argv, "ecdsap384") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x70\x33\x38\x34") == 0)
             ecdsa_doit[R_EC_P384] = 2;
-        else if (strcmp(*argv, "ecdsap521") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x70\x35\x32\x31") == 0)
             ecdsa_doit[R_EC_P521] = 2;
-        else if (strcmp(*argv, "ecdsak163") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x6b\x31\x36\x33") == 0)
             ecdsa_doit[R_EC_K163] = 2;
-        else if (strcmp(*argv, "ecdsak233") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x6b\x32\x33\x33") == 0)
             ecdsa_doit[R_EC_K233] = 2;
-        else if (strcmp(*argv, "ecdsak283") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x6b\x32\x38\x33") == 0)
             ecdsa_doit[R_EC_K283] = 2;
-        else if (strcmp(*argv, "ecdsak409") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x6b\x34\x30\x39") == 0)
             ecdsa_doit[R_EC_K409] = 2;
-        else if (strcmp(*argv, "ecdsak571") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x6b\x35\x37\x31") == 0)
             ecdsa_doit[R_EC_K571] = 2;
-        else if (strcmp(*argv, "ecdsab163") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x62\x31\x36\x33") == 0)
             ecdsa_doit[R_EC_B163] = 2;
-        else if (strcmp(*argv, "ecdsab233") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x62\x32\x33\x33") == 0)
             ecdsa_doit[R_EC_B233] = 2;
-        else if (strcmp(*argv, "ecdsab283") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x62\x32\x38\x33") == 0)
             ecdsa_doit[R_EC_B283] = 2;
-        else if (strcmp(*argv, "ecdsab409") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x62\x34\x30\x39") == 0)
             ecdsa_doit[R_EC_B409] = 2;
-        else if (strcmp(*argv, "ecdsab571") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61\x62\x35\x37\x31") == 0)
             ecdsa_doit[R_EC_B571] = 2;
-        else if (strcmp(*argv, "ecdsa") == 0) {
+        else if (strcmp(*argv, "\x65\x63\x64\x73\x61") == 0) {
             for (i = 0; i < EC_NUM; i++)
                 ecdsa_doit[i] = 1;
         } else
 # endif
 # ifndef OPENSSL_NO_ECDH
-        if (strcmp(*argv, "ecdhp160") == 0)
+        if (strcmp(*argv, "\x65\x63\x64\x68\x70\x31\x36\x30") == 0)
             ecdh_doit[R_EC_P160] = 2;
-        else if (strcmp(*argv, "ecdhp192") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x70\x31\x39\x32") == 0)
             ecdh_doit[R_EC_P192] = 2;
-        else if (strcmp(*argv, "ecdhp224") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x70\x32\x32\x34") == 0)
             ecdh_doit[R_EC_P224] = 2;
-        else if (strcmp(*argv, "ecdhp256") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x70\x32\x35\x36") == 0)
             ecdh_doit[R_EC_P256] = 2;
-        else if (strcmp(*argv, "ecdhp384") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x70\x33\x38\x34") == 0)
             ecdh_doit[R_EC_P384] = 2;
-        else if (strcmp(*argv, "ecdhp521") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x70\x35\x32\x31") == 0)
             ecdh_doit[R_EC_P521] = 2;
-        else if (strcmp(*argv, "ecdhk163") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x6b\x31\x36\x33") == 0)
             ecdh_doit[R_EC_K163] = 2;
-        else if (strcmp(*argv, "ecdhk233") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x6b\x32\x33\x33") == 0)
             ecdh_doit[R_EC_K233] = 2;
-        else if (strcmp(*argv, "ecdhk283") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x6b\x32\x38\x33") == 0)
             ecdh_doit[R_EC_K283] = 2;
-        else if (strcmp(*argv, "ecdhk409") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x6b\x34\x30\x39") == 0)
             ecdh_doit[R_EC_K409] = 2;
-        else if (strcmp(*argv, "ecdhk571") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x6b\x35\x37\x31") == 0)
             ecdh_doit[R_EC_K571] = 2;
-        else if (strcmp(*argv, "ecdhb163") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x62\x31\x36\x33") == 0)
             ecdh_doit[R_EC_B163] = 2;
-        else if (strcmp(*argv, "ecdhb233") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x62\x32\x33\x33") == 0)
             ecdh_doit[R_EC_B233] = 2;
-        else if (strcmp(*argv, "ecdhb283") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x62\x32\x38\x33") == 0)
             ecdh_doit[R_EC_B283] = 2;
-        else if (strcmp(*argv, "ecdhb409") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x62\x34\x30\x39") == 0)
             ecdh_doit[R_EC_B409] = 2;
-        else if (strcmp(*argv, "ecdhb571") == 0)
+        else if (strcmp(*argv, "\x65\x63\x64\x68\x62\x35\x37\x31") == 0)
             ecdh_doit[R_EC_B571] = 2;
-        else if (strcmp(*argv, "ecdh") == 0) {
+        else if (strcmp(*argv, "\x65\x63\x64\x68") == 0) {
             for (i = 0; i < EC_NUM; i++)
                 ecdh_doit[i] = 1;
         } else
 # endif
         {
-            BIO_printf(bio_err, "Error: bad option or value\n");
-            BIO_printf(bio_err, "\n");
-            BIO_printf(bio_err, "Available values:\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x3a\x20\x62\x61\x64\x20\x6f\x70\x74\x69\x6f\x6e\x20\x6f\x72\x20\x76\x61\x6c\x75\x65\xa");
+            BIO_printf(bio_err, "\xa");
+            BIO_printf(bio_err, "\x41\x76\x61\x69\x6c\x61\x62\x6c\x65\x20\x76\x61\x6c\x75\x65\x73\x3a\xa");
 # ifndef OPENSSL_NO_MD2
-            BIO_printf(bio_err, "md2      ");
+            BIO_printf(bio_err, "\x6d\x64\x32\x20\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_MDC2
-            BIO_printf(bio_err, "mdc2     ");
+            BIO_printf(bio_err, "\x6d\x64\x63\x32\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_MD4
-            BIO_printf(bio_err, "md4      ");
+            BIO_printf(bio_err, "\x6d\x64\x34\x20\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_MD5
-            BIO_printf(bio_err, "md5      ");
+            BIO_printf(bio_err, "\x6d\x64\x35\x20\x20\x20\x20\x20\x20");
 #  ifndef OPENSSL_NO_HMAC
-            BIO_printf(bio_err, "hmac     ");
+            BIO_printf(bio_err, "\x68\x6d\x61\x63\x20\x20\x20\x20\x20");
 #  endif
 # endif
 # ifndef OPENSSL_NO_SHA1
-            BIO_printf(bio_err, "sha1     ");
+            BIO_printf(bio_err, "\x73\x68\x61\x31\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_SHA256
-            BIO_printf(bio_err, "sha256   ");
+            BIO_printf(bio_err, "\x73\x68\x61\x32\x35\x36\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_SHA512
-            BIO_printf(bio_err, "sha512   ");
+            BIO_printf(bio_err, "\x73\x68\x61\x35\x31\x32\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_WHIRLPOOL
-            BIO_printf(bio_err, "whirlpool");
+            BIO_printf(bio_err, "\x77\x68\x69\x72\x6c\x70\x6f\x6f\x6c");
 # endif
 # ifndef OPENSSL_NO_RIPEMD160
-            BIO_printf(bio_err, "rmd160");
+            BIO_printf(bio_err, "\x72\x6d\x64\x31\x36\x30");
 # endif
 # if !defined(OPENSSL_NO_MD2) || !defined(OPENSSL_NO_MDC2) || \
     !defined(OPENSSL_NO_MD4) || !defined(OPENSSL_NO_MD5) || \
     !defined(OPENSSL_NO_SHA1) || !defined(OPENSSL_NO_RIPEMD160) || \
     !defined(OPENSSL_NO_WHIRLPOOL)
-            BIO_printf(bio_err, "\n");
+            BIO_printf(bio_err, "\xa");
 # endif
 
 # ifndef OPENSSL_NO_IDEA
-            BIO_printf(bio_err, "idea-cbc ");
+            BIO_printf(bio_err, "\x69\x64\x65\x61\x2d\x63\x62\x63\x20");
 # endif
 # ifndef OPENSSL_NO_SEED
-            BIO_printf(bio_err, "seed-cbc ");
+            BIO_printf(bio_err, "\x73\x65\x65\x64\x2d\x63\x62\x63\x20");
 # endif
 # ifndef OPENSSL_NO_RC2
-            BIO_printf(bio_err, "rc2-cbc  ");
+            BIO_printf(bio_err, "\x72\x63\x32\x2d\x63\x62\x63\x20\x20");
 # endif
 # ifndef OPENSSL_NO_RC5
-            BIO_printf(bio_err, "rc5-cbc  ");
+            BIO_printf(bio_err, "\x72\x63\x35\x2d\x63\x62\x63\x20\x20");
 # endif
 # ifndef OPENSSL_NO_BF
-            BIO_printf(bio_err, "bf-cbc");
+            BIO_printf(bio_err, "\x62\x66\x2d\x63\x62\x63");
 # endif
 # if !defined(OPENSSL_NO_IDEA) || !defined(OPENSSL_NO_SEED) || !defined(OPENSSL_NO_RC2) || \
     !defined(OPENSSL_NO_BF) || !defined(OPENSSL_NO_RC5)
-            BIO_printf(bio_err, "\n");
+            BIO_printf(bio_err, "\xa");
 # endif
 # ifndef OPENSSL_NO_DES
-            BIO_printf(bio_err, "des-cbc  des-ede3 ");
+            BIO_printf(bio_err, "\x64\x65\x73\x2d\x63\x62\x63\x20\x20\x64\x65\x73\x2d\x65\x64\x65\x33\x20");
 # endif
 # ifndef OPENSSL_NO_AES
-            BIO_printf(bio_err, "aes-128-cbc aes-192-cbc aes-256-cbc ");
-            BIO_printf(bio_err, "aes-128-ige aes-192-ige aes-256-ige ");
+            BIO_printf(bio_err, "\x61\x65\x73\x2d\x31\x32\x38\x2d\x63\x62\x63\x20\x61\x65\x73\x2d\x31\x39\x32\x2d\x63\x62\x63\x20\x61\x65\x73\x2d\x32\x35\x36\x2d\x63\x62\x63\x20");
+            BIO_printf(bio_err, "\x61\x65\x73\x2d\x31\x32\x38\x2d\x69\x67\x65\x20\x61\x65\x73\x2d\x31\x39\x32\x2d\x69\x67\x65\x20\x61\x65\x73\x2d\x32\x35\x36\x2d\x69\x67\x65\x20");
 # endif
 # ifndef OPENSSL_NO_CAMELLIA
-            BIO_printf(bio_err, "\n");
+            BIO_printf(bio_err, "\xa");
             BIO_printf(bio_err,
-                       "camellia-128-cbc camellia-192-cbc camellia-256-cbc ");
+                       "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x32\x38\x2d\x63\x62\x63\x20\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x31\x39\x32\x2d\x63\x62\x63\x20\x63\x61\x6d\x65\x6c\x6c\x69\x61\x2d\x32\x35\x36\x2d\x63\x62\x63\x20");
 # endif
 # ifndef OPENSSL_NO_RC4
-            BIO_printf(bio_err, "rc4");
+            BIO_printf(bio_err, "\x72\x63\x34");
 # endif
-            BIO_printf(bio_err, "\n");
+            BIO_printf(bio_err, "\xa");
 
 # ifndef OPENSSL_NO_RSA
-            BIO_printf(bio_err, "rsa512   rsa1024  rsa2048  rsa4096\n");
+            BIO_printf(bio_err, "\x72\x73\x61\x35\x31\x32\x20\x20\x20\x72\x73\x61\x31\x30\x32\x34\x20\x20\x72\x73\x61\x32\x30\x34\x38\x20\x20\x72\x73\x61\x34\x30\x39\x36\xa");
 # endif
 
 # ifndef OPENSSL_NO_DSA
-            BIO_printf(bio_err, "dsa512   dsa1024  dsa2048\n");
+            BIO_printf(bio_err, "\x64\x73\x61\x35\x31\x32\x20\x20\x20\x64\x73\x61\x31\x30\x32\x34\x20\x20\x64\x73\x61\x32\x30\x34\x38\xa");
 # endif
 # ifndef OPENSSL_NO_ECDSA
-            BIO_printf(bio_err, "ecdsap160 ecdsap192 ecdsap224 "
-                       "ecdsap256 ecdsap384 ecdsap521\n");
+            BIO_printf(bio_err, "\x65\x63\x64\x73\x61\x70\x31\x36\x30\x20\x65\x63\x64\x73\x61\x70\x31\x39\x32\x20\x65\x63\x64\x73\x61\x70\x32\x32\x34\x20"
+                       "\x65\x63\x64\x73\x61\x70\x32\x35\x36\x20\x65\x63\x64\x73\x61\x70\x33\x38\x34\x20\x65\x63\x64\x73\x61\x70\x35\x32\x31\xa");
             BIO_printf(bio_err,
-                       "ecdsak163 ecdsak233 ecdsak283 ecdsak409 ecdsak571\n");
+                       "\x65\x63\x64\x73\x61\x6b\x31\x36\x33\x20\x65\x63\x64\x73\x61\x6b\x32\x33\x33\x20\x65\x63\x64\x73\x61\x6b\x32\x38\x33\x20\x65\x63\x64\x73\x61\x6b\x34\x30\x39\x20\x65\x63\x64\x73\x61\x6b\x35\x37\x31\xa");
             BIO_printf(bio_err,
-                       "ecdsab163 ecdsab233 ecdsab283 ecdsab409 ecdsab571\n");
-            BIO_printf(bio_err, "ecdsa\n");
+                       "\x65\x63\x64\x73\x61\x62\x31\x36\x33\x20\x65\x63\x64\x73\x61\x62\x32\x33\x33\x20\x65\x63\x64\x73\x61\x62\x32\x38\x33\x20\x65\x63\x64\x73\x61\x62\x34\x30\x39\x20\x65\x63\x64\x73\x61\x62\x35\x37\x31\xa");
+            BIO_printf(bio_err, "\x65\x63\x64\x73\x61\xa");
 # endif
 # ifndef OPENSSL_NO_ECDH
-            BIO_printf(bio_err, "ecdhp160  ecdhp192  ecdhp224 "
-                       "ecdhp256  ecdhp384  ecdhp521\n");
+            BIO_printf(bio_err, "\x65\x63\x64\x68\x70\x31\x36\x30\x20\x20\x65\x63\x64\x68\x70\x31\x39\x32\x20\x20\x65\x63\x64\x68\x70\x32\x32\x34\x20"
+                       "\x65\x63\x64\x68\x70\x32\x35\x36\x20\x20\x65\x63\x64\x68\x70\x33\x38\x34\x20\x20\x65\x63\x64\x68\x70\x35\x32\x31\xa");
             BIO_printf(bio_err,
-                       "ecdhk163  ecdhk233  ecdhk283  ecdhk409  ecdhk571\n");
+                       "\x65\x63\x64\x68\x6b\x31\x36\x33\x20\x20\x65\x63\x64\x68\x6b\x32\x33\x33\x20\x20\x65\x63\x64\x68\x6b\x32\x38\x33\x20\x20\x65\x63\x64\x68\x6b\x34\x30\x39\x20\x20\x65\x63\x64\x68\x6b\x35\x37\x31\xa");
             BIO_printf(bio_err,
-                       "ecdhb163  ecdhb233  ecdhb283  ecdhb409  ecdhb571\n");
-            BIO_printf(bio_err, "ecdh\n");
+                       "\x65\x63\x64\x68\x62\x31\x36\x33\x20\x20\x65\x63\x64\x68\x62\x32\x33\x33\x20\x20\x65\x63\x64\x68\x62\x32\x38\x33\x20\x20\x65\x63\x64\x68\x62\x34\x30\x39\x20\x20\x65\x63\x64\x68\x62\x35\x37\x31\xa");
+            BIO_printf(bio_err, "\x65\x63\x64\x68\xa");
 # endif
 
 # ifndef OPENSSL_NO_IDEA
-            BIO_printf(bio_err, "idea     ");
+            BIO_printf(bio_err, "\x69\x64\x65\x61\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_SEED
-            BIO_printf(bio_err, "seed     ");
+            BIO_printf(bio_err, "\x73\x65\x65\x64\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_RC2
-            BIO_printf(bio_err, "rc2      ");
+            BIO_printf(bio_err, "\x72\x63\x32\x20\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_DES
-            BIO_printf(bio_err, "des      ");
+            BIO_printf(bio_err, "\x64\x65\x73\x20\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_AES
-            BIO_printf(bio_err, "aes      ");
+            BIO_printf(bio_err, "\x61\x65\x73\x20\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_CAMELLIA
-            BIO_printf(bio_err, "camellia ");
+            BIO_printf(bio_err, "\x63\x61\x6d\x65\x6c\x6c\x69\x61\x20");
 # endif
 # ifndef OPENSSL_NO_RSA
-            BIO_printf(bio_err, "rsa      ");
+            BIO_printf(bio_err, "\x72\x73\x61\x20\x20\x20\x20\x20\x20");
 # endif
 # ifndef OPENSSL_NO_BF
-            BIO_printf(bio_err, "blowfish");
+            BIO_printf(bio_err, "\x62\x6c\x6f\x77\x66\x69\x73\x68");
 # endif
 # if !defined(OPENSSL_NO_IDEA) || !defined(OPENSSL_NO_SEED) || \
     !defined(OPENSSL_NO_RC2) || !defined(OPENSSL_NO_DES) || \
     !defined(OPENSSL_NO_RSA) || !defined(OPENSSL_NO_BF) || \
     !defined(OPENSSL_NO_AES) || !defined(OPENSSL_NO_CAMELLIA)
-            BIO_printf(bio_err, "\n");
+            BIO_printf(bio_err, "\xa");
 # endif
 
-            BIO_printf(bio_err, "\n");
-            BIO_printf(bio_err, "Available options:\n");
+            BIO_printf(bio_err, "\xa");
+            BIO_printf(bio_err, "\x41\x76\x61\x69\x6c\x61\x62\x6c\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x3a\xa");
 # if defined(TIMES) || defined(USE_TOD)
-            BIO_printf(bio_err, "-elapsed        "
-                       "measure time in real time instead of CPU user time.\n");
+            BIO_printf(bio_err, "\x2d\x65\x6c\x61\x70\x73\x65\x64\x20\x20\x20\x20\x20\x20\x20\x20"
+                       "\x6d\x65\x61\x73\x75\x72\x65\x20\x74\x69\x6d\x65\x20\x69\x6e\x20\x72\x65\x61\x6c\x20\x74\x69\x6d\x65\x20\x69\x6e\x73\x74\x65\x61\x64\x20\x6f\x66\x20\x43\x50\x55\x20\x75\x73\x65\x72\x20\x74\x69\x6d\x65\x2e\xa");
 # endif
 # ifndef OPENSSL_NO_ENGINE
             BIO_printf(bio_err,
-                       "-engine e       "
-                       "use engine e, possibly a hardware device.\n");
+                       "\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x20"
+                       "\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 # endif
-            BIO_printf(bio_err, "-evp e          " "use EVP e.\n");
+            BIO_printf(bio_err, "\x2d\x65\x76\x70\x20\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20" "\x75\x73\x65\x20\x45\x56\x50\x20\x65\x2e\xa");
             BIO_printf(bio_err,
-                       "-decrypt        "
-                       "time decryption instead of encryption (only EVP).\n");
+                       "\x2d\x64\x65\x63\x72\x79\x70\x74\x20\x20\x20\x20\x20\x20\x20\x20"
+                       "\x74\x69\x6d\x65\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x69\x6e\x73\x74\x65\x61\x64\x20\x6f\x66\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x28\x6f\x6e\x6c\x79\x20\x45\x56\x50\x29\x2e\xa");
             BIO_printf(bio_err,
-                       "-mr             "
-                       "produce machine readable output.\n");
+                       "\x2d\x6d\x72\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"
+                       "\x70\x72\x6f\x64\x75\x63\x65\x20\x6d\x61\x63\x68\x69\x6e\x65\x20\x72\x65\x61\x64\x61\x62\x6c\x65\x20\x6f\x75\x74\x70\x75\x74\x2e\xa");
 # ifndef NO_FORK
             BIO_printf(bio_err,
-                       "-multi n        " "run n benchmarks in parallel.\n");
+                       "\x2d\x6d\x75\x6c\x74\x69\x20\x6e\x20\x20\x20\x20\x20\x20\x20\x20" "\x72\x75\x6e\x20\x6e\x20\x62\x65\x6e\x63\x68\x6d\x61\x72\x6b\x73\x20\x69\x6e\x20\x70\x61\x72\x61\x6c\x6c\x65\x6c\x2e\xa");
 # endif
             goto end;
         }
@@ -1254,8 +1254,8 @@ int MAIN(int argc, char **argv)
 
     if (usertime == 0 && !mr)
         BIO_printf(bio_err,
-                   "You have chosen to measure elapsed time "
-                   "instead of user CPU time.\n");
+                   "\x59\x6f\x75\x20\x68\x61\x76\x65\x20\x63\x68\x6f\x73\x65\x6e\x20\x74\x6f\x20\x6d\x65\x61\x73\x75\x72\x65\x20\x65\x6c\x61\x70\x73\x65\x64\x20\x74\x69\x6d\x65\x20"
+                   "\x69\x6e\x73\x74\x65\x61\x64\x20\x6f\x66\x20\x75\x73\x65\x72\x20\x43\x50\x55\x20\x74\x69\x6d\x65\x2e\xa");
 
 # ifndef OPENSSL_NO_RSA
     for (i = 0; i < RSA_NUM; i++) {
@@ -1264,18 +1264,18 @@ int MAIN(int argc, char **argv)
         p = rsa_data[i];
         rsa_key[i] = d2i_RSAPrivateKey(NULL, &p, rsa_data_length[i]);
         if (rsa_key[i] == NULL) {
-            BIO_printf(bio_err, "internal error loading RSA key number %d\n",
+            BIO_printf(bio_err, "\x69\x6e\x74\x65\x72\x6e\x61\x6c\x20\x65\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x52\x53\x41\x20\x6b\x65\x79\x20\x6e\x75\x6d\x62\x65\x72\x20\x25\x64\xa",
                        i);
             goto end;
         }
 #  if 0
         else {
             BIO_printf(bio_err,
-                       mr ? "+RK:%d:"
-                       : "Loaded RSA key, %d bit modulus and e= 0x",
+                       mr ? "\x2b\x52\x4b\x3a\x25\x64\x3a"
+                       : "\x4c\x6f\x61\x64\x65\x64\x20\x52\x53\x41\x20\x6b\x65\x79\x2c\x20\x25\x64\x20\x62\x69\x74\x20\x6d\x6f\x64\x75\x6c\x75\x73\x20\x61\x6e\x64\x20\x65\x3d\x20\x30\x78",
                        BN_num_bits(rsa_key[i]->n));
             BN_print(bio_err, rsa_key[i]->e);
-            BIO_printf(bio_err, "\n");
+            BIO_printf(bio_err, "\xa");
         }
 #  endif
     }
@@ -1328,7 +1328,7 @@ int MAIN(int argc, char **argv)
 # endif
 # ifndef SIGALRM
 #  ifndef OPENSSL_NO_DES
-    BIO_printf(bio_err, "First we calculate the approximate speed ...\n");
+    BIO_printf(bio_err, "\x46\x69\x72\x73\x74\x20\x77\x65\x20\x63\x61\x6c\x63\x75\x6c\x61\x74\x65\x20\x74\x68\x65\x20\x61\x70\x70\x72\x6f\x78\x69\x6d\x61\x74\x65\x20\x73\x70\x65\x65\x64\x20\x2e\x2e\x2e\xa");
     count = 10;
     do {
         long it;
@@ -1534,7 +1534,7 @@ int MAIN(int argc, char **argv)
 #   define COUNT(d) (d)
 #  else
 /* not worth fixing */
-#   error "You cannot disable DES on systems without SIGALRM."
+#   error "\x59\x6f\x75\x20\x63\x61\x6e\x6e\x6f\x74\x20\x64\x69\x73\x61\x62\x6c\x65\x20\x44\x45\x53\x20\x6f\x6e\x20\x73\x79\x73\x74\x65\x6d\x73\x20\x77\x69\x74\x68\x6f\x75\x74\x20\x53\x49\x47\x41\x4c\x52\x4d\x2e"
 #  endif                        /* OPENSSL_NO_DES */
 # else
 #  define COND(c) (run && count<0x7fffffff)
@@ -1592,7 +1592,7 @@ int MAIN(int argc, char **argv)
             Time_F(START);
             for (count = 0, run = 1; COND(c[D_MD5][j]); count++)
                 EVP_Digest(&(buf[0]), (unsigned long)lengths[j], &(md5[0]),
-                           NULL, EVP_get_digestbyname("md5"), NULL);
+                           NULL, EVP_get_digestbyname("\x6d\x64\x35"), NULL);
             d = Time_F(STOP);
             print_result(D_MD5, j, count, d);
         }
@@ -1604,7 +1604,7 @@ int MAIN(int argc, char **argv)
         HMAC_CTX hctx;
 
         HMAC_CTX_init(&hctx);
-        HMAC_Init_ex(&hctx, (unsigned char *)"This is a key...",
+        HMAC_Init_ex(&hctx, (unsigned char *)"\x54\x68\x69\x73\x20\x69\x73\x20\x61\x20\x6b\x65\x79\x2e\x2e\x2e",
                      16, EVP_md5(), NULL);
 
         for (j = 0; j < SIZE_NUM; j++) {
@@ -1807,7 +1807,7 @@ int MAIN(int argc, char **argv)
     if (doit[D_GHASH]) {
         GCM128_CONTEXT *ctx =
             CRYPTO_gcm128_new(&aes_ks1, (block128_f) AES_encrypt);
-        CRYPTO_gcm128_setiv(ctx, (unsigned char *)"0123456789ab", 12);
+        CRYPTO_gcm128_setiv(ctx, (unsigned char *)"\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x61\x62", 12);
 
         for (j = 0; j < SIZE_NUM; j++) {
             print_message(names[D_GHASH], c[D_GHASH][j], lengths[j]);
@@ -1951,7 +1951,7 @@ int MAIN(int argc, char **argv)
             if (!
                 (EVP_CIPHER_flags(evp_cipher) &
                  EVP_CIPH_FLAG_TLS1_1_MULTIBLOCK)) {
-                fprintf(stderr, "%s is not multi-block capable\n",
+                fprintf(stderr, "\x25\x73\x20\x69\x73\x20\x6e\x6f\x74\x20\x6d\x75\x6c\x74\x69\x2d\x62\x6c\x6f\x63\x6b\x20\x63\x61\x70\x61\x62\x6c\x65\xa",
                         OBJ_nid2ln(evp_cipher->nid));
                 goto end;
             }
@@ -2021,11 +2021,11 @@ int MAIN(int argc, char **argv)
         ret = RSA_sign(NID_md5_sha1, buf, 36, buf2, &rsa_num, rsa_key[j]);
         if (ret == 0) {
             BIO_printf(bio_err,
-                       "RSA sign failure.  No RSA sign will be done.\n");
+                       "\x52\x53\x41\x20\x73\x69\x67\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\x20\x20\x4e\x6f\x20\x52\x53\x41\x20\x73\x69\x67\x6e\x20\x77\x69\x6c\x6c\x20\x62\x65\x20\x64\x6f\x6e\x65\x2e\xa");
             ERR_print_errors(bio_err);
             rsa_count = 1;
         } else {
-            pkey_print_message("private", "rsa",
+            pkey_print_message("\x70\x72\x69\x76\x61\x74\x65", "\x72\x73\x61",
                                rsa_c[j][0], rsa_bits[j], RSA_SECONDS);
             /* RSA_blinding_on(rsa_key[j],NULL); */
             Time_F(START);
@@ -2033,7 +2033,7 @@ int MAIN(int argc, char **argv)
                 ret = RSA_sign(NID_md5_sha1, buf, 36, buf2,
                                &rsa_num, rsa_key[j]);
                 if (ret == 0) {
-                    BIO_printf(bio_err, "RSA sign failure\n");
+                    BIO_printf(bio_err, "\x52\x53\x41\x20\x73\x69\x67\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
                     ERR_print_errors(bio_err);
                     count = 1;
                     break;
@@ -2041,8 +2041,8 @@ int MAIN(int argc, char **argv)
             }
             d = Time_F(STOP);
             BIO_printf(bio_err,
-                       mr ? "+R1:%ld:%d:%.2f\n"
-                       : "%ld %d bit private RSA's in %.2fs\n",
+                       mr ? "\x2b\x52\x31\x3a\x25\x6c\x64\x3a\x25\x64\x3a\x25\x2e\x32\x66\xa"
+                       : "\x25\x6c\x64\x20\x25\x64\x20\x62\x69\x74\x20\x70\x72\x69\x76\x61\x74\x65\x20\x52\x53\x41\x27\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\xa",
                        count, rsa_bits[j], d);
             rsa_results[j][0] = d / (double)count;
             rsa_count = count;
@@ -2052,18 +2052,18 @@ int MAIN(int argc, char **argv)
         ret = RSA_verify(NID_md5_sha1, buf, 36, buf2, rsa_num, rsa_key[j]);
         if (ret <= 0) {
             BIO_printf(bio_err,
-                       "RSA verify failure.  No RSA verify will be done.\n");
+                       "\x52\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\x20\x20\x4e\x6f\x20\x52\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x77\x69\x6c\x6c\x20\x62\x65\x20\x64\x6f\x6e\x65\x2e\xa");
             ERR_print_errors(bio_err);
             rsa_doit[j] = 0;
         } else {
-            pkey_print_message("public", "rsa",
+            pkey_print_message("\x70\x75\x62\x6c\x69\x63", "\x72\x73\x61",
                                rsa_c[j][1], rsa_bits[j], RSA_SECONDS);
             Time_F(START);
             for (count = 0, run = 1; COND(rsa_c[j][1]); count++) {
                 ret = RSA_verify(NID_md5_sha1, buf, 36, buf2,
                                  rsa_num, rsa_key[j]);
                 if (ret <= 0) {
-                    BIO_printf(bio_err, "RSA verify failure\n");
+                    BIO_printf(bio_err, "\x52\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
                     ERR_print_errors(bio_err);
                     count = 1;
                     break;
@@ -2071,8 +2071,8 @@ int MAIN(int argc, char **argv)
             }
             d = Time_F(STOP);
             BIO_printf(bio_err,
-                       mr ? "+R2:%ld:%d:%.2f\n"
-                       : "%ld %d bit public RSA's in %.2fs\n",
+                       mr ? "\x2b\x52\x32\x3a\x25\x6c\x64\x3a\x25\x64\x3a\x25\x2e\x32\x66\xa"
+                       : "\x25\x6c\x64\x20\x25\x64\x20\x62\x69\x74\x20\x70\x75\x62\x6c\x69\x63\x20\x52\x53\x41\x27\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\xa",
                        count, rsa_bits[j], d);
             rsa_results[j][1] = d / (double)count;
         }
@@ -2104,17 +2104,17 @@ int MAIN(int argc, char **argv)
         ret = DSA_sign(EVP_PKEY_DSA, buf, 20, buf2, &kk, dsa_key[j]);
         if (ret == 0) {
             BIO_printf(bio_err,
-                       "DSA sign failure.  No DSA sign will be done.\n");
+                       "\x44\x53\x41\x20\x73\x69\x67\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\x20\x20\x4e\x6f\x20\x44\x53\x41\x20\x73\x69\x67\x6e\x20\x77\x69\x6c\x6c\x20\x62\x65\x20\x64\x6f\x6e\x65\x2e\xa");
             ERR_print_errors(bio_err);
             rsa_count = 1;
         } else {
-            pkey_print_message("sign", "dsa",
+            pkey_print_message("\x73\x69\x67\x6e", "\x64\x73\x61",
                                dsa_c[j][0], dsa_bits[j], DSA_SECONDS);
             Time_F(START);
             for (count = 0, run = 1; COND(dsa_c[j][0]); count++) {
                 ret = DSA_sign(EVP_PKEY_DSA, buf, 20, buf2, &kk, dsa_key[j]);
                 if (ret == 0) {
-                    BIO_printf(bio_err, "DSA sign failure\n");
+                    BIO_printf(bio_err, "\x44\x53\x41\x20\x73\x69\x67\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
                     ERR_print_errors(bio_err);
                     count = 1;
                     break;
@@ -2122,8 +2122,8 @@ int MAIN(int argc, char **argv)
             }
             d = Time_F(STOP);
             BIO_printf(bio_err,
-                       mr ? "+R3:%ld:%d:%.2f\n"
-                       : "%ld %d bit DSA signs in %.2fs\n",
+                       mr ? "\x2b\x52\x33\x3a\x25\x6c\x64\x3a\x25\x64\x3a\x25\x2e\x32\x66\xa"
+                       : "\x25\x6c\x64\x20\x25\x64\x20\x62\x69\x74\x20\x44\x53\x41\x20\x73\x69\x67\x6e\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\xa",
                        count, dsa_bits[j], d);
             dsa_results[j][0] = d / (double)count;
             rsa_count = count;
@@ -2132,17 +2132,17 @@ int MAIN(int argc, char **argv)
         ret = DSA_verify(EVP_PKEY_DSA, buf, 20, buf2, kk, dsa_key[j]);
         if (ret <= 0) {
             BIO_printf(bio_err,
-                       "DSA verify failure.  No DSA verify will be done.\n");
+                       "\x44\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\x20\x20\x4e\x6f\x20\x44\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x77\x69\x6c\x6c\x20\x62\x65\x20\x64\x6f\x6e\x65\x2e\xa");
             ERR_print_errors(bio_err);
             dsa_doit[j] = 0;
         } else {
-            pkey_print_message("verify", "dsa",
+            pkey_print_message("\x76\x65\x72\x69\x66\x79", "\x64\x73\x61",
                                dsa_c[j][1], dsa_bits[j], DSA_SECONDS);
             Time_F(START);
             for (count = 0, run = 1; COND(dsa_c[j][1]); count++) {
                 ret = DSA_verify(EVP_PKEY_DSA, buf, 20, buf2, kk, dsa_key[j]);
                 if (ret <= 0) {
-                    BIO_printf(bio_err, "DSA verify failure\n");
+                    BIO_printf(bio_err, "\x44\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
                     ERR_print_errors(bio_err);
                     count = 1;
                     break;
@@ -2150,8 +2150,8 @@ int MAIN(int argc, char **argv)
             }
             d = Time_F(STOP);
             BIO_printf(bio_err,
-                       mr ? "+R4:%ld:%d:%.2f\n"
-                       : "%ld %d bit DSA verify in %.2fs\n",
+                       mr ? "\x2b\x52\x34\x3a\x25\x6c\x64\x3a\x25\x64\x3a\x25\x2e\x32\x66\xa"
+                       : "\x25\x6c\x64\x20\x25\x64\x20\x62\x69\x74\x20\x44\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\xa",
                        count, dsa_bits[j], d);
             dsa_results[j][1] = d / (double)count;
         }
@@ -2178,7 +2178,7 @@ int MAIN(int argc, char **argv)
             continue;           /* Ignore Curve */
         ecdsa[j] = EC_KEY_new_by_curve_name(test_curves[j]);
         if (ecdsa[j] == NULL) {
-            BIO_printf(bio_err, "ECDSA failure.\n");
+            BIO_printf(bio_err, "\x45\x43\x44\x53\x41\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\xa");
             ERR_print_errors(bio_err);
             rsa_count = 1;
         } else {
@@ -2190,11 +2190,11 @@ int MAIN(int argc, char **argv)
             ret = ECDSA_sign(0, buf, 20, ecdsasig, &ecdsasiglen, ecdsa[j]);
             if (ret == 0) {
                 BIO_printf(bio_err,
-                           "ECDSA sign failure.  No ECDSA sign will be done.\n");
+                           "\x45\x43\x44\x53\x41\x20\x73\x69\x67\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\x20\x20\x4e\x6f\x20\x45\x43\x44\x53\x41\x20\x73\x69\x67\x6e\x20\x77\x69\x6c\x6c\x20\x62\x65\x20\x64\x6f\x6e\x65\x2e\xa");
                 ERR_print_errors(bio_err);
                 rsa_count = 1;
             } else {
-                pkey_print_message("sign", "ecdsa",
+                pkey_print_message("\x73\x69\x67\x6e", "\x65\x63\x64\x73\x61",
                                    ecdsa_c[j][0],
                                    test_curves_bits[j], ECDSA_SECONDS);
 
@@ -2203,7 +2203,7 @@ int MAIN(int argc, char **argv)
                     ret = ECDSA_sign(0, buf, 20,
                                      ecdsasig, &ecdsasiglen, ecdsa[j]);
                     if (ret == 0) {
-                        BIO_printf(bio_err, "ECDSA sign failure\n");
+                        BIO_printf(bio_err, "\x45\x43\x44\x53\x41\x20\x73\x69\x67\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
                         ERR_print_errors(bio_err);
                         count = 1;
                         break;
@@ -2212,8 +2212,8 @@ int MAIN(int argc, char **argv)
                 d = Time_F(STOP);
 
                 BIO_printf(bio_err,
-                           mr ? "+R5:%ld:%d:%.2f\n" :
-                           "%ld %d bit ECDSA signs in %.2fs \n",
+                           mr ? "\x2b\x52\x35\x3a\x25\x6c\x64\x3a\x25\x64\x3a\x25\x2e\x32\x66\xa" :
+                           "\x25\x6c\x64\x20\x25\x64\x20\x62\x69\x74\x20\x45\x43\x44\x53\x41\x20\x73\x69\x67\x6e\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\x20\xa",
                            count, test_curves_bits[j], d);
                 ecdsa_results[j][0] = d / (double)count;
                 rsa_count = count;
@@ -2223,11 +2223,11 @@ int MAIN(int argc, char **argv)
             ret = ECDSA_verify(0, buf, 20, ecdsasig, ecdsasiglen, ecdsa[j]);
             if (ret != 1) {
                 BIO_printf(bio_err,
-                           "ECDSA verify failure.  No ECDSA verify will be done.\n");
+                           "\x45\x43\x44\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\x20\x20\x4e\x6f\x20\x45\x43\x44\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x77\x69\x6c\x6c\x20\x62\x65\x20\x64\x6f\x6e\x65\x2e\xa");
                 ERR_print_errors(bio_err);
                 ecdsa_doit[j] = 0;
             } else {
-                pkey_print_message("verify", "ecdsa",
+                pkey_print_message("\x76\x65\x72\x69\x66\x79", "\x65\x63\x64\x73\x61",
                                    ecdsa_c[j][1],
                                    test_curves_bits[j], ECDSA_SECONDS);
                 Time_F(START);
@@ -2236,7 +2236,7 @@ int MAIN(int argc, char **argv)
                         ECDSA_verify(0, buf, 20, ecdsasig, ecdsasiglen,
                                      ecdsa[j]);
                     if (ret != 1) {
-                        BIO_printf(bio_err, "ECDSA verify failure\n");
+                        BIO_printf(bio_err, "\x45\x43\x44\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
                         ERR_print_errors(bio_err);
                         count = 1;
                         break;
@@ -2244,8 +2244,8 @@ int MAIN(int argc, char **argv)
                 }
                 d = Time_F(STOP);
                 BIO_printf(bio_err,
-                           mr ? "+R6:%ld:%d:%.2f\n"
-                           : "%ld %d bit ECDSA verify in %.2fs\n",
+                           mr ? "\x2b\x52\x36\x3a\x25\x6c\x64\x3a\x25\x64\x3a\x25\x2e\x32\x66\xa"
+                           : "\x25\x6c\x64\x20\x25\x64\x20\x62\x69\x74\x20\x45\x43\x44\x53\x41\x20\x76\x65\x72\x69\x66\x79\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\xa",
                            count, test_curves_bits[j], d);
                 ecdsa_results[j][1] = d / (double)count;
             }
@@ -2272,14 +2272,14 @@ int MAIN(int argc, char **argv)
         ecdh_a[j] = EC_KEY_new_by_curve_name(test_curves[j]);
         ecdh_b[j] = EC_KEY_new_by_curve_name(test_curves[j]);
         if ((ecdh_a[j] == NULL) || (ecdh_b[j] == NULL)) {
-            BIO_printf(bio_err, "ECDH failure.\n");
+            BIO_printf(bio_err, "\x45\x43\x44\x48\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\xa");
             ERR_print_errors(bio_err);
             rsa_count = 1;
         } else {
             /* generate two ECDH key pairs */
             if (!EC_KEY_generate_key(ecdh_a[j]) ||
                 !EC_KEY_generate_key(ecdh_b[j])) {
-                BIO_printf(bio_err, "ECDH key generation failure.\n");
+                BIO_printf(bio_err, "\x45\x43\x44\x48\x20\x6b\x65\x79\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\xa");
                 ERR_print_errors(bio_err);
                 rsa_count = 1;
             } else {
@@ -2320,12 +2320,12 @@ int MAIN(int argc, char **argv)
                 }
 
                 if (ecdh_checks == 0) {
-                    BIO_printf(bio_err, "ECDH computations don't match.\n");
+                    BIO_printf(bio_err, "\x45\x43\x44\x48\x20\x63\x6f\x6d\x70\x75\x74\x61\x74\x69\x6f\x6e\x73\x20\x64\x6f\x6e\x27\x74\x20\x6d\x61\x74\x63\x68\x2e\xa");
                     ERR_print_errors(bio_err);
                     rsa_count = 1;
                 }
 
-                pkey_print_message("", "ecdh",
+                pkey_print_message("", "\x65\x63\x64\x68",
                                    ecdh_c[j][0],
                                    test_curves_bits[j], ECDH_SECONDS);
                 Time_F(START);
@@ -2336,8 +2336,8 @@ int MAIN(int argc, char **argv)
                 }
                 d = Time_F(STOP);
                 BIO_printf(bio_err,
-                           mr ? "+R7:%ld:%d:%.2f\n" :
-                           "%ld %d-bit ECDH ops in %.2fs\n", count,
+                           mr ? "\x2b\x52\x37\x3a\x25\x6c\x64\x3a\x25\x64\x3a\x25\x2e\x32\x66\xa" :
+                           "\x25\x6c\x64\x20\x25\x64\x2d\x62\x69\x74\x20\x45\x43\x44\x48\x20\x6f\x70\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\xa", count,
                            test_curves_bits[j], d);
                 ecdh_results[j][0] = d / (double)count;
                 rsa_count = count;
@@ -2357,58 +2357,58 @@ int MAIN(int argc, char **argv)
  show_res:
 # endif
     if (!mr) {
-        fprintf(stdout, "%s\n", SSLeay_version(SSLEAY_VERSION));
-        fprintf(stdout, "%s\n", SSLeay_version(SSLEAY_BUILT_ON));
-        printf("options:");
-        printf("%s ", BN_options());
+        fprintf(stdout, "\x25\x73\xa", SSLeay_version(SSLEAY_VERSION));
+        fprintf(stdout, "\x25\x73\xa", SSLeay_version(SSLEAY_BUILT_ON));
+        printf("\x6f\x70\x74\x69\x6f\x6e\x73\x3a");
+        printf("\x25\x73\x20", BN_options());
 # ifndef OPENSSL_NO_MD2
-        printf("%s ", MD2_options());
+        printf("\x25\x73\x20", MD2_options());
 # endif
 # ifndef OPENSSL_NO_RC4
-        printf("%s ", RC4_options());
+        printf("\x25\x73\x20", RC4_options());
 # endif
 # ifndef OPENSSL_NO_DES
-        printf("%s ", DES_options());
+        printf("\x25\x73\x20", DES_options());
 # endif
 # ifndef OPENSSL_NO_AES
-        printf("%s ", AES_options());
+        printf("\x25\x73\x20", AES_options());
 # endif
 # ifndef OPENSSL_NO_IDEA
-        printf("%s ", idea_options());
+        printf("\x25\x73\x20", idea_options());
 # endif
 # ifndef OPENSSL_NO_BF
-        printf("%s ", BF_options());
+        printf("\x25\x73\x20", BF_options());
 # endif
-        fprintf(stdout, "\n%s\n", SSLeay_version(SSLEAY_CFLAGS));
+        fprintf(stdout, "\xa\x25\x73\xa", SSLeay_version(SSLEAY_CFLAGS));
     }
 
     if (pr_header) {
         if (mr)
-            fprintf(stdout, "+H");
+            fprintf(stdout, "\x2b\x48");
         else {
             fprintf(stdout,
-                    "The 'numbers' are in 1000s of bytes per second processed.\n");
-            fprintf(stdout, "type        ");
+                    "\x54\x68\x65\x20\x27\x6e\x75\x6d\x62\x65\x72\x73\x27\x20\x61\x72\x65\x20\x69\x6e\x20\x31\x30\x30\x30\x73\x20\x6f\x66\x20\x62\x79\x74\x65\x73\x20\x70\x65\x72\x20\x73\x65\x63\x6f\x6e\x64\x20\x70\x72\x6f\x63\x65\x73\x73\x65\x64\x2e\xa");
+            fprintf(stdout, "\x74\x79\x70\x65\x20\x20\x20\x20\x20\x20\x20\x20");
         }
         for (j = 0; j < SIZE_NUM; j++)
-            fprintf(stdout, mr ? ":%d" : "%7d bytes", lengths[j]);
-        fprintf(stdout, "\n");
+            fprintf(stdout, mr ? "\x3a\x25\x64" : "\x25\x37\x64\x20\x62\x79\x74\x65\x73", lengths[j]);
+        fprintf(stdout, "\xa");
     }
 
     for (k = 0; k < ALGOR_NUM; k++) {
         if (!doit[k])
             continue;
         if (mr)
-            fprintf(stdout, "+F:%d:%s", k, names[k]);
+            fprintf(stdout, "\x2b\x46\x3a\x25\x64\x3a\x25\x73", k, names[k]);
         else
-            fprintf(stdout, "%-13s", names[k]);
+            fprintf(stdout, "\x25\x2d\x31\x33\x73", names[k]);
         for (j = 0; j < SIZE_NUM; j++) {
             if (results[k][j] > 10000 && !mr)
-                fprintf(stdout, " %11.2fk", results[k][j] / 1e3);
+                fprintf(stdout, "\x20\x25\x31\x31\x2e\x32\x66\x6b", results[k][j] / 1e3);
             else
-                fprintf(stdout, mr ? ":%.2f" : " %11.2f ", results[k][j]);
+                fprintf(stdout, mr ? "\x3a\x25\x2e\x32\x66" : "\x20\x25\x31\x31\x2e\x32\x66\x20", results[k][j]);
         }
-        fprintf(stdout, "\n");
+        fprintf(stdout, "\xa");
     }
 # ifndef OPENSSL_NO_RSA
     j = 1;
@@ -2416,14 +2416,14 @@ int MAIN(int argc, char **argv)
         if (!rsa_doit[k])
             continue;
         if (j && !mr) {
-            printf("%18ssign    verify    sign/s verify/s\n", " ");
+            printf("\x25\x31\x38\x73\x73\x69\x67\x6e\x20\x20\x20\x20\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x73\x69\x67\x6e\x2f\x73\x20\x76\x65\x72\x69\x66\x79\x2f\x73\xa", "\x20");
             j = 0;
         }
         if (mr)
-            fprintf(stdout, "+F2:%u:%u:%f:%f\n",
+            fprintf(stdout, "\x2b\x46\x32\x3a\x25\x75\x3a\x25\x75\x3a\x25\x66\x3a\x25\x66\xa",
                     k, rsa_bits[k], rsa_results[k][0], rsa_results[k][1]);
         else
-            fprintf(stdout, "rsa %4u bits %8.6fs %8.6fs %8.1f %8.1f\n",
+            fprintf(stdout, "\x72\x73\x61\x20\x25\x34\x75\x20\x62\x69\x74\x73\x20\x25\x38\x2e\x36\x66\x73\x20\x25\x38\x2e\x36\x66\x73\x20\x25\x38\x2e\x31\x66\x20\x25\x38\x2e\x31\x66\xa",
                     rsa_bits[k], rsa_results[k][0], rsa_results[k][1],
                     1.0 / rsa_results[k][0], 1.0 / rsa_results[k][1]);
     }
@@ -2434,14 +2434,14 @@ int MAIN(int argc, char **argv)
         if (!dsa_doit[k])
             continue;
         if (j && !mr) {
-            printf("%18ssign    verify    sign/s verify/s\n", " ");
+            printf("\x25\x31\x38\x73\x73\x69\x67\x6e\x20\x20\x20\x20\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x73\x69\x67\x6e\x2f\x73\x20\x76\x65\x72\x69\x66\x79\x2f\x73\xa", "\x20");
             j = 0;
         }
         if (mr)
-            fprintf(stdout, "+F3:%u:%u:%f:%f\n",
+            fprintf(stdout, "\x2b\x46\x33\x3a\x25\x75\x3a\x25\x75\x3a\x25\x66\x3a\x25\x66\xa",
                     k, dsa_bits[k], dsa_results[k][0], dsa_results[k][1]);
         else
-            fprintf(stdout, "dsa %4u bits %8.6fs %8.6fs %8.1f %8.1f\n",
+            fprintf(stdout, "\x64\x73\x61\x20\x25\x34\x75\x20\x62\x69\x74\x73\x20\x25\x38\x2e\x36\x66\x73\x20\x25\x38\x2e\x36\x66\x73\x20\x25\x38\x2e\x31\x66\x20\x25\x38\x2e\x31\x66\xa",
                     dsa_bits[k], dsa_results[k][0], dsa_results[k][1],
                     1.0 / dsa_results[k][0], 1.0 / dsa_results[k][1]);
     }
@@ -2452,17 +2452,17 @@ int MAIN(int argc, char **argv)
         if (!ecdsa_doit[k])
             continue;
         if (j && !mr) {
-            printf("%30ssign    verify    sign/s verify/s\n", " ");
+            printf("\x25\x33\x30\x73\x73\x69\x67\x6e\x20\x20\x20\x20\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x73\x69\x67\x6e\x2f\x73\x20\x76\x65\x72\x69\x66\x79\x2f\x73\xa", "\x20");
             j = 0;
         }
 
         if (mr)
-            fprintf(stdout, "+F4:%u:%u:%f:%f\n",
+            fprintf(stdout, "\x2b\x46\x34\x3a\x25\x75\x3a\x25\x75\x3a\x25\x66\x3a\x25\x66\xa",
                     k, test_curves_bits[k],
                     ecdsa_results[k][0], ecdsa_results[k][1]);
         else
             fprintf(stdout,
-                    "%4u bit ecdsa (%s) %8.4fs %8.4fs %8.1f %8.1f\n",
+                    "\x25\x34\x75\x20\x62\x69\x74\x20\x65\x63\x64\x73\x61\x20\x28\x25\x73\x29\x20\x25\x38\x2e\x34\x66\x73\x20\x25\x38\x2e\x34\x66\x73\x20\x25\x38\x2e\x31\x66\x20\x25\x38\x2e\x31\x66\xa",
                     test_curves_bits[k],
                     test_curves_names[k],
                     ecdsa_results[k][0], ecdsa_results[k][1],
@@ -2476,16 +2476,16 @@ int MAIN(int argc, char **argv)
         if (!ecdh_doit[k])
             continue;
         if (j && !mr) {
-            printf("%30sop      op/s\n", " ");
+            printf("\x25\x33\x30\x73\x6f\x70\x20\x20\x20\x20\x20\x20\x6f\x70\x2f\x73\xa", "\x20");
             j = 0;
         }
         if (mr)
-            fprintf(stdout, "+F5:%u:%u:%f:%f\n",
+            fprintf(stdout, "\x2b\x46\x35\x3a\x25\x75\x3a\x25\x75\x3a\x25\x66\x3a\x25\x66\xa",
                     k, test_curves_bits[k],
                     ecdh_results[k][0], 1.0 / ecdh_results[k][0]);
 
         else
-            fprintf(stdout, "%4u bit ecdh (%s) %8.4fs %8.1f\n",
+            fprintf(stdout, "\x25\x34\x75\x20\x62\x69\x74\x20\x65\x63\x64\x68\x20\x28\x25\x73\x29\x20\x25\x38\x2e\x34\x66\x73\x20\x25\x38\x2e\x31\x66\xa",
                     test_curves_bits[k],
                     test_curves_names[k],
                     ecdh_results[k][0], 1.0 / ecdh_results[k][0]);
@@ -2534,14 +2534,14 @@ static void print_message(const char *s, long num, int length)
 {
 # ifdef SIGALRM
     BIO_printf(bio_err,
-               mr ? "+DT:%s:%d:%d\n"
-               : "Doing %s for %ds on %d size blocks: ", s, SECONDS, length);
+               mr ? "\x2b\x44\x54\x3a\x25\x73\x3a\x25\x64\x3a\x25\x64\xa"
+               : "\x44\x6f\x69\x6e\x67\x20\x25\x73\x20\x66\x6f\x72\x20\x25\x64\x73\x20\x6f\x6e\x20\x25\x64\x20\x73\x69\x7a\x65\x20\x62\x6c\x6f\x63\x6b\x73\x3a\x20", s, SECONDS, length);
     (void)BIO_flush(bio_err);
     alarm(SECONDS);
 # else
     BIO_printf(bio_err,
-               mr ? "+DN:%s:%ld:%d\n"
-               : "Doing %s %ld times on %d size blocks: ", s, num, length);
+               mr ? "\x2b\x44\x4e\x3a\x25\x73\x3a\x25\x6c\x64\x3a\x25\x64\xa"
+               : "\x44\x6f\x69\x6e\x67\x20\x25\x73\x20\x25\x6c\x64\x20\x74\x69\x6d\x65\x73\x20\x6f\x6e\x20\x25\x64\x20\x73\x69\x7a\x65\x20\x62\x6c\x6f\x63\x6b\x73\x3a\x20", s, num, length);
     (void)BIO_flush(bio_err);
 # endif
 # ifdef LINT
@@ -2554,14 +2554,14 @@ static void pkey_print_message(const char *str, const char *str2, long num,
 {
 # ifdef SIGALRM
     BIO_printf(bio_err,
-               mr ? "+DTP:%d:%s:%s:%d\n"
-               : "Doing %d bit %s %s's for %ds: ", bits, str, str2, tm);
+               mr ? "\x2b\x44\x54\x50\x3a\x25\x64\x3a\x25\x73\x3a\x25\x73\x3a\x25\x64\xa"
+               : "\x44\x6f\x69\x6e\x67\x20\x25\x64\x20\x62\x69\x74\x20\x25\x73\x20\x25\x73\x27\x73\x20\x66\x6f\x72\x20\x25\x64\x73\x3a\x20", bits, str, str2, tm);
     (void)BIO_flush(bio_err);
     alarm(tm);
 # else
     BIO_printf(bio_err,
-               mr ? "+DNP:%ld:%d:%s:%s\n"
-               : "Doing %ld %d bit %s %s's: ", num, bits, str, str2);
+               mr ? "\x2b\x44\x4e\x50\x3a\x25\x6c\x64\x3a\x25\x64\x3a\x25\x73\x3a\x25\x73\xa"
+               : "\x44\x6f\x69\x6e\x67\x20\x25\x6c\x64\x20\x25\x64\x20\x62\x69\x74\x20\x25\x73\x20\x25\x73\x27\x73\x3a\x20", num, bits, str, str2);
     (void)BIO_flush(bio_err);
 # endif
 # ifdef LINT
@@ -2572,8 +2572,8 @@ static void pkey_print_message(const char *str, const char *str2, long num,
 static void print_result(int alg, int run_no, int count, double time_used)
 {
     BIO_printf(bio_err,
-               mr ? "+R:%d:%s:%f\n"
-               : "%d %s's in %.2fs\n", count, names[alg], time_used);
+               mr ? "\x2b\x52\x3a\x25\x64\x3a\x25\x73\x3a\x25\x66\xa"
+               : "\x25\x64\x20\x25\x73\x27\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\xa", count, names[alg], time_used);
     results[alg][run_no] = ((double)count) / time_used * lengths[run_no];
 }
 
@@ -2611,16 +2611,16 @@ static int do_multi(int multi)
     int n;
     int fd[2];
     int *fds;
-    static char sep[] = ":";
+    static char sep[] = "\x3a";
 
     fds = malloc(multi * sizeof *fds);
     if (fds == NULL) {
-        fprintf(stderr, "Out of memory in speed (do_multi)\n");
+        fprintf(stderr, "\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\x20\x69\x6e\x20\x73\x70\x65\x65\x64\x20\x28\x64\x6f\x5f\x6d\x75\x6c\x74\x69\x29\xa");
         exit(1);
     }
     for (n = 0; n < multi; ++n) {
         if (pipe(fd) == -1) {
-            fprintf(stderr, "pipe failure\n");
+            fprintf(stderr, "\x70\x69\x70\x65\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
             exit(1);
         }
         fflush(stdout);
@@ -2632,7 +2632,7 @@ static int do_multi(int multi)
             close(fd[0]);
             close(1);
             if (dup(fd[1]) == -1) {
-                fprintf(stderr, "dup failed\n");
+                fprintf(stderr, "\x64\x75\x70\x20\x66\x61\x69\x6c\x65\x64\xa");
                 exit(1);
             }
             close(fd[1]);
@@ -2641,7 +2641,7 @@ static int do_multi(int multi)
             free(fds);
             return 0;
         }
-        printf("Forked child %d\n", n);
+        printf("\x46\x6f\x72\x6b\x65\x64\x20\x63\x68\x69\x6c\x64\x20\x25\x64\xa", n);
     }
 
     /* for now, assume the pipe is long enough to take all the output */
@@ -2650,18 +2650,18 @@ static int do_multi(int multi)
         char buf[1024];
         char *p;
 
-        f = fdopen(fds[n], "r");
+        f = fdopen(fds[n], "\x72");
         while (fgets(buf, sizeof buf, f)) {
-            p = strchr(buf, '\n');
+            p = strchr(buf, '\xa');
             if (p)
-                *p = '\0';
-            if (buf[0] != '+') {
-                fprintf(stderr, "Don't understand line '%s' from child %d\n",
+                *p = '\x0';
+            if (buf[0] != '\x2b') {
+                fprintf(stderr, "\x44\x6f\x6e\x27\x74\x20\x75\x6e\x64\x65\x72\x73\x74\x61\x6e\x64\x20\x6c\x69\x6e\x65\x20\x27\x25\x73\x27\x20\x66\x72\x6f\x6d\x20\x63\x68\x69\x6c\x64\x20\x25\x64\xa",
                         buf, n);
                 continue;
             }
-            printf("Got: %s from %d\n", buf, n);
-            if (!strncmp(buf, "+F:", 3)) {
+            printf("\x47\x6f\x74\x3a\x20\x25\x73\x20\x66\x72\x6f\x6d\x20\x25\x64\xa", buf, n);
+            if (!strncmp(buf, "\x2b\x46\x3a", 3)) {
                 int alg;
                 int j;
 
@@ -2670,7 +2670,7 @@ static int do_multi(int multi)
                 sstrsep(&p, sep);
                 for (j = 0; j < SIZE_NUM; ++j)
                     results[alg][j] += atof(sstrsep(&p, sep));
-            } else if (!strncmp(buf, "+F2:", 4)) {
+            } else if (!strncmp(buf, "\x2b\x46\x32\x3a", 4)) {
                 int k;
                 double d;
 
@@ -2691,7 +2691,7 @@ static int do_multi(int multi)
                     rsa_results[k][1] = d;
             }
 #  ifndef OPENSSL_NO_DSA
-            else if (!strncmp(buf, "+F3:", 4)) {
+            else if (!strncmp(buf, "\x2b\x46\x33\x3a", 4)) {
                 int k;
                 double d;
 
@@ -2713,7 +2713,7 @@ static int do_multi(int multi)
             }
 #  endif
 #  ifndef OPENSSL_NO_ECDSA
-            else if (!strncmp(buf, "+F4:", 4)) {
+            else if (!strncmp(buf, "\x2b\x46\x34\x3a", 4)) {
                 int k;
                 double d;
 
@@ -2738,7 +2738,7 @@ static int do_multi(int multi)
 #  endif
 
 #  ifndef OPENSSL_NO_ECDH
-            else if (!strncmp(buf, "+F5:", 4)) {
+            else if (!strncmp(buf, "\x2b\x46\x35\x3a", 4)) {
                 int k;
                 double d;
 
@@ -2755,9 +2755,9 @@ static int do_multi(int multi)
             }
 #  endif
 
-            else if (!strncmp(buf, "+H:", 3)) {
+            else if (!strncmp(buf, "\x2b\x48\x3a", 3)) {
             } else
-                fprintf(stderr, "Unknown type '%s' from child %d\n", buf, n);
+                fprintf(stderr, "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x74\x79\x70\x65\x20\x27\x25\x73\x27\x20\x66\x72\x6f\x6d\x20\x63\x68\x69\x6c\x64\x20\x25\x64\xa", buf, n);
         }
 
         fclose(f);
@@ -2780,7 +2780,7 @@ static void multiblock_speed(const EVP_CIPHER *evp_cipher)
     inp = OPENSSL_malloc(mblengths[num - 1]);
     out = OPENSSL_malloc(mblengths[num - 1] + 1024);
     if (!inp || !out) {
-        BIO_printf(bio_err,"Out of memory\n");
+        BIO_printf(bio_err,"\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
         goto end;
     }
 
@@ -2837,36 +2837,36 @@ static void multiblock_speed(const EVP_CIPHER *evp_cipher)
         }
         d = Time_F(STOP);
         BIO_printf(bio_err,
-                   mr ? "+R:%d:%s:%f\n"
-                   : "%d %s's in %.2fs\n", count, "evp", d);
+                   mr ? "\x2b\x52\x3a\x25\x64\x3a\x25\x73\x3a\x25\x66\xa"
+                   : "\x25\x64\x20\x25\x73\x27\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\xa", count, "\x65\x76\x70", d);
         results[D_EVP][j] = ((double)count) / d * mblengths[j];
     }
 
     if (mr) {
-        fprintf(stdout, "+H");
+        fprintf(stdout, "\x2b\x48");
         for (j = 0; j < num; j++)
-            fprintf(stdout, ":%d", mblengths[j]);
-        fprintf(stdout, "\n");
-        fprintf(stdout, "+F:%d:%s", D_EVP, alg_name);
+            fprintf(stdout, "\x3a\x25\x64", mblengths[j]);
+        fprintf(stdout, "\xa");
+        fprintf(stdout, "\x2b\x46\x3a\x25\x64\x3a\x25\x73", D_EVP, alg_name);
         for (j = 0; j < num; j++)
-            fprintf(stdout, ":%.2f", results[D_EVP][j]);
-        fprintf(stdout, "\n");
+            fprintf(stdout, "\x3a\x25\x2e\x32\x66", results[D_EVP][j]);
+        fprintf(stdout, "\xa");
     } else {
         fprintf(stdout,
-                "The 'numbers' are in 1000s of bytes per second processed.\n");
-        fprintf(stdout, "type                    ");
+                "\x54\x68\x65\x20\x27\x6e\x75\x6d\x62\x65\x72\x73\x27\x20\x61\x72\x65\x20\x69\x6e\x20\x31\x30\x30\x30\x73\x20\x6f\x66\x20\x62\x79\x74\x65\x73\x20\x70\x65\x72\x20\x73\x65\x63\x6f\x6e\x64\x20\x70\x72\x6f\x63\x65\x73\x73\x65\x64\x2e\xa");
+        fprintf(stdout, "\x74\x79\x70\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20");
         for (j = 0; j < num; j++)
-            fprintf(stdout, "%7d bytes", mblengths[j]);
-        fprintf(stdout, "\n");
-        fprintf(stdout, "%-24s", alg_name);
+            fprintf(stdout, "\x25\x37\x64\x20\x62\x79\x74\x65\x73", mblengths[j]);
+        fprintf(stdout, "\xa");
+        fprintf(stdout, "\x25\x2d\x32\x34\x73", alg_name);
 
         for (j = 0; j < num; j++) {
             if (results[D_EVP][j] > 10000)
-                fprintf(stdout, " %11.2fk", results[D_EVP][j] / 1e3);
+                fprintf(stdout, "\x20\x25\x31\x31\x2e\x32\x66\x6b", results[D_EVP][j] / 1e3);
             else
-                fprintf(stdout, " %11.2f ", results[D_EVP][j]);
+                fprintf(stdout, "\x20\x25\x31\x31\x2e\x32\x66\x20", results[D_EVP][j]);
         }
-        fprintf(stdout, "\n");
+        fprintf(stdout, "\xa");
     }
 
 end:

@@ -87,7 +87,7 @@ typedef struct ec_pre_comp_st {
  * being fully reduced, i.e. being in [0, modulus) range. Simply put if
  * inputs are fully reduced, then output is too. Note that reverse is
  * not true, in sense that given partially reduced inputs output can be
- * either, not unlikely reduced. And "most" in first sentence refers to
+ * either, not unlikely reduced. And "\x6d\x6f\x73\x74" in first sentence refers to
  * the fact that given the calculations flow one can tolerate that
  * addition, 1st function below, produces partially reduced result *if*
  * multiplications by 2 and 3, which customarily use addition, fully

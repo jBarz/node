@@ -95,7 +95,7 @@ void OPENSSL_cpuid_setup(void)
         return;
     trigger = 1;
 
-    if ((e = getenv("OPENSSL_armcap"))) {
+    if ((e = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x61\x72\x6d\x63\x61\x70"))) {
         OPENSSL_armcap_P = (unsigned int)strtoul(e, NULL, 0);
         return;
     }

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,7 +111,7 @@
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
  *
- * Portions of the attached software ("Contribution") are developed by
+ * Portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") are developed by
  * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
  *
  * The Contribution is licensed pursuant to the OpenSSL open source
@@ -124,12 +124,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -141,7 +141,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -569,149 +569,149 @@ SSL_CTX_callback_ctrl(ssl,SSL_CTRL_SET_TLSEXT_TICKET_KEY_CB,(void (*)(void))cb)
  * should be using DHE + * everywhere, though we may indefinitely maintain
  * aliases for users + * or configurations that used "EDH" +
  */
-# define TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_MD5         "EXP1024-RC4-MD5"
-# define TLS1_TXT_RSA_EXPORT1024_WITH_RC2_CBC_56_MD5     "EXP1024-RC2-CBC-MD5"
-# define TLS1_TXT_RSA_EXPORT1024_WITH_DES_CBC_SHA        "EXP1024-DES-CBC-SHA"
-# define TLS1_TXT_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA    "EXP1024-DHE-DSS-DES-CBC-SHA"
-# define TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_SHA         "EXP1024-RC4-SHA"
-# define TLS1_TXT_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA     "EXP1024-DHE-DSS-RC4-SHA"
-# define TLS1_TXT_DHE_DSS_WITH_RC4_128_SHA               "DHE-DSS-RC4-SHA"
+# define TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_MD5         "\x45\x58\x50\x31\x30\x32\x34\x2d\x52\x43\x34\x2d\x4d\x44\x35"
+# define TLS1_TXT_RSA_EXPORT1024_WITH_RC2_CBC_56_MD5     "\x45\x58\x50\x31\x30\x32\x34\x2d\x52\x43\x32\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define TLS1_TXT_RSA_EXPORT1024_WITH_DES_CBC_SHA        "\x45\x58\x50\x31\x30\x32\x34\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA    "\x45\x58\x50\x31\x30\x32\x34\x2d\x44\x48\x45\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_RSA_EXPORT1024_WITH_RC4_56_SHA         "\x45\x58\x50\x31\x30\x32\x34\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA     "\x45\x58\x50\x31\x30\x32\x34\x2d\x44\x48\x45\x2d\x44\x53\x53\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_DSS_WITH_RC4_128_SHA               "\x44\x48\x45\x2d\x44\x53\x53\x2d\x52\x43\x34\x2d\x53\x48\x41"
 
 /* AES ciphersuites from RFC3268 */
-# define TLS1_TXT_RSA_WITH_AES_128_SHA                   "AES128-SHA"
-# define TLS1_TXT_DH_DSS_WITH_AES_128_SHA                "DH-DSS-AES128-SHA"
-# define TLS1_TXT_DH_RSA_WITH_AES_128_SHA                "DH-RSA-AES128-SHA"
-# define TLS1_TXT_DHE_DSS_WITH_AES_128_SHA               "DHE-DSS-AES128-SHA"
-# define TLS1_TXT_DHE_RSA_WITH_AES_128_SHA               "DHE-RSA-AES128-SHA"
-# define TLS1_TXT_ADH_WITH_AES_128_SHA                   "ADH-AES128-SHA"
+# define TLS1_TXT_RSA_WITH_AES_128_SHA                   "\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_DSS_WITH_AES_128_SHA                "\x44\x48\x2d\x44\x53\x53\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_RSA_WITH_AES_128_SHA                "\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_DSS_WITH_AES_128_SHA               "\x44\x48\x45\x2d\x44\x53\x53\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_RSA_WITH_AES_128_SHA               "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_ADH_WITH_AES_128_SHA                   "\x41\x44\x48\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
 
-# define TLS1_TXT_RSA_WITH_AES_256_SHA                   "AES256-SHA"
-# define TLS1_TXT_DH_DSS_WITH_AES_256_SHA                "DH-DSS-AES256-SHA"
-# define TLS1_TXT_DH_RSA_WITH_AES_256_SHA                "DH-RSA-AES256-SHA"
-# define TLS1_TXT_DHE_DSS_WITH_AES_256_SHA               "DHE-DSS-AES256-SHA"
-# define TLS1_TXT_DHE_RSA_WITH_AES_256_SHA               "DHE-RSA-AES256-SHA"
-# define TLS1_TXT_ADH_WITH_AES_256_SHA                   "ADH-AES256-SHA"
+# define TLS1_TXT_RSA_WITH_AES_256_SHA                   "\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_DSS_WITH_AES_256_SHA                "\x44\x48\x2d\x44\x53\x53\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_RSA_WITH_AES_256_SHA                "\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_DSS_WITH_AES_256_SHA               "\x44\x48\x45\x2d\x44\x53\x53\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_RSA_WITH_AES_256_SHA               "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_ADH_WITH_AES_256_SHA                   "\x41\x44\x48\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
 
 /* ECC ciphersuites from RFC4492 */
-# define TLS1_TXT_ECDH_ECDSA_WITH_NULL_SHA               "ECDH-ECDSA-NULL-SHA"
-# define TLS1_TXT_ECDH_ECDSA_WITH_RC4_128_SHA            "ECDH-ECDSA-RC4-SHA"
-# define TLS1_TXT_ECDH_ECDSA_WITH_DES_192_CBC3_SHA       "ECDH-ECDSA-DES-CBC3-SHA"
-# define TLS1_TXT_ECDH_ECDSA_WITH_AES_128_CBC_SHA        "ECDH-ECDSA-AES128-SHA"
-# define TLS1_TXT_ECDH_ECDSA_WITH_AES_256_CBC_SHA        "ECDH-ECDSA-AES256-SHA"
+# define TLS1_TXT_ECDH_ECDSA_WITH_NULL_SHA               "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x4e\x55\x4c\x4c\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_ECDSA_WITH_RC4_128_SHA            "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_ECDSA_WITH_DES_192_CBC3_SHA       "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_ECDSA_WITH_AES_128_CBC_SHA        "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_ECDSA_WITH_AES_256_CBC_SHA        "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
 
-# define TLS1_TXT_ECDHE_ECDSA_WITH_NULL_SHA              "ECDHE-ECDSA-NULL-SHA"
-# define TLS1_TXT_ECDHE_ECDSA_WITH_RC4_128_SHA           "ECDHE-ECDSA-RC4-SHA"
-# define TLS1_TXT_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA      "ECDHE-ECDSA-DES-CBC3-SHA"
-# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_CBC_SHA       "ECDHE-ECDSA-AES128-SHA"
-# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_CBC_SHA       "ECDHE-ECDSA-AES256-SHA"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_NULL_SHA              "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x4e\x55\x4c\x4c\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_RC4_128_SHA           "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_DES_192_CBC3_SHA      "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_CBC_SHA       "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_CBC_SHA       "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
 
-# define TLS1_TXT_ECDH_RSA_WITH_NULL_SHA                 "ECDH-RSA-NULL-SHA"
-# define TLS1_TXT_ECDH_RSA_WITH_RC4_128_SHA              "ECDH-RSA-RC4-SHA"
-# define TLS1_TXT_ECDH_RSA_WITH_DES_192_CBC3_SHA         "ECDH-RSA-DES-CBC3-SHA"
-# define TLS1_TXT_ECDH_RSA_WITH_AES_128_CBC_SHA          "ECDH-RSA-AES128-SHA"
-# define TLS1_TXT_ECDH_RSA_WITH_AES_256_CBC_SHA          "ECDH-RSA-AES256-SHA"
+# define TLS1_TXT_ECDH_RSA_WITH_NULL_SHA                 "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x4e\x55\x4c\x4c\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_RSA_WITH_RC4_128_SHA              "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_RSA_WITH_DES_192_CBC3_SHA         "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_RSA_WITH_AES_128_CBC_SHA          "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_RSA_WITH_AES_256_CBC_SHA          "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
 
-# define TLS1_TXT_ECDHE_RSA_WITH_NULL_SHA                "ECDHE-RSA-NULL-SHA"
-# define TLS1_TXT_ECDHE_RSA_WITH_RC4_128_SHA             "ECDHE-RSA-RC4-SHA"
-# define TLS1_TXT_ECDHE_RSA_WITH_DES_192_CBC3_SHA        "ECDHE-RSA-DES-CBC3-SHA"
-# define TLS1_TXT_ECDHE_RSA_WITH_AES_128_CBC_SHA         "ECDHE-RSA-AES128-SHA"
-# define TLS1_TXT_ECDHE_RSA_WITH_AES_256_CBC_SHA         "ECDHE-RSA-AES256-SHA"
+# define TLS1_TXT_ECDHE_RSA_WITH_NULL_SHA                "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x4e\x55\x4c\x4c\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDHE_RSA_WITH_RC4_128_SHA             "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDHE_RSA_WITH_DES_192_CBC3_SHA        "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDHE_RSA_WITH_AES_128_CBC_SHA         "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDHE_RSA_WITH_AES_256_CBC_SHA         "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
 
-# define TLS1_TXT_ECDH_anon_WITH_NULL_SHA                "AECDH-NULL-SHA"
-# define TLS1_TXT_ECDH_anon_WITH_RC4_128_SHA             "AECDH-RC4-SHA"
-# define TLS1_TXT_ECDH_anon_WITH_DES_192_CBC3_SHA        "AECDH-DES-CBC3-SHA"
-# define TLS1_TXT_ECDH_anon_WITH_AES_128_CBC_SHA         "AECDH-AES128-SHA"
-# define TLS1_TXT_ECDH_anon_WITH_AES_256_CBC_SHA         "AECDH-AES256-SHA"
+# define TLS1_TXT_ECDH_anon_WITH_NULL_SHA                "\x41\x45\x43\x44\x48\x2d\x4e\x55\x4c\x4c\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_anon_WITH_RC4_128_SHA             "\x41\x45\x43\x44\x48\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_anon_WITH_DES_192_CBC3_SHA        "\x41\x45\x43\x44\x48\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_anon_WITH_AES_128_CBC_SHA         "\x41\x45\x43\x44\x48\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_ECDH_anon_WITH_AES_256_CBC_SHA         "\x41\x45\x43\x44\x48\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41"
 
 /* PSK ciphersuites from RFC 4279 */
-# define TLS1_TXT_PSK_WITH_RC4_128_SHA                   "PSK-RC4-SHA"
-# define TLS1_TXT_PSK_WITH_3DES_EDE_CBC_SHA              "PSK-3DES-EDE-CBC-SHA"
-# define TLS1_TXT_PSK_WITH_AES_128_CBC_SHA               "PSK-AES128-CBC-SHA"
-# define TLS1_TXT_PSK_WITH_AES_256_CBC_SHA               "PSK-AES256-CBC-SHA"
+# define TLS1_TXT_PSK_WITH_RC4_128_SHA                   "\x50\x53\x4b\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define TLS1_TXT_PSK_WITH_3DES_EDE_CBC_SHA              "\x50\x53\x4b\x2d\x33\x44\x45\x53\x2d\x45\x44\x45\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_PSK_WITH_AES_128_CBC_SHA               "\x50\x53\x4b\x2d\x41\x45\x53\x31\x32\x38\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_PSK_WITH_AES_256_CBC_SHA               "\x50\x53\x4b\x2d\x41\x45\x53\x32\x35\x36\x2d\x43\x42\x43\x2d\x53\x48\x41"
 
 /* SRP ciphersuite from RFC 5054 */
-# define TLS1_TXT_SRP_SHA_WITH_3DES_EDE_CBC_SHA          "SRP-3DES-EDE-CBC-SHA"
-# define TLS1_TXT_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA      "SRP-RSA-3DES-EDE-CBC-SHA"
-# define TLS1_TXT_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA      "SRP-DSS-3DES-EDE-CBC-SHA"
-# define TLS1_TXT_SRP_SHA_WITH_AES_128_CBC_SHA           "SRP-AES-128-CBC-SHA"
-# define TLS1_TXT_SRP_SHA_RSA_WITH_AES_128_CBC_SHA       "SRP-RSA-AES-128-CBC-SHA"
-# define TLS1_TXT_SRP_SHA_DSS_WITH_AES_128_CBC_SHA       "SRP-DSS-AES-128-CBC-SHA"
-# define TLS1_TXT_SRP_SHA_WITH_AES_256_CBC_SHA           "SRP-AES-256-CBC-SHA"
-# define TLS1_TXT_SRP_SHA_RSA_WITH_AES_256_CBC_SHA       "SRP-RSA-AES-256-CBC-SHA"
-# define TLS1_TXT_SRP_SHA_DSS_WITH_AES_256_CBC_SHA       "SRP-DSS-AES-256-CBC-SHA"
+# define TLS1_TXT_SRP_SHA_WITH_3DES_EDE_CBC_SHA          "\x53\x52\x50\x2d\x33\x44\x45\x53\x2d\x45\x44\x45\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA      "\x53\x52\x50\x2d\x52\x53\x41\x2d\x33\x44\x45\x53\x2d\x45\x44\x45\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_SRP_SHA_DSS_WITH_3DES_EDE_CBC_SHA      "\x53\x52\x50\x2d\x44\x53\x53\x2d\x33\x44\x45\x53\x2d\x45\x44\x45\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_SRP_SHA_WITH_AES_128_CBC_SHA           "\x53\x52\x50\x2d\x41\x45\x53\x2d\x31\x32\x38\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_SRP_SHA_RSA_WITH_AES_128_CBC_SHA       "\x53\x52\x50\x2d\x52\x53\x41\x2d\x41\x45\x53\x2d\x31\x32\x38\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_SRP_SHA_DSS_WITH_AES_128_CBC_SHA       "\x53\x52\x50\x2d\x44\x53\x53\x2d\x41\x45\x53\x2d\x31\x32\x38\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_SRP_SHA_WITH_AES_256_CBC_SHA           "\x53\x52\x50\x2d\x41\x45\x53\x2d\x32\x35\x36\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_SRP_SHA_RSA_WITH_AES_256_CBC_SHA       "\x53\x52\x50\x2d\x52\x53\x41\x2d\x41\x45\x53\x2d\x32\x35\x36\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define TLS1_TXT_SRP_SHA_DSS_WITH_AES_256_CBC_SHA       "\x53\x52\x50\x2d\x44\x53\x53\x2d\x41\x45\x53\x2d\x32\x35\x36\x2d\x43\x42\x43\x2d\x53\x48\x41"
 
 /* Camellia ciphersuites from RFC4132 */
-# define TLS1_TXT_RSA_WITH_CAMELLIA_128_CBC_SHA          "CAMELLIA128-SHA"
-# define TLS1_TXT_DH_DSS_WITH_CAMELLIA_128_CBC_SHA       "DH-DSS-CAMELLIA128-SHA"
-# define TLS1_TXT_DH_RSA_WITH_CAMELLIA_128_CBC_SHA       "DH-RSA-CAMELLIA128-SHA"
-# define TLS1_TXT_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA      "DHE-DSS-CAMELLIA128-SHA"
-# define TLS1_TXT_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA      "DHE-RSA-CAMELLIA128-SHA"
-# define TLS1_TXT_ADH_WITH_CAMELLIA_128_CBC_SHA          "ADH-CAMELLIA128-SHA"
+# define TLS1_TXT_RSA_WITH_CAMELLIA_128_CBC_SHA          "\x43\x41\x4d\x45\x4c\x4c\x49\x41\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_DSS_WITH_CAMELLIA_128_CBC_SHA       "\x44\x48\x2d\x44\x53\x53\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_RSA_WITH_CAMELLIA_128_CBC_SHA       "\x44\x48\x2d\x52\x53\x41\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA      "\x44\x48\x45\x2d\x44\x53\x53\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA      "\x44\x48\x45\x2d\x52\x53\x41\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x31\x32\x38\x2d\x53\x48\x41"
+# define TLS1_TXT_ADH_WITH_CAMELLIA_128_CBC_SHA          "\x41\x44\x48\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x31\x32\x38\x2d\x53\x48\x41"
 
-# define TLS1_TXT_RSA_WITH_CAMELLIA_256_CBC_SHA          "CAMELLIA256-SHA"
-# define TLS1_TXT_DH_DSS_WITH_CAMELLIA_256_CBC_SHA       "DH-DSS-CAMELLIA256-SHA"
-# define TLS1_TXT_DH_RSA_WITH_CAMELLIA_256_CBC_SHA       "DH-RSA-CAMELLIA256-SHA"
-# define TLS1_TXT_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA      "DHE-DSS-CAMELLIA256-SHA"
-# define TLS1_TXT_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA      "DHE-RSA-CAMELLIA256-SHA"
-# define TLS1_TXT_ADH_WITH_CAMELLIA_256_CBC_SHA          "ADH-CAMELLIA256-SHA"
+# define TLS1_TXT_RSA_WITH_CAMELLIA_256_CBC_SHA          "\x43\x41\x4d\x45\x4c\x4c\x49\x41\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_DSS_WITH_CAMELLIA_256_CBC_SHA       "\x44\x48\x2d\x44\x53\x53\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_RSA_WITH_CAMELLIA_256_CBC_SHA       "\x44\x48\x2d\x52\x53\x41\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA      "\x44\x48\x45\x2d\x44\x53\x53\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA      "\x44\x48\x45\x2d\x52\x53\x41\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x32\x35\x36\x2d\x53\x48\x41"
+# define TLS1_TXT_ADH_WITH_CAMELLIA_256_CBC_SHA          "\x41\x44\x48\x2d\x43\x41\x4d\x45\x4c\x4c\x49\x41\x32\x35\x36\x2d\x53\x48\x41"
 
 /* SEED ciphersuites from RFC4162 */
-# define TLS1_TXT_RSA_WITH_SEED_SHA                      "SEED-SHA"
-# define TLS1_TXT_DH_DSS_WITH_SEED_SHA                   "DH-DSS-SEED-SHA"
-# define TLS1_TXT_DH_RSA_WITH_SEED_SHA                   "DH-RSA-SEED-SHA"
-# define TLS1_TXT_DHE_DSS_WITH_SEED_SHA                  "DHE-DSS-SEED-SHA"
-# define TLS1_TXT_DHE_RSA_WITH_SEED_SHA                  "DHE-RSA-SEED-SHA"
-# define TLS1_TXT_ADH_WITH_SEED_SHA                      "ADH-SEED-SHA"
+# define TLS1_TXT_RSA_WITH_SEED_SHA                      "\x53\x45\x45\x44\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_DSS_WITH_SEED_SHA                   "\x44\x48\x2d\x44\x53\x53\x2d\x53\x45\x45\x44\x2d\x53\x48\x41"
+# define TLS1_TXT_DH_RSA_WITH_SEED_SHA                   "\x44\x48\x2d\x52\x53\x41\x2d\x53\x45\x45\x44\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_DSS_WITH_SEED_SHA                  "\x44\x48\x45\x2d\x44\x53\x53\x2d\x53\x45\x45\x44\x2d\x53\x48\x41"
+# define TLS1_TXT_DHE_RSA_WITH_SEED_SHA                  "\x44\x48\x45\x2d\x52\x53\x41\x2d\x53\x45\x45\x44\x2d\x53\x48\x41"
+# define TLS1_TXT_ADH_WITH_SEED_SHA                      "\x41\x44\x48\x2d\x53\x45\x45\x44\x2d\x53\x48\x41"
 
 /* TLS v1.2 ciphersuites */
-# define TLS1_TXT_RSA_WITH_NULL_SHA256                   "NULL-SHA256"
-# define TLS1_TXT_RSA_WITH_AES_128_SHA256                "AES128-SHA256"
-# define TLS1_TXT_RSA_WITH_AES_256_SHA256                "AES256-SHA256"
-# define TLS1_TXT_DH_DSS_WITH_AES_128_SHA256             "DH-DSS-AES128-SHA256"
-# define TLS1_TXT_DH_RSA_WITH_AES_128_SHA256             "DH-RSA-AES128-SHA256"
-# define TLS1_TXT_DHE_DSS_WITH_AES_128_SHA256            "DHE-DSS-AES128-SHA256"
-# define TLS1_TXT_DHE_RSA_WITH_AES_128_SHA256            "DHE-RSA-AES128-SHA256"
-# define TLS1_TXT_DH_DSS_WITH_AES_256_SHA256             "DH-DSS-AES256-SHA256"
-# define TLS1_TXT_DH_RSA_WITH_AES_256_SHA256             "DH-RSA-AES256-SHA256"
-# define TLS1_TXT_DHE_DSS_WITH_AES_256_SHA256            "DHE-DSS-AES256-SHA256"
-# define TLS1_TXT_DHE_RSA_WITH_AES_256_SHA256            "DHE-RSA-AES256-SHA256"
-# define TLS1_TXT_ADH_WITH_AES_128_SHA256                "ADH-AES128-SHA256"
-# define TLS1_TXT_ADH_WITH_AES_256_SHA256                "ADH-AES256-SHA256"
+# define TLS1_TXT_RSA_WITH_NULL_SHA256                   "\x4e\x55\x4c\x4c\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_RSA_WITH_AES_128_SHA256                "\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_RSA_WITH_AES_256_SHA256                "\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DH_DSS_WITH_AES_128_SHA256             "\x44\x48\x2d\x44\x53\x53\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DH_RSA_WITH_AES_128_SHA256             "\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DHE_DSS_WITH_AES_128_SHA256            "\x44\x48\x45\x2d\x44\x53\x53\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DHE_RSA_WITH_AES_128_SHA256            "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DH_DSS_WITH_AES_256_SHA256             "\x44\x48\x2d\x44\x53\x53\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DH_RSA_WITH_AES_256_SHA256             "\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DHE_DSS_WITH_AES_256_SHA256            "\x44\x48\x45\x2d\x44\x53\x53\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DHE_RSA_WITH_AES_256_SHA256            "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ADH_WITH_AES_128_SHA256                "\x41\x44\x48\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ADH_WITH_AES_256_SHA256                "\x41\x44\x48\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x32\x35\x36"
 
 /* TLS v1.2 GCM ciphersuites from RFC5288 */
-# define TLS1_TXT_RSA_WITH_AES_128_GCM_SHA256            "AES128-GCM-SHA256"
-# define TLS1_TXT_RSA_WITH_AES_256_GCM_SHA384            "AES256-GCM-SHA384"
-# define TLS1_TXT_DHE_RSA_WITH_AES_128_GCM_SHA256        "DHE-RSA-AES128-GCM-SHA256"
-# define TLS1_TXT_DHE_RSA_WITH_AES_256_GCM_SHA384        "DHE-RSA-AES256-GCM-SHA384"
-# define TLS1_TXT_DH_RSA_WITH_AES_128_GCM_SHA256         "DH-RSA-AES128-GCM-SHA256"
-# define TLS1_TXT_DH_RSA_WITH_AES_256_GCM_SHA384         "DH-RSA-AES256-GCM-SHA384"
-# define TLS1_TXT_DHE_DSS_WITH_AES_128_GCM_SHA256        "DHE-DSS-AES128-GCM-SHA256"
-# define TLS1_TXT_DHE_DSS_WITH_AES_256_GCM_SHA384        "DHE-DSS-AES256-GCM-SHA384"
-# define TLS1_TXT_DH_DSS_WITH_AES_128_GCM_SHA256         "DH-DSS-AES128-GCM-SHA256"
-# define TLS1_TXT_DH_DSS_WITH_AES_256_GCM_SHA384         "DH-DSS-AES256-GCM-SHA384"
-# define TLS1_TXT_ADH_WITH_AES_128_GCM_SHA256            "ADH-AES128-GCM-SHA256"
-# define TLS1_TXT_ADH_WITH_AES_256_GCM_SHA384            "ADH-AES256-GCM-SHA384"
+# define TLS1_TXT_RSA_WITH_AES_128_GCM_SHA256            "\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_RSA_WITH_AES_256_GCM_SHA384            "\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_DHE_RSA_WITH_AES_128_GCM_SHA256        "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DHE_RSA_WITH_AES_256_GCM_SHA384        "\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_DH_RSA_WITH_AES_128_GCM_SHA256         "\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DH_RSA_WITH_AES_256_GCM_SHA384         "\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_DHE_DSS_WITH_AES_128_GCM_SHA256        "\x44\x48\x45\x2d\x44\x53\x53\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DHE_DSS_WITH_AES_256_GCM_SHA384        "\x44\x48\x45\x2d\x44\x53\x53\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_DH_DSS_WITH_AES_128_GCM_SHA256         "\x44\x48\x2d\x44\x53\x53\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_DH_DSS_WITH_AES_256_GCM_SHA384         "\x44\x48\x2d\x44\x53\x53\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_ADH_WITH_AES_128_GCM_SHA256            "\x41\x44\x48\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ADH_WITH_AES_256_GCM_SHA384            "\x41\x44\x48\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
 
 /* ECDH HMAC based ciphersuites from RFC5289 */
 
-# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_SHA256    "ECDHE-ECDSA-AES128-SHA256"
-# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_SHA384    "ECDHE-ECDSA-AES256-SHA384"
-# define TLS1_TXT_ECDH_ECDSA_WITH_AES_128_SHA256     "ECDH-ECDSA-AES128-SHA256"
-# define TLS1_TXT_ECDH_ECDSA_WITH_AES_256_SHA384     "ECDH-ECDSA-AES256-SHA384"
-# define TLS1_TXT_ECDHE_RSA_WITH_AES_128_SHA256      "ECDHE-RSA-AES128-SHA256"
-# define TLS1_TXT_ECDHE_RSA_WITH_AES_256_SHA384      "ECDHE-RSA-AES256-SHA384"
-# define TLS1_TXT_ECDH_RSA_WITH_AES_128_SHA256       "ECDH-RSA-AES128-SHA256"
-# define TLS1_TXT_ECDH_RSA_WITH_AES_256_SHA384       "ECDH-RSA-AES256-SHA384"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_SHA256    "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_SHA384    "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_ECDH_ECDSA_WITH_AES_128_SHA256     "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ECDH_ECDSA_WITH_AES_256_SHA384     "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_ECDHE_RSA_WITH_AES_128_SHA256      "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ECDHE_RSA_WITH_AES_256_SHA384      "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_ECDH_RSA_WITH_AES_128_SHA256       "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ECDH_RSA_WITH_AES_256_SHA384       "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x53\x48\x41\x33\x38\x34"
 
 /* ECDH GCM based ciphersuites from RFC5289 */
-# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256    "ECDHE-ECDSA-AES128-GCM-SHA256"
-# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384    "ECDHE-ECDSA-AES256-GCM-SHA384"
-# define TLS1_TXT_ECDH_ECDSA_WITH_AES_128_GCM_SHA256     "ECDH-ECDSA-AES128-GCM-SHA256"
-# define TLS1_TXT_ECDH_ECDSA_WITH_AES_256_GCM_SHA384     "ECDH-ECDSA-AES256-GCM-SHA384"
-# define TLS1_TXT_ECDHE_RSA_WITH_AES_128_GCM_SHA256      "ECDHE-RSA-AES128-GCM-SHA256"
-# define TLS1_TXT_ECDHE_RSA_WITH_AES_256_GCM_SHA384      "ECDHE-RSA-AES256-GCM-SHA384"
-# define TLS1_TXT_ECDH_RSA_WITH_AES_128_GCM_SHA256       "ECDH-RSA-AES128-GCM-SHA256"
-# define TLS1_TXT_ECDH_RSA_WITH_AES_256_GCM_SHA384       "ECDH-RSA-AES256-GCM-SHA384"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256    "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384    "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_ECDH_ECDSA_WITH_AES_128_GCM_SHA256     "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ECDH_ECDSA_WITH_AES_256_GCM_SHA384     "\x45\x43\x44\x48\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_ECDHE_RSA_WITH_AES_128_GCM_SHA256      "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ECDHE_RSA_WITH_AES_256_GCM_SHA384      "\x45\x43\x44\x48\x45\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
+# define TLS1_TXT_ECDH_RSA_WITH_AES_128_GCM_SHA256       "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36"
+# define TLS1_TXT_ECDH_RSA_WITH_AES_256_GCM_SHA384       "\x45\x43\x44\x48\x2d\x52\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34"
 
 # define TLS_CT_RSA_SIGN                 1
 # define TLS_CT_DSS_SIGN                 2
@@ -731,21 +731,21 @@ SSL_CTX_callback_ctrl(ssl,SSL_CTRL_SET_TLSEXT_TICKET_KEY_CB,(void (*)(void))cb)
 # define TLS1_FINISH_MAC_LENGTH          12
 
 # define TLS_MD_MAX_CONST_SIZE                   20
-# define TLS_MD_CLIENT_FINISH_CONST              "client finished"
+# define TLS_MD_CLIENT_FINISH_CONST              "\x63\x6c\x69\x65\x6e\x74\x20\x66\x69\x6e\x69\x73\x68\x65\x64"
 # define TLS_MD_CLIENT_FINISH_CONST_SIZE         15
-# define TLS_MD_SERVER_FINISH_CONST              "server finished"
+# define TLS_MD_SERVER_FINISH_CONST              "\x73\x65\x72\x76\x65\x72\x20\x66\x69\x6e\x69\x73\x68\x65\x64"
 # define TLS_MD_SERVER_FINISH_CONST_SIZE         15
-# define TLS_MD_SERVER_WRITE_KEY_CONST           "server write key"
+# define TLS_MD_SERVER_WRITE_KEY_CONST           "\x73\x65\x72\x76\x65\x72\x20\x77\x72\x69\x74\x65\x20\x6b\x65\x79"
 # define TLS_MD_SERVER_WRITE_KEY_CONST_SIZE      16
-# define TLS_MD_KEY_EXPANSION_CONST              "key expansion"
+# define TLS_MD_KEY_EXPANSION_CONST              "\x6b\x65\x79\x20\x65\x78\x70\x61\x6e\x73\x69\x6f\x6e"
 # define TLS_MD_KEY_EXPANSION_CONST_SIZE         13
-# define TLS_MD_CLIENT_WRITE_KEY_CONST           "client write key"
+# define TLS_MD_CLIENT_WRITE_KEY_CONST           "\x63\x6c\x69\x65\x6e\x74\x20\x77\x72\x69\x74\x65\x20\x6b\x65\x79"
 # define TLS_MD_CLIENT_WRITE_KEY_CONST_SIZE      16
-# define TLS_MD_SERVER_WRITE_KEY_CONST           "server write key"
+# define TLS_MD_SERVER_WRITE_KEY_CONST           "\x73\x65\x72\x76\x65\x72\x20\x77\x72\x69\x74\x65\x20\x6b\x65\x79"
 # define TLS_MD_SERVER_WRITE_KEY_CONST_SIZE      16
-# define TLS_MD_IV_BLOCK_CONST                   "IV block"
+# define TLS_MD_IV_BLOCK_CONST                   "\x49\x56\x20\x62\x6c\x6f\x63\x6b"
 # define TLS_MD_IV_BLOCK_CONST_SIZE              8
-# define TLS_MD_MASTER_SECRET_CONST              "master secret"
+# define TLS_MD_MASTER_SECRET_CONST              "\x6d\x61\x73\x74\x65\x72\x20\x73\x65\x63\x72\x65\x74"
 # define TLS_MD_MASTER_SECRET_CONST_SIZE         13
 
 # ifdef CHARSET_EBCDIC

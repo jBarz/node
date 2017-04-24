@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,13 +70,13 @@ const char *filename;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                    PSTR cmdline, int iCmdShow)
 {
-    static char appname[] = "OpenSSL";
+    static char appname[] = "\x4f\x70\x65\x6e\x53\x53\x4c";
     HWND hwnd;
     MSG msg;
     WNDCLASSEX wndclass;
     char buffer[200];
 
-    if (cmdline[0] == '\0')
+    if (cmdline[0] == '\x0')
         filename = RAND_file_name(buffer, sizeof buffer);
     else
         filename = cmdline;
@@ -124,7 +124,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         hdc = BeginPaint(hwnd, &ps);
         GetClientRect(hwnd, &rect);
-        DrawText(hdc, "Seeding the PRNG. Please move the mouse!", -1,
+        DrawText(hdc, "\x53\x65\x65\x64\x69\x6e\x67\x20\x74\x68\x65\x20\x50\x52\x4e\x47\x2e\x20\x50\x6c\x65\x61\x73\x65\x20\x6d\x6f\x76\x65\x20\x74\x68\x65\x20\x6d\x6f\x75\x73\x65\x21", -1,
                  &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
         EndPaint(hwnd, &ps);
         return 0;
@@ -137,8 +137,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
     if (RAND_event(iMsg, wParam, lParam) == 1 && seeded == 0) {
         seeded = 1;
         if (RAND_write_file(filename) <= 0)
-            MessageBox(hwnd, "Couldn't write random file!",
-                       "OpenSSL", MB_OK | MB_ICONERROR);
+            MessageBox(hwnd, "\x43\x6f\x75\x6c\x64\x6e\x27\x74\x20\x77\x72\x69\x74\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x66\x69\x6c\x65\x21",
+                       "\x4f\x70\x65\x6e\x53\x53\x4c", MB_OK | MB_ICONERROR);
         PostQuitMessage(0);
     }
 

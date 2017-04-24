@@ -33,13 +33,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -85,7 +85,7 @@
 #ifdef OPENSSL_NO_ECDH
 int main(int argc, char *argv[])
 {
-    printf("No ECDH support\n");
+    printf("\x4e\x6f\x20\x45\x43\x44\x48\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -103,7 +103,7 @@ static void MS_CALLBACK cb(int p, int n, void *arg);
 # endif
 
 static const char rnd_seed[] =
-    "string to make the random number generator think it has entropy";
+    "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 
 static const int KDF1_SHA1_len = 20;
 static void *KDF1_SHA1(const void *in, size_t inlen, void *out,
@@ -146,10 +146,10 @@ static int test_ecdh_curve(int nid, const char *text, BN_CTX *ctx, BIO *out)
     if ((y_b = BN_new()) == NULL)
         goto err;
 
-    BIO_puts(out, "Testing key generation with ");
+    BIO_puts(out, "\x54\x65\x73\x74\x69\x6e\x67\x20\x6b\x65\x79\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x20\x77\x69\x74\x68\x20");
     BIO_puts(out, text);
 # ifdef NOISY
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 # else
     (void)BIO_flush(out);
 # endif
@@ -172,15 +172,15 @@ static int test_ecdh_curve(int nid, const char *text, BN_CTX *ctx, BIO *out)
     }
 # endif
 # ifdef NOISY
-    BIO_puts(out, "  pri 1=");
+    BIO_puts(out, "\x20\x20\x70\x72\x69\x20\x31\x3d");
     BN_print(out, a->priv_key);
-    BIO_puts(out, "\n  pub 1=");
+    BIO_puts(out, "\xa\x20\x20\x70\x75\x62\x20\x31\x3d");
     BN_print(out, x_a);
-    BIO_puts(out, ",");
+    BIO_puts(out, "\x2c");
     BN_print(out, y_a);
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 # else
-    BIO_printf(out, " .");
+    BIO_printf(out, "\x20\x2e");
     (void)BIO_flush(out);
 # endif
 
@@ -203,15 +203,15 @@ static int test_ecdh_curve(int nid, const char *text, BN_CTX *ctx, BIO *out)
 # endif
 
 # ifdef NOISY
-    BIO_puts(out, "  pri 2=");
+    BIO_puts(out, "\x20\x20\x70\x72\x69\x20\x32\x3d");
     BN_print(out, b->priv_key);
-    BIO_puts(out, "\n  pub 2=");
+    BIO_puts(out, "\xa\x20\x20\x70\x75\x62\x20\x32\x3d");
     BN_print(out, x_b);
-    BIO_puts(out, ",");
+    BIO_puts(out, "\x2c");
     BN_print(out, y_b);
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 # else
-    BIO_printf(out, ".");
+    BIO_printf(out, "\x2e");
     (void)BIO_flush(out);
 # endif
 
@@ -221,14 +221,14 @@ static int test_ecdh_curve(int nid, const char *text, BN_CTX *ctx, BIO *out)
         ECDH_compute_key(abuf, alen, EC_KEY_get0_public_key(b), a, KDF1_SHA1);
 
 # ifdef NOISY
-    BIO_puts(out, "  key1 =");
+    BIO_puts(out, "\x20\x20\x6b\x65\x79\x31\x20\x3d");
     for (i = 0; i < aout; i++) {
-        sprintf(buf, "%02X", abuf[i]);
+        sprintf(buf, "\x25\x30\x32\x58", abuf[i]);
         BIO_puts(out, buf);
     }
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 # else
-    BIO_printf(out, ".");
+    BIO_printf(out, "\x2e");
     (void)BIO_flush(out);
 # endif
 
@@ -238,55 +238,55 @@ static int test_ecdh_curve(int nid, const char *text, BN_CTX *ctx, BIO *out)
         ECDH_compute_key(bbuf, blen, EC_KEY_get0_public_key(a), b, KDF1_SHA1);
 
 # ifdef NOISY
-    BIO_puts(out, "  key2 =");
+    BIO_puts(out, "\x20\x20\x6b\x65\x79\x32\x20\x3d");
     for (i = 0; i < bout; i++) {
-        sprintf(buf, "%02X", bbuf[i]);
+        sprintf(buf, "\x25\x30\x32\x58", bbuf[i]);
         BIO_puts(out, buf);
     }
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 # else
-    BIO_printf(out, ".");
+    BIO_printf(out, "\x2e");
     (void)BIO_flush(out);
 # endif
 
     if ((aout < 4) || (bout != aout) || (memcmp(abuf, bbuf, aout) != 0)) {
 # ifndef NOISY
-        BIO_printf(out, " failed\n\n");
-        BIO_printf(out, "key a:\n");
-        BIO_printf(out, "private key: ");
+        BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa\xa");
+        BIO_printf(out, "\x6b\x65\x79\x20\x61\x3a\xa");
+        BIO_printf(out, "\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x3a\x20");
         BN_print(out, EC_KEY_get0_private_key(a));
-        BIO_printf(out, "\n");
-        BIO_printf(out, "public key (x,y): ");
+        BIO_printf(out, "\xa");
+        BIO_printf(out, "\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x28\x78\x2c\x79\x29\x3a\x20");
         BN_print(out, x_a);
-        BIO_printf(out, ",");
+        BIO_printf(out, "\x2c");
         BN_print(out, y_a);
-        BIO_printf(out, "\nkey b:\n");
-        BIO_printf(out, "private key: ");
+        BIO_printf(out, "\xa\x6b\x65\x79\x20\x62\x3a\xa");
+        BIO_printf(out, "\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x3a\x20");
         BN_print(out, EC_KEY_get0_private_key(b));
-        BIO_printf(out, "\n");
-        BIO_printf(out, "public key (x,y): ");
+        BIO_printf(out, "\xa");
+        BIO_printf(out, "\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x28\x78\x2c\x79\x29\x3a\x20");
         BN_print(out, x_b);
-        BIO_printf(out, ",");
+        BIO_printf(out, "\x2c");
         BN_print(out, y_b);
-        BIO_printf(out, "\n");
-        BIO_printf(out, "generated key a: ");
+        BIO_printf(out, "\xa");
+        BIO_printf(out, "\x67\x65\x6e\x65\x72\x61\x74\x65\x64\x20\x6b\x65\x79\x20\x61\x3a\x20");
         for (i = 0; i < bout; i++) {
-            sprintf(buf, "%02X", bbuf[i]);
+            sprintf(buf, "\x25\x30\x32\x58", bbuf[i]);
             BIO_puts(out, buf);
         }
-        BIO_printf(out, "\n");
-        BIO_printf(out, "generated key b: ");
+        BIO_printf(out, "\xa");
+        BIO_printf(out, "\x67\x65\x6e\x65\x72\x61\x74\x65\x64\x20\x6b\x65\x79\x20\x62\x3a\x20");
         for (i = 0; i < aout; i++) {
-            sprintf(buf, "%02X", abuf[i]);
+            sprintf(buf, "\x25\x30\x32\x58", abuf[i]);
             BIO_puts(out, buf);
         }
-        BIO_printf(out, "\n");
+        BIO_printf(out, "\xa");
 # endif
-        fprintf(stderr, "Error in ECDH routines\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x45\x43\x44\x48\x20\x72\x6f\x75\x74\x69\x6e\x65\x73\xa");
         ret = 0;
     } else {
 # ifndef NOISY
-        BIO_printf(out, " ok\n");
+        BIO_printf(out, "\x20\x6f\x6b\xa");
 # endif
         ret = 1;
     }
@@ -432,7 +432,7 @@ static int ecdh_kat(BIO *out, const char *cname, int nid,
     EC_KEY *key1 = NULL, *key2 = NULL;
     unsigned char *Ztmp = NULL;
     size_t Ztmplen;
-    BIO_puts(out, "Testing ECDH shared secret with ");
+    BIO_puts(out, "\x54\x65\x73\x74\x69\x6e\x67\x20\x45\x43\x44\x48\x20\x73\x68\x61\x72\x65\x64\x20\x73\x65\x63\x72\x65\x74\x20\x77\x69\x74\x68\x20");
     BIO_puts(out, cname);
     key1 = mk_eckey(nid, k1, k1_len);
     key2 = mk_eckey(nid, k2, k2_len);
@@ -462,9 +462,9 @@ static int ecdh_kat(BIO *out, const char *cname, int nid,
     if (Ztmp)
         OPENSSL_free(Ztmp);
     if (rv)
-        BIO_puts(out, " ok\n");
+        BIO_puts(out, "\x20\x6f\x6b\xa");
     else {
-        fprintf(stderr, "Error in ECDH routines\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x45\x43\x44\x48\x20\x72\x6f\x75\x74\x69\x6e\x65\x73\xa");
         ERR_print_errors_fp(stderr);
     }
     return rv;
@@ -502,45 +502,45 @@ int main(int argc, char *argv[])
 
     /* NIST PRIME CURVES TESTS */
     if (!test_ecdh_curve
-        (NID_X9_62_prime192v1, "NIST Prime-Curve P-192", ctx, out))
+        (NID_X9_62_prime192v1, "\x4e\x49\x53\x54\x20\x50\x72\x69\x6d\x65\x2d\x43\x75\x72\x76\x65\x20\x50\x2d\x31\x39\x32", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_secp224r1, "NIST Prime-Curve P-224", ctx, out))
+    if (!test_ecdh_curve(NID_secp224r1, "\x4e\x49\x53\x54\x20\x50\x72\x69\x6d\x65\x2d\x43\x75\x72\x76\x65\x20\x50\x2d\x32\x32\x34", ctx, out))
         goto err;
     if (!test_ecdh_curve
-        (NID_X9_62_prime256v1, "NIST Prime-Curve P-256", ctx, out))
+        (NID_X9_62_prime256v1, "\x4e\x49\x53\x54\x20\x50\x72\x69\x6d\x65\x2d\x43\x75\x72\x76\x65\x20\x50\x2d\x32\x35\x36", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_secp384r1, "NIST Prime-Curve P-384", ctx, out))
+    if (!test_ecdh_curve(NID_secp384r1, "\x4e\x49\x53\x54\x20\x50\x72\x69\x6d\x65\x2d\x43\x75\x72\x76\x65\x20\x50\x2d\x33\x38\x34", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_secp521r1, "NIST Prime-Curve P-521", ctx, out))
+    if (!test_ecdh_curve(NID_secp521r1, "\x4e\x49\x53\x54\x20\x50\x72\x69\x6d\x65\x2d\x43\x75\x72\x76\x65\x20\x50\x2d\x35\x32\x31", ctx, out))
         goto err;
 # ifndef OPENSSL_NO_EC2M
     /* NIST BINARY CURVES TESTS */
-    if (!test_ecdh_curve(NID_sect163k1, "NIST Binary-Curve K-163", ctx, out))
+    if (!test_ecdh_curve(NID_sect163k1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x4b\x2d\x31\x36\x33", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect163r2, "NIST Binary-Curve B-163", ctx, out))
+    if (!test_ecdh_curve(NID_sect163r2, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x42\x2d\x31\x36\x33", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect233k1, "NIST Binary-Curve K-233", ctx, out))
+    if (!test_ecdh_curve(NID_sect233k1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x4b\x2d\x32\x33\x33", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect233r1, "NIST Binary-Curve B-233", ctx, out))
+    if (!test_ecdh_curve(NID_sect233r1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x42\x2d\x32\x33\x33", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect283k1, "NIST Binary-Curve K-283", ctx, out))
+    if (!test_ecdh_curve(NID_sect283k1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x4b\x2d\x32\x38\x33", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect283r1, "NIST Binary-Curve B-283", ctx, out))
+    if (!test_ecdh_curve(NID_sect283r1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x42\x2d\x32\x38\x33", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect409k1, "NIST Binary-Curve K-409", ctx, out))
+    if (!test_ecdh_curve(NID_sect409k1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x4b\x2d\x34\x30\x39", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect409r1, "NIST Binary-Curve B-409", ctx, out))
+    if (!test_ecdh_curve(NID_sect409r1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x42\x2d\x34\x30\x39", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect571k1, "NIST Binary-Curve K-571", ctx, out))
+    if (!test_ecdh_curve(NID_sect571k1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x4b\x2d\x35\x37\x31", ctx, out))
         goto err;
-    if (!test_ecdh_curve(NID_sect571r1, "NIST Binary-Curve B-571", ctx, out))
+    if (!test_ecdh_curve(NID_sect571r1, "\x4e\x49\x53\x54\x20\x42\x69\x6e\x61\x72\x79\x2d\x43\x75\x72\x76\x65\x20\x42\x2d\x35\x37\x31", ctx, out))
         goto err;
 # endif
-    if (!test_ecdh_kat(out, "Brainpool Prime-Curve brainpoolP256r1", 256))
+    if (!test_ecdh_kat(out, "\x42\x72\x61\x69\x6e\x70\x6f\x6f\x6c\x20\x50\x72\x69\x6d\x65\x2d\x43\x75\x72\x76\x65\x20\x62\x72\x61\x69\x6e\x70\x6f\x6f\x6c\x50\x32\x35\x36\x72\x31", 256))
         goto err;
-    if (!test_ecdh_kat(out, "Brainpool Prime-Curve brainpoolP384r1", 384))
+    if (!test_ecdh_kat(out, "\x42\x72\x61\x69\x6e\x70\x6f\x6f\x6c\x20\x50\x72\x69\x6d\x65\x2d\x43\x75\x72\x76\x65\x20\x62\x72\x61\x69\x6e\x70\x6f\x6f\x6c\x50\x33\x38\x34\x72\x31", 384))
         goto err;
-    if (!test_ecdh_kat(out, "Brainpool Prime-Curve brainpoolP512r1", 512))
+    if (!test_ecdh_kat(out, "\x42\x72\x61\x69\x6e\x70\x6f\x6f\x6c\x20\x50\x72\x69\x6d\x65\x2d\x43\x75\x72\x76\x65\x20\x62\x72\x61\x69\x6e\x70\x6f\x6f\x6c\x50\x35\x31\x32\x72\x31", 512))
         goto err;
 
     ret = 0;
@@ -560,16 +560,16 @@ int main(int argc, char *argv[])
 # if 0
 static void MS_CALLBACK cb(int p, int n, void *arg)
 {
-    char c = '*';
+    char c = '\x2a';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     BIO_write((BIO *)arg, &c, 1);
     (void)BIO_flush((BIO *)arg);
 #  ifdef LINT

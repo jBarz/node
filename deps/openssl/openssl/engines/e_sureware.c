@@ -78,7 +78,7 @@
 #   include "vendor_defns/sureware.h"
 #  endif
 
-#  define SUREWARE_LIB_NAME "sureware engine"
+#  define SUREWARE_LIB_NAME "\x73\x75\x72\x65\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "e_sureware_err.c"
 
 static int surewarehk_ctrl(ENGINE *e, int cmd, long i, void *p,
@@ -127,7 +127,7 @@ static int surewarehk_mod_exp_mont(BIGNUM *r, const BIGNUM *a,
 
 /* Our internal RSA_METHOD that we provide pointers to */
 static RSA_METHOD surewarehk_rsa = {
-    "SureWare RSA method",
+    "\x53\x75\x72\x65\x57\x61\x72\x65\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* pub_enc */
     NULL,                       /* pub_dec */
     surewarehk_rsa_sign,        /* our rsa_sign is OpenSSL priv_enc */
@@ -155,7 +155,7 @@ static int surewarehk_modexp_dh(const DH *dh, BIGNUM *r, const BIGNUM *a,
 }
 
 static DH_METHOD surewarehk_dh = {
-    "SureWare DH method",
+    "\x53\x75\x72\x65\x57\x61\x72\x65\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* gen_key */
     NULL,                       /* agree, */
     surewarehk_modexp_dh,       /* dh mod exp */
@@ -205,7 +205,7 @@ static int surewarehk_dsa_mod_exp(DSA *dsa, BIGNUM *rr, BIGNUM *a1,
 }
 
 static DSA_METHOD surewarehk_dsa = {
-    "SureWare DSA method",
+    "\x53\x75\x72\x65\x57\x61\x72\x65\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     surewarehk_dsa_do_sign,
     NULL,                       /* sign setup */
     NULL,                       /* verify, */
@@ -220,8 +220,8 @@ static DSA_METHOD surewarehk_dsa = {
 };
 #  endif
 
-static const char *engine_sureware_id = "sureware";
-static const char *engine_sureware_name = "SureWare hardware engine support";
+static const char *engine_sureware_id = "\x73\x75\x72\x65\x77\x61\x72\x65";
+static const char *engine_sureware_name = "\x53\x75\x72\x65\x57\x61\x72\x65\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /* Now, to our own code */
 
@@ -373,22 +373,22 @@ static SureWareHook_Dsa_Sign_t *p_surewarehk_Dsa_Sign = NULL;
 static SureWareHook_Mod_Exp_t *p_surewarehk_Mod_Exp = NULL;
 
 /* Used in the DSO operations. */
-static const char *surewarehk_LIBNAME = "SureWareHook";
-static const char *n_surewarehk_Init = "SureWareHook_Init";
-static const char *n_surewarehk_Finish = "SureWareHook_Finish";
-static const char *n_surewarehk_Rand_Bytes = "SureWareHook_Rand_Bytes";
-static const char *n_surewarehk_Rand_Seed = "SureWareHook_Rand_Seed";
-static const char *n_surewarehk_Load_Privkey = "SureWareHook_Load_Privkey";
-static const char *n_surewarehk_Info_Pubkey = "SureWareHook_Info_Pubkey";
+static const char *surewarehk_LIBNAME = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b";
+static const char *n_surewarehk_Init = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x49\x6e\x69\x74";
+static const char *n_surewarehk_Finish = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x46\x69\x6e\x69\x73\x68";
+static const char *n_surewarehk_Rand_Bytes = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x52\x61\x6e\x64\x5f\x42\x79\x74\x65\x73";
+static const char *n_surewarehk_Rand_Seed = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x52\x61\x6e\x64\x5f\x53\x65\x65\x64";
+static const char *n_surewarehk_Load_Privkey = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x4c\x6f\x61\x64\x5f\x50\x72\x69\x76\x6b\x65\x79";
+static const char *n_surewarehk_Info_Pubkey = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x49\x6e\x66\x6f\x5f\x50\x75\x62\x6b\x65\x79";
 static const char *n_surewarehk_Load_Rsa_Pubkey =
-    "SureWareHook_Load_Rsa_Pubkey";
+    "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x4c\x6f\x61\x64\x5f\x52\x73\x61\x5f\x50\x75\x62\x6b\x65\x79";
 static const char *n_surewarehk_Load_Dsa_Pubkey =
-    "SureWareHook_Load_Dsa_Pubkey";
-static const char *n_surewarehk_Free = "SureWareHook_Free";
-static const char *n_surewarehk_Rsa_Priv_Dec = "SureWareHook_Rsa_Priv_Dec";
-static const char *n_surewarehk_Rsa_Sign = "SureWareHook_Rsa_Sign";
-static const char *n_surewarehk_Dsa_Sign = "SureWareHook_Dsa_Sign";
-static const char *n_surewarehk_Mod_Exp = "SureWareHook_Mod_Exp";
+    "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x4c\x6f\x61\x64\x5f\x44\x73\x61\x5f\x50\x75\x62\x6b\x65\x79";
+static const char *n_surewarehk_Free = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x46\x72\x65\x65";
+static const char *n_surewarehk_Rsa_Priv_Dec = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x52\x73\x61\x5f\x50\x72\x69\x76\x5f\x44\x65\x63";
+static const char *n_surewarehk_Rsa_Sign = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x52\x73\x61\x5f\x53\x69\x67\x6e";
+static const char *n_surewarehk_Dsa_Sign = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x44\x73\x61\x5f\x53\x69\x67\x6e";
+static const char *n_surewarehk_Mod_Exp = "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x5f\x4d\x6f\x64\x5f\x45\x78\x70";
 static BIO *logstream = NULL;
 
 /*
@@ -454,7 +454,7 @@ static int surewarehk_destroy(ENGINE *e)
 /* (de)initialisation functions. */
 static int surewarehk_init(ENGINE *e)
 {
-    char msg[64] = "ENGINE_init";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x69\x6e\x69\x74";
     SureWareHook_Init_t *p1 = NULL;
     SureWareHook_Finish_t *p2 = NULL;
     SureWareHook_Rand_Bytes_t *p3 = NULL;
@@ -554,13 +554,13 @@ static int surewarehk_init(ENGINE *e)
 #  ifndef OPENSSL_NO_RSA
     if (rsaHndidx == -1)
         rsaHndidx = RSA_get_ex_new_index(0,
-                                         "SureWareHook RSA key handle",
+                                         "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x20\x52\x53\x41\x20\x6b\x65\x79\x20\x68\x61\x6e\x64\x6c\x65",
                                          NULL, NULL, surewarehk_ex_free);
 #  endif
 #  ifndef OPENSSL_NO_DSA
     if (dsaHndidx == -1)
         dsaHndidx = DSA_get_ex_new_index(0,
-                                         "SureWareHook DSA key handle",
+                                         "\x53\x75\x72\x65\x57\x61\x72\x65\x48\x6f\x6f\x6b\x20\x44\x53\x41\x20\x6b\x65\x79\x20\x68\x61\x6e\x64\x6c\x65",
                                          NULL, NULL, surewarehk_ex_free);
 #  endif
 
@@ -638,7 +638,7 @@ static void surewarehk_error_handling(char *const msg, int func, int ret)
         ENGINEerr(func, SUREWARE_R_REQUEST_FAILED);
         break;
     case 1:                    /* nothing */
-        msg[0] = '\0';
+        msg[0] = '\x0';
     }
     if (*msg) {
         ERR_add_error_data(1, msg);
@@ -653,7 +653,7 @@ static void surewarehk_error_handling(char *const msg, int func, int ret)
 static int surewarehk_rand_bytes(unsigned char *buf, int num)
 {
     int ret = 0;
-    char msg[64] = "ENGINE_rand_bytes";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x72\x61\x6e\x64\x5f\x62\x79\x74\x65\x73";
     if (!p_surewarehk_Rand_Bytes) {
         SUREWAREerr(SUREWARE_F_SUREWAREHK_RAND_BYTES,
                     ENGINE_R_NOT_INITIALISED);
@@ -667,7 +667,7 @@ static int surewarehk_rand_bytes(unsigned char *buf, int num)
 static void surewarehk_rand_seed(const void *buf, int num)
 {
     int ret = 0;
-    char msg[64] = "ENGINE_rand_seed";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x72\x61\x6e\x64\x5f\x73\x65\x65\x64";
     if (!p_surewarehk_Rand_Seed) {
         SUREWAREerr(SUREWARE_F_SUREWAREHK_RAND_SEED,
                     ENGINE_R_NOT_INITIALISED);
@@ -693,7 +693,7 @@ static EVP_PKEY *sureware_load_public(ENGINE *e, const char *key_id,
 #  ifndef OPENSSL_NO_DSA
     DSA *dsatmp = NULL;
 #  endif
-    char msg[64] = "sureware_load_public";
+    char msg[64] = "\x73\x75\x72\x65\x77\x61\x72\x65\x5f\x6c\x6f\x61\x64\x5f\x70\x75\x62\x6c\x69\x63";
     int ret = 0;
     if (!p_surewarehk_Load_Rsa_Pubkey || !p_surewarehk_Load_Dsa_Pubkey) {
         SUREWAREerr(SUREWARE_F_SUREWARE_LOAD_PUBLIC,
@@ -822,7 +822,7 @@ static EVP_PKEY *surewarehk_load_privkey(ENGINE *e, const char *key_id,
     unsigned long el = 0;
     char *hptr = NULL;
     char keytype = 0;
-    char msg[64] = "ENGINE_load_privkey";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x6c\x6f\x61\x64\x5f\x70\x72\x69\x76\x6b\x65\x79";
 
     if (!p_surewarehk_Load_Privkey) {
         SUREWAREerr(SUREWARE_F_SUREWAREHK_LOAD_PRIVKEY,
@@ -848,7 +848,7 @@ static EVP_PKEY *surewarehk_load_pubkey(ENGINE *e, const char *key_id,
     unsigned long el = 0;
     char *hptr = NULL;
     char keytype = 0;
-    char msg[64] = "ENGINE_load_pubkey";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x6c\x6f\x61\x64\x5f\x70\x75\x62\x6b\x65\x79";
 
     if (!p_surewarehk_Info_Pubkey) {
         SUREWAREerr(SUREWARE_F_SUREWAREHK_LOAD_PUBKEY,
@@ -905,7 +905,7 @@ static int surewarehk_rsa_priv_dec(int flen, const unsigned char *from,
 {
     int ret = 0, tlen;
     char *buf = NULL, *hptr = NULL;
-    char msg[64] = "ENGINE_rsa_priv_dec";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x72\x73\x61\x5f\x70\x72\x69\x76\x5f\x64\x65\x63";
     if (!p_surewarehk_Rsa_Priv_Dec) {
         SUREWAREerr(SUREWARE_F_SUREWAREHK_RSA_PRIV_DEC,
                     ENGINE_R_NOT_INITIALISED);
@@ -986,7 +986,7 @@ static int surewarehk_rsa_sign(int flen, const unsigned char *from,
 {
     int ret = 0, tlen;
     char *hptr = NULL;
-    char msg[64] = "ENGINE_rsa_sign";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x72\x73\x61\x5f\x73\x69\x67\x6e";
     if (!p_surewarehk_Rsa_Sign) {
         SUREWAREerr(SUREWARE_F_SUREWAREHK_RSA_SIGN, ENGINE_R_NOT_INITIALISED);
     }
@@ -1022,7 +1022,7 @@ static DSA_SIG *surewarehk_dsa_do_sign(const unsigned char *from, int flen,
     int ret = 0;
     char *hptr = NULL;
     DSA_SIG *psign = NULL;
-    char msg[64] = "ENGINE_dsa_do_sign";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x64\x73\x61\x5f\x64\x6f\x5f\x73\x69\x67\x6e";
     if (!p_surewarehk_Dsa_Sign) {
         SUREWAREerr(SUREWARE_F_SUREWAREHK_DSA_DO_SIGN,
                     ENGINE_R_NOT_INITIALISED);
@@ -1072,7 +1072,7 @@ static int surewarehk_modexp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
                              const BIGNUM *m, BN_CTX *ctx)
 {
     int ret = 0;
-    char msg[64] = "ENGINE_modexp";
+    char msg[64] = "\x45\x4e\x47\x49\x4e\x45\x5f\x6d\x6f\x64\x65\x78\x70";
     if (!p_surewarehk_Mod_Exp) {
         SUREWAREerr(SUREWARE_F_SUREWAREHK_MODEXP, ENGINE_R_NOT_INITIALISED);
     } else if (r) {

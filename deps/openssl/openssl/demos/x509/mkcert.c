@@ -48,16 +48,16 @@ int main(int argc, char **argv)
 
 static void callback(int p, int n, void *arg)
 {
-    char c = 'B';
+    char c = '\x42';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     fputc(c, stderr);
 }
 
@@ -102,9 +102,9 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
      * string type and performing checks on its length. Normally we'd check
      * the return value for errors...
      */
-    X509_NAME_add_entry_by_txt(name, "C", MBSTRING_ASC, "UK", -1, -1, 0);
-    X509_NAME_add_entry_by_txt(name, "CN",
-                               MBSTRING_ASC, "OpenSSL Group", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "\x43", MBSTRING_ASC, "\x55\x4b", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "\x43\x4e",
+                               MBSTRING_ASC, "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x47\x72\x6f\x75\x70", -1, -1, 0);
 
     /*
      * Its self signed so set the issuer name to be the same as the subject.
@@ -112,23 +112,23 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
     X509_set_issuer_name(x, name);
 
     /* Add various extensions: standard extensions */
-    add_ext(x, NID_basic_constraints, "critical,CA:TRUE");
-    add_ext(x, NID_key_usage, "critical,keyCertSign,cRLSign");
+    add_ext(x, NID_basic_constraints, "\x63\x72\x69\x74\x69\x63\x61\x6c\x2c\x43\x41\x3a\x54\x52\x55\x45");
+    add_ext(x, NID_key_usage, "\x63\x72\x69\x74\x69\x63\x61\x6c\x2c\x6b\x65\x79\x43\x65\x72\x74\x53\x69\x67\x6e\x2c\x63\x52\x4c\x53\x69\x67\x6e");
 
-    add_ext(x, NID_subject_key_identifier, "hash");
+    add_ext(x, NID_subject_key_identifier, "\x68\x61\x73\x68");
 
     /* Some Netscape specific extensions */
-    add_ext(x, NID_netscape_cert_type, "sslCA");
+    add_ext(x, NID_netscape_cert_type, "\x73\x73\x6c\x43\x41");
 
-    add_ext(x, NID_netscape_comment, "example comment extension");
+    add_ext(x, NID_netscape_comment, "\x65\x78\x61\x6d\x70\x6c\x65\x20\x63\x6f\x6d\x6d\x65\x6e\x74\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e");
 
 #ifdef CUSTOM_EXT
     /* Maybe even add our own extension based on existing */
     {
         int nid;
-        nid = OBJ_create("1.2.3.4", "MyAlias", "My Test Alias Extension");
+        nid = OBJ_create("\x31\x2e\x32\x2e\x33\x2e\x34", "\x4d\x79\x41\x6c\x69\x61\x73", "\x4d\x79\x20\x54\x65\x73\x74\x20\x41\x6c\x69\x61\x73\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e");
         X509V3_EXT_add_alias(nid, NID_netscape_comment);
-        add_ext(x, nid, "example comment alias");
+        add_ext(x, nid, "\x65\x78\x61\x6d\x70\x6c\x65\x20\x63\x6f\x6d\x6d\x65\x6e\x74\x20\x61\x6c\x69\x61\x73");
     }
 #endif
 

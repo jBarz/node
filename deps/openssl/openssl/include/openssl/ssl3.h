@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -208,70 +208,70 @@ extern "C" {
 # define SSL3_CK_KRB5_RC2_40_CBC_MD5             0x0300002A
 # define SSL3_CK_KRB5_RC4_40_MD5                 0x0300002B
 
-# define SSL3_TXT_RSA_NULL_MD5                   "NULL-MD5"
-# define SSL3_TXT_RSA_NULL_SHA                   "NULL-SHA"
-# define SSL3_TXT_RSA_RC4_40_MD5                 "EXP-RC4-MD5"
-# define SSL3_TXT_RSA_RC4_128_MD5                "RC4-MD5"
-# define SSL3_TXT_RSA_RC4_128_SHA                "RC4-SHA"
-# define SSL3_TXT_RSA_RC2_40_MD5                 "EXP-RC2-CBC-MD5"
-# define SSL3_TXT_RSA_IDEA_128_SHA               "IDEA-CBC-SHA"
-# define SSL3_TXT_RSA_DES_40_CBC_SHA             "EXP-DES-CBC-SHA"
-# define SSL3_TXT_RSA_DES_64_CBC_SHA             "DES-CBC-SHA"
-# define SSL3_TXT_RSA_DES_192_CBC3_SHA           "DES-CBC3-SHA"
+# define SSL3_TXT_RSA_NULL_MD5                   "\x4e\x55\x4c\x4c\x2d\x4d\x44\x35"
+# define SSL3_TXT_RSA_NULL_SHA                   "\x4e\x55\x4c\x4c\x2d\x53\x48\x41"
+# define SSL3_TXT_RSA_RC4_40_MD5                 "\x45\x58\x50\x2d\x52\x43\x34\x2d\x4d\x44\x35"
+# define SSL3_TXT_RSA_RC4_128_MD5                "\x52\x43\x34\x2d\x4d\x44\x35"
+# define SSL3_TXT_RSA_RC4_128_SHA                "\x52\x43\x34\x2d\x53\x48\x41"
+# define SSL3_TXT_RSA_RC2_40_MD5                 "\x45\x58\x50\x2d\x52\x43\x32\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define SSL3_TXT_RSA_IDEA_128_SHA               "\x49\x44\x45\x41\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_RSA_DES_40_CBC_SHA             "\x45\x58\x50\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_RSA_DES_64_CBC_SHA             "\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_RSA_DES_192_CBC3_SHA           "\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
 
-# define SSL3_TXT_DH_DSS_DES_40_CBC_SHA          "EXP-DH-DSS-DES-CBC-SHA"
-# define SSL3_TXT_DH_DSS_DES_64_CBC_SHA          "DH-DSS-DES-CBC-SHA"
-# define SSL3_TXT_DH_DSS_DES_192_CBC3_SHA        "DH-DSS-DES-CBC3-SHA"
-# define SSL3_TXT_DH_RSA_DES_40_CBC_SHA          "EXP-DH-RSA-DES-CBC-SHA"
-# define SSL3_TXT_DH_RSA_DES_64_CBC_SHA          "DH-RSA-DES-CBC-SHA"
-# define SSL3_TXT_DH_RSA_DES_192_CBC3_SHA        "DH-RSA-DES-CBC3-SHA"
+# define SSL3_TXT_DH_DSS_DES_40_CBC_SHA          "\x45\x58\x50\x2d\x44\x48\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_DH_DSS_DES_64_CBC_SHA          "\x44\x48\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_DH_DSS_DES_192_CBC3_SHA        "\x44\x48\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define SSL3_TXT_DH_RSA_DES_40_CBC_SHA          "\x45\x58\x50\x2d\x44\x48\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_DH_RSA_DES_64_CBC_SHA          "\x44\x48\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_DH_RSA_DES_192_CBC3_SHA        "\x44\x48\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
 
-# define SSL3_TXT_DHE_DSS_DES_40_CBC_SHA         "EXP-DHE-DSS-DES-CBC-SHA"
-# define SSL3_TXT_DHE_DSS_DES_64_CBC_SHA         "DHE-DSS-DES-CBC-SHA"
-# define SSL3_TXT_DHE_DSS_DES_192_CBC3_SHA       "DHE-DSS-DES-CBC3-SHA"
-# define SSL3_TXT_DHE_RSA_DES_40_CBC_SHA         "EXP-DHE-RSA-DES-CBC-SHA"
-# define SSL3_TXT_DHE_RSA_DES_64_CBC_SHA         "DHE-RSA-DES-CBC-SHA"
-# define SSL3_TXT_DHE_RSA_DES_192_CBC3_SHA       "DHE-RSA-DES-CBC3-SHA"
+# define SSL3_TXT_DHE_DSS_DES_40_CBC_SHA         "\x45\x58\x50\x2d\x44\x48\x45\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_DHE_DSS_DES_64_CBC_SHA         "\x44\x48\x45\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_DHE_DSS_DES_192_CBC3_SHA       "\x44\x48\x45\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define SSL3_TXT_DHE_RSA_DES_40_CBC_SHA         "\x45\x58\x50\x2d\x44\x48\x45\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_DHE_RSA_DES_64_CBC_SHA         "\x44\x48\x45\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_DHE_RSA_DES_192_CBC3_SHA       "\x44\x48\x45\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
 
 /*
  * This next block of six "EDH" labels is for backward compatibility with
  * older versions of OpenSSL.  New code should use the six "DHE" labels above
  * instead:
  */
-# define SSL3_TXT_EDH_DSS_DES_40_CBC_SHA         "EXP-EDH-DSS-DES-CBC-SHA"
-# define SSL3_TXT_EDH_DSS_DES_64_CBC_SHA         "EDH-DSS-DES-CBC-SHA"
-# define SSL3_TXT_EDH_DSS_DES_192_CBC3_SHA       "EDH-DSS-DES-CBC3-SHA"
-# define SSL3_TXT_EDH_RSA_DES_40_CBC_SHA         "EXP-EDH-RSA-DES-CBC-SHA"
-# define SSL3_TXT_EDH_RSA_DES_64_CBC_SHA         "EDH-RSA-DES-CBC-SHA"
-# define SSL3_TXT_EDH_RSA_DES_192_CBC3_SHA       "EDH-RSA-DES-CBC3-SHA"
+# define SSL3_TXT_EDH_DSS_DES_40_CBC_SHA         "\x45\x58\x50\x2d\x45\x44\x48\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_EDH_DSS_DES_64_CBC_SHA         "\x45\x44\x48\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_EDH_DSS_DES_192_CBC3_SHA       "\x45\x44\x48\x2d\x44\x53\x53\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define SSL3_TXT_EDH_RSA_DES_40_CBC_SHA         "\x45\x58\x50\x2d\x45\x44\x48\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_EDH_RSA_DES_64_CBC_SHA         "\x45\x44\x48\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_EDH_RSA_DES_192_CBC3_SHA       "\x45\x44\x48\x2d\x52\x53\x41\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
 
-# define SSL3_TXT_ADH_RC4_40_MD5                 "EXP-ADH-RC4-MD5"
-# define SSL3_TXT_ADH_RC4_128_MD5                "ADH-RC4-MD5"
-# define SSL3_TXT_ADH_DES_40_CBC_SHA             "EXP-ADH-DES-CBC-SHA"
-# define SSL3_TXT_ADH_DES_64_CBC_SHA             "ADH-DES-CBC-SHA"
-# define SSL3_TXT_ADH_DES_192_CBC_SHA            "ADH-DES-CBC3-SHA"
+# define SSL3_TXT_ADH_RC4_40_MD5                 "\x45\x58\x50\x2d\x41\x44\x48\x2d\x52\x43\x34\x2d\x4d\x44\x35"
+# define SSL3_TXT_ADH_RC4_128_MD5                "\x41\x44\x48\x2d\x52\x43\x34\x2d\x4d\x44\x35"
+# define SSL3_TXT_ADH_DES_40_CBC_SHA             "\x45\x58\x50\x2d\x41\x44\x48\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_ADH_DES_64_CBC_SHA             "\x41\x44\x48\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_ADH_DES_192_CBC_SHA            "\x41\x44\x48\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
 
 # if 0
-#  define SSL3_TXT_FZA_DMS_NULL_SHA               "FZA-NULL-SHA"
-#  define SSL3_TXT_FZA_DMS_FZA_SHA                "FZA-FZA-CBC-SHA"
-#  define SSL3_TXT_FZA_DMS_RC4_SHA                "FZA-RC4-SHA"
+#  define SSL3_TXT_FZA_DMS_NULL_SHA               "\x46\x5a\x41\x2d\x4e\x55\x4c\x4c\x2d\x53\x48\x41"
+#  define SSL3_TXT_FZA_DMS_FZA_SHA                "\x46\x5a\x41\x2d\x46\x5a\x41\x2d\x43\x42\x43\x2d\x53\x48\x41"
+#  define SSL3_TXT_FZA_DMS_RC4_SHA                "\x46\x5a\x41\x2d\x52\x43\x34\x2d\x53\x48\x41"
 # endif
 
-# define SSL3_TXT_KRB5_DES_64_CBC_SHA            "KRB5-DES-CBC-SHA"
-# define SSL3_TXT_KRB5_DES_192_CBC3_SHA          "KRB5-DES-CBC3-SHA"
-# define SSL3_TXT_KRB5_RC4_128_SHA               "KRB5-RC4-SHA"
-# define SSL3_TXT_KRB5_IDEA_128_CBC_SHA          "KRB5-IDEA-CBC-SHA"
-# define SSL3_TXT_KRB5_DES_64_CBC_MD5            "KRB5-DES-CBC-MD5"
-# define SSL3_TXT_KRB5_DES_192_CBC3_MD5          "KRB5-DES-CBC3-MD5"
-# define SSL3_TXT_KRB5_RC4_128_MD5               "KRB5-RC4-MD5"
-# define SSL3_TXT_KRB5_IDEA_128_CBC_MD5          "KRB5-IDEA-CBC-MD5"
+# define SSL3_TXT_KRB5_DES_64_CBC_SHA            "\x4b\x52\x42\x35\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_KRB5_DES_192_CBC3_SHA          "\x4b\x52\x42\x35\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define SSL3_TXT_KRB5_RC4_128_SHA               "\x4b\x52\x42\x35\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define SSL3_TXT_KRB5_IDEA_128_CBC_SHA          "\x4b\x52\x42\x35\x2d\x49\x44\x45\x41\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_KRB5_DES_64_CBC_MD5            "\x4b\x52\x42\x35\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define SSL3_TXT_KRB5_DES_192_CBC3_MD5          "\x4b\x52\x42\x35\x2d\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x4d\x44\x35"
+# define SSL3_TXT_KRB5_RC4_128_MD5               "\x4b\x52\x42\x35\x2d\x52\x43\x34\x2d\x4d\x44\x35"
+# define SSL3_TXT_KRB5_IDEA_128_CBC_MD5          "\x4b\x52\x42\x35\x2d\x49\x44\x45\x41\x2d\x43\x42\x43\x2d\x4d\x44\x35"
 
-# define SSL3_TXT_KRB5_DES_40_CBC_SHA            "EXP-KRB5-DES-CBC-SHA"
-# define SSL3_TXT_KRB5_RC2_40_CBC_SHA            "EXP-KRB5-RC2-CBC-SHA"
-# define SSL3_TXT_KRB5_RC4_40_SHA                "EXP-KRB5-RC4-SHA"
-# define SSL3_TXT_KRB5_DES_40_CBC_MD5            "EXP-KRB5-DES-CBC-MD5"
-# define SSL3_TXT_KRB5_RC2_40_CBC_MD5            "EXP-KRB5-RC2-CBC-MD5"
-# define SSL3_TXT_KRB5_RC4_40_MD5                "EXP-KRB5-RC4-MD5"
+# define SSL3_TXT_KRB5_DES_40_CBC_SHA            "\x45\x58\x50\x2d\x4b\x52\x42\x35\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_KRB5_RC2_40_CBC_SHA            "\x45\x58\x50\x2d\x4b\x52\x42\x35\x2d\x52\x43\x32\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL3_TXT_KRB5_RC4_40_SHA                "\x45\x58\x50\x2d\x4b\x52\x42\x35\x2d\x52\x43\x34\x2d\x53\x48\x41"
+# define SSL3_TXT_KRB5_DES_40_CBC_MD5            "\x45\x58\x50\x2d\x4b\x52\x42\x35\x2d\x44\x45\x53\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define SSL3_TXT_KRB5_RC2_40_CBC_MD5            "\x45\x58\x50\x2d\x4b\x52\x42\x35\x2d\x52\x43\x32\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define SSL3_TXT_KRB5_RC4_40_MD5                "\x45\x58\x50\x2d\x4b\x52\x42\x35\x2d\x52\x43\x34\x2d\x4d\x44\x35"
 
 # define SSL3_SSL_SESSION_ID_LENGTH              32
 # define SSL3_MAX_SSL_SESSION_ID_LENGTH          32
@@ -295,7 +295,7 @@ extern "C" {
 #  define SSL3_ALIGN_PAYLOAD                     8
 # else
 #  if (SSL3_ALIGN_PAYLOAD&(SSL3_ALIGN_PAYLOAD-1))!=0
-#   error "insane SSL3_ALIGN_PAYLOAD"
+#   error "\x69\x6e\x73\x61\x6e\x65\x20\x53\x53\x4c\x33\x5f\x41\x4c\x49\x47\x4e\x5f\x50\x41\x59\x4c\x4f\x41\x44"
 #   undef SSL3_ALIGN_PAYLOAD
 #  endif
 # endif

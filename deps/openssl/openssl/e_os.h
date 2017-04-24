@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -74,7 +74,7 @@ extern "C" {
 /* Used to checking reference counts, most while doing perl5 stuff :-) */
 # ifdef REF_PRINT
 #  undef REF_PRINT
-#  define REF_PRINT(a,b)  fprintf(stderr,"%08X:%4d:%s\n",(int)b,b->references,a)
+#  define REF_PRINT(a,b)  fprintf(stderr,"\x25\x30\x38\x58\x3a\x25\x34\x64\x3a\x25\x73\xa",(int)b,b->references,a)
 # endif
 
 # ifndef DEVRANDOM
@@ -82,7 +82,7 @@ extern "C" {
  * set this to a comma-separated list of 'random' device files to try out. My
  * default, we will try to read at least one of these files
  */
-#  define DEVRANDOM "/dev/urandom","/dev/random","/dev/srandom"
+#  define DEVRANDOM "\x2f\x64\x65\x76\x2f\x75\x72\x61\x6e\x64\x6f\x6d","\x2f\x64\x65\x76\x2f\x72\x61\x6e\x64\x6f\x6d","\x2f\x64\x65\x76\x2f\x73\x72\x61\x6e\x64\x6f\x6d"
 # endif
 # ifndef DEVRANDOM_EGD
 /*
@@ -90,7 +90,7 @@ extern "C" {
  * sockets will be tried in the order listed in case accessing the device
  * files listed in DEVRANDOM did not return enough entropy.
  */
-#  define DEVRANDOM_EGD "/var/run/egd-pool","/dev/egd-pool","/etc/egd-pool","/etc/entropy"
+#  define DEVRANDOM_EGD "\x2f\x76\x61\x72\x2f\x72\x75\x6e\x2f\x65\x67\x64\x2d\x70\x6f\x6f\x6c","\x2f\x64\x65\x76\x2f\x65\x67\x64\x2d\x70\x6f\x6f\x6c","\x2f\x65\x74\x63\x2f\x65\x67\x64\x2d\x70\x6f\x6f\x6c","\x2f\x65\x74\x63\x2f\x65\x6e\x74\x72\x6f\x70\x79"
 # endif
 
 # if defined(OPENSSL_SYS_VXWORKS)
@@ -243,7 +243,7 @@ extern "C" {
 #   define _O_TEXT O_TEXT
 #   define _O_BINARY O_BINARY
 #   undef DEVRANDOM
-#   define DEVRANDOM "/dev/urandom\x24"
+#   define DEVRANDOM "\x2f\x64\x65\x76\x2f\x75\x72\x61\x6e\x64\x6f\x6d\x24"
 #  endif                        /* __DJGPP__ */
 
 #  ifndef S_IFDIR
@@ -360,7 +360,7 @@ extern FILE *_imp___iob;
 #  endif
 
 #  define EXIT(n) exit(n)
-#  define LIST_SEPARATOR_CHAR ';'
+#  define LIST_SEPARATOR_CHAR '\x3b'
 #  ifndef X_OK
 #   define X_OK        0
 #  endif
@@ -370,14 +370,14 @@ extern FILE *_imp___iob;
 #  ifndef R_OK
 #   define R_OK        4
 #  endif
-#  define OPENSSL_CONF  "openssl.cnf"
+#  define OPENSSL_CONF  "\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x63\x6e\x66"
 #  define SSLEAY_CONF   OPENSSL_CONF
-#  define NUL_DEV       "nul"
-#  define RFILE         ".rnd"
+#  define NUL_DEV       "\x6e\x75\x6c"
+#  define RFILE         "\x2e\x72\x6e\x64"
 #  ifdef OPENSSL_SYS_WINCE
 #   define DEFAULT_HOME  ""
 #  else
-#   define DEFAULT_HOME  "C:"
+#   define DEFAULT_HOME  "\x43\x3a"
 #  endif
 
 /* Avoid Visual Studio 13 GetVersion deprecated problems */
@@ -403,11 +403,11 @@ extern FILE *_imp___iob;
 #   else
 #    include <unixlib.h>
 #   endif
-#   define OPENSSL_CONF        "openssl.cnf"
+#   define OPENSSL_CONF        "\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x63\x6e\x66"
 #   define SSLEAY_CONF         OPENSSL_CONF
-#   define RFILE               ".rnd"
-#   define LIST_SEPARATOR_CHAR ','
-#   define NUL_DEV             "NLA0:"
+#   define RFILE               "\x2e\x72\x6e\x64"
+#   define LIST_SEPARATOR_CHAR '\x2c'
+#   define NUL_DEV             "\x4e\x4c\x41\x30\x3a"
   /* We don't have any well-defined random devices on VMS, yet... */
 #   undef DEVRANDOM
   /*-
@@ -453,11 +453,11 @@ extern int kbhit(void);
 #   define _kbhit kbhit
 #   define _O_TEXT O_TEXT
 #   define _O_BINARY O_BINARY
-#   define OPENSSL_CONF   "openssl.cnf"
+#   define OPENSSL_CONF   "\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x63\x6e\x66"
 #   define SSLEAY_CONF    OPENSSL_CONF
-#   define RFILE    ".rnd"
-#   define LIST_SEPARATOR_CHAR ';'
-#   define EXIT(n)  { if (n) printf("ERROR: %d\n", (int)n); exit(n); }
+#   define RFILE    "\x2e\x72\x6e\x64"
+#   define LIST_SEPARATOR_CHAR '\x3b'
+#   define EXIT(n)  { if (n) printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", (int)n); exit(n); }
 
 #  else
      /* !defined VMS */
@@ -490,11 +490,11 @@ typedef unsigned long clock_t;
 #    include <fcntl.h>
 #   endif
 
-#   define OPENSSL_CONF        "openssl.cnf"
+#   define OPENSSL_CONF        "\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x63\x6e\x66"
 #   define SSLEAY_CONF         OPENSSL_CONF
-#   define RFILE               ".rnd"
-#   define LIST_SEPARATOR_CHAR ':'
-#   define NUL_DEV             "/dev/null"
+#   define RFILE               "\x2e\x72\x6e\x64"
+#   define LIST_SEPARATOR_CHAR '\x3a'
+#   define NUL_DEV             "\x2f\x64\x65\x76\x2f\x6e\x75\x6c\x6c"
 #   define EXIT(n)             exit(n)
 #  endif
 

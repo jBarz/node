@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -70,16 +70,16 @@
 #define PROG    sess_id_main
 
 static const char *sess_id_usage[] = {
-    "usage: sess_id args\n",
-    "\n",
-    " -inform arg     - input format - default PEM (DER or PEM)\n",
-    " -outform arg    - output format - default PEM\n",
-    " -in arg         - input file - default stdin\n",
-    " -out arg        - output file - default stdout\n",
-    " -text           - print ssl session id details\n",
-    " -cert           - output certificate \n",
-    " -noout          - no CRL output\n",
-    " -context arg    - set the session ID context\n",
+    "\x75\x73\x61\x67\x65\x3a\x20\x73\x65\x73\x73\x5f\x69\x64\x20\x61\x72\x67\x73\xa",
+    "\xa",
+    "\x20\x2d\x69\x6e\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x20\x2d\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\x20\x28\x44\x45\x52\x20\x6f\x72\x20\x50\x45\x4d\x29\xa",
+    "\x20\x2d\x6f\x75\x74\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\xa",
+    "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x74\x64\x69\x6e\xa",
+    "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x74\x64\x6f\x75\x74\xa",
+    "\x20\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x73\x73\x6c\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x69\x64\x20\x64\x65\x74\x61\x69\x6c\x73\xa",
+    "\x20\x2d\x63\x65\x72\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\xa",
+    "\x20\x2d\x6e\x6f\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6e\x6f\x20\x43\x52\x4c\x20\x6f\x75\x74\x70\x75\x74\xa",
+    "\x20\x2d\x63\x6f\x6e\x74\x65\x78\x74\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x73\x65\x74\x20\x74\x68\x65\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x49\x44\x20\x63\x6f\x6e\x74\x65\x78\x74\xa",
     NULL
 };
 
@@ -111,34 +111,34 @@ int MAIN(int argc, char **argv)
     argv++;
     num = 0;
     while (argc >= 1) {
-        if (strcmp(*argv, "-inform") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             informat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-outform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             outformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-in") == 0) {
+        } else if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-text") == 0)
+        } else if (strcmp(*argv, "\x2d\x74\x65\x78\x74") == 0)
             text = ++num;
-        else if (strcmp(*argv, "-cert") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x65\x72\x74") == 0)
             cert = ++num;
-        else if (strcmp(*argv, "-noout") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x6f\x6f\x75\x74") == 0)
             noout = ++num;
-        else if (strcmp(*argv, "-context") == 0) {
+        else if (strcmp(*argv, "\x2d\x63\x6f\x6e\x74\x65\x78\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             context = *++argv;
         } else {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badops = 1;
             break;
         }
@@ -149,7 +149,7 @@ int MAIN(int argc, char **argv)
     if (badops) {
  bad:
         for (pp = sess_id_usage; (*pp != NULL); pp++)
-            BIO_printf(bio_err, "%s", *pp);
+            BIO_printf(bio_err, "\x25\x73", *pp);
         goto end;
     }
 
@@ -163,7 +163,7 @@ int MAIN(int argc, char **argv)
     if (context) {
         size_t ctx_len = strlen(context);
         if (ctx_len > SSL_MAX_SID_CTX_LENGTH) {
-            BIO_printf(bio_err, "Context too long\n");
+            BIO_printf(bio_err, "\x43\x6f\x6e\x74\x65\x78\x74\x20\x74\x6f\x6f\x20\x6c\x6f\x6e\x67\xa");
             goto end;
         }
         SSL_SESSION_set1_id_context(x, (unsigned char *)context, ctx_len);
@@ -217,7 +217,7 @@ int MAIN(int argc, char **argv)
 
         if (cert) {
             if (peer == NULL)
-                BIO_puts(out, "No certificate present\n");
+                BIO_puts(out, "\x4e\x6f\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x70\x72\x65\x73\x65\x6e\x74\xa");
             else
                 X509_print(out, peer);
         }
@@ -229,11 +229,11 @@ int MAIN(int argc, char **argv)
         else if (outformat == FORMAT_PEM)
             i = PEM_write_bio_SSL_SESSION(out, x);
         else {
-            BIO_printf(bio_err, "bad output format specified for outfile\n");
+            BIO_printf(bio_err, "\x62\x61\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6f\x75\x74\x66\x69\x6c\x65\xa");
             goto end;
         }
         if (!i) {
-            BIO_printf(bio_err, "unable to write SSL_SESSION\n");
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x53\x53\x4c\x5f\x53\x45\x53\x53\x49\x4f\x4e\xa");
             goto end;
         }
     } else if (!noout && (peer != NULL)) { /* just print the certificate */
@@ -242,11 +242,11 @@ int MAIN(int argc, char **argv)
         else if (outformat == FORMAT_PEM)
             i = PEM_write_bio_X509(out, peer);
         else {
-            BIO_printf(bio_err, "bad output format specified for outfile\n");
+            BIO_printf(bio_err, "\x62\x61\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6f\x75\x74\x66\x69\x6c\x65\xa");
             goto end;
         }
         if (!i) {
-            BIO_printf(bio_err, "unable to write X509\n");
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x58\x35\x30\x39\xa");
             goto end;
         }
     }
@@ -284,11 +284,11 @@ static SSL_SESSION *load_sess_id(char *infile, int format)
     else if (format == FORMAT_PEM)
         x = PEM_read_bio_SSL_SESSION(in, NULL, NULL, NULL);
     else {
-        BIO_printf(bio_err, "bad input format specified for input crl\n");
+        BIO_printf(bio_err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x69\x6e\x70\x75\x74\x20\x63\x72\x6c\xa");
         goto end;
     }
     if (x == NULL) {
-        BIO_printf(bio_err, "unable to load SSL_SESSION\n");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x53\x53\x4c\x5f\x53\x45\x53\x53\x49\x4f\x4e\xa");
         ERR_print_errors(bio_err);
         goto end;
     }

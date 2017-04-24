@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -79,7 +79,7 @@ char *X509_NAME_oneline(X509_NAME *a, char *buf, int len)
     char *p;
     unsigned char *q;
     BUF_MEM *b = NULL;
-    static const char hex[17] = "0123456789ABCDEF";
+    static const char hex[17] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
     int gs_doit[4];
     char tmp_buf[80];
 #ifdef CHARSET_EBCDIC
@@ -91,7 +91,7 @@ char *X509_NAME_oneline(X509_NAME *a, char *buf, int len)
             goto err;
         if (!BUF_MEM_grow(b, 200))
             goto err;
-        b->data[0] = '\0';
+        b->data[0] = '\x0';
         len = 200;
     } else if (len == 0) {
         return NULL;
@@ -101,12 +101,12 @@ char *X509_NAME_oneline(X509_NAME *a, char *buf, int len)
             buf = b->data;
             OPENSSL_free(b);
         }
-        strncpy(buf, "NO X509_NAME", len);
-        buf[len - 1] = '\0';
+        strncpy(buf, "\x4e\x4f\x20\x58\x35\x30\x39\x5f\x4e\x41\x4d\x45", len);
+        buf[len - 1] = '\x0';
         return buf;
     }
 
-    len--;                      /* space for '\0' */
+    len--;                      /* space for '\x0' */
     l = 0;
     for (i = 0; i < sk_X509_NAME_ENTRY_num(a->entries); i++) {
         ne = sk_X509_NAME_ENTRY_value(a->entries, i);
@@ -157,11 +157,11 @@ char *X509_NAME_oneline(X509_NAME *a, char *buf, int len)
                 continue;
             l2++;
 #ifndef CHARSET_EBCDIC
-            if ((q[j] < ' ') || (q[j] > '~'))
+            if ((q[j] < '\x20') || (q[j] > '\x7e'))
                 l2 += 3;
 #else
-            if ((os_toascii[q[j]] < os_toascii[' ']) ||
-                (os_toascii[q[j]] > os_toascii['~']))
+            if ((os_toascii[q[j]] < os_toascii['\x20']) ||
+                (os_toascii[q[j]] > os_toascii['\x7e']))
                 l2 += 3;
 #endif
         }
@@ -180,10 +180,10 @@ char *X509_NAME_oneline(X509_NAME *a, char *buf, int len)
             break;
         } else
             p = &(buf[lold]);
-        *(p++) = '/';
+        *(p++) = '\x2f';
         memcpy(p, s, (unsigned int)l1);
         p += l1;
-        *(p++) = '=';
+        *(p++) = '\x3d';
 
 #ifndef CHARSET_EBCDIC          /* q was assigned above already. */
         q = ne->value->data;
@@ -194,25 +194,25 @@ char *X509_NAME_oneline(X509_NAME *a, char *buf, int len)
                 continue;
 #ifndef CHARSET_EBCDIC
             n = q[j];
-            if ((n < ' ') || (n > '~')) {
-                *(p++) = '\\';
-                *(p++) = 'x';
+            if ((n < '\x20') || (n > '\x7e')) {
+                *(p++) = '\x5c';
+                *(p++) = '\x78';
                 *(p++) = hex[(n >> 4) & 0x0f];
                 *(p++) = hex[n & 0x0f];
             } else
                 *(p++) = n;
 #else
             n = os_toascii[q[j]];
-            if ((n < os_toascii[' ']) || (n > os_toascii['~'])) {
-                *(p++) = '\\';
-                *(p++) = 'x';
+            if ((n < os_toascii['\x20']) || (n > os_toascii['\x7e'])) {
+                *(p++) = '\x5c';
+                *(p++) = '\x78';
                 *(p++) = hex[(n >> 4) & 0x0f];
                 *(p++) = hex[n & 0x0f];
             } else
                 *(p++) = q[j];
 #endif
         }
-        *p = '\0';
+        *p = '\x0';
     }
     if (b != NULL) {
         p = b->data;
@@ -220,7 +220,7 @@ char *X509_NAME_oneline(X509_NAME *a, char *buf, int len)
     } else
         p = buf;
     if (i == 0)
-        *p = '\0';
+        *p = '\x0';
     return (p);
  err:
     X509err(X509_F_X509_NAME_ONELINE, ERR_R_MALLOC_FAILURE);

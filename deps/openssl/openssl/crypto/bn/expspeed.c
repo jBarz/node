@@ -38,7 +38,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -78,7 +78,7 @@
                                  * used for BN_sqrt timings */
 
 #if defined(TEST_EXP) + defined(TEST_MUL) + defined(TEST_SQR) + defined(TEST_GCD) + defined(TEST_KRON) + defined(TEST_INV) +defined(TEST_SQRT) != 1
-# error "choose one test"
+# error "\x63\x68\x6f\x6f\x73\x65\x20\x6f\x6e\x65\x20\x74\x65\x73\x74"
 #endif
 
 #if defined(TEST_INV) || defined(TEST_SQRT)
@@ -185,7 +185,7 @@ static double Time_F(int s)
 
 #define NUM_SIZES       7
 #if NUM_START > NUM_SIZES
-# error "NUM_START > NUM_SIZES"
+# error "\x4e\x55\x4d\x5f\x53\x54\x41\x52\x54\x20\x3e\x20\x4e\x55\x4d\x5f\x53\x49\x5a\x45\x53"
 #endif
 static int sizes[NUM_SIZES] = { 128, 256, 512, 1024, 2048, 4096, 8192 };
 
@@ -220,7 +220,7 @@ int main(int argc, char **argv)
 
     while (!RAND_status())
         /* not enough bits */
-        RAND_SEED("I demand a manual recount!");
+        RAND_SEED("\x49\x20\x64\x65\x6d\x61\x6e\x64\x20\x61\x20\x6d\x61\x6e\x75\x61\x6c\x20\x72\x65\x63\x6f\x75\x6e\x74\x21");
 
     do_mul_exp(r, a, b, c, ctx);
     return 0;
@@ -248,7 +248,7 @@ void do_mul_exp(BIGNUM *r, BIGNUM *a, BIGNUM *b, BIGNUM *c, BN_CTX *ctx)
 # endif
         if (!BN_generate_prime(c, sizes[i], 0, ADD, REM, genprime_cb, NULL))
             goto err;
-        putc('\n', stderr);
+        putc('\xa', stderr);
         fflush(stderr);
 #endif
 
@@ -330,21 +330,21 @@ void do_mul_exp(BIGNUM *r, BIGNUM *a, BIGNUM *b, BIGNUM *c, BN_CTX *ctx)
         tm = Time_F(STOP);
         printf(
 #if defined(TEST_EXP)
-                  "modexp %4d ^ %4d %% %4d"
+                  "\x6d\x6f\x64\x65\x78\x70\x20\x25\x34\x64\x20\x5e\x20\x25\x34\x64\x20\x25\x25\x20\x25\x34\x64"
 #elif defined(TEST_MUL)
-                  "50*modmul %4d %4d %4d"
+                  "\x35\x30\x2a\x6d\x6f\x64\x6d\x75\x6c\x20\x25\x34\x64\x20\x25\x34\x64\x20\x25\x34\x64"
 #elif defined(TEST_SQR)
-                  "100*modsqr %4d %4d %4d"
+                  "\x31\x30\x30\x2a\x6d\x6f\x64\x73\x71\x72\x20\x25\x34\x64\x20\x25\x34\x64\x20\x25\x34\x64"
 #elif defined(TEST_GCD)
-                  "3*gcd %4d %4d %4d"
+                  "\x33\x2a\x67\x63\x64\x20\x25\x34\x64\x20\x25\x34\x64\x20\x25\x34\x64"
 #elif defined(TEST_KRON)
-                  "3*kronecker %4d %4d %4d"
+                  "\x33\x2a\x6b\x72\x6f\x6e\x65\x63\x6b\x65\x72\x20\x25\x34\x64\x20\x25\x34\x64\x20\x25\x34\x64"
 #elif defined(TEST_INV)
-                  "2*inv %4d %4d mod %4d"
+                  "\x32\x2a\x69\x6e\x76\x20\x25\x34\x64\x20\x25\x34\x64\x20\x6d\x6f\x64\x20\x25\x34\x64"
 #else                           /* TEST_SQRT */
-                  "2*sqrt [prime == %d (mod 64)] %4d %4d mod %4d"
+                  "\x32\x2a\x73\x71\x72\x74\x20\x5b\x70\x72\x69\x6d\x65\x20\x3d\x3d\x20\x25\x64\x20\x28\x6d\x6f\x64\x20\x36\x34\x29\x5d\x20\x25\x34\x64\x20\x25\x34\x64\x20\x6d\x6f\x64\x20\x25\x34\x64"
 #endif
-                  " -> %8.6fms %5.1f (%ld)\n",
+                  "\x20\x2d\x3e\x20\x25\x38\x2e\x36\x66\x6d\x73\x20\x25\x35\x2e\x31\x66\x20\x28\x25\x6c\x64\x29\xa",
 #ifdef TEST_SQRT
                   P_MOD_64,
 #endif
@@ -363,16 +363,16 @@ void do_mul_exp(BIGNUM *r, BIGNUM *a, BIGNUM *b, BIGNUM *c, BN_CTX *ctx)
 #ifdef C_PRIME
 static void genprime_cb(int p, int n, void *arg)
 {
-    char c = '*';
+    char c = '\x2a';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     putc(c, stderr);
     fflush(stderr);
     (void)n;

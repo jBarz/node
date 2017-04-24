@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -65,7 +65,7 @@
 #ifdef OPENSSL_NO_RC4
 int main(int argc, char *argv[])
 {
-    printf("No RC4 support\n");
+    printf("\x4e\x6f\x20\x52\x43\x34\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -132,67 +132,67 @@ int main(int argc, char *argv[])
         memset(obuf, 0x00, sizeof(obuf));
         RC4(&key, data_len[i], &(data[i][0]), obuf);
         if (memcmp(obuf, output[i], data_len[i] + 1) != 0) {
-            printf("error calculating RC4\n");
-            printf("output:");
+            printf("\x65\x72\x72\x6f\x72\x20\x63\x61\x6c\x63\x75\x6c\x61\x74\x69\x6e\x67\x20\x52\x43\x34\xa");
+            printf("\x6f\x75\x74\x70\x75\x74\x3a");
             for (j = 0; j < data_len[i] + 1; j++)
-                printf(" %02x", obuf[j]);
-            printf("\n");
-            printf("expect:");
+                printf("\x20\x25\x30\x32\x78", obuf[j]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x3a");
             p = &(output[i][0]);
             for (j = 0; j < data_len[i] + 1; j++)
-                printf(" %02x", *(p++));
-            printf("\n");
+                printf("\x20\x25\x30\x32\x78", *(p++));
+            printf("\xa");
             err++;
         } else
-            printf("test %d ok\n", i);
+            printf("\x74\x65\x73\x74\x20\x25\x64\x20\x6f\x6b\xa", i);
     }
-    printf("test end processing ");
+    printf("\x74\x65\x73\x74\x20\x65\x6e\x64\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\x20");
     for (i = 0; i < data_len[3]; i++) {
         RC4_set_key(&key, keys[3][0], &(keys[3][1]));
         memset(obuf, 0x00, sizeof(obuf));
         RC4(&key, i, &(data[3][0]), obuf);
         if ((memcmp(obuf, output[3], i) != 0) || (obuf[i] != 0)) {
-            printf("error in RC4 length processing\n");
-            printf("output:");
+            printf("\x65\x72\x72\x6f\x72\x20\x69\x6e\x20\x52\x43\x34\x20\x6c\x65\x6e\x67\x74\x68\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\xa");
+            printf("\x6f\x75\x74\x70\x75\x74\x3a");
             for (j = 0; j < i + 1; j++)
-                printf(" %02x", obuf[j]);
-            printf("\n");
-            printf("expect:");
+                printf("\x20\x25\x30\x32\x78", obuf[j]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x3a");
             p = &(output[3][0]);
             for (j = 0; j < i; j++)
-                printf(" %02x", *(p++));
-            printf(" 00\n");
+                printf("\x20\x25\x30\x32\x78", *(p++));
+            printf("\x20\x30\x30\xa");
             err++;
         } else {
-            printf(".");
+            printf("\x2e");
             fflush(stdout);
         }
     }
-    printf("done\n");
-    printf("test multi-call ");
+    printf("\x64\x6f\x6e\x65\xa");
+    printf("\x74\x65\x73\x74\x20\x6d\x75\x6c\x74\x69\x2d\x63\x61\x6c\x6c\x20");
     for (i = 0; i < data_len[3]; i++) {
         RC4_set_key(&key, keys[3][0], &(keys[3][1]));
         memset(obuf, 0x00, sizeof(obuf));
         RC4(&key, i, &(data[3][0]), obuf);
         RC4(&key, data_len[3] - i, &(data[3][i]), &(obuf[i]));
         if (memcmp(obuf, output[3], data_len[3] + 1) != 0) {
-            printf("error in RC4 multi-call processing\n");
-            printf("output:");
+            printf("\x65\x72\x72\x6f\x72\x20\x69\x6e\x20\x52\x43\x34\x20\x6d\x75\x6c\x74\x69\x2d\x63\x61\x6c\x6c\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\xa");
+            printf("\x6f\x75\x74\x70\x75\x74\x3a");
             for (j = 0; j < data_len[3] + 1; j++)
-                printf(" %02x", obuf[j]);
-            printf("\n");
-            printf("expect:");
+                printf("\x20\x25\x30\x32\x78", obuf[j]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x3a");
             p = &(output[3][0]);
             for (j = 0; j < data_len[3] + 1; j++)
-                printf(" %02x", *(p++));
+                printf("\x20\x25\x30\x32\x78", *(p++));
             err++;
         } else {
-            printf(".");
+            printf("\x2e");
             fflush(stdout);
         }
     }
-    printf("done\n");
-    printf("bulk test ");
+    printf("\x64\x6f\x6e\x65\xa");
+    printf("\x62\x75\x6c\x6b\x20\x74\x65\x73\x74\x20");
     {
         unsigned char buf[513];
         SHA_CTX c;
@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
         };
 
         RC4_set_key(&key, keys[0][0], &(keys[3][1]));
-        memset(buf, '\0', sizeof(buf));
+        memset(buf, '\x0', sizeof(buf));
         SHA1_Init(&c);
         for (i = 0; i < 2571; i++) {
             RC4(&key, sizeof(buf), buf, buf);
@@ -212,22 +212,22 @@ int main(int argc, char *argv[])
         SHA1_Final(md, &c);
 
         if (memcmp(md, expected, sizeof(md))) {
-            printf("error in RC4 bulk test\n");
-            printf("output:");
+            printf("\x65\x72\x72\x6f\x72\x20\x69\x6e\x20\x52\x43\x34\x20\x62\x75\x6c\x6b\x20\x74\x65\x73\x74\xa");
+            printf("\x6f\x75\x74\x70\x75\x74\x3a");
             for (j = 0; j < (int)sizeof(md); j++)
-                printf(" %02x", md[j]);
-            printf("\n");
-            printf("expect:");
+                printf("\x20\x25\x30\x32\x78", md[j]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x3a");
             for (j = 0; j < (int)sizeof(md); j++)
-                printf(" %02x", expected[j]);
-            printf("\n");
+                printf("\x20\x25\x30\x32\x78", expected[j]);
+            printf("\xa");
             err++;
         } else
-            printf("ok\n");
+            printf("\x6f\x6b\xa");
     }
 # ifdef OPENSSL_SYS_NETWARE
     if (err)
-        printf("ERROR: %d\n", err);
+        printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", err);
 # endif
     EXIT(err);
     return (0);

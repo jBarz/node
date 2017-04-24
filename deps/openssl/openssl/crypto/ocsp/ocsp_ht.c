@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -162,8 +162,8 @@ void OCSP_set_max_response_length(OCSP_REQ_CTX *rctx, unsigned long len)
 int OCSP_REQ_CTX_i2d(OCSP_REQ_CTX *rctx, const ASN1_ITEM *it, ASN1_VALUE *val)
 {
     static const char req_hdr[] =
-        "Content-Type: application/ocsp-request\r\n"
-        "Content-Length: %d\r\n\r\n";
+        "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x79\x70\x65\x3a\x20\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x6f\x63\x73\x70\x2d\x72\x65\x71\x75\x65\x73\x74\xd\xa"
+        "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x4c\x65\x6e\x67\x74\x68\x3a\x20\x25\x64\xd\xa\xd\xa";
     int reqlen = ASN1_item_i2d(val, NULL, it);
     if (BIO_printf(rctx->mem, req_hdr, reqlen) <= 0)
         return 0;
@@ -194,10 +194,10 @@ int OCSP_REQ_CTX_nbio_d2i(OCSP_REQ_CTX *rctx,
 
 int OCSP_REQ_CTX_http(OCSP_REQ_CTX *rctx, const char *op, const char *path)
 {
-    static const char http_hdr[] = "%s %s HTTP/1.0\r\n";
+    static const char http_hdr[] = "\x25\x73\x20\x25\x73\x20\x48\x54\x54\x50\x2f\x31\x2e\x30\xd\xa";
 
     if (!path)
-        path = "/";
+        path = "\x2f";
 
     if (BIO_printf(rctx->mem, http_hdr, op, path) <= 0)
         return 0;
@@ -219,12 +219,12 @@ int OCSP_REQ_CTX_add1_header(OCSP_REQ_CTX *rctx,
     if (BIO_puts(rctx->mem, name) <= 0)
         return 0;
     if (value) {
-        if (BIO_write(rctx->mem, ": ", 2) != 2)
+        if (BIO_write(rctx->mem, "\x3a\x20", 2) != 2)
             return 0;
         if (BIO_puts(rctx->mem, value) <= 0)
             return 0;
     }
-    if (BIO_write(rctx->mem, "\r\n", 2) != 2)
+    if (BIO_write(rctx->mem, "\xd\xa", 2) != 2)
         return 0;
     rctx->state = OHS_HTTP_HEADER;
     return 1;
@@ -239,7 +239,7 @@ OCSP_REQ_CTX *OCSP_sendreq_new(BIO *io, const char *path, OCSP_REQUEST *req,
     if (!rctx)
         return NULL;
 
-    if (!OCSP_REQ_CTX_http(rctx, "POST", path))
+    if (!OCSP_REQ_CTX_http(rctx, "\x50\x4f\x53\x54", path))
         goto err;
 
     if (req && !OCSP_REQ_CTX_set1_req(rctx, req))
@@ -313,9 +313,9 @@ static int parse_http_line1(char *line)
     if (retcode != 200) {
         OCSPerr(OCSP_F_PARSE_HTTP_LINE1, OCSP_R_SERVER_RESPONSE_ERROR);
         if (!*q)
-            ERR_add_error_data(2, "Code=", p);
+            ERR_add_error_data(2, "\x43\x6f\x64\x65\x3d", p);
         else
-            ERR_add_error_data(4, "Code=", p, ",Reason=", q);
+            ERR_add_error_data(4, "\x43\x6f\x64\x65\x3d", p, "\x2c\x52\x65\x61\x73\x6f\x6e\x3d", q);
         return 0;
     }
 
@@ -346,7 +346,7 @@ int OCSP_REQ_CTX_nbio(OCSP_REQ_CTX *rctx)
     switch (rctx->state) {
     case OHS_HTTP_HEADER:
         /* Last operation was adding headers: need a final \r\n */
-        if (BIO_write(rctx->mem, "\r\n", 2) != 2) {
+        if (BIO_write(rctx->mem, "\xd\xa", 2) != 2) {
             rctx->state = OHS_ERROR;
             return 0;
         }
@@ -407,7 +407,7 @@ int OCSP_REQ_CTX_nbio(OCSP_REQ_CTX *rctx)
          * just get a partial read.
          */
         n = BIO_get_mem_data(rctx->mem, &p);
-        if ((n <= 0) || !memchr(p, '\n', n)) {
+        if ((n <= 0) || !memchr(p, '\xa', n)) {
             if (n >= rctx->iobuflen) {
                 rctx->state = OHS_ERROR;
                 return 0;
@@ -441,7 +441,7 @@ int OCSP_REQ_CTX_nbio(OCSP_REQ_CTX *rctx)
         } else {
             /* Look for blank line: end of headers */
             for (p = rctx->iobuf; *p; p++) {
-                if ((*p != '\r') && (*p != '\n'))
+                if ((*p != '\xd') && (*p != '\xa'))
                     break;
             }
             if (*p)

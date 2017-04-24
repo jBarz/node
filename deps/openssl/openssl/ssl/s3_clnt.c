@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,7 +111,7 @@
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
  *
- * Portions of the attached software ("Contribution") are developed by
+ * Portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") are developed by
  * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
  *
  * The Contribution is licensed pursuant to the OpenSSL open source
@@ -124,12 +124,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -141,7 +141,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -1293,9 +1293,9 @@ int ssl3_get_server_certificate(SSL *s)
         ? 0 : 1;
 
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "pkey,x = %p, %p\n", pkey, x);
-    fprintf(stderr, "ssl_cert_type(x,pkey) = %d\n", ssl_cert_type(x, pkey));
-    fprintf(stderr, "cipher, alg, nc = %s, %lx, %lx, %d\n",
+    fprintf(stderr, "\x70\x6b\x65\x79\x2c\x78\x20\x3d\x20\x25\x70\x2c\x20\x25\x70\xa", pkey, x);
+    fprintf(stderr, "\x73\x73\x6c\x5f\x63\x65\x72\x74\x5f\x74\x79\x70\x65\x28\x78\x2c\x70\x6b\x65\x79\x29\x20\x3d\x20\x25\x64\xa", ssl_cert_type(x, pkey));
+    fprintf(stderr, "\x63\x69\x70\x68\x65\x72\x2c\x20\x61\x6c\x67\x2c\x20\x6e\x63\x20\x3d\x20\x25\x73\x2c\x20\x25\x6c\x78\x2c\x20\x25\x6c\x78\x2c\x20\x25\x64\xa",
             s->s3->tmp.new_cipher->name,
             s->s3->tmp.new_cipher->algorithm_mkey,
             s->s3->tmp.new_cipher->algorithm_auth, need_cert);
@@ -1952,7 +1952,7 @@ int ssl3_get_key_exchange(SSL *s)
                 goto f_err;
             }
 #ifdef SSL_DEBUG
-            fprintf(stderr, "USING TLSv1.2 HASH %s\n", EVP_MD_name(md));
+            fprintf(stderr, "\x55\x53\x49\x4e\x47\x20\x54\x4c\x53\x76\x31\x2e\x32\x20\x48\x41\x53\x48\x20\x25\x73\xa", EVP_MD_name(md));
 #endif
             p += 2;
             n -= 2;
@@ -2186,7 +2186,7 @@ int ssl3_get_certificate_request(SSL *s)
 #if 0
     {
         FILE *out;
-        out = fopen("/tmp/vsign.der", "w");
+        out = fopen("\x2f\x74\x6d\x70\x2f\x76\x73\x69\x67\x6e\x2e\x64\x65\x72", "\x77");
         fwrite(p, 1, llen, out);
         fclose(out);
     }
@@ -2610,7 +2610,7 @@ int ssl3_send_client_key_exchange(SSL *s)
             EVP_CIPHER_CTX_init(&ciph_ctx);
 
 # ifdef KSSL_DEBUG
-            fprintf(stderr, "ssl3_send_client_key_exchange(%lx & %lx)\n",
+            fprintf(stderr, "\x73\x73\x6c\x33\x5f\x73\x65\x6e\x64\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6b\x65\x79\x5f\x65\x78\x63\x68\x61\x6e\x67\x65\x28\x25\x6c\x78\x20\x26\x20\x25\x6c\x78\x29\xa",
                     alg_k, SSL_kKRB5);
 # endif                         /* KSSL_DEBUG */
 
@@ -2626,9 +2626,9 @@ int ssl3_send_client_key_exchange(SSL *s)
                 goto err;
 # ifdef KSSL_DEBUG
             {
-                fprintf(stderr, "kssl_cget_tkt rtn %d\n", krb5rc);
+                fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x63\x67\x65\x74\x5f\x74\x6b\x74\x20\x72\x74\x6e\x20\x25\x64\xa", krb5rc);
                 if (krb5rc && kssl_err.text)
-                    fprintf(stderr, "kssl_cget_tkt kssl_err=%s\n",
+                    fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x63\x67\x65\x74\x5f\x74\x6b\x74\x20\x6b\x73\x73\x6c\x5f\x65\x72\x72\x3d\x25\x73\xa",
                             kssl_err.text);
             }
 # endif                         /* KSSL_DEBUG */
@@ -3158,7 +3158,7 @@ int ssl3_send_client_key_exchange(SSL *s)
                        SSL_R_PSK_IDENTITY_NOT_FOUND);
                 goto psk_err;
             }
-            identity[PSK_MAX_IDENTITY_LEN + 1] = '\0';
+            identity[PSK_MAX_IDENTITY_LEN + 1] = '\x0';
             identity_len = strlen(identity);
             if (identity_len > PSK_MAX_IDENTITY_LEN) {
                 SSLerr(SSL_F_SSL3_SEND_CLIENT_KEY_EXCHANGE,
@@ -3284,7 +3284,7 @@ int ssl3_send_client_verify(SSL *s)
             }
             p += 2;
 #ifdef SSL_DEBUG
-            fprintf(stderr, "Using TLS 1.2 with client alg %s\n",
+            fprintf(stderr, "\x55\x73\x69\x6e\x67\x20\x54\x4c\x53\x20\x31\x2e\x32\x20\x77\x69\x74\x68\x20\x63\x6c\x69\x65\x6e\x74\x20\x61\x6c\x67\x20\x25\x73\xa",
                     EVP_MD_name(md));
 #endif
             if (!EVP_SignInit_ex(&mctx, md, NULL)

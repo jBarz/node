@@ -102,8 +102,8 @@ static int rdrand_init(ENGINE *e)
     return 1;
 }
 
-static const char *engine_e_rdrand_id = "rdrand";
-static const char *engine_e_rdrand_name = "Intel RDRAND engine";
+static const char *engine_e_rdrand_id = "\x72\x64\x72\x61\x6e\x64";
+static const char *engine_e_rdrand_name = "\x49\x6e\x74\x65\x6c\x20\x52\x44\x52\x41\x4e\x44\x20\x65\x6e\x67\x69\x6e\x65";
 
 static int bind_helper(ENGINE *e)
 {

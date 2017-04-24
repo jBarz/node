@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -67,7 +67,7 @@
 static char *skip_dot(char *name)
 {
     char *p;
-    p = strchr(name, '.');
+    p = strchr(name, '\x2e');
     if (p)
         return p + 1;
     return name;
@@ -101,7 +101,7 @@ static int int_engine_configure(char *name, char *value, const CONF *cnf)
 
     name = skip_dot(name);
 #ifdef ENGINE_CONF_DEBUG
-    fprintf(stderr, "Configuring engine %s\n", name);
+    fprintf(stderr, "\x43\x6f\x6e\x66\x69\x67\x75\x72\x69\x6e\x67\x20\x65\x6e\x67\x69\x6e\x65\x20\x25\x73\xa", name);
 #endif
     /* Value is a section containing ENGINE commands */
     ecmds = NCONF_get_section(cnf, value);
@@ -117,27 +117,27 @@ static int int_engine_configure(char *name, char *value, const CONF *cnf)
         ctrlname = skip_dot(ecmd->name);
         ctrlvalue = ecmd->value;
 #ifdef ENGINE_CONF_DEBUG
-        fprintf(stderr, "ENGINE conf: doing ctrl(%s,%s)\n", ctrlname,
+        fprintf(stderr, "\x45\x4e\x47\x49\x4e\x45\x20\x63\x6f\x6e\x66\x3a\x20\x64\x6f\x69\x6e\x67\x20\x63\x74\x72\x6c\x28\x25\x73\x2c\x25\x73\x29\xa", ctrlname,
                 ctrlvalue);
 #endif
 
         /* First handle some special pseudo ctrls */
 
         /* Override engine name to use */
-        if (!strcmp(ctrlname, "engine_id"))
+        if (!strcmp(ctrlname, "\x65\x6e\x67\x69\x6e\x65\x5f\x69\x64"))
             name = ctrlvalue;
-        else if (!strcmp(ctrlname, "soft_load"))
+        else if (!strcmp(ctrlname, "\x73\x6f\x66\x74\x5f\x6c\x6f\x61\x64"))
             soft = 1;
         /* Load a dynamic ENGINE */
-        else if (!strcmp(ctrlname, "dynamic_path")) {
-            e = ENGINE_by_id("dynamic");
+        else if (!strcmp(ctrlname, "\x64\x79\x6e\x61\x6d\x69\x63\x5f\x70\x61\x74\x68")) {
+            e = ENGINE_by_id("\x64\x79\x6e\x61\x6d\x69\x63");
             if (!e)
                 goto err;
-            if (!ENGINE_ctrl_cmd_string(e, "SO_PATH", ctrlvalue, 0))
+            if (!ENGINE_ctrl_cmd_string(e, "\x53\x4f\x5f\x50\x41\x54\x48", ctrlvalue, 0))
                 goto err;
-            if (!ENGINE_ctrl_cmd_string(e, "LIST_ADD", "2", 0))
+            if (!ENGINE_ctrl_cmd_string(e, "\x4c\x49\x53\x54\x5f\x41\x44\x44", "\x32", 0))
                 goto err;
-            if (!ENGINE_ctrl_cmd_string(e, "LOAD", NULL, 0))
+            if (!ENGINE_ctrl_cmd_string(e, "\x4c\x4f\x41\x44", NULL, 0))
                 goto err;
         }
         /* ... add other pseudos here ... */
@@ -159,10 +159,10 @@ static int int_engine_configure(char *name, char *value, const CONF *cnf)
              * Allow "EMPTY" to mean no value: this allows a valid "value" to
              * be passed to ctrls of type NO_INPUT
              */
-            if (!strcmp(ctrlvalue, "EMPTY"))
+            if (!strcmp(ctrlvalue, "\x45\x4d\x50\x54\x59"))
                 ctrlvalue = NULL;
-            if (!strcmp(ctrlname, "init")) {
-                if (!NCONF_get_number_e(cnf, value, "init", &do_init))
+            if (!strcmp(ctrlname, "\x69\x6e\x69\x74")) {
+                if (!NCONF_get_number_e(cnf, value, "\x69\x6e\x69\x74", &do_init))
                     goto err;
                 if (do_init == 1) {
                     if (!int_engine_init(e))
@@ -172,7 +172,7 @@ static int int_engine_configure(char *name, char *value, const CONF *cnf)
                               ENGINE_R_INVALID_INIT_VALUE);
                     goto err;
                 }
-            } else if (!strcmp(ctrlname, "default_algorithms")) {
+            } else if (!strcmp(ctrlname, "\x64\x65\x66\x61\x75\x6c\x74\x5f\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x73")) {
                 if (!ENGINE_set_default_string(e, ctrlvalue))
                     goto err;
             } else if (!ENGINE_ctrl_cmd_string(e, ctrlname, ctrlvalue, 0))
@@ -190,9 +190,9 @@ static int int_engine_configure(char *name, char *value, const CONF *cnf)
         ENGINEerr(ENGINE_F_INT_ENGINE_CONFIGURE,
                   ENGINE_R_ENGINE_CONFIGURATION_ERROR);
         if (ecmd)
-            ERR_add_error_data(6, "section=", ecmd->section,
-                               ", name=", ecmd->name,
-                               ", value=", ecmd->value);
+            ERR_add_error_data(6, "\x73\x65\x63\x74\x69\x6f\x6e\x3d", ecmd->section,
+                               "\x2c\x20\x6e\x61\x6d\x65\x3d", ecmd->name,
+                               "\x2c\x20\x76\x61\x6c\x75\x65\x3d", ecmd->value);
     }
     if (e)
         ENGINE_free(e);
@@ -205,7 +205,7 @@ static int int_engine_module_init(CONF_IMODULE *md, const CONF *cnf)
     CONF_VALUE *cval;
     int i;
 #ifdef ENGINE_CONF_DEBUG
-    fprintf(stderr, "Called engine module: name %s, value %s\n",
+    fprintf(stderr, "\x43\x61\x6c\x6c\x65\x64\x20\x65\x6e\x67\x69\x6e\x65\x20\x6d\x6f\x64\x75\x6c\x65\x3a\x20\x6e\x61\x6d\x65\x20\x25\x73\x2c\x20\x76\x61\x6c\x75\x65\x20\x25\x73\xa",
             CONF_imodule_get_name(md), CONF_imodule_get_value(md));
 #endif
     /* Value is a section containing ENGINEs to configure */
@@ -237,6 +237,6 @@ static void int_engine_module_finish(CONF_IMODULE *md)
 
 void ENGINE_add_conf_module(void)
 {
-    CONF_module_add("engines",
+    CONF_module_add("\x65\x6e\x67\x69\x6e\x65\x73",
                     int_engine_module_init, int_engine_module_finish);
 }

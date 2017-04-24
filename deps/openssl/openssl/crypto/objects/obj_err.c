@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,19 +70,19 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_OBJ,0,reason)
 
 static ERR_STRING_DATA OBJ_str_functs[] = {
-    {ERR_FUNC(OBJ_F_OBJ_ADD_OBJECT), "OBJ_add_object"},
-    {ERR_FUNC(OBJ_F_OBJ_CREATE), "OBJ_create"},
-    {ERR_FUNC(OBJ_F_OBJ_DUP), "OBJ_dup"},
-    {ERR_FUNC(OBJ_F_OBJ_NAME_NEW_INDEX), "OBJ_NAME_new_index"},
-    {ERR_FUNC(OBJ_F_OBJ_NID2LN), "OBJ_nid2ln"},
-    {ERR_FUNC(OBJ_F_OBJ_NID2OBJ), "OBJ_nid2obj"},
-    {ERR_FUNC(OBJ_F_OBJ_NID2SN), "OBJ_nid2sn"},
+    {ERR_FUNC(OBJ_F_OBJ_ADD_OBJECT), "\x4f\x42\x4a\x5f\x61\x64\x64\x5f\x6f\x62\x6a\x65\x63\x74"},
+    {ERR_FUNC(OBJ_F_OBJ_CREATE), "\x4f\x42\x4a\x5f\x63\x72\x65\x61\x74\x65"},
+    {ERR_FUNC(OBJ_F_OBJ_DUP), "\x4f\x42\x4a\x5f\x64\x75\x70"},
+    {ERR_FUNC(OBJ_F_OBJ_NAME_NEW_INDEX), "\x4f\x42\x4a\x5f\x4e\x41\x4d\x45\x5f\x6e\x65\x77\x5f\x69\x6e\x64\x65\x78"},
+    {ERR_FUNC(OBJ_F_OBJ_NID2LN), "\x4f\x42\x4a\x5f\x6e\x69\x64\x32\x6c\x6e"},
+    {ERR_FUNC(OBJ_F_OBJ_NID2OBJ), "\x4f\x42\x4a\x5f\x6e\x69\x64\x32\x6f\x62\x6a"},
+    {ERR_FUNC(OBJ_F_OBJ_NID2SN), "\x4f\x42\x4a\x5f\x6e\x69\x64\x32\x73\x6e"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA OBJ_str_reasons[] = {
-    {ERR_REASON(OBJ_R_MALLOC_FAILURE), "malloc failure"},
-    {ERR_REASON(OBJ_R_UNKNOWN_NID), "unknown nid"},
+    {ERR_REASON(OBJ_R_MALLOC_FAILURE), "\x6d\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {ERR_REASON(OBJ_R_UNKNOWN_NID), "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6e\x69\x64"},
     {0, NULL}
 };
 

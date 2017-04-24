@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -84,7 +84,7 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
     }
     for (i = 0; i < sk_CONF_VALUE_num(sktmp); i++) {
         oval = sk_CONF_VALUE_value(sktmp, i);
-        if (!strcmp(oval->name, "fips_mode")) {
+        if (!strcmp(oval->name, "\x66\x69\x70\x73\x5f\x6d\x6f\x64\x65")) {
             int m;
             if (!X509V3_get_value_bool(oval, &m)) {
                 EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_INVALID_FIPS_MODE);
@@ -104,8 +104,8 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
             }
         } else {
             EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_UNKNOWN_OPTION);
-            ERR_add_error_data(4, "name=", oval->name,
-                               ", value=", oval->value);
+            ERR_add_error_data(4, "\x6e\x61\x6d\x65\x3d", oval->name,
+                               "\x2c\x20\x76\x61\x6c\x75\x65\x3d", oval->value);
         }
 
     }
@@ -114,5 +114,5 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
 
 void EVP_add_alg_module(void)
 {
-    CONF_module_add("alg_section", alg_module_init, 0);
+    CONF_module_add("\x61\x6c\x67\x5f\x73\x65\x63\x74\x69\x6f\x6e", alg_module_init, 0);
 }

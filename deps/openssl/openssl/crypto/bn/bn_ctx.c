@@ -20,13 +20,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -155,32 +155,32 @@ static void ctxdbg(BN_CTX *ctx)
     unsigned int bnidx = 0, fpidx = 0;
     BN_POOL_ITEM *item = ctx->pool.head;
     BN_STACK *stack = &ctx->stack;
-    fprintf(stderr, "(%16p): ", ctx);
+    fprintf(stderr, "\x28\x25\x31\x36\x70\x29\x3a\x20", ctx);
     while (bnidx < ctx->used) {
-        fprintf(stderr, "%03x ", item->vals[bnidx++ % BN_CTX_POOL_SIZE].dmax);
+        fprintf(stderr, "\x25\x30\x33\x78\x20", item->vals[bnidx++ % BN_CTX_POOL_SIZE].dmax);
         if (!(bnidx % BN_CTX_POOL_SIZE))
             item = item->next;
     }
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
     bnidx = 0;
-    fprintf(stderr, "          : ");
+    fprintf(stderr, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20");
     while (fpidx < stack->depth) {
         while (bnidx++ < stack->indexes[fpidx])
-            fprintf(stderr, "    ");
-        fprintf(stderr, "^^^ ");
+            fprintf(stderr, "\x20\x20\x20\x20");
+        fprintf(stderr, "\x5e\x5e\x5e\x20");
         bnidx++;
         fpidx++;
     }
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 }
 
 # define CTXDBG_ENTRY(str, ctx)  do { \
                                 ctxdbg_cur = (str); \
-                                fprintf(stderr,"Starting %s\n", ctxdbg_cur); \
+                                fprintf(stderr,"\x53\x74\x61\x72\x74\x69\x6e\x67\x20\x25\x73\xa", ctxdbg_cur); \
                                 ctxdbg(ctx); \
                                 } while(0)
 # define CTXDBG_EXIT(ctx)        do { \
-                                fprintf(stderr,"Ending %s\n", ctxdbg_cur); \
+                                fprintf(stderr,"\x45\x6e\x64\x69\x6e\x67\x20\x25\x73\xa", ctxdbg_cur); \
                                 ctxdbg(ctx); \
                                 } while(0)
 # define CTXDBG_RET(ctx,ret)
@@ -234,16 +234,16 @@ void BN_CTX_free(BN_CTX *ctx)
 #ifdef BN_CTX_DEBUG
     {
         BN_POOL_ITEM *pool = ctx->pool.head;
-        fprintf(stderr, "BN_CTX_free, stack-size=%d, pool-bignums=%d\n",
+        fprintf(stderr, "\x42\x4e\x5f\x43\x54\x58\x5f\x66\x72\x65\x65\x2c\x20\x73\x74\x61\x63\x6b\x2d\x73\x69\x7a\x65\x3d\x25\x64\x2c\x20\x70\x6f\x6f\x6c\x2d\x62\x69\x67\x6e\x75\x6d\x73\x3d\x25\x64\xa",
                 ctx->stack.size, ctx->pool.size);
-        fprintf(stderr, "dmaxs: ");
+        fprintf(stderr, "\x64\x6d\x61\x78\x73\x3a\x20");
         while (pool) {
             unsigned loop = 0;
             while (loop < BN_CTX_POOL_SIZE)
-                fprintf(stderr, "%02x ", pool->vals[loop++].dmax);
+                fprintf(stderr, "\x25\x30\x32\x78\x20", pool->vals[loop++].dmax);
             pool = pool->next;
         }
-        fprintf(stderr, "\n");
+        fprintf(stderr, "\xa");
     }
 #endif
     BN_STACK_finish(&ctx->stack);
@@ -253,7 +253,7 @@ void BN_CTX_free(BN_CTX *ctx)
 
 void BN_CTX_start(BN_CTX *ctx)
 {
-    CTXDBG_ENTRY("BN_CTX_start", ctx);
+    CTXDBG_ENTRY("\x42\x4e\x5f\x43\x54\x58\x5f\x73\x74\x61\x72\x74", ctx);
     /* If we're already overflowing ... */
     if (ctx->err_stack || ctx->too_many)
         ctx->err_stack++;
@@ -267,7 +267,7 @@ void BN_CTX_start(BN_CTX *ctx)
 
 void BN_CTX_end(BN_CTX *ctx)
 {
-    CTXDBG_ENTRY("BN_CTX_end", ctx);
+    CTXDBG_ENTRY("\x42\x4e\x5f\x43\x54\x58\x5f\x65\x6e\x64", ctx);
     if (ctx->err_stack)
         ctx->err_stack--;
     else {
@@ -285,7 +285,7 @@ void BN_CTX_end(BN_CTX *ctx)
 BIGNUM *BN_CTX_get(BN_CTX *ctx)
 {
     BIGNUM *ret;
-    CTXDBG_ENTRY("BN_CTX_get", ctx);
+    CTXDBG_ENTRY("\x42\x4e\x5f\x43\x54\x58\x5f\x67\x65\x74", ctx);
     if (ctx->err_stack || ctx->too_many)
         return NULL;
     if ((ret = BN_POOL_get(&ctx->pool)) == NULL) {

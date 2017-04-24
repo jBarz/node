@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,52 +70,52 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_CONF,0,reason)
 
 static ERR_STRING_DATA CONF_str_functs[] = {
-    {ERR_FUNC(CONF_F_CONF_DUMP_FP), "CONF_dump_fp"},
-    {ERR_FUNC(CONF_F_CONF_LOAD), "CONF_load"},
-    {ERR_FUNC(CONF_F_CONF_LOAD_BIO), "CONF_load_bio"},
-    {ERR_FUNC(CONF_F_CONF_LOAD_FP), "CONF_load_fp"},
-    {ERR_FUNC(CONF_F_CONF_MODULES_LOAD), "CONF_modules_load"},
-    {ERR_FUNC(CONF_F_CONF_PARSE_LIST), "CONF_parse_list"},
-    {ERR_FUNC(CONF_F_DEF_LOAD), "DEF_LOAD"},
-    {ERR_FUNC(CONF_F_DEF_LOAD_BIO), "DEF_LOAD_BIO"},
-    {ERR_FUNC(CONF_F_MODULE_INIT), "MODULE_INIT"},
-    {ERR_FUNC(CONF_F_MODULE_LOAD_DSO), "MODULE_LOAD_DSO"},
-    {ERR_FUNC(CONF_F_MODULE_RUN), "MODULE_RUN"},
-    {ERR_FUNC(CONF_F_NCONF_DUMP_BIO), "NCONF_dump_bio"},
-    {ERR_FUNC(CONF_F_NCONF_DUMP_FP), "NCONF_dump_fp"},
-    {ERR_FUNC(CONF_F_NCONF_GET_NUMBER), "NCONF_get_number"},
-    {ERR_FUNC(CONF_F_NCONF_GET_NUMBER_E), "NCONF_get_number_e"},
-    {ERR_FUNC(CONF_F_NCONF_GET_SECTION), "NCONF_get_section"},
-    {ERR_FUNC(CONF_F_NCONF_GET_STRING), "NCONF_get_string"},
-    {ERR_FUNC(CONF_F_NCONF_LOAD), "NCONF_load"},
-    {ERR_FUNC(CONF_F_NCONF_LOAD_BIO), "NCONF_load_bio"},
-    {ERR_FUNC(CONF_F_NCONF_LOAD_FP), "NCONF_load_fp"},
-    {ERR_FUNC(CONF_F_NCONF_NEW), "NCONF_new"},
-    {ERR_FUNC(CONF_F_STR_COPY), "STR_COPY"},
+    {ERR_FUNC(CONF_F_CONF_DUMP_FP), "\x43\x4f\x4e\x46\x5f\x64\x75\x6d\x70\x5f\x66\x70"},
+    {ERR_FUNC(CONF_F_CONF_LOAD), "\x43\x4f\x4e\x46\x5f\x6c\x6f\x61\x64"},
+    {ERR_FUNC(CONF_F_CONF_LOAD_BIO), "\x43\x4f\x4e\x46\x5f\x6c\x6f\x61\x64\x5f\x62\x69\x6f"},
+    {ERR_FUNC(CONF_F_CONF_LOAD_FP), "\x43\x4f\x4e\x46\x5f\x6c\x6f\x61\x64\x5f\x66\x70"},
+    {ERR_FUNC(CONF_F_CONF_MODULES_LOAD), "\x43\x4f\x4e\x46\x5f\x6d\x6f\x64\x75\x6c\x65\x73\x5f\x6c\x6f\x61\x64"},
+    {ERR_FUNC(CONF_F_CONF_PARSE_LIST), "\x43\x4f\x4e\x46\x5f\x70\x61\x72\x73\x65\x5f\x6c\x69\x73\x74"},
+    {ERR_FUNC(CONF_F_DEF_LOAD), "\x44\x45\x46\x5f\x4c\x4f\x41\x44"},
+    {ERR_FUNC(CONF_F_DEF_LOAD_BIO), "\x44\x45\x46\x5f\x4c\x4f\x41\x44\x5f\x42\x49\x4f"},
+    {ERR_FUNC(CONF_F_MODULE_INIT), "\x4d\x4f\x44\x55\x4c\x45\x5f\x49\x4e\x49\x54"},
+    {ERR_FUNC(CONF_F_MODULE_LOAD_DSO), "\x4d\x4f\x44\x55\x4c\x45\x5f\x4c\x4f\x41\x44\x5f\x44\x53\x4f"},
+    {ERR_FUNC(CONF_F_MODULE_RUN), "\x4d\x4f\x44\x55\x4c\x45\x5f\x52\x55\x4e"},
+    {ERR_FUNC(CONF_F_NCONF_DUMP_BIO), "\x4e\x43\x4f\x4e\x46\x5f\x64\x75\x6d\x70\x5f\x62\x69\x6f"},
+    {ERR_FUNC(CONF_F_NCONF_DUMP_FP), "\x4e\x43\x4f\x4e\x46\x5f\x64\x75\x6d\x70\x5f\x66\x70"},
+    {ERR_FUNC(CONF_F_NCONF_GET_NUMBER), "\x4e\x43\x4f\x4e\x46\x5f\x67\x65\x74\x5f\x6e\x75\x6d\x62\x65\x72"},
+    {ERR_FUNC(CONF_F_NCONF_GET_NUMBER_E), "\x4e\x43\x4f\x4e\x46\x5f\x67\x65\x74\x5f\x6e\x75\x6d\x62\x65\x72\x5f\x65"},
+    {ERR_FUNC(CONF_F_NCONF_GET_SECTION), "\x4e\x43\x4f\x4e\x46\x5f\x67\x65\x74\x5f\x73\x65\x63\x74\x69\x6f\x6e"},
+    {ERR_FUNC(CONF_F_NCONF_GET_STRING), "\x4e\x43\x4f\x4e\x46\x5f\x67\x65\x74\x5f\x73\x74\x72\x69\x6e\x67"},
+    {ERR_FUNC(CONF_F_NCONF_LOAD), "\x4e\x43\x4f\x4e\x46\x5f\x6c\x6f\x61\x64"},
+    {ERR_FUNC(CONF_F_NCONF_LOAD_BIO), "\x4e\x43\x4f\x4e\x46\x5f\x6c\x6f\x61\x64\x5f\x62\x69\x6f"},
+    {ERR_FUNC(CONF_F_NCONF_LOAD_FP), "\x4e\x43\x4f\x4e\x46\x5f\x6c\x6f\x61\x64\x5f\x66\x70"},
+    {ERR_FUNC(CONF_F_NCONF_NEW), "\x4e\x43\x4f\x4e\x46\x5f\x6e\x65\x77"},
+    {ERR_FUNC(CONF_F_STR_COPY), "\x53\x54\x52\x5f\x43\x4f\x50\x59"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA CONF_str_reasons[] = {
-    {ERR_REASON(CONF_R_ERROR_LOADING_DSO), "error loading dso"},
-    {ERR_REASON(CONF_R_LIST_CANNOT_BE_NULL), "list cannot be null"},
+    {ERR_REASON(CONF_R_ERROR_LOADING_DSO), "\x65\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x64\x73\x6f"},
+    {ERR_REASON(CONF_R_LIST_CANNOT_BE_NULL), "\x6c\x69\x73\x74\x20\x63\x61\x6e\x6e\x6f\x74\x20\x62\x65\x20\x6e\x75\x6c\x6c"},
     {ERR_REASON(CONF_R_MISSING_CLOSE_SQUARE_BRACKET),
-     "missing close square bracket"},
-    {ERR_REASON(CONF_R_MISSING_EQUAL_SIGN), "missing equal sign"},
-    {ERR_REASON(CONF_R_MISSING_FINISH_FUNCTION), "missing finish function"},
-    {ERR_REASON(CONF_R_MISSING_INIT_FUNCTION), "missing init function"},
+     "\x6d\x69\x73\x73\x69\x6e\x67\x20\x63\x6c\x6f\x73\x65\x20\x73\x71\x75\x61\x72\x65\x20\x62\x72\x61\x63\x6b\x65\x74"},
+    {ERR_REASON(CONF_R_MISSING_EQUAL_SIGN), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x65\x71\x75\x61\x6c\x20\x73\x69\x67\x6e"},
+    {ERR_REASON(CONF_R_MISSING_FINISH_FUNCTION), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x66\x69\x6e\x69\x73\x68\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e"},
+    {ERR_REASON(CONF_R_MISSING_INIT_FUNCTION), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x69\x6e\x69\x74\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e"},
     {ERR_REASON(CONF_R_MODULE_INITIALIZATION_ERROR),
-     "module initialization error"},
-    {ERR_REASON(CONF_R_NO_CLOSE_BRACE), "no close brace"},
-    {ERR_REASON(CONF_R_NO_CONF), "no conf"},
+     "\x6d\x6f\x64\x75\x6c\x65\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(CONF_R_NO_CLOSE_BRACE), "\x6e\x6f\x20\x63\x6c\x6f\x73\x65\x20\x62\x72\x61\x63\x65"},
+    {ERR_REASON(CONF_R_NO_CONF), "\x6e\x6f\x20\x63\x6f\x6e\x66"},
     {ERR_REASON(CONF_R_NO_CONF_OR_ENVIRONMENT_VARIABLE),
-     "no conf or environment variable"},
-    {ERR_REASON(CONF_R_NO_SECTION), "no section"},
-    {ERR_REASON(CONF_R_NO_SUCH_FILE), "no such file"},
-    {ERR_REASON(CONF_R_NO_VALUE), "no value"},
+     "\x6e\x6f\x20\x63\x6f\x6e\x66\x20\x6f\x72\x20\x65\x6e\x76\x69\x72\x6f\x6e\x6d\x65\x6e\x74\x20\x76\x61\x72\x69\x61\x62\x6c\x65"},
+    {ERR_REASON(CONF_R_NO_SECTION), "\x6e\x6f\x20\x73\x65\x63\x74\x69\x6f\x6e"},
+    {ERR_REASON(CONF_R_NO_SUCH_FILE), "\x6e\x6f\x20\x73\x75\x63\x68\x20\x66\x69\x6c\x65"},
+    {ERR_REASON(CONF_R_NO_VALUE), "\x6e\x6f\x20\x76\x61\x6c\x75\x65"},
     {ERR_REASON(CONF_R_UNABLE_TO_CREATE_NEW_SECTION),
-     "unable to create new section"},
-    {ERR_REASON(CONF_R_UNKNOWN_MODULE_NAME), "unknown module name"},
-    {ERR_REASON(CONF_R_VARIABLE_HAS_NO_VALUE), "variable has no value"},
+     "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x6e\x65\x77\x20\x73\x65\x63\x74\x69\x6f\x6e"},
+    {ERR_REASON(CONF_R_UNKNOWN_MODULE_NAME), "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6d\x6f\x64\x75\x6c\x65\x20\x6e\x61\x6d\x65"},
+    {ERR_REASON(CONF_R_VARIABLE_HAS_NO_VALUE), "\x76\x61\x72\x69\x61\x62\x6c\x65\x20\x68\x61\x73\x20\x6e\x6f\x20\x76\x61\x6c\x75\x65"},
     {0, NULL}
 };
 

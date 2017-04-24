@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -78,15 +78,15 @@ void X509V3_EXT_val_prn(BIO *out, STACK_OF(CONF_VALUE) *val, int indent,
     if (!val)
         return;
     if (!ml || !sk_CONF_VALUE_num(val)) {
-        BIO_printf(out, "%*s", indent, "");
+        BIO_printf(out, "\x25\x2a\x73", indent, "");
         if (!sk_CONF_VALUE_num(val))
-            BIO_puts(out, "<EMPTY>\n");
+            BIO_puts(out, "\x3c\x45\x4d\x50\x54\x59\x3e\xa");
     }
     for (i = 0; i < sk_CONF_VALUE_num(val); i++) {
         if (ml)
-            BIO_printf(out, "%*s", indent, "");
+            BIO_printf(out, "\x25\x2a\x73", indent, "");
         else if (i > 0)
-            BIO_printf(out, ", ");
+            BIO_printf(out, "\x2c\x20");
         nval = sk_CONF_VALUE_value(val, i);
         if (!nval->name)
             BIO_puts(out, nval->value);
@@ -94,7 +94,7 @@ void X509V3_EXT_val_prn(BIO *out, STACK_OF(CONF_VALUE) *val, int indent,
             BIO_puts(out, nval->name);
 #ifndef CHARSET_EBCDIC
         else
-            BIO_printf(out, "%s:%s", nval->name, nval->value);
+            BIO_printf(out, "\x25\x73\x3a\x25\x73", nval->name, nval->value);
 #else
         else {
             int len;
@@ -103,13 +103,13 @@ void X509V3_EXT_val_prn(BIO *out, STACK_OF(CONF_VALUE) *val, int indent,
             tmp = OPENSSL_malloc(len);
             if (tmp) {
                 ascii2ebcdic(tmp, nval->value, len);
-                BIO_printf(out, "%s:%s", nval->name, tmp);
+                BIO_printf(out, "\x25\x73\x3a\x25\x73", nval->name, tmp);
                 OPENSSL_free(tmp);
             }
         }
 #endif
         if (ml)
-            BIO_puts(out, "\n");
+            BIO_puts(out, "\xa");
     }
 }
 
@@ -144,7 +144,7 @@ int X509V3_EXT_print(BIO *out, X509_EXTENSION *ext, unsigned long flag,
             goto err;
         }
 #ifndef CHARSET_EBCDIC
-        BIO_printf(out, "%*s%s", indent, "", value);
+        BIO_printf(out, "\x25\x2a\x73\x25\x73", indent, "", value);
 #else
         {
             int len;
@@ -153,7 +153,7 @@ int X509V3_EXT_print(BIO *out, X509_EXTENSION *ext, unsigned long flag,
             tmp = OPENSSL_malloc(len);
             if (tmp) {
                 ascii2ebcdic(tmp, value, len);
-                BIO_printf(out, "%*s%s", indent, "", tmp);
+                BIO_printf(out, "\x25\x2a\x73\x25\x73", indent, "", tmp);
                 OPENSSL_free(tmp);
             }
         }
@@ -192,7 +192,7 @@ int X509V3_extensions_print(BIO *bp, char *title,
         return 1;
 
     if (title) {
-        BIO_printf(bp, "%*s%s:\n", indent, "", title);
+        BIO_printf(bp, "\x25\x2a\x73\x25\x73\x3a\xa", indent, "", title);
         indent += 4;
     }
 
@@ -200,18 +200,18 @@ int X509V3_extensions_print(BIO *bp, char *title,
         ASN1_OBJECT *obj;
         X509_EXTENSION *ex;
         ex = sk_X509_EXTENSION_value(exts, i);
-        if (indent && BIO_printf(bp, "%*s", indent, "") <= 0)
+        if (indent && BIO_printf(bp, "\x25\x2a\x73", indent, "") <= 0)
             return 0;
         obj = X509_EXTENSION_get_object(ex);
         i2a_ASN1_OBJECT(bp, obj);
         j = X509_EXTENSION_get_critical(ex);
-        if (BIO_printf(bp, ": %s\n", j ? "critical" : "") <= 0)
+        if (BIO_printf(bp, "\x3a\x20\x25\x73\xa", j ? "\x63\x72\x69\x74\x69\x63\x61\x6c" : "") <= 0)
             return 0;
         if (!X509V3_EXT_print(bp, ex, flag, indent + 4)) {
-            BIO_printf(bp, "%*s", indent + 4, "");
+            BIO_printf(bp, "\x25\x2a\x73", indent + 4, "");
             M_ASN1_OCTET_STRING_print(bp, ex->value);
         }
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             return 0;
     }
     return 1;
@@ -227,9 +227,9 @@ static int unknown_ext_print(BIO *out, X509_EXTENSION *ext,
 
     case X509V3_EXT_ERROR_UNKNOWN:
         if (supported)
-            BIO_printf(out, "%*s<Parse Error>", indent, "");
+            BIO_printf(out, "\x25\x2a\x73\x3c\x50\x61\x72\x73\x65\x20\x45\x72\x72\x6f\x72\x3e", indent, "");
         else
-            BIO_printf(out, "%*s<Not Supported>", indent, "");
+            BIO_printf(out, "\x25\x2a\x73\x3c\x4e\x6f\x74\x20\x53\x75\x70\x70\x6f\x72\x74\x65\x64\x3e", indent, "");
         return 1;
 
     case X509V3_EXT_PARSE_UNKNOWN:

@@ -355,10 +355,10 @@ size_t CRYPTO_nistcts128_decrypt(const unsigned char *in, unsigned char *out,
 # include <openssl/aes.h>
 
 /* test vectors from RFC 3962 */
-static const unsigned char test_key[16] = "chicken teriyaki";
+static const unsigned char test_key[16] = "\x63\x68\x69\x63\x6b\x65\x6e\x20\x74\x65\x72\x69\x79\x61\x6b\x69";
 static const unsigned char test_input[64] =
-    "I would like the" " General Gau's C"
-    "hicken, please, " "and wonton soup.";
+    "\x49\x20\x77\x6f\x75\x6c\x64\x20\x6c\x69\x6b\x65\x20\x74\x68\x65" "\x20\x47\x65\x6e\x65\x72\x61\x6c\x20\x47\x61\x75\x27\x73\x20\x43"
+    "\x68\x69\x63\x6b\x65\x6e\x2c\x20\x70\x6c\x65\x61\x73\x65\x2c\x20" "\x61\x6e\x64\x20\x77\x6f\x6e\x74\x6f\x6e\x20\x73\x6f\x75\x70\x2e";
 static const unsigned char test_iv[16] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -419,7 +419,7 @@ void test_vector(const unsigned char *vector, size_t len)
     unsigned char cleartext[64], ciphertext[64];
     size_t tail;
 
-    printf("vector_%d\n", len);
+    printf("\x76\x65\x63\x74\x6f\x72\x5f\x25\x64\xa", len);
     fflush(stdout);
 
     if ((tail = len % 16) == 0)
@@ -431,36 +431,36 @@ void test_vector(const unsigned char *vector, size_t len)
     CRYPTO_cts128_encrypt_block(test_input, ciphertext, len, &encks, iv,
                                 (block128_f) AES_encrypt);
     if (memcmp(ciphertext, vector, len))
-        fprintf(stderr, "output_%d mismatch\n", len), exit(1);
+        fprintf(stderr, "\x6f\x75\x74\x70\x75\x74\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(1);
     if (memcmp(iv, vector + len - tail, sizeof(iv)))
-        fprintf(stderr, "iv_%d mismatch\n", len), exit(1);
+        fprintf(stderr, "\x69\x76\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(1);
 
     /* test block-based decryption */
     memcpy(iv, test_iv, sizeof(test_iv));
     CRYPTO_cts128_decrypt_block(ciphertext, cleartext, len, &decks, iv,
                                 (block128_f) AES_decrypt);
     if (memcmp(cleartext, test_input, len))
-        fprintf(stderr, "input_%d mismatch\n", len), exit(2);
+        fprintf(stderr, "\x69\x6e\x70\x75\x74\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(2);
     if (memcmp(iv, vector + len - tail, sizeof(iv)))
-        fprintf(stderr, "iv_%d mismatch\n", len), exit(2);
+        fprintf(stderr, "\x69\x76\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(2);
 
     /* test streamed encryption */
     memcpy(iv, test_iv, sizeof(test_iv));
     CRYPTO_cts128_encrypt(test_input, ciphertext, len, &encks, iv,
                           (cbc128_f) AES_cbc_encrypt);
     if (memcmp(ciphertext, vector, len))
-        fprintf(stderr, "output_%d mismatch\n", len), exit(3);
+        fprintf(stderr, "\x6f\x75\x74\x70\x75\x74\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(3);
     if (memcmp(iv, vector + len - tail, sizeof(iv)))
-        fprintf(stderr, "iv_%d mismatch\n", len), exit(3);
+        fprintf(stderr, "\x69\x76\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(3);
 
     /* test streamed decryption */
     memcpy(iv, test_iv, sizeof(test_iv));
     CRYPTO_cts128_decrypt(ciphertext, cleartext, len, &decks, iv,
                           (cbc128_f) AES_cbc_encrypt);
     if (memcmp(cleartext, test_input, len))
-        fprintf(stderr, "input_%d mismatch\n", len), exit(4);
+        fprintf(stderr, "\x69\x6e\x70\x75\x74\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(4);
     if (memcmp(iv, vector + len - tail, sizeof(iv)))
-        fprintf(stderr, "iv_%d mismatch\n", len), exit(4);
+        fprintf(stderr, "\x69\x76\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(4);
 }
 
 void test_nistvector(const unsigned char *vector, size_t len)
@@ -469,7 +469,7 @@ void test_nistvector(const unsigned char *vector, size_t len)
     unsigned char cleartext[64], ciphertext[64], nistvector[64];
     size_t tail;
 
-    printf("nistvector_%d\n", len);
+    printf("\x6e\x69\x73\x74\x76\x65\x63\x74\x6f\x72\x5f\x25\x64\xa", len);
     fflush(stdout);
 
     if ((tail = len % 16) == 0)
@@ -488,36 +488,36 @@ void test_nistvector(const unsigned char *vector, size_t len)
     CRYPTO_nistcts128_encrypt_block(test_input, ciphertext, len, &encks, iv,
                                     (block128_f) AES_encrypt);
     if (memcmp(ciphertext, nistvector, len))
-        fprintf(stderr, "output_%d mismatch\n", len), exit(1);
+        fprintf(stderr, "\x6f\x75\x74\x70\x75\x74\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(1);
     if (memcmp(iv, nistvector + len - tail, sizeof(iv)))
-        fprintf(stderr, "iv_%d mismatch\n", len), exit(1);
+        fprintf(stderr, "\x69\x76\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(1);
 
     /* test block-based decryption */
     memcpy(iv, test_iv, sizeof(test_iv));
     CRYPTO_nistcts128_decrypt_block(ciphertext, cleartext, len, &decks, iv,
                                     (block128_f) AES_decrypt);
     if (memcmp(cleartext, test_input, len))
-        fprintf(stderr, "input_%d mismatch\n", len), exit(2);
+        fprintf(stderr, "\x69\x6e\x70\x75\x74\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(2);
     if (memcmp(iv, nistvector + len - tail, sizeof(iv)))
-        fprintf(stderr, "iv_%d mismatch\n", len), exit(2);
+        fprintf(stderr, "\x69\x76\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(2);
 
     /* test streamed encryption */
     memcpy(iv, test_iv, sizeof(test_iv));
     CRYPTO_nistcts128_encrypt(test_input, ciphertext, len, &encks, iv,
                               (cbc128_f) AES_cbc_encrypt);
     if (memcmp(ciphertext, nistvector, len))
-        fprintf(stderr, "output_%d mismatch\n", len), exit(3);
+        fprintf(stderr, "\x6f\x75\x74\x70\x75\x74\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(3);
     if (memcmp(iv, nistvector + len - tail, sizeof(iv)))
-        fprintf(stderr, "iv_%d mismatch\n", len), exit(3);
+        fprintf(stderr, "\x69\x76\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(3);
 
     /* test streamed decryption */
     memcpy(iv, test_iv, sizeof(test_iv));
     CRYPTO_nistcts128_decrypt(ciphertext, cleartext, len, &decks, iv,
                               (cbc128_f) AES_cbc_encrypt);
     if (memcmp(cleartext, test_input, len))
-        fprintf(stderr, "input_%d mismatch\n", len), exit(4);
+        fprintf(stderr, "\x69\x6e\x70\x75\x74\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(4);
     if (memcmp(iv, nistvector + len - tail, sizeof(iv)))
-        fprintf(stderr, "iv_%d mismatch\n", len), exit(4);
+        fprintf(stderr, "\x69\x76\x5f\x25\x64\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa", len), exit(4);
 }
 
 int main()

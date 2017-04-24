@@ -38,7 +38,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -77,13 +77,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -118,12 +118,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -135,7 +135,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -281,7 +281,7 @@ int SSL_CTX_set_ssl_version(SSL_CTX *ctx, const SSL_METHOD *meth)
     sk = ssl_create_cipher_list(ctx->method, &(ctx->cipher_list),
                                 &(ctx->cipher_list_by_id),
                                 meth->version ==
-                                SSL2_VERSION ? "SSLv2" :
+                                SSL2_VERSION ? "\x53\x53\x4c\x76\x32" :
                                 SSL_DEFAULT_CIPHER_LIST, ctx->cert);
     if ((sk == NULL) || (sk_SSL_CIPHER_num(sk) <= 0)) {
         SSLerr(SSL_F_SSL_CTX_SET_SSL_VERSION,
@@ -568,13 +568,13 @@ void SSL_free(SSL *s)
 
     i = CRYPTO_add(&s->references, -1, CRYPTO_LOCK_SSL);
 #ifdef REF_PRINT
-    REF_PRINT("SSL", s);
+    REF_PRINT("\x53\x53\x4c", s);
 #endif
     if (i > 0)
         return;
 #ifdef REF_CHECK
     if (i < 0) {
-        fprintf(stderr, "SSL_free, bad reference count\n");
+        fprintf(stderr, "\x53\x53\x4c\x5f\x66\x72\x65\x65\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
         abort();                /* ok */
     }
 #endif
@@ -1428,15 +1428,15 @@ char *SSL_get_shared_ciphers(const SSL *s, char *buf, int len)
         if (n + 1 > len) {
             if (p != buf)
                 --p;
-            *p = '\0';
+            *p = '\x0';
             return buf;
         }
         strcpy(p, c->name);
         p += n;
-        *(p++) = ':';
+        *(p++) = '\x3a';
         len -= n + 1;
     }
-    p[-1] = '\0';
+    p[-1] = '\x0';
     return (buf);
 }
 
@@ -1489,7 +1489,7 @@ int ssl_cipher_list_to_bytes(SSL *s, STACK_OF(SSL_CIPHER) *sk,
             p += j;
 #ifdef OPENSSL_RI_DEBUG
             fprintf(stderr,
-                    "TLS_EMPTY_RENEGOTIATION_INFO_SCSV sent by client\n");
+                    "\x54\x4c\x53\x5f\x45\x4d\x50\x54\x59\x5f\x52\x45\x4e\x45\x47\x4f\x54\x49\x41\x54\x49\x4f\x4e\x5f\x49\x4e\x46\x4f\x5f\x53\x43\x53\x56\x20\x73\x65\x6e\x74\x20\x62\x79\x20\x63\x6c\x69\x65\x6e\x74\xa");
 #endif
         }
         if (s->mode & SSL_MODE_SEND_FALLBACK_SCSV) {
@@ -1556,7 +1556,7 @@ STACK_OF(SSL_CIPHER) *ssl_bytes_to_cipher_list(SSL *s, unsigned char *p,
             s->s3->send_connection_binding = 1;
             p += n;
 #ifdef OPENSSL_RI_DEBUG
-            fprintf(stderr, "SCSV received by server\n");
+            fprintf(stderr, "\x53\x43\x53\x56\x20\x72\x65\x63\x65\x69\x76\x65\x64\x20\x62\x79\x20\x73\x65\x72\x76\x65\x72\xa");
 #endif
             continue;
         }
@@ -1960,7 +1960,7 @@ SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth)
     ssl_create_cipher_list(ret->method,
                            &ret->cipher_list, &ret->cipher_list_by_id,
                            meth->version ==
-                           SSL2_VERSION ? "SSLv2" : SSL_DEFAULT_CIPHER_LIST,
+                           SSL2_VERSION ? "\x53\x53\x4c\x76\x32" : SSL_DEFAULT_CIPHER_LIST,
                            ret->cert);
     if (ret->cipher_list == NULL || sk_SSL_CIPHER_num(ret->cipher_list) <= 0) {
         SSLerr(SSL_F_SSL_CTX_NEW, SSL_R_LIBRARY_HAS_NO_CIPHERS);
@@ -1971,15 +1971,15 @@ SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth)
     if (!ret->param)
         goto err;
 
-    if ((ret->rsa_md5 = EVP_get_digestbyname("ssl2-md5")) == NULL) {
+    if ((ret->rsa_md5 = EVP_get_digestbyname("\x73\x73\x6c\x32\x2d\x6d\x64\x35")) == NULL) {
         SSLerr(SSL_F_SSL_CTX_NEW, SSL_R_UNABLE_TO_LOAD_SSL2_MD5_ROUTINES);
         goto err2;
     }
-    if ((ret->md5 = EVP_get_digestbyname("ssl3-md5")) == NULL) {
+    if ((ret->md5 = EVP_get_digestbyname("\x73\x73\x6c\x33\x2d\x6d\x64\x35")) == NULL) {
         SSLerr(SSL_F_SSL_CTX_NEW, SSL_R_UNABLE_TO_LOAD_SSL3_MD5_ROUTINES);
         goto err2;
     }
-    if ((ret->sha1 = EVP_get_digestbyname("ssl3-sha1")) == NULL) {
+    if ((ret->sha1 = EVP_get_digestbyname("\x73\x73\x6c\x33\x2d\x73\x68\x61\x31")) == NULL) {
         SSLerr(SSL_F_SSL_CTX_NEW, SSL_R_UNABLE_TO_LOAD_SSL3_SHA1_ROUTINES);
         goto err2;
     }
@@ -2039,7 +2039,7 @@ SSL_CTX *SSL_CTX_new(const SSL_METHOD *meth)
 #ifndef OPENSSL_NO_ENGINE
     ret->client_cert_engine = NULL;
 # ifdef OPENSSL_SSL_CLIENT_ENGINE_AUTO
-#  define eng_strx(x)     #x
+#  define eng_strx(x)      USTR(#x)
 #  define eng_str(x)      eng_strx(x)
     /* Use specific client engine automatically... ignore errors */
     {
@@ -2105,13 +2105,13 @@ void SSL_CTX_free(SSL_CTX *a)
 
     i = CRYPTO_add(&a->references, -1, CRYPTO_LOCK_SSL_CTX);
 #ifdef REF_PRINT
-    REF_PRINT("SSL_CTX", a);
+    REF_PRINT("\x53\x53\x4c\x5f\x43\x54\x58", a);
 #endif
     if (i > 0)
         return;
 #ifdef REF_CHECK
     if (i < 0) {
-        fprintf(stderr, "SSL_CTX_free, bad reference count\n");
+        fprintf(stderr, "\x53\x53\x4c\x5f\x43\x54\x58\x5f\x66\x72\x65\x65\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
         abort();                /* ok */
     }
 #endif
@@ -2300,7 +2300,7 @@ void ssl_set_cert_masks(CERT *c, const SSL_CIPHER *cipher)
 
 #ifdef CIPHER_DEBUG
     fprintf(stderr,
-            "rt=%d rte=%d dht=%d ecdht=%d re=%d ree=%d rs=%d ds=%d dhr=%d dhd=%d\n",
+            "\x72\x74\x3d\x25\x64\x20\x72\x74\x65\x3d\x25\x64\x20\x64\x68\x74\x3d\x25\x64\x20\x65\x63\x64\x68\x74\x3d\x25\x64\x20\x72\x65\x3d\x25\x64\x20\x72\x65\x65\x3d\x25\x64\x20\x72\x73\x3d\x25\x64\x20\x64\x73\x3d\x25\x64\x20\x64\x68\x72\x3d\x25\x64\x20\x64\x68\x64\x3d\x25\x64\xa",
             rsa_tmp, rsa_tmp_export, dh_tmp, have_ecdh_tmp, rsa_enc,
             rsa_enc_export, rsa_sign, dsa_sign, dh_rsa, dh_dsa);
 #endif
@@ -2843,23 +2843,23 @@ SSL_METHOD *ssl_bad_method(int ver)
 const char *SSL_get_version(const SSL *s)
 {
     if (s->version == TLS1_2_VERSION)
-        return ("TLSv1.2");
+        return ("\x54\x4c\x53\x76\x31\x2e\x32");
     else if (s->version == TLS1_1_VERSION)
-        return ("TLSv1.1");
+        return ("\x54\x4c\x53\x76\x31\x2e\x31");
     else if (s->version == TLS1_VERSION)
-        return ("TLSv1");
+        return ("\x54\x4c\x53\x76\x31");
     else if (s->version == SSL3_VERSION)
-        return ("SSLv3");
+        return ("\x53\x53\x4c\x76\x33");
     else if (s->version == SSL2_VERSION)
-        return ("SSLv2");
+        return ("\x53\x53\x4c\x76\x32");
     else if (s->version == DTLS1_BAD_VER)
-        return ("DTLSv0.9");
+        return ("\x44\x54\x4c\x53\x76\x30\x2e\x39");
     else if (s->version == DTLS1_VERSION)
-        return ("DTLSv1");
+        return ("\x44\x54\x4c\x53\x76\x31");
     else if (s->version == DTLS1_2_VERSION)
-        return ("DTLSv1.2");
+        return ("\x44\x54\x4c\x53\x76\x31\x2e\x32");
     else
-        return ("unknown");
+        return ("\x75\x6e\x6b\x6e\x6f\x77\x6e");
 }
 
 SSL *SSL_dup(SSL *s)

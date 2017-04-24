@@ -92,10 +92,10 @@ int fill_GOST2001_params(EC_KEY *eckey, int nid)
         goto err;
     }
 #ifdef DEBUG_KEYS
-    fprintf(stderr, "Set params index %d oid %s\nq=",
+    fprintf(stderr, "\x53\x65\x74\x20\x70\x61\x72\x61\x6d\x73\x20\x69\x6e\x64\x65\x78\x20\x25\x64\x20\x6f\x69\x64\x20\x25\x73\xa\x71\x3d",
             (params - R3410_2001_paramset), OBJ_nid2sn(params->nid));
     BN_print_fp(stderr, q);
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 #endif
 
     if(!EC_GROUP_set_generator(grp, P, q, NULL)) {
@@ -166,11 +166,11 @@ DSA_SIG *gost2001_do_sign(const unsigned char *dgst, int dlen, EC_KEY *eckey)
         goto err;
     }
 #ifdef DEBUG_SIGN
-    fprintf(stderr, "digest as bignum=");
+    fprintf(stderr, "\x64\x69\x67\x65\x73\x74\x20\x61\x73\x20\x62\x69\x67\x6e\x75\x6d\x3d");
     BN_print_fp(stderr, md);
-    fprintf(stderr, "\ndigest mod q=");
+    fprintf(stderr, "\xad\x69\x67\x65\x73\x74\x20\x6d\x6f\x64\x20\x71\x3d");
     BN_print_fp(stderr, e);
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 #endif
     if (BN_is_zero(e)) {
         BN_one(e);
@@ -309,9 +309,9 @@ int gost2001_do_verify(const unsigned char *dgst, int dgst_len,
         goto err;
     }
 #ifdef DEBUG_SIGN
-    fprintf(stderr, "digest as bignum: ");
+    fprintf(stderr, "\x64\x69\x67\x65\x73\x74\x20\x61\x73\x20\x62\x69\x67\x6e\x75\x6d\x3a\x20");
     BN_print_fp(stderr, md);
-    fprintf(stderr, "\ndigest mod q: ");
+    fprintf(stderr, "\xad\x69\x67\x65\x73\x74\x20\x6d\x6f\x64\x20\x71\x3a\x20");
     BN_print_fp(stderr, e);
 #endif
     if (BN_is_zero(e) && !BN_one(e)) {
@@ -327,11 +327,11 @@ int gost2001_do_verify(const unsigned char *dgst, int dgst_len,
         goto err;
     }
 #ifdef DEBUG_SIGN
-    fprintf(stderr, "\nInverted digest value: ");
+    fprintf(stderr, "\xa\x49\x6e\x76\x65\x72\x74\x65\x64\x20\x64\x69\x67\x65\x73\x74\x20\x76\x61\x6c\x75\x65\x3a\x20");
     BN_print_fp(stderr, v);
-    fprintf(stderr, "\nz1: ");
+    fprintf(stderr, "\xa\x7a\x31\x3a\x20");
     BN_print_fp(stderr, z1);
-    fprintf(stderr, "\nz2: ");
+    fprintf(stderr, "\xa\x7a\x32\x3a\x20");
     BN_print_fp(stderr, z2);
 #endif
     C = EC_POINT_new(group);
@@ -352,11 +352,11 @@ int gost2001_do_verify(const unsigned char *dgst, int dgst_len,
         goto err;
     }
 #ifdef DEBUG_SIGN
-    fprintf(stderr, "\nX=");
+    fprintf(stderr, "\xa\x58\x3d");
     BN_print_fp(stderr, X);
-    fprintf(stderr, "\nX mod q=");
+    fprintf(stderr, "\xa\x58\x20\x6d\x6f\x64\x20\x71\x3d");
     BN_print_fp(stderr, R);
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 #endif
     if (BN_cmp(R, sig->r) != 0) {
         GOSTerr(GOST_F_GOST2001_DO_VERIFY, GOST_R_SIGNATURE_MISMATCH);

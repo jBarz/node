@@ -42,16 +42,16 @@ typedef struct {
 
 decc_feat_t decc_feat_array[] = {
     /* Preserve command-line case with SET PROCESS/PARSE_STYLE=EXTENDED */
-    {"DECC$ARGV_PARSE_STYLE", 1},
+    {"\x44\x45\x43\x43\x24\x41\x52\x47\x56\x5f\x50\x41\x52\x53\x45\x5f\x53\x54\x59\x4c\x45", 1},
 
     /* Preserve case for file names on ODS5 disks. */
-    {"DECC$EFS_CASE_PRESERVE", 1},
+    {"\x44\x45\x43\x43\x24\x45\x46\x53\x5f\x43\x41\x53\x45\x5f\x50\x52\x45\x53\x45\x52\x56\x45", 1},
 
     /*
      * Enable multiple dots (and most characters) in ODS5 file names, while
      * preserving VMS-ness of ";version".
      */
-    {"DECC$EFS_CHARSET", 1},
+    {"\x44\x45\x43\x43\x24\x45\x46\x53\x5f\x43\x48\x41\x52\x53\x45\x54", 1},
 
     /* List terminator. */
     {(char *)NULL, 0}
@@ -71,7 +71,7 @@ static void decc_init(void)
     int sts;
 
     /* Get debug option. */
-    openssl_debug_decc_init = getenv("OPENSSL_DEBUG_DECC_INIT");
+    openssl_debug_decc_init = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x44\x45\x42\x55\x47\x5f\x44\x45\x43\x43\x5f\x49\x4e\x49\x54");
     if (openssl_debug_decc_init != NULL) {
         verbose = strtol(openssl_debug_decc_init, NULL, 10);
         if (verbose <= 0) {
@@ -102,7 +102,7 @@ static void decc_init(void)
                                                  1, decc_feat_array[i].value);
 
                     if (verbose > 1) {
-                        fprintf(stderr, " %s = %d, sts = %d.\n",
+                        fprintf(stderr, "\x20\x25\x73\x20\x3d\x20\x25\x64\x2c\x20\x73\x74\x73\x20\x3d\x20\x25\x64\x2e\xa",
                                 decc_feat_array[i].name,
                                 decc_feat_array[i].value, sts);
                     }
@@ -110,7 +110,7 @@ static void decc_init(void)
             } else {
                 /* Invalid DECC feature value. */
                 fprintf(stderr,
-                        " INVALID DECC$FEATURE VALUE, %d: %d <= %s <= %d.\n",
+                        "\x20\x49\x4e\x56\x41\x4c\x49\x44\x20\x44\x45\x43\x43\x24\x46\x45\x41\x54\x55\x52\x45\x20\x56\x41\x4c\x55\x45\x2c\x20\x25\x64\x3a\x20\x25\x64\x20\x3c\x3d\x20\x25\x73\x20\x3c\x3d\x20\x25\x64\x2e\xa",
                         feat_value,
                         feat_value_min, decc_feat_array[i].name,
                         feat_value_max);
@@ -118,12 +118,12 @@ static void decc_init(void)
         } else {
             /* Invalid DECC feature name. */
             fprintf(stderr,
-                    " UNKNOWN DECC$FEATURE: %s.\n", decc_feat_array[i].name);
+                    "\x20\x55\x4e\x4b\x4e\x4f\x57\x4e\x20\x44\x45\x43\x43\x24\x46\x45\x41\x54\x55\x52\x45\x3a\x20\x25\x73\x2e\xa", decc_feat_array[i].name);
         }
     }
 
     if (verbose > 0) {
-        fprintf(stderr, " DECC_INIT complete.\n");
+        fprintf(stderr, "\x20\x44\x45\x43\x43\x5f\x49\x4e\x49\x54\x20\x63\x6f\x6d\x70\x6c\x65\x74\x65\x2e\xa");
     }
 }
 

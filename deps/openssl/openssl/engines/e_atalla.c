@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -83,7 +83,7 @@
 #   include "vendor_defns/atalla.h"
 #  endif
 
-#  define ATALLA_LIB_NAME "atalla engine"
+#  define ATALLA_LIB_NAME "\x61\x74\x61\x6c\x6c\x61\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "e_atalla_err.c"
 
 static int atalla_destroy(ENGINE *e);
@@ -128,8 +128,8 @@ static int atalla_mod_exp_dh(const DH *dh, BIGNUM *r,
 #  define ATALLA_CMD_SO_PATH              ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN atalla_cmd_defns[] = {
     {ATALLA_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'atasi' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x61\x74\x61\x73\x69\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
@@ -137,7 +137,7 @@ static const ENGINE_CMD_DEFN atalla_cmd_defns[] = {
 #  ifndef OPENSSL_NO_RSA
 /* Our internal RSA_METHOD that we provide pointers to */
 static RSA_METHOD atalla_rsa = {
-    "Atalla RSA method",
+    "\x41\x74\x61\x6c\x6c\x61\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     NULL,
@@ -157,7 +157,7 @@ static RSA_METHOD atalla_rsa = {
 #  ifndef OPENSSL_NO_DSA
 /* Our internal DSA_METHOD that we provide pointers to */
 static DSA_METHOD atalla_dsa = {
-    "Atalla DSA method",
+    "\x41\x74\x61\x6c\x6c\x61\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* dsa_do_sign */
     NULL,                       /* dsa_sign_setup */
     NULL,                       /* dsa_do_verify */
@@ -175,7 +175,7 @@ static DSA_METHOD atalla_dsa = {
 #  ifndef OPENSSL_NO_DH
 /* Our internal DH_METHOD that we provide pointers to */
 static DH_METHOD atalla_dh = {
-    "Atalla DH method",
+    "\x41\x74\x61\x6c\x6c\x61\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     atalla_mod_exp_dh,
@@ -188,8 +188,8 @@ static DH_METHOD atalla_dh = {
 #  endif
 
 /* Constants used when creating the ENGINE */
-static const char *engine_atalla_id = "atalla";
-static const char *engine_atalla_name = "Atalla hardware engine support";
+static const char *engine_atalla_id = "\x61\x74\x61\x6c\x6c\x61";
+static const char *engine_atalla_name = "\x41\x74\x61\x6c\x6c\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /*
  * This internal function is used by ENGINE_atalla() and possibly by the
@@ -319,7 +319,7 @@ static const char *get_ATALLA_LIBNAME(void)
 {
     if (ATALLA_LIBNAME)
         return ATALLA_LIBNAME;
-    return "atasi";
+    return "\x61\x74\x61\x73\x69";
 }
 
 static void free_ATALLA_LIBNAME(void)
@@ -335,9 +335,9 @@ static long set_ATALLA_LIBNAME(const char *name)
     return (((ATALLA_LIBNAME = BUF_strdup(name)) != NULL) ? 1 : 0);
 }
 
-static const char *ATALLA_F1 = "ASI_GetHardwareConfig";
-static const char *ATALLA_F2 = "ASI_RSAPrivateKeyOpFn";
-static const char *ATALLA_F3 = "ASI_GetPerformanceStatistics";
+static const char *ATALLA_F1 = "\x41\x53\x49\x5f\x47\x65\x74\x48\x61\x72\x64\x77\x61\x72\x65\x43\x6f\x6e\x66\x69\x67";
+static const char *ATALLA_F2 = "\x41\x53\x49\x5f\x52\x53\x41\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79\x4f\x70\x46\x6e";
+static const char *ATALLA_F3 = "\x41\x53\x49\x5f\x47\x65\x74\x50\x65\x72\x66\x6f\x72\x6d\x61\x6e\x63\x65\x53\x74\x61\x74\x69\x73\x74\x69\x63\x73";
 
 /* Destructor (complements the "ENGINE_atalla()" constructor) */
 static int atalla_destroy(ENGINE *e)

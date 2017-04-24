@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -94,7 +94,7 @@ static STACK_OF(GENERAL_NAME) *gnames_from_sectname(X509V3_CTX *ctx,
 {
     STACK_OF(CONF_VALUE) *gnsect;
     STACK_OF(GENERAL_NAME) *gens;
-    if (*sect == '@')
+    if (*sect == '\x40')
         gnsect = X509V3_get_section(ctx, sect + 1);
     else
         gnsect = X509V3_parse_list(sect);
@@ -103,7 +103,7 @@ static STACK_OF(GENERAL_NAME) *gnames_from_sectname(X509V3_CTX *ctx,
         return NULL;
     }
     gens = v2i_GENERAL_NAMES(NULL, ctx, gnsect);
-    if (*sect == '@')
+    if (*sect == '\x40')
         X509V3_section_free(ctx, gnsect);
     else
         sk_CONF_VALUE_pop_free(gnsect, X509V3_conf_free);
@@ -115,11 +115,11 @@ static int set_dist_point_name(DIST_POINT_NAME **pdp, X509V3_CTX *ctx,
 {
     STACK_OF(GENERAL_NAME) *fnm = NULL;
     STACK_OF(X509_NAME_ENTRY) *rnm = NULL;
-    if (!strncmp(cnf->name, "fullname", 9)) {
+    if (!strncmp(cnf->name, "\x66\x75\x6c\x6c\x6e\x61\x6d\x65", 9)) {
         fnm = gnames_from_sectname(ctx, cnf->value);
         if (!fnm)
             goto err;
-    } else if (!strcmp(cnf->name, "relativename")) {
+    } else if (!strcmp(cnf->name, "\x72\x65\x6c\x61\x74\x69\x76\x65\x6e\x61\x6d\x65")) {
         int ret;
         STACK_OF(CONF_VALUE) *dnsect;
         X509_NAME *nm;
@@ -179,15 +179,15 @@ static int set_dist_point_name(DIST_POINT_NAME **pdp, X509V3_CTX *ctx,
 }
 
 static const BIT_STRING_BITNAME reason_flags[] = {
-    {0, "Unused", "unused"},
-    {1, "Key Compromise", "keyCompromise"},
-    {2, "CA Compromise", "CACompromise"},
-    {3, "Affiliation Changed", "affiliationChanged"},
-    {4, "Superseded", "superseded"},
-    {5, "Cessation Of Operation", "cessationOfOperation"},
-    {6, "Certificate Hold", "certificateHold"},
-    {7, "Privilege Withdrawn", "privilegeWithdrawn"},
-    {8, "AA Compromise", "AACompromise"},
+    {0, "\x55\x6e\x75\x73\x65\x64", "\x75\x6e\x75\x73\x65\x64"},
+    {1, "\x4b\x65\x79\x20\x43\x6f\x6d\x70\x72\x6f\x6d\x69\x73\x65", "\x6b\x65\x79\x43\x6f\x6d\x70\x72\x6f\x6d\x69\x73\x65"},
+    {2, "\x43\x41\x20\x43\x6f\x6d\x70\x72\x6f\x6d\x69\x73\x65", "\x43\x41\x43\x6f\x6d\x70\x72\x6f\x6d\x69\x73\x65"},
+    {3, "\x41\x66\x66\x69\x6c\x69\x61\x74\x69\x6f\x6e\x20\x43\x68\x61\x6e\x67\x65\x64", "\x61\x66\x66\x69\x6c\x69\x61\x74\x69\x6f\x6e\x43\x68\x61\x6e\x67\x65\x64"},
+    {4, "\x53\x75\x70\x65\x72\x73\x65\x64\x65\x64", "\x73\x75\x70\x65\x72\x73\x65\x64\x65\x64"},
+    {5, "\x43\x65\x73\x73\x61\x74\x69\x6f\x6e\x20\x4f\x66\x20\x4f\x70\x65\x72\x61\x74\x69\x6f\x6e", "\x63\x65\x73\x73\x61\x74\x69\x6f\x6e\x4f\x66\x4f\x70\x65\x72\x61\x74\x69\x6f\x6e"},
+    {6, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x48\x6f\x6c\x64", "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x48\x6f\x6c\x64"},
+    {7, "\x50\x72\x69\x76\x69\x6c\x65\x67\x65\x20\x57\x69\x74\x68\x64\x72\x61\x77\x6e", "\x70\x72\x69\x76\x69\x6c\x65\x67\x65\x57\x69\x74\x68\x64\x72\x61\x77\x6e"},
+    {8, "\x41\x41\x20\x43\x6f\x6d\x70\x72\x6f\x6d\x69\x73\x65", "\x41\x41\x43\x6f\x6d\x70\x72\x6f\x6d\x69\x73\x65"},
     {-1, NULL, NULL}
 };
 
@@ -231,20 +231,20 @@ static int print_reasons(BIO *out, const char *rname,
 {
     int first = 1;
     const BIT_STRING_BITNAME *pbn;
-    BIO_printf(out, "%*s%s:\n%*s", indent, "", rname, indent + 2, "");
+    BIO_printf(out, "\x25\x2a\x73\x25\x73\x3a\xa\x25\x2a\x73", indent, "", rname, indent + 2, "");
     for (pbn = reason_flags; pbn->lname; pbn++) {
         if (ASN1_BIT_STRING_get_bit(rflags, pbn->bitnum)) {
             if (first)
                 first = 0;
             else
-                BIO_puts(out, ", ");
+                BIO_puts(out, "\x2c\x20");
             BIO_puts(out, pbn->lname);
         }
     }
     if (first)
-        BIO_puts(out, "<EMPTY>\n");
+        BIO_puts(out, "\x3c\x45\x4d\x50\x54\x59\x3e\xa");
     else
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     return 1;
 }
 
@@ -265,10 +265,10 @@ static DIST_POINT *crldp_from_section(X509V3_CTX *ctx,
             continue;
         if (ret < 0)
             goto err;
-        if (!strcmp(cnf->name, "reasons")) {
+        if (!strcmp(cnf->name, "\x72\x65\x61\x73\x6f\x6e\x73")) {
             if (!set_reasons(&point->reasons, cnf->value))
                 goto err;
-        } else if (!strcmp(cnf->name, "CRLissuer")) {
+        } else if (!strcmp(cnf->name, "\x43\x52\x4c\x69\x73\x73\x75\x65\x72")) {
             point->CRLissuer = gnames_from_sectname(ctx, cnf->value);
             if (!point->CRLissuer)
                 goto err;
@@ -432,19 +432,19 @@ static void *v2i_idp(const X509V3_EXT_METHOD *method, X509V3_CTX *ctx,
             continue;
         if (ret < 0)
             goto err;
-        if (!strcmp(name, "onlyuser")) {
+        if (!strcmp(name, "\x6f\x6e\x6c\x79\x75\x73\x65\x72")) {
             if (!X509V3_get_value_bool(cnf, &idp->onlyuser))
                 goto err;
-        } else if (!strcmp(name, "onlyCA")) {
+        } else if (!strcmp(name, "\x6f\x6e\x6c\x79\x43\x41")) {
             if (!X509V3_get_value_bool(cnf, &idp->onlyCA))
                 goto err;
-        } else if (!strcmp(name, "onlyAA")) {
+        } else if (!strcmp(name, "\x6f\x6e\x6c\x79\x41\x41")) {
             if (!X509V3_get_value_bool(cnf, &idp->onlyattr))
                 goto err;
-        } else if (!strcmp(name, "indirectCRL")) {
+        } else if (!strcmp(name, "\x69\x6e\x64\x69\x72\x65\x63\x74\x43\x52\x4c")) {
             if (!X509V3_get_value_bool(cnf, &idp->indirectCRL))
                 goto err;
-        } else if (!strcmp(name, "onlysomereasons")) {
+        } else if (!strcmp(name, "\x6f\x6e\x6c\x79\x73\x6f\x6d\x65\x72\x65\x61\x73\x6f\x6e\x73")) {
             if (!set_reasons(&idp->onlysomereasons, val))
                 goto err;
         } else {
@@ -466,9 +466,9 @@ static int print_gens(BIO *out, STACK_OF(GENERAL_NAME) *gens, int indent)
 {
     int i;
     for (i = 0; i < sk_GENERAL_NAME_num(gens); i++) {
-        BIO_printf(out, "%*s", indent + 2, "");
+        BIO_printf(out, "\x25\x2a\x73", indent + 2, "");
         GENERAL_NAME_print(out, sk_GENERAL_NAME_value(gens, i));
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     }
     return 1;
 }
@@ -476,14 +476,14 @@ static int print_gens(BIO *out, STACK_OF(GENERAL_NAME) *gens, int indent)
 static int print_distpoint(BIO *out, DIST_POINT_NAME *dpn, int indent)
 {
     if (dpn->type == 0) {
-        BIO_printf(out, "%*sFull Name:\n", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x46\x75\x6c\x6c\x20\x4e\x61\x6d\x65\x3a\xa", indent, "");
         print_gens(out, dpn->name.fullname, indent);
     } else {
         X509_NAME ntmp;
         ntmp.entries = dpn->name.relativename;
-        BIO_printf(out, "%*sRelative Name:\n%*s", indent, "", indent + 2, "");
+        BIO_printf(out, "\x25\x2a\x73\x52\x65\x6c\x61\x74\x69\x76\x65\x20\x4e\x61\x6d\x65\x3a\xa\x25\x2a\x73", indent, "", indent + 2, "");
         X509_NAME_print_ex(out, &ntmp, 0, XN_FLAG_ONELINE);
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     }
     return 1;
 }
@@ -495,19 +495,19 @@ static int i2r_idp(const X509V3_EXT_METHOD *method, void *pidp, BIO *out,
     if (idp->distpoint)
         print_distpoint(out, idp->distpoint, indent);
     if (idp->onlyuser > 0)
-        BIO_printf(out, "%*sOnly User Certificates\n", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x4f\x6e\x6c\x79\x20\x55\x73\x65\x72\x20\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\xa", indent, "");
     if (idp->onlyCA > 0)
-        BIO_printf(out, "%*sOnly CA Certificates\n", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x4f\x6e\x6c\x79\x20\x43\x41\x20\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\xa", indent, "");
     if (idp->indirectCRL > 0)
-        BIO_printf(out, "%*sIndirect CRL\n", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x49\x6e\x64\x69\x72\x65\x63\x74\x20\x43\x52\x4c\xa", indent, "");
     if (idp->onlysomereasons)
-        print_reasons(out, "Only Some Reasons", idp->onlysomereasons, indent);
+        print_reasons(out, "\x4f\x6e\x6c\x79\x20\x53\x6f\x6d\x65\x20\x52\x65\x61\x73\x6f\x6e\x73", idp->onlysomereasons, indent);
     if (idp->onlyattr > 0)
-        BIO_printf(out, "%*sOnly Attribute Certificates\n", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x4f\x6e\x6c\x79\x20\x41\x74\x74\x72\x69\x62\x75\x74\x65\x20\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\xa", indent, "");
     if (!idp->distpoint && (idp->onlyuser <= 0) && (idp->onlyCA <= 0)
         && (idp->indirectCRL <= 0) && !idp->onlysomereasons
         && (idp->onlyattr <= 0))
-        BIO_printf(out, "%*s<EMPTY>\n", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x3c\x45\x4d\x50\x54\x59\x3e\xa", indent, "");
 
     return 1;
 }
@@ -519,14 +519,14 @@ static int i2r_crldp(const X509V3_EXT_METHOD *method, void *pcrldp, BIO *out,
     DIST_POINT *point;
     int i;
     for (i = 0; i < sk_DIST_POINT_num(crld); i++) {
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
         point = sk_DIST_POINT_value(crld, i);
         if (point->distpoint)
             print_distpoint(out, point->distpoint, indent);
         if (point->reasons)
-            print_reasons(out, "Reasons", point->reasons, indent);
+            print_reasons(out, "\x52\x65\x61\x73\x6f\x6e\x73", point->reasons, indent);
         if (point->CRLissuer) {
-            BIO_printf(out, "%*sCRL Issuer:\n", indent, "");
+            BIO_printf(out, "\x25\x2a\x73\x43\x52\x4c\x20\x49\x73\x73\x75\x65\x72\x3a\xa", indent, "");
             print_gens(out, point->CRLissuer, indent);
         }
     }

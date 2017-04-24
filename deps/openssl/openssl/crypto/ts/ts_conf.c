@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -69,26 +69,26 @@
 
 /* Macro definitions for the configuration file. */
 
-#define BASE_SECTION                    "tsa"
-#define ENV_DEFAULT_TSA                 "default_tsa"
-#define ENV_SERIAL                      "serial"
-#define ENV_CRYPTO_DEVICE               "crypto_device"
-#define ENV_SIGNER_CERT                 "signer_cert"
-#define ENV_CERTS                       "certs"
-#define ENV_SIGNER_KEY                  "signer_key"
-#define ENV_DEFAULT_POLICY              "default_policy"
-#define ENV_OTHER_POLICIES              "other_policies"
-#define ENV_DIGESTS                     "digests"
-#define ENV_ACCURACY                    "accuracy"
-#define ENV_ORDERING                    "ordering"
-#define ENV_TSA_NAME                    "tsa_name"
-#define ENV_ESS_CERT_ID_CHAIN           "ess_cert_id_chain"
-#define ENV_VALUE_SECS                  "secs"
-#define ENV_VALUE_MILLISECS             "millisecs"
-#define ENV_VALUE_MICROSECS             "microsecs"
-#define ENV_CLOCK_PRECISION_DIGITS      "clock_precision_digits"
-#define ENV_VALUE_YES                   "yes"
-#define ENV_VALUE_NO                    "no"
+#define BASE_SECTION                    "\x74\x73\x61"
+#define ENV_DEFAULT_TSA                 "\x64\x65\x66\x61\x75\x6c\x74\x5f\x74\x73\x61"
+#define ENV_SERIAL                      "\x73\x65\x72\x69\x61\x6c"
+#define ENV_CRYPTO_DEVICE               "\x63\x72\x79\x70\x74\x6f\x5f\x64\x65\x76\x69\x63\x65"
+#define ENV_SIGNER_CERT                 "\x73\x69\x67\x6e\x65\x72\x5f\x63\x65\x72\x74"
+#define ENV_CERTS                       "\x63\x65\x72\x74\x73"
+#define ENV_SIGNER_KEY                  "\x73\x69\x67\x6e\x65\x72\x5f\x6b\x65\x79"
+#define ENV_DEFAULT_POLICY              "\x64\x65\x66\x61\x75\x6c\x74\x5f\x70\x6f\x6c\x69\x63\x79"
+#define ENV_OTHER_POLICIES              "\x6f\x74\x68\x65\x72\x5f\x70\x6f\x6c\x69\x63\x69\x65\x73"
+#define ENV_DIGESTS                     "\x64\x69\x67\x65\x73\x74\x73"
+#define ENV_ACCURACY                    "\x61\x63\x63\x75\x72\x61\x63\x79"
+#define ENV_ORDERING                    "\x6f\x72\x64\x65\x72\x69\x6e\x67"
+#define ENV_TSA_NAME                    "\x74\x73\x61\x5f\x6e\x61\x6d\x65"
+#define ENV_ESS_CERT_ID_CHAIN           "\x65\x73\x73\x5f\x63\x65\x72\x74\x5f\x69\x64\x5f\x63\x68\x61\x69\x6e"
+#define ENV_VALUE_SECS                  "\x73\x65\x63\x73"
+#define ENV_VALUE_MILLISECS             "\x6d\x69\x6c\x6c\x69\x73\x65\x63\x73"
+#define ENV_VALUE_MICROSECS             "\x6d\x69\x63\x72\x6f\x73\x65\x63\x73"
+#define ENV_CLOCK_PRECISION_DIGITS      "\x63\x6c\x6f\x63\x6b\x5f\x70\x72\x65\x63\x69\x73\x69\x6f\x6e\x5f\x64\x69\x67\x69\x74\x73"
+#define ENV_VALUE_YES                   "\x79\x65\x73"
+#define ENV_VALUE_NO                    "\x6e\x6f"
 
 /* Function definitions for certificate and key loading. */
 
@@ -97,12 +97,12 @@ X509 *TS_CONF_load_cert(const char *file)
     BIO *cert = NULL;
     X509 *x = NULL;
 
-    if ((cert = BIO_new_file(file, "r")) == NULL)
+    if ((cert = BIO_new_file(file, "\x72")) == NULL)
         goto end;
     x = PEM_read_bio_X509_AUX(cert, NULL, NULL, NULL);
  end:
     if (x == NULL)
-        fprintf(stderr, "unable to load certificate: %s\n", file);
+        fprintf(stderr, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x3a\x20\x25\x73\xa", file);
     BIO_free(cert);
     return x;
 }
@@ -114,7 +114,7 @@ STACK_OF(X509) *TS_CONF_load_certs(const char *file)
     STACK_OF(X509_INFO) *allcerts = NULL;
     int i;
 
-    if (!(certs = BIO_new_file(file, "r")))
+    if (!(certs = BIO_new_file(file, "\x72")))
         goto end;
 
     if (!(othercerts = sk_X509_new_null()))
@@ -129,7 +129,7 @@ STACK_OF(X509) *TS_CONF_load_certs(const char *file)
     }
  end:
     if (othercerts == NULL)
-        fprintf(stderr, "unable to load certificates: %s\n", file);
+        fprintf(stderr, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x3a\x20\x25\x73\xa", file);
     sk_X509_INFO_pop_free(allcerts, X509_INFO_free);
     BIO_free(certs);
     return othercerts;
@@ -140,12 +140,12 @@ EVP_PKEY *TS_CONF_load_key(const char *file, const char *pass)
     BIO *key = NULL;
     EVP_PKEY *pkey = NULL;
 
-    if (!(key = BIO_new_file(file, "r")))
+    if (!(key = BIO_new_file(file, "\x72")))
         goto end;
     pkey = PEM_read_bio_PrivateKey(key, NULL, NULL, (char *)pass);
  end:
     if (pkey == NULL)
-        fprintf(stderr, "unable to load private key: %s\n", file);
+        fprintf(stderr, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x3a\x20\x25\x73\xa", file);
     BIO_free(key);
     return pkey;
 }
@@ -154,12 +154,12 @@ EVP_PKEY *TS_CONF_load_key(const char *file, const char *pass)
 
 static void TS_CONF_lookup_fail(const char *name, const char *tag)
 {
-    fprintf(stderr, "variable lookup failed for %s::%s\n", name, tag);
+    fprintf(stderr, "\x76\x61\x72\x69\x61\x62\x6c\x65\x20\x6c\x6f\x6f\x6b\x75\x70\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x25\x73\x3a\x3a\x25\x73\xa", name, tag);
 }
 
 static void TS_CONF_invalid(const char *name, const char *tag)
 {
-    fprintf(stderr, "invalid variable value for %s::%s\n", name, tag);
+    fprintf(stderr, "\x69\x6e\x76\x61\x6c\x69\x64\x20\x76\x61\x72\x69\x61\x62\x6c\x65\x20\x76\x61\x6c\x75\x65\x20\x66\x6f\x72\x20\x25\x73\x3a\x3a\x25\x73\xa", name, tag);
 }
 
 const char *TS_CONF_get_tsa_section(CONF *conf, const char *section)
@@ -213,13 +213,13 @@ int TS_CONF_set_default_engine(const char *name)
     int ret = 0;
 
     /* Leave the default if builtin specified. */
-    if (strcmp(name, "builtin") == 0)
+    if (strcmp(name, "\x62\x75\x69\x6c\x74\x69\x6e") == 0)
         return 1;
 
     if (!(e = ENGINE_by_id(name)))
         goto err;
     /* Enable the use of the NCipher HSM for forked children. */
-    if (strcmp(name, "chil") == 0)
+    if (strcmp(name, "\x63\x68\x69\x6c") == 0)
         ENGINE_ctrl(e, ENGINE_CTRL_CHIL_SET_FORKCHECK, 1, 0, 0);
     /* All the operations are going to be carried out by the engine. */
     if (!ENGINE_set_default(e, ENGINE_METHOD_ALL))
@@ -228,7 +228,7 @@ int TS_CONF_set_default_engine(const char *name)
  err:
     if (!ret) {
         TSerr(TS_F_TS_CONF_SET_DEFAULT_ENGINE, TS_R_COULD_NOT_SET_ENGINE);
-        ERR_add_error_data(2, "engine:", name);
+        ERR_add_error_data(2, "\x65\x6e\x67\x69\x6e\x65\x3a", name);
     }
     if (e)
         ENGINE_free(e);

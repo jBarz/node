@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -71,7 +71,7 @@
 #ifdef OPENSSL_NO_BF
 int main(int argc, char *argv[])
 {
-    printf("No BF support\n");
+    printf("\x4e\x6f\x20\x42\x46\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -82,8 +82,8 @@ int main(int argc, char *argv[])
 # endif
 
 static char *bf_key[2] = {
-    "abcdefghijklmnopqrstuvwxyz",
-    "Who is John Galt?"
+    "\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a",
+    "\x57\x68\x6f\x20\x69\x73\x20\x4a\x6f\x68\x6e\x20\x47\x61\x6c\x74\x3f"
 };
 
 /* big endian */
@@ -218,7 +218,7 @@ static unsigned char cbc_key[16] = {
 };
 static unsigned char cbc_iv[8] =
     { 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10 };
-static char cbc_data[40] = "7654321 Now is the time for ";
+static char cbc_data[40] = "\x37\x36\x35\x34\x33\x32\x31\x20\x4e\x6f\x77\x20\x69\x73\x20\x74\x68\x65\x20\x74\x69\x6d\x65\x20\x66\x6f\x72\x20";
 static unsigned char cbc_ok[32] = {
     0x6B, 0x77, 0xB4, 0xD6, 0x30, 0x06, 0xDE, 0xE6,
     0x05, 0xB1, 0x56, 0xE2, 0x74, 0x03, 0x97, 0x93,
@@ -291,7 +291,7 @@ int main(int argc, char *argv[])
 
 # ifdef OPENSSL_SYS_NETWARE
     if (ret)
-        printf("ERROR: %d\n", ret);
+        printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", ret);
 # endif
     EXIT(ret);
     return (0);
@@ -301,64 +301,64 @@ static int print_test_data(void)
 {
     unsigned int i, j;
 
-    printf("ecb test data\n");
-    printf("key bytes\t\tclear bytes\t\tcipher bytes\n");
+    printf("\x65\x63\x62\x20\x74\x65\x73\x74\x20\x64\x61\x74\x61\xa");
+    printf("\x6b\x65\x79\x20\x62\x79\x74\x65\x73\x9\x9c\x6c\x65\x61\x72\x20\x62\x79\x74\x65\x73\x9\x9c\x69\x70\x68\x65\x72\x20\x62\x79\x74\x65\x73\xa");
     for (i = 0; i < NUM_TESTS; i++) {
         for (j = 0; j < 8; j++)
-            printf("%02X", ecb_data[i][j]);
-        printf("\t");
+            printf("\x25\x30\x32\x58", ecb_data[i][j]);
+        printf("\x9");
         for (j = 0; j < 8; j++)
-            printf("%02X", plain_data[i][j]);
-        printf("\t");
+            printf("\x25\x30\x32\x58", plain_data[i][j]);
+        printf("\x9");
         for (j = 0; j < 8; j++)
-            printf("%02X", cipher_data[i][j]);
-        printf("\n");
+            printf("\x25\x30\x32\x58", cipher_data[i][j]);
+        printf("\xa");
     }
 
-    printf("set_key test data\n");
-    printf("data[8]= ");
+    printf("\x73\x65\x74\x5f\x6b\x65\x79\x20\x74\x65\x73\x74\x20\x64\x61\x74\x61\xa");
+    printf("\x64\x61\x74\x61\x5b\x38\x5d\x3d\x20");
     for (j = 0; j < 8; j++)
-        printf("%02X", key_data[j]);
-    printf("\n");
+        printf("\x25\x30\x32\x58", key_data[j]);
+    printf("\xa");
     for (i = 0; i < KEY_TEST_NUM - 1; i++) {
-        printf("c=");
+        printf("\x63\x3d");
         for (j = 0; j < 8; j++)
-            printf("%02X", key_out[i][j]);
-        printf(" k[%2u]=", i + 1);
+            printf("\x25\x30\x32\x58", key_out[i][j]);
+        printf("\x20\x6b\x5b\x25\x32\x75\x5d\x3d", i + 1);
         for (j = 0; j < i + 1; j++)
-            printf("%02X", key_test[j]);
-        printf("\n");
+            printf("\x25\x30\x32\x58", key_test[j]);
+        printf("\xa");
     }
 
-    printf("\nchaining mode test data\n");
-    printf("key[16]   = ");
+    printf("\xac\x68\x61\x69\x6e\x69\x6e\x67\x20\x6d\x6f\x64\x65\x20\x74\x65\x73\x74\x20\x64\x61\x74\x61\xa");
+    printf("\x6b\x65\x79\x5b\x31\x36\x5d\x20\x20\x20\x3d\x20");
     for (j = 0; j < 16; j++)
-        printf("%02X", cbc_key[j]);
-    printf("\niv[8]     = ");
+        printf("\x25\x30\x32\x58", cbc_key[j]);
+    printf("\xa\x69\x76\x5b\x38\x5d\x20\x20\x20\x20\x20\x3d\x20");
     for (j = 0; j < 8; j++)
-        printf("%02X", cbc_iv[j]);
-    printf("\ndata[%d]  = '%s'", (int)strlen(cbc_data) + 1, cbc_data);
-    printf("\ndata[%d]  = ", (int)strlen(cbc_data) + 1);
+        printf("\x25\x30\x32\x58", cbc_iv[j]);
+    printf("\xad\x61\x74\x61\x5b\x25\x64\x5d\x20\x20\x3d\x20\x27\x25\x73\x27", (int)strlen(cbc_data) + 1, cbc_data);
+    printf("\xad\x61\x74\x61\x5b\x25\x64\x5d\x20\x20\x3d\x20", (int)strlen(cbc_data) + 1);
     for (j = 0; j < strlen(cbc_data) + 1; j++)
-        printf("%02X", cbc_data[j]);
-    printf("\n");
-    printf("cbc cipher text\n");
-    printf("cipher[%d]= ", 32);
+        printf("\x25\x30\x32\x58", cbc_data[j]);
+    printf("\xa");
+    printf("\x63\x62\x63\x20\x63\x69\x70\x68\x65\x72\x20\x74\x65\x78\x74\xa");
+    printf("\x63\x69\x70\x68\x65\x72\x5b\x25\x64\x5d\x3d\x20", 32);
     for (j = 0; j < 32; j++)
-        printf("%02X", cbc_ok[j]);
-    printf("\n");
+        printf("\x25\x30\x32\x58", cbc_ok[j]);
+    printf("\xa");
 
-    printf("cfb64 cipher text\n");
-    printf("cipher[%d]= ", (int)strlen(cbc_data) + 1);
+    printf("\x63\x66\x62\x36\x34\x20\x63\x69\x70\x68\x65\x72\x20\x74\x65\x78\x74\xa");
+    printf("\x63\x69\x70\x68\x65\x72\x5b\x25\x64\x5d\x3d\x20", (int)strlen(cbc_data) + 1);
     for (j = 0; j < strlen(cbc_data) + 1; j++)
-        printf("%02X", cfb64_ok[j]);
-    printf("\n");
+        printf("\x25\x30\x32\x58", cfb64_ok[j]);
+    printf("\xa");
 
-    printf("ofb64 cipher text\n");
-    printf("cipher[%d]= ", (int)strlen(cbc_data) + 1);
+    printf("\x6f\x66\x62\x36\x34\x20\x63\x69\x70\x68\x65\x72\x20\x74\x65\x78\x74\xa");
+    printf("\x63\x69\x70\x68\x65\x72\x5b\x25\x64\x5d\x3d\x20", (int)strlen(cbc_data) + 1);
     for (j = 0; j < strlen(cbc_data) + 1; j++)
-        printf("%02X", ofb64_ok[j]);
-    printf("\n");
+        printf("\x25\x30\x32\x58", ofb64_ok[j]);
+    printf("\xa");
     return (0);
 }
 
@@ -375,7 +375,7 @@ static int test(void)
     ebcdic2ascii(cbc_data, cbc_data, strlen(cbc_data));
 # endif
 
-    printf("testing blowfish in raw ecb mode\n");
+    printf("\x74\x65\x73\x74\x69\x6e\x67\x20\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x69\x6e\x20\x72\x61\x77\x20\x65\x63\x62\x20\x6d\x6f\x64\x65\xa");
     for (n = 0; n < 2; n++) {
 # ifdef CHARSET_EBCDIC
         ebcdic2ascii(bf_key[n], bf_key[n], strlen(bf_key[n]));
@@ -386,79 +386,79 @@ static int test(void)
         data[1] = bf_plain[n][1];
         BF_encrypt(data, &key);
         if (memcmp(&(bf_cipher[n][0]), &(data[0]), 8) != 0) {
-            printf("BF_encrypt error encrypting\n");
-            printf("got     :");
+            printf("\x42\x46\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6e\x67\xa");
+            printf("\x67\x6f\x74\x20\x20\x20\x20\x20\x3a");
             for (i = 0; i < 2; i++)
-                printf("%08lX ", (unsigned long)data[i]);
-            printf("\n");
-            printf("expected:");
+                printf("\x25\x30\x38\x6c\x58\x20", (unsigned long)data[i]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x65\x64\x3a");
             for (i = 0; i < 2; i++)
-                printf("%08lX ", (unsigned long)bf_cipher[n][i]);
+                printf("\x25\x30\x38\x6c\x58\x20", (unsigned long)bf_cipher[n][i]);
             err = 1;
-            printf("\n");
+            printf("\xa");
         }
 
         BF_decrypt(&(data[0]), &key);
         if (memcmp(&(bf_plain[n][0]), &(data[0]), 8) != 0) {
-            printf("BF_encrypt error decrypting\n");
-            printf("got     :");
+            printf("\x42\x46\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6e\x67\xa");
+            printf("\x67\x6f\x74\x20\x20\x20\x20\x20\x3a");
             for (i = 0; i < 2; i++)
-                printf("%08lX ", (unsigned long)data[i]);
-            printf("\n");
-            printf("expected:");
+                printf("\x25\x30\x38\x6c\x58\x20", (unsigned long)data[i]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x65\x64\x3a");
             for (i = 0; i < 2; i++)
-                printf("%08lX ", (unsigned long)bf_plain[n][i]);
-            printf("\n");
+                printf("\x25\x30\x38\x6c\x58\x20", (unsigned long)bf_plain[n][i]);
+            printf("\xa");
             err = 1;
         }
     }
 
-    printf("testing blowfish in ecb mode\n");
+    printf("\x74\x65\x73\x74\x69\x6e\x67\x20\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x69\x6e\x20\x65\x63\x62\x20\x6d\x6f\x64\x65\xa");
 
     for (n = 0; n < NUM_TESTS; n++) {
         BF_set_key(&key, 8, ecb_data[n]);
 
         BF_ecb_encrypt(&(plain_data[n][0]), out, &key, BF_ENCRYPT);
         if (memcmp(&(cipher_data[n][0]), out, 8) != 0) {
-            printf("BF_ecb_encrypt blowfish error encrypting\n");
-            printf("got     :");
+            printf("\x42\x46\x5f\x65\x63\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x65\x72\x72\x6f\x72\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6e\x67\xa");
+            printf("\x67\x6f\x74\x20\x20\x20\x20\x20\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", out[i]);
-            printf("\n");
-            printf("expected:");
+                printf("\x25\x30\x32\x58\x20", out[i]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x65\x64\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", cipher_data[n][i]);
+                printf("\x25\x30\x32\x58\x20", cipher_data[n][i]);
             err = 1;
-            printf("\n");
+            printf("\xa");
         }
 
         BF_ecb_encrypt(out, out, &key, BF_DECRYPT);
         if (memcmp(&(plain_data[n][0]), out, 8) != 0) {
-            printf("BF_ecb_encrypt error decrypting\n");
-            printf("got     :");
+            printf("\x42\x46\x5f\x65\x63\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6e\x67\xa");
+            printf("\x67\x6f\x74\x20\x20\x20\x20\x20\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", out[i]);
-            printf("\n");
-            printf("expected:");
+                printf("\x25\x30\x32\x58\x20", out[i]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x65\x64\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", plain_data[n][i]);
-            printf("\n");
+                printf("\x25\x30\x32\x58\x20", plain_data[n][i]);
+            printf("\xa");
             err = 1;
         }
     }
 
-    printf("testing blowfish set_key\n");
+    printf("\x74\x65\x73\x74\x69\x6e\x67\x20\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x73\x65\x74\x5f\x6b\x65\x79\xa");
     for (n = 1; n < KEY_TEST_NUM; n++) {
         BF_set_key(&key, n, key_test);
         BF_ecb_encrypt(key_data, out, &key, BF_ENCRYPT);
         /* mips-sgi-irix6.5-gcc  vv  -mabi=64 bug workaround */
         if (memcmp(out, &(key_out[i = n - 1][0]), 8) != 0) {
-            printf("blowfish setkey error\n");
+            printf("\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x73\x65\x74\x6b\x65\x79\x20\x65\x72\x72\x6f\x72\xa");
             err = 1;
         }
     }
 
-    printf("testing blowfish in cbc mode\n");
+    printf("\x74\x65\x73\x74\x69\x6e\x67\x20\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x69\x6e\x20\x63\x62\x63\x20\x6d\x6f\x64\x65\xa");
     len = strlen(cbc_data) + 1;
 
     BF_set_key(&key, 16, cbc_key);
@@ -469,18 +469,18 @@ static int test(void)
                    &key, iv, BF_ENCRYPT);
     if (memcmp(cbc_out, cbc_ok, 32) != 0) {
         err = 1;
-        printf("BF_cbc_encrypt encrypt error\n");
+        printf("\x42\x46\x5f\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < 32; i++)
-            printf("0x%02X,", cbc_out[i]);
+            printf("\x30\x78\x25\x30\x32\x58\x2c", cbc_out[i]);
     }
     memcpy(iv, cbc_iv, 8);
     BF_cbc_encrypt(cbc_out, cbc_in, len, &key, iv, BF_DECRYPT);
     if (memcmp(cbc_in, cbc_data, strlen(cbc_data) + 1) != 0) {
-        printf("BF_cbc_encrypt decrypt error\n");
+        printf("\x42\x46\x5f\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 
-    printf("testing blowfish in cfb64 mode\n");
+    printf("\x74\x65\x73\x74\x69\x6e\x67\x20\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x69\x6e\x20\x63\x66\x62\x36\x34\x20\x6d\x6f\x64\x65\xa");
 
     BF_set_key(&key, 16, cbc_key);
     memset(cbc_in, 0, 40);
@@ -493,9 +493,9 @@ static int test(void)
                      len - 13, &key, iv, &n, BF_ENCRYPT);
     if (memcmp(cbc_out, cfb64_ok, (int)len) != 0) {
         err = 1;
-        printf("BF_cfb64_encrypt encrypt error\n");
+        printf("\x42\x46\x5f\x63\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < (int)len; i++)
-            printf("0x%02X,", cbc_out[i]);
+            printf("\x30\x78\x25\x30\x32\x58\x2c", cbc_out[i]);
     }
     n = 0;
     memcpy(iv, cbc_iv, 8);
@@ -503,11 +503,11 @@ static int test(void)
     BF_cfb64_encrypt(&(cbc_out[17]), &(cbc_in[17]), len - 17,
                      &key, iv, &n, BF_DECRYPT);
     if (memcmp(cbc_in, cbc_data, (int)len) != 0) {
-        printf("BF_cfb64_encrypt decrypt error\n");
+        printf("\x42\x46\x5f\x63\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 
-    printf("testing blowfish in ofb64\n");
+    printf("\x74\x65\x73\x74\x69\x6e\x67\x20\x62\x6c\x6f\x77\x66\x69\x73\x68\x20\x69\x6e\x20\x6f\x66\x62\x36\x34\xa");
 
     BF_set_key(&key, 16, cbc_key);
     memset(cbc_in, 0, 40);
@@ -520,16 +520,16 @@ static int test(void)
                      len - 13, &key, iv, &n);
     if (memcmp(cbc_out, ofb64_ok, (int)len) != 0) {
         err = 1;
-        printf("BF_ofb64_encrypt encrypt error\n");
+        printf("\x42\x46\x5f\x6f\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < (int)len; i++)
-            printf("0x%02X,", cbc_out[i]);
+            printf("\x30\x78\x25\x30\x32\x58\x2c", cbc_out[i]);
     }
     n = 0;
     memcpy(iv, cbc_iv, 8);
     BF_ofb64_encrypt(cbc_out, cbc_in, 17, &key, iv, &n);
     BF_ofb64_encrypt(&(cbc_out[17]), &(cbc_in[17]), len - 17, &key, iv, &n);
     if (memcmp(cbc_in, cbc_data, (int)len) != 0) {
-        printf("BF_ofb64_encrypt decrypt error\n");
+        printf("\x42\x46\x5f\x6f\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 

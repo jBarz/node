@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -366,11 +366,11 @@ static int do_dh_print(BIO *bp, const DH *x, int indent,
     update_buflen(priv_key, &buf_len);
 
     if (ptype == 2)
-        ktype = "DH Private-Key";
+        ktype = "\x44\x48\x20\x50\x72\x69\x76\x61\x74\x65\x2d\x4b\x65\x79";
     else if (ptype == 1)
-        ktype = "DH Public-Key";
+        ktype = "\x44\x48\x20\x50\x75\x62\x6c\x69\x63\x2d\x4b\x65\x79";
     else
-        ktype = "DH Parameters";
+        ktype = "\x44\x48\x20\x50\x61\x72\x61\x6d\x65\x74\x65\x72\x73";
 
     m = OPENSSL_malloc(buf_len + 10);
     if (m == NULL) {
@@ -379,45 +379,45 @@ static int do_dh_print(BIO *bp, const DH *x, int indent,
     }
 
     BIO_indent(bp, indent, 128);
-    if (BIO_printf(bp, "%s: (%d bit)\n", ktype, BN_num_bits(x->p)) <= 0)
+    if (BIO_printf(bp, "\x25\x73\x3a\x20\x28\x25\x64\x20\x62\x69\x74\x29\xa", ktype, BN_num_bits(x->p)) <= 0)
         goto err;
     indent += 4;
 
-    if (!ASN1_bn_print(bp, "private-key:", priv_key, m, indent))
+    if (!ASN1_bn_print(bp, "\x70\x72\x69\x76\x61\x74\x65\x2d\x6b\x65\x79\x3a", priv_key, m, indent))
         goto err;
-    if (!ASN1_bn_print(bp, "public-key:", pub_key, m, indent))
+    if (!ASN1_bn_print(bp, "\x70\x75\x62\x6c\x69\x63\x2d\x6b\x65\x79\x3a", pub_key, m, indent))
         goto err;
 
-    if (!ASN1_bn_print(bp, "prime:", x->p, m, indent))
+    if (!ASN1_bn_print(bp, "\x70\x72\x69\x6d\x65\x3a", x->p, m, indent))
         goto err;
-    if (!ASN1_bn_print(bp, "generator:", x->g, m, indent))
+    if (!ASN1_bn_print(bp, "\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x3a", x->g, m, indent))
         goto err;
-    if (x->q && !ASN1_bn_print(bp, "subgroup order:", x->q, m, indent))
+    if (x->q && !ASN1_bn_print(bp, "\x73\x75\x62\x67\x72\x6f\x75\x70\x20\x6f\x72\x64\x65\x72\x3a", x->q, m, indent))
         goto err;
-    if (x->j && !ASN1_bn_print(bp, "subgroup factor:", x->j, m, indent))
+    if (x->j && !ASN1_bn_print(bp, "\x73\x75\x62\x67\x72\x6f\x75\x70\x20\x66\x61\x63\x74\x6f\x72\x3a", x->j, m, indent))
         goto err;
     if (x->seed) {
         int i;
         BIO_indent(bp, indent, 128);
-        BIO_puts(bp, "seed:");
+        BIO_puts(bp, "\x73\x65\x65\x64\x3a");
         for (i = 0; i < x->seedlen; i++) {
             if ((i % 15) == 0) {
-                if (BIO_puts(bp, "\n") <= 0
+                if (BIO_puts(bp, "\xa") <= 0
                     || !BIO_indent(bp, indent + 4, 128))
                     goto err;
             }
-            if (BIO_printf(bp, "%02x%s", x->seed[i],
-                           ((i + 1) == x->seedlen) ? "" : ":") <= 0)
+            if (BIO_printf(bp, "\x25\x30\x32\x78\x25\x73", x->seed[i],
+                           ((i + 1) == x->seedlen) ? "" : "\x3a") <= 0)
                 goto err;
         }
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             return (0);
     }
-    if (x->counter && !ASN1_bn_print(bp, "counter:", x->counter, m, indent))
+    if (x->counter && !ASN1_bn_print(bp, "\x63\x6f\x75\x6e\x74\x65\x72\x3a", x->counter, m, indent))
         goto err;
     if (x->length != 0) {
         BIO_indent(bp, indent, 128);
-        if (BIO_printf(bp, "recommended-private-length: %d bits\n",
+        if (BIO_printf(bp, "\x72\x65\x63\x6f\x6d\x6d\x65\x6e\x64\x65\x64\x2d\x70\x72\x69\x76\x61\x74\x65\x2d\x6c\x65\x6e\x67\x74\x68\x3a\x20\x25\x64\x20\x62\x69\x74\x73\xa",
                        (int)x->length) <= 0)
             goto err;
     }
@@ -589,8 +589,8 @@ const EVP_PKEY_ASN1_METHOD dh_asn1_meth = {
     EVP_PKEY_DH,
     0,
 
-    "DH",
-    "OpenSSL PKCS#3 DH method",
+    "\x44\x48",
+    "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x4b\x43\x53\x23\x33\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
 
     dh_pub_decode,
     dh_pub_encode,
@@ -621,8 +621,8 @@ const EVP_PKEY_ASN1_METHOD dhx_asn1_meth = {
     EVP_PKEY_DHX,
     0,
 
-    "X9.42 DH",
-    "OpenSSL X9.42 DH method",
+    "\x58\x39\x2e\x34\x32\x20\x44\x48",
+    "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x58\x39\x2e\x34\x32\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
 
     dh_pub_decode,
     dh_pub_encode,

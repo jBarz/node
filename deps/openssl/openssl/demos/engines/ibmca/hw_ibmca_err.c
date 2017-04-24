@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -66,32 +66,32 @@
 /* BEGIN ERROR CODES */
 #ifndef OPENSSL_NO_ERR
 static ERR_STRING_DATA IBMCA_str_functs[] = {
-    {ERR_PACK(0, IBMCA_F_IBMCA_CTRL, 0), "IBMCA_CTRL"},
-    {ERR_PACK(0, IBMCA_F_IBMCA_FINISH, 0), "IBMCA_FINISH"},
-    {ERR_PACK(0, IBMCA_F_IBMCA_INIT, 0), "IBMCA_INIT"},
-    {ERR_PACK(0, IBMCA_F_IBMCA_MOD_EXP, 0), "IBMCA_MOD_EXP"},
-    {ERR_PACK(0, IBMCA_F_IBMCA_MOD_EXP_CRT, 0), "IBMCA_MOD_EXP_CRT"},
-    {ERR_PACK(0, IBMCA_F_IBMCA_RAND_BYTES, 0), "IBMCA_RAND_BYTES"},
-    {ERR_PACK(0, IBMCA_F_IBMCA_RSA_MOD_EXP, 0), "IBMCA_RSA_MOD_EXP"},
+    {ERR_PACK(0, IBMCA_F_IBMCA_CTRL, 0), "\x49\x42\x4d\x43\x41\x5f\x43\x54\x52\x4c"},
+    {ERR_PACK(0, IBMCA_F_IBMCA_FINISH, 0), "\x49\x42\x4d\x43\x41\x5f\x46\x49\x4e\x49\x53\x48"},
+    {ERR_PACK(0, IBMCA_F_IBMCA_INIT, 0), "\x49\x42\x4d\x43\x41\x5f\x49\x4e\x49\x54"},
+    {ERR_PACK(0, IBMCA_F_IBMCA_MOD_EXP, 0), "\x49\x42\x4d\x43\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
+    {ERR_PACK(0, IBMCA_F_IBMCA_MOD_EXP_CRT, 0), "\x49\x42\x4d\x43\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50\x5f\x43\x52\x54"},
+    {ERR_PACK(0, IBMCA_F_IBMCA_RAND_BYTES, 0), "\x49\x42\x4d\x43\x41\x5f\x52\x41\x4e\x44\x5f\x42\x59\x54\x45\x53"},
+    {ERR_PACK(0, IBMCA_F_IBMCA_RSA_MOD_EXP, 0), "\x49\x42\x4d\x43\x41\x5f\x52\x53\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA IBMCA_str_reasons[] = {
-    {IBMCA_R_ALREADY_LOADED, "already loaded"},
-    {IBMCA_R_BN_CTX_FULL, "bn ctx full"},
-    {IBMCA_R_BN_EXPAND_FAIL, "bn expand fail"},
-    {IBMCA_R_CTRL_COMMAND_NOT_IMPLEMENTED, "ctrl command not implemented"},
-    {IBMCA_R_DSO_FAILURE, "dso failure"},
-    {IBMCA_R_MEXP_LENGTH_TO_LARGE, "mexp length to large"},
-    {IBMCA_R_MISSING_KEY_COMPONENTS, "missing key components"},
-    {IBMCA_R_NOT_INITIALISED, "not initialised"},
-    {IBMCA_R_NOT_LOADED, "not loaded"},
-    {IBMCA_R_OPERANDS_TO_LARGE, "operands to large"},
-    {IBMCA_R_OUTLEN_TO_LARGE, "outlen to large"},
-    {IBMCA_R_REQUEST_FAILED, "request failed"},
-    {IBMCA_R_UNDERFLOW_CONDITION, "underflow condition"},
-    {IBMCA_R_UNDERFLOW_KEYRECORD, "underflow keyrecord"},
-    {IBMCA_R_UNIT_FAILURE, "unit failure"},
+    {IBMCA_R_ALREADY_LOADED, "\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x61\x64\x65\x64"},
+    {IBMCA_R_BN_CTX_FULL, "\x62\x6e\x20\x63\x74\x78\x20\x66\x75\x6c\x6c"},
+    {IBMCA_R_BN_EXPAND_FAIL, "\x62\x6e\x20\x65\x78\x70\x61\x6e\x64\x20\x66\x61\x69\x6c"},
+    {IBMCA_R_CTRL_COMMAND_NOT_IMPLEMENTED, "\x63\x74\x72\x6c\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x6e\x6f\x74\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64"},
+    {IBMCA_R_DSO_FAILURE, "\x64\x73\x6f\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {IBMCA_R_MEXP_LENGTH_TO_LARGE, "\x6d\x65\x78\x70\x20\x6c\x65\x6e\x67\x74\x68\x20\x74\x6f\x20\x6c\x61\x72\x67\x65"},
+    {IBMCA_R_MISSING_KEY_COMPONENTS, "\x6d\x69\x73\x73\x69\x6e\x67\x20\x6b\x65\x79\x20\x63\x6f\x6d\x70\x6f\x6e\x65\x6e\x74\x73"},
+    {IBMCA_R_NOT_INITIALISED, "\x6e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x65\x64"},
+    {IBMCA_R_NOT_LOADED, "\x6e\x6f\x74\x20\x6c\x6f\x61\x64\x65\x64"},
+    {IBMCA_R_OPERANDS_TO_LARGE, "\x6f\x70\x65\x72\x61\x6e\x64\x73\x20\x74\x6f\x20\x6c\x61\x72\x67\x65"},
+    {IBMCA_R_OUTLEN_TO_LARGE, "\x6f\x75\x74\x6c\x65\x6e\x20\x74\x6f\x20\x6c\x61\x72\x67\x65"},
+    {IBMCA_R_REQUEST_FAILED, "\x72\x65\x71\x75\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64"},
+    {IBMCA_R_UNDERFLOW_CONDITION, "\x75\x6e\x64\x65\x72\x66\x6c\x6f\x77\x20\x63\x6f\x6e\x64\x69\x74\x69\x6f\x6e"},
+    {IBMCA_R_UNDERFLOW_KEYRECORD, "\x75\x6e\x64\x65\x72\x66\x6c\x6f\x77\x20\x6b\x65\x79\x72\x65\x63\x6f\x72\x64"},
+    {IBMCA_R_UNIT_FAILURE, "\x75\x6e\x69\x74\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {0, NULL}
 };
 

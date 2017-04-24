@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -70,7 +70,7 @@
 #define NUM_BITS        (BN_BITS*2)
 
 static const char rnd_seed[] =
-    "string to make the random number generator think it has entropy";
+    "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 
 /*
  * Test that r == 0 in test_exp_mod_zero(). Returns one on success,
@@ -79,13 +79,13 @@ static const char rnd_seed[] =
 static int a_is_zero_mod_one(const char *method, const BIGNUM *r,
                              const BIGNUM *a) {
     if (!BN_is_zero(r)) {
-        fprintf(stderr, "%s failed:\n", method);
-        fprintf(stderr, "a ** 0 mod 1 = r (should be 0)\n");
-        fprintf(stderr, "a = ");
+        fprintf(stderr, "\x25\x73\x20\x66\x61\x69\x6c\x65\x64\x3a\xa", method);
+        fprintf(stderr, "\x61\x20\x2a\x2a\x20\x30\x20\x6d\x6f\x64\x20\x31\x20\x3d\x20\x72\x20\x28\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x30\x29\xa");
+        fprintf(stderr, "\x61\x20\x3d\x20");
         BN_print_fp(stderr, a);
-        fprintf(stderr, "\nr = ");
+        fprintf(stderr, "\xa\x72\x20\x3d\x20");
         BN_print_fp(stderr, r);
-        fprintf(stderr, "\n");
+        fprintf(stderr, "\xa");
         return 0;
     }
     return 1;
@@ -119,32 +119,32 @@ static int test_exp_mod_zero()
     if (!BN_mod_exp(&r, &a, &p, &m, ctx))
         goto err;
 
-    if (!a_is_zero_mod_one("BN_mod_exp", &r, &a))
+    if (!a_is_zero_mod_one("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70", &r, &a))
         failed = 1;
 
     if (!BN_mod_exp_recp(&r, &a, &p, &m, ctx))
         goto err;
 
-    if (!a_is_zero_mod_one("BN_mod_exp_recp", &r, &a))
+    if (!a_is_zero_mod_one("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x72\x65\x63\x70", &r, &a))
         failed = 1;
 
     if (!BN_mod_exp_simple(&r, &a, &p, &m, ctx))
         goto err;
 
-    if (!a_is_zero_mod_one("BN_mod_exp_simple", &r, &a))
+    if (!a_is_zero_mod_one("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x73\x69\x6d\x70\x6c\x65", &r, &a))
         failed = 1;
 
     if (!BN_mod_exp_mont(&r, &a, &p, &m, ctx, NULL))
         goto err;
 
-    if (!a_is_zero_mod_one("BN_mod_exp_mont", &r, &a))
+    if (!a_is_zero_mod_one("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x6d\x6f\x6e\x74", &r, &a))
         failed = 1;
 
     if (!BN_mod_exp_mont_consttime(&r, &a, &p, &m, ctx, NULL)) {
         goto err;
     }
 
-    if (!a_is_zero_mod_one("BN_mod_exp_mont_consttime", &r, &a))
+    if (!a_is_zero_mod_one("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x6d\x6f\x6e\x74\x5f\x63\x6f\x6e\x73\x74\x74\x69\x6d\x65", &r, &a))
         failed = 1;
 
     /*
@@ -155,11 +155,11 @@ static int test_exp_mod_zero()
         goto err;
 
     if (!BN_is_zero(&r)) {
-        fprintf(stderr, "BN_mod_exp_mont_word failed:\n");
-        fprintf(stderr, "1 ** 0 mod 1 = r (should be 0)\n");
-        fprintf(stderr, "r = ");
+        fprintf(stderr, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x6d\x6f\x6e\x74\x5f\x77\x6f\x72\x64\x20\x66\x61\x69\x6c\x65\x64\x3a\xa");
+        fprintf(stderr, "\x31\x20\x2a\x2a\x20\x30\x20\x6d\x6f\x64\x20\x31\x20\x3d\x20\x72\x20\x28\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x30\x29\xa");
+        fprintf(stderr, "\x72\x20\x3d\x20");
         BN_print_fp(stderr, &r);
-        fprintf(stderr, "\n");
+        fprintf(stderr, "\xa");
         return 0;
     }
 
@@ -226,28 +226,28 @@ int main(int argc, char *argv[])
 
         ret = BN_mod_exp_mont(r_mont, a, b, m, ctx, NULL);
         if (ret <= 0) {
-            printf("BN_mod_exp_mont() problems\n");
+            printf("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x6d\x6f\x6e\x74\x28\x29\x20\x70\x72\x6f\x62\x6c\x65\x6d\x73\xa");
             ERR_print_errors(out);
             EXIT(1);
         }
 
         ret = BN_mod_exp_recp(r_recp, a, b, m, ctx);
         if (ret <= 0) {
-            printf("BN_mod_exp_recp() problems\n");
+            printf("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x72\x65\x63\x70\x28\x29\x20\x70\x72\x6f\x62\x6c\x65\x6d\x73\xa");
             ERR_print_errors(out);
             EXIT(1);
         }
 
         ret = BN_mod_exp_simple(r_simple, a, b, m, ctx);
         if (ret <= 0) {
-            printf("BN_mod_exp_simple() problems\n");
+            printf("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x73\x69\x6d\x70\x6c\x65\x28\x29\x20\x70\x72\x6f\x62\x6c\x65\x6d\x73\xa");
             ERR_print_errors(out);
             EXIT(1);
         }
 
         ret = BN_mod_exp_mont_consttime(r_mont_const, a, b, m, ctx, NULL);
         if (ret <= 0) {
-            printf("BN_mod_exp_mont_consttime() problems\n");
+            printf("\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x6d\x6f\x6e\x74\x5f\x63\x6f\x6e\x73\x74\x74\x69\x6d\x65\x28\x29\x20\x70\x72\x6f\x62\x6c\x65\x6d\x73\xa");
             ERR_print_errors(out);
             EXIT(1);
         }
@@ -255,31 +255,31 @@ int main(int argc, char *argv[])
         if (BN_cmp(r_simple, r_mont) == 0
             && BN_cmp(r_simple, r_recp) == 0
             && BN_cmp(r_simple, r_mont_const) == 0) {
-            printf(".");
+            printf("\x2e");
             fflush(stdout);
         } else {
             if (BN_cmp(r_simple, r_mont) != 0)
-                printf("\nsimple and mont results differ\n");
+                printf("\xa\x73\x69\x6d\x70\x6c\x65\x20\x61\x6e\x64\x20\x6d\x6f\x6e\x74\x20\x72\x65\x73\x75\x6c\x74\x73\x20\x64\x69\x66\x66\x65\x72\xa");
             if (BN_cmp(r_simple, r_mont_const) != 0)
-                printf("\nsimple and mont const time results differ\n");
+                printf("\xa\x73\x69\x6d\x70\x6c\x65\x20\x61\x6e\x64\x20\x6d\x6f\x6e\x74\x20\x63\x6f\x6e\x73\x74\x20\x74\x69\x6d\x65\x20\x72\x65\x73\x75\x6c\x74\x73\x20\x64\x69\x66\x66\x65\x72\xa");
             if (BN_cmp(r_simple, r_recp) != 0)
-                printf("\nsimple and recp results differ\n");
+                printf("\xa\x73\x69\x6d\x70\x6c\x65\x20\x61\x6e\x64\x20\x72\x65\x63\x70\x20\x72\x65\x73\x75\x6c\x74\x73\x20\x64\x69\x66\x66\x65\x72\xa");
 
-            printf("a (%3d) = ", BN_num_bits(a));
+            printf("\x61\x20\x28\x25\x33\x64\x29\x20\x3d\x20", BN_num_bits(a));
             BN_print(out, a);
-            printf("\nb (%3d) = ", BN_num_bits(b));
+            printf("\xab\x20\x28\x25\x33\x64\x29\x20\x3d\x20", BN_num_bits(b));
             BN_print(out, b);
-            printf("\nm (%3d) = ", BN_num_bits(m));
+            printf("\xa\x6d\x20\x28\x25\x33\x64\x29\x20\x3d\x20", BN_num_bits(m));
             BN_print(out, m);
-            printf("\nsimple   =");
+            printf("\xa\x73\x69\x6d\x70\x6c\x65\x20\x20\x20\x3d");
             BN_print(out, r_simple);
-            printf("\nrecp     =");
+            printf("\xa\x72\x65\x63\x70\x20\x20\x20\x20\x20\x3d");
             BN_print(out, r_recp);
-            printf("\nmont     =");
+            printf("\xa\x6d\x6f\x6e\x74\x20\x20\x20\x20\x20\x3d");
             BN_print(out, r_mont);
-            printf("\nmont_ct  =");
+            printf("\xa\x6d\x6f\x6e\x74\x5f\x63\x74\x20\x20\x3d");
             BN_print(out, r_mont_const);
-            printf("\n");
+            printf("\xa");
             EXIT(1);
         }
     }
@@ -294,19 +294,19 @@ int main(int argc, char *argv[])
     ERR_remove_thread_state(NULL);
     CRYPTO_mem_leaks(out);
     BIO_free(out);
-    printf("\n");
+    printf("\xa");
 
     if (test_exp_mod_zero() != 0)
         goto err;
 
-    printf("done\n");
+    printf("\x64\x6f\x6e\x65\xa");
 
     EXIT(0);
  err:
     ERR_load_crypto_strings();
     ERR_print_errors(out);
 #ifdef OPENSSL_SYS_NETWARE
-    printf("ERROR\n");
+    printf("\x45\x52\x52\x4f\x52\xa");
 #endif
     EXIT(1);
     return (1);

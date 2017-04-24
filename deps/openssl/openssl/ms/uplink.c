@@ -18,7 +18,7 @@ static TCHAR msg[128];
 
 static void unimplemented(void)
 {
-    OPENSSL_showfatal(sizeof(TCHAR) == sizeof(char) ? "%s\n" : "%S\n", msg);
+    OPENSSL_showfatal(sizeof(TCHAR) == sizeof(char) ? "\x25\x73\xa" : "\x25\x53\xa", msg);
     ExitProcess(1);
 }
 
@@ -47,13 +47,13 @@ void OPENSSL_Uplink(volatile void **table, int index)
      */
     do {
         len = _sntprintf(msg, sizeof(msg) / sizeof(TCHAR),
-                         _T("OPENSSL_Uplink(%p,%02X): "), table, index);
-        _tcscpy(msg + len, _T("unimplemented function"));
+                         _T("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x55\x70\x6c\x69\x6e\x6b\x28\x25\x70\x2c\x25\x30\x32\x58\x29\x3a\x20"), table, index);
+        _tcscpy(msg + len, _T("\x75\x6e\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e"));
 
         if ((h = apphandle) == NULL) {
             if ((h = GetModuleHandle(NULL)) == NULL) {
                 apphandle = (HMODULE) - 1;
-                _tcscpy(msg + len, _T("no host application"));
+                _tcscpy(msg + len, _T("\x6e\x6f\x20\x68\x6f\x73\x74\x20\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e"));
                 break;
             }
             apphandle = h;
@@ -64,16 +64,16 @@ void OPENSSL_Uplink(volatile void **table, int index)
         if (applinktable == NULL) {
             void **(*applink) ();
 
-            applink = (void **(*)())GetProcAddress(h, "OPENSSL_Applink");
+            applink = (void **(*)())GetProcAddress(h, "\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x41\x70\x70\x6c\x69\x6e\x6b");
             if (applink == NULL) {
                 apphandle = (HMODULE) - 1;
-                _tcscpy(msg + len, _T("no OPENSSL_Applink"));
+                _tcscpy(msg + len, _T("\x6e\x6f\x20\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x41\x70\x70\x6c\x69\x6e\x6b"));
                 break;
             }
             p = (*applink) ();
             if (p == NULL) {
                 apphandle = (HMODULE) - 1;
-                _tcscpy(msg + len, _T("no ApplinkTable"));
+                _tcscpy(msg + len, _T("\x6e\x6f\x20\x41\x70\x70\x6c\x69\x6e\x6b\x54\x61\x62\x6c\x65"));
                 break;
             }
             applinktable = p;
@@ -100,7 +100,7 @@ __declspec(naked) static void lazy##i (void) {  \
         _asm    jmp  OPENSSL_UplinkTable+4*i    }
 
 # if APPLINK_MAX>25
-#  error "Add more stubs..."
+#  error "\x41\x64\x64\x20\x6d\x6f\x72\x65\x20\x73\x74\x75\x62\x73\x2e\x2e\x2e"
 # endif
 /* make some in advance... */
 LAZY(1) LAZY(2) LAZY(3) LAZY(4) LAZY(5)
@@ -121,6 +121,6 @@ void *OPENSSL_UplinkTable[] = {
 #ifdef SELFTEST
 main()
 {
-    UP_fprintf(UP_stdout, "hello, world!\n");
+    UP_fprintf(UP_stdout, "\x68\x65\x6c\x6c\x6f\x2c\x20\x77\x6f\x72\x6c\x64\x21\xa");
 }
 #endif

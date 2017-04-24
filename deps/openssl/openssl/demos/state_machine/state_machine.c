@@ -102,12 +102,12 @@ void SSLStateMachine_print_error(SSLStateMachine * pMachine,
 {
     unsigned long l;
 
-    fprintf(stderr, "%s\n", szErr);
+    fprintf(stderr, "\x25\x73\xa", szErr);
     while ((l = ERR_get_error())) {
         char buf[1024];
 
         ERR_error_string_n(l, buf, sizeof buf);
-        fprintf(stderr, "Error %lx: %s\n", l, buf);
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x25\x6c\x78\x3a\x20\x25\x73\xa", l, buf);
     }
 }
 
@@ -154,7 +154,7 @@ void SSLStateMachine_read_inject(SSLStateMachine * pMachine,
      * to succeed, though.
      */
     assert(n == nBuf);
-    fprintf(stderr, "%d bytes of encrypted data fed to state machine\n", n);
+    fprintf(stderr, "\x25\x64\x20\x62\x79\x74\x65\x73\x20\x6f\x66\x20\x65\x6e\x63\x72\x79\x70\x74\x65\x64\x20\x64\x61\x74\x61\x20\x66\x65\x64\x20\x74\x6f\x20\x73\x74\x61\x74\x65\x20\x6d\x61\x63\x68\x69\x6e\x65\xa", n);
 }
 
 int SSLStateMachine_read_extract(SSLStateMachine * pMachine,
@@ -163,20 +163,20 @@ int SSLStateMachine_read_extract(SSLStateMachine * pMachine,
     int n;
 
     if (!SSL_is_init_finished(pMachine->pSSL)) {
-        fprintf(stderr, "Doing SSL_accept\n");
+        fprintf(stderr, "\x44\x6f\x69\x6e\x67\x20\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\xa");
         n = SSL_accept(pMachine->pSSL);
         if (n == 0)
-            fprintf(stderr, "SSL_accept returned zero\n");
+            fprintf(stderr, "\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x20\x72\x65\x74\x75\x72\x6e\x65\x64\x20\x7a\x65\x72\x6f\xa");
         if (n < 0) {
             int err;
 
             if ((err =
                  SSL_get_error(pMachine->pSSL, n)) == SSL_ERROR_WANT_READ) {
-                fprintf(stderr, "SSL_accept wants more data\n");
+                fprintf(stderr, "\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x20\x77\x61\x6e\x74\x73\x20\x6d\x6f\x72\x65\x20\x64\x61\x74\x61\xa");
                 return 0;
             }
 
-            SSLStateMachine_print_error(pMachine, "SSL_accept error");
+            SSLStateMachine_print_error(pMachine, "\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x20\x65\x72\x72\x6f\x72");
             exit(7);
         }
         return 0;
@@ -187,15 +187,15 @@ int SSLStateMachine_read_extract(SSLStateMachine * pMachine,
         int err = SSL_get_error(pMachine->pSSL, n);
 
         if (err == SSL_ERROR_WANT_READ) {
-            fprintf(stderr, "SSL_read wants more data\n");
+            fprintf(stderr, "\x53\x53\x4c\x5f\x72\x65\x61\x64\x20\x77\x61\x6e\x74\x73\x20\x6d\x6f\x72\x65\x20\x64\x61\x74\x61\xa");
             return 0;
         }
 
-        SSLStateMachine_print_error(pMachine, "SSL_read error");
+        SSLStateMachine_print_error(pMachine, "\x53\x53\x4c\x5f\x72\x65\x61\x64\x20\x65\x72\x72\x6f\x72");
         exit(8);
     }
 
-    fprintf(stderr, "%d bytes of decrypted data read from state machine\n",
+    fprintf(stderr, "\x25\x64\x20\x62\x79\x74\x65\x73\x20\x6f\x66\x20\x64\x65\x63\x72\x79\x70\x74\x65\x64\x20\x64\x61\x74\x61\x20\x72\x65\x61\x64\x20\x66\x72\x6f\x6d\x20\x73\x74\x61\x74\x65\x20\x6d\x61\x63\x68\x69\x6e\x65\xa",
             n);
     return n;
 }
@@ -204,9 +204,9 @@ int SSLStateMachine_write_can_extract(SSLStateMachine * pMachine)
 {
     int n = BIO_pending(pMachine->pbioWrite);
     if (n)
-        fprintf(stderr, "There is encrypted data available to write\n");
+        fprintf(stderr, "\x54\x68\x65\x72\x65\x20\x69\x73\x20\x65\x6e\x63\x72\x79\x70\x74\x65\x64\x20\x64\x61\x74\x61\x20\x61\x76\x61\x69\x6c\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\xa");
     else
-        fprintf(stderr, "There is no encrypted data available to write\n");
+        fprintf(stderr, "\x54\x68\x65\x72\x65\x20\x69\x73\x20\x6e\x6f\x20\x65\x6e\x63\x72\x79\x70\x74\x65\x64\x20\x64\x61\x74\x61\x20\x61\x76\x61\x69\x6c\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\xa");
 
     return n;
 }
@@ -217,7 +217,7 @@ int SSLStateMachine_write_extract(SSLStateMachine * pMachine,
     int n;
 
     n = BIO_read(pMachine->pbioWrite, aucBuf, nBuf);
-    fprintf(stderr, "%d bytes of encrypted data read from state machine\n",
+    fprintf(stderr, "\x25\x64\x20\x62\x79\x74\x65\x73\x20\x6f\x66\x20\x65\x6e\x63\x72\x79\x70\x74\x65\x64\x20\x64\x61\x74\x61\x20\x72\x65\x61\x64\x20\x66\x72\x6f\x6d\x20\x73\x74\x61\x74\x65\x20\x6d\x61\x63\x68\x69\x6e\x65\xa",
             n);
     return n;
 }
@@ -232,7 +232,7 @@ void SSLStateMachine_write_inject(SSLStateMachine * pMachine,
      * to succeed, though.
      */
     assert(n == nBuf);
-    fprintf(stderr, "%d bytes of unencrypted data fed to state machine\n", n);
+    fprintf(stderr, "\x25\x64\x20\x62\x79\x74\x65\x73\x20\x6f\x66\x20\x75\x6e\x65\x6e\x63\x72\x79\x70\x74\x65\x64\x20\x64\x61\x74\x61\x20\x66\x65\x64\x20\x74\x6f\x20\x73\x74\x61\x74\x65\x20\x6d\x61\x63\x68\x69\x6e\x65\xa", n);
 }
 
 int OpenSocket(int nPort)
@@ -247,13 +247,13 @@ int OpenSocket(int nPort)
 
     nSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (nSocket < 0) {
-        perror("socket");
+        perror("\x73\x6f\x63\x6b\x65\x74");
         exit(1);
     }
 
     if (setsockopt
         (nSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&one, sizeof one) < 0) {
-        perror("setsockopt");
+        perror("\x73\x65\x74\x73\x6f\x63\x6b\x6f\x70\x74");
         exit(2);
     }
 
@@ -262,23 +262,23 @@ int OpenSocket(int nPort)
     saServer.sin_port = htons(nPort);
     nSize = sizeof saServer;
     if (bind(nSocket, (struct sockaddr *)&saServer, nSize) < 0) {
-        perror("bind");
+        perror("\x62\x69\x6e\x64");
         exit(3);
     }
 
     if (listen(nSocket, 512) < 0) {
-        perror("listen");
+        perror("\x6c\x69\x73\x74\x65\x6e");
         exit(4);
     }
 
     nLen = sizeof saClient;
     nFD = accept(nSocket, (struct sockaddr *)&saClient, &nLen);
     if (nFD < 0) {
-        perror("accept");
+        perror("\x61\x63\x63\x65\x70\x74");
         exit(5);
     }
 
-    fprintf(stderr, "Incoming accepted on port %d\n", nPort);
+    fprintf(stderr, "\x49\x6e\x63\x6f\x6d\x69\x6e\x67\x20\x61\x63\x63\x65\x70\x74\x65\x64\x20\x6f\x6e\x20\x70\x6f\x72\x74\x20\x25\x64\xa", nPort);
 
     return nFD;
 }
@@ -294,7 +294,7 @@ int main(int argc, char **argv)
     int nrbuf = 0;
 
     if (argc != 4) {
-        fprintf(stderr, "%s <port> <certificate file> <key file>\n", argv[0]);
+        fprintf(stderr, "\x25\x73\x20\x3c\x70\x6f\x72\x74\x3e\x20\x3c\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65\x3e\x20\x3c\x6b\x65\x79\x20\x66\x69\x6c\x65\x3e\xa", argv[0]);
         exit(6);
     }
 
@@ -345,7 +345,7 @@ int main(int argc, char **argv)
         if (FD_ISSET(nFD, &rfds)) {
             n = read(nFD, buf, sizeof buf);
             if (n == 0) {
-                fprintf(stderr, "Got EOF on socket\n");
+                fprintf(stderr, "\x47\x6f\x74\x20\x45\x4f\x46\x20\x6f\x6e\x20\x73\x6f\x63\x6b\x65\x74\xa");
                 exit(0);
             }
             assert(n > 0);
@@ -362,7 +362,7 @@ int main(int argc, char **argv)
             n = SSLStateMachine_read_extract(pMachine, buf + 1,
                                              sizeof buf - 1);
             if (n < 0) {
-                SSLStateMachine_print_error(pMachine, "read extract failed");
+                SSLStateMachine_print_error(pMachine, "\x72\x65\x61\x64\x20\x65\x78\x74\x72\x61\x63\x74\x20\x66\x61\x69\x6c\x65\x64");
                 break;
             }
             assert(n >= 0);
@@ -394,7 +394,7 @@ int main(int argc, char **argv)
         if (FD_ISSET(0, &rfds)) {
             n = read(0, buf, sizeof buf);
             if (n == 0) {
-                fprintf(stderr, "Got EOF on stdin\n");
+                fprintf(stderr, "\x47\x6f\x74\x20\x45\x4f\x46\x20\x6f\x6e\x20\x73\x74\x64\x69\x6e\xa");
                 exit(0);
             }
             assert(n > 0);

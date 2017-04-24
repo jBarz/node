@@ -72,7 +72,7 @@ int CRYPTO_xts128_encrypt(const XTS128_CONTEXT *ctx,
     union {
         u64 u[2];
         u32 d[4];
-        u8 c[16];
+        u8  c[16];
     } tweak, scratch;
     unsigned int i;
 
@@ -147,7 +147,7 @@ int CRYPTO_xts128_encrypt(const XTS128_CONTEXT *ctx,
     } else {
         union {
             u64 u[2];
-            u8 c[16];
+            u8  c[16];
         } tweak1;
 
         if (is_endian.little) {

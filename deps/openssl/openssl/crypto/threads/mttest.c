@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -91,11 +91,11 @@
 #include <openssl/rand.h>
 
 #ifdef OPENSSL_SYS_NETWARE
-# define TEST_SERVER_CERT "/openssl/apps/server.pem"
-# define TEST_CLIENT_CERT "/openssl/apps/client.pem"
+# define TEST_SERVER_CERT "\x2f\x6f\x70\x65\x6e\x73\x73\x6c\x2f\x61\x70\x70\x73\x2f\x73\x65\x72\x76\x65\x72\x2e\x70\x65\x6d"
+# define TEST_CLIENT_CERT "\x2f\x6f\x70\x65\x6e\x73\x73\x6c\x2f\x61\x70\x70\x73\x2f\x63\x6c\x69\x65\x6e\x74\x2e\x70\x65\x6d"
 #else
-# define TEST_SERVER_CERT "../../apps/server.pem"
-# define TEST_CLIENT_CERT "../../apps/client.pem"
+# define TEST_SERVER_CERT "\x2e\x2e\x2f\x2e\x2e\x2f\x61\x70\x70\x73\x2f\x73\x65\x72\x76\x65\x72\x2e\x70\x65\x6d"
+# define TEST_CLIENT_CERT "\x2e\x2e\x2f\x2e\x2e\x2f\x61\x70\x70\x73\x2f\x63\x6c\x69\x65\x6e\x74\x2e\x70\x65\x6d"
 #endif
 
 #define MAX_THREAD_NUMBER       100
@@ -139,42 +139,42 @@ int reconnect = 0;
 int cache_stats = 0;
 
 static const char rnd_seed[] =
-    "string to make the random number generator think it has entropy";
+    "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 
 int doit(char *ctx[4]);
 static void print_stats(BIO *bio, SSL_CTX *ctx)
 {
-    BIO_printf(bio, "%4ld items in the session cache\n",
+    BIO_printf(bio, "\x25\x34\x6c\x64\x20\x69\x74\x65\x6d\x73\x20\x69\x6e\x20\x74\x68\x65\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x63\x61\x63\x68\x65\xa",
 	       SSL_CTX_sess_number(ctx));
-    BIO_printf(bio, "%4d client connects (SSL_connect())\n",
+    BIO_printf(bio, "\x25\x34\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x6f\x6e\x6e\x65\x63\x74\x73\x20\x28\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74\x28\x29\x29\xa",
 	       SSL_CTX_sess_connect(ctx));
-    BIO_printf(bio, "%4d client connects that finished\n",
+    BIO_printf(bio, "\x25\x34\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x6f\x6e\x6e\x65\x63\x74\x73\x20\x74\x68\x61\x74\x20\x66\x69\x6e\x69\x73\x68\x65\x64\xa",
 	       SSL_CTX_sess_connect_good(ctx));
-    BIO_printf(bio, "%4d server connects (SSL_accept())\n",
+    BIO_printf(bio, "\x25\x34\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x6f\x6e\x6e\x65\x63\x74\x73\x20\x28\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x28\x29\x29\xa",
 	       SSL_CTX_sess_accept(ctx));
-    BIO_printf(bio, "%4d server connects that finished\n",
+    BIO_printf(bio, "\x25\x34\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x6f\x6e\x6e\x65\x63\x74\x73\x20\x74\x68\x61\x74\x20\x66\x69\x6e\x69\x73\x68\x65\x64\xa",
 	       SSL_CTX_sess_accept_good(ctx));
-    BIO_printf(bio, "%4d session cache hits\n", SSL_CTX_sess_hits(ctx));
-    BIO_printf(bio, "%4d session cache misses\n", SSL_CTX_sess_misses(ctx));
-    BIO_printf(bio, "%4d session cache timeouts\n", SSL_CTX_sess_timeouts(ctx));
+    BIO_printf(bio, "\x25\x34\x64\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x63\x61\x63\x68\x65\x20\x68\x69\x74\x73\xa", SSL_CTX_sess_hits(ctx));
+    BIO_printf(bio, "\x25\x34\x64\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x63\x61\x63\x68\x65\x20\x6d\x69\x73\x73\x65\x73\xa", SSL_CTX_sess_misses(ctx));
+    BIO_printf(bio, "\x25\x34\x64\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x63\x61\x63\x68\x65\x20\x74\x69\x6d\x65\x6f\x75\x74\x73\xa", SSL_CTX_sess_timeouts(ctx));
 }
 
 static void sv_usage(void)
 {
-    BIO_printf(bio_err, "usage: ssltest [args ...]\n");
-    BIO_printf(bio_err, "\n");
-    BIO_printf(bio_err, " -server_auth  - check server certificate\n");
-    BIO_printf(bio_err, " -client_auth  - do client authentication\n");
-    BIO_printf(bio_err, " -v            - more output\n");
-    BIO_printf(bio_err, " -CApath arg   - PEM format directory of CA's\n");
-    BIO_printf(bio_err, " -CAfile arg   - PEM format file of CA's\n");
-    BIO_printf(bio_err, " -threads arg  - number of threads\n");
-    BIO_printf(bio_err, " -loops arg    - number of 'connections', per thread\n");
-    BIO_printf(bio_err, " -reconnect    - reuse session-id's\n");
-    BIO_printf(bio_err, " -stats        - server session-id cache stats\n");
-    BIO_printf(bio_err, " -cert arg     - server certificate/key\n");
-    BIO_printf(bio_err, " -ccert arg    - client certificate/key\n");
-    BIO_printf(bio_err, " -ssl3         - just SSLv3n\n");
+    BIO_printf(bio_err, "\x75\x73\x61\x67\x65\x3a\x20\x73\x73\x6c\x74\x65\x73\x74\x20\x5b\x61\x72\x67\x73\x20\x2e\x2e\x2e\x5d\xa");
+    BIO_printf(bio_err, "\xa");
+    BIO_printf(bio_err, "\x20\x2d\x73\x65\x72\x76\x65\x72\x5f\x61\x75\x74\x68\x20\x20\x2d\x20\x63\x68\x65\x63\x6b\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
+    BIO_printf(bio_err, "\x20\x2d\x63\x6c\x69\x65\x6e\x74\x5f\x61\x75\x74\x68\x20\x20\x2d\x20\x64\x6f\x20\x63\x6c\x69\x65\x6e\x74\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e\xa");
+    BIO_printf(bio_err, "\x20\x2d\x76\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6d\x6f\x72\x65\x20\x6f\x75\x74\x70\x75\x74\xa");
+    BIO_printf(bio_err, "\x20\x2d\x43\x41\x70\x61\x74\x68\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x50\x45\x4d\x20\x66\x6f\x72\x6d\x61\x74\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x20\x6f\x66\x20\x43\x41\x27\x73\xa");
+    BIO_printf(bio_err, "\x20\x2d\x43\x41\x66\x69\x6c\x65\x20\x61\x72\x67\x20\x20\x20\x2d\x20\x50\x45\x4d\x20\x66\x6f\x72\x6d\x61\x74\x20\x66\x69\x6c\x65\x20\x6f\x66\x20\x43\x41\x27\x73\xa");
+    BIO_printf(bio_err, "\x20\x2d\x74\x68\x72\x65\x61\x64\x73\x20\x61\x72\x67\x20\x20\x2d\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x74\x68\x72\x65\x61\x64\x73\xa");
+    BIO_printf(bio_err, "\x20\x2d\x6c\x6f\x6f\x70\x73\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x27\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x27\x2c\x20\x70\x65\x72\x20\x74\x68\x72\x65\x61\x64\xa");
+    BIO_printf(bio_err, "\x20\x2d\x72\x65\x63\x6f\x6e\x6e\x65\x63\x74\x20\x20\x20\x20\x2d\x20\x72\x65\x75\x73\x65\x20\x73\x65\x73\x73\x69\x6f\x6e\x2d\x69\x64\x27\x73\xa");
+    BIO_printf(bio_err, "\x20\x2d\x73\x74\x61\x74\x73\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x73\x65\x72\x76\x65\x72\x20\x73\x65\x73\x73\x69\x6f\x6e\x2d\x69\x64\x20\x63\x61\x63\x68\x65\x20\x73\x74\x61\x74\x73\xa");
+    BIO_printf(bio_err, "\x20\x2d\x63\x65\x72\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x2d\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x2f\x6b\x65\x79\xa");
+    BIO_printf(bio_err, "\x20\x2d\x63\x63\x65\x72\x74\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x2f\x6b\x65\x79\xa");
+    BIO_printf(bio_err, "\x20\x2d\x73\x73\x6c\x33\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6a\x75\x73\x74\x20\x53\x53\x4c\x76\x33\x6e\xa");
 }
 
 int main(int argc, char *argv[])
@@ -200,35 +200,35 @@ int main(int argc, char *argv[])
     argv++;
 
     while (argc >= 1) {
-        if (strcmp(*argv, "-server_auth") == 0)
+        if (strcmp(*argv, "\x2d\x73\x65\x72\x76\x65\x72\x5f\x61\x75\x74\x68") == 0)
             server_auth = 1;
-        else if (strcmp(*argv, "-client_auth") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x6c\x69\x65\x6e\x74\x5f\x61\x75\x74\x68") == 0)
             client_auth = 1;
-        else if (strcmp(*argv, "-reconnect") == 0)
+        else if (strcmp(*argv, "\x2d\x72\x65\x63\x6f\x6e\x6e\x65\x63\x74") == 0)
             reconnect = 1;
-        else if (strcmp(*argv, "-stats") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x74\x61\x74\x73") == 0)
             cache_stats = 1;
-        else if (strcmp(*argv, "-ssl3") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x73\x6c\x33") == 0)
             ssl_method = SSLv3_method();
-        else if (strcmp(*argv, "-ssl2") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x73\x6c\x32") == 0)
             ssl_method = SSLv2_method();
-        else if (strcmp(*argv, "-CApath") == 0) {
+        else if (strcmp(*argv, "\x2d\x43\x41\x70\x61\x74\x68") == 0) {
             if (--argc < 1)
                 goto bad;
             CApath = *(++argv);
-        } else if (strcmp(*argv, "-CAfile") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x66\x69\x6c\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             CAfile = *(++argv);
-        } else if (strcmp(*argv, "-cert") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x65\x72\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             scert = *(++argv);
-        } else if (strcmp(*argv, "-ccert") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x63\x65\x72\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             ccert = *(++argv);
-        } else if (strcmp(*argv, "-threads") == 0) {
+        } else if (strcmp(*argv, "\x2d\x74\x68\x72\x65\x61\x64\x73") == 0) {
             if (--argc < 1)
                 goto bad;
             thread_number = atoi(*(++argv));
@@ -236,14 +236,14 @@ int main(int argc, char *argv[])
                 thread_number = 1;
             if (thread_number > MAX_THREAD_NUMBER)
                 thread_number = MAX_THREAD_NUMBER;
-        } else if (strcmp(*argv, "-loops") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6c\x6f\x6f\x70\x73") == 0) {
             if (--argc < 1)
                 goto bad;
             number_of_loops = atoi(*(++argv));
             if (number_of_loops == 0)
                 number_of_loops = 1;
         } else {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badop = 1;
             break;
         }
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
     }
 
     if (cipher == NULL && OPENSSL_issetugid() == 0)
-        cipher = getenv("SSL_CIPHER");
+        cipher = getenv("\x53\x53\x4c\x5f\x43\x49\x50\x48\x45\x52");
 
     SSL_load_error_strings();
     OpenSSL_add_ssl_algorithms();
@@ -277,12 +277,12 @@ int main(int argc, char *argv[])
                                    SSL_SESS_CACHE_SERVER);
 
     if (!SSL_CTX_use_certificate_file(s_ctx, scert, SSL_FILETYPE_PEM)) {
-        BIO_printf(bio_err, "SSL_CTX_use_certificate_file (%s)\n", scert);
+        BIO_printf(bio_err, "\x53\x53\x4c\x5f\x43\x54\x58\x5f\x75\x73\x65\x5f\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x5f\x66\x69\x6c\x65\x20\x28\x25\x73\x29\xa", scert);
         ERR_print_errors(bio_err);
         goto end;
     } else
         if (!SSL_CTX_use_RSAPrivateKey_file(s_ctx, scert, SSL_FILETYPE_PEM)) {
-        BIO_printf(bio_err, "SSL_CTX_use_RSAPrivateKey_file (%s)\n", scert);
+        BIO_printf(bio_err, "\x53\x53\x4c\x5f\x43\x54\x58\x5f\x75\x73\x65\x5f\x52\x53\x41\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79\x5f\x66\x69\x6c\x65\x20\x28\x25\x73\x29\xa", scert);
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -296,19 +296,19 @@ int main(int argc, char *argv[])
         (!SSL_CTX_set_default_verify_paths(s_ctx)) ||
         (!SSL_CTX_load_verify_locations(c_ctx, CAfile, CApath)) ||
         (!SSL_CTX_set_default_verify_paths(c_ctx))) {
-        BIO_printf(bio_err, "SSL_load_verify_locations\n");
+        BIO_printf(bio_err, "\x53\x53\x4c\x5f\x6c\x6f\x61\x64\x5f\x76\x65\x72\x69\x66\x79\x5f\x6c\x6f\x63\x61\x74\x69\x6f\x6e\x73\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
 
     if (client_auth) {
-        BIO_printf(bio_err, "client authentication\n");
+        BIO_printf(bio_err, "\x63\x6c\x69\x65\x6e\x74\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e\xa");
         SSL_CTX_set_verify(s_ctx,
                            SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
                            verify_callback);
     }
     if (server_auth) {
-        BIO_printf(bio_err, "server authentication\n");
+        BIO_printf(bio_err, "\x73\x65\x72\x76\x65\x72\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e\xa");
         SSL_CTX_set_verify(c_ctx, SSL_VERIFY_PEER, verify_callback);
     }
 
@@ -318,24 +318,24 @@ int main(int argc, char *argv[])
  end:
 
     if (c_ctx != NULL) {
-        BIO_printf(bio_err, "Client SSL_CTX stats then free it\n");
+        BIO_printf(bio_err, "\x43\x6c\x69\x65\x6e\x74\x20\x53\x53\x4c\x5f\x43\x54\x58\x20\x73\x74\x61\x74\x73\x20\x74\x68\x65\x6e\x20\x66\x72\x65\x65\x20\x69\x74\xa");
         print_stats(bio_err, c_ctx);
         SSL_CTX_free(c_ctx);
     }
     if (s_ctx != NULL) {
-        BIO_printf(bio_err, "Server SSL_CTX stats then free it\n");
+        BIO_printf(bio_err, "\x53\x65\x72\x76\x65\x72\x20\x53\x53\x4c\x5f\x43\x54\x58\x20\x73\x74\x61\x74\x73\x20\x74\x68\x65\x6e\x20\x66\x72\x65\x65\x20\x69\x74\xa");
         print_stats(bio_err, s_ctx);
         if (cache_stats) {
-            BIO_printf(bio_err, "-----\n");
+            BIO_printf(bio_err, "\x2d\x2d\x2d\x2d\x2d\xa");
             lh_SSL_SESSION_stats_bio(SSL_CTX_sessions(s_ctx), bio_err);
-            BIO_printf(bio_err, "-----\n");
+            BIO_printf(bio_err, "\x2d\x2d\x2d\x2d\x2d\xa");
     /*-     lh_SSL_SESSION_node_stats_bio(SSL_CTX_sessions(s_ctx),bio_err);
             BIO_printf(bio_err,"-----\n"); */
             lh_SSL_SESSION_node_usage_stats_bio(SSL_CTX_sessions(s_ctx), bio_err);
-            BIO_printf(bio_err, "-----\n");
+            BIO_printf(bio_err, "\x2d\x2d\x2d\x2d\x2d\xa");
         }
         SSL_CTX_free(s_ctx);
-        BIO_printf(bio_err, "done free\n");
+        BIO_printf(bio_err, "\x64\x6f\x6e\x65\x20\x66\x72\x65\x65\xa");
     }
     exit(ret);
     return (0);
@@ -365,7 +365,7 @@ int ndoit(SSL_CTX *ssl_ctx[2])
     }
 
     CRYPTO_THREADID_current(&thread_id);
-    BIO_printf(bio_stdout, "started thread %lu\n",
+    BIO_printf(bio_stdout, "\x73\x74\x61\x72\x74\x65\x64\x20\x74\x68\x72\x65\x61\x64\x20\x25\x6c\x75\xa",
 	       CRYPTO_THREADID_hash(&thread_id));
     for (i = 0; i < number_of_loops; i++) {
 /*-     BIO_printf(bio_err,"%4d %2d ctx->ref (%3d,%3d)\n",
@@ -376,12 +376,12 @@ int ndoit(SSL_CTX *ssl_ctx[2])
 
         ret = doit(ctx);
         if (ret != 0) {
-            BIO_printf(bio_stdout, "error[%d] %lu - %d\n",
+            BIO_printf(bio_stdout, "\x65\x72\x72\x6f\x72\x5b\x25\x64\x5d\x20\x25\x6c\x75\x20\x2d\x20\x25\x64\xa",
                        i, CRYPTO_THREADID_hash(&thread_id), ret);
             return (ret);
         }
     }
-    BIO_printf(bio_stdout, "DONE %lu\n", CRYPTO_THREADID_hash(&thread_id));
+    BIO_printf(bio_stdout, "\x44\x4f\x4e\x45\x20\x25\x6c\x75\xa", CRYPTO_THREADID_hash(&thread_id));
     if (reconnect) {
         SSL_free((SSL *)ctx[2]);
         SSL_free((SSL *)ctx[3]);
@@ -466,31 +466,31 @@ int doit(char *ctx[4])
 
         if (do_server && verbose) {
             if (SSL_in_init(s_ssl))
-                BIO_printf(bio_stdout, "server waiting in SSL_accept - %s\n",
+                BIO_printf(bio_stdout, "\x73\x65\x72\x76\x65\x72\x20\x77\x61\x69\x74\x69\x6e\x67\x20\x69\x6e\x20\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74\x20\x2d\x20\x25\x73\xa",
                            SSL_state_string_long(s_ssl));
             else if (s_write)
-                BIO_printf(bio_stdout, "server:SSL_write()\n");
+                BIO_printf(bio_stdout, "\x73\x65\x72\x76\x65\x72\x3a\x53\x53\x4c\x5f\x77\x72\x69\x74\x65\x28\x29\xa");
             else
-                BIO_printf(bio_stdout, "server:SSL_read()\n");
+                BIO_printf(bio_stdout, "\x73\x65\x72\x76\x65\x72\x3a\x53\x53\x4c\x5f\x72\x65\x61\x64\x28\x29\xa");
         }
 
         if (do_client && verbose) {
             if (SSL_in_init(c_ssl))
-                BIO_printf(bio_stdout, "client waiting in SSL_connect - %s\n",
+                BIO_printf(bio_stdout, "\x63\x6c\x69\x65\x6e\x74\x20\x77\x61\x69\x74\x69\x6e\x67\x20\x69\x6e\x20\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74\x20\x2d\x20\x25\x73\xa",
                            SSL_state_string_long(c_ssl));
             else if (c_write)
-                BIO_printf(bio_stdout, "client:SSL_write()\n");
+                BIO_printf(bio_stdout, "\x63\x6c\x69\x65\x6e\x74\x3a\x53\x53\x4c\x5f\x77\x72\x69\x74\x65\x28\x29\xa");
             else
-                BIO_printf(bio_stdout, "client:SSL_read()\n");
+                BIO_printf(bio_stdout, "\x63\x6c\x69\x65\x6e\x74\x3a\x53\x53\x4c\x5f\x72\x65\x61\x64\x28\x29\xa");
         }
 
         if (!do_client && !do_server) {
-            BIO_printf(bio_stdout, "ERROR IN STARTUP\n");
+            BIO_printf(bio_stdout, "\x45\x52\x52\x4f\x52\x20\x49\x4e\x20\x53\x54\x41\x52\x54\x55\x50\xa");
             break;
         }
         if (do_client && !(done & C_DONE)) {
             if (c_write) {
-                i = BIO_write(c_bio, "hello from client\n", 18);
+                i = BIO_write(c_bio, "\x68\x65\x6c\x6c\x6f\x20\x66\x72\x6f\x6d\x20\x63\x6c\x69\x65\x6e\x74\xa", 18);
                 if (i < 0) {
                     c_r = 0;
                     c_w = 0;
@@ -500,12 +500,12 @@ int doit(char *ctx[4])
                         if (BIO_should_write(c_bio))
                             c_w = 1;
                     } else {
-                        BIO_printf(bio_err, "ERROR in CLIENT\n");
+                        BIO_printf(bio_err, "\x45\x52\x52\x4f\x52\x20\x69\x6e\x20\x43\x4c\x49\x45\x4e\x54\xa");
                         ERR_print_errors_fp(stderr);
                         return (1);
                     }
                 } else if (i == 0) {
-                    BIO_printf(bio_err, "SSL CLIENT STARTUP FAILED\n");
+                    BIO_printf(bio_err, "\x53\x53\x4c\x20\x43\x4c\x49\x45\x4e\x54\x20\x53\x54\x41\x52\x54\x55\x50\x20\x46\x41\x49\x4c\x45\x44\xa");
                     return (1);
                 } else {
                     /* ok */
@@ -522,17 +522,17 @@ int doit(char *ctx[4])
                         if (BIO_should_write(c_bio))
                             c_w = 1;
                     } else {
-                        BIO_printf(bio_err, "ERROR in CLIENT\n");
+                        BIO_printf(bio_err, "\x45\x52\x52\x4f\x52\x20\x69\x6e\x20\x43\x4c\x49\x45\x4e\x54\xa");
                         ERR_print_errors_fp(stderr);
                         return (1);
                     }
                 } else if (i == 0) {
-                    BIO_printf(bio_err, "SSL CLIENT STARTUP FAILED\n");
+                    BIO_printf(bio_err, "\x53\x53\x4c\x20\x43\x4c\x49\x45\x4e\x54\x20\x53\x54\x41\x52\x54\x55\x50\x20\x46\x41\x49\x4c\x45\x44\xa");
                     return (1);
                 } else {
                     done |= C_DONE;
 #ifdef undef
-                    BIO_printf(bio_stdout, "CLIENT:from server:");
+                    BIO_printf(bio_stdout, "\x43\x4c\x49\x45\x4e\x54\x3a\x66\x72\x6f\x6d\x20\x73\x65\x72\x76\x65\x72\x3a");
                     BIO_write(bio_stdout, cbuf, i);
                     BIO_flush(bio_stdout);
 #endif
@@ -552,24 +552,24 @@ int doit(char *ctx[4])
                         if (BIO_should_write(s_bio))
                             s_w = 1;
                     } else {
-                        BIO_printf(bio_err, "ERROR in SERVER\n");
+                        BIO_printf(bio_err, "\x45\x52\x52\x4f\x52\x20\x69\x6e\x20\x53\x45\x52\x56\x45\x52\xa");
                         ERR_print_errors_fp(stderr);
                         return (1);
                     }
                 } else if (i == 0) {
-                    BIO_printf(bio_err, "SSL SERVER STARTUP FAILED\n");
+                    BIO_printf(bio_err, "\x53\x53\x4c\x20\x53\x45\x52\x56\x45\x52\x20\x53\x54\x41\x52\x54\x55\x50\x20\x46\x41\x49\x4c\x45\x44\xa");
                     return (1);
                 } else {
                     s_write = 1;
                     s_w = 1;
 #ifdef undef
-                    BIO_printf(bio_stdout, "SERVER:from client:");
+                    BIO_printf(bio_stdout, "\x53\x45\x52\x56\x45\x52\x3a\x66\x72\x6f\x6d\x20\x63\x6c\x69\x65\x6e\x74\x3a");
                     BIO_write(bio_stdout, sbuf, i);
                     BIO_flush(bio_stdout);
 #endif
                 }
             } else {
-                i = BIO_write(s_bio, "hello from server\n", 18);
+                i = BIO_write(s_bio, "\x68\x65\x6c\x6c\x6f\x20\x66\x72\x6f\x6d\x20\x73\x65\x72\x76\x65\x72\xa", 18);
                 if (i < 0) {
                     s_r = 0;
                     s_w = 0;
@@ -579,12 +579,12 @@ int doit(char *ctx[4])
                         if (BIO_should_write(s_bio))
                             s_w = 1;
                     } else {
-                        BIO_printf(bio_err, "ERROR in SERVER\n");
+                        BIO_printf(bio_err, "\x45\x52\x52\x4f\x52\x20\x69\x6e\x20\x53\x45\x52\x56\x45\x52\xa");
                         ERR_print_errors_fp(stderr);
                         return (1);
                     }
                 } else if (i == 0) {
-                    BIO_printf(bio_err, "SSL SERVER STARTUP FAILED\n");
+                    BIO_printf(bio_err, "\x53\x53\x4c\x20\x53\x45\x52\x56\x45\x52\x20\x53\x54\x41\x52\x54\x55\x50\x20\x46\x41\x49\x4c\x45\x44\xa");
                     return (1);
                 } else {
                     s_write = 0;
@@ -605,7 +605,7 @@ int doit(char *ctx[4])
     SSL_set_shutdown(s_ssl, SSL_SENT_SHUTDOWN | SSL_RECEIVED_SHUTDOWN);
 
 #ifdef undef
-    BIO_printf(bio_stdout, "DONE\n");
+    BIO_printf(bio_stdout, "\x44\x4f\x4e\x45\xa");
 #endif
  err:
     /*
@@ -648,9 +648,9 @@ int verify_callback(int ok, X509_STORE_CTX *ctx)
                               buf, 256);
         if (s != NULL) {
             if (ok)
-                BIO_printf(bio_err, "depth=%d %s\n", ctx->error_depth, buf);
+                BIO_printf(bio_err, "\x64\x65\x70\x74\x68\x3d\x25\x64\x20\x25\x73\xa", ctx->error_depth, buf);
             else
-                BIO_printf(bio_err, "depth=%d error=%d %s\n",
+                BIO_printf(bio_err, "\x64\x65\x70\x74\x68\x3d\x25\x64\x20\x65\x72\x72\x6f\x72\x3d\x25\x64\x20\x25\x73\xa",
                         ctx->error_depth, ctx->error, buf);
         }
     }
@@ -716,7 +716,7 @@ void do_threads(SSL_CTX *s_ctx, SSL_CTX *c_ctx)
                                         (void *)ssl_ctx, 0L, &(thread_id[i]));
     }
 
-    BIO_printf(bio_stdout, "reaping\n");
+    BIO_printf(bio_stdout, "\x72\x65\x61\x70\x69\x6e\x67\xa");
     for (i = 0; i < thread_number; i += 50) {
         int j;
 
@@ -726,7 +726,7 @@ void do_threads(SSL_CTX *s_ctx, SSL_CTX *c_ctx)
                                    (CONST HANDLE *) & (thread_handle[i]),
                                    TRUE, INFINITE)
             == WAIT_FAILED) {
-            BIO_printf(bio_err, "WaitForMultipleObjects failed:%d\n",
+            BIO_printf(bio_err, "\x57\x61\x69\x74\x46\x6f\x72\x4d\x75\x6c\x74\x69\x70\x6c\x65\x4f\x62\x6a\x65\x63\x74\x73\x20\x66\x61\x69\x6c\x65\x64\x3a\x25\x64\xa",
                     GetLastError());
             exit(1);
         }
@@ -742,7 +742,7 @@ void do_threads(SSL_CTX *s_ctx, SSL_CTX *c_ctx)
     ret = (ret + end.wSecond - start.wSecond);
     ret += (end.wMilliseconds - start.wMilliseconds) / 1000.0;
 
-    BIO_printf(bio_stdout, "win32 threads done - %.3f seconds\n", ret);
+    BIO_printf(bio_stdout, "\x77\x69\x6e\x33\x32\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\x20\x2d\x20\x25\x2e\x33\x66\x20\x73\x65\x63\x6f\x6e\x64\x73\xa", ret);
 }
 
 #endif                          /* OPENSSL_SYS_WIN32 */
@@ -777,27 +777,27 @@ void thread_cleanup(void)
 
     CRYPTO_set_locking_callback(NULL);
 
-    BIO_printf(bio_err, "cleanup\n");
+    BIO_printf(bio_err, "\x63\x6c\x65\x61\x6e\x75\x70\xa");
 
     for (i = 0; i < CRYPTO_num_locks(); i++) {
         /* rwlock_destroy(&(lock_cs[i])); */
         mutex_destroy(&(lock_cs[i]));
-        BIO_printf(bio_err, "%8ld:%s\n", lock_count[i], CRYPTO_get_lock_name(i));
+        BIO_printf(bio_err, "\x25\x38\x6c\x64\x3a\x25\x73\xa", lock_count[i], CRYPTO_get_lock_name(i));
     }
     OPENSSL_free(lock_cs);
     OPENSSL_free(lock_count);
 
-    BIO_printf(bio_err, "done cleanup\n");
+    BIO_printf(bio_err, "\x64\x6f\x6e\x65\x20\x63\x6c\x65\x61\x6e\x75\x70\xa");
 
 }
 
 void solaris_locking_callback(int mode, int type, const char *file, int line)
 {
 # ifdef undef
-    BIO_printf(bio_err, "thread=%4d mode=%s lock=%s %s:%d\n",
+    BIO_printf(bio_err, "\x74\x68\x72\x65\x61\x64\x3d\x25\x34\x64\x20\x6d\x6f\x64\x65\x3d\x25\x73\x20\x6c\x6f\x63\x6b\x3d\x25\x73\x20\x25\x73\x3a\x25\x64\xa",
                CRYPTO_thread_id(),
-               (mode & CRYPTO_LOCK) ? "l" : "u",
-               (type & CRYPTO_READ) ? "r" : "w", file, line);
+               (mode & CRYPTO_LOCK) ? "\x6c" : "\x75",
+               (type & CRYPTO_READ) ? "\x72" : "\x77", file, line);
 # endif
 
     /*-
@@ -836,16 +836,16 @@ void do_threads(SSL_CTX *s_ctx, SSL_CTX *c_ctx)
                    (void *(*)())ndoit, (void *)ssl_ctx, 0L, &(thread_ctx[i]));
     }
 
-    BIO_printf(bio_stdout, "reaping\n");
+    BIO_printf(bio_stdout, "\x72\x65\x61\x70\x69\x6e\x67\xa");
     for (i = 0; i < thread_number; i++) {
         thr_join(thread_ctx[i], NULL, NULL);
     }
 
 #if 0 /* We can't currently find out the reference amount */
-    BIO_printf(bio_stdout, "solaris threads done (%d,%d)\n",
+    BIO_printf(bio_stdout, "\x73\x6f\x6c\x61\x72\x69\x73\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\x20\x28\x25\x64\x2c\x25\x64\x29\xa",
                s_ctx->references, c_ctx->references);
 #else
-    BIO_printf(bio_stdout, "solaris threads done\n");
+    BIO_printf(bio_stdout, "\x73\x6f\x6c\x61\x72\x69\x73\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\xa");
 #endif
 }
 
@@ -865,7 +865,7 @@ void thread_setup(void)
     int i;
     char filename[20];
 
-    strcpy(filename, "/tmp/mttest.XXXXXX");
+    strcpy(filename, "\x2f\x74\x6d\x70\x2f\x6d\x74\x74\x65\x73\x74\x2e\x58\x58\x58\x58\x58\x58");
     mktemp(filename);
 
     usconfig(CONF_STHREADIOOFF);
@@ -892,7 +892,7 @@ void thread_cleanup(void)
     for (i = 0; i < CRYPTO_num_locks(); i++) {
         char buf[10];
 
-        sprintf(buf, "%2d:", i);
+        sprintf(buf, "\x25\x32\x64\x3a", i);
         usdumpsema(lock_cs[i], stdout, buf);
         usfreesema(lock_cs[i], arena);
     }
@@ -902,10 +902,10 @@ void thread_cleanup(void)
 void irix_locking_callback(int mode, int type, const char *file, int line)
 {
     if (mode & CRYPTO_LOCK) {
-        BIO_printf(bio_stdout, "lock %d\n", type);
+        BIO_printf(bio_stdout, "\x6c\x6f\x63\x6b\x20\x25\x64\xa", type);
         uspsema(lock_cs[type]);
     } else {
-        BIO_printf(bio_stdout, "unlock %d\n", type);
+        BIO_printf(bio_stdout, "\x75\x6e\x6c\x6f\x63\x6b\x20\x25\x64\xa", type);
         usvsema(lock_cs[type]);
     }
 }
@@ -924,16 +924,16 @@ void do_threads(SSL_CTX *s_ctx, SSL_CTX *c_ctx)
                               PR_SADDR | PR_SFDS, (void *)ssl_ctx);
     }
 
-    BIO_printf(bio_stdout, "reaping\n");
+    BIO_printf(bio_stdout, "\x72\x65\x61\x70\x69\x6e\x67\xa");
     for (i = 0; i < thread_number; i++) {
         wait(NULL);
     }
 
 #if 0 /* We can't currently find out the reference amount */
-    BIO_printf(bio_stdout, "irix threads done (%d,%d)\n",
+    BIO_printf(bio_stdout, "\x69\x72\x69\x78\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\x20\x28\x25\x64\x2c\x25\x64\x29\xa",
                s_ctx->references, c_ctx->references);
 #else
-    BIO_printf(bio_stdout, "irix threads done\n");
+    BIO_printf(bio_stdout, "\x69\x72\x69\x78\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\xa");
 #endif
 }
 
@@ -968,24 +968,24 @@ void thread_cleanup(void)
     int i;
 
     CRYPTO_set_locking_callback(NULL);
-    BIO_printf(bio_err, "cleanup\n");
+    BIO_printf(bio_err, "\x63\x6c\x65\x61\x6e\x75\x70\xa");
     for (i = 0; i < CRYPTO_num_locks(); i++) {
         pthread_mutex_destroy(&(lock_cs[i]));
-        BIO_printf(bio_err, "%8ld:%s\n", lock_count[i], CRYPTO_get_lock_name(i));
+        BIO_printf(bio_err, "\x25\x38\x6c\x64\x3a\x25\x73\xa", lock_count[i], CRYPTO_get_lock_name(i));
     }
     OPENSSL_free(lock_cs);
     OPENSSL_free(lock_count);
 
-    BIO_printf(bio_err, "done cleanup\n");
+    BIO_printf(bio_err, "\x64\x6f\x6e\x65\x20\x63\x6c\x65\x61\x6e\x75\x70\xa");
 }
 
 void pthreads_locking_callback(int mode, int type, const char *file, int line)
 {
 # ifdef undef
-    BIO_printf(bio_err, "thread=%4d mode=%s lock=%s %s:%d\n",
+    BIO_printf(bio_err, "\x74\x68\x72\x65\x61\x64\x3d\x25\x34\x64\x20\x6d\x6f\x64\x65\x3d\x25\x73\x20\x6c\x6f\x63\x6b\x3d\x25\x73\x20\x25\x73\x3a\x25\x64\xa",
                CRYPTO_thread_id(),
-               (mode & CRYPTO_LOCK) ? "l" : "u",
-               (type & CRYPTO_READ) ? "r" : "w", file, line);
+               (mode & CRYPTO_LOCK) ? "\x6c" : "\x75",
+               (type & CRYPTO_READ) ? "\x72" : "\x77", file, line);
 # endif
 /*-
     if (CRYPTO_LOCK_SSL_CERT == type)
@@ -1018,16 +1018,16 @@ void do_threads(SSL_CTX *s_ctx, SSL_CTX *c_ctx)
                        (void *(*)())ndoit, (void *)ssl_ctx);
     }
 
-    BIO_printf(bio_stdout, "reaping\n");
+    BIO_printf(bio_stdout, "\x72\x65\x61\x70\x69\x6e\x67\xa");
     for (i = 0; i < thread_number; i++) {
         pthread_join(thread_ctx[i], NULL);
     }
 
 #if 0 /* We can't currently find out the reference amount */
-    BIO_printf(bio_stdout, "pthreads threads done (%d,%d)\n",
+    BIO_printf(bio_stdout, "\x70\x74\x68\x72\x65\x61\x64\x73\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\x20\x28\x25\x64\x2c\x25\x64\x29\xa",
                s_ctx->references, c_ctx->references);
 #else
-    BIO_printf(bio_stdout, "pthreads threads done\n");
+    BIO_printf(bio_stdout, "\x70\x74\x68\x72\x65\x61\x64\x73\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\xa");
 #endif
 }
 
@@ -1048,10 +1048,10 @@ void thread_setup(void)
     lock_count = OPENSSL_malloc(CRYPTO_num_locks() * sizeof(long));
     for (i = 0; i < CRYPTO_num_locks(); i++) {
         lock_count[i] = 0;
-        lock_cs[i] = MPKMutexAlloc("OpenSSL mutex");
+        lock_cs[i] = MPKMutexAlloc("\x4f\x70\x65\x6e\x53\x53\x4c\x20\x6d\x75\x74\x65\x78");
     }
 
-    ThreadSem = MPKSemaphoreAlloc("OpenSSL mttest semaphore", 0);
+    ThreadSem = MPKSemaphoreAlloc("\x4f\x70\x65\x6e\x53\x53\x4c\x20\x6d\x74\x74\x65\x73\x74\x20\x73\x65\x6d\x61\x70\x68\x6f\x72\x65", 0);
 
     CRYPTO_set_id_callback(netware_thread_id);
     CRYPTO_set_locking_callback(netware_locking_callback);
@@ -1063,18 +1063,18 @@ void thread_cleanup(void)
 
     CRYPTO_set_locking_callback(NULL);
 
-    BIO_printf(bio_stdout, "thread_cleanup\n");
+    BIO_printf(bio_stdout, "\x74\x68\x72\x65\x61\x64\x5f\x63\x6c\x65\x61\x6e\x75\x70\xa");
 
     for (i = 0; i < CRYPTO_num_locks(); i++) {
         MPKMutexFree(lock_cs[i]);
-        BIO_printf(bio_stdout, "%8ld:%s\n", lock_count[i], CRYPTO_get_lock_name(i));
+        BIO_printf(bio_stdout, "\x25\x38\x6c\x64\x3a\x25\x73\xa", lock_count[i], CRYPTO_get_lock_name(i));
     }
     OPENSSL_free(lock_cs);
     OPENSSL_free(lock_count);
 
     MPKSemaphoreFree(ThreadSem);
 
-    BIO_printf(bio_stdout, "done cleanup\n");
+    BIO_printf(bio_stdout, "\x64\x6f\x6e\x65\x20\x63\x6c\x65\x61\x6e\x75\x70\xa");
 }
 
 void netware_locking_callback(int mode, int type, const char *file, int line)
@@ -1099,17 +1099,17 @@ void do_threads(SSL_CTX *s_ctx, SSL_CTX *c_ctx)
         ThreadSwitchWithDelay();
     }
 
-    BIO_printf(bio_stdout, "reaping\n");
+    BIO_printf(bio_stdout, "\x72\x65\x61\x70\x69\x6e\x67\xa");
 
     /* loop until all threads have signaled the semaphore */
     for (i = 0; i < thread_number; i++) {
         MPKSemaphoreWait(ThreadSem);
     }
 #if 0 /* We can't currently find out the reference amount */
-    BIO_printf(bio_stdout, "netware threads done (%d,%d)\n",
+    BIO_printf(bio_stdout, "\x6e\x65\x74\x77\x61\x72\x65\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\x20\x28\x25\x64\x2c\x25\x64\x29\xa",
                s_ctx->references, c_ctx->references);
 #else
-    BIO_printf(bio_stdout, "netware threads done\n");
+    BIO_printf(bio_stdout, "\x6e\x65\x74\x77\x61\x72\x65\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\xa");
 #endif
 }
 
@@ -1147,24 +1147,24 @@ void thread_cleanup(void)
     int i;
 
     CRYPTO_set_locking_callback(NULL);
-    BIO_printf(bio_err, "cleanup\n");
+    BIO_printf(bio_err, "\x63\x6c\x65\x61\x6e\x75\x70\xa");
     for (i = 0; i < CRYPTO_num_locks(); i++) {
         delete lock_cs[i];
-        BIO_printf(bio_err, "%8ld:%s\n", lock_count[i], CRYPTO_get_lock_name(i));
+        BIO_printf(bio_err, "\x25\x38\x6c\x64\x3a\x25\x73\xa", lock_count[i], CRYPTO_get_lock_name(i));
     }
     OPENSSL_free(lock_cs);
     OPENSSL_free(lock_count);
 
-    BIO_printf(bio_err, "done cleanup\n");
+    BIO_printf(bio_err, "\x64\x6f\x6e\x65\x20\x63\x6c\x65\x61\x6e\x75\x70\xa");
 }
 
 void beos_locking_callback(int mode, int type, const char *file, int line)
 {
 # if 0
-    BIO_printf(bio_err, "thread=%4d mode=%s lock=%s %s:%d\n",
+    BIO_printf(bio_err, "\x74\x68\x72\x65\x61\x64\x3d\x25\x34\x64\x20\x6d\x6f\x64\x65\x3d\x25\x73\x20\x6c\x6f\x63\x6b\x3d\x25\x73\x20\x25\x73\x3a\x25\x64\xa",
                CRYPTO_thread_id(),
-               (mode & CRYPTO_LOCK) ? "l" : "u",
-               (type & CRYPTO_READ) ? "r" : "w", file, line);
+               (mode & CRYPTO_LOCK) ? "\x6c" : "\x75",
+               (type & CRYPTO_READ) ? "\x72" : "\x77", file, line);
 # endif
     if (mode & CRYPTO_LOCK) {
         lock_cs[type]->Lock();
@@ -1190,13 +1190,13 @@ void do_threads(SSL_CTX *s_ctx, SSL_CTX *c_ctx)
         resume_thread(thread_ctx[i]);
     }
 
-    BIO_printf(bio_stdout, "waiting...\n");
+    BIO_printf(bio_stdout, "\x77\x61\x69\x74\x69\x6e\x67\x2e\x2e\x2e\xa");
     for (i = 0; i < thread_number; i++) {
         status_t result;
         wait_for_thread(thread_ctx[i], &result);
     }
 
-    BIO_printf(bio_stdout, "beos threads done (%d,%d)\n",
+    BIO_printf(bio_stdout, "\x62\x65\x6f\x73\x20\x74\x68\x72\x65\x61\x64\x73\x20\x64\x6f\x6e\x65\x20\x28\x25\x64\x2c\x25\x64\x29\xa",
                s_ctx->references, c_ctx->references);
 }
 

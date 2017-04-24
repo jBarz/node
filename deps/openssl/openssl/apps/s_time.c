@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -91,11 +91,11 @@
 #undef ioctl
 #define ioctl ioctlsocket
 
-#define SSL_CONNECT_NAME        "localhost:4433"
+#define SSL_CONNECT_NAME        "\x6c\x6f\x63\x61\x6c\x68\x6f\x73\x74\x3a\x34\x34\x33\x33"
 
 /* no default cert. */
 /*
- * #define TEST_CERT "client.pem"
+ * #define TEST_CERT "\x63\x6c\x69\x65\x6e\x74\x2e\x70\x65\x6d"
  */
 
 #undef BUFSIZZ
@@ -184,18 +184,18 @@ static void s_time_usage(void)
 -CAfile arg   - PEM format file of CA's\n\
 -cipher       - preferred cipher to use, play with 'openssl ciphers'\n\n";
 
-    printf("usage: s_time <args>\n\n");
+    printf("\x75\x73\x61\x67\x65\x3a\x20\x73\x5f\x74\x69\x6d\x65\x20\x3c\x61\x72\x67\x73\x3e\xa\xa");
 
-    printf("-connect host:port - host:port to connect to (default is %s)\n",
+    printf("\x2d\x63\x6f\x6e\x6e\x65\x63\x74\x20\x68\x6f\x73\x74\x3a\x70\x6f\x72\x74\x20\x2d\x20\x68\x6f\x73\x74\x3a\x70\x6f\x72\x74\x20\x74\x6f\x20\x63\x6f\x6e\x6e\x65\x63\x74\x20\x74\x6f\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x69\x73\x20\x25\x73\x29\xa",
            SSL_CONNECT_NAME);
 #ifdef FIONBIO
-    printf("-nbio         - Run with non-blocking IO\n");
-    printf("-ssl2         - Just use SSLv2\n");
-    printf("-ssl3         - Just use SSLv3\n");
-    printf("-bugs         - Turn on SSL bug compatibility\n");
-    printf("-new          - Just time new connections\n");
-    printf("-reuse        - Just time connection reuse\n");
-    printf("-www page     - Retrieve 'page' from the site\n");
+    printf("\x2d\x6e\x62\x69\x6f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x52\x75\x6e\x20\x77\x69\x74\x68\x20\x6e\x6f\x6e\x2d\x62\x6c\x6f\x63\x6b\x69\x6e\x67\x20\x49\x4f\xa");
+    printf("\x2d\x73\x73\x6c\x32\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x4a\x75\x73\x74\x20\x75\x73\x65\x20\x53\x53\x4c\x76\x32\xa");
+    printf("\x2d\x73\x73\x6c\x33\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x4a\x75\x73\x74\x20\x75\x73\x65\x20\x53\x53\x4c\x76\x33\xa");
+    printf("\x2d\x62\x75\x67\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x54\x75\x72\x6e\x20\x6f\x6e\x20\x53\x53\x4c\x20\x62\x75\x67\x20\x63\x6f\x6d\x70\x61\x74\x69\x62\x69\x6c\x69\x74\x79\xa");
+    printf("\x2d\x6e\x65\x77\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x4a\x75\x73\x74\x20\x74\x69\x6d\x65\x20\x6e\x65\x77\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\xa");
+    printf("\x2d\x72\x65\x75\x73\x65\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x4a\x75\x73\x74\x20\x74\x69\x6d\x65\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x72\x65\x75\x73\x65\xa");
+    printf("\x2d\x77\x77\x77\x20\x70\x61\x67\x65\x20\x20\x20\x20\x20\x2d\x20\x52\x65\x74\x72\x69\x65\x76\x65\x20\x27\x70\x61\x67\x65\x27\x20\x66\x72\x6f\x6d\x20\x74\x68\x65\x20\x73\x69\x74\x65\xa");
 #endif
     printf(umsg, SECONDS);
 }
@@ -216,98 +216,98 @@ static int parseArgs(int argc, char **argv)
     argv++;
 
     while (argc >= 1) {
-        if (strcmp(*argv, "-connect") == 0) {
+        if (strcmp(*argv, "\x2d\x63\x6f\x6e\x6e\x65\x63\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             host = *(++argv);
         }
 #if 0
-        else if (strcmp(*argv, "-host") == 0) {
+        else if (strcmp(*argv, "\x2d\x68\x6f\x73\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             host = *(++argv);
-        } else if (strcmp(*argv, "-port") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x6f\x72\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             port = *(++argv);
         }
 #endif
-        else if (strcmp(*argv, "-reuse") == 0)
+        else if (strcmp(*argv, "\x2d\x72\x65\x75\x73\x65") == 0)
             perform = 2;
-        else if (strcmp(*argv, "-new") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x65\x77") == 0)
             perform = 1;
-        else if (strcmp(*argv, "-verify") == 0) {
+        else if (strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79") == 0) {
 
             tm_verify = SSL_VERIFY_PEER | SSL_VERIFY_CLIENT_ONCE;
             if (--argc < 1)
                 goto bad;
             verify_depth = atoi(*(++argv));
-            BIO_printf(bio_err, "verify depth is %d\n", verify_depth);
+            BIO_printf(bio_err, "\x76\x65\x72\x69\x66\x79\x20\x64\x65\x70\x74\x68\x20\x69\x73\x20\x25\x64\xa", verify_depth);
 
-        } else if (strcmp(*argv, "-cert") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x65\x72\x74") == 0) {
 
             if (--argc < 1)
                 goto bad;
             t_cert_file = *(++argv);
 
-        } else if (strcmp(*argv, "-key") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79") == 0) {
 
             if (--argc < 1)
                 goto bad;
             t_key_file = *(++argv);
 
-        } else if (strcmp(*argv, "-CApath") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x70\x61\x74\x68") == 0) {
 
             if (--argc < 1)
                 goto bad;
             CApath = *(++argv);
 
-        } else if (strcmp(*argv, "-CAfile") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x66\x69\x6c\x65") == 0) {
 
             if (--argc < 1)
                 goto bad;
             CAfile = *(++argv);
 
-        } else if (strcmp(*argv, "-cipher") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x69\x70\x68\x65\x72") == 0) {
 
             if (--argc < 1)
                 goto bad;
             tm_cipher = *(++argv);
         }
 #ifdef FIONBIO
-        else if (strcmp(*argv, "-nbio") == 0) {
+        else if (strcmp(*argv, "\x2d\x6e\x62\x69\x6f") == 0) {
             t_nbio = 1;
         }
 #endif
-        else if (strcmp(*argv, "-www") == 0) {
+        else if (strcmp(*argv, "\x2d\x77\x77\x77") == 0) {
             if (--argc < 1)
                 goto bad;
             s_www_path = *(++argv);
             if (strlen(s_www_path) > MYBUFSIZ - 100) {
-                BIO_printf(bio_err, "-www option too long\n");
+                BIO_printf(bio_err, "\x2d\x77\x77\x77\x20\x6f\x70\x74\x69\x6f\x6e\x20\x74\x6f\x6f\x20\x6c\x6f\x6e\x67\xa");
                 badop = 1;
             }
-        } else if (strcmp(*argv, "-bugs") == 0)
+        } else if (strcmp(*argv, "\x2d\x62\x75\x67\x73") == 0)
             st_bugs = 1;
 #ifndef OPENSSL_NO_SSL2
-        else if (strcmp(*argv, "-ssl2") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x73\x6c\x32") == 0)
             s_time_meth = SSLv2_client_method();
 #endif
 #ifndef OPENSSL_NO_SSL3
-        else if (strcmp(*argv, "-ssl3") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x73\x6c\x33") == 0)
             s_time_meth = SSLv3_client_method();
 #endif
-        else if (strcmp(*argv, "-time") == 0) {
+        else if (strcmp(*argv, "\x2d\x74\x69\x6d\x65") == 0) {
 
             if (--argc < 1)
                 goto bad;
             maxTime = atoi(*(++argv));
             if (maxTime <= 0) {
-                BIO_printf(bio_err, "time must be > 0\n");
+                BIO_printf(bio_err, "\x74\x69\x6d\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x3e\x20\x30\xa");
                 badop = 1;
             }
         } else {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badop = 1;
             break;
         }
@@ -391,15 +391,15 @@ int MAIN(int argc, char **argv)
     }
 
     if (tm_cipher == NULL)
-        tm_cipher = getenv("SSL_CIPHER");
+        tm_cipher = getenv("\x53\x53\x4c\x5f\x43\x49\x50\x48\x45\x52");
 
     if (tm_cipher == NULL) {
-        fprintf(stderr, "No CIPHER specified\n");
+        fprintf(stderr, "\x4e\x6f\x20\x43\x49\x50\x48\x45\x52\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
     }
 
     if (!(perform & 1))
         goto next;
-    printf("Collecting connection statistics for %d seconds\n", maxTime);
+    printf("\x43\x6f\x6c\x6c\x65\x63\x74\x69\x6e\x67\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x73\x74\x61\x74\x69\x73\x74\x69\x63\x73\x20\x66\x6f\x72\x20\x25\x64\x20\x73\x65\x63\x6f\x6e\x64\x73\xa", maxTime);
 
     /* Loop and time how long it takes to make connections */
 
@@ -422,7 +422,7 @@ int MAIN(int argc, char **argv)
             goto end;
 
         if (s_www_path != NULL) {
-            BIO_snprintf(buf, sizeof buf, "GET %s HTTP/1.0\r\n\r\n",
+            BIO_snprintf(buf, sizeof buf, "\x47\x45\x54\x20\x25\x73\x20\x48\x54\x54\x50\x2f\x31\x2e\x30\xd\xa\xd\xa",
                          s_www_path);
             SSL_write(scon, buf, strlen(buf));
             while ((i = SSL_read(scon, buf, sizeof(buf))) > 0)
@@ -437,17 +437,17 @@ int MAIN(int argc, char **argv)
 
         nConn += 1;
         if (SSL_session_reused(scon))
-            ver = 'r';
+            ver = '\x72';
         else {
             ver = SSL_version(scon);
             if (ver == TLS1_VERSION)
-                ver = 't';
+                ver = '\x74';
             else if (ver == SSL3_VERSION)
-                ver = '3';
+                ver = '\x33';
             else if (ver == SSL2_VERSION)
-                ver = '2';
+                ver = '\x32';
             else
-                ver = '*';
+                ver = '\x2a';
         }
         fputc(ver, stdout);
         fflush(stdout);
@@ -459,10 +459,10 @@ int MAIN(int argc, char **argv)
 
     i = (int)((long)time(NULL) - finishtime + maxTime);
     printf
-        ("\n\n%d connections in %.2fs; %.2f connections/user sec, bytes read %ld\n",
+        ("\xa\xa\x25\x64\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\x3b\x20\x25\x2e\x32\x66\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x2f\x75\x73\x65\x72\x20\x73\x65\x63\x2c\x20\x62\x79\x74\x65\x73\x20\x72\x65\x61\x64\x20\x25\x6c\x64\xa",
          nConn, totalTime, ((double)nConn / totalTime), bytes_read);
     printf
-        ("%d connections in %ld real seconds, %ld bytes read per connection\n",
+        ("\x25\x64\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x20\x69\x6e\x20\x25\x6c\x64\x20\x72\x65\x61\x6c\x20\x73\x65\x63\x6f\x6e\x64\x73\x2c\x20\x25\x6c\x64\x20\x62\x79\x74\x65\x73\x20\x72\x65\x61\x64\x20\x70\x65\x72\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\xa",
          nConn, (long)time(NULL) - finishtime + maxTime, bytes_read / nConn);
 
     /*
@@ -472,16 +472,16 @@ int MAIN(int argc, char **argv)
  next:
     if (!(perform & 2))
         goto end;
-    printf("\n\nNow timing with session id reuse.\n");
+    printf("\xa\xa\x4e\x6f\x77\x20\x74\x69\x6d\x69\x6e\x67\x20\x77\x69\x74\x68\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x69\x64\x20\x72\x65\x75\x73\x65\x2e\xa");
 
     /* Get an SSL object so we can reuse the session id */
     if ((scon = doConnection(NULL)) == NULL) {
-        fprintf(stderr, "Unable to get connection\n");
+        fprintf(stderr, "\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x67\x65\x74\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\xa");
         goto end;
     }
 
     if (s_www_path != NULL) {
-        BIO_snprintf(buf, sizeof buf, "GET %s HTTP/1.0\r\n\r\n", s_www_path);
+        BIO_snprintf(buf, sizeof buf, "\x47\x45\x54\x20\x25\x73\x20\x48\x54\x54\x50\x2f\x31\x2e\x30\xd\xa\xd\xa", s_www_path);
         SSL_write(scon, buf, strlen(buf));
         while (SSL_read(scon, buf, sizeof(buf)) > 0) ;
     }
@@ -497,7 +497,7 @@ int MAIN(int argc, char **argv)
 
     finishtime = (long)time(NULL) + maxTime;
 
-    printf("starting\n");
+    printf("\x73\x74\x61\x72\x74\x69\x6e\x67\xa");
     bytes_read = 0;
     tm_Time_F(START);
 
@@ -517,7 +517,7 @@ int MAIN(int argc, char **argv)
             goto end;
 
         if (s_www_path) {
-            BIO_snprintf(buf, sizeof buf, "GET %s HTTP/1.0\r\n\r\n",
+            BIO_snprintf(buf, sizeof buf, "\x47\x45\x54\x20\x25\x73\x20\x48\x54\x54\x50\x2f\x31\x2e\x30\xd\xa\xd\xa",
                          s_www_path);
             SSL_write(scon, buf, strlen(buf));
             while ((i = SSL_read(scon, buf, sizeof(buf))) > 0)
@@ -532,17 +532,17 @@ int MAIN(int argc, char **argv)
 
         nConn += 1;
         if (SSL_session_reused(scon))
-            ver = 'r';
+            ver = '\x72';
         else {
             ver = SSL_version(scon);
             if (ver == TLS1_VERSION)
-                ver = 't';
+                ver = '\x74';
             else if (ver == SSL3_VERSION)
-                ver = '3';
+                ver = '\x33';
             else if (ver == SSL2_VERSION)
-                ver = '2';
+                ver = '\x32';
             else
-                ver = '*';
+                ver = '\x2a';
         }
         fputc(ver, stdout);
         fflush(stdout);
@@ -550,10 +550,10 @@ int MAIN(int argc, char **argv)
     totalTime += tm_Time_F(STOP); /* Add the time for this iteration */
 
     printf
-        ("\n\n%d connections in %.2fs; %.2f connections/user sec, bytes read %ld\n",
+        ("\xa\xa\x25\x64\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x73\x3b\x20\x25\x2e\x32\x66\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x2f\x75\x73\x65\x72\x20\x73\x65\x63\x2c\x20\x62\x79\x74\x65\x73\x20\x72\x65\x61\x64\x20\x25\x6c\x64\xa",
          nConn, totalTime, ((double)nConn / totalTime), bytes_read);
     printf
-        ("%d connections in %ld real seconds, %ld bytes read per connection\n",
+        ("\x25\x64\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x20\x69\x6e\x20\x25\x6c\x64\x20\x72\x65\x61\x6c\x20\x73\x65\x63\x6f\x6e\x64\x73\x2c\x20\x25\x6c\x64\x20\x62\x79\x74\x65\x73\x20\x72\x65\x61\x64\x20\x70\x65\x72\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\xa",
          nConn, (long)time(NULL) - finishtime + maxTime,
          bytes_read / (nConn?nConn:1));
 
@@ -608,7 +608,7 @@ static SSL *doConnection(SSL *scon)
     for (;;) {
         i = SSL_connect(serverCon);
         if (BIO_sock_should_retry(i)) {
-            BIO_printf(bio_err, "DELAY\n");
+            BIO_printf(bio_err, "\x44\x45\x4c\x41\x59\xa");
 
             i = SSL_get_fd(serverCon);
             width = i + 1;
@@ -626,9 +626,9 @@ static SSL *doConnection(SSL *scon)
         break;
     }
     if (i <= 0) {
-        BIO_printf(bio_err, "ERROR\n");
+        BIO_printf(bio_err, "\x45\x52\x52\x4f\x52\xa");
         if (verify_error != X509_V_OK)
-            BIO_printf(bio_err, "verify error:%s\n",
+            BIO_printf(bio_err, "\x76\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72\x3a\x25\x73\xa",
                        X509_verify_cert_error_string(verify_error));
         else
             ERR_print_errors(bio_err);

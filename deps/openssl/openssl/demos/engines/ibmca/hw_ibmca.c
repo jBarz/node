@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -73,7 +73,7 @@
 #   include "vendor_defns/ica_openssl_api.h"
 #  endif
 
-#  define IBMCA_LIB_NAME "ibmca engine"
+#  define IBMCA_LIB_NAME "\x69\x62\x6d\x63\x61\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "hw_ibmca_err.c"
 
 static int ibmca_destroy(ENGINE *e);
@@ -81,11 +81,11 @@ static int ibmca_init(ENGINE *e);
 static int ibmca_finish(ENGINE *e);
 static int ibmca_ctrl(ENGINE *e, int cmd, long i, void *p, void (*f) ());
 
-static const char *IBMCA_F1 = "icaOpenAdapter";
-static const char *IBMCA_F2 = "icaCloseAdapter";
-static const char *IBMCA_F3 = "icaRsaModExpo";
-static const char *IBMCA_F4 = "icaRandomNumberGenerate";
-static const char *IBMCA_F5 = "icaRsaCrt";
+static const char *IBMCA_F1 = "\x69\x63\x61\x4f\x70\x65\x6e\x41\x64\x61\x70\x74\x65\x72";
+static const char *IBMCA_F2 = "\x69\x63\x61\x43\x6c\x6f\x73\x65\x41\x64\x61\x70\x74\x65\x72";
+static const char *IBMCA_F3 = "\x69\x63\x61\x52\x73\x61\x4d\x6f\x64\x45\x78\x70\x6f";
+static const char *IBMCA_F4 = "\x69\x63\x61\x52\x61\x6e\x64\x6f\x6d\x4e\x75\x6d\x62\x65\x72\x47\x65\x6e\x65\x72\x61\x74\x65";
+static const char *IBMCA_F5 = "\x69\x63\x61\x52\x73\x61\x43\x72\x74";
 
 ICA_ADAPTER_HANDLE handle = 0;
 
@@ -136,8 +136,8 @@ static int ibmca_rand_status(void);
 #  define IBMCA_CMD_SO_PATH               ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN ibmca_cmd_defns[] = {
     {IBMCA_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'atasi' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x61\x74\x61\x73\x69\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
@@ -145,7 +145,7 @@ static const ENGINE_CMD_DEFN ibmca_cmd_defns[] = {
 #  ifndef OPENSSL_NO_RSA
 /* Our internal RSA_METHOD that we provide pointers to */
 static RSA_METHOD ibmca_rsa = {
-    "Ibmca RSA method",
+    "\x49\x62\x6d\x63\x61\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     NULL,
@@ -164,7 +164,7 @@ static RSA_METHOD ibmca_rsa = {
 #  ifndef OPENSSL_NO_DSA
 /* Our internal DSA_METHOD that we provide pointers to */
 static DSA_METHOD ibmca_dsa = {
-    "Ibmca DSA method",
+    "\x49\x62\x6d\x63\x61\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* dsa_do_sign */
     NULL,                       /* dsa_sign_setup */
     NULL,                       /* dsa_do_verify */
@@ -180,7 +180,7 @@ static DSA_METHOD ibmca_dsa = {
 #  ifndef OPENSSL_NO_DH
 /* Our internal DH_METHOD that we provide pointers to */
 static DH_METHOD ibmca_dh = {
-    "Ibmca DH method",
+    "\x49\x62\x6d\x63\x61\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     ibmca_mod_exp_dh,
@@ -202,8 +202,8 @@ static RAND_METHOD ibmca_rand = {
 };
 
 /* Constants used when creating the ENGINE */
-static const char *engine_ibmca_id = "ibmca";
-static const char *engine_ibmca_name = "Ibmca hardware engine support";
+static const char *engine_ibmca_id = "\x69\x62\x6d\x63\x61";
+static const char *engine_ibmca_name = "\x49\x62\x6d\x63\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /*
  * This internal function is used by ENGINE_ibmca() and possibly by the
@@ -565,7 +565,7 @@ static int ibmca_mod_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
     if ((rc = p_icaRsaModExpo(handle, inLen, (unsigned char *)argument->d,
                               publKey, &outLen, (unsigned char *)result->d))
         != 0) {
-        printf("rc = %d\n", rc);
+        printf("\x72\x63\x20\x3d\x20\x25\x64\xa", rc);
         IBMCAerr(IBMCA_F_IBMCA_MOD_EXP, IBMCA_R_REQUEST_FAILED);
         goto err;
     }
@@ -778,7 +778,7 @@ static int ibmca_mod_exp_crt(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
     if ((rc = p_icaRsaCrt(handle, inLen, (unsigned char *)argument->d,
                           privKey, &outLen, (unsigned char *)result->d)) != 0)
     {
-        printf("rc = %d\n", rc);
+        printf("\x72\x63\x20\x3d\x20\x25\x64\xa", rc);
         IBMCAerr(IBMCA_F_IBMCA_MOD_EXP_CRT, IBMCA_R_REQUEST_FAILED);
         goto err;
     }

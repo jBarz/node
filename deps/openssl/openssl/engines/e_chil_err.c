@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,36 +70,36 @@
 # define ERR_REASON(reason) ERR_PACK(0,0,reason)
 
 static ERR_STRING_DATA HWCRHK_str_functs[] = {
-    {ERR_FUNC(HWCRHK_F_HWCRHK_CTRL), "HWCRHK_CTRL"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_FINISH), "HWCRHK_FINISH"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_GET_PASS), "HWCRHK_GET_PASS"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_INIT), "HWCRHK_INIT"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_INSERT_CARD), "HWCRHK_INSERT_CARD"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_LOAD_PRIVKEY), "HWCRHK_LOAD_PRIVKEY"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_LOAD_PUBKEY), "HWCRHK_LOAD_PUBKEY"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_MOD_EXP), "HWCRHK_MOD_EXP"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_RAND_BYTES), "HWCRHK_RAND_BYTES"},
-    {ERR_FUNC(HWCRHK_F_HWCRHK_RSA_MOD_EXP), "HWCRHK_RSA_MOD_EXP"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_CTRL), "\x48\x57\x43\x52\x48\x4b\x5f\x43\x54\x52\x4c"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_FINISH), "\x48\x57\x43\x52\x48\x4b\x5f\x46\x49\x4e\x49\x53\x48"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_GET_PASS), "\x48\x57\x43\x52\x48\x4b\x5f\x47\x45\x54\x5f\x50\x41\x53\x53"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_INIT), "\x48\x57\x43\x52\x48\x4b\x5f\x49\x4e\x49\x54"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_INSERT_CARD), "\x48\x57\x43\x52\x48\x4b\x5f\x49\x4e\x53\x45\x52\x54\x5f\x43\x41\x52\x44"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_LOAD_PRIVKEY), "\x48\x57\x43\x52\x48\x4b\x5f\x4c\x4f\x41\x44\x5f\x50\x52\x49\x56\x4b\x45\x59"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_LOAD_PUBKEY), "\x48\x57\x43\x52\x48\x4b\x5f\x4c\x4f\x41\x44\x5f\x50\x55\x42\x4b\x45\x59"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_MOD_EXP), "\x48\x57\x43\x52\x48\x4b\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_RAND_BYTES), "\x48\x57\x43\x52\x48\x4b\x5f\x52\x41\x4e\x44\x5f\x42\x59\x54\x45\x53"},
+    {ERR_FUNC(HWCRHK_F_HWCRHK_RSA_MOD_EXP), "\x48\x57\x43\x52\x48\x4b\x5f\x52\x53\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA HWCRHK_str_reasons[] = {
-    {ERR_REASON(HWCRHK_R_ALREADY_LOADED), "already loaded"},
-    {ERR_REASON(HWCRHK_R_BIO_WAS_FREED), "bio was freed"},
-    {ERR_REASON(HWCRHK_R_CHIL_ERROR), "chil error"},
+    {ERR_REASON(HWCRHK_R_ALREADY_LOADED), "\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x61\x64\x65\x64"},
+    {ERR_REASON(HWCRHK_R_BIO_WAS_FREED), "\x62\x69\x6f\x20\x77\x61\x73\x20\x66\x72\x65\x65\x64"},
+    {ERR_REASON(HWCRHK_R_CHIL_ERROR), "\x63\x68\x69\x6c\x20\x65\x72\x72\x6f\x72"},
     {ERR_REASON(HWCRHK_R_CTRL_COMMAND_NOT_IMPLEMENTED),
-     "ctrl command not implemented"},
-    {ERR_REASON(HWCRHK_R_DSO_FAILURE), "dso failure"},
-    {ERR_REASON(HWCRHK_R_MISSING_KEY_COMPONENTS), "missing key components"},
-    {ERR_REASON(HWCRHK_R_NOT_INITIALISED), "not initialised"},
-    {ERR_REASON(HWCRHK_R_NOT_LOADED), "not loaded"},
-    {ERR_REASON(HWCRHK_R_NO_CALLBACK), "no callback"},
-    {ERR_REASON(HWCRHK_R_NO_KEY), "no key"},
+     "\x63\x74\x72\x6c\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x6e\x6f\x74\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64"},
+    {ERR_REASON(HWCRHK_R_DSO_FAILURE), "\x64\x73\x6f\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {ERR_REASON(HWCRHK_R_MISSING_KEY_COMPONENTS), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x6b\x65\x79\x20\x63\x6f\x6d\x70\x6f\x6e\x65\x6e\x74\x73"},
+    {ERR_REASON(HWCRHK_R_NOT_INITIALISED), "\x6e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x65\x64"},
+    {ERR_REASON(HWCRHK_R_NOT_LOADED), "\x6e\x6f\x74\x20\x6c\x6f\x61\x64\x65\x64"},
+    {ERR_REASON(HWCRHK_R_NO_CALLBACK), "\x6e\x6f\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b"},
+    {ERR_REASON(HWCRHK_R_NO_KEY), "\x6e\x6f\x20\x6b\x65\x79"},
     {ERR_REASON(HWCRHK_R_PRIVATE_KEY_ALGORITHMS_DISABLED),
-     "private key algorithms disabled"},
-    {ERR_REASON(HWCRHK_R_REQUEST_FAILED), "request failed"},
-    {ERR_REASON(HWCRHK_R_REQUEST_FALLBACK), "request fallback"},
-    {ERR_REASON(HWCRHK_R_UNIT_FAILURE), "unit failure"},
+     "\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x73\x20\x64\x69\x73\x61\x62\x6c\x65\x64"},
+    {ERR_REASON(HWCRHK_R_REQUEST_FAILED), "\x72\x65\x71\x75\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(HWCRHK_R_REQUEST_FALLBACK), "\x72\x65\x71\x75\x65\x73\x74\x20\x66\x61\x6c\x6c\x62\x61\x63\x6b"},
+    {ERR_REASON(HWCRHK_R_UNIT_FAILURE), "\x75\x6e\x69\x74\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {0, NULL}
 };
 

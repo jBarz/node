@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -58,12 +58,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -75,7 +75,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -91,371 +91,371 @@ const char *SSL_state_string_long(const SSL *s)
 
     switch (s->state) {
     case SSL_ST_BEFORE:
-        str = "before SSL initialization";
+        str = "\x62\x65\x66\x6f\x72\x65\x20\x53\x53\x4c\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e";
         break;
     case SSL_ST_ACCEPT:
-        str = "before accept initialization";
+        str = "\x62\x65\x66\x6f\x72\x65\x20\x61\x63\x63\x65\x70\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e";
         break;
     case SSL_ST_CONNECT:
-        str = "before connect initialization";
+        str = "\x62\x65\x66\x6f\x72\x65\x20\x63\x6f\x6e\x6e\x65\x63\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e";
         break;
     case SSL_ST_OK:
-        str = "SSL negotiation finished successfully";
+        str = "\x53\x53\x4c\x20\x6e\x65\x67\x6f\x74\x69\x61\x74\x69\x6f\x6e\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x73\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79";
         break;
     case SSL_ST_RENEGOTIATE:
-        str = "SSL renegotiate ciphers";
+        str = "\x53\x53\x4c\x20\x72\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x65\x20\x63\x69\x70\x68\x65\x72\x73";
         break;
     case SSL_ST_BEFORE | SSL_ST_CONNECT:
-        str = "before/connect initialization";
+        str = "\x62\x65\x66\x6f\x72\x65\x2f\x63\x6f\x6e\x6e\x65\x63\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e";
         break;
     case SSL_ST_OK | SSL_ST_CONNECT:
-        str = "ok/connect SSL initialization";
+        str = "\x6f\x6b\x2f\x63\x6f\x6e\x6e\x65\x63\x74\x20\x53\x53\x4c\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e";
         break;
     case SSL_ST_BEFORE | SSL_ST_ACCEPT:
-        str = "before/accept initialization";
+        str = "\x62\x65\x66\x6f\x72\x65\x2f\x61\x63\x63\x65\x70\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e";
         break;
     case SSL_ST_OK | SSL_ST_ACCEPT:
-        str = "ok/accept SSL initialization";
+        str = "\x6f\x6b\x2f\x61\x63\x63\x65\x70\x74\x20\x53\x53\x4c\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x61\x74\x69\x6f\x6e";
         break;
     case SSL_ST_ERR:
-        str = "error";
+        str = "\x65\x72\x72\x6f\x72";
         break;
 #ifndef OPENSSL_NO_SSL2
     case SSL2_ST_CLIENT_START_ENCRYPTION:
-        str = "SSLv2 client start encryption";
+        str = "\x53\x53\x4c\x76\x32\x20\x63\x6c\x69\x65\x6e\x74\x20\x73\x74\x61\x72\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e";
         break;
     case SSL2_ST_SERVER_START_ENCRYPTION:
-        str = "SSLv2 server start encryption";
+        str = "\x53\x53\x4c\x76\x32\x20\x73\x65\x72\x76\x65\x72\x20\x73\x74\x61\x72\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e";
         break;
     case SSL2_ST_SEND_CLIENT_HELLO_A:
-        str = "SSLv2 write client hello A";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL2_ST_SEND_CLIENT_HELLO_B:
-        str = "SSLv2 write client hello B";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL2_ST_GET_SERVER_HELLO_A:
-        str = "SSLv2 read server hello A";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL2_ST_GET_SERVER_HELLO_B:
-        str = "SSLv2 read server hello B";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL2_ST_SEND_CLIENT_MASTER_KEY_A:
-        str = "SSLv2 write client master key A";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x6d\x61\x73\x74\x65\x72\x20\x6b\x65\x79\x20\x41";
         break;
     case SSL2_ST_SEND_CLIENT_MASTER_KEY_B:
-        str = "SSLv2 write client master key B";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x6d\x61\x73\x74\x65\x72\x20\x6b\x65\x79\x20\x42";
         break;
     case SSL2_ST_SEND_CLIENT_FINISHED_A:
-        str = "SSLv2 write client finished A";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x41";
         break;
     case SSL2_ST_SEND_CLIENT_FINISHED_B:
-        str = "SSLv2 write client finished B";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x42";
         break;
     case SSL2_ST_SEND_CLIENT_CERTIFICATE_A:
-        str = "SSLv2 write client certificate A";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x41";
         break;
     case SSL2_ST_SEND_CLIENT_CERTIFICATE_B:
-        str = "SSLv2 write client certificate B";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x42";
         break;
     case SSL2_ST_SEND_CLIENT_CERTIFICATE_C:
-        str = "SSLv2 write client certificate C";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x43";
         break;
     case SSL2_ST_SEND_CLIENT_CERTIFICATE_D:
-        str = "SSLv2 write client certificate D";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x44";
         break;
     case SSL2_ST_GET_SERVER_VERIFY_A:
-        str = "SSLv2 read server verify A";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x76\x65\x72\x69\x66\x79\x20\x41";
         break;
     case SSL2_ST_GET_SERVER_VERIFY_B:
-        str = "SSLv2 read server verify B";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x76\x65\x72\x69\x66\x79\x20\x42";
         break;
     case SSL2_ST_GET_SERVER_FINISHED_A:
-        str = "SSLv2 read server finished A";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x41";
         break;
     case SSL2_ST_GET_SERVER_FINISHED_B:
-        str = "SSLv2 read server finished B";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x42";
         break;
     case SSL2_ST_GET_CLIENT_HELLO_A:
-        str = "SSLv2 read client hello A";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL2_ST_GET_CLIENT_HELLO_B:
-        str = "SSLv2 read client hello B";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL2_ST_GET_CLIENT_HELLO_C:
-        str = "SSLv2 read client hello C";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x43";
         break;
     case SSL2_ST_SEND_SERVER_HELLO_A:
-        str = "SSLv2 write server hello A";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL2_ST_SEND_SERVER_HELLO_B:
-        str = "SSLv2 write server hello B";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL2_ST_GET_CLIENT_MASTER_KEY_A:
-        str = "SSLv2 read client master key A";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x6d\x61\x73\x74\x65\x72\x20\x6b\x65\x79\x20\x41";
         break;
     case SSL2_ST_GET_CLIENT_MASTER_KEY_B:
-        str = "SSLv2 read client master key B";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x6d\x61\x73\x74\x65\x72\x20\x6b\x65\x79\x20\x42";
         break;
     case SSL2_ST_SEND_SERVER_VERIFY_A:
-        str = "SSLv2 write server verify A";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x76\x65\x72\x69\x66\x79\x20\x41";
         break;
     case SSL2_ST_SEND_SERVER_VERIFY_B:
-        str = "SSLv2 write server verify B";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x76\x65\x72\x69\x66\x79\x20\x42";
         break;
     case SSL2_ST_SEND_SERVER_VERIFY_C:
-        str = "SSLv2 write server verify C";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x76\x65\x72\x69\x66\x79\x20\x43";
         break;
     case SSL2_ST_GET_CLIENT_FINISHED_A:
-        str = "SSLv2 read client finished A";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x41";
         break;
     case SSL2_ST_GET_CLIENT_FINISHED_B:
-        str = "SSLv2 read client finished B";
+        str = "\x53\x53\x4c\x76\x32\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x42";
         break;
     case SSL2_ST_SEND_SERVER_FINISHED_A:
-        str = "SSLv2 write server finished A";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x41";
         break;
     case SSL2_ST_SEND_SERVER_FINISHED_B:
-        str = "SSLv2 write server finished B";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x42";
         break;
     case SSL2_ST_SEND_REQUEST_CERTIFICATE_A:
-        str = "SSLv2 write request certificate A";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x41";
         break;
     case SSL2_ST_SEND_REQUEST_CERTIFICATE_B:
-        str = "SSLv2 write request certificate B";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x42";
         break;
     case SSL2_ST_SEND_REQUEST_CERTIFICATE_C:
-        str = "SSLv2 write request certificate C";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x43";
         break;
     case SSL2_ST_SEND_REQUEST_CERTIFICATE_D:
-        str = "SSLv2 write request certificate D";
+        str = "\x53\x53\x4c\x76\x32\x20\x77\x72\x69\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x44";
         break;
     case SSL2_ST_X509_GET_SERVER_CERTIFICATE:
-        str = "SSLv2 X509 read server certificate";
+        str = "\x53\x53\x4c\x76\x32\x20\x58\x35\x30\x39\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65";
         break;
     case SSL2_ST_X509_GET_CLIENT_CERTIFICATE:
-        str = "SSLv2 X509 read client certificate";
+        str = "\x53\x53\x4c\x76\x32\x20\x58\x35\x30\x39\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65";
         break;
 #endif
 
 #ifndef OPENSSL_NO_SSL3
 /* SSLv3 additions */
     case SSL3_ST_CW_CLNT_HELLO_A:
-        str = "SSLv3 write client hello A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL3_ST_CW_CLNT_HELLO_B:
-        str = "SSLv3 write client hello B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL3_ST_CR_SRVR_HELLO_A:
-        str = "SSLv3 read server hello A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL3_ST_CR_SRVR_HELLO_B:
-        str = "SSLv3 read server hello B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL3_ST_CR_CERT_A:
-        str = "SSLv3 read server certificate A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x41";
         break;
     case SSL3_ST_CR_CERT_B:
-        str = "SSLv3 read server certificate B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x42";
         break;
     case SSL3_ST_CR_KEY_EXCH_A:
-        str = "SSLv3 read server key exchange A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x6b\x65\x79\x20\x65\x78\x63\x68\x61\x6e\x67\x65\x20\x41";
         break;
     case SSL3_ST_CR_KEY_EXCH_B:
-        str = "SSLv3 read server key exchange B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x6b\x65\x79\x20\x65\x78\x63\x68\x61\x6e\x67\x65\x20\x42";
         break;
     case SSL3_ST_CR_CERT_REQ_A:
-        str = "SSLv3 read server certificate request A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x41";
         break;
     case SSL3_ST_CR_CERT_REQ_B:
-        str = "SSLv3 read server certificate request B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x42";
         break;
     case SSL3_ST_CR_SESSION_TICKET_A:
-        str = "SSLv3 read server session ticket A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x63\x6b\x65\x74\x20\x41";
         break;
     case SSL3_ST_CR_SESSION_TICKET_B:
-        str = "SSLv3 read server session ticket B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x63\x6b\x65\x74\x20\x42";
         break;
     case SSL3_ST_CR_SRVR_DONE_A:
-        str = "SSLv3 read server done A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x64\x6f\x6e\x65\x20\x41";
         break;
     case SSL3_ST_CR_SRVR_DONE_B:
-        str = "SSLv3 read server done B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x64\x6f\x6e\x65\x20\x42";
         break;
     case SSL3_ST_CW_CERT_A:
-        str = "SSLv3 write client certificate A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x41";
         break;
     case SSL3_ST_CW_CERT_B:
-        str = "SSLv3 write client certificate B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x42";
         break;
     case SSL3_ST_CW_CERT_C:
-        str = "SSLv3 write client certificate C";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x43";
         break;
     case SSL3_ST_CW_CERT_D:
-        str = "SSLv3 write client certificate D";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x44";
         break;
     case SSL3_ST_CW_KEY_EXCH_A:
-        str = "SSLv3 write client key exchange A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x6b\x65\x79\x20\x65\x78\x63\x68\x61\x6e\x67\x65\x20\x41";
         break;
     case SSL3_ST_CW_KEY_EXCH_B:
-        str = "SSLv3 write client key exchange B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x6b\x65\x79\x20\x65\x78\x63\x68\x61\x6e\x67\x65\x20\x42";
         break;
     case SSL3_ST_CW_CERT_VRFY_A:
-        str = "SSLv3 write certificate verify A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x76\x65\x72\x69\x66\x79\x20\x41";
         break;
     case SSL3_ST_CW_CERT_VRFY_B:
-        str = "SSLv3 write certificate verify B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x76\x65\x72\x69\x66\x79\x20\x42";
         break;
 
     case SSL3_ST_CW_CHANGE_A:
     case SSL3_ST_SW_CHANGE_A:
-        str = "SSLv3 write change cipher spec A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x68\x61\x6e\x67\x65\x20\x63\x69\x70\x68\x65\x72\x20\x73\x70\x65\x63\x20\x41";
         break;
     case SSL3_ST_CW_CHANGE_B:
     case SSL3_ST_SW_CHANGE_B:
-        str = "SSLv3 write change cipher spec B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x68\x61\x6e\x67\x65\x20\x63\x69\x70\x68\x65\x72\x20\x73\x70\x65\x63\x20\x42";
         break;
     case SSL3_ST_CW_FINISHED_A:
     case SSL3_ST_SW_FINISHED_A:
-        str = "SSLv3 write finished A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x41";
         break;
     case SSL3_ST_CW_FINISHED_B:
     case SSL3_ST_SW_FINISHED_B:
-        str = "SSLv3 write finished B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x42";
         break;
     case SSL3_ST_CR_CHANGE_A:
     case SSL3_ST_SR_CHANGE_A:
-        str = "SSLv3 read change cipher spec A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x68\x61\x6e\x67\x65\x20\x63\x69\x70\x68\x65\x72\x20\x73\x70\x65\x63\x20\x41";
         break;
     case SSL3_ST_CR_CHANGE_B:
     case SSL3_ST_SR_CHANGE_B:
-        str = "SSLv3 read change cipher spec B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x68\x61\x6e\x67\x65\x20\x63\x69\x70\x68\x65\x72\x20\x73\x70\x65\x63\x20\x42";
         break;
     case SSL3_ST_CR_FINISHED_A:
     case SSL3_ST_SR_FINISHED_A:
-        str = "SSLv3 read finished A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x41";
         break;
     case SSL3_ST_CR_FINISHED_B:
     case SSL3_ST_SR_FINISHED_B:
-        str = "SSLv3 read finished B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x66\x69\x6e\x69\x73\x68\x65\x64\x20\x42";
         break;
 
     case SSL3_ST_CW_FLUSH:
     case SSL3_ST_SW_FLUSH:
-        str = "SSLv3 flush data";
+        str = "\x53\x53\x4c\x76\x33\x20\x66\x6c\x75\x73\x68\x20\x64\x61\x74\x61";
         break;
 
     case SSL3_ST_SR_CLNT_HELLO_A:
-        str = "SSLv3 read client hello A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL3_ST_SR_CLNT_HELLO_B:
-        str = "SSLv3 read client hello B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL3_ST_SR_CLNT_HELLO_C:
-        str = "SSLv3 read client hello C";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x43";
         break;
     case SSL3_ST_SW_HELLO_REQ_A:
-        str = "SSLv3 write hello request A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x68\x65\x6c\x6c\x6f\x20\x72\x65\x71\x75\x65\x73\x74\x20\x41";
         break;
     case SSL3_ST_SW_HELLO_REQ_B:
-        str = "SSLv3 write hello request B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x68\x65\x6c\x6c\x6f\x20\x72\x65\x71\x75\x65\x73\x74\x20\x42";
         break;
     case SSL3_ST_SW_HELLO_REQ_C:
-        str = "SSLv3 write hello request C";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x68\x65\x6c\x6c\x6f\x20\x72\x65\x71\x75\x65\x73\x74\x20\x43";
         break;
     case SSL3_ST_SW_SRVR_HELLO_A:
-        str = "SSLv3 write server hello A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL3_ST_SW_SRVR_HELLO_B:
-        str = "SSLv3 write server hello B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL3_ST_SW_CERT_A:
-        str = "SSLv3 write certificate A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x41";
         break;
     case SSL3_ST_SW_CERT_B:
-        str = "SSLv3 write certificate B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x42";
         break;
     case SSL3_ST_SW_KEY_EXCH_A:
-        str = "SSLv3 write key exchange A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x6b\x65\x79\x20\x65\x78\x63\x68\x61\x6e\x67\x65\x20\x41";
         break;
     case SSL3_ST_SW_KEY_EXCH_B:
-        str = "SSLv3 write key exchange B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x6b\x65\x79\x20\x65\x78\x63\x68\x61\x6e\x67\x65\x20\x42";
         break;
     case SSL3_ST_SW_CERT_REQ_A:
-        str = "SSLv3 write certificate request A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x41";
         break;
     case SSL3_ST_SW_CERT_REQ_B:
-        str = "SSLv3 write certificate request B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x65\x73\x74\x20\x42";
         break;
     case SSL3_ST_SW_SESSION_TICKET_A:
-        str = "SSLv3 write session ticket A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x63\x6b\x65\x74\x20\x41";
         break;
     case SSL3_ST_SW_SESSION_TICKET_B:
-        str = "SSLv3 write session ticket B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x63\x6b\x65\x74\x20\x42";
         break;
     case SSL3_ST_SW_SRVR_DONE_A:
-        str = "SSLv3 write server done A";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x64\x6f\x6e\x65\x20\x41";
         break;
     case SSL3_ST_SW_SRVR_DONE_B:
-        str = "SSLv3 write server done B";
+        str = "\x53\x53\x4c\x76\x33\x20\x77\x72\x69\x74\x65\x20\x73\x65\x72\x76\x65\x72\x20\x64\x6f\x6e\x65\x20\x42";
         break;
     case SSL3_ST_SR_CERT_A:
-        str = "SSLv3 read client certificate A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x41";
         break;
     case SSL3_ST_SR_CERT_B:
-        str = "SSLv3 read client certificate B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x42";
         break;
     case SSL3_ST_SR_KEY_EXCH_A:
-        str = "SSLv3 read client key exchange A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x6b\x65\x79\x20\x65\x78\x63\x68\x61\x6e\x67\x65\x20\x41";
         break;
     case SSL3_ST_SR_KEY_EXCH_B:
-        str = "SSLv3 read client key exchange B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x6b\x65\x79\x20\x65\x78\x63\x68\x61\x6e\x67\x65\x20\x42";
         break;
     case SSL3_ST_SR_CERT_VRFY_A:
-        str = "SSLv3 read certificate verify A";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x76\x65\x72\x69\x66\x79\x20\x41";
         break;
     case SSL3_ST_SR_CERT_VRFY_B:
-        str = "SSLv3 read certificate verify B";
+        str = "\x53\x53\x4c\x76\x33\x20\x72\x65\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x76\x65\x72\x69\x66\x79\x20\x42";
         break;
 #endif
 
 /* SSLv2/v3 compatibility states */
 /* client */
     case SSL23_ST_CW_CLNT_HELLO_A:
-        str = "SSLv2/v3 write client hello A";
+        str = "\x53\x53\x4c\x76\x32\x2f\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL23_ST_CW_CLNT_HELLO_B:
-        str = "SSLv2/v3 write client hello B";
+        str = "\x53\x53\x4c\x76\x32\x2f\x76\x33\x20\x77\x72\x69\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
     case SSL23_ST_CR_SRVR_HELLO_A:
-        str = "SSLv2/v3 read server hello A";
+        str = "\x53\x53\x4c\x76\x32\x2f\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL23_ST_CR_SRVR_HELLO_B:
-        str = "SSLv2/v3 read server hello B";
+        str = "\x53\x53\x4c\x76\x32\x2f\x76\x33\x20\x72\x65\x61\x64\x20\x73\x65\x72\x76\x65\x72\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
 /* server */
     case SSL23_ST_SR_CLNT_HELLO_A:
-        str = "SSLv2/v3 read client hello A";
+        str = "\x53\x53\x4c\x76\x32\x2f\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x41";
         break;
     case SSL23_ST_SR_CLNT_HELLO_B:
-        str = "SSLv2/v3 read client hello B";
+        str = "\x53\x53\x4c\x76\x32\x2f\x76\x33\x20\x72\x65\x61\x64\x20\x63\x6c\x69\x65\x6e\x74\x20\x68\x65\x6c\x6c\x6f\x20\x42";
         break;
 
 /* DTLS */
     case DTLS1_ST_CR_HELLO_VERIFY_REQUEST_A:
-        str = "DTLS1 read hello verify request A";
+        str = "\x44\x54\x4c\x53\x31\x20\x72\x65\x61\x64\x20\x68\x65\x6c\x6c\x6f\x20\x76\x65\x72\x69\x66\x79\x20\x72\x65\x71\x75\x65\x73\x74\x20\x41";
         break;
     case DTLS1_ST_CR_HELLO_VERIFY_REQUEST_B:
-        str = "DTLS1 read hello verify request B";
+        str = "\x44\x54\x4c\x53\x31\x20\x72\x65\x61\x64\x20\x68\x65\x6c\x6c\x6f\x20\x76\x65\x72\x69\x66\x79\x20\x72\x65\x71\x75\x65\x73\x74\x20\x42";
         break;
     case DTLS1_ST_SW_HELLO_VERIFY_REQUEST_A:
-        str = "DTLS1 write hello verify request A";
+        str = "\x44\x54\x4c\x53\x31\x20\x77\x72\x69\x74\x65\x20\x68\x65\x6c\x6c\x6f\x20\x76\x65\x72\x69\x66\x79\x20\x72\x65\x71\x75\x65\x73\x74\x20\x41";
         break;
     case DTLS1_ST_SW_HELLO_VERIFY_REQUEST_B:
-        str = "DTLS1 write hello verify request B";
+        str = "\x44\x54\x4c\x53\x31\x20\x77\x72\x69\x74\x65\x20\x68\x65\x6c\x6c\x6f\x20\x76\x65\x72\x69\x66\x79\x20\x72\x65\x71\x75\x65\x73\x74\x20\x42";
         break;
 
     default:
-        str = "unknown state";
+        str = "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x73\x74\x61\x74\x65";
         break;
     }
     return (str);
@@ -467,16 +467,16 @@ const char *SSL_rstate_string_long(const SSL *s)
 
     switch (s->rstate) {
     case SSL_ST_READ_HEADER:
-        str = "read header";
+        str = "\x72\x65\x61\x64\x20\x68\x65\x61\x64\x65\x72";
         break;
     case SSL_ST_READ_BODY:
-        str = "read body";
+        str = "\x72\x65\x61\x64\x20\x62\x6f\x64\x79";
         break;
     case SSL_ST_READ_DONE:
-        str = "read done";
+        str = "\x72\x65\x61\x64\x20\x64\x6f\x6e\x65";
         break;
     default:
-        str = "unknown";
+        str = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
         break;
     }
     return (str);
@@ -488,134 +488,134 @@ const char *SSL_state_string(const SSL *s)
 
     switch (s->state) {
     case SSL_ST_BEFORE:
-        str = "PINIT ";
+        str = "\x50\x49\x4e\x49\x54\x20";
         break;
     case SSL_ST_ACCEPT:
-        str = "AINIT ";
+        str = "\x41\x49\x4e\x49\x54\x20";
         break;
     case SSL_ST_CONNECT:
-        str = "CINIT ";
+        str = "\x43\x49\x4e\x49\x54\x20";
         break;
     case SSL_ST_OK:
-        str = "SSLOK ";
+        str = "\x53\x53\x4c\x4f\x4b\x20";
         break;
     case SSL_ST_ERR:
-        str = "SSLERR";
+        str = "\x53\x53\x4c\x45\x52\x52";
         break;
 #ifndef OPENSSL_NO_SSL2
     case SSL2_ST_CLIENT_START_ENCRYPTION:
-        str = "2CSENC";
+        str = "\x32\x43\x53\x45\x4e\x43";
         break;
     case SSL2_ST_SERVER_START_ENCRYPTION:
-        str = "2SSENC";
+        str = "\x32\x53\x53\x45\x4e\x43";
         break;
     case SSL2_ST_SEND_CLIENT_HELLO_A:
-        str = "2SCH_A";
+        str = "\x32\x53\x43\x48\x5f\x41";
         break;
     case SSL2_ST_SEND_CLIENT_HELLO_B:
-        str = "2SCH_B";
+        str = "\x32\x53\x43\x48\x5f\x42";
         break;
     case SSL2_ST_GET_SERVER_HELLO_A:
-        str = "2GSH_A";
+        str = "\x32\x47\x53\x48\x5f\x41";
         break;
     case SSL2_ST_GET_SERVER_HELLO_B:
-        str = "2GSH_B";
+        str = "\x32\x47\x53\x48\x5f\x42";
         break;
     case SSL2_ST_SEND_CLIENT_MASTER_KEY_A:
-        str = "2SCMKA";
+        str = "\x32\x53\x43\x4d\x4b\x41";
         break;
     case SSL2_ST_SEND_CLIENT_MASTER_KEY_B:
-        str = "2SCMKB";
+        str = "\x32\x53\x43\x4d\x4b\x42";
         break;
     case SSL2_ST_SEND_CLIENT_FINISHED_A:
-        str = "2SCF_A";
+        str = "\x32\x53\x43\x46\x5f\x41";
         break;
     case SSL2_ST_SEND_CLIENT_FINISHED_B:
-        str = "2SCF_B";
+        str = "\x32\x53\x43\x46\x5f\x42";
         break;
     case SSL2_ST_SEND_CLIENT_CERTIFICATE_A:
-        str = "2SCC_A";
+        str = "\x32\x53\x43\x43\x5f\x41";
         break;
     case SSL2_ST_SEND_CLIENT_CERTIFICATE_B:
-        str = "2SCC_B";
+        str = "\x32\x53\x43\x43\x5f\x42";
         break;
     case SSL2_ST_SEND_CLIENT_CERTIFICATE_C:
-        str = "2SCC_C";
+        str = "\x32\x53\x43\x43\x5f\x43";
         break;
     case SSL2_ST_SEND_CLIENT_CERTIFICATE_D:
-        str = "2SCC_D";
+        str = "\x32\x53\x43\x43\x5f\x44";
         break;
     case SSL2_ST_GET_SERVER_VERIFY_A:
-        str = "2GSV_A";
+        str = "\x32\x47\x53\x56\x5f\x41";
         break;
     case SSL2_ST_GET_SERVER_VERIFY_B:
-        str = "2GSV_B";
+        str = "\x32\x47\x53\x56\x5f\x42";
         break;
     case SSL2_ST_GET_SERVER_FINISHED_A:
-        str = "2GSF_A";
+        str = "\x32\x47\x53\x46\x5f\x41";
         break;
     case SSL2_ST_GET_SERVER_FINISHED_B:
-        str = "2GSF_B";
+        str = "\x32\x47\x53\x46\x5f\x42";
         break;
     case SSL2_ST_GET_CLIENT_HELLO_A:
-        str = "2GCH_A";
+        str = "\x32\x47\x43\x48\x5f\x41";
         break;
     case SSL2_ST_GET_CLIENT_HELLO_B:
-        str = "2GCH_B";
+        str = "\x32\x47\x43\x48\x5f\x42";
         break;
     case SSL2_ST_GET_CLIENT_HELLO_C:
-        str = "2GCH_C";
+        str = "\x32\x47\x43\x48\x5f\x43";
         break;
     case SSL2_ST_SEND_SERVER_HELLO_A:
-        str = "2SSH_A";
+        str = "\x32\x53\x53\x48\x5f\x41";
         break;
     case SSL2_ST_SEND_SERVER_HELLO_B:
-        str = "2SSH_B";
+        str = "\x32\x53\x53\x48\x5f\x42";
         break;
     case SSL2_ST_GET_CLIENT_MASTER_KEY_A:
-        str = "2GCMKA";
+        str = "\x32\x47\x43\x4d\x4b\x41";
         break;
     case SSL2_ST_GET_CLIENT_MASTER_KEY_B:
-        str = "2GCMKA";
+        str = "\x32\x47\x43\x4d\x4b\x41";
         break;
     case SSL2_ST_SEND_SERVER_VERIFY_A:
-        str = "2SSV_A";
+        str = "\x32\x53\x53\x56\x5f\x41";
         break;
     case SSL2_ST_SEND_SERVER_VERIFY_B:
-        str = "2SSV_B";
+        str = "\x32\x53\x53\x56\x5f\x42";
         break;
     case SSL2_ST_SEND_SERVER_VERIFY_C:
-        str = "2SSV_C";
+        str = "\x32\x53\x53\x56\x5f\x43";
         break;
     case SSL2_ST_GET_CLIENT_FINISHED_A:
-        str = "2GCF_A";
+        str = "\x32\x47\x43\x46\x5f\x41";
         break;
     case SSL2_ST_GET_CLIENT_FINISHED_B:
-        str = "2GCF_B";
+        str = "\x32\x47\x43\x46\x5f\x42";
         break;
     case SSL2_ST_SEND_SERVER_FINISHED_A:
-        str = "2SSF_A";
+        str = "\x32\x53\x53\x46\x5f\x41";
         break;
     case SSL2_ST_SEND_SERVER_FINISHED_B:
-        str = "2SSF_B";
+        str = "\x32\x53\x53\x46\x5f\x42";
         break;
     case SSL2_ST_SEND_REQUEST_CERTIFICATE_A:
-        str = "2SRC_A";
+        str = "\x32\x53\x52\x43\x5f\x41";
         break;
     case SSL2_ST_SEND_REQUEST_CERTIFICATE_B:
-        str = "2SRC_B";
+        str = "\x32\x53\x52\x43\x5f\x42";
         break;
     case SSL2_ST_SEND_REQUEST_CERTIFICATE_C:
-        str = "2SRC_C";
+        str = "\x32\x53\x52\x43\x5f\x43";
         break;
     case SSL2_ST_SEND_REQUEST_CERTIFICATE_D:
-        str = "2SRC_D";
+        str = "\x32\x53\x52\x43\x5f\x44";
         break;
     case SSL2_ST_X509_GET_SERVER_CERTIFICATE:
-        str = "2X9GSC";
+        str = "\x32\x58\x39\x47\x53\x43";
         break;
     case SSL2_ST_X509_GET_CLIENT_CERTIFICATE:
-        str = "2X9GCC";
+        str = "\x32\x58\x39\x47\x43\x43";
         break;
 #endif
 
@@ -623,208 +623,208 @@ const char *SSL_state_string(const SSL *s)
 /* SSLv3 additions */
     case SSL3_ST_SW_FLUSH:
     case SSL3_ST_CW_FLUSH:
-        str = "3FLUSH";
+        str = "\x33\x46\x4c\x55\x53\x48";
         break;
     case SSL3_ST_CW_CLNT_HELLO_A:
-        str = "3WCH_A";
+        str = "\x33\x57\x43\x48\x5f\x41";
         break;
     case SSL3_ST_CW_CLNT_HELLO_B:
-        str = "3WCH_B";
+        str = "\x33\x57\x43\x48\x5f\x42";
         break;
     case SSL3_ST_CR_SRVR_HELLO_A:
-        str = "3RSH_A";
+        str = "\x33\x52\x53\x48\x5f\x41";
         break;
     case SSL3_ST_CR_SRVR_HELLO_B:
-        str = "3RSH_B";
+        str = "\x33\x52\x53\x48\x5f\x42";
         break;
     case SSL3_ST_CR_CERT_A:
-        str = "3RSC_A";
+        str = "\x33\x52\x53\x43\x5f\x41";
         break;
     case SSL3_ST_CR_CERT_B:
-        str = "3RSC_B";
+        str = "\x33\x52\x53\x43\x5f\x42";
         break;
     case SSL3_ST_CR_KEY_EXCH_A:
-        str = "3RSKEA";
+        str = "\x33\x52\x53\x4b\x45\x41";
         break;
     case SSL3_ST_CR_KEY_EXCH_B:
-        str = "3RSKEB";
+        str = "\x33\x52\x53\x4b\x45\x42";
         break;
     case SSL3_ST_CR_CERT_REQ_A:
-        str = "3RCR_A";
+        str = "\x33\x52\x43\x52\x5f\x41";
         break;
     case SSL3_ST_CR_CERT_REQ_B:
-        str = "3RCR_B";
+        str = "\x33\x52\x43\x52\x5f\x42";
         break;
     case SSL3_ST_CR_SRVR_DONE_A:
-        str = "3RSD_A";
+        str = "\x33\x52\x53\x44\x5f\x41";
         break;
     case SSL3_ST_CR_SRVR_DONE_B:
-        str = "3RSD_B";
+        str = "\x33\x52\x53\x44\x5f\x42";
         break;
     case SSL3_ST_CW_CERT_A:
-        str = "3WCC_A";
+        str = "\x33\x57\x43\x43\x5f\x41";
         break;
     case SSL3_ST_CW_CERT_B:
-        str = "3WCC_B";
+        str = "\x33\x57\x43\x43\x5f\x42";
         break;
     case SSL3_ST_CW_CERT_C:
-        str = "3WCC_C";
+        str = "\x33\x57\x43\x43\x5f\x43";
         break;
     case SSL3_ST_CW_CERT_D:
-        str = "3WCC_D";
+        str = "\x33\x57\x43\x43\x5f\x44";
         break;
     case SSL3_ST_CW_KEY_EXCH_A:
-        str = "3WCKEA";
+        str = "\x33\x57\x43\x4b\x45\x41";
         break;
     case SSL3_ST_CW_KEY_EXCH_B:
-        str = "3WCKEB";
+        str = "\x33\x57\x43\x4b\x45\x42";
         break;
     case SSL3_ST_CW_CERT_VRFY_A:
-        str = "3WCV_A";
+        str = "\x33\x57\x43\x56\x5f\x41";
         break;
     case SSL3_ST_CW_CERT_VRFY_B:
-        str = "3WCV_B";
+        str = "\x33\x57\x43\x56\x5f\x42";
         break;
 
     case SSL3_ST_SW_CHANGE_A:
     case SSL3_ST_CW_CHANGE_A:
-        str = "3WCCSA";
+        str = "\x33\x57\x43\x43\x53\x41";
         break;
     case SSL3_ST_SW_CHANGE_B:
     case SSL3_ST_CW_CHANGE_B:
-        str = "3WCCSB";
+        str = "\x33\x57\x43\x43\x53\x42";
         break;
     case SSL3_ST_SW_FINISHED_A:
     case SSL3_ST_CW_FINISHED_A:
-        str = "3WFINA";
+        str = "\x33\x57\x46\x49\x4e\x41";
         break;
     case SSL3_ST_SW_FINISHED_B:
     case SSL3_ST_CW_FINISHED_B:
-        str = "3WFINB";
+        str = "\x33\x57\x46\x49\x4e\x42";
         break;
     case SSL3_ST_SR_CHANGE_A:
     case SSL3_ST_CR_CHANGE_A:
-        str = "3RCCSA";
+        str = "\x33\x52\x43\x43\x53\x41";
         break;
     case SSL3_ST_SR_CHANGE_B:
     case SSL3_ST_CR_CHANGE_B:
-        str = "3RCCSB";
+        str = "\x33\x52\x43\x43\x53\x42";
         break;
     case SSL3_ST_SR_FINISHED_A:
     case SSL3_ST_CR_FINISHED_A:
-        str = "3RFINA";
+        str = "\x33\x52\x46\x49\x4e\x41";
         break;
     case SSL3_ST_SR_FINISHED_B:
     case SSL3_ST_CR_FINISHED_B:
-        str = "3RFINB";
+        str = "\x33\x52\x46\x49\x4e\x42";
         break;
 
     case SSL3_ST_SW_HELLO_REQ_A:
-        str = "3WHR_A";
+        str = "\x33\x57\x48\x52\x5f\x41";
         break;
     case SSL3_ST_SW_HELLO_REQ_B:
-        str = "3WHR_B";
+        str = "\x33\x57\x48\x52\x5f\x42";
         break;
     case SSL3_ST_SW_HELLO_REQ_C:
-        str = "3WHR_C";
+        str = "\x33\x57\x48\x52\x5f\x43";
         break;
     case SSL3_ST_SR_CLNT_HELLO_A:
-        str = "3RCH_A";
+        str = "\x33\x52\x43\x48\x5f\x41";
         break;
     case SSL3_ST_SR_CLNT_HELLO_B:
-        str = "3RCH_B";
+        str = "\x33\x52\x43\x48\x5f\x42";
         break;
     case SSL3_ST_SR_CLNT_HELLO_C:
-        str = "3RCH_C";
+        str = "\x33\x52\x43\x48\x5f\x43";
         break;
     case SSL3_ST_SW_SRVR_HELLO_A:
-        str = "3WSH_A";
+        str = "\x33\x57\x53\x48\x5f\x41";
         break;
     case SSL3_ST_SW_SRVR_HELLO_B:
-        str = "3WSH_B";
+        str = "\x33\x57\x53\x48\x5f\x42";
         break;
     case SSL3_ST_SW_CERT_A:
-        str = "3WSC_A";
+        str = "\x33\x57\x53\x43\x5f\x41";
         break;
     case SSL3_ST_SW_CERT_B:
-        str = "3WSC_B";
+        str = "\x33\x57\x53\x43\x5f\x42";
         break;
     case SSL3_ST_SW_KEY_EXCH_A:
-        str = "3WSKEA";
+        str = "\x33\x57\x53\x4b\x45\x41";
         break;
     case SSL3_ST_SW_KEY_EXCH_B:
-        str = "3WSKEB";
+        str = "\x33\x57\x53\x4b\x45\x42";
         break;
     case SSL3_ST_SW_CERT_REQ_A:
-        str = "3WCR_A";
+        str = "\x33\x57\x43\x52\x5f\x41";
         break;
     case SSL3_ST_SW_CERT_REQ_B:
-        str = "3WCR_B";
+        str = "\x33\x57\x43\x52\x5f\x42";
         break;
     case SSL3_ST_SW_SRVR_DONE_A:
-        str = "3WSD_A";
+        str = "\x33\x57\x53\x44\x5f\x41";
         break;
     case SSL3_ST_SW_SRVR_DONE_B:
-        str = "3WSD_B";
+        str = "\x33\x57\x53\x44\x5f\x42";
         break;
     case SSL3_ST_SR_CERT_A:
-        str = "3RCC_A";
+        str = "\x33\x52\x43\x43\x5f\x41";
         break;
     case SSL3_ST_SR_CERT_B:
-        str = "3RCC_B";
+        str = "\x33\x52\x43\x43\x5f\x42";
         break;
     case SSL3_ST_SR_KEY_EXCH_A:
-        str = "3RCKEA";
+        str = "\x33\x52\x43\x4b\x45\x41";
         break;
     case SSL3_ST_SR_KEY_EXCH_B:
-        str = "3RCKEB";
+        str = "\x33\x52\x43\x4b\x45\x42";
         break;
     case SSL3_ST_SR_CERT_VRFY_A:
-        str = "3RCV_A";
+        str = "\x33\x52\x43\x56\x5f\x41";
         break;
     case SSL3_ST_SR_CERT_VRFY_B:
-        str = "3RCV_B";
+        str = "\x33\x52\x43\x56\x5f\x42";
         break;
 #endif
 
 /* SSLv2/v3 compatibility states */
 /* client */
     case SSL23_ST_CW_CLNT_HELLO_A:
-        str = "23WCHA";
+        str = "\x32\x33\x57\x43\x48\x41";
         break;
     case SSL23_ST_CW_CLNT_HELLO_B:
-        str = "23WCHB";
+        str = "\x32\x33\x57\x43\x48\x42";
         break;
     case SSL23_ST_CR_SRVR_HELLO_A:
-        str = "23RSHA";
+        str = "\x32\x33\x52\x53\x48\x41";
         break;
     case SSL23_ST_CR_SRVR_HELLO_B:
-        str = "23RSHA";
+        str = "\x32\x33\x52\x53\x48\x41";
         break;
 /* server */
     case SSL23_ST_SR_CLNT_HELLO_A:
-        str = "23RCHA";
+        str = "\x32\x33\x52\x43\x48\x41";
         break;
     case SSL23_ST_SR_CLNT_HELLO_B:
-        str = "23RCHB";
+        str = "\x32\x33\x52\x43\x48\x42";
         break;
 
 /* DTLS */
     case DTLS1_ST_CR_HELLO_VERIFY_REQUEST_A:
-        str = "DRCHVA";
+        str = "\x44\x52\x43\x48\x56\x41";
         break;
     case DTLS1_ST_CR_HELLO_VERIFY_REQUEST_B:
-        str = "DRCHVB";
+        str = "\x44\x52\x43\x48\x56\x42";
         break;
     case DTLS1_ST_SW_HELLO_VERIFY_REQUEST_A:
-        str = "DWCHVA";
+        str = "\x44\x57\x43\x48\x56\x41";
         break;
     case DTLS1_ST_SW_HELLO_VERIFY_REQUEST_B:
-        str = "DWCHVB";
+        str = "\x44\x57\x43\x48\x56\x42";
         break;
 
     default:
-        str = "UNKWN ";
+        str = "\x55\x4e\x4b\x57\x4e\x20";
         break;
     }
     return (str);
@@ -834,22 +834,22 @@ const char *SSL_alert_type_string_long(int value)
 {
     value >>= 8;
     if (value == SSL3_AL_WARNING)
-        return ("warning");
+        return ("\x77\x61\x72\x6e\x69\x6e\x67");
     else if (value == SSL3_AL_FATAL)
-        return ("fatal");
+        return ("\x66\x61\x74\x61\x6c");
     else
-        return ("unknown");
+        return ("\x75\x6e\x6b\x6e\x6f\x77\x6e");
 }
 
 const char *SSL_alert_type_string(int value)
 {
     value >>= 8;
     if (value == SSL3_AL_WARNING)
-        return ("W");
+        return ("\x57");
     else if (value == SSL3_AL_FATAL)
-        return ("F");
+        return ("\x46");
     else
-        return ("U");
+        return ("\x55");
 }
 
 const char *SSL_alert_desc_string(int value)
@@ -858,97 +858,97 @@ const char *SSL_alert_desc_string(int value)
 
     switch (value & 0xff) {
     case SSL3_AD_CLOSE_NOTIFY:
-        str = "CN";
+        str = "\x43\x4e";
         break;
     case SSL3_AD_UNEXPECTED_MESSAGE:
-        str = "UM";
+        str = "\x55\x4d";
         break;
     case SSL3_AD_BAD_RECORD_MAC:
-        str = "BM";
+        str = "\x42\x4d";
         break;
     case SSL3_AD_DECOMPRESSION_FAILURE:
-        str = "DF";
+        str = "\x44\x46";
         break;
     case SSL3_AD_HANDSHAKE_FAILURE:
-        str = "HF";
+        str = "\x48\x46";
         break;
     case SSL3_AD_NO_CERTIFICATE:
-        str = "NC";
+        str = "\x4e\x43";
         break;
     case SSL3_AD_BAD_CERTIFICATE:
-        str = "BC";
+        str = "\x42\x43";
         break;
     case SSL3_AD_UNSUPPORTED_CERTIFICATE:
-        str = "UC";
+        str = "\x55\x43";
         break;
     case SSL3_AD_CERTIFICATE_REVOKED:
-        str = "CR";
+        str = "\x43\x52";
         break;
     case SSL3_AD_CERTIFICATE_EXPIRED:
-        str = "CE";
+        str = "\x43\x45";
         break;
     case SSL3_AD_CERTIFICATE_UNKNOWN:
-        str = "CU";
+        str = "\x43\x55";
         break;
     case SSL3_AD_ILLEGAL_PARAMETER:
-        str = "IP";
+        str = "\x49\x50";
         break;
     case TLS1_AD_DECRYPTION_FAILED:
-        str = "DC";
+        str = "\x44\x43";
         break;
     case TLS1_AD_RECORD_OVERFLOW:
-        str = "RO";
+        str = "\x52\x4f";
         break;
     case TLS1_AD_UNKNOWN_CA:
-        str = "CA";
+        str = "\x43\x41";
         break;
     case TLS1_AD_ACCESS_DENIED:
-        str = "AD";
+        str = "\x41\x44";
         break;
     case TLS1_AD_DECODE_ERROR:
-        str = "DE";
+        str = "\x44\x45";
         break;
     case TLS1_AD_DECRYPT_ERROR:
-        str = "CY";
+        str = "\x43\x59";
         break;
     case TLS1_AD_EXPORT_RESTRICTION:
-        str = "ER";
+        str = "\x45\x52";
         break;
     case TLS1_AD_PROTOCOL_VERSION:
-        str = "PV";
+        str = "\x50\x56";
         break;
     case TLS1_AD_INSUFFICIENT_SECURITY:
-        str = "IS";
+        str = "\x49\x53";
         break;
     case TLS1_AD_INTERNAL_ERROR:
-        str = "IE";
+        str = "\x49\x45";
         break;
     case TLS1_AD_USER_CANCELLED:
-        str = "US";
+        str = "\x55\x53";
         break;
     case TLS1_AD_NO_RENEGOTIATION:
-        str = "NR";
+        str = "\x4e\x52";
         break;
     case TLS1_AD_UNSUPPORTED_EXTENSION:
-        str = "UE";
+        str = "\x55\x45";
         break;
     case TLS1_AD_CERTIFICATE_UNOBTAINABLE:
-        str = "CO";
+        str = "\x43\x4f";
         break;
     case TLS1_AD_UNRECOGNIZED_NAME:
-        str = "UN";
+        str = "\x55\x4e";
         break;
     case TLS1_AD_BAD_CERTIFICATE_STATUS_RESPONSE:
-        str = "BR";
+        str = "\x42\x52";
         break;
     case TLS1_AD_BAD_CERTIFICATE_HASH_VALUE:
-        str = "BH";
+        str = "\x42\x48";
         break;
     case TLS1_AD_UNKNOWN_PSK_IDENTITY:
-        str = "UP";
+        str = "\x55\x50";
         break;
     default:
-        str = "UK";
+        str = "\x55\x4b";
         break;
     }
     return (str);
@@ -960,97 +960,97 @@ const char *SSL_alert_desc_string_long(int value)
 
     switch (value & 0xff) {
     case SSL3_AD_CLOSE_NOTIFY:
-        str = "close notify";
+        str = "\x63\x6c\x6f\x73\x65\x20\x6e\x6f\x74\x69\x66\x79";
         break;
     case SSL3_AD_UNEXPECTED_MESSAGE:
-        str = "unexpected_message";
+        str = "\x75\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x5f\x6d\x65\x73\x73\x61\x67\x65";
         break;
     case SSL3_AD_BAD_RECORD_MAC:
-        str = "bad record mac";
+        str = "\x62\x61\x64\x20\x72\x65\x63\x6f\x72\x64\x20\x6d\x61\x63";
         break;
     case SSL3_AD_DECOMPRESSION_FAILURE:
-        str = "decompression failure";
+        str = "\x64\x65\x63\x6f\x6d\x70\x72\x65\x73\x73\x69\x6f\x6e\x20\x66\x61\x69\x6c\x75\x72\x65";
         break;
     case SSL3_AD_HANDSHAKE_FAILURE:
-        str = "handshake failure";
+        str = "\x68\x61\x6e\x64\x73\x68\x61\x6b\x65\x20\x66\x61\x69\x6c\x75\x72\x65";
         break;
     case SSL3_AD_NO_CERTIFICATE:
-        str = "no certificate";
+        str = "\x6e\x6f\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65";
         break;
     case SSL3_AD_BAD_CERTIFICATE:
-        str = "bad certificate";
+        str = "\x62\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65";
         break;
     case SSL3_AD_UNSUPPORTED_CERTIFICATE:
-        str = "unsupported certificate";
+        str = "\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65";
         break;
     case SSL3_AD_CERTIFICATE_REVOKED:
-        str = "certificate revoked";
+        str = "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x76\x6f\x6b\x65\x64";
         break;
     case SSL3_AD_CERTIFICATE_EXPIRED:
-        str = "certificate expired";
+        str = "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x65\x78\x70\x69\x72\x65\x64";
         break;
     case SSL3_AD_CERTIFICATE_UNKNOWN:
-        str = "certificate unknown";
+        str = "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x75\x6e\x6b\x6e\x6f\x77\x6e";
         break;
     case SSL3_AD_ILLEGAL_PARAMETER:
-        str = "illegal parameter";
+        str = "\x69\x6c\x6c\x65\x67\x61\x6c\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72";
         break;
     case TLS1_AD_DECRYPTION_FAILED:
-        str = "decryption failed";
+        str = "\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64";
         break;
     case TLS1_AD_RECORD_OVERFLOW:
-        str = "record overflow";
+        str = "\x72\x65\x63\x6f\x72\x64\x20\x6f\x76\x65\x72\x66\x6c\x6f\x77";
         break;
     case TLS1_AD_UNKNOWN_CA:
-        str = "unknown CA";
+        str = "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x43\x41";
         break;
     case TLS1_AD_ACCESS_DENIED:
-        str = "access denied";
+        str = "\x61\x63\x63\x65\x73\x73\x20\x64\x65\x6e\x69\x65\x64";
         break;
     case TLS1_AD_DECODE_ERROR:
-        str = "decode error";
+        str = "\x64\x65\x63\x6f\x64\x65\x20\x65\x72\x72\x6f\x72";
         break;
     case TLS1_AD_DECRYPT_ERROR:
-        str = "decrypt error";
+        str = "\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72";
         break;
     case TLS1_AD_EXPORT_RESTRICTION:
-        str = "export restriction";
+        str = "\x65\x78\x70\x6f\x72\x74\x20\x72\x65\x73\x74\x72\x69\x63\x74\x69\x6f\x6e";
         break;
     case TLS1_AD_PROTOCOL_VERSION:
-        str = "protocol version";
+        str = "\x70\x72\x6f\x74\x6f\x63\x6f\x6c\x20\x76\x65\x72\x73\x69\x6f\x6e";
         break;
     case TLS1_AD_INSUFFICIENT_SECURITY:
-        str = "insufficient security";
+        str = "\x69\x6e\x73\x75\x66\x66\x69\x63\x69\x65\x6e\x74\x20\x73\x65\x63\x75\x72\x69\x74\x79";
         break;
     case TLS1_AD_INTERNAL_ERROR:
-        str = "internal error";
+        str = "\x69\x6e\x74\x65\x72\x6e\x61\x6c\x20\x65\x72\x72\x6f\x72";
         break;
     case TLS1_AD_USER_CANCELLED:
-        str = "user canceled";
+        str = "\x75\x73\x65\x72\x20\x63\x61\x6e\x63\x65\x6c\x65\x64";
         break;
     case TLS1_AD_NO_RENEGOTIATION:
-        str = "no renegotiation";
+        str = "\x6e\x6f\x20\x72\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x69\x6f\x6e";
         break;
     case TLS1_AD_UNSUPPORTED_EXTENSION:
-        str = "unsupported extension";
+        str = "\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e";
         break;
     case TLS1_AD_CERTIFICATE_UNOBTAINABLE:
-        str = "certificate unobtainable";
+        str = "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x75\x6e\x6f\x62\x74\x61\x69\x6e\x61\x62\x6c\x65";
         break;
     case TLS1_AD_UNRECOGNIZED_NAME:
-        str = "unrecognized name";
+        str = "\x75\x6e\x72\x65\x63\x6f\x67\x6e\x69\x7a\x65\x64\x20\x6e\x61\x6d\x65";
         break;
     case TLS1_AD_BAD_CERTIFICATE_STATUS_RESPONSE:
-        str = "bad certificate status response";
+        str = "\x62\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x74\x61\x74\x75\x73\x20\x72\x65\x73\x70\x6f\x6e\x73\x65";
         break;
     case TLS1_AD_BAD_CERTIFICATE_HASH_VALUE:
-        str = "bad certificate hash value";
+        str = "\x62\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65";
         break;
     case TLS1_AD_UNKNOWN_PSK_IDENTITY:
-        str = "unknown PSK identity";
+        str = "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x50\x53\x4b\x20\x69\x64\x65\x6e\x74\x69\x74\x79";
         break;
     default:
-        str = "unknown";
+        str = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
         break;
     }
     return (str);
@@ -1062,16 +1062,16 @@ const char *SSL_rstate_string(const SSL *s)
 
     switch (s->rstate) {
     case SSL_ST_READ_HEADER:
-        str = "RH";
+        str = "\x52\x48";
         break;
     case SSL_ST_READ_BODY:
-        str = "RB";
+        str = "\x52\x42";
         break;
     case SSL_ST_READ_DONE:
-        str = "RD";
+        str = "\x52\x44";
         break;
     default:
-        str = "unknown";
+        str = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
         break;
     }
     return (str);

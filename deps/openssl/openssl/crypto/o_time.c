@@ -27,13 +27,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -122,8 +122,8 @@ struct tm *OPENSSL_gmtime(const time_t *timer, struct tm *result)
 #endif
 #if defined( OPENSSL_SYS_VMS) && !defined( VMS_GMTIME_OK)
     if (ts == NULL) {
-        static $DESCRIPTOR(tabnam, "LNM$DCL_LOGICAL");
-        static $DESCRIPTOR(lognam, "SYS$TIMEZONE_DIFFERENTIAL");
+        static $DESCRIPTOR(tabnam, "\x4c\x4e\x4d\x24\x44\x43\x4c\x5f\x4c\x4f\x47\x49\x43\x41\x4c");
+        static $DESCRIPTOR(lognam, "\x53\x59\x53\x24\x54\x49\x4d\x45\x5a\x4f\x4e\x45\x5f\x44\x49\x46\x46\x45\x52\x45\x4e\x54\x49\x41\x4c");
         char logvalue[256];
         unsigned int reslen = 0;
 # if __INITIAL_POINTER_SIZE == 64
@@ -165,7 +165,7 @@ struct tm *OPENSSL_gmtime(const time_t *timer, struct tm *result)
         status = sys$trnlnm(0, &tabnam, &lognam, 0, itemlist);
         if (!(status & 1))
             return NULL;
-        logvalue[reslen] = '\0';
+        logvalue[reslen] = '\x0';
 
         t = *timer;
 
@@ -454,11 +454,11 @@ int check_time(long offset)
         (tm1.tm_mday != tm2.tm_mday) ||
         (tm1.tm_hour != tm2.tm_hour) ||
         (tm1.tm_min != tm2.tm_min) || (tm1.tm_sec != tm2.tm_sec)) {
-        fprintf(stderr, "TIME ERROR!!\n");
-        fprintf(stderr, "Time1: %d/%d/%d, %d:%02d:%02d\n",
+        fprintf(stderr, "\x54\x49\x4d\x45\x20\x45\x52\x52\x4f\x52\x21\x21\xa");
+        fprintf(stderr, "\x54\x69\x6d\x65\x31\x3a\x20\x25\x64\x2f\x25\x64\x2f\x25\x64\x2c\x20\x25\x64\x3a\x25\x30\x32\x64\x3a\x25\x30\x32\x64\xa",
                 tm2.tm_mday, tm2.tm_mon + 1, tm2.tm_year + 1900,
                 tm2.tm_hour, tm2.tm_min, tm2.tm_sec);
-        fprintf(stderr, "Time2: %d/%d/%d, %d:%02d:%02d\n",
+        fprintf(stderr, "\x54\x69\x6d\x65\x32\x3a\x20\x25\x64\x2f\x25\x64\x2f\x25\x64\x2c\x20\x25\x64\x3a\x25\x30\x32\x64\x3a\x25\x30\x32\x64\xa",
                 tm1.tm_mday, tm1.tm_mon + 1, tm1.tm_year + 1900,
                 tm1.tm_hour, tm1.tm_min, tm1.tm_sec);
         return 0;
@@ -466,8 +466,8 @@ int check_time(long offset)
     OPENSSL_gmtime_diff(&o1, &tm1, &off_day, &off_sec);
     toffset = (long)off_day *SECS_PER_DAY + off_sec;
     if (offset != toffset) {
-        fprintf(stderr, "TIME OFFSET ERROR!!\n");
-        fprintf(stderr, "Expected %ld, Got %ld (%d:%d)\n",
+        fprintf(stderr, "\x54\x49\x4d\x45\x20\x4f\x46\x46\x53\x45\x54\x20\x45\x52\x52\x4f\x52\x21\x21\xa");
+        fprintf(stderr, "\x45\x78\x70\x65\x63\x74\x65\x64\x20\x25\x6c\x64\x2c\x20\x47\x6f\x74\x20\x25\x6c\x64\x20\x28\x25\x64\x3a\x25\x64\x29\xa",
                 offset, toffset, off_day, off_sec);
         return 0;
     }

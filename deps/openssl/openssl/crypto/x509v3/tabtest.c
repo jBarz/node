@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -74,7 +74,7 @@ main()
     X509V3_EXT_METHOD **tmp;
     i = sizeof(standard_exts) / sizeof(X509V3_EXT_METHOD *);
     if (i != STANDARD_EXTENSION_COUNT)
-        fprintf(stderr, "Extension number invalid expecting %d\n", i);
+        fprintf(stderr, "\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x6e\x76\x61\x6c\x69\x64\x20\x65\x78\x70\x65\x63\x74\x69\x6e\x67\x20\x25\x64\xa", i);
     tmp = standard_exts;
     for (i = 0; i < STANDARD_EXTENSION_COUNT; i++, tmp++) {
         if ((*tmp)->ext_nid < prev)
@@ -84,9 +84,9 @@ main()
     }
     if (bad) {
         tmp = standard_exts;
-        fprintf(stderr, "Extensions out of order!\n");
+        fprintf(stderr, "\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x20\x6f\x75\x74\x20\x6f\x66\x20\x6f\x72\x64\x65\x72\x21\xa");
         for (i = 0; i < STANDARD_EXTENSION_COUNT; i++, tmp++)
-            printf("%d : %s\n", (*tmp)->ext_nid, OBJ_nid2sn((*tmp)->ext_nid));
+            printf("\x25\x64\x20\x3a\x20\x25\x73\xa", (*tmp)->ext_nid, OBJ_nid2sn((*tmp)->ext_nid));
     } else
-        fprintf(stderr, "Order OK\n");
+        fprintf(stderr, "\x4f\x72\x64\x65\x72\x20\x4f\x4b\xa");
 }

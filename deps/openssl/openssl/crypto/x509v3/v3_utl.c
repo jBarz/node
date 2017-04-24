@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -134,15 +134,15 @@ int X509V3_add_value_bool(const char *name, int asn1_bool,
                           STACK_OF(CONF_VALUE) **extlist)
 {
     if (asn1_bool)
-        return X509V3_add_value(name, "TRUE", extlist);
-    return X509V3_add_value(name, "FALSE", extlist);
+        return X509V3_add_value(name, "\x54\x52\x55\x45", extlist);
+    return X509V3_add_value(name, "\x46\x41\x4c\x53\x45", extlist);
 }
 
 int X509V3_add_value_bool_nf(char *name, int asn1_bool,
                              STACK_OF(CONF_VALUE) **extlist)
 {
     if (asn1_bool)
-        return X509V3_add_value(name, "TRUE", extlist);
+        return X509V3_add_value(name, "\x54\x52\x55\x45", extlist);
     return 1;
 }
 
@@ -183,13 +183,13 @@ ASN1_INTEGER *s2i_ASN1_INTEGER(X509V3_EXT_METHOD *method, char *value)
         return 0;
     }
     bn = BN_new();
-    if (value[0] == '-') {
+    if (value[0] == '\x2d') {
         value++;
         isneg = 1;
     } else
         isneg = 0;
 
-    if (value[0] == '0' && ((value[1] == 'x') || (value[1] == 'X'))) {
+    if (value[0] == '\x30' && ((value[1] == '\x78') || (value[1] == '\x58'))) {
         value += 2;
         ishex = 1;
     } else
@@ -240,14 +240,14 @@ int X509V3_get_value_bool(CONF_VALUE *value, int *asn1_bool)
     char *btmp;
     if (!(btmp = value->value))
         goto err;
-    if (!strcmp(btmp, "TRUE") || !strcmp(btmp, "true")
-        || !strcmp(btmp, "Y") || !strcmp(btmp, "y")
-        || !strcmp(btmp, "YES") || !strcmp(btmp, "yes")) {
+    if (!strcmp(btmp, "\x54\x52\x55\x45") || !strcmp(btmp, "\x74\x72\x75\x65")
+        || !strcmp(btmp, "\x59") || !strcmp(btmp, "\x79")
+        || !strcmp(btmp, "\x59\x45\x53") || !strcmp(btmp, "\x79\x65\x73")) {
         *asn1_bool = 0xff;
         return 1;
-    } else if (!strcmp(btmp, "FALSE") || !strcmp(btmp, "false")
-               || !strcmp(btmp, "N") || !strcmp(btmp, "n")
-               || !strcmp(btmp, "NO") || !strcmp(btmp, "no")) {
+    } else if (!strcmp(btmp, "\x46\x41\x4c\x53\x45") || !strcmp(btmp, "\x66\x61\x6c\x73\x65")
+               || !strcmp(btmp, "\x4e") || !strcmp(btmp, "\x6e")
+               || !strcmp(btmp, "\x4e\x4f") || !strcmp(btmp, "\x6e\x6f")) {
         *asn1_bool = 0;
         return 1;
     }
@@ -292,12 +292,12 @@ STACK_OF(CONF_VALUE) *X509V3_parse_list(const char *line)
     state = HDR_NAME;
     ntmp = NULL;
     /* Go through all characters */
-    for (p = linebuf, q = linebuf; (c = *p) && (c != '\r') && (c != '\n');
+    for (p = linebuf, q = linebuf; (c = *p) && (c != '\xd') && (c != '\xa');
          p++) {
 
         switch (state) {
         case HDR_NAME:
-            if (c == ':') {
+            if (c == '\x3a') {
                 state = HDR_VALUE;
                 *p = 0;
                 ntmp = strip_spaces(q);
@@ -307,12 +307,12 @@ STACK_OF(CONF_VALUE) *X509V3_parse_list(const char *line)
                     goto err;
                 }
                 q = p + 1;
-            } else if (c == ',') {
+            } else if (c == '\x2c') {
                 *p = 0;
                 ntmp = strip_spaces(q);
                 q = p + 1;
 #if 0
-                printf("%s\n", ntmp);
+                printf("\x25\x73\xa", ntmp);
 #endif
                 if (!ntmp) {
                     X509V3err(X509V3_F_X509V3_PARSE_LIST,
@@ -324,12 +324,12 @@ STACK_OF(CONF_VALUE) *X509V3_parse_list(const char *line)
             break;
 
         case HDR_VALUE:
-            if (c == ',') {
+            if (c == '\x2c') {
                 state = HDR_NAME;
                 *p = 0;
                 vtmp = strip_spaces(q);
 #if 0
-                printf("%s\n", ntmp);
+                printf("\x25\x73\xa", ntmp);
 #endif
                 if (!vtmp) {
                     X509V3err(X509V3_F_X509V3_PARSE_LIST,
@@ -347,7 +347,7 @@ STACK_OF(CONF_VALUE) *X509V3_parse_list(const char *line)
     if (state == HDR_VALUE) {
         vtmp = strip_spaces(q);
 #if 0
-        printf("%s=%s\n", ntmp, vtmp);
+        printf("\x25\x73\x3d\x25\x73\xa", ntmp, vtmp);
 #endif
         if (!vtmp) {
             X509V3err(X509V3_F_X509V3_PARSE_LIST,
@@ -358,7 +358,7 @@ STACK_OF(CONF_VALUE) *X509V3_parse_list(const char *line)
     } else {
         ntmp = strip_spaces(q);
 #if 0
-        printf("%s\n", ntmp);
+        printf("\x25\x73\xa", ntmp);
 #endif
         if (!ntmp) {
             X509V3err(X509V3_F_X509V3_PARSE_LIST, X509V3_R_INVALID_NULL_NAME);
@@ -409,7 +409,7 @@ char *hex_to_string(const unsigned char *buffer, long len)
     char *tmp, *q;
     const unsigned char *p;
     int i;
-    const static char hexdig[] = "0123456789ABCDEF";
+    const static char hexdig[] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
     if (!buffer || !len)
         return NULL;
     if (!(tmp = OPENSSL_malloc(len * 3 + 1))) {
@@ -420,7 +420,7 @@ char *hex_to_string(const unsigned char *buffer, long len)
     for (i = 0, p = buffer; i < len; i++, p++) {
         *q++ = hexdig[(*p >> 4) & 0xf];
         *q++ = hexdig[*p & 0xf];
-        *q++ = ':';
+        *q++ = '\x3a';
     }
     q[-1] = 0;
 #ifdef CHARSET_EBCDIC
@@ -449,7 +449,7 @@ unsigned char *string_to_hex(const char *str, long *len)
 #ifdef CHARSET_EBCDIC
         ch = os_toebcdic[ch];
 #endif
-        if (ch == ':')
+        if (ch == '\x3a')
             continue;
         cl = *p++;
 #ifdef CHARSET_EBCDIC
@@ -465,17 +465,17 @@ unsigned char *string_to_hex(const char *str, long *len)
         if (isupper(cl))
             cl = tolower(cl);
 
-        if ((ch >= '0') && (ch <= '9'))
-            ch -= '0';
-        else if ((ch >= 'a') && (ch <= 'f'))
-            ch -= 'a' - 10;
+        if ((ch >= '\x30') && (ch <= '\x39'))
+            ch -= '\x30';
+        else if ((ch >= '\x61') && (ch <= '\x66'))
+            ch -= '\x61' - 10;
         else
             goto badhex;
 
-        if ((cl >= '0') && (cl <= '9'))
-            cl -= '0';
-        else if ((cl >= 'a') && (cl <= 'f'))
-            cl -= 'a' - 10;
+        if ((cl >= '\x30') && (cl <= '\x39'))
+            cl -= '\x30';
+        else if ((cl >= '\x61') && (cl <= '\x66'))
+            cl -= '\x61' - 10;
         else
             goto badhex;
 
@@ -512,7 +512,7 @@ int name_cmp(const char *name, const char *cmp)
     if ((ret = strncmp(name, cmp, len)))
         return ret;
     c = name[len];
-    if (!c || (c == '.'))
+    if (!c || (c == '\x2e'))
         return 0;
     return 1;
 }
@@ -655,7 +655,7 @@ static void skip_prefix(const unsigned char **p, size_t *plen,
 
     while (pattern_len > subject_len && *pattern) {
         if ((flags & X509_CHECK_FLAG_SINGLE_LABEL_SUBDOMAINS) &&
-            *pattern == '.')
+            *pattern == '\x2e')
             break;
         ++pattern;
         --pattern_len;
@@ -683,10 +683,10 @@ static int equal_nocase(const unsigned char *pattern, size_t pattern_len,
         if (l == 0)
             return 0;
         if (l != r) {
-            if ('A' <= l && l <= 'Z')
-                l = (l - 'A') + 'a';
-            if ('A' <= r && r <= 'Z')
-                r = (r - 'A') + 'a';
+            if ('\x41' <= l && l <= '\x5a')
+                l = (l - '\x41') + '\x61';
+            if ('\x41' <= r && r <= '\x5a')
+                r = (r - '\x41') + '\x61';
             if (l != r)
                 return 0;
         }
@@ -726,7 +726,7 @@ static int equal_email(const unsigned char *a, size_t a_len,
      */
     while (i > 0) {
         --i;
-        if (a[i] == '@' || b[i] == '@') {
+        if (a[i] == '\x40' || b[i] == '\x40') {
             if (!equal_nocase(a + i, a_len - i, b + i, a_len - i, 0))
                 return 0;
             break;
@@ -764,7 +764,7 @@ static int wildcard_match(const unsigned char *prefix, size_t prefix_len,
      * If the wildcard makes up the entire first label, it must match at
      * least one character.
      */
-    if (prefix_len == 0 && *suffix == '.') {
+    if (prefix_len == 0 && *suffix == '\x2e') {
         if (wildcard_start == wildcard_end)
             return 0;
         allow_idna = 1;
@@ -773,10 +773,10 @@ static int wildcard_match(const unsigned char *prefix, size_t prefix_len,
     }
     /* IDNA labels cannot match partial wildcards */
     if (!allow_idna &&
-        subject_len >= 4 && strncasecmp((char *)subject, "xn--", 4) == 0)
+        subject_len >= 4 && strncasecmp((char *)subject, "\x78\x6e\x2d\x2d", 4) == 0)
         return 0;
     /* The wildcard may match a literal '*' */
-    if (wildcard_end == wildcard_start + 1 && *wildcard_start == '*')
+    if (wildcard_end == wildcard_start + 1 && *wildcard_start == '\x2a')
         return 1;
     /*
      * Check that the part matched by the wildcard contains only
@@ -784,10 +784,10 @@ static int wildcard_match(const unsigned char *prefix, size_t prefix_len,
      * allow_multi is set.
      */
     for (p = wildcard_start; p != wildcard_end; ++p)
-        if (!(('0' <= *p && *p <= '9') ||
-              ('A' <= *p && *p <= 'Z') ||
-              ('a' <= *p && *p <= 'z') ||
-              *p == '-' || (allow_multi && *p == '.')))
+        if (!(('\x30' <= *p && *p <= '\x39') ||
+              ('\x41' <= *p && *p <= '\x5a') ||
+              ('\x61' <= *p && *p <= '\x7a') ||
+              *p == '\x2d' || (allow_multi && *p == '\x2e')))
             return 0;
     return 1;
 }
@@ -809,9 +809,9 @@ static const unsigned char *valid_star(const unsigned char *p, size_t len,
          * Locate first and only legal wildcard, either at the start
          * or end of a non-IDNA first and not final label.
          */
-        if (p[i] == '*') {
+        if (p[i] == '\x2a') {
             int atstart = (state & LABEL_START);
-            int atend = (i == len - 1 || p[i + 1] == '.');
+            int atend = (i == len - 1 || p[i + 1] == '\x2e');
             /*-
              * At most one wildcard per pattern.
              * No wildcards in IDNA labels.
@@ -828,19 +828,19 @@ static const unsigned char *valid_star(const unsigned char *p, size_t len,
                 return NULL;
             star = &p[i];
             state &= ~LABEL_START;
-        } else if (('a' <= p[i] && p[i] <= 'z')
-                   || ('A' <= p[i] && p[i] <= 'Z')
-                   || ('0' <= p[i] && p[i] <= '9')) {
+        } else if (('\x61' <= p[i] && p[i] <= '\x7a')
+                   || ('\x41' <= p[i] && p[i] <= '\x5a')
+                   || ('\x30' <= p[i] && p[i] <= '\x39')) {
             if ((state & LABEL_START) != 0
-                && len - i >= 4 && strncasecmp((char *)&p[i], "xn--", 4) == 0)
+                && len - i >= 4 && strncasecmp((char *)&p[i], "\x78\x6e\x2d\x2d", 4) == 0)
                 state |= LABEL_IDNA;
             state &= ~(LABEL_HYPHEN | LABEL_START);
-        } else if (p[i] == '.') {
+        } else if (p[i] == '\x2e') {
             if ((state & (LABEL_HYPHEN | LABEL_START)) != 0)
                 return NULL;
             state = LABEL_START;
             ++dots;
-        } else if (p[i] == '-') {
+        } else if (p[i] == '\x2d') {
             /* no domain/subdomain starts with '-' */
             if ((state & LABEL_START) != 0)
                 return NULL;
@@ -869,7 +869,7 @@ static int equal_wildcard(const unsigned char *pattern, size_t pattern_len,
      * Subject names starting with '.' can only match a wildcard pattern
      * via a subject sub-domain pattern suffix match.
      */
-    if (!(subject_len > 1 && subject[0] == '.'))
+    if (!(subject_len > 1 && subject[0] == '\x2e'))
         star = valid_star(pattern, pattern_len, flags);
     if (star == NULL)
         return equal_nocase(pattern, pattern_len,
@@ -942,7 +942,7 @@ static int do_x509_check(X509 *x, const char *chk, size_t chklen,
     } else if (check_type == GEN_DNS) {
         cnid = NID_commonName;
         /* Implicit client-side DNS sub-domain pattern */
-        if (chklen > 1 && chk[0] == '.')
+        if (chklen > 1 && chk[0] == '\x2e')
             flags |= _X509_CHECK_FLAG_DOT_SUBDOMAINS;
         alt_type = V_ASN1_IA5STRING;
         if (flags & X509_CHECK_FLAG_NO_WILDCARDS)
@@ -1017,9 +1017,9 @@ int X509_check_host(X509 *x, const char *chk, size_t chklen,
      */
     if (chklen == 0)
         chklen = strlen(chk);
-    else if (memchr(chk, '\0', chklen > 1 ? chklen - 1 : chklen))
+    else if (memchr(chk, '\x0', chklen > 1 ? chklen - 1 : chklen))
         return -2;
-    if (chklen > 1 && chk[chklen - 1] == '\0')
+    if (chklen > 1 && chk[chklen - 1] == '\x0')
         --chklen;
     return do_x509_check(x, chk, chklen, flags, GEN_DNS, peername);
 }
@@ -1036,9 +1036,9 @@ int X509_check_email(X509 *x, const char *chk, size_t chklen,
      */
     if (chklen == 0)
         chklen = strlen((char *)chk);
-    else if (memchr(chk, '\0', chklen > 1 ? chklen - 1 : chklen))
+    else if (memchr(chk, '\x0', chklen > 1 ? chklen - 1 : chklen))
         return -2;
-    if (chklen > 1 && chk[chklen - 1] == '\0')
+    if (chklen > 1 && chk[chklen - 1] == '\x0')
         --chklen;
     return do_x509_check(x, chk, chklen, flags, GEN_EMAIL, NULL);
 }
@@ -1098,7 +1098,7 @@ ASN1_OCTET_STRING *a2i_IPADDRESS_NC(const char *ipasc)
     unsigned char ipout[32];
     char *iptmp = NULL, *p;
     int iplen1, iplen2;
-    p = strchr(ipasc, '/');
+    p = strchr(ipasc, '\x2f');
     if (!p)
         return NULL;
     iptmp = BUF_strdup(ipasc);
@@ -1140,7 +1140,7 @@ int a2i_ipadd(unsigned char *ipout, const char *ipasc)
 {
     /* If string contains a ':' assume IPv6 */
 
-    if (strchr(ipasc, ':')) {
+    if (strchr(ipasc, '\x3a')) {
         if (!ipv6_from_asc(ipout, ipasc))
             return 0;
         return 16;
@@ -1154,7 +1154,7 @@ int a2i_ipadd(unsigned char *ipout, const char *ipasc)
 static int ipv4_from_asc(unsigned char *v4, const char *in)
 {
     int a0, a1, a2, a3;
-    if (sscanf(in, "%d.%d.%d.%d", &a0, &a1, &a2, &a3) != 4)
+    if (sscanf(in, "\x25\x64\x2e\x25\x64\x2e\x25\x64\x2e\x25\x64", &a0, &a1, &a2, &a3) != 4)
         return 0;
     if ((a0 < 0) || (a0 > 255) || (a1 < 0) || (a1 > 255)
         || (a2 < 0) || (a2 > 255) || (a3 < 0) || (a3 > 255))
@@ -1188,7 +1188,7 @@ static int ipv6_from_asc(unsigned char *v6, const char *in)
      * The presence of a '::' will parse as one, two or three zero length
      * elements.
      */
-    if (!CONF_parse_list(in, ':', 0, ipv6_cb, &v6stat))
+    if (!CONF_parse_list(in, '\x3a', 0, ipv6_cb, &v6stat))
         return 0;
 
     /* Now for some sanity checks */
@@ -1289,12 +1289,12 @@ static int ipv6_hex(unsigned char *out, const char *in, int inlen)
     while (inlen--) {
         c = *in++;
         num <<= 4;
-        if ((c >= '0') && (c <= '9'))
-            num |= c - '0';
-        else if ((c >= 'A') && (c <= 'F'))
-            num |= c - 'A' + 10;
-        else if ((c >= 'a') && (c <= 'f'))
-            num |= c - 'a' + 10;
+        if ((c >= '\x30') && (c <= '\x39'))
+            num |= c - '\x30';
+        else if ((c >= '\x41') && (c <= '\x46'))
+            num |= c - '\x41' + 10;
+        else if ((c >= '\x61') && (c <= '\x66'))
+            num |= c - '\x61' + 10;
         else
             return 0;
     }
@@ -1320,10 +1320,10 @@ int X509V3_NAME_from_section(X509_NAME *nm, STACK_OF(CONF_VALUE) *dn_sk,
          */
         for (p = type; *p; p++)
 #ifndef CHARSET_EBCDIC
-            if ((*p == ':') || (*p == ',') || (*p == '.'))
+            if ((*p == '\x3a') || (*p == '\x2c') || (*p == '\x2e'))
 #else
-            if ((*p == os_toascii[':']) || (*p == os_toascii[','])
-                || (*p == os_toascii['.']))
+            if ((*p == os_toascii['\x3a']) || (*p == os_toascii['\x2c'])
+                || (*p == os_toascii['\x2e']))
 #endif
             {
                 p++;
@@ -1332,9 +1332,9 @@ int X509V3_NAME_from_section(X509_NAME *nm, STACK_OF(CONF_VALUE) *dn_sk,
                 break;
             }
 #ifndef CHARSET_EBCDIC
-        if (*type == '+')
+        if (*type == '\x2b')
 #else
-        if (*type == os_toascii['+'])
+        if (*type == os_toascii['\x2b'])
 #endif
         {
             mval = -1;

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -137,7 +137,7 @@ static int check_crl_chain(X509_STORE_CTX *ctx,
                            STACK_OF(X509) *crl_path);
 
 static int internal_verify(X509_STORE_CTX *ctx);
-const char X509_version[] = "X.509" OPENSSL_VERSION_PTEXT;
+const char X509_version[] = "\x58\x2e\x35\x30\x39" OPENSSL_VERSION_PTEXT;
 
 static int null_callback(int ok, X509_STORE_CTX *e)
 {
@@ -620,7 +620,7 @@ static int check_chain_extensions(X509_STORE_CTX *ctx)
          * A hack to keep people who don't want to modify their software
          * happy
          */
-        if (getenv("OPENSSL_ALLOW_PROXY_CERTS"))
+        if (getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x41\x4c\x4c\x4f\x57\x5f\x50\x52\x4f\x58\x59\x5f\x43\x45\x52\x54\x53"))
             allow_proxy_certs = 1;
         purpose = ctx->param->purpose;
     }
@@ -1954,8 +1954,8 @@ int X509_cmp_time(const ASN1_TIME *ctm, time_t *cmp_time)
      */
     if (ctm->type == V_ASN1_UTCTIME) {
         /* YYMMDDHHMM[SS]Z or YYMMDDHHMM[SS](+-)hhmm */
-        int min_length = sizeof("YYMMDDHHMMZ") - 1;
-        int max_length = sizeof("YYMMDDHHMMSS+hhmm") - 1;
+        int min_length = sizeof("\x59\x59\x4d\x4d\x44\x44\x48\x48\x4d\x4d\x5a") - 1;
+        int max_length = sizeof("\x59\x59\x4d\x4d\x44\x44\x48\x48\x4d\x4d\x53\x53\x2b\x68\x68\x6d\x6d") - 1;
         if (remaining < min_length || remaining > max_length)
             return 0;
         memcpy(p, str, 10);
@@ -1964,8 +1964,8 @@ int X509_cmp_time(const ASN1_TIME *ctm, time_t *cmp_time)
         remaining -= 10;
     } else {
         /* YYYYMMDDHHMM[SS[.fff]]Z or YYYYMMDDHHMM[SS[.f[f[f]]]](+-)hhmm */
-        int min_length = sizeof("YYYYMMDDHHMMZ") - 1;
-        int max_length = sizeof("YYYYMMDDHHMMSS.fff+hhmm") - 1;
+        int min_length = sizeof("\x59\x59\x59\x59\x4d\x4d\x44\x44\x48\x48\x4d\x4d\x5a") - 1;
+        int max_length = sizeof("\x59\x59\x59\x59\x4d\x4d\x44\x44\x48\x48\x4d\x4d\x53\x53\x2e\x66\x66\x66\x2b\x68\x68\x6d\x6d") - 1;
         if (remaining < min_length || remaining > max_length)
             return 0;
         memcpy(p, str, 12);
@@ -1974,9 +1974,9 @@ int X509_cmp_time(const ASN1_TIME *ctm, time_t *cmp_time)
         remaining -= 12;
     }
 
-    if ((*str == 'Z') || (*str == '-') || (*str == '+')) {
-        *(p++) = '0';
-        *(p++) = '0';
+    if ((*str == '\x5a') || (*str == '\x2d') || (*str == '\x2b')) {
+        *(p++) = '\x30';
+        *(p++) = '\x30';
     } else {
         /* SS (seconds) */
         if (remaining < 2)
@@ -1989,39 +1989,39 @@ int X509_cmp_time(const ASN1_TIME *ctm, time_t *cmp_time)
          * TODO(emilia): in RFC5280, fractional seconds are forbidden.
          * Can we just kill them altogether?
          */
-        if (remaining && *str == '.') {
+        if (remaining && *str == '\x2e') {
             str++;
             remaining--;
             for (i = 0; i < 3 && remaining; i++, str++, remaining--) {
-                if (*str < '0' || *str > '9')
+                if (*str < '\x30' || *str > '\x39')
                     break;
             }
         }
 
     }
-    *(p++) = 'Z';
-    *(p++) = '\0';
+    *(p++) = '\x5a';
+    *(p++) = '\x0';
 
     /* We now need either a terminating 'Z' or an offset. */
     if (!remaining)
         return 0;
-    if (*str == 'Z') {
+    if (*str == '\x5a') {
         if (remaining != 1)
             return 0;
         offset = 0;
     } else {
         /* (+-)HHMM */
-        if ((*str != '+') && (*str != '-'))
+        if ((*str != '\x2b') && (*str != '\x2d'))
             return 0;
         /* Historical behaviour: the (+-)hhmm offset is forbidden in RFC5280. */
         if (remaining != 5)
             return 0;
-        if (str[1] < '0' || str[1] > '9' || str[2] < '0' || str[2] > '9' ||
-            str[3] < '0' || str[3] > '9' || str[4] < '0' || str[4] > '9')
+        if (str[1] < '\x30' || str[1] > '\x39' || str[2] < '\x30' || str[2] > '\x39' ||
+            str[3] < '\x30' || str[3] > '\x39' || str[4] < '\x30' || str[4] > '\x39')
             return 0;
-        offset = ((str[1] - '0') * 10 + (str[2] - '0')) * 60;
-        offset += (str[3] - '0') * 10 + (str[4] - '0');
-        if (*str == '-')
+        offset = ((str[1] - '\x30') * 10 + (str[2] - '\x30')) * 60;
+        offset += (str[3] - '\x30') * 10 + (str[4] - '\x30');
+        if (*str == '\x2d')
             offset = -offset;
     }
     atm.type = ctm->type;
@@ -2033,10 +2033,10 @@ int X509_cmp_time(const ASN1_TIME *ctm, time_t *cmp_time)
         return 0;
 
     if (ctm->type == V_ASN1_UTCTIME) {
-        i = (buff1[0] - '0') * 10 + (buff1[1] - '0');
+        i = (buff1[0] - '\x30') * 10 + (buff1[1] - '\x30');
         if (i < 50)
             i += 100;           /* cf. RFC 2459 */
-        j = (buff2[0] - '0') * 10 + (buff2[1] - '0');
+        j = (buff2[0] - '\x30') * 10 + (buff2[1] - '\x30');
         if (j < 50)
             j += 100;
 
@@ -2451,7 +2451,7 @@ int X509_STORE_CTX_init(X509_STORE_CTX *ctx, X509_STORE *store, X509 *x509,
 
     if (ret)
         ret = X509_VERIFY_PARAM_inherit(ctx->param,
-                                        X509_VERIFY_PARAM_lookup("default"));
+                                        X509_VERIFY_PARAM_lookup("\x64\x65\x66\x61\x75\x6c\x74"));
 
     if (ret == 0) {
         X509err(X509_F_X509_STORE_CTX_INIT, ERR_R_MALLOC_FAILURE);

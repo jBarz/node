@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -64,13 +64,13 @@ static void hexdump(FILE *f, const char *title, const unsigned char *s, int l)
 {
     int n = 0;
 
-    fprintf(f, "%s", title);
+    fprintf(f, "\x25\x73", title);
     for (; n < l; ++n) {
         if ((n % 16) == 0)
-            fprintf(f, "\n%04x", n);
-        fprintf(f, " %02x", s[n]);
+            fprintf(f, "\xa\x25\x30\x34\x78", n);
+        fprintf(f, "\x20\x25\x30\x32\x78", s[n]);
     }
-    fprintf(f, "\n");
+    fprintf(f, "\xa");
 }
 
 static int convert(unsigned char *s)
@@ -82,10 +82,10 @@ static int convert(unsigned char *s)
         unsigned int n;
 
         if (!s[1]) {
-            fprintf(stderr, "Odd number of hex digits!");
+            fprintf(stderr, "\x4f\x64\x64\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x68\x65\x78\x20\x64\x69\x67\x69\x74\x73\x21");
             EXIT(4);
         }
-        sscanf((char *)s, "%2x", &n);
+        sscanf((char *)s, "\x25\x32\x78", &n);
         *d = (unsigned char)n;
         digits++;
     }
@@ -142,22 +142,22 @@ static void test1(const EVP_CIPHER *c, const unsigned char *key, int kn,
     unsigned char out[4096];
     int outl, outl2, mode;
 
-    printf("Testing cipher %s%s\n", EVP_CIPHER_name(c),
+    printf("\x54\x65\x73\x74\x69\x6e\x67\x20\x63\x69\x70\x68\x65\x72\x20\x25\x73\x25\x73\xa", EVP_CIPHER_name(c),
            (encdec ==
-            1 ? "(encrypt)" : (encdec ==
-                               0 ? "(decrypt)" : "(encrypt/decrypt)")));
-    hexdump(stdout, "Key", key, kn);
+            1 ? "\x28\x65\x6e\x63\x72\x79\x70\x74\x29" : (encdec ==
+                               0 ? "\x28\x64\x65\x63\x72\x79\x70\x74\x29" : "\x28\x65\x6e\x63\x72\x79\x70\x74\x2f\x64\x65\x63\x72\x79\x70\x74\x29")));
+    hexdump(stdout, "\x4b\x65\x79", key, kn);
     if (in)
-        hexdump(stdout, "IV", iv, in);
-    hexdump(stdout, "Plaintext", plaintext, pn);
-    hexdump(stdout, "Ciphertext", ciphertext, cn);
+        hexdump(stdout, "\x49\x56", iv, in);
+    hexdump(stdout, "\x50\x6c\x61\x69\x6e\x74\x65\x78\x74", plaintext, pn);
+    hexdump(stdout, "\x43\x69\x70\x68\x65\x72\x74\x65\x78\x74", ciphertext, cn);
     if (an)
-        hexdump(stdout, "AAD", aad, an);
+        hexdump(stdout, "\x41\x41\x44", aad, an);
     if (tn)
-        hexdump(stdout, "Tag", tag, tn);
+        hexdump(stdout, "\x54\x61\x67", tag, tn);
     mode = EVP_CIPHER_mode(c);
     if (kn != EVP_CIPHER_key_length(c)) {
-        fprintf(stderr, "Key length doesn't match, got %d expected %lu\n", kn,
+        fprintf(stderr, "\x4b\x65\x79\x20\x6c\x65\x6e\x67\x74\x68\x20\x64\x6f\x65\x73\x6e\x27\x74\x20\x6d\x61\x74\x63\x68\x2c\x20\x67\x6f\x74\x20\x25\x64\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x6c\x75\xa", kn,
                 (unsigned long)EVP_CIPHER_key_length(c));
         test1_exit(5);
     }
@@ -166,90 +166,90 @@ static void test1(const EVP_CIPHER *c, const unsigned char *key, int kn,
     if (encdec != 0) {
         if (mode == EVP_CIPH_GCM_MODE) {
             if (!EVP_EncryptInit_ex(&ctx, c, NULL, NULL, NULL)) {
-                fprintf(stderr, "EncryptInit failed\n");
+                fprintf(stderr, "\x45\x6e\x63\x72\x79\x70\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(10);
             }
             if (!EVP_CIPHER_CTX_ctrl(&ctx, EVP_CTRL_GCM_SET_IVLEN, in, NULL)) {
-                fprintf(stderr, "IV length set failed\n");
+                fprintf(stderr, "\x49\x56\x20\x6c\x65\x6e\x67\x74\x68\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(11);
             }
             if (!EVP_EncryptInit_ex(&ctx, NULL, NULL, key, iv)) {
-                fprintf(stderr, "Key/IV set failed\n");
+                fprintf(stderr, "\x4b\x65\x79\x2f\x49\x56\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(12);
             }
             if (an && !EVP_EncryptUpdate(&ctx, NULL, &outl, aad, an)) {
-                fprintf(stderr, "AAD set failed\n");
+                fprintf(stderr, "\x41\x41\x44\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(13);
             }
         } else if (mode == EVP_CIPH_CCM_MODE) {
             if (!EVP_EncryptInit_ex(&ctx, c, NULL, NULL, NULL)) {
-                fprintf(stderr, "EncryptInit failed\n");
+                fprintf(stderr, "\x45\x6e\x63\x72\x79\x70\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(10);
             }
             if (!EVP_CIPHER_CTX_ctrl(&ctx, EVP_CTRL_CCM_SET_IVLEN, in, NULL)) {
-                fprintf(stderr, "IV length set failed\n");
+                fprintf(stderr, "\x49\x56\x20\x6c\x65\x6e\x67\x74\x68\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(11);
             }
             if (!EVP_CIPHER_CTX_ctrl(&ctx, EVP_CTRL_CCM_SET_TAG, tn, NULL)) {
-                fprintf(stderr, "Tag length set failed\n");
+                fprintf(stderr, "\x54\x61\x67\x20\x6c\x65\x6e\x67\x74\x68\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(11);
             }
             if (!EVP_EncryptInit_ex(&ctx, NULL, NULL, key, iv)) {
-                fprintf(stderr, "Key/IV set failed\n");
+                fprintf(stderr, "\x4b\x65\x79\x2f\x49\x56\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(12);
             }
             if (!EVP_EncryptUpdate(&ctx, NULL, &outl, NULL, pn)) {
-                fprintf(stderr, "Plaintext length set failed\n");
+                fprintf(stderr, "\x50\x6c\x61\x69\x6e\x74\x65\x78\x74\x20\x6c\x65\x6e\x67\x74\x68\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(12);
             }
             if (an && !EVP_EncryptUpdate(&ctx, NULL, &outl, aad, an)) {
-                fprintf(stderr, "AAD set failed\n");
+                fprintf(stderr, "\x41\x41\x44\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(13);
             }
         } else if (mode == EVP_CIPH_WRAP_MODE) {
             if (!EVP_EncryptInit_ex(&ctx, c, NULL, key, in ? iv : NULL)) {
-                fprintf(stderr, "EncryptInit failed\n");
+                fprintf(stderr, "\x45\x6e\x63\x72\x79\x70\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(10);
             }
         } else if (!EVP_EncryptInit_ex(&ctx, c, NULL, key, iv)) {
-            fprintf(stderr, "EncryptInit failed\n");
+            fprintf(stderr, "\x45\x6e\x63\x72\x79\x70\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
             ERR_print_errors_fp(stderr);
             test1_exit(10);
         }
         EVP_CIPHER_CTX_set_padding(&ctx, 0);
 
         if (!EVP_EncryptUpdate(&ctx, out, &outl, plaintext, pn)) {
-            fprintf(stderr, "Encrypt failed\n");
+            fprintf(stderr, "\x45\x6e\x63\x72\x79\x70\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
             ERR_print_errors_fp(stderr);
             test1_exit(6);
         }
         if (!EVP_EncryptFinal_ex(&ctx, out + outl, &outl2)) {
-            fprintf(stderr, "EncryptFinal failed\n");
+            fprintf(stderr, "\x45\x6e\x63\x72\x79\x70\x74\x46\x69\x6e\x61\x6c\x20\x66\x61\x69\x6c\x65\x64\xa");
             ERR_print_errors_fp(stderr);
             test1_exit(7);
         }
 
         if (outl + outl2 != cn) {
-            fprintf(stderr, "Ciphertext length mismatch got %d expected %d\n",
+            fprintf(stderr, "\x43\x69\x70\x68\x65\x72\x74\x65\x78\x74\x20\x6c\x65\x6e\x67\x74\x68\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\x20\x67\x6f\x74\x20\x25\x64\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\xa",
                     outl + outl2, cn);
             test1_exit(8);
         }
 
         if (memcmp(out, ciphertext, cn)) {
-            fprintf(stderr, "Ciphertext mismatch\n");
-            hexdump(stderr, "Got", out, cn);
-            hexdump(stderr, "Expected", ciphertext, cn);
+            fprintf(stderr, "\x43\x69\x70\x68\x65\x72\x74\x65\x78\x74\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa");
+            hexdump(stderr, "\x47\x6f\x74", out, cn);
+            hexdump(stderr, "\x45\x78\x70\x65\x63\x74\x65\x64", ciphertext, cn);
             test1_exit(9);
         }
         if (mode == EVP_CIPH_GCM_MODE || mode == EVP_CIPH_CCM_MODE) {
@@ -259,14 +259,14 @@ static void test1(const EVP_CIPHER *c, const unsigned char *key, int kn,
              * EVP_CTRL_GCM_GET_TAG
              */
             if (!EVP_CIPHER_CTX_ctrl(&ctx, EVP_CTRL_GCM_GET_TAG, tn, rtag)) {
-                fprintf(stderr, "Get tag failed\n");
+                fprintf(stderr, "\x47\x65\x74\x20\x74\x61\x67\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(14);
             }
             if (memcmp(rtag, tag, tn)) {
-                fprintf(stderr, "Tag mismatch\n");
-                hexdump(stderr, "Got", rtag, tn);
-                hexdump(stderr, "Expected", tag, tn);
+                fprintf(stderr, "\x54\x61\x67\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa");
+                hexdump(stderr, "\x47\x6f\x74", rtag, tn);
+                hexdump(stderr, "\x45\x78\x70\x65\x63\x74\x65\x64", tag, tn);
                 test1_exit(9);
             }
         }
@@ -275,105 +275,105 @@ static void test1(const EVP_CIPHER *c, const unsigned char *key, int kn,
     if (encdec <= 0) {
         if (mode == EVP_CIPH_GCM_MODE) {
             if (!EVP_DecryptInit_ex(&ctx, c, NULL, NULL, NULL)) {
-                fprintf(stderr, "EncryptInit failed\n");
+                fprintf(stderr, "\x45\x6e\x63\x72\x79\x70\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(10);
             }
             if (!EVP_CIPHER_CTX_ctrl(&ctx, EVP_CTRL_GCM_SET_IVLEN, in, NULL)) {
-                fprintf(stderr, "IV length set failed\n");
+                fprintf(stderr, "\x49\x56\x20\x6c\x65\x6e\x67\x74\x68\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(11);
             }
             if (!EVP_DecryptInit_ex(&ctx, NULL, NULL, key, iv)) {
-                fprintf(stderr, "Key/IV set failed\n");
+                fprintf(stderr, "\x4b\x65\x79\x2f\x49\x56\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(12);
             }
             if (!EVP_CIPHER_CTX_ctrl
                 (&ctx, EVP_CTRL_GCM_SET_TAG, tn, (void *)tag)) {
-                fprintf(stderr, "Set tag failed\n");
+                fprintf(stderr, "\x53\x65\x74\x20\x74\x61\x67\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(14);
             }
             if (an && !EVP_DecryptUpdate(&ctx, NULL, &outl, aad, an)) {
-                fprintf(stderr, "AAD set failed\n");
+                fprintf(stderr, "\x41\x41\x44\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(13);
             }
         } else if (mode == EVP_CIPH_CCM_MODE) {
             if (!EVP_DecryptInit_ex(&ctx, c, NULL, NULL, NULL)) {
-                fprintf(stderr, "DecryptInit failed\n");
+                fprintf(stderr, "\x44\x65\x63\x72\x79\x70\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(10);
             }
             if (!EVP_CIPHER_CTX_ctrl(&ctx, EVP_CTRL_CCM_SET_IVLEN, in, NULL)) {
-                fprintf(stderr, "IV length set failed\n");
+                fprintf(stderr, "\x49\x56\x20\x6c\x65\x6e\x67\x74\x68\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(11);
             }
             if (!EVP_CIPHER_CTX_ctrl
                 (&ctx, EVP_CTRL_CCM_SET_TAG, tn, (void *)tag)) {
-                fprintf(stderr, "Tag length set failed\n");
+                fprintf(stderr, "\x54\x61\x67\x20\x6c\x65\x6e\x67\x74\x68\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(11);
             }
             if (!EVP_DecryptInit_ex(&ctx, NULL, NULL, key, iv)) {
-                fprintf(stderr, "Key/Nonce set failed\n");
+                fprintf(stderr, "\x4b\x65\x79\x2f\x4e\x6f\x6e\x63\x65\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(12);
             }
             if (!EVP_DecryptUpdate(&ctx, NULL, &outl, NULL, pn)) {
-                fprintf(stderr, "Plaintext length set failed\n");
+                fprintf(stderr, "\x50\x6c\x61\x69\x6e\x74\x65\x78\x74\x20\x6c\x65\x6e\x67\x74\x68\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(12);
             }
             if (an && !EVP_EncryptUpdate(&ctx, NULL, &outl, aad, an)) {
-                fprintf(stderr, "AAD set failed\n");
+                fprintf(stderr, "\x41\x41\x44\x20\x73\x65\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(13);
             }
         } else if (mode == EVP_CIPH_WRAP_MODE) {
             if (!EVP_DecryptInit_ex(&ctx, c, NULL, key, in ? iv : NULL)) {
-                fprintf(stderr, "EncryptInit failed\n");
+                fprintf(stderr, "\x45\x6e\x63\x72\x79\x70\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
                 ERR_print_errors_fp(stderr);
                 test1_exit(10);
             }
         } else if (!EVP_DecryptInit_ex(&ctx, c, NULL, key, iv)) {
-            fprintf(stderr, "DecryptInit failed\n");
+            fprintf(stderr, "\x44\x65\x63\x72\x79\x70\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
             ERR_print_errors_fp(stderr);
             test1_exit(11);
         }
         EVP_CIPHER_CTX_set_padding(&ctx, 0);
 
         if (!EVP_DecryptUpdate(&ctx, out, &outl, ciphertext, cn)) {
-            fprintf(stderr, "Decrypt failed\n");
+            fprintf(stderr, "\x44\x65\x63\x72\x79\x70\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
             ERR_print_errors_fp(stderr);
             test1_exit(6);
         }
         if (mode != EVP_CIPH_CCM_MODE
             && !EVP_DecryptFinal_ex(&ctx, out + outl, &outl2)) {
-            fprintf(stderr, "DecryptFinal failed\n");
+            fprintf(stderr, "\x44\x65\x63\x72\x79\x70\x74\x46\x69\x6e\x61\x6c\x20\x66\x61\x69\x6c\x65\x64\xa");
             ERR_print_errors_fp(stderr);
             test1_exit(7);
         }
 
         if (outl + outl2 != pn) {
-            fprintf(stderr, "Plaintext length mismatch got %d expected %d\n",
+            fprintf(stderr, "\x50\x6c\x61\x69\x6e\x74\x65\x78\x74\x20\x6c\x65\x6e\x67\x74\x68\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\x20\x67\x6f\x74\x20\x25\x64\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\xa",
                     outl + outl2, pn);
             test1_exit(8);
         }
 
         if (memcmp(out, plaintext, pn)) {
-            fprintf(stderr, "Plaintext mismatch\n");
-            hexdump(stderr, "Got", out, pn);
-            hexdump(stderr, "Expected", plaintext, pn);
+            fprintf(stderr, "\x50\x6c\x61\x69\x6e\x74\x65\x78\x74\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa");
+            hexdump(stderr, "\x47\x6f\x74", out, pn);
+            hexdump(stderr, "\x45\x78\x70\x65\x63\x74\x65\x64", plaintext, pn);
             test1_exit(9);
         }
     }
 
     EVP_CIPHER_CTX_cleanup(&ctx);
 
-    printf("\n");
+    printf("\xa");
 }
 
 static int test_cipher(const char *cipher, const unsigned char *key, int kn,
@@ -408,42 +408,42 @@ static int test_digest(const char *digest,
     if (!d)
         return 0;
 
-    printf("Testing digest %s\n", EVP_MD_name(d));
-    hexdump(stdout, "Plaintext", plaintext, pn);
-    hexdump(stdout, "Digest", ciphertext, cn);
+    printf("\x54\x65\x73\x74\x69\x6e\x67\x20\x64\x69\x67\x65\x73\x74\x20\x25\x73\xa", EVP_MD_name(d));
+    hexdump(stdout, "\x50\x6c\x61\x69\x6e\x74\x65\x78\x74", plaintext, pn);
+    hexdump(stdout, "\x44\x69\x67\x65\x73\x74", ciphertext, cn);
 
     EVP_MD_CTX_init(&ctx);
     if (!EVP_DigestInit_ex(&ctx, d, NULL)) {
-        fprintf(stderr, "DigestInit failed\n");
+        fprintf(stderr, "\x44\x69\x67\x65\x73\x74\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
         ERR_print_errors_fp(stderr);
         EXIT(100);
     }
     if (!EVP_DigestUpdate(&ctx, plaintext, pn)) {
-        fprintf(stderr, "DigestUpdate failed\n");
+        fprintf(stderr, "\x44\x69\x67\x65\x73\x74\x55\x70\x64\x61\x74\x65\x20\x66\x61\x69\x6c\x65\x64\xa");
         ERR_print_errors_fp(stderr);
         EXIT(101);
     }
     if (!EVP_DigestFinal_ex(&ctx, md, &mdn)) {
-        fprintf(stderr, "DigestFinal failed\n");
+        fprintf(stderr, "\x44\x69\x67\x65\x73\x74\x46\x69\x6e\x61\x6c\x20\x66\x61\x69\x6c\x65\x64\xa");
         ERR_print_errors_fp(stderr);
         EXIT(101);
     }
     EVP_MD_CTX_cleanup(&ctx);
 
     if (mdn != cn) {
-        fprintf(stderr, "Digest length mismatch, got %d expected %d\n", mdn,
+        fprintf(stderr, "\x44\x69\x67\x65\x73\x74\x20\x6c\x65\x6e\x67\x74\x68\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\x2c\x20\x67\x6f\x74\x20\x25\x64\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\xa", mdn,
                 cn);
         EXIT(102);
     }
 
     if (memcmp(md, ciphertext, cn)) {
-        fprintf(stderr, "Digest mismatch\n");
-        hexdump(stderr, "Got", md, cn);
-        hexdump(stderr, "Expected", ciphertext, cn);
+        fprintf(stderr, "\x44\x69\x67\x65\x73\x74\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa");
+        hexdump(stderr, "\x47\x6f\x74", md, cn);
+        hexdump(stderr, "\x45\x78\x70\x65\x63\x74\x65\x64", ciphertext, cn);
         EXIT(103);
     }
 
-    printf("\n");
+    printf("\xa");
 
     EVP_MD_CTX_cleanup(&ctx);
 
@@ -456,7 +456,7 @@ int main(int argc, char **argv)
     FILE *f;
 
     if (argc != 2) {
-        fprintf(stderr, "%s <test file>\n", argv[0]);
+        fprintf(stderr, "\x25\x73\x20\x3c\x74\x65\x73\x74\x20\x66\x69\x6c\x65\x3e\xa", argv[0]);
         EXIT(1);
     }
     CRYPTO_malloc_debug_init();
@@ -465,7 +465,7 @@ int main(int argc, char **argv)
 
     szTestFile = argv[1];
 
-    f = fopen(szTestFile, "r");
+    f = fopen(szTestFile, "\x72");
     if (!f) {
         perror(szTestFile);
         EXIT(2);
@@ -508,32 +508,32 @@ int main(int argc, char **argv)
 
         if (!fgets((char *)line, sizeof line, f))
             break;
-        if (line[0] == '#' || line[0] == '\n')
+        if (line[0] == '\x23' || line[0] == '\xa')
             continue;
         p = line;
-        cipher = sstrsep(&p, ":");
-        key = ustrsep(&p, ":");
-        iv = ustrsep(&p, ":");
-        plaintext = ustrsep(&p, ":");
-        ciphertext = ustrsep(&p, ":");
-        if (p[-1] == '\n') {
+        cipher = sstrsep(&p, "\x3a");
+        key = ustrsep(&p, "\x3a");
+        iv = ustrsep(&p, "\x3a");
+        plaintext = ustrsep(&p, "\x3a");
+        ciphertext = ustrsep(&p, "\x3a");
+        if (p[-1] == '\xa') {
             encdec = -1;
-            p[-1] = '\0';
+            p[-1] = '\x0';
             tag = aad = NULL;
             an = tn = 0;
         } else {
-            aad = ustrsep(&p, ":");
-            tag = ustrsep(&p, ":");
+            aad = ustrsep(&p, "\x3a");
+            tag = ustrsep(&p, "\x3a");
             if (tag == NULL) {
                 p = (char *)aad;
                 tag = aad = NULL;
                 an = tn = 0;
             }
-            if (p[-1] == '\n') {
+            if (p[-1] == '\xa') {
                 encdec = -1;
-                p[-1] = '\0';
+                p[-1] = '\x0';
             } else
-                encdec = atoi(sstrsep(&p, "\n"));
+                encdec = atoi(sstrsep(&p, "\xa"));
         }
 
         kn = convert(key);
@@ -550,36 +550,36 @@ int main(int argc, char **argv)
              tag, tn, encdec)
             && !test_digest(cipher, plaintext, pn, ciphertext, cn)) {
 #ifdef OPENSSL_NO_AES
-            if (strstr(cipher, "AES") == cipher) {
-                fprintf(stdout, "Cipher disabled, skipping %s\n", cipher);
+            if (strstr(cipher, "\x41\x45\x53") == cipher) {
+                fprintf(stdout, "\x43\x69\x70\x68\x65\x72\x20\x64\x69\x73\x61\x62\x6c\x65\x64\x2c\x20\x73\x6b\x69\x70\x70\x69\x6e\x67\x20\x25\x73\xa", cipher);
                 continue;
             }
 #endif
 #ifdef OPENSSL_NO_DES
-            if (strstr(cipher, "DES") == cipher) {
-                fprintf(stdout, "Cipher disabled, skipping %s\n", cipher);
+            if (strstr(cipher, "\x44\x45\x53") == cipher) {
+                fprintf(stdout, "\x43\x69\x70\x68\x65\x72\x20\x64\x69\x73\x61\x62\x6c\x65\x64\x2c\x20\x73\x6b\x69\x70\x70\x69\x6e\x67\x20\x25\x73\xa", cipher);
                 continue;
             }
 #endif
 #ifdef OPENSSL_NO_RC4
-            if (strstr(cipher, "RC4") == cipher) {
-                fprintf(stdout, "Cipher disabled, skipping %s\n", cipher);
+            if (strstr(cipher, "\x52\x43\x34") == cipher) {
+                fprintf(stdout, "\x43\x69\x70\x68\x65\x72\x20\x64\x69\x73\x61\x62\x6c\x65\x64\x2c\x20\x73\x6b\x69\x70\x70\x69\x6e\x67\x20\x25\x73\xa", cipher);
                 continue;
             }
 #endif
 #ifdef OPENSSL_NO_CAMELLIA
-            if (strstr(cipher, "CAMELLIA") == cipher) {
-                fprintf(stdout, "Cipher disabled, skipping %s\n", cipher);
+            if (strstr(cipher, "\x43\x41\x4d\x45\x4c\x4c\x49\x41") == cipher) {
+                fprintf(stdout, "\x43\x69\x70\x68\x65\x72\x20\x64\x69\x73\x61\x62\x6c\x65\x64\x2c\x20\x73\x6b\x69\x70\x70\x69\x6e\x67\x20\x25\x73\xa", cipher);
                 continue;
             }
 #endif
 #ifdef OPENSSL_NO_SEED
-            if (strstr(cipher, "SEED") == cipher) {
-                fprintf(stdout, "Cipher disabled, skipping %s\n", cipher);
+            if (strstr(cipher, "\x53\x45\x45\x44") == cipher) {
+                fprintf(stdout, "\x43\x69\x70\x68\x65\x72\x20\x64\x69\x73\x61\x62\x6c\x65\x64\x2c\x20\x73\x6b\x69\x70\x70\x69\x6e\x67\x20\x25\x73\xa", cipher);
                 continue;
             }
 #endif
-            fprintf(stderr, "Can't find %s\n", cipher);
+            fprintf(stderr, "\x43\x61\x6e\x27\x74\x20\x66\x69\x6e\x64\x20\x25\x73\xa", cipher);
             EXIT(3);
         }
     }

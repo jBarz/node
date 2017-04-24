@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -84,8 +84,8 @@ extern "C" {
 # ifdef ENGINE_REF_COUNT_DEBUG
 
 #  define engine_ref_debug(e, isfunct, diff) \
-        fprintf(stderr, "engine: %08x %s from %d to %d (%s:%d)\n", \
-                (unsigned int)(e), (isfunct ? "funct" : "struct"), \
+        fprintf(stderr, "\x65\x6e\x67\x69\x6e\x65\x3a\x20\x25\x30\x38\x78\x20\x25\x73\x20\x66\x72\x6f\x6d\x20\x25\x64\x20\x74\x6f\x20\x25\x64\x20\x28\x25\x73\x3a\x25\x64\x29\xa", \
+                (unsigned int)(e), (isfunct ? "\x66\x75\x6e\x63\x74" : "\x73\x74\x72\x75\x63\x74"), \
                 ((isfunct) ? ((e)->funct_ref - (diff)) : ((e)->struct_ref - (diff))), \
                 ((isfunct) ? (e)->funct_ref : (e)->struct_ref), \
                 (__FILE__), (__LINE__));

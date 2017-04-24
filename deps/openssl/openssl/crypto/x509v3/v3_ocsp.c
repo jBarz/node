@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -162,27 +162,27 @@ static int i2r_ocsp_crlid(const X509V3_EXT_METHOD *method, void *in, BIO *bp,
 {
     OCSP_CRLID *a = in;
     if (a->crlUrl) {
-        if (BIO_printf(bp, "%*scrlUrl: ", ind, "") <= 0)
+        if (BIO_printf(bp, "\x25\x2a\x73\x63\x72\x6c\x55\x72\x6c\x3a\x20", ind, "") <= 0)
             goto err;
         if (!ASN1_STRING_print(bp, (ASN1_STRING *)a->crlUrl))
             goto err;
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             goto err;
     }
     if (a->crlNum) {
-        if (BIO_printf(bp, "%*scrlNum: ", ind, "") <= 0)
+        if (BIO_printf(bp, "\x25\x2a\x73\x63\x72\x6c\x4e\x75\x6d\x3a\x20", ind, "") <= 0)
             goto err;
         if (i2a_ASN1_INTEGER(bp, a->crlNum) <= 0)
             goto err;
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             goto err;
     }
     if (a->crlTime) {
-        if (BIO_printf(bp, "%*scrlTime: ", ind, "") <= 0)
+        if (BIO_printf(bp, "\x25\x2a\x73\x63\x72\x6c\x54\x69\x6d\x65\x3a\x20", ind, "") <= 0)
             goto err;
         if (!ASN1_GENERALIZEDTIME_print(bp, a->crlTime))
             goto err;
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             goto err;
     }
     return 1;
@@ -193,7 +193,7 @@ static int i2r_ocsp_crlid(const X509V3_EXT_METHOD *method, void *in, BIO *bp,
 static int i2r_ocsp_acutoff(const X509V3_EXT_METHOD *method, void *cutoff,
                             BIO *bp, int ind)
 {
-    if (BIO_printf(bp, "%*s", ind, "") <= 0)
+    if (BIO_printf(bp, "\x25\x2a\x73", ind, "") <= 0)
         return 0;
     if (!ASN1_GENERALIZEDTIME_print(bp, cutoff))
         return 0;
@@ -203,7 +203,7 @@ static int i2r_ocsp_acutoff(const X509V3_EXT_METHOD *method, void *cutoff,
 static int i2r_object(const X509V3_EXT_METHOD *method, void *oid, BIO *bp,
                       int ind)
 {
-    if (BIO_printf(bp, "%*s", ind, "") <= 0)
+    if (BIO_printf(bp, "\x25\x2a\x73", ind, "") <= 0)
         return 0;
     if (i2a_ASN1_OBJECT(bp, oid) <= 0)
         return 0;
@@ -262,7 +262,7 @@ static void ocsp_nonce_free(void *a)
 static int i2r_ocsp_nonce(const X509V3_EXT_METHOD *method, void *nonce,
                           BIO *out, int indent)
 {
-    if (BIO_printf(out, "%*s", indent, "") <= 0)
+    if (BIO_printf(out, "\x25\x2a\x73", indent, "") <= 0)
         return 0;
     if (i2a_ASN1_STRING(out, nonce, V_ASN1_OCTET_STRING) <= 0)
         return 0;
@@ -290,17 +290,17 @@ static int i2r_ocsp_serviceloc(const X509V3_EXT_METHOD *method, void *in,
     OCSP_SERVICELOC *a = in;
     ACCESS_DESCRIPTION *ad;
 
-    if (BIO_printf(bp, "%*sIssuer: ", ind, "") <= 0)
+    if (BIO_printf(bp, "\x25\x2a\x73\x49\x73\x73\x75\x65\x72\x3a\x20", ind, "") <= 0)
         goto err;
     if (X509_NAME_print_ex(bp, a->issuer, 0, XN_FLAG_ONELINE) <= 0)
         goto err;
     for (i = 0; i < sk_ACCESS_DESCRIPTION_num(a->locator); i++) {
         ad = sk_ACCESS_DESCRIPTION_value(a->locator, i);
-        if (BIO_printf(bp, "\n%*s", (2 * ind), "") <= 0)
+        if (BIO_printf(bp, "\xa\x25\x2a\x73", (2 * ind), "") <= 0)
             goto err;
         if (i2a_ASN1_OBJECT(bp, ad->method) <= 0)
             goto err;
-        if (BIO_puts(bp, " - ") <= 0)
+        if (BIO_puts(bp, "\x20\x2d\x20") <= 0)
             goto err;
         if (GENERAL_NAME_print(bp, ad->location) <= 0)
             goto err;

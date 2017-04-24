@@ -4,7 +4,7 @@
  */
 /* Copyright 2011 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "\x4c\x69\x63\x65\x6e\x73\x65");
  *
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,7 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  distributed under the License is distributed on an "\x41\x53\x20\x49\x53" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
@@ -45,10 +45,10 @@ typedef __uint128_t uint128_t;  /* nonstandard; implemented by gcc on 64-bit
                                  * platforms */
 typedef __int128_t int128_t;
 # else
-#  error "Need GCC 3.1 or later to define type uint128_t"
+#  error "\x4e\x65\x65\x64\x20\x47\x43\x43\x20\x33\x2e\x31\x20\x6f\x72\x20\x6c\x61\x74\x65\x72\x20\x74\x6f\x20\x64\x65\x66\x69\x6e\x65\x20\x74\x79\x70\x65\x20\x75\x69\x6e\x74\x31\x32\x38\x5f\x74"
 # endif
 
-typedef uint8_t u8;
+typedef uint8_t ;
 typedef uint32_t u32;
 typedef uint64_t u64;
 typedef int64_t s64;
@@ -59,7 +59,7 @@ typedef int64_t s64;
  * felem_bytearray.
  */
 
-typedef u8 felem_bytearray[32];
+typedef  felem_bytearray[32];
 
 /*
  * These are the parameters of P256, taken from FIPS 186-3, page 86. These
@@ -125,7 +125,7 @@ static const u64 bottom63bits = 0x7ffffffffffffffful;
  * bin32_to_felem takes a little-endian byte array and converts it into felem
  * form. This assumes that the CPU is little-endian.
  */
-static void bin32_to_felem(felem out, const u8 in[32])
+static void bin32_to_felem(felem out, const  in[32])
 {
     out[0] = *((u64 *)&in[0]);
     out[1] = *((u64 *)&in[8]);
@@ -137,7 +137,7 @@ static void bin32_to_felem(felem out, const u8 in[32])
  * smallfelem_to_bin32 takes a smallfelem and serialises into a little
  * endian, 32 byte array. This assumes that the CPU is little-endian.
  */
-static void smallfelem_to_bin32(u8 out[32], const smallfelem in)
+static void smallfelem_to_bin32( out[32], const smallfelem in)
 {
     *((u64 *)&out[0]) = in[0];
     *((u64 *)&out[8]) = in[1];
@@ -146,7 +146,7 @@ static void smallfelem_to_bin32(u8 out[32], const smallfelem in)
 }
 
 /* To preserve endianness when using BN_bn2bin and BN_bin2bn */
-static void flip_endian(u8 *out, const u8 *in, unsigned len)
+static void flip_endian( *out, const  *in, unsigned len)
 {
     unsigned i;
     for (i = 0; i < len; ++i)
@@ -1661,7 +1661,7 @@ static char get_bit(const felem_bytearray in, int i)
  */
 static void batch_mul(felem x_out, felem y_out, felem z_out,
                       const felem_bytearray scalars[],
-                      const unsigned num_points, const u8 *g_scalar,
+                      const unsigned num_points, const  *g_scalar,
                       const int mixed, const smallfelem pre_comp[][17][3],
                       const smallfelem g_pre_comp[2][16][3])
 {
@@ -1670,7 +1670,7 @@ static void batch_mul(felem x_out, felem y_out, felem z_out,
     felem nq[3], ftmp;
     smallfelem tmp[3];
     u64 bits;
-    u8 sign, digit;
+     sign, digit;
 
     /* set nq to the point at infinity */
     memset(nq, 0, 3 * sizeof(felem));

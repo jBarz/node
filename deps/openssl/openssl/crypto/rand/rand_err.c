@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,19 +70,19 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_RAND,0,reason)
 
 static ERR_STRING_DATA RAND_str_functs[] = {
-    {ERR_FUNC(RAND_F_RAND_GET_RAND_METHOD), "RAND_get_rand_method"},
-    {ERR_FUNC(RAND_F_RAND_INIT_FIPS), "RAND_init_fips"},
-    {ERR_FUNC(RAND_F_SSLEAY_RAND_BYTES), "SSLEAY_RAND_BYTES"},
+    {ERR_FUNC(RAND_F_RAND_GET_RAND_METHOD), "\x52\x41\x4e\x44\x5f\x67\x65\x74\x5f\x72\x61\x6e\x64\x5f\x6d\x65\x74\x68\x6f\x64"},
+    {ERR_FUNC(RAND_F_RAND_INIT_FIPS), "\x52\x41\x4e\x44\x5f\x69\x6e\x69\x74\x5f\x66\x69\x70\x73"},
+    {ERR_FUNC(RAND_F_SSLEAY_RAND_BYTES), "\x53\x53\x4c\x45\x41\x59\x5f\x52\x41\x4e\x44\x5f\x42\x59\x54\x45\x53"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA RAND_str_reasons[] = {
-    {ERR_REASON(RAND_R_DUAL_EC_DRBG_DISABLED), "dual ec drbg disabled"},
-    {ERR_REASON(RAND_R_ERROR_INITIALISING_DRBG), "error initialising drbg"},
-    {ERR_REASON(RAND_R_ERROR_INSTANTIATING_DRBG), "error instantiating drbg"},
+    {ERR_REASON(RAND_R_DUAL_EC_DRBG_DISABLED), "\x64\x75\x61\x6c\x20\x65\x63\x20\x64\x72\x62\x67\x20\x64\x69\x73\x61\x62\x6c\x65\x64"},
+    {ERR_REASON(RAND_R_ERROR_INITIALISING_DRBG), "\x65\x72\x72\x6f\x72\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x69\x6e\x67\x20\x64\x72\x62\x67"},
+    {ERR_REASON(RAND_R_ERROR_INSTANTIATING_DRBG), "\x65\x72\x72\x6f\x72\x20\x69\x6e\x73\x74\x61\x6e\x74\x69\x61\x74\x69\x6e\x67\x20\x64\x72\x62\x67"},
     {ERR_REASON(RAND_R_NO_FIPS_RANDOM_METHOD_SET),
-     "no fips random method set"},
-    {ERR_REASON(RAND_R_PRNG_NOT_SEEDED), "PRNG not seeded"},
+     "\x6e\x6f\x20\x66\x69\x70\x73\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6d\x65\x74\x68\x6f\x64\x20\x73\x65\x74"},
+    {ERR_REASON(RAND_R_PRNG_NOT_SEEDED), "\x50\x52\x4e\x47\x20\x6e\x6f\x74\x20\x73\x65\x65\x64\x65\x64"},
     {0, NULL}
 };
 

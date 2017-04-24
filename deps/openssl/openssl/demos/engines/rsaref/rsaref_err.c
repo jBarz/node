@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -66,41 +66,41 @@
 /* BEGIN ERROR CODES */
 #ifndef OPENSSL_NO_ERR
 static ERR_STRING_DATA RSAREF_str_functs[] = {
-    {ERR_PACK(0, RSAREF_F_BNREF_MOD_EXP, 0), "BNREF_MOD_EXP"},
-    {ERR_PACK(0, RSAREF_F_CIPHER_DES_CBC_CODE, 0), "CIPHER_DES_CBC_CODE"},
-    {ERR_PACK(0, RSAREF_F_RSAREF_BN2BIN, 0), "RSAREF_BN2BIN"},
-    {ERR_PACK(0, RSAREF_F_RSAREF_MOD_EXP, 0), "RSAREF_MOD_EXP"},
+    {ERR_PACK(0, RSAREF_F_BNREF_MOD_EXP, 0), "\x42\x4e\x52\x45\x46\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
+    {ERR_PACK(0, RSAREF_F_CIPHER_DES_CBC_CODE, 0), "\x43\x49\x50\x48\x45\x52\x5f\x44\x45\x53\x5f\x43\x42\x43\x5f\x43\x4f\x44\x45"},
+    {ERR_PACK(0, RSAREF_F_RSAREF_BN2BIN, 0), "\x52\x53\x41\x52\x45\x46\x5f\x42\x4e\x32\x42\x49\x4e"},
+    {ERR_PACK(0, RSAREF_F_RSAREF_MOD_EXP, 0), "\x52\x53\x41\x52\x45\x46\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {ERR_PACK(0, RSAREF_F_RSAREF_PRIVATE_DECRYPT, 0),
-     "RSAREF_PRIVATE_DECRYPT"},
+     "\x52\x53\x41\x52\x45\x46\x5f\x50\x52\x49\x56\x41\x54\x45\x5f\x44\x45\x43\x52\x59\x50\x54"},
     {ERR_PACK(0, RSAREF_F_RSAREF_PRIVATE_ENCRYPT, 0),
-     "RSAREF_PRIVATE_ENCRYPT"},
-    {ERR_PACK(0, RSAREF_F_RSAREF_PUBLIC_DECRYPT, 0), "RSAREF_PUBLIC_DECRYPT"},
-    {ERR_PACK(0, RSAREF_F_RSAREF_PUBLIC_ENCRYPT, 0), "RSAREF_PUBLIC_ENCRYPT"},
-    {ERR_PACK(0, RSAREF_F_RSA_BN2BIN, 0), "RSA_BN2BIN"},
-    {ERR_PACK(0, RSAREF_F_RSA_PRIVATE_DECRYPT, 0), "RSA_PRIVATE_DECRYPT"},
-    {ERR_PACK(0, RSAREF_F_RSA_PRIVATE_ENCRYPT, 0), "RSA_PRIVATE_ENCRYPT"},
-    {ERR_PACK(0, RSAREF_F_RSA_PUBLIC_DECRYPT, 0), "RSA_PUBLIC_DECRYPT"},
-    {ERR_PACK(0, RSAREF_F_RSA_PUBLIC_ENCRYPT, 0), "RSA_PUBLIC_ENCRYPT"},
+     "\x52\x53\x41\x52\x45\x46\x5f\x50\x52\x49\x56\x41\x54\x45\x5f\x45\x4e\x43\x52\x59\x50\x54"},
+    {ERR_PACK(0, RSAREF_F_RSAREF_PUBLIC_DECRYPT, 0), "\x52\x53\x41\x52\x45\x46\x5f\x50\x55\x42\x4c\x49\x43\x5f\x44\x45\x43\x52\x59\x50\x54"},
+    {ERR_PACK(0, RSAREF_F_RSAREF_PUBLIC_ENCRYPT, 0), "\x52\x53\x41\x52\x45\x46\x5f\x50\x55\x42\x4c\x49\x43\x5f\x45\x4e\x43\x52\x59\x50\x54"},
+    {ERR_PACK(0, RSAREF_F_RSA_BN2BIN, 0), "\x52\x53\x41\x5f\x42\x4e\x32\x42\x49\x4e"},
+    {ERR_PACK(0, RSAREF_F_RSA_PRIVATE_DECRYPT, 0), "\x52\x53\x41\x5f\x50\x52\x49\x56\x41\x54\x45\x5f\x44\x45\x43\x52\x59\x50\x54"},
+    {ERR_PACK(0, RSAREF_F_RSA_PRIVATE_ENCRYPT, 0), "\x52\x53\x41\x5f\x50\x52\x49\x56\x41\x54\x45\x5f\x45\x4e\x43\x52\x59\x50\x54"},
+    {ERR_PACK(0, RSAREF_F_RSA_PUBLIC_DECRYPT, 0), "\x52\x53\x41\x5f\x50\x55\x42\x4c\x49\x43\x5f\x44\x45\x43\x52\x59\x50\x54"},
+    {ERR_PACK(0, RSAREF_F_RSA_PUBLIC_ENCRYPT, 0), "\x52\x53\x41\x5f\x50\x55\x42\x4c\x49\x43\x5f\x45\x4e\x43\x52\x59\x50\x54"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA RSAREF_str_reasons[] = {
-    {RSAREF_R_CONTENT_ENCODING, "content encoding"},
-    {RSAREF_R_DATA, "data"},
-    {RSAREF_R_DIGEST_ALGORITHM, "digest algorithm"},
-    {RSAREF_R_ENCODING, "encoding"},
-    {RSAREF_R_ENCRYPTION_ALGORITHM, "encryption algorithm"},
-    {RSAREF_R_KEY, "key"},
-    {RSAREF_R_KEY_ENCODING, "key encoding"},
-    {RSAREF_R_LEN, "len"},
-    {RSAREF_R_LENGTH_NOT_BLOCK_ALIGNED, "length not block aligned"},
-    {RSAREF_R_MODULUS_LEN, "modulus len"},
-    {RSAREF_R_NEED_RANDOM, "need random"},
-    {RSAREF_R_PRIVATE_KEY, "private key"},
-    {RSAREF_R_PUBLIC_KEY, "public key"},
-    {RSAREF_R_SIGNATURE, "signature"},
-    {RSAREF_R_SIGNATURE_ENCODING, "signature encoding"},
-    {RSAREF_R_UNKNOWN_FAULT, "unknown fault"},
+    {RSAREF_R_CONTENT_ENCODING, "\x63\x6f\x6e\x74\x65\x6e\x74\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67"},
+    {RSAREF_R_DATA, "\x64\x61\x74\x61"},
+    {RSAREF_R_DIGEST_ALGORITHM, "\x64\x69\x67\x65\x73\x74\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d"},
+    {RSAREF_R_ENCODING, "\x65\x6e\x63\x6f\x64\x69\x6e\x67"},
+    {RSAREF_R_ENCRYPTION_ALGORITHM, "\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d"},
+    {RSAREF_R_KEY, "\x6b\x65\x79"},
+    {RSAREF_R_KEY_ENCODING, "\x6b\x65\x79\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67"},
+    {RSAREF_R_LEN, "\x6c\x65\x6e"},
+    {RSAREF_R_LENGTH_NOT_BLOCK_ALIGNED, "\x6c\x65\x6e\x67\x74\x68\x20\x6e\x6f\x74\x20\x62\x6c\x6f\x63\x6b\x20\x61\x6c\x69\x67\x6e\x65\x64"},
+    {RSAREF_R_MODULUS_LEN, "\x6d\x6f\x64\x75\x6c\x75\x73\x20\x6c\x65\x6e"},
+    {RSAREF_R_NEED_RANDOM, "\x6e\x65\x65\x64\x20\x72\x61\x6e\x64\x6f\x6d"},
+    {RSAREF_R_PRIVATE_KEY, "\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79"},
+    {RSAREF_R_PUBLIC_KEY, "\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79"},
+    {RSAREF_R_SIGNATURE, "\x73\x69\x67\x6e\x61\x74\x75\x72\x65"},
+    {RSAREF_R_SIGNATURE_ENCODING, "\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67"},
+    {RSAREF_R_UNKNOWN_FAULT, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x66\x61\x75\x6c\x74"},
     {0, NULL}
 };
 

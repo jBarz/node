@@ -23,22 +23,22 @@ void dump_signature(const char *message, const unsigned char *buffer,
                     size_t len)
 {
     size_t i;
-    fprintf(stderr, "signature %s Length=%d", message, len);
+    fprintf(stderr, "\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x25\x73\x20\x4c\x65\x6e\x67\x74\x68\x3d\x25\x64", message, len);
     for (i = 0; i < len; i++) {
         if (i % 16 == 0)
-            fputc('\n', stderr);
-        fprintf(stderr, " %02x", buffer[i]);
+            fputc('\xa', stderr);
+        fprintf(stderr, "\x20\x25\x30\x32\x78", buffer[i]);
     }
-    fprintf(stderr, "\nEnd of signature\n");
+    fprintf(stderr, "\xaE\x6e\x64\x20\x6f\x66\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\xa");
 }
 
 void dump_dsa_sig(const char *message, DSA_SIG *sig)
 {
-    fprintf(stderr, "%s\nR=", message);
+    fprintf(stderr, "\x25\x73\xa\x52\x3d", message);
     BN_print_fp(stderr, sig->r);
-    fprintf(stderr, "\nS=");
+    fprintf(stderr, "\xa\x53\x3d");
     BN_print_fp(stderr, sig->s);
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 }
 
 #else
@@ -134,7 +134,7 @@ int pack_sign_cc(DSA_SIG *s,int order,unsigned char *sig, size_t *siglen)
         memset(sig,0,*siglen);
         store_bignum(s->r, sig,order);
         store_bignum(s->s, sig + order,order);
-        dump_signature("serialized",sig,*siglen);
+        dump_signature("\x73\x65\x72\x69\x61\x6c\x69\x7a\x65\x64",sig,*siglen);
         DSA_SIG_free(s);
         return 1;
         }
@@ -149,7 +149,7 @@ int pack_sign_cp(DSA_SIG *s, int order, unsigned char *sig, size_t *siglen)
     memset(sig, 0, *siglen);
     store_bignum(s->s, sig, order);
     store_bignum(s->r, sig + order, order);
-    dump_signature("serialized", sig, *siglen);
+    dump_signature("\x73\x65\x72\x69\x61\x6c\x69\x7a\x65\x64", sig, *siglen);
     DSA_SIG_free(s);
     return 1;
 }

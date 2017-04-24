@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -150,12 +150,12 @@ int PKCS5_PBKDF2_HMAC(const char *pass, int passlen,
     }
     HMAC_CTX_cleanup(&hctx_tpl);
 # ifdef DEBUG_PKCS5V2
-    fprintf(stderr, "Password:\n");
+    fprintf(stderr, "\x50\x61\x73\x73\x77\x6f\x72\x64\x3a\xa");
     h__dump(pass, passlen);
-    fprintf(stderr, "Salt:\n");
+    fprintf(stderr, "\x53\x61\x6c\x74\x3a\xa");
     h__dump(salt, saltlen);
-    fprintf(stderr, "Iteration count %d\n", iter);
-    fprintf(stderr, "Key:\n");
+    fprintf(stderr, "\x49\x74\x65\x72\x61\x74\x69\x6f\x6e\x20\x63\x6f\x75\x6e\x74\x20\x25\x64\xa", iter);
+    fprintf(stderr, "\x4b\x65\x79\x3a\xa");
     h__dump(out, keylen);
 # endif
     return 1;
@@ -174,8 +174,8 @@ main()
 {
     unsigned char out[4];
     unsigned char salt[] = { 0x12, 0x34, 0x56, 0x78 };
-    PKCS5_PBKDF2_HMAC_SHA1("password", -1, salt, 4, 5, 4, out);
-    fprintf(stderr, "Out %02X %02X %02X %02X\n",
+    PKCS5_PBKDF2_HMAC_SHA1("\x70\x61\x73\x73\x77\x6f\x72\x64", -1, salt, 4, 5, 4, out);
+    fprintf(stderr, "\x4f\x75\x74\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\xa",
             out[0], out[1], out[2], out[3]);
 }
 
@@ -327,8 +327,8 @@ int PKCS5_v2_PBKDF2_keyivgen(EVP_CIPHER_CTX *ctx, const char *pass,
 static void h__dump(const unsigned char *p, int len)
 {
     for (; len--; p++)
-        fprintf(stderr, "%02X ", *p);
-    fprintf(stderr, "\n");
+        fprintf(stderr, "\x25\x30\x32\x58\x20", *p);
+    fprintf(stderr, "\xa");
 }
 # endif
 #endif

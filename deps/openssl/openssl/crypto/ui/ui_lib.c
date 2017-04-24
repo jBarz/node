@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -197,7 +197,7 @@ static int general_allocate_boolean(UI *ui,
     } else if (cancel_chars == NULL) {
         UIerr(UI_F_GENERAL_ALLOCATE_BOOLEAN, ERR_R_PASSED_NULL_PARAMETER);
     } else {
-        for (p = ok_chars; *p != '\0'; p++) {
+        for (p = ok_chars; *p != '\x0'; p++) {
             if (strchr(cancel_chars, *p) != NULL) {
                 UIerr(UI_F_GENERAL_ALLOCATE_BOOLEAN,
                       UI_R_COMMON_OK_AND_CANCEL_CHARACTERS);
@@ -400,9 +400,9 @@ char *UI_construct_prompt(UI *ui, const char *object_desc,
     if (ui->meth->ui_construct_prompt != NULL)
         prompt = ui->meth->ui_construct_prompt(ui, object_desc, object_name);
     else {
-        char prompt1[] = "Enter ";
-        char prompt2[] = " for ";
-        char prompt3[] = ":";
+        char prompt1[] = "\x45\x6e\x74\x65\x72\x20";
+        char prompt2[] = "\x20\x66\x6f\x72\x20";
+        char prompt3[] = "\x3a";
         int len = 0;
 
         if (object_desc == NULL)
@@ -821,23 +821,23 @@ int UI_set_result(UI *ui, UI_STRING *uis, const char *result)
             char number1[DECIMAL_SIZE(uis->_.string_data.result_minsize) + 1];
             char number2[DECIMAL_SIZE(uis->_.string_data.result_maxsize) + 1];
 
-            BIO_snprintf(number1, sizeof(number1), "%d",
+            BIO_snprintf(number1, sizeof(number1), "\x25\x64",
                          uis->_.string_data.result_minsize);
-            BIO_snprintf(number2, sizeof(number2), "%d",
+            BIO_snprintf(number2, sizeof(number2), "\x25\x64",
                          uis->_.string_data.result_maxsize);
 
             if (l < uis->_.string_data.result_minsize) {
                 ui->flags |= UI_FLAG_REDOABLE;
                 UIerr(UI_F_UI_SET_RESULT, UI_R_RESULT_TOO_SMALL);
-                ERR_add_error_data(5, "You must type in ",
-                                   number1, " to ", number2, " characters");
+                ERR_add_error_data(5, "\x59\x6f\x75\x20\x6d\x75\x73\x74\x20\x74\x79\x70\x65\x20\x69\x6e\x20",
+                                   number1, "\x20\x74\x6f\x20", number2, "\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x73");
                 return -1;
             }
             if (l > uis->_.string_data.result_maxsize) {
                 ui->flags |= UI_FLAG_REDOABLE;
                 UIerr(UI_F_UI_SET_RESULT, UI_R_RESULT_TOO_LARGE);
-                ERR_add_error_data(5, "You must type in ",
-                                   number1, " to ", number2, " characters");
+                ERR_add_error_data(5, "\x59\x6f\x75\x20\x6d\x75\x73\x74\x20\x74\x79\x70\x65\x20\x69\x6e\x20",
+                                   number1, "\x20\x74\x6f\x20", number2, "\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x73");
                 return -1;
             }
         }
@@ -859,7 +859,7 @@ int UI_set_result(UI *ui, UI_STRING *uis, const char *result)
                 return -1;
             }
 
-            uis->result_buf[0] = '\0';
+            uis->result_buf[0] = '\x0';
             for (p = result; *p; p++) {
                 if (strchr(uis->_.boolean_data.ok_chars, *p)) {
                     uis->result_buf[0] = uis->_.boolean_data.ok_chars[0];

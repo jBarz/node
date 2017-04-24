@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,21 +70,21 @@
 # define ERR_REASON(reason) ERR_PACK(0,0,reason)
 
 static ERR_STRING_DATA NURON_str_functs[] = {
-    {ERR_FUNC(NURON_F_NURON_CTRL), "NURON_CTRL"},
-    {ERR_FUNC(NURON_F_NURON_FINISH), "NURON_FINISH"},
-    {ERR_FUNC(NURON_F_NURON_INIT), "NURON_INIT"},
-    {ERR_FUNC(NURON_F_NURON_MOD_EXP), "NURON_MOD_EXP"},
+    {ERR_FUNC(NURON_F_NURON_CTRL), "\x4e\x55\x52\x4f\x4e\x5f\x43\x54\x52\x4c"},
+    {ERR_FUNC(NURON_F_NURON_FINISH), "\x4e\x55\x52\x4f\x4e\x5f\x46\x49\x4e\x49\x53\x48"},
+    {ERR_FUNC(NURON_F_NURON_INIT), "\x4e\x55\x52\x4f\x4e\x5f\x49\x4e\x49\x54"},
+    {ERR_FUNC(NURON_F_NURON_MOD_EXP), "\x4e\x55\x52\x4f\x4e\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA NURON_str_reasons[] = {
-    {ERR_REASON(NURON_R_ALREADY_LOADED), "already loaded"},
+    {ERR_REASON(NURON_R_ALREADY_LOADED), "\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x61\x64\x65\x64"},
     {ERR_REASON(NURON_R_CTRL_COMMAND_NOT_IMPLEMENTED),
-     "ctrl command not implemented"},
-    {ERR_REASON(NURON_R_DSO_FAILURE), "dso failure"},
-    {ERR_REASON(NURON_R_DSO_FUNCTION_NOT_FOUND), "dso function not found"},
-    {ERR_REASON(NURON_R_DSO_NOT_FOUND), "dso not found"},
-    {ERR_REASON(NURON_R_NOT_LOADED), "not loaded"},
+     "\x63\x74\x72\x6c\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x6e\x6f\x74\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64"},
+    {ERR_REASON(NURON_R_DSO_FAILURE), "\x64\x73\x6f\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {ERR_REASON(NURON_R_DSO_FUNCTION_NOT_FOUND), "\x64\x73\x6f\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e\x20\x6e\x6f\x74\x20\x66\x6f\x75\x6e\x64"},
+    {ERR_REASON(NURON_R_DSO_NOT_FOUND), "\x64\x73\x6f\x20\x6e\x6f\x74\x20\x66\x6f\x75\x6e\x64"},
+    {ERR_REASON(NURON_R_NOT_LOADED), "\x6e\x6f\x74\x20\x6c\x6f\x61\x64\x65\x64"},
     {0, NULL}
 };
 

@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,66 +70,66 @@
 # define ERR_REASON(reason) ERR_PACK(0,0,reason)
 
 static ERR_STRING_DATA CAPI_str_functs[] = {
-    {ERR_FUNC(CAPI_F_CAPI_CERT_GET_FNAME), "CAPI_CERT_GET_FNAME"},
-    {ERR_FUNC(CAPI_F_CAPI_CTRL), "CAPI_CTRL"},
-    {ERR_FUNC(CAPI_F_CAPI_CTX_NEW), "CAPI_CTX_NEW"},
-    {ERR_FUNC(CAPI_F_CAPI_CTX_SET_PROVNAME), "CAPI_CTX_SET_PROVNAME"},
-    {ERR_FUNC(CAPI_F_CAPI_DSA_DO_SIGN), "CAPI_DSA_DO_SIGN"},
-    {ERR_FUNC(CAPI_F_CAPI_GET_KEY), "CAPI_GET_KEY"},
-    {ERR_FUNC(CAPI_F_CAPI_GET_PKEY), "CAPI_GET_PKEY"},
-    {ERR_FUNC(CAPI_F_CAPI_GET_PROVNAME), "CAPI_GET_PROVNAME"},
-    {ERR_FUNC(CAPI_F_CAPI_GET_PROV_INFO), "CAPI_GET_PROV_INFO"},
-    {ERR_FUNC(CAPI_F_CAPI_INIT), "CAPI_INIT"},
-    {ERR_FUNC(CAPI_F_CAPI_LIST_CONTAINERS), "CAPI_LIST_CONTAINERS"},
-    {ERR_FUNC(CAPI_F_CAPI_LOAD_PRIVKEY), "CAPI_LOAD_PRIVKEY"},
-    {ERR_FUNC(CAPI_F_CAPI_OPEN_STORE), "CAPI_OPEN_STORE"},
-    {ERR_FUNC(CAPI_F_CAPI_RSA_PRIV_DEC), "CAPI_RSA_PRIV_DEC"},
-    {ERR_FUNC(CAPI_F_CAPI_RSA_PRIV_ENC), "CAPI_RSA_PRIV_ENC"},
-    {ERR_FUNC(CAPI_F_CAPI_RSA_SIGN), "CAPI_RSA_SIGN"},
-    {ERR_FUNC(CAPI_F_CERT_SELECT_DIALOG), "CERT_SELECT_DIALOG"},
-    {ERR_FUNC(CAPI_F_CLIENT_CERT_SELECT), "CLIENT_CERT_SELECT"},
-    {ERR_FUNC(CAPI_F_WIDE_TO_ASC), "WIDE_TO_ASC"},
+    {ERR_FUNC(CAPI_F_CAPI_CERT_GET_FNAME), "\x43\x41\x50\x49\x5f\x43\x45\x52\x54\x5f\x47\x45\x54\x5f\x46\x4e\x41\x4d\x45"},
+    {ERR_FUNC(CAPI_F_CAPI_CTRL), "\x43\x41\x50\x49\x5f\x43\x54\x52\x4c"},
+    {ERR_FUNC(CAPI_F_CAPI_CTX_NEW), "\x43\x41\x50\x49\x5f\x43\x54\x58\x5f\x4e\x45\x57"},
+    {ERR_FUNC(CAPI_F_CAPI_CTX_SET_PROVNAME), "\x43\x41\x50\x49\x5f\x43\x54\x58\x5f\x53\x45\x54\x5f\x50\x52\x4f\x56\x4e\x41\x4d\x45"},
+    {ERR_FUNC(CAPI_F_CAPI_DSA_DO_SIGN), "\x43\x41\x50\x49\x5f\x44\x53\x41\x5f\x44\x4f\x5f\x53\x49\x47\x4e"},
+    {ERR_FUNC(CAPI_F_CAPI_GET_KEY), "\x43\x41\x50\x49\x5f\x47\x45\x54\x5f\x4b\x45\x59"},
+    {ERR_FUNC(CAPI_F_CAPI_GET_PKEY), "\x43\x41\x50\x49\x5f\x47\x45\x54\x5f\x50\x4b\x45\x59"},
+    {ERR_FUNC(CAPI_F_CAPI_GET_PROVNAME), "\x43\x41\x50\x49\x5f\x47\x45\x54\x5f\x50\x52\x4f\x56\x4e\x41\x4d\x45"},
+    {ERR_FUNC(CAPI_F_CAPI_GET_PROV_INFO), "\x43\x41\x50\x49\x5f\x47\x45\x54\x5f\x50\x52\x4f\x56\x5f\x49\x4e\x46\x4f"},
+    {ERR_FUNC(CAPI_F_CAPI_INIT), "\x43\x41\x50\x49\x5f\x49\x4e\x49\x54"},
+    {ERR_FUNC(CAPI_F_CAPI_LIST_CONTAINERS), "\x43\x41\x50\x49\x5f\x4c\x49\x53\x54\x5f\x43\x4f\x4e\x54\x41\x49\x4e\x45\x52\x53"},
+    {ERR_FUNC(CAPI_F_CAPI_LOAD_PRIVKEY), "\x43\x41\x50\x49\x5f\x4c\x4f\x41\x44\x5f\x50\x52\x49\x56\x4b\x45\x59"},
+    {ERR_FUNC(CAPI_F_CAPI_OPEN_STORE), "\x43\x41\x50\x49\x5f\x4f\x50\x45\x4e\x5f\x53\x54\x4f\x52\x45"},
+    {ERR_FUNC(CAPI_F_CAPI_RSA_PRIV_DEC), "\x43\x41\x50\x49\x5f\x52\x53\x41\x5f\x50\x52\x49\x56\x5f\x44\x45\x43"},
+    {ERR_FUNC(CAPI_F_CAPI_RSA_PRIV_ENC), "\x43\x41\x50\x49\x5f\x52\x53\x41\x5f\x50\x52\x49\x56\x5f\x45\x4e\x43"},
+    {ERR_FUNC(CAPI_F_CAPI_RSA_SIGN), "\x43\x41\x50\x49\x5f\x52\x53\x41\x5f\x53\x49\x47\x4e"},
+    {ERR_FUNC(CAPI_F_CERT_SELECT_DIALOG), "\x43\x45\x52\x54\x5f\x53\x45\x4c\x45\x43\x54\x5f\x44\x49\x41\x4c\x4f\x47"},
+    {ERR_FUNC(CAPI_F_CLIENT_CERT_SELECT), "\x43\x4c\x49\x45\x4e\x54\x5f\x43\x45\x52\x54\x5f\x53\x45\x4c\x45\x43\x54"},
+    {ERR_FUNC(CAPI_F_WIDE_TO_ASC), "\x57\x49\x44\x45\x5f\x54\x4f\x5f\x41\x53\x43"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA CAPI_str_reasons[] = {
-    {ERR_REASON(CAPI_R_CANT_CREATE_HASH_OBJECT), "cant create hash object"},
-    {ERR_REASON(CAPI_R_CANT_FIND_CAPI_CONTEXT), "cant find capi context"},
-    {ERR_REASON(CAPI_R_CANT_GET_KEY), "cant get key"},
-    {ERR_REASON(CAPI_R_CANT_SET_HASH_VALUE), "cant set hash value"},
+    {ERR_REASON(CAPI_R_CANT_CREATE_HASH_OBJECT), "\x63\x61\x6e\x74\x20\x63\x72\x65\x61\x74\x65\x20\x68\x61\x73\x68\x20\x6f\x62\x6a\x65\x63\x74"},
+    {ERR_REASON(CAPI_R_CANT_FIND_CAPI_CONTEXT), "\x63\x61\x6e\x74\x20\x66\x69\x6e\x64\x20\x63\x61\x70\x69\x20\x63\x6f\x6e\x74\x65\x78\x74"},
+    {ERR_REASON(CAPI_R_CANT_GET_KEY), "\x63\x61\x6e\x74\x20\x67\x65\x74\x20\x6b\x65\x79"},
+    {ERR_REASON(CAPI_R_CANT_SET_HASH_VALUE), "\x63\x61\x6e\x74\x20\x73\x65\x74\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65"},
     {ERR_REASON(CAPI_R_CRYPTACQUIRECONTEXT_ERROR),
-     "cryptacquirecontext error"},
-    {ERR_REASON(CAPI_R_CRYPTENUMPROVIDERS_ERROR), "cryptenumproviders error"},
-    {ERR_REASON(CAPI_R_DECRYPT_ERROR), "decrypt error"},
-    {ERR_REASON(CAPI_R_ENGINE_NOT_INITIALIZED), "engine not initialized"},
-    {ERR_REASON(CAPI_R_ENUMCONTAINERS_ERROR), "enumcontainers error"},
-    {ERR_REASON(CAPI_R_ERROR_ADDING_CERT), "error adding cert"},
-    {ERR_REASON(CAPI_R_ERROR_CREATING_STORE), "error creating store"},
+     "\x63\x72\x79\x70\x74\x61\x63\x71\x75\x69\x72\x65\x63\x6f\x6e\x74\x65\x78\x74\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(CAPI_R_CRYPTENUMPROVIDERS_ERROR), "\x63\x72\x79\x70\x74\x65\x6e\x75\x6d\x70\x72\x6f\x76\x69\x64\x65\x72\x73\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(CAPI_R_DECRYPT_ERROR), "\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(CAPI_R_ENGINE_NOT_INITIALIZED), "\x65\x6e\x67\x69\x6e\x65\x20\x6e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64"},
+    {ERR_REASON(CAPI_R_ENUMCONTAINERS_ERROR), "\x65\x6e\x75\x6d\x63\x6f\x6e\x74\x61\x69\x6e\x65\x72\x73\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(CAPI_R_ERROR_ADDING_CERT), "\x65\x72\x72\x6f\x72\x20\x61\x64\x64\x69\x6e\x67\x20\x63\x65\x72\x74"},
+    {ERR_REASON(CAPI_R_ERROR_CREATING_STORE), "\x65\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x73\x74\x6f\x72\x65"},
     {ERR_REASON(CAPI_R_ERROR_GETTING_FRIENDLY_NAME),
-     "error getting friendly name"},
+     "\x65\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x66\x72\x69\x65\x6e\x64\x6c\x79\x20\x6e\x61\x6d\x65"},
     {ERR_REASON(CAPI_R_ERROR_GETTING_KEY_PROVIDER_INFO),
-     "error getting key provider info"},
-    {ERR_REASON(CAPI_R_ERROR_OPENING_STORE), "error opening store"},
-    {ERR_REASON(CAPI_R_ERROR_SIGNING_HASH), "error signing hash"},
-    {ERR_REASON(CAPI_R_FUNCTION_NOT_SUPPORTED), "function not supported"},
-    {ERR_REASON(CAPI_R_GETUSERKEY_ERROR), "getuserkey error"},
-    {ERR_REASON(CAPI_R_INVALID_DIGEST_LENGTH), "invalid digest length"},
+     "\x65\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x6b\x65\x79\x20\x70\x72\x6f\x76\x69\x64\x65\x72\x20\x69\x6e\x66\x6f"},
+    {ERR_REASON(CAPI_R_ERROR_OPENING_STORE), "\x65\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x73\x74\x6f\x72\x65"},
+    {ERR_REASON(CAPI_R_ERROR_SIGNING_HASH), "\x65\x72\x72\x6f\x72\x20\x73\x69\x67\x6e\x69\x6e\x67\x20\x68\x61\x73\x68"},
+    {ERR_REASON(CAPI_R_FUNCTION_NOT_SUPPORTED), "\x66\x75\x6e\x63\x74\x69\x6f\x6e\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64"},
+    {ERR_REASON(CAPI_R_GETUSERKEY_ERROR), "\x67\x65\x74\x75\x73\x65\x72\x6b\x65\x79\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(CAPI_R_INVALID_DIGEST_LENGTH), "\x69\x6e\x76\x61\x6c\x69\x64\x20\x64\x69\x67\x65\x73\x74\x20\x6c\x65\x6e\x67\x74\x68"},
     {ERR_REASON(CAPI_R_INVALID_DSA_PUBLIC_KEY_BLOB_MAGIC_NUMBER),
-     "invalid dsa public key blob magic number"},
-    {ERR_REASON(CAPI_R_INVALID_LOOKUP_METHOD), "invalid lookup method"},
-    {ERR_REASON(CAPI_R_INVALID_PUBLIC_KEY_BLOB), "invalid public key blob"},
+     "\x69\x6e\x76\x61\x6c\x69\x64\x20\x64\x73\x61\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x62\x6c\x6f\x62\x20\x6d\x61\x67\x69\x63\x20\x6e\x75\x6d\x62\x65\x72"},
+    {ERR_REASON(CAPI_R_INVALID_LOOKUP_METHOD), "\x69\x6e\x76\x61\x6c\x69\x64\x20\x6c\x6f\x6f\x6b\x75\x70\x20\x6d\x65\x74\x68\x6f\x64"},
+    {ERR_REASON(CAPI_R_INVALID_PUBLIC_KEY_BLOB), "\x69\x6e\x76\x61\x6c\x69\x64\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x62\x6c\x6f\x62"},
     {ERR_REASON(CAPI_R_INVALID_RSA_PUBLIC_KEY_BLOB_MAGIC_NUMBER),
-     "invalid rsa public key blob magic number"},
-    {ERR_REASON(CAPI_R_PUBKEY_EXPORT_ERROR), "pubkey export error"},
+     "\x69\x6e\x76\x61\x6c\x69\x64\x20\x72\x73\x61\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x62\x6c\x6f\x62\x20\x6d\x61\x67\x69\x63\x20\x6e\x75\x6d\x62\x65\x72"},
+    {ERR_REASON(CAPI_R_PUBKEY_EXPORT_ERROR), "\x70\x75\x62\x6b\x65\x79\x20\x65\x78\x70\x6f\x72\x74\x20\x65\x72\x72\x6f\x72"},
     {ERR_REASON(CAPI_R_PUBKEY_EXPORT_LENGTH_ERROR),
-     "pubkey export length error"},
-    {ERR_REASON(CAPI_R_UNKNOWN_COMMAND), "unknown command"},
+     "\x70\x75\x62\x6b\x65\x79\x20\x65\x78\x70\x6f\x72\x74\x20\x6c\x65\x6e\x67\x74\x68\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(CAPI_R_UNKNOWN_COMMAND), "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x6f\x6d\x6d\x61\x6e\x64"},
     {ERR_REASON(CAPI_R_UNSUPPORTED_ALGORITHM_NID),
-     "unsupported algorithm nid"},
-    {ERR_REASON(CAPI_R_UNSUPPORTED_PADDING), "unsupported padding"},
+     "\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x6e\x69\x64"},
+    {ERR_REASON(CAPI_R_UNSUPPORTED_PADDING), "\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x70\x61\x64\x64\x69\x6e\x67"},
     {ERR_REASON(CAPI_R_UNSUPPORTED_PUBLIC_KEY_ALGORITHM),
-     "unsupported public key algorithm"},
-    {ERR_REASON(CAPI_R_WIN32_ERROR), "win32 error"},
+     "\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d"},
+    {ERR_REASON(CAPI_R_WIN32_ERROR), "\x77\x69\x6e\x33\x32\x20\x65\x72\x72\x6f\x72"},
     {0, NULL}
 };
 

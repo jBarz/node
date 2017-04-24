@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -126,8 +126,8 @@ extern "C" {
 # define BIO_CTRL_RESET          1/* opt - rewind/zero etc */
 # define BIO_CTRL_EOF            2/* opt - are we at the eof */
 # define BIO_CTRL_INFO           3/* opt - extra tit-bits */
-# define BIO_CTRL_SET            4/* man - set the 'IO' type */
-# define BIO_CTRL_GET            5/* man - get the 'IO' type */
+# define BIO_CTRL_SET            4/* man - set the '\x49\x4f' type */
+# define BIO_CTRL_GET            5/* man - get the '\x49\x4f' type */
 # define BIO_CTRL_PUSH           6/* opt - internal, used to signify change */
 # define BIO_CTRL_POP            7/* opt - internal, used to signify change */
 # define BIO_CTRL_GET_CLOSE      8/* man - set the 'close' on free */
@@ -487,7 +487,7 @@ struct bio_dgram_sctp_prinfo {
 # define BIO_set_accept_port(b,name) BIO_ctrl(b,BIO_C_SET_ACCEPT,0,(char *)name)
 # define BIO_get_accept_port(b)  BIO_ptr_ctrl(b,BIO_C_GET_ACCEPT,0)
 /* #define BIO_set_nbio(b,n)    BIO_ctrl(b,BIO_C_SET_NBIO,(n),NULL) */
-# define BIO_set_nbio_accept(b,n) BIO_ctrl(b,BIO_C_SET_ACCEPT,1,(n)?(void *)"a":NULL)
+# define BIO_set_nbio_accept(b,n) BIO_ctrl(b,BIO_C_SET_ACCEPT,1,(n)?(void *)"\x61":NULL)
 # define BIO_set_accept_bios(b,bio) BIO_ctrl(b,BIO_C_SET_ACCEPT,2,(char *)bio)
 
 # define BIO_BIND_NORMAL                 0

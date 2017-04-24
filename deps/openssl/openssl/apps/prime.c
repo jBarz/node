@@ -75,25 +75,25 @@ int MAIN(int argc, char **argv)
 
     --argc;
     ++argv;
-    while (argc >= 1 && **argv == '-') {
-        if (!strcmp(*argv, "-hex"))
+    while (argc >= 1 && **argv == '\x2d') {
+        if (!strcmp(*argv, "\x2d\x68\x65\x78"))
             hex = 1;
-        else if (!strcmp(*argv, "-generate"))
+        else if (!strcmp(*argv, "\x2d\x67\x65\x6e\x65\x72\x61\x74\x65"))
             generate = 1;
-        else if (!strcmp(*argv, "-bits"))
+        else if (!strcmp(*argv, "\x2d\x62\x69\x74\x73"))
             if (--argc < 1)
                 goto bad;
             else
                 bits = atoi(*++argv);
-        else if (!strcmp(*argv, "-safe"))
+        else if (!strcmp(*argv, "\x2d\x73\x61\x66\x65"))
             safe = 1;
-        else if (!strcmp(*argv, "-checks"))
+        else if (!strcmp(*argv, "\x2d\x63\x68\x65\x63\x6b\x73"))
             if (--argc < 1)
                 goto bad;
             else
                 checks = atoi(*++argv);
         else {
-            BIO_printf(bio_err, "Unknown option '%s'\n", *argv);
+            BIO_printf(bio_err, "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x27\x25\x73\x27\xa", *argv);
             goto bad;
         }
         --argc;
@@ -101,7 +101,7 @@ int MAIN(int argc, char **argv)
     }
 
     if (argv[0] == NULL && !generate) {
-        BIO_printf(bio_err, "No prime specified\n");
+        BIO_printf(bio_err, "\x4e\x6f\x20\x70\x72\x69\x6d\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
         goto bad;
     }
 
@@ -119,13 +119,13 @@ int MAIN(int argc, char **argv)
         char *s;
 
         if (!bits) {
-            BIO_printf(bio_err, "Specifiy the number of bits.\n");
+            BIO_printf(bio_err, "\x53\x70\x65\x63\x69\x66\x69\x79\x20\x74\x68\x65\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x62\x69\x74\x73\x2e\xa");
             return 1;
         }
         bn = BN_new();
         BN_generate_prime_ex(bn, bits, safe, NULL, NULL, NULL);
         s = hex ? BN_bn2hex(bn) : BN_bn2dec(bn);
-        BIO_printf(bio_out, "%s\n", s);
+        BIO_printf(bio_out, "\x25\x73\xa", s);
         OPENSSL_free(s);
     } else {
         int r;
@@ -136,13 +136,13 @@ int MAIN(int argc, char **argv)
             r = BN_dec2bn(&bn, argv[0]);
 
         if(!r) {
-            BIO_printf(bio_err, "Failed to process value (%s)\n", argv[0]);
+            BIO_printf(bio_err, "\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x70\x72\x6f\x63\x65\x73\x73\x20\x76\x61\x6c\x75\x65\x20\x28\x25\x73\x29\xa", argv[0]);
             goto end;
         }
 
         BN_print(bio_out, bn);
-        BIO_printf(bio_out, " is %sprime\n",
-                   BN_is_prime_ex(bn, checks, NULL, NULL) ? "" : "not ");
+        BIO_printf(bio_out, "\x20\x69\x73\x20\x25\x73\x70\x72\x69\x6d\x65\xa",
+                   BN_is_prime_ex(bn, checks, NULL, NULL) ? "" : "\x6e\x6f\x74\x20");
     }
 
  end:
@@ -152,8 +152,8 @@ int MAIN(int argc, char **argv)
     return 0;
 
  bad:
-    BIO_printf(bio_err, "options are\n");
-    BIO_printf(bio_err, "%-14s hex\n", "-hex");
-    BIO_printf(bio_err, "%-14s number of checks\n", "-checks <n>");
+    BIO_printf(bio_err, "\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+    BIO_printf(bio_err, "\x25\x2d\x31\x34\x73\x20\x68\x65\x78\xa", "\x2d\x68\x65\x78");
+    BIO_printf(bio_err, "\x25\x2d\x31\x34\x73\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x63\x68\x65\x63\x6b\x73\xa", "\x2d\x63\x68\x65\x63\x6b\x73\x20\x3c\x6e\x3e");
     return 1;
 }

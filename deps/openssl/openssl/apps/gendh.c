@@ -37,7 +37,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -114,24 +114,24 @@ int MAIN(int argc, char **argv)
     for (;;) {
         if (argc <= 0)
             break;
-        if (strcmp(*argv, "-out") == 0) {
+        if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-2") == 0)
+        } else if (strcmp(*argv, "\x2d\x32") == 0)
             g = 2;
 /*-     else if (strcmp(*argv,"-3") == 0)
                 g=3; */
-        else if (strcmp(*argv, "-5") == 0)
+        else if (strcmp(*argv, "\x2d\x35") == 0)
             g = 5;
 # ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*argv, "-engine") == 0) {
+        else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine = *(++argv);
         }
 # endif
-        else if (strcmp(*argv, "-rand") == 0) {
+        else if (strcmp(*argv, "\x2d\x72\x61\x6e\x64") == 0) {
             if (--argc < 1)
                 goto bad;
             inrand = *(++argv);
@@ -140,24 +140,24 @@ int MAIN(int argc, char **argv)
         argv++;
         argc--;
     }
-    if ((argc >= 1) && ((sscanf(*argv, "%d", &num) == 0) || (num < 0))) {
+    if ((argc >= 1) && ((sscanf(*argv, "\x25\x64", &num) == 0) || (num < 0))) {
  bad:
-        BIO_printf(bio_err, "usage: gendh [args] [numbits]\n");
-        BIO_printf(bio_err, " -out file - output the key to 'file\n");
-        BIO_printf(bio_err, " -2        - use 2 as the generator value\n");
+        BIO_printf(bio_err, "\x75\x73\x61\x67\x65\x3a\x20\x67\x65\x6e\x64\x68\x20\x5b\x61\x72\x67\x73\x5d\x20\x5b\x6e\x75\x6d\x62\x69\x74\x73\x5d\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x74\x68\x65\x20\x6b\x65\x79\x20\x74\x6f\x20\x27\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x32\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x75\x73\x65\x20\x32\x20\x61\x73\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x76\x61\x6c\x75\x65\xa");
         /*
          * BIO_printf(bio_err," -3 - use 3 as the generator value\n");
          */
-        BIO_printf(bio_err, " -5        - use 5 as the generator value\n");
+        BIO_printf(bio_err, "\x20\x2d\x35\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x75\x73\x65\x20\x35\x20\x61\x73\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x76\x61\x6c\x75\x65\xa");
 # ifndef OPENSSL_NO_ENGINE
         BIO_printf(bio_err,
-                   " -engine e - use engine e, possibly a hardware device.\n");
+                   "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x2d\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 # endif
-        BIO_printf(bio_err, " -rand file%cfile%c...\n", LIST_SEPARATOR_CHAR,
+        BIO_printf(bio_err, "\x20\x2d\x72\x61\x6e\x64\x20\x66\x69\x6c\x65\x25\x63\x66\x69\x6c\x65\x25\x63\x2e\x2e\x2e\xa", LIST_SEPARATOR_CHAR,
                    LIST_SEPARATOR_CHAR);
         BIO_printf(bio_err,
-                   "           - load the file (or the files in the directory) into\n");
-        BIO_printf(bio_err, "             the random number generator\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6c\x6f\x61\x64\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x20\x28\x6f\x72\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x73\x20\x69\x6e\x20\x74\x68\x65\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x29\x20\x69\x6e\x74\x6f\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\xa");
         goto end;
     }
     setup_engine(bio_err, engine, 0);
@@ -185,16 +185,16 @@ int MAIN(int argc, char **argv)
 
     if (!app_RAND_load_file(NULL, bio_err, 1) && inrand == NULL) {
         BIO_printf(bio_err,
-                   "warning, not much extra random data, consider using the -rand option\n");
+                   "\x77\x61\x72\x6e\x69\x6e\x67\x2c\x20\x6e\x6f\x74\x20\x6d\x75\x63\x68\x20\x65\x78\x74\x72\x61\x20\x72\x61\x6e\x64\x6f\x6d\x20\x64\x61\x74\x61\x2c\x20\x63\x6f\x6e\x73\x69\x64\x65\x72\x20\x75\x73\x69\x6e\x67\x20\x74\x68\x65\x20\x2d\x72\x61\x6e\x64\x20\x6f\x70\x74\x69\x6f\x6e\xa");
     }
     if (inrand != NULL)
-        BIO_printf(bio_err, "%ld semi-random bytes loaded\n",
+        BIO_printf(bio_err, "\x25\x6c\x64\x20\x73\x65\x6d\x69\x2d\x72\x61\x6e\x64\x6f\x6d\x20\x62\x79\x74\x65\x73\x20\x6c\x6f\x61\x64\x65\x64\xa",
                    app_RAND_load_files(inrand));
 
     BIO_printf(bio_err,
-               "Generating DH parameters, %d bit long safe prime, generator %d\n",
+               "\x47\x65\x6e\x65\x72\x61\x74\x69\x6e\x67\x20\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x2c\x20\x25\x64\x20\x62\x69\x74\x20\x6c\x6f\x6e\x67\x20\x73\x61\x66\x65\x20\x70\x72\x69\x6d\x65\x2c\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x25\x64\xa",
                num, g);
-    BIO_printf(bio_err, "This is going to take a long time\n");
+    BIO_printf(bio_err, "\x54\x68\x69\x73\x20\x69\x73\x20\x67\x6f\x69\x6e\x67\x20\x74\x6f\x20\x74\x61\x6b\x65\x20\x61\x20\x6c\x6f\x6e\x67\x20\x74\x69\x6d\x65\xa");
 
     if (((dh = DH_new()) == NULL)
         || !DH_generate_parameters_ex(dh, num, g, &cb))
@@ -218,16 +218,16 @@ int MAIN(int argc, char **argv)
 
 static int MS_CALLBACK dh_cb(int p, int n, BN_GENCB *cb)
 {
-    char c = '*';
+    char c = '\x2a';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     BIO_write(cb->arg, &c, 1);
     (void)BIO_flush(cb->arg);
 # ifdef LINT

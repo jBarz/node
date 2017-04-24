@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     ERR_load_crypto_strings();
 
     /* Read in recipient certificate */
-    tbio = BIO_new_file("signer.pem", "r");
+    tbio = BIO_new_file("\x73\x69\x67\x6e\x65\x72\x2e\x70\x65\x6d", "\x72");
 
     if (!tbio)
         goto err;
@@ -44,9 +44,9 @@ int main(int argc, char **argv)
 
     /* Open content being encrypted */
 
-    in = BIO_new_file("encr.txt", "r");
+    in = BIO_new_file("\x65\x6e\x63\x72\x2e\x74\x78\x74", "\x72");
 
-    dout = BIO_new_file("smencr.out", "wb");
+    dout = BIO_new_file("\x73\x6d\x65\x6e\x63\x72\x2e\x6f\x75\x74", "\x77\x62");
 
     if (!in)
         goto err;
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
     if (!cms)
         goto err;
 
-    out = BIO_new_file("smencr.pem", "w");
+    out = BIO_new_file("\x73\x6d\x65\x6e\x63\x72\x2e\x70\x65\x6d", "\x77");
     if (!out)
         goto err;
 
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
  err:
 
     if (ret) {
-        fprintf(stderr, "Error Encrypting Data\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x45\x6e\x63\x72\x79\x70\x74\x69\x6e\x67\x20\x44\x61\x74\x61\xa");
         ERR_print_errors_fp(stderr);
     }
 

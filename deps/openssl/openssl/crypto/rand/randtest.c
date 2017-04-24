@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
     i = RAND_pseudo_bytes(buf, 2500);
     if (i < 0) {
-        printf("init failed, the rand method is not properly installed\n");
+        printf("\x69\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x20\x6d\x65\x74\x68\x6f\x64\x20\x69\x73\x20\x6e\x6f\x74\x20\x70\x72\x6f\x70\x65\x72\x6c\x79\x20\x69\x6e\x73\x74\x61\x6c\x6c\x65\x64\xa");
         err++;
         goto err;
     }
@@ -127,10 +127,10 @@ int main(int argc, char **argv)
 
     /* test 1 */
     if (!((9654 < n1) && (n1 < 10346))) {
-        printf("test 1 failed, X=%lu\n", n1);
+        printf("\x74\x65\x73\x74\x20\x31\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x58\x3d\x25\x6c\x75\xa", n1);
         err++;
     }
-    printf("test 1 done\n");
+    printf("\x74\x65\x73\x74\x20\x31\x20\x64\x6f\x6e\x65\xa");
 
     /* test 2 */
 #ifdef undef
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
         d += n2[i] * n2[i];
     d = d * 16.0 / 5000.0 - 5000.0;
     if (!((1.03 < d) && (d < 57.4))) {
-        printf("test 2 failed, X=%.2f\n", d);
+        printf("\x74\x65\x73\x74\x20\x32\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x58\x3d\x25\x2e\x32\x66\xa", d);
         err++;
     }
 #endif
@@ -148,61 +148,61 @@ int main(int argc, char **argv)
         d += n2[i] * n2[i];
     d = (d * 8) / 25 - 500000;
     if (!((103 < d) && (d < 5740))) {
-        printf("test 2 failed, X=%ld.%02ld\n", d / 100L, d % 100L);
+        printf("\x74\x65\x73\x74\x20\x32\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x58\x3d\x25\x6c\x64\x2e\x25\x30\x32\x6c\x64\xa", d / 100L, d % 100L);
         err++;
     }
-    printf("test 2 done\n");
+    printf("\x74\x65\x73\x74\x20\x32\x20\x64\x6f\x6e\x65\xa");
 
     /* test 3 */
     for (i = 0; i < 2; i++) {
         if (!((2267 < runs[i][0]) && (runs[i][0] < 2733))) {
-            printf("test 3 failed, bit=%d run=%d num=%lu\n",
+            printf("\x74\x65\x73\x74\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x62\x69\x74\x3d\x25\x64\x20\x72\x75\x6e\x3d\x25\x64\x20\x6e\x75\x6d\x3d\x25\x6c\x75\xa",
                    i, 1, runs[i][0]);
             err++;
         }
         if (!((1079 < runs[i][1]) && (runs[i][1] < 1421))) {
-            printf("test 3 failed, bit=%d run=%d num=%lu\n",
+            printf("\x74\x65\x73\x74\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x62\x69\x74\x3d\x25\x64\x20\x72\x75\x6e\x3d\x25\x64\x20\x6e\x75\x6d\x3d\x25\x6c\x75\xa",
                    i, 2, runs[i][1]);
             err++;
         }
         if (!((502 < runs[i][2]) && (runs[i][2] < 748))) {
-            printf("test 3 failed, bit=%d run=%d num=%lu\n",
+            printf("\x74\x65\x73\x74\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x62\x69\x74\x3d\x25\x64\x20\x72\x75\x6e\x3d\x25\x64\x20\x6e\x75\x6d\x3d\x25\x6c\x75\xa",
                    i, 3, runs[i][2]);
             err++;
         }
         if (!((223 < runs[i][3]) && (runs[i][3] < 402))) {
-            printf("test 3 failed, bit=%d run=%d num=%lu\n",
+            printf("\x74\x65\x73\x74\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x62\x69\x74\x3d\x25\x64\x20\x72\x75\x6e\x3d\x25\x64\x20\x6e\x75\x6d\x3d\x25\x6c\x75\xa",
                    i, 4, runs[i][3]);
             err++;
         }
         if (!((90 < runs[i][4]) && (runs[i][4] < 223))) {
-            printf("test 3 failed, bit=%d run=%d num=%lu\n",
+            printf("\x74\x65\x73\x74\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x62\x69\x74\x3d\x25\x64\x20\x72\x75\x6e\x3d\x25\x64\x20\x6e\x75\x6d\x3d\x25\x6c\x75\xa",
                    i, 5, runs[i][4]);
             err++;
         }
         if (!((90 < runs[i][5]) && (runs[i][5] < 223))) {
-            printf("test 3 failed, bit=%d run=%d num=%lu\n",
+            printf("\x74\x65\x73\x74\x20\x33\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x62\x69\x74\x3d\x25\x64\x20\x72\x75\x6e\x3d\x25\x64\x20\x6e\x75\x6d\x3d\x25\x6c\x75\xa",
                    i, 6, runs[i][5]);
             err++;
         }
     }
-    printf("test 3 done\n");
+    printf("\x74\x65\x73\x74\x20\x33\x20\x64\x6f\x6e\x65\xa");
 
     /* test 4 */
     if (runs[0][33] != 0) {
-        printf("test 4 failed, bit=%d run=%d num=%lu\n", 0, 34, runs[0][33]);
+        printf("\x74\x65\x73\x74\x20\x34\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x62\x69\x74\x3d\x25\x64\x20\x72\x75\x6e\x3d\x25\x64\x20\x6e\x75\x6d\x3d\x25\x6c\x75\xa", 0, 34, runs[0][33]);
         err++;
     }
     if (runs[1][33] != 0) {
-        printf("test 4 failed, bit=%d run=%d num=%lu\n", 1, 34, runs[1][33]);
+        printf("\x74\x65\x73\x74\x20\x34\x20\x66\x61\x69\x6c\x65\x64\x2c\x20\x62\x69\x74\x3d\x25\x64\x20\x72\x75\x6e\x3d\x25\x64\x20\x6e\x75\x6d\x3d\x25\x6c\x75\xa", 1, 34, runs[1][33]);
         err++;
     }
-    printf("test 4 done\n");
+    printf("\x74\x65\x73\x74\x20\x34\x20\x64\x6f\x6e\x65\xa");
  err:
     err = ((err) ? 1 : 0);
 #ifdef OPENSSL_SYS_NETWARE
     if (err)
-        printf("ERROR: %d\n", err);
+        printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", err);
 #endif
     EXIT(err);
     return (err);

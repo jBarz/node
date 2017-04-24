@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,16 +70,16 @@
 # define ERR_REASON(reason) ERR_PACK(0,0,reason)
 
 static ERR_STRING_DATA GMP_str_functs[] = {
-    {ERR_FUNC(GMP_F_E_GMP_CTRL), "E_GMP_CTRL"},
-    {ERR_FUNC(GMP_F_E_GMP_RSA_MOD_EXP), "E_GMP_RSA_MOD_EXP"},
+    {ERR_FUNC(GMP_F_E_GMP_CTRL), "\x45\x5f\x47\x4d\x50\x5f\x43\x54\x52\x4c"},
+    {ERR_FUNC(GMP_F_E_GMP_RSA_MOD_EXP), "\x45\x5f\x47\x4d\x50\x5f\x52\x53\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA GMP_str_reasons[] = {
     {ERR_REASON(GMP_R_CTRL_COMMAND_NOT_IMPLEMENTED),
-     "ctrl command not implemented"},
-    {ERR_REASON(GMP_R_KEY_CONTEXT_ERROR), "key context error"},
-    {ERR_REASON(GMP_R_MISSING_KEY_COMPONENTS), "missing key components"},
+     "\x63\x74\x72\x6c\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x6e\x6f\x74\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64"},
+    {ERR_REASON(GMP_R_KEY_CONTEXT_ERROR), "\x6b\x65\x79\x20\x63\x6f\x6e\x74\x65\x78\x74\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(GMP_R_MISSING_KEY_COMPONENTS), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x6b\x65\x79\x20\x63\x6f\x6d\x70\x6f\x6e\x65\x6e\x74\x73"},
     {0, NULL}
 };
 

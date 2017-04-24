@@ -4,7 +4,7 @@
  */
 /* Copyright 2011 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "\x4c\x69\x63\x65\x6e\x73\x65");
  *
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,7 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  distributed under the License is distributed on an "\x41\x53\x20\x49\x53" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
@@ -204,7 +204,7 @@ void ec_GFp_nistp_recode_scalar_bits(unsigned char *sign,
 {
     unsigned char s, d;
 
-    s = ~((in >> 5) - 1);       /* sets all bits to MSB(in), 'in' seen as
+    s = ~((in >> 5) - 1);       /* sets all bits to MSB(in), '\x69\x6e' seen as
                                  * 6-bit value */
     d = (1 << 6) - in - 1;
     d = (d & s) | (in & ~s);

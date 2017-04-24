@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -130,13 +130,13 @@ void X509_PKEY_free(X509_PKEY *x)
 
     i = CRYPTO_add(&x->references, -1, CRYPTO_LOCK_X509_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("X509_PKEY", x);
+    REF_PRINT("\x58\x35\x30\x39\x5f\x50\x4b\x45\x59", x);
 #endif
     if (i > 0)
         return;
 #ifdef REF_CHECK
     if (i < 0) {
-        fprintf(stderr, "X509_PKEY_free, bad reference count\n");
+        fprintf(stderr, "\x58\x35\x30\x39\x5f\x50\x4b\x45\x59\x5f\x66\x72\x65\x65\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
         abort();
     }
 #endif

@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -91,14 +91,14 @@ static STACK_OF(CONF_VALUE) *i2v_AUTHORITY_KEYID(X509V3_EXT_METHOD *method,
     char *tmp;
     if (akeyid->keyid) {
         tmp = hex_to_string(akeyid->keyid->data, akeyid->keyid->length);
-        X509V3_add_value("keyid", tmp, &extlist);
+        X509V3_add_value("\x6b\x65\x79\x69\x64", tmp, &extlist);
         OPENSSL_free(tmp);
     }
     if (akeyid->issuer)
         extlist = i2v_GENERAL_NAMES(NULL, akeyid->issuer, extlist);
     if (akeyid->serial) {
         tmp = hex_to_string(akeyid->serial->data, akeyid->serial->length);
-        X509V3_add_value("serial", tmp, &extlist);
+        X509V3_add_value("\x73\x65\x72\x69\x61\x6c", tmp, &extlist);
         OPENSSL_free(tmp);
     }
     return extlist;
@@ -131,17 +131,17 @@ static AUTHORITY_KEYID *v2i_AUTHORITY_KEYID(X509V3_EXT_METHOD *method,
 
     for (i = 0; i < sk_CONF_VALUE_num(values); i++) {
         cnf = sk_CONF_VALUE_value(values, i);
-        if (!strcmp(cnf->name, "keyid")) {
+        if (!strcmp(cnf->name, "\x6b\x65\x79\x69\x64")) {
             keyid = 1;
-            if (cnf->value && !strcmp(cnf->value, "always"))
+            if (cnf->value && !strcmp(cnf->value, "\x61\x6c\x77\x61\x79\x73"))
                 keyid = 2;
-        } else if (!strcmp(cnf->name, "issuer")) {
+        } else if (!strcmp(cnf->name, "\x69\x73\x73\x75\x65\x72")) {
             issuer = 1;
-            if (cnf->value && !strcmp(cnf->value, "always"))
+            if (cnf->value && !strcmp(cnf->value, "\x61\x6c\x77\x61\x79\x73"))
                 issuer = 2;
         } else {
             X509V3err(X509V3_F_V2I_AUTHORITY_KEYID, X509V3_R_UNKNOWN_OPTION);
-            ERR_add_error_data(2, "name=", cnf->name);
+            ERR_add_error_data(2, "\x6e\x61\x6d\x65\x3d", cnf->name);
             return NULL;
         }
     }

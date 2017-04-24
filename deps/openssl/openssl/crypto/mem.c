@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -309,7 +309,7 @@ void *CRYPTO_malloc_locked(int num, const char *file, int line)
     }
     ret = malloc_locked_ex_func(num, file, line);
 #ifdef LEVITTE_DEBUG_MEM
-    fprintf(stderr, "LEVITTE_DEBUG_MEM:         > 0x%p (%d)\n", ret, num);
+    fprintf(stderr, "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3e\x20\x30\x78\x25\x70\x20\x28\x25\x64\x29\xa", ret, num);
 #endif
     if (malloc_debug_func != NULL)
         malloc_debug_func(ret, num, file, line, 1);
@@ -322,7 +322,7 @@ void CRYPTO_free_locked(void *str)
     if (free_debug_func != NULL)
         free_debug_func(str, 0);
 #ifdef LEVITTE_DEBUG_MEM
-    fprintf(stderr, "LEVITTE_DEBUG_MEM:         < 0x%p\n", str);
+    fprintf(stderr, "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3c\x20\x30\x78\x25\x70\xa", str);
 #endif
     free_locked_func(str);
     if (free_debug_func != NULL)
@@ -345,7 +345,7 @@ void *CRYPTO_malloc(int num, const char *file, int line)
     }
     ret = malloc_ex_func(num, file, line);
 #ifdef LEVITTE_DEBUG_MEM
-    fprintf(stderr, "LEVITTE_DEBUG_MEM:         > 0x%p (%d)\n", ret, num);
+    fprintf(stderr, "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3e\x20\x30\x78\x25\x70\x20\x28\x25\x64\x29\xa", ret, num);
 #endif
     if (malloc_debug_func != NULL)
         malloc_debug_func(ret, num, file, line, 1);
@@ -378,7 +378,7 @@ void *CRYPTO_realloc(void *str, int num, const char *file, int line)
         realloc_debug_func(str, NULL, num, file, line, 0);
     ret = realloc_ex_func(str, num, file, line);
 #ifdef LEVITTE_DEBUG_MEM
-    fprintf(stderr, "LEVITTE_DEBUG_MEM:         | 0x%p -> 0x%p (%d)\n", str,
+    fprintf(stderr, "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x7c\x20\x30\x78\x25\x70\x20\x2d\x3e\x20\x30\x78\x25\x70\x20\x28\x25\x64\x29\xa", str,
             ret, num);
 #endif
     if (realloc_debug_func != NULL)
@@ -415,7 +415,7 @@ void *CRYPTO_realloc_clean(void *str, int old_len, int num, const char *file,
     }
 #ifdef LEVITTE_DEBUG_MEM
     fprintf(stderr,
-            "LEVITTE_DEBUG_MEM:         | 0x%p -> 0x%p (%d)\n",
+            "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x7c\x20\x30\x78\x25\x70\x20\x2d\x3e\x20\x30\x78\x25\x70\x20\x28\x25\x64\x29\xa",
             str, ret, num);
 #endif
     if (realloc_debug_func != NULL)
@@ -429,7 +429,7 @@ void CRYPTO_free(void *str)
     if (free_debug_func != NULL)
         free_debug_func(str, 0);
 #ifdef LEVITTE_DEBUG_MEM
-    fprintf(stderr, "LEVITTE_DEBUG_MEM:         < 0x%p\n", str);
+    fprintf(stderr, "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3c\x20\x30\x78\x25\x70\xa", str);
 #endif
     free_func(str);
     if (free_debug_func != NULL)

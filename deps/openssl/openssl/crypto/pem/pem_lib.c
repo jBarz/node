@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -74,7 +74,7 @@
 # include <openssl/engine.h>
 #endif
 
-const char PEM_version[] = "PEM" OPENSSL_VERSION_PTEXT;
+const char PEM_version[] = "\x50\x45\x4d" OPENSSL_VERSION_PTEXT;
 
 #define MIN_LENGTH      4
 
@@ -102,7 +102,7 @@ int PEM_def_callback(char *buf, int num, int w, void *key)
 
     prompt = EVP_get_pw_prompt();
     if (prompt == NULL)
-        prompt = "Enter PEM pass phrase:";
+        prompt = "\x45\x6e\x74\x65\x72\x20\x50\x45\x4d\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x3a";
 
     for (;;) {
         /*
@@ -120,7 +120,7 @@ int PEM_def_callback(char *buf, int num, int w, void *key)
         j = strlen(buf);
         if (min_len && j < min_len) {
             fprintf(stderr,
-                    "phrase is too short, needs to be at least %d chars\n",
+                    "\x70\x68\x72\x61\x73\x65\x20\x69\x73\x20\x74\x6f\x6f\x20\x73\x68\x6f\x72\x74\x2c\x20\x6e\x65\x65\x64\x73\x20\x74\x6f\x20\x62\x65\x20\x61\x74\x20\x6c\x65\x61\x73\x74\x20\x25\x64\x20\x63\x68\x61\x72\x73\xa",
                     min_len);
         } else
             break;
@@ -134,28 +134,28 @@ void PEM_proc_type(char *buf, int type)
     const char *str;
 
     if (type == PEM_TYPE_ENCRYPTED)
-        str = "ENCRYPTED";
+        str = "\x45\x4e\x43\x52\x59\x50\x54\x45\x44";
     else if (type == PEM_TYPE_MIC_CLEAR)
-        str = "MIC-CLEAR";
+        str = "\x4d\x49\x43\x2d\x43\x4c\x45\x41\x52";
     else if (type == PEM_TYPE_MIC_ONLY)
-        str = "MIC-ONLY";
+        str = "\x4d\x49\x43\x2d\x4f\x4e\x4c\x59";
     else
-        str = "BAD-TYPE";
+        str = "\x42\x41\x44\x2d\x54\x59\x50\x45";
 
-    BUF_strlcat(buf, "Proc-Type: 4,", PEM_BUFSIZE);
+    BUF_strlcat(buf, "\x50\x72\x6f\x63\x2d\x54\x79\x70\x65\x3a\x20\x34\x2c", PEM_BUFSIZE);
     BUF_strlcat(buf, str, PEM_BUFSIZE);
-    BUF_strlcat(buf, "\n", PEM_BUFSIZE);
+    BUF_strlcat(buf, "\xa", PEM_BUFSIZE);
 }
 
 void PEM_dek_info(char *buf, const char *type, int len, char *str)
 {
-    static const unsigned char map[17] = "0123456789ABCDEF";
+    static const unsigned char map[17] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
     long i;
     int j;
 
-    BUF_strlcat(buf, "DEK-Info: ", PEM_BUFSIZE);
+    BUF_strlcat(buf, "\x44\x45\x4b\x2d\x49\x6e\x66\x6f\x3a\x20", PEM_BUFSIZE);
     BUF_strlcat(buf, type, PEM_BUFSIZE);
-    BUF_strlcat(buf, ",", PEM_BUFSIZE);
+    BUF_strlcat(buf, "\x2c", PEM_BUFSIZE);
     j = strlen(buf);
     if (j + (len * 2) + 1 > PEM_BUFSIZE)
         return;
@@ -163,8 +163,8 @@ void PEM_dek_info(char *buf, const char *type, int len, char *str)
         buf[j + i * 2] = map[(str[i] >> 4) & 0x0f];
         buf[j + i * 2 + 1] = map[(str[i]) & 0x0f];
     }
-    buf[j + i * 2] = '\n';
-    buf[j + i * 2 + 1] = '\0';
+    buf[j + i * 2] = '\xa';
+    buf[j + i * 2 + 1] = '\x0';
 }
 
 #ifndef OPENSSL_NO_FP_API
@@ -200,7 +200,7 @@ static int check_pem(const char *nm, const char *name)
             return 1;
         if (!strcmp(nm, PEM_STRING_PKCS8INF))
             return 1;
-        slen = pem_check_suffix(nm, "PRIVATE KEY");
+        slen = pem_check_suffix(nm, "\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59");
         if (slen > 0) {
             /*
              * NB: ENGINE implementations wont contain a deprecated old
@@ -216,7 +216,7 @@ static int check_pem(const char *nm, const char *name)
     if (!strcmp(name, PEM_STRING_PARAMETERS)) {
         int slen;
         const EVP_PKEY_ASN1_METHOD *ameth;
-        slen = pem_check_suffix(nm, "PARAMETERS");
+        slen = pem_check_suffix(nm, "\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53");
         if (slen > 0) {
             ENGINE *e;
             ameth = EVP_PKEY_asn1_find_str(&e, nm, slen);
@@ -290,7 +290,7 @@ int PEM_bytes_read_bio(unsigned char **pdata, long *plen, char **pnm,
     for (;;) {
         if (!PEM_read_bio(bp, &nm, &header, &data, &len)) {
             if (ERR_GET_REASON(ERR_peek_error()) == PEM_R_NO_START_LINE)
-                ERR_add_error_data(2, "Expecting: ", name);
+                ERR_add_error_data(2, "\x45\x78\x70\x65\x63\x74\x69\x6e\x67\x3a\x20", name);
             return 0;
         }
         if (check_pem(nm, name))
@@ -408,7 +408,7 @@ int PEM_ASN1_write_bio(i2d_of_void *i2d, const char *name, BIO *bp,
         OPENSSL_assert(strlen(objstr) + 23 + 2 * enc->iv_len + 13 <=
                        sizeof buf);
 
-        buf[0] = '\0';
+        buf[0] = '\x0';
         PEM_proc_type(buf, PEM_TYPE_ENCRYPTED);
         PEM_dek_info(buf, objstr, enc->iv_len, (char *)iv);
         /* k=strlen(buf); */
@@ -425,7 +425,7 @@ int PEM_ASN1_write_bio(i2d_of_void *i2d, const char *name, BIO *bp,
         i += j;
     } else {
         ret = 1;
-        buf[0] = '\0';
+        buf[0] = '\x0';
     }
     i = PEM_write_bio(bp, name, buf, data, i);
     if (i <= 0)
@@ -499,30 +499,30 @@ int PEM_get_EVP_CIPHER_INFO(char *header, EVP_CIPHER_INFO *cipher)
     char **header_pp = &header;
 
     cipher->cipher = NULL;
-    if ((header == NULL) || (*header == '\0') || (*header == '\n'))
+    if ((header == NULL) || (*header == '\x0') || (*header == '\xa'))
         return (1);
-    if (strncmp(header, "Proc-Type: ", 11) != 0) {
+    if (strncmp(header, "\x50\x72\x6f\x63\x2d\x54\x79\x70\x65\x3a\x20", 11) != 0) {
         PEMerr(PEM_F_PEM_GET_EVP_CIPHER_INFO, PEM_R_NOT_PROC_TYPE);
         return (0);
     }
     header += 11;
-    if (*header != '4')
+    if (*header != '\x34')
         return (0);
     header++;
-    if (*header != ',')
+    if (*header != '\x2c')
         return (0);
     header++;
-    if (strncmp(header, "ENCRYPTED", 9) != 0) {
+    if (strncmp(header, "\x45\x4e\x43\x52\x59\x50\x54\x45\x44", 9) != 0) {
         PEMerr(PEM_F_PEM_GET_EVP_CIPHER_INFO, PEM_R_NOT_ENCRYPTED);
         return (0);
     }
-    for (; (*header != '\n') && (*header != '\0'); header++) ;
-    if (*header == '\0') {
+    for (; (*header != '\xa') && (*header != '\x0'); header++) ;
+    if (*header == '\x0') {
         PEMerr(PEM_F_PEM_GET_EVP_CIPHER_INFO, PEM_R_SHORT_HEADER);
         return (0);
     }
     header++;
-    if (strncmp(header, "DEK-Info: ", 10) != 0) {
+    if (strncmp(header, "\x44\x45\x4b\x2d\x49\x6e\x66\x6f\x3a\x20", 10) != 0) {
         PEMerr(PEM_F_PEM_GET_EVP_CIPHER_INFO, PEM_R_NOT_DEK_INFO);
         return (0);
     }
@@ -532,16 +532,16 @@ int PEM_get_EVP_CIPHER_INFO(char *header, EVP_CIPHER_INFO *cipher)
     for (;;) {
         c = *header;
 #ifndef CHARSET_EBCDIC
-        if (!(((c >= 'A') && (c <= 'Z')) || (c == '-') ||
-              ((c >= '0') && (c <= '9'))))
+        if (!(((c >= '\x41') && (c <= '\x5a')) || (c == '\x2d') ||
+              ((c >= '\x30') && (c <= '\x39'))))
             break;
 #else
-        if (!(isupper(c) || (c == '-') || isdigit(c)))
+        if (!(isupper(c) || (c == '\x2d') || isdigit(c)))
             break;
 #endif
         header++;
     }
-    *header = '\0';
+    *header = '\x0';
     cipher->cipher = enc = EVP_get_cipherbyname(p);
     *header = c;
     header++;
@@ -566,12 +566,12 @@ static int load_iv(char **fromp, unsigned char *to, int num)
         to[i] = 0;
     num *= 2;
     for (i = 0; i < num; i++) {
-        if ((*from >= '0') && (*from <= '9'))
-            v = *from - '0';
-        else if ((*from >= 'A') && (*from <= 'F'))
-            v = *from - 'A' + 10;
-        else if ((*from >= 'a') && (*from <= 'f'))
-            v = *from - 'a' + 10;
+        if ((*from >= '\x30') && (*from <= '\x39'))
+            v = *from - '\x30';
+        else if ((*from >= '\x41') && (*from <= '\x46'))
+            v = *from - '\x41' + 10;
+        else if ((*from >= '\x61') && (*from <= '\x66'))
+            v = *from - '\x61' + 10;
         else {
             PEMerr(PEM_F_LOAD_IV, PEM_R_BAD_IV_CHARS);
             return (0);
@@ -613,14 +613,14 @@ int PEM_write_bio(BIO *bp, const char *name, const char *header,
     EVP_EncodeInit(&ctx);
     nlen = strlen(name);
 
-    if ((BIO_write(bp, "-----BEGIN ", 11) != 11) ||
+    if ((BIO_write(bp, "\x2d\x2d\x2d\x2d\x2d\x42\x45\x47\x49\x4e\x20", 11) != 11) ||
         (BIO_write(bp, name, nlen) != nlen) ||
-        (BIO_write(bp, "-----\n", 6) != 6))
+        (BIO_write(bp, "\x2d\x2d\x2d\x2d\x2d\xa", 6) != 6))
         goto err;
 
     i = strlen(header);
     if (i > 0) {
-        if ((BIO_write(bp, header, i) != i) || (BIO_write(bp, "\n", 1) != 1))
+        if ((BIO_write(bp, header, i) != i) || (BIO_write(bp, "\xa", 1) != 1))
             goto err;
     }
 
@@ -646,9 +646,9 @@ int PEM_write_bio(BIO *bp, const char *name, const char *header,
     OPENSSL_cleanse(buf, PEM_BUFSIZE * 8);
     OPENSSL_free(buf);
     buf = NULL;
-    if ((BIO_write(bp, "-----END ", 9) != 9) ||
+    if ((BIO_write(bp, "\x2d\x2d\x2d\x2d\x2d\x45\x4e\x44\x20", 9) != 9) ||
         (BIO_write(bp, name, nlen) != nlen) ||
-        (BIO_write(bp, "-----\n", 6) != 6))
+        (BIO_write(bp, "\x2d\x2d\x2d\x2d\x2d\xa", 6) != 6))
         goto err;
     return (i + outl);
  err:
@@ -699,7 +699,7 @@ int PEM_read_bio(BIO *bp, char **name, char **header, unsigned char **data,
         return (0);
     }
 
-    buf[254] = '\0';
+    buf[254] = '\x0';
     for (;;) {
         i = BIO_gets(bp, buf, 254);
 
@@ -708,22 +708,22 @@ int PEM_read_bio(BIO *bp, char **name, char **header, unsigned char **data,
             goto err;
         }
 
-        while ((i >= 0) && (buf[i] <= ' '))
+        while ((i >= 0) && (buf[i] <= '\x20'))
             i--;
-        buf[++i] = '\n';
-        buf[++i] = '\0';
+        buf[++i] = '\xa';
+        buf[++i] = '\x0';
 
-        if (strncmp(buf, "-----BEGIN ", 11) == 0) {
+        if (strncmp(buf, "\x2d\x2d\x2d\x2d\x2d\x42\x45\x47\x49\x4e\x20", 11) == 0) {
             i = strlen(&(buf[11]));
 
-            if (strncmp(&(buf[11 + i - 6]), "-----\n", 6) != 0)
+            if (strncmp(&(buf[11 + i - 6]), "\x2d\x2d\x2d\x2d\x2d\xa", 6) != 0)
                 continue;
             if (!BUF_MEM_grow(nameB, i + 9)) {
                 PEMerr(PEM_F_PEM_READ_BIO, ERR_R_MALLOC_FAILURE);
                 goto err;
             }
             memcpy(nameB->data, &(buf[11]), i - 6);
-            nameB->data[i - 6] = '\0';
+            nameB->data[i - 6] = '\x0';
             break;
         }
     }
@@ -732,29 +732,29 @@ int PEM_read_bio(BIO *bp, char **name, char **header, unsigned char **data,
         PEMerr(PEM_F_PEM_READ_BIO, ERR_R_MALLOC_FAILURE);
         goto err;
     }
-    headerB->data[0] = '\0';
+    headerB->data[0] = '\x0';
     for (;;) {
         i = BIO_gets(bp, buf, 254);
         if (i <= 0)
             break;
 
-        while ((i >= 0) && (buf[i] <= ' '))
+        while ((i >= 0) && (buf[i] <= '\x20'))
             i--;
-        buf[++i] = '\n';
-        buf[++i] = '\0';
+        buf[++i] = '\xa';
+        buf[++i] = '\x0';
 
-        if (buf[0] == '\n')
+        if (buf[0] == '\xa')
             break;
         if (!BUF_MEM_grow(headerB, hl + i + 9)) {
             PEMerr(PEM_F_PEM_READ_BIO, ERR_R_MALLOC_FAILURE);
             goto err;
         }
-        if (strncmp(buf, "-----END ", 9) == 0) {
+        if (strncmp(buf, "\x2d\x2d\x2d\x2d\x2d\x45\x4e\x44\x20", 9) == 0) {
             nohead = 1;
             break;
         }
         memcpy(&(headerB->data[hl]), buf, i);
-        headerB->data[hl + i] = '\0';
+        headerB->data[hl + i] = '\x0';
         hl += i;
     }
 
@@ -763,21 +763,21 @@ int PEM_read_bio(BIO *bp, char **name, char **header, unsigned char **data,
         PEMerr(PEM_F_PEM_READ_BIO, ERR_R_MALLOC_FAILURE);
         goto err;
     }
-    dataB->data[0] = '\0';
+    dataB->data[0] = '\x0';
     if (!nohead) {
         for (;;) {
             i = BIO_gets(bp, buf, 254);
             if (i <= 0)
                 break;
 
-            while ((i >= 0) && (buf[i] <= ' '))
+            while ((i >= 0) && (buf[i] <= '\x20'))
                 i--;
-            buf[++i] = '\n';
-            buf[++i] = '\0';
+            buf[++i] = '\xa';
+            buf[++i] = '\x0';
 
             if (i != 65)
                 end = 1;
-            if (strncmp(buf, "-----END ", 9) == 0)
+            if (strncmp(buf, "\x2d\x2d\x2d\x2d\x2d\x45\x4e\x44\x20", 9) == 0)
                 break;
             if (i > 65)
                 break;
@@ -786,18 +786,18 @@ int PEM_read_bio(BIO *bp, char **name, char **header, unsigned char **data,
                 goto err;
             }
             memcpy(&(dataB->data[bl]), buf, i);
-            dataB->data[bl + i] = '\0';
+            dataB->data[bl + i] = '\x0';
             bl += i;
             if (end) {
-                buf[0] = '\0';
+                buf[0] = '\x0';
                 i = BIO_gets(bp, buf, 254);
                 if (i <= 0)
                     break;
 
-                while ((i >= 0) && (buf[i] <= ' '))
+                while ((i >= 0) && (buf[i] <= '\x20'))
                     i--;
-                buf[++i] = '\n';
-                buf[++i] = '\0';
+                buf[++i] = '\xa';
+                buf[++i] = '\x0';
 
                 break;
             }
@@ -809,9 +809,9 @@ int PEM_read_bio(BIO *bp, char **name, char **header, unsigned char **data,
         bl = hl;
     }
     i = strlen(nameB->data);
-    if ((strncmp(buf, "-----END ", 9) != 0) ||
+    if ((strncmp(buf, "\x2d\x2d\x2d\x2d\x2d\x45\x4e\x44\x20", 9) != 0) ||
         (strncmp(nameB->data, &(buf[9]), i) != 0) ||
-        (strncmp(&(buf[9 + i]), "-----\n", 6) != 0)) {
+        (strncmp(&(buf[9 + i]), "\x2d\x2d\x2d\x2d\x2d\xa", 6) != 0)) {
         PEMerr(PEM_F_PEM_READ_BIO, PEM_R_BAD_END_LINE);
         goto err;
     }
@@ -865,7 +865,7 @@ int pem_check_suffix(const char *pem_str, const char *suffix)
     if (strcmp(p, suffix))
         return 0;
     p--;
-    if (*p != ' ')
+    if (*p != '\x20')
         return 0;
     return p - pem_str;
 }

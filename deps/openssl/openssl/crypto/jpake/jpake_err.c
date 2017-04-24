@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,27 +70,27 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_JPAKE,0,reason)
 
 static ERR_STRING_DATA JPAKE_str_functs[] = {
-    {ERR_FUNC(JPAKE_F_JPAKE_STEP1_PROCESS), "JPAKE_STEP1_process"},
-    {ERR_FUNC(JPAKE_F_JPAKE_STEP2_PROCESS), "JPAKE_STEP2_process"},
-    {ERR_FUNC(JPAKE_F_JPAKE_STEP3A_PROCESS), "JPAKE_STEP3A_process"},
-    {ERR_FUNC(JPAKE_F_JPAKE_STEP3B_PROCESS), "JPAKE_STEP3B_process"},
-    {ERR_FUNC(JPAKE_F_VERIFY_ZKP), "VERIFY_ZKP"},
+    {ERR_FUNC(JPAKE_F_JPAKE_STEP1_PROCESS), "\x4a\x50\x41\x4b\x45\x5f\x53\x54\x45\x50\x31\x5f\x70\x72\x6f\x63\x65\x73\x73"},
+    {ERR_FUNC(JPAKE_F_JPAKE_STEP2_PROCESS), "\x4a\x50\x41\x4b\x45\x5f\x53\x54\x45\x50\x32\x5f\x70\x72\x6f\x63\x65\x73\x73"},
+    {ERR_FUNC(JPAKE_F_JPAKE_STEP3A_PROCESS), "\x4a\x50\x41\x4b\x45\x5f\x53\x54\x45\x50\x33\x41\x5f\x70\x72\x6f\x63\x65\x73\x73"},
+    {ERR_FUNC(JPAKE_F_JPAKE_STEP3B_PROCESS), "\x4a\x50\x41\x4b\x45\x5f\x53\x54\x45\x50\x33\x42\x5f\x70\x72\x6f\x63\x65\x73\x73"},
+    {ERR_FUNC(JPAKE_F_VERIFY_ZKP), "\x56\x45\x52\x49\x46\x59\x5f\x5a\x4b\x50"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA JPAKE_str_reasons[] = {
     {ERR_REASON(JPAKE_R_G_TO_THE_X3_IS_NOT_LEGAL),
-     "g to the x3 is not legal"},
+     "\x67\x20\x74\x6f\x20\x74\x68\x65\x20\x78\x33\x20\x69\x73\x20\x6e\x6f\x74\x20\x6c\x65\x67\x61\x6c"},
     {ERR_REASON(JPAKE_R_G_TO_THE_X4_IS_NOT_LEGAL),
-     "g to the x4 is not legal"},
-    {ERR_REASON(JPAKE_R_G_TO_THE_X4_IS_ONE), "g to the x4 is one"},
+     "\x67\x20\x74\x6f\x20\x74\x68\x65\x20\x78\x34\x20\x69\x73\x20\x6e\x6f\x74\x20\x6c\x65\x67\x61\x6c"},
+    {ERR_REASON(JPAKE_R_G_TO_THE_X4_IS_ONE), "\x67\x20\x74\x6f\x20\x74\x68\x65\x20\x78\x34\x20\x69\x73\x20\x6f\x6e\x65"},
     {ERR_REASON(JPAKE_R_HASH_OF_HASH_OF_KEY_MISMATCH),
-     "hash of hash of key mismatch"},
-    {ERR_REASON(JPAKE_R_HASH_OF_KEY_MISMATCH), "hash of key mismatch"},
-    {ERR_REASON(JPAKE_R_VERIFY_B_FAILED), "verify b failed"},
-    {ERR_REASON(JPAKE_R_VERIFY_X3_FAILED), "verify x3 failed"},
-    {ERR_REASON(JPAKE_R_VERIFY_X4_FAILED), "verify x4 failed"},
-    {ERR_REASON(JPAKE_R_ZKP_VERIFY_FAILED), "zkp verify failed"},
+     "\x68\x61\x73\x68\x20\x6f\x66\x20\x68\x61\x73\x68\x20\x6f\x66\x20\x6b\x65\x79\x20\x6d\x69\x73\x6d\x61\x74\x63\x68"},
+    {ERR_REASON(JPAKE_R_HASH_OF_KEY_MISMATCH), "\x68\x61\x73\x68\x20\x6f\x66\x20\x6b\x65\x79\x20\x6d\x69\x73\x6d\x61\x74\x63\x68"},
+    {ERR_REASON(JPAKE_R_VERIFY_B_FAILED), "\x76\x65\x72\x69\x66\x79\x20\x62\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(JPAKE_R_VERIFY_X3_FAILED), "\x76\x65\x72\x69\x66\x79\x20\x78\x33\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(JPAKE_R_VERIFY_X4_FAILED), "\x76\x65\x72\x69\x66\x79\x20\x78\x34\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(JPAKE_R_ZKP_VERIFY_FAILED), "\x7a\x6b\x70\x20\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x65\x64"},
     {0, NULL}
 };
 

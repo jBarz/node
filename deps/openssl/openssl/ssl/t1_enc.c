@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,12 +111,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -128,7 +128,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -303,14 +303,14 @@ static int tls1_generate_key_block(SSL *s, unsigned char *km,
                    NULL, 0, NULL, 0, s->session->master_key,
                    s->session->master_key_length, km, tmp, num);
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "tls1_generate_key_block() ==> %d byte master_key =\n\t",
+    fprintf(stderr, "\x74\x6c\x73\x31\x5f\x67\x65\x6e\x65\x72\x61\x74\x65\x5f\x6b\x65\x79\x5f\x62\x6c\x6f\x63\x6b\x28\x29\x20\x3d\x3d\x3e\x20\x25\x64\x20\x62\x79\x74\x65\x20\x6d\x61\x73\x74\x65\x72\x5f\x6b\x65\x79\x20\x3d\xa\x9",
             s->session->master_key_length);
     {
         int i;
         for (i = 0; i < s->session->master_key_length; i++) {
-            fprintf(stderr, "%02X", s->session->master_key[i]);
+            fprintf(stderr, "\x25\x30\x32\x58", s->session->master_key[i]);
         }
-        fprintf(stderr, "\n");
+        fprintf(stderr, "\xa");
     }
 #endif                          /* KSSL_DEBUG */
     return ret;
@@ -349,20 +349,20 @@ int tls1_change_cipher_state(SSL *s, int which)
 #endif
 
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "tls1_change_cipher_state(which= %d) w/\n", which);
-    fprintf(stderr, "\talg= %ld/%ld, comp= %p\n",
+    fprintf(stderr, "\x74\x6c\x73\x31\x5f\x63\x68\x61\x6e\x67\x65\x5f\x63\x69\x70\x68\x65\x72\x5f\x73\x74\x61\x74\x65\x28\x77\x68\x69\x63\x68\x3d\x20\x25\x64\x29\x20\x77\x2f\xa", which);
+    fprintf(stderr, "\x9a\x6c\x67\x3d\x20\x25\x6c\x64\x2f\x25\x6c\x64\x2c\x20\x63\x6f\x6d\x70\x3d\x20\x25\x70\xa",
             s->s3->tmp.new_cipher->algorithm_mkey,
             s->s3->tmp.new_cipher->algorithm_auth, comp);
-    fprintf(stderr, "\tevp_cipher == %p ==? &d_cbc_ede_cipher3\n", c);
-    fprintf(stderr, "\tevp_cipher: nid, blksz= %d, %d, keylen=%d, ivlen=%d\n",
+    fprintf(stderr, "\x9e\x76\x70\x5f\x63\x69\x70\x68\x65\x72\x20\x3d\x3d\x20\x25\x70\x20\x3d\x3d\x3f\x20\x26\x64\x5f\x63\x62\x63\x5f\x65\x64\x65\x5f\x63\x69\x70\x68\x65\x72\x33\xa", c);
+    fprintf(stderr, "\x9e\x76\x70\x5f\x63\x69\x70\x68\x65\x72\x3a\x20\x6e\x69\x64\x2c\x20\x62\x6c\x6b\x73\x7a\x3d\x20\x25\x64\x2c\x20\x25\x64\x2c\x20\x6b\x65\x79\x6c\x65\x6e\x3d\x25\x64\x2c\x20\x69\x76\x6c\x65\x6e\x3d\x25\x64\xa",
             c->nid, c->block_size, c->key_len, c->iv_len);
-    fprintf(stderr, "\tkey_block: len= %d, data= ",
+    fprintf(stderr, "\x9\x6b\x65\x79\x5f\x62\x6c\x6f\x63\x6b\x3a\x20\x6c\x65\x6e\x3d\x20\x25\x64\x2c\x20\x64\x61\x74\x61\x3d\x20",
             s->s3->tmp.key_block_length);
     {
         int i;
         for (i = 0; i < s->s3->tmp.key_block_length; i++)
-            fprintf(stderr, "%02x", s->s3->tmp.key_block[i]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x78", s->s3->tmp.key_block[i]);
+        fprintf(stderr, "\xa");
     }
 #endif                          /* KSSL_DEBUG */
 
@@ -513,11 +513,11 @@ int tls1_change_cipher_state(SSL *s, int which)
         EVP_PKEY_free(mac_key);
     }
 #ifdef TLS_DEBUG
-    printf("which = %04X\nmac key=", which);
+    printf("\x77\x68\x69\x63\x68\x20\x3d\x20\x25\x30\x34\x58\xa\x6d\x61\x63\x20\x6b\x65\x79\x3d", which);
     {
         int z;
         for (z = 0; z < i; z++)
-            printf("%02X%c", ms[z], ((z + 1) % 16) ? ' ' : '\n');
+            printf("\x25\x30\x32\x58\x25\x63", ms[z], ((z + 1) % 16) ? '\x20' : '\xa');
     }
 #endif
     if (is_export) {
@@ -552,15 +552,15 @@ int tls1_change_cipher_state(SSL *s, int which)
 #ifdef KSSL_DEBUG
     {
         int i;
-        fprintf(stderr, "EVP_CipherInit_ex(dd,c,key=,iv=,which)\n");
-        fprintf(stderr, "\tkey= ");
+        fprintf(stderr, "\x45\x56\x50\x5f\x43\x69\x70\x68\x65\x72\x49\x6e\x69\x74\x5f\x65\x78\x28\x64\x64\x2c\x63\x2c\x6b\x65\x79\x3d\x2c\x69\x76\x3d\x2c\x77\x68\x69\x63\x68\x29\xa");
+        fprintf(stderr, "\x9\x6b\x65\x79\x3d\x20");
         for (i = 0; i < c->key_len; i++)
-            fprintf(stderr, "%02x", key[i]);
-        fprintf(stderr, "\n");
-        fprintf(stderr, "\t iv= ");
+            fprintf(stderr, "\x25\x30\x32\x78", key[i]);
+        fprintf(stderr, "\xa");
+        fprintf(stderr, "\x9\x20\x69\x76\x3d\x20");
         for (i = 0; i < c->iv_len; i++)
-            fprintf(stderr, "%02x", iv[i]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x78", iv[i]);
+        fprintf(stderr, "\xa");
     }
 #endif                          /* KSSL_DEBUG */
 
@@ -604,19 +604,19 @@ int tls1_change_cipher_state(SSL *s, int which)
 #endif
 
 #ifdef TLS_DEBUG
-    printf("which = %04X\nkey=", which);
+    printf("\x77\x68\x69\x63\x68\x20\x3d\x20\x25\x30\x34\x58\xa\x6b\x65\x79\x3d", which);
     {
         int z;
         for (z = 0; z < EVP_CIPHER_key_length(c); z++)
-            printf("%02X%c", key[z], ((z + 1) % 16) ? ' ' : '\n');
+            printf("\x25\x30\x32\x58\x25\x63", key[z], ((z + 1) % 16) ? '\x20' : '\xa');
     }
-    printf("\niv=");
+    printf("\xa\x69\x76\x3d");
     {
         int z;
         for (z = 0; z < k; z++)
-            printf("%02X%c", iv[z], ((z + 1) % 16) ? ' ' : '\n');
+            printf("\x25\x30\x32\x58\x25\x63", iv[z], ((z + 1) % 16) ? '\x20' : '\xa');
     }
-    printf("\n");
+    printf("\xa");
 #endif
 
     OPENSSL_cleanse(tmp1, sizeof(tmp1));
@@ -641,7 +641,7 @@ int tls1_setup_key_block(SSL *s)
     int ret = 0;
 
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "tls1_setup_key_block()\n");
+    fprintf(stderr, "\x74\x6c\x73\x31\x5f\x73\x65\x74\x75\x70\x5f\x6b\x65\x79\x5f\x62\x6c\x6f\x63\x6b\x28\x29\xa");
 #endif                          /* KSSL_DEBUG */
 
     if (s->s3->tmp.key_block_length != 0)
@@ -676,36 +676,36 @@ int tls1_setup_key_block(SSL *s)
         goto err;
     }
 #ifdef TLS_DEBUG
-    printf("client random\n");
+    printf("\x63\x6c\x69\x65\x6e\x74\x20\x72\x61\x6e\x64\x6f\x6d\xa");
     {
         int z;
         for (z = 0; z < SSL3_RANDOM_SIZE; z++)
-            printf("%02X%c", s->s3->client_random[z],
-                   ((z + 1) % 16) ? ' ' : '\n');
+            printf("\x25\x30\x32\x58\x25\x63", s->s3->client_random[z],
+                   ((z + 1) % 16) ? '\x20' : '\xa');
     }
-    printf("server random\n");
+    printf("\x73\x65\x72\x76\x65\x72\x20\x72\x61\x6e\x64\x6f\x6d\xa");
     {
         int z;
         for (z = 0; z < SSL3_RANDOM_SIZE; z++)
-            printf("%02X%c", s->s3->server_random[z],
-                   ((z + 1) % 16) ? ' ' : '\n');
+            printf("\x25\x30\x32\x58\x25\x63", s->s3->server_random[z],
+                   ((z + 1) % 16) ? '\x20' : '\xa');
     }
-    printf("pre-master\n");
+    printf("\x70\x72\x65\x2d\x6d\x61\x73\x74\x65\x72\xa");
     {
         int z;
         for (z = 0; z < s->session->master_key_length; z++)
-            printf("%02X%c", s->session->master_key[z],
-                   ((z + 1) % 16) ? ' ' : '\n');
+            printf("\x25\x30\x32\x58\x25\x63", s->session->master_key[z],
+                   ((z + 1) % 16) ? '\x20' : '\xa');
     }
 #endif
     if (!tls1_generate_key_block(s, p1, p2, num))
         goto err;
 #ifdef TLS_DEBUG
-    printf("\nkey block\n");
+    printf("\xa\x6b\x65\x79\x20\x62\x6c\x6f\x63\x6b\xa");
     {
         int z;
         for (z = 0; z < num; z++)
-            printf("%02X%c", p1[z], ((z + 1) % 16) ? ' ' : '\n');
+            printf("\x25\x30\x32\x58\x25\x63", p1[z], ((z + 1) % 16) ? '\x20' : '\xa');
     }
 #endif
 
@@ -780,7 +780,7 @@ int tls1_enc(SSL *s, int send)
                      * happen?? (steve)
                      */
                     fprintf(stderr,
-                            "%s:%d: rec->data != rec->input\n",
+                            "\x25\x73\x3a\x25\x64\x3a\x20\x72\x65\x63\x2d\x3e\x64\x61\x74\x61\x20\x21\x3d\x20\x72\x65\x63\x2d\x3e\x69\x6e\x70\x75\x74\xa",
                             __FILE__, __LINE__);
                 else if (RAND_bytes(rec->input, ivlen) <= 0)
                     return -1;
@@ -800,7 +800,7 @@ int tls1_enc(SSL *s, int send)
     }
 
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "tls1_enc(%d)\n", send);
+    fprintf(stderr, "\x74\x6c\x73\x31\x5f\x65\x6e\x63\x28\x25\x64\x29\xa", send);
 #endif                          /* KSSL_DEBUG */
 
     if ((s->session == NULL) || (ds == NULL) || (enc == NULL)) {
@@ -864,20 +864,20 @@ int tls1_enc(SSL *s, int send)
         {
             unsigned long ui;
             fprintf(stderr,
-                    "EVP_Cipher(ds=%p,rec->data=%p,rec->input=%p,l=%ld) ==>\n",
+                    "\x45\x56\x50\x5f\x43\x69\x70\x68\x65\x72\x28\x64\x73\x3d\x25\x70\x2c\x72\x65\x63\x2d\x3e\x64\x61\x74\x61\x3d\x25\x70\x2c\x72\x65\x63\x2d\x3e\x69\x6e\x70\x75\x74\x3d\x25\x70\x2c\x6c\x3d\x25\x6c\x64\x29\x20\x3d\x3d\x3e\xa",
                     ds, rec->data, rec->input, l);
             fprintf(stderr,
-                    "\tEVP_CIPHER_CTX: %d buf_len, %d key_len [%lu %lu], %d iv_len\n",
+                    "\x9E\x56\x50\x5f\x43\x49\x50\x48\x45\x52\x5f\x43\x54\x58\x3a\x20\x25\x64\x20\x62\x75\x66\x5f\x6c\x65\x6e\x2c\x20\x25\x64\x20\x6b\x65\x79\x5f\x6c\x65\x6e\x20\x5b\x25\x6c\x75\x20\x25\x6c\x75\x5d\x2c\x20\x25\x64\x20\x69\x76\x5f\x6c\x65\x6e\xa",
                     ds->buf_len, ds->cipher->key_len, DES_KEY_SZ,
                     DES_SCHEDULE_SZ, ds->cipher->iv_len);
-            fprintf(stderr, "\t\tIV: ");
+            fprintf(stderr, "\x9\x9\x49\x56\x3a\x20");
             for (i = 0; i < ds->cipher->iv_len; i++)
-                fprintf(stderr, "%02X", ds->iv[i]);
-            fprintf(stderr, "\n");
-            fprintf(stderr, "\trec->input=");
+                fprintf(stderr, "\x25\x30\x32\x58", ds->iv[i]);
+            fprintf(stderr, "\xa");
+            fprintf(stderr, "\x9\x72\x65\x63\x2d\x3e\x69\x6e\x70\x75\x74\x3d");
             for (ui = 0; ui < l; ui++)
-                fprintf(stderr, " %02x", rec->input[ui]);
-            fprintf(stderr, "\n");
+                fprintf(stderr, "\x20\x25\x30\x32\x78", rec->input[ui]);
+            fprintf(stderr, "\xa");
         }
 #endif                          /* KSSL_DEBUG */
 
@@ -899,10 +899,10 @@ int tls1_enc(SSL *s, int send)
 #ifdef KSSL_DEBUG
         {
             unsigned long i;
-            fprintf(stderr, "\trec->data=");
+            fprintf(stderr, "\x9\x72\x65\x63\x2d\x3e\x64\x61\x74\x61\x3d");
             for (i = 0; i < l; i++)
-                fprintf(stderr, " %02x", rec->data[i]);
-            fprintf(stderr, "\n");
+                fprintf(stderr, "\x20\x25\x30\x32\x78", rec->data[i]);
+            fprintf(stderr, "\xa");
         }
 #endif                          /* KSSL_DEBUG */
 
@@ -1097,19 +1097,19 @@ int tls1_mac(SSL *ssl, unsigned char *md, int send)
     if (!stream_mac)
         EVP_MD_CTX_cleanup(&hmac);
 #ifdef TLS_DEBUG
-    fprintf(stderr, "seq=");
+    fprintf(stderr, "\x73\x65\x71\x3d");
     {
         int z;
         for (z = 0; z < 8; z++)
-            fprintf(stderr, "%02X ", seq[z]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x58\x20", seq[z]);
+        fprintf(stderr, "\xa");
     }
-    fprintf(stderr, "rec=");
+    fprintf(stderr, "\x72\x65\x63\x3d");
     {
         unsigned int z;
         for (z = 0; z < rec->length; z++)
-            fprintf(stderr, "%02X ", rec->data[z]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x58\x20", rec->data[z]);
+        fprintf(stderr, "\xa");
     }
 #endif
 
@@ -1124,8 +1124,8 @@ int tls1_mac(SSL *ssl, unsigned char *md, int send)
     {
         unsigned int z;
         for (z = 0; z < md_size; z++)
-            fprintf(stderr, "%02X ", md[z]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x58\x20", md[z]);
+        fprintf(stderr, "\xa");
     }
 #endif
     return (md_size);
@@ -1139,7 +1139,7 @@ int tls1_generate_master_secret(SSL *s, unsigned char *out, unsigned char *p,
     int col = 0, sol = 0;
 
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "tls1_generate_master_secret(%p,%p, %p, %d)\n", s, out, p,
+    fprintf(stderr, "\x74\x6c\x73\x31\x5f\x67\x65\x6e\x65\x72\x61\x74\x65\x5f\x6d\x61\x73\x74\x65\x72\x5f\x73\x65\x63\x72\x65\x74\x28\x25\x70\x2c\x25\x70\x2c\x20\x25\x70\x2c\x20\x25\x64\x29\xa", s, out, p,
             len);
 #endif                          /* KSSL_DEBUG */
 
@@ -1168,13 +1168,13 @@ int tls1_generate_master_secret(SSL *s, unsigned char *out, unsigned char *p,
              so, sol, p, len, s->session->master_key, buff, sizeof buff);
     OPENSSL_cleanse(buff, sizeof buff);
 #ifdef SSL_DEBUG
-    fprintf(stderr, "Premaster Secret:\n");
+    fprintf(stderr, "\x50\x72\x65\x6d\x61\x73\x74\x65\x72\x20\x53\x65\x63\x72\x65\x74\x3a\xa");
     BIO_dump_fp(stderr, (char *)p, len);
-    fprintf(stderr, "Client Random:\n");
+    fprintf(stderr, "\x43\x6c\x69\x65\x6e\x74\x20\x52\x61\x6e\x64\x6f\x6d\x3a\xa");
     BIO_dump_fp(stderr, (char *)s->s3->client_random, SSL3_RANDOM_SIZE);
-    fprintf(stderr, "Server Random:\n");
+    fprintf(stderr, "\x53\x65\x72\x76\x65\x72\x20\x52\x61\x6e\x64\x6f\x6d\x3a\xa");
     BIO_dump_fp(stderr, (char *)s->s3->server_random, SSL3_RANDOM_SIZE);
-    fprintf(stderr, "Master Secret:\n");
+    fprintf(stderr, "\x4d\x61\x73\x74\x65\x72\x20\x53\x65\x63\x72\x65\x74\x3a\xa");
     BIO_dump_fp(stderr, (char *)s->session->master_key,
                 SSL3_MASTER_SECRET_SIZE);
 #endif
@@ -1196,7 +1196,7 @@ int tls1_generate_master_secret(SSL *s, unsigned char *out, unsigned char *p,
 #endif
 
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "tls1_generate_master_secret() complete\n");
+    fprintf(stderr, "\x74\x6c\x73\x31\x5f\x67\x65\x6e\x65\x72\x61\x74\x65\x5f\x6d\x61\x73\x74\x65\x72\x5f\x73\x65\x63\x72\x65\x74\x28\x29\x20\x63\x6f\x6d\x70\x6c\x65\x74\x65\xa");
 #endif                          /* KSSL_DEBUG */
     return (SSL3_MASTER_SECRET_SIZE);
 }
@@ -1212,7 +1212,7 @@ int tls1_export_keying_material(SSL *s, unsigned char *out, size_t olen,
     int rv;
 
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "tls1_export_keying_material(%p,%p,%lu,%s,%lu,%p,%lu)\n",
+    fprintf(stderr, "\x74\x6c\x73\x31\x5f\x65\x78\x70\x6f\x72\x74\x5f\x6b\x65\x79\x69\x6e\x67\x5f\x6d\x61\x74\x65\x72\x69\x61\x6c\x28\x25\x70\x2c\x25\x70\x2c\x25\x6c\x75\x2c\x25\x73\x2c\x25\x6c\x75\x2c\x25\x70\x2c\x25\x6c\x75\x29\xa",
             s, out, olen, label, llen, context, contextlen);
 #endif                          /* KSSL_DEBUG */
 
@@ -1281,7 +1281,7 @@ int tls1_export_keying_material(SSL *s, unsigned char *out, size_t olen,
     OPENSSL_cleanse(buff, olen);
 
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "tls1_export_keying_material() complete\n");
+    fprintf(stderr, "\x74\x6c\x73\x31\x5f\x65\x78\x70\x6f\x72\x74\x5f\x6b\x65\x79\x69\x6e\x67\x5f\x6d\x61\x74\x65\x72\x69\x61\x6c\x28\x29\x20\x63\x6f\x6d\x70\x6c\x65\x74\x65\xa");
 #endif                          /* KSSL_DEBUG */
     goto ret;
  err1:

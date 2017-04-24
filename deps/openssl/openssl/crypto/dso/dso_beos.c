@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -85,7 +85,7 @@ static long beos_ctrl(DSO *dso, int cmd, long larg, void *parg);
 static char *beos_name_converter(DSO *dso, const char *filename);
 
 static DSO_METHOD dso_meth_beos = {
-    "OpenSSL 'beos' shared library method",
+    "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x27\x62\x65\x6f\x73\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79\x20\x6d\x65\x74\x68\x6f\x64",
     beos_load,
     beos_unload,
     beos_bind_var,
@@ -124,7 +124,7 @@ static int beos_load(DSO *dso)
     id = load_add_on(filename);
     if (id < 1) {
         DSOerr(DSO_F_BEOS_LOAD, DSO_R_LOAD_FAILED);
-        ERR_add_error_data(3, "filename(", filename, ")");
+        ERR_add_error_data(3, "\x66\x69\x6c\x65\x6e\x61\x6d\x65\x28", filename, "\x29");
         goto err;
     }
     if (!sk_push(dso->meth_data, (char *)id)) {
@@ -188,7 +188,7 @@ static void *beos_bind_var(DSO *dso, const char *symname)
     }
     if (get_image_symbol(id, symname, B_SYMBOL_TYPE_DATA, &sym) != B_OK) {
         DSOerr(DSO_F_BEOS_BIND_VAR, DSO_R_SYM_FAILURE);
-        ERR_add_error_data(3, "symname(", symname, ")");
+        ERR_add_error_data(3, "\x73\x79\x6d\x6e\x61\x6d\x65\x28", symname, "\x29");
         return (NULL);
     }
     return (sym);
@@ -214,7 +214,7 @@ static DSO_FUNC_TYPE beos_bind_func(DSO *dso, const char *symname)
     }
     if (get_image_symbol(id, symname, B_SYMBOL_TYPE_TEXT, &sym) != B_OK) {
         DSOerr(DSO_F_BEOS_BIND_FUNC, DSO_R_SYM_FAILURE);
-        ERR_add_error_data(3, "symname(", symname, ")");
+        ERR_add_error_data(3, "\x73\x79\x6d\x6e\x61\x6d\x65\x28", symname, "\x29");
         return (NULL);
     }
     return ((DSO_FUNC_TYPE)sym);
@@ -228,12 +228,12 @@ static char *beos_name_converter(DSO *dso, const char *filename)
 
     len = strlen(filename);
     rsize = len + 1;
-    transform = (strstr(filename, "/") == NULL);
+    transform = (strstr(filename, "\x2f") == NULL);
     if (transform) {
         /* We will convert this to "%s.so" or "lib%s.so" */
-        rsize += 3;             /* The length of ".so" */
+        rsize += 3;             /* The length of "\x2e\x73\x6f" */
         if ((DSO_flags(dso) & DSO_FLAG_NAME_TRANSLATION_EXT_ONLY) == 0)
-            rsize += 3;         /* The length of "lib" */
+            rsize += 3;         /* The length of "\x6c\x69\x62" */
     }
     translated = OPENSSL_malloc(rsize);
     if (translated == NULL) {
@@ -242,11 +242,11 @@ static char *beos_name_converter(DSO *dso, const char *filename)
     }
     if (transform) {
         if ((DSO_flags(dso) & DSO_FLAG_NAME_TRANSLATION_EXT_ONLY) == 0)
-            sprintf(translated, "lib%s.so", filename);
+            sprintf(translated, "\x6c\x69\x62\x25\x73\x2e\x73\x6f", filename);
         else
-            sprintf(translated, "%s.so", filename);
+            sprintf(translated, "\x25\x73\x2e\x73\x6f", filename);
     } else
-        sprintf(translated, "%s", filename);
+        sprintf(translated, "\x25\x73", filename);
     return (translated);
 }
 

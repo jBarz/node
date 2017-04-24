@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -65,7 +65,7 @@
 static int asn1_get_length(const unsigned char **pp, int *inf, long *rl,
                            long max);
 static void asn1_put_length(unsigned char **pp, int length);
-const char ASN1_version[] = "ASN.1" OPENSSL_VERSION_PTEXT;
+const char ASN1_version[] = "\x41\x53\x4e\x2e\x31" OPENSSL_VERSION_PTEXT;
 
 static int _asn1_check_infinite_end(const unsigned char **p, long len)
 {
@@ -138,7 +138,7 @@ int ASN1_get_object(const unsigned char **pp, long *plength, int *ptag,
         goto err;
 
 #if 0
-    fprintf(stderr, "p=%d + *plength=%ld > omax=%ld + *pp=%d  (%d > %d)\n",
+    fprintf(stderr, "\x70\x3d\x25\x64\x20\x2b\x20\x2a\x70\x6c\x65\x6e\x67\x74\x68\x3d\x25\x6c\x64\x20\x3e\x20\x6f\x6d\x61\x78\x3d\x25\x6c\x64\x20\x2b\x20\x2a\x70\x70\x3d\x25\x64\x20\x20\x28\x25\x64\x20\x3e\x20\x25\x64\x29\xa",
             (int)p, *plength, omax, (int)*pp, (int)(p + *plength),
             (int)(omax + *pp));
 
@@ -387,7 +387,7 @@ int ASN1_STRING_set(ASN1_STRING *str, const void *_data, int len)
     if (data != NULL) {
         memcpy(str->data, data, len);
         /* an allowance for strings :-) */
-        str->data[len] = '\0';
+        str->data[len] = '\x0';
     }
     return (1);
 }
@@ -456,9 +456,9 @@ void asn1_add_error(const unsigned char *address, int offset)
 {
     char buf1[DECIMAL_SIZE(address) + 1], buf2[DECIMAL_SIZE(offset) + 1];
 
-    BIO_snprintf(buf1, sizeof buf1, "%lu", (unsigned long)address);
-    BIO_snprintf(buf2, sizeof buf2, "%d", offset);
-    ERR_add_error_data(4, "address=", buf1, " offset=", buf2);
+    BIO_snprintf(buf1, sizeof buf1, "\x25\x6c\x75", (unsigned long)address);
+    BIO_snprintf(buf2, sizeof buf2, "\x25\x64", offset);
+    ERR_add_error_data(4, "\x61\x64\x64\x72\x65\x73\x73\x3d", buf1, "\x20\x6f\x66\x66\x73\x65\x74\x3d", buf2);
 }
 
 int ASN1_STRING_length(const ASN1_STRING *x)

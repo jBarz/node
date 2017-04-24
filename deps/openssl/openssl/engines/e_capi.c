@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -141,8 +141,8 @@
 # include "e_capi_err.h"
 # include "e_capi_err.c"
 
-static const char *engine_capi_id = "capi";
-static const char *engine_capi_name = "CryptoAPI ENGINE";
+static const char *engine_capi_id = "\x63\x61\x70\x69";
+static const char *engine_capi_name = "\x43\x72\x79\x70\x74\x6f\x41\x50\x49\x20\x45\x4e\x47\x49\x4e\x45";
 
 typedef struct CAPI_CTX_st CAPI_CTX;
 typedef struct CAPI_KEY_st CAPI_KEY;
@@ -213,7 +213,7 @@ struct CAPI_CTX_st {
     /* System store flags */
     DWORD store_flags;
 /* Lookup string meanings in load_private_key */
-/* Substring of subject: uses "storename" */
+/* Substring of subject: uses "\x73\x74\x6f\x72\x65\x6e\x61\x6d\x65" */
 # define CAPI_LU_SUBSTR          1
 /* Friendly name: uses storename */
 # define CAPI_LU_FNAME           2
@@ -262,61 +262,61 @@ static int capi_ctx_set_provname_idx(CAPI_CTX * ctx, int idx);
 
 static const ENGINE_CMD_DEFN capi_cmd_defns[] = {
     {CAPI_CMD_LIST_CERTS,
-     "list_certs",
-     "List all certificates in store",
+     "\x6c\x69\x73\x74\x5f\x63\x65\x72\x74\x73",
+     "\x4c\x69\x73\x74\x20\x61\x6c\x6c\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x69\x6e\x20\x73\x74\x6f\x72\x65",
      ENGINE_CMD_FLAG_NO_INPUT},
     {CAPI_CMD_LOOKUP_CERT,
-     "lookup_cert",
-     "Lookup and output certificates",
+     "\x6c\x6f\x6f\x6b\x75\x70\x5f\x63\x65\x72\x74",
+     "\x4c\x6f\x6f\x6b\x75\x70\x20\x61\x6e\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73",
      ENGINE_CMD_FLAG_STRING},
     {CAPI_CMD_DEBUG_LEVEL,
-     "debug_level",
-     "debug level (1=errors, 2=trace)",
+     "\x64\x65\x62\x75\x67\x5f\x6c\x65\x76\x65\x6c",
+     "\x64\x65\x62\x75\x67\x20\x6c\x65\x76\x65\x6c\x20\x28\x31\x3d\x65\x72\x72\x6f\x72\x73\x2c\x20\x32\x3d\x74\x72\x61\x63\x65\x29",
      ENGINE_CMD_FLAG_NUMERIC},
     {CAPI_CMD_DEBUG_FILE,
-     "debug_file",
-     "debugging filename)",
+     "\x64\x65\x62\x75\x67\x5f\x66\x69\x6c\x65",
+     "\x64\x65\x62\x75\x67\x67\x69\x6e\x67\x20\x66\x69\x6c\x65\x6e\x61\x6d\x65\x29",
      ENGINE_CMD_FLAG_STRING},
     {CAPI_CMD_KEYTYPE,
-     "key_type",
-     "Key type: 1=AT_KEYEXCHANGE (default), 2=AT_SIGNATURE",
+     "\x6b\x65\x79\x5f\x74\x79\x70\x65",
+     "\x4b\x65\x79\x20\x74\x79\x70\x65\x3a\x20\x31\x3d\x41\x54\x5f\x4b\x45\x59\x45\x58\x43\x48\x41\x4e\x47\x45\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29\x2c\x20\x32\x3d\x41\x54\x5f\x53\x49\x47\x4e\x41\x54\x55\x52\x45",
      ENGINE_CMD_FLAG_NUMERIC},
     {CAPI_CMD_LIST_CSPS,
-     "list_csps",
-     "List all CSPs",
+     "\x6c\x69\x73\x74\x5f\x63\x73\x70\x73",
+     "\x4c\x69\x73\x74\x20\x61\x6c\x6c\x20\x43\x53\x50\x73",
      ENGINE_CMD_FLAG_NO_INPUT},
     {CAPI_CMD_SET_CSP_IDX,
-     "csp_idx",
-     "Set CSP by index",
+     "\x63\x73\x70\x5f\x69\x64\x78",
+     "\x53\x65\x74\x20\x43\x53\x50\x20\x62\x79\x20\x69\x6e\x64\x65\x78",
      ENGINE_CMD_FLAG_NUMERIC},
     {CAPI_CMD_SET_CSP_NAME,
-     "csp_name",
-     "Set CSP name, (default CSP used if not specified)",
+     "\x63\x73\x70\x5f\x6e\x61\x6d\x65",
+     "\x53\x65\x74\x20\x43\x53\x50\x20\x6e\x61\x6d\x65\x2c\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x43\x53\x50\x20\x75\x73\x65\x64\x20\x69\x66\x20\x6e\x6f\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x29",
      ENGINE_CMD_FLAG_STRING},
     {CAPI_CMD_SET_CSP_TYPE,
-     "csp_type",
-     "Set CSP type, (default RSA_PROV_FULL)",
+     "\x63\x73\x70\x5f\x74\x79\x70\x65",
+     "\x53\x65\x74\x20\x43\x53\x50\x20\x74\x79\x70\x65\x2c\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x52\x53\x41\x5f\x50\x52\x4f\x56\x5f\x46\x55\x4c\x4c\x29",
      ENGINE_CMD_FLAG_NUMERIC},
     {CAPI_CMD_LIST_CONTAINERS,
-     "list_containers",
-     "list container names",
+     "\x6c\x69\x73\x74\x5f\x63\x6f\x6e\x74\x61\x69\x6e\x65\x72\x73",
+     "\x6c\x69\x73\x74\x20\x63\x6f\x6e\x74\x61\x69\x6e\x65\x72\x20\x6e\x61\x6d\x65\x73",
      ENGINE_CMD_FLAG_NO_INPUT},
     {CAPI_CMD_LIST_OPTIONS,
-     "list_options",
-     "Set list options (1=summary,2=friendly name, 4=full printout, 8=PEM output, 16=XXX, "
-     "32=private key info)",
+     "\x6c\x69\x73\x74\x5f\x6f\x70\x74\x69\x6f\x6e\x73",
+     "\x53\x65\x74\x20\x6c\x69\x73\x74\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x28\x31\x3d\x73\x75\x6d\x6d\x61\x72\x79\x2c\x32\x3d\x66\x72\x69\x65\x6e\x64\x6c\x79\x20\x6e\x61\x6d\x65\x2c\x20\x34\x3d\x66\x75\x6c\x6c\x20\x70\x72\x69\x6e\x74\x6f\x75\x74\x2c\x20\x38\x3d\x50\x45\x4d\x20\x6f\x75\x74\x70\x75\x74\x2c\x20\x31\x36\x3d\x58\x58\x58\x2c\x20"
+     "\x33\x32\x3d\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x69\x6e\x66\x6f\x29",
      ENGINE_CMD_FLAG_NUMERIC},
     {CAPI_CMD_LOOKUP_METHOD,
-     "lookup_method",
-     "Set key lookup method (1=substring, 2=friendlyname, 3=container name)",
+     "\x6c\x6f\x6f\x6b\x75\x70\x5f\x6d\x65\x74\x68\x6f\x64",
+     "\x53\x65\x74\x20\x6b\x65\x79\x20\x6c\x6f\x6f\x6b\x75\x70\x20\x6d\x65\x74\x68\x6f\x64\x20\x28\x31\x3d\x73\x75\x62\x73\x74\x72\x69\x6e\x67\x2c\x20\x32\x3d\x66\x72\x69\x65\x6e\x64\x6c\x79\x6e\x61\x6d\x65\x2c\x20\x33\x3d\x63\x6f\x6e\x74\x61\x69\x6e\x65\x72\x20\x6e\x61\x6d\x65\x29",
      ENGINE_CMD_FLAG_NUMERIC},
     {CAPI_CMD_STORE_NAME,
-     "store_name",
-     "certificate store name, default \"MY\"",
+     "\x73\x74\x6f\x72\x65\x5f\x6e\x61\x6d\x65",
+     "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x74\x6f\x72\x65\x20\x6e\x61\x6d\x65\x2c\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x22\x4d\x59\x22",
      ENGINE_CMD_FLAG_STRING},
     {CAPI_CMD_STORE_FLAGS,
-     "store_flags",
-     "Certificate store flags: 1 = system store",
+     "\x73\x74\x6f\x72\x65\x5f\x66\x6c\x61\x67\x73",
+     "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x74\x6f\x72\x65\x20\x66\x6c\x61\x67\x73\x3a\x20\x31\x20\x3d\x20\x73\x79\x73\x74\x65\x6d\x20\x73\x74\x6f\x72\x65",
      ENGINE_CMD_FLAG_NUMERIC},
 
     {0, NULL, NULL, 0}
@@ -359,7 +359,7 @@ static int capi_ctrl(ENGINE *e, int cmd, long i, void *p, void (*f) (void))
         if (ctx->storename)
             OPENSSL_free(ctx->storename);
         ctx->storename = BUF_strdup(p);
-        CAPI_trace(ctx, "Setting store name to %s\n", p);
+        CAPI_trace(ctx, "\x53\x65\x74\x74\x69\x6e\x67\x20\x73\x74\x6f\x72\x65\x20\x6e\x61\x6d\x65\x20\x74\x6f\x20\x25\x73\xa", p);
         break;
 
     case CAPI_CMD_STORE_FLAGS:
@@ -370,22 +370,22 @@ static int capi_ctrl(ENGINE *e, int cmd, long i, void *p, void (*f) (void))
             ctx->store_flags |= CERT_SYSTEM_STORE_CURRENT_USER;
             ctx->store_flags &= ~CERT_SYSTEM_STORE_LOCAL_MACHINE;
         }
-        CAPI_trace(ctx, "Setting flags to %d\n", i);
+        CAPI_trace(ctx, "\x53\x65\x74\x74\x69\x6e\x67\x20\x66\x6c\x61\x67\x73\x20\x74\x6f\x20\x25\x64\xa", i);
         break;
 
     case CAPI_CMD_DEBUG_LEVEL:
         ctx->debug_level = (int)i;
-        CAPI_trace(ctx, "Setting debug level to %d\n", ctx->debug_level);
+        CAPI_trace(ctx, "\x53\x65\x74\x74\x69\x6e\x67\x20\x64\x65\x62\x75\x67\x20\x6c\x65\x76\x65\x6c\x20\x74\x6f\x20\x25\x64\xa", ctx->debug_level);
         break;
 
     case CAPI_CMD_DEBUG_FILE:
         ctx->debug_file = BUF_strdup(p);
-        CAPI_trace(ctx, "Setting debug file to %s\n", ctx->debug_file);
+        CAPI_trace(ctx, "\x53\x65\x74\x74\x69\x6e\x67\x20\x64\x65\x62\x75\x67\x20\x66\x69\x6c\x65\x20\x74\x6f\x20\x25\x73\xa", ctx->debug_file);
         break;
 
     case CAPI_CMD_KEYTYPE:
         ctx->keytype = i;
-        CAPI_trace(ctx, "Setting key type to %d\n", ctx->keytype);
+        CAPI_trace(ctx, "\x53\x65\x74\x74\x69\x6e\x67\x20\x6b\x65\x79\x20\x74\x79\x70\x65\x20\x74\x6f\x20\x25\x64\xa", ctx->keytype);
         break;
 
     case CAPI_CMD_SET_CSP_IDX:
@@ -423,7 +423,7 @@ static int capi_ctrl(ENGINE *e, int cmd, long i, void *p, void (*f) (void))
 }
 
 static RSA_METHOD capi_rsa_method = {
-    "CryptoAPI RSA method",
+    "\x43\x72\x79\x70\x74\x6f\x41\x50\x49\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     0,                          /* pub_enc */
     0,                          /* pub_dec */
     capi_rsa_priv_enc,          /* priv_enc */
@@ -439,7 +439,7 @@ static RSA_METHOD capi_rsa_method = {
 };
 
 static DSA_METHOD capi_dsa_method = {
-    "CryptoAPI DSA method",
+    "\x43\x72\x79\x70\x74\x6f\x41\x50\x49\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     capi_dsa_do_sign,           /* dsa_do_sign */
     0,                          /* dsa_sign_setup */
     0,                          /* dsa_do_verify */
@@ -490,15 +490,15 @@ static int capi_init(ENGINE *e)
 
 # ifdef OPENSSL_CAPIENG_DIALOG
     {
-        HMODULE cryptui = LoadLibrary(TEXT("CRYPTUI.DLL"));
-        HMODULE kernel = GetModuleHandle(TEXT("KERNEL32.DLL"));
+        HMODULE cryptui = LoadLibrary(TEXT("\x43\x52\x59\x50\x54\x55\x49\x2e\x44\x4c\x4c"));
+        HMODULE kernel = GetModuleHandle(TEXT("\x4b\x45\x52\x4e\x45\x4c\x33\x32\x2e\x44\x4c\x4c"));
         if (cryptui)
             ctx->certselectdlg =
                 (CERTDLG) GetProcAddress(cryptui,
-                                         "CryptUIDlgSelectCertificateFromStore");
+                                         "\x43\x72\x79\x70\x74\x55\x49\x44\x6c\x67\x53\x65\x6c\x65\x63\x74\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x46\x72\x6f\x6d\x53\x74\x6f\x72\x65");
         if (kernel)
             ctx->getconswindow =
-                (GETCONSWIN) GetProcAddress(kernel, "GetConsoleWindow");
+                (GETCONSWIN) GetProcAddress(kernel, "\x47\x65\x74\x43\x6f\x6e\x73\x6f\x6c\x65\x57\x69\x6e\x64\x6f\x77");
         if (cryptui && !OPENSSL_isservice())
             ctx->client_cert_select = cert_select_dialog;
     }
@@ -660,10 +660,10 @@ static EVP_PKEY *capi_get_pkey(ENGINE *eng, CAPI_KEY * key)
         rp = (RSAPUBKEY *) (bh + 1);
         if (rp->magic != 0x31415352) {
             char magstr[10];
-            BIO_snprintf(magstr, 10, "%lx", rp->magic);
+            BIO_snprintf(magstr, 10, "\x25\x6c\x78", rp->magic);
             CAPIerr(CAPI_F_CAPI_GET_PKEY,
                     CAPI_R_INVALID_RSA_PUBLIC_KEY_BLOB_MAGIC_NUMBER);
-            ERR_add_error_data(2, "magic=0x", magstr);
+            ERR_add_error_data(2, "\x6d\x61\x67\x69\x63\x3d\x30\x78", magstr);
             goto err;
         }
         rsa_modulus = (unsigned char *)(rp + 1);
@@ -699,10 +699,10 @@ static EVP_PKEY *capi_get_pkey(ENGINE *eng, CAPI_KEY * key)
         dp = (DSSPUBKEY *) (bh + 1);
         if (dp->magic != 0x31535344) {
             char magstr[10];
-            BIO_snprintf(magstr, 10, "%lx", dp->magic);
+            BIO_snprintf(magstr, 10, "\x25\x6c\x78", dp->magic);
             CAPIerr(CAPI_F_CAPI_GET_PKEY,
                     CAPI_R_INVALID_DSA_PUBLIC_KEY_BLOB_MAGIC_NUMBER);
-            ERR_add_error_data(2, "magic=0x", magstr);
+            ERR_add_error_data(2, "\x6d\x61\x67\x69\x63\x3d\x30\x78", magstr);
             goto err;
         }
         dsa_plen = dp->bitlen / 8;
@@ -738,10 +738,10 @@ static EVP_PKEY *capi_get_pkey(ENGINE *eng, CAPI_KEY * key)
         dkey = NULL;
     } else {
         char algstr[10];
-        BIO_snprintf(algstr, 10, "%lx", bh->aiKeyAlg);
+        BIO_snprintf(algstr, 10, "\x25\x6c\x78", bh->aiKeyAlg);
         CAPIerr(CAPI_F_CAPI_GET_PKEY,
                 CAPI_R_UNSUPPORTED_PUBLIC_KEY_ALGORITHM);
-        ERR_add_error_data(2, "aiKeyAlg=0x", algstr);
+        ERR_add_error_data(2, "\x61\x69\x4b\x65\x79\x41\x6c\x67\x3d\x30\x78", algstr);
         goto err;
     }
 
@@ -811,7 +811,7 @@ int capi_rsa_sign(int dtype, const unsigned char *m, unsigned int m_len,
 
     ctx = ENGINE_get_ex_data(rsa->engine, capi_idx);
 
-    CAPI_trace(ctx, "Called CAPI_rsa_sign()\n");
+    CAPI_trace(ctx, "\x43\x61\x6c\x6c\x65\x64\x20\x43\x41\x50\x49\x5f\x72\x73\x61\x5f\x73\x69\x67\x6e\x28\x29\xa");
 
     capi_key = RSA_get_ex_data(rsa, rsa_capi_idx);
     if (!capi_key) {
@@ -846,9 +846,9 @@ int capi_rsa_sign(int dtype, const unsigned char *m, unsigned int m_len,
     default:
         {
             char algstr[10];
-            BIO_snprintf(algstr, 10, "%lx", dtype);
+            BIO_snprintf(algstr, 10, "\x25\x6c\x78", dtype);
             CAPIerr(CAPI_F_CAPI_RSA_SIGN, CAPI_R_UNSUPPORTED_ALGORITHM_NID);
-            ERR_add_error_data(2, "NID=0x", algstr);
+            ERR_add_error_data(2, "\x4e\x49\x44\x3d\x30\x78", algstr);
             return -1;
         }
     }
@@ -902,7 +902,7 @@ int capi_rsa_priv_dec(int flen, const unsigned char *from,
     CAPI_CTX *ctx;
     ctx = ENGINE_get_ex_data(rsa->engine, capi_idx);
 
-    CAPI_trace(ctx, "Called capi_rsa_priv_dec()\n");
+    CAPI_trace(ctx, "\x43\x61\x6c\x6c\x65\x64\x20\x63\x61\x70\x69\x5f\x72\x73\x61\x5f\x70\x72\x69\x76\x5f\x64\x65\x63\x28\x29\xa");
 
     capi_key = RSA_get_ex_data(rsa, rsa_capi_idx);
     if (!capi_key) {
@@ -912,9 +912,9 @@ int capi_rsa_priv_dec(int flen, const unsigned char *from,
 
     if (padding != RSA_PKCS1_PADDING) {
         char errstr[10];
-        BIO_snprintf(errstr, 10, "%d", padding);
+        BIO_snprintf(errstr, 10, "\x25\x64", padding);
         CAPIerr(CAPI_F_CAPI_RSA_PRIV_DEC, CAPI_R_UNSUPPORTED_PADDING);
-        ERR_add_error_data(2, "padding=", errstr);
+        ERR_add_error_data(2, "\x70\x61\x64\x64\x69\x6e\x67\x3d", errstr);
         return -1;
     }
 
@@ -963,7 +963,7 @@ static DSA_SIG *capi_dsa_do_sign(const unsigned char *digest, int dlen,
 
     ctx = ENGINE_get_ex_data(dsa->engine, capi_idx);
 
-    CAPI_trace(ctx, "Called CAPI_dsa_do_sign()\n");
+    CAPI_trace(ctx, "\x43\x61\x6c\x6c\x65\x64\x20\x43\x41\x50\x49\x5f\x64\x73\x61\x5f\x64\x6f\x5f\x73\x69\x67\x6e\x28\x29\xa");
 
     capi_key = DSA_get_ex_data(dsa, dsa_capi_idx);
 
@@ -1037,7 +1037,7 @@ static void capi_vtrace(CAPI_CTX * ctx, int level, char *format,
 
     if (!ctx || (ctx->debug_level < level) || (!ctx->debug_file))
         return;
-    out = BIO_new_file(ctx->debug_file, "a+");
+    out = BIO_new_file(ctx->debug_file, "\x61\x2b");
     BIO_vprintf(out, format, argptr);
     BIO_free(out);
 }
@@ -1058,8 +1058,8 @@ static void capi_addlasterror(void)
 static void capi_adderror(DWORD err)
 {
     char errstr[10];
-    BIO_snprintf(errstr, 10, "%lX", err);
-    ERR_add_error_data(2, "Error code= 0x", errstr);
+    BIO_snprintf(errstr, 10, "\x25\x6c\x58", err);
+    ERR_add_error_data(2, "\x45\x72\x72\x6f\x72\x20\x63\x6f\x64\x65\x3d\x20\x30\x78", errstr);
 }
 
 static char *wide_to_asc(LPCWSTR wstr)
@@ -1093,7 +1093,7 @@ static int capi_get_provname(CAPI_CTX * ctx, LPSTR * pname, DWORD * ptype,
 {
     DWORD len, err;
     LPTSTR name;
-    CAPI_trace(ctx, "capi_get_provname, index=%d\n", idx);
+    CAPI_trace(ctx, "\x63\x61\x70\x69\x5f\x67\x65\x74\x5f\x70\x72\x6f\x76\x6e\x61\x6d\x65\x2c\x20\x69\x6e\x64\x65\x78\x3d\x25\x64\xa", idx);
     if (!CryptEnumProviders(idx, NULL, 0, ptype, NULL, &len)) {
         err = GetLastError();
         if (err == ERROR_NO_MORE_ITEMS)
@@ -1122,7 +1122,7 @@ static int capi_get_provname(CAPI_CTX * ctx, LPSTR * pname, DWORD * ptype,
         *pname = wide_to_asc((WCHAR *)name);
     else
         *pname = (char *)name;
-    CAPI_trace(ctx, "capi_get_provname, returned name=%s, type=%d\n", *pname,
+    CAPI_trace(ctx, "\x63\x61\x70\x69\x5f\x67\x65\x74\x5f\x70\x72\x6f\x76\x6e\x61\x6d\x65\x2c\x20\x72\x65\x74\x75\x72\x6e\x65\x64\x20\x6e\x61\x6d\x65\x3d\x25\x73\x2c\x20\x74\x79\x70\x65\x3d\x25\x64\xa", *pname,
                *ptype);
 
     return 1;
@@ -1133,15 +1133,15 @@ static int capi_list_providers(CAPI_CTX * ctx, BIO *out)
     DWORD idx, ptype;
     int ret;
     LPSTR provname = NULL;
-    CAPI_trace(ctx, "capi_list_providers\n");
-    BIO_printf(out, "Available CSPs:\n");
+    CAPI_trace(ctx, "\x63\x61\x70\x69\x5f\x6c\x69\x73\x74\x5f\x70\x72\x6f\x76\x69\x64\x65\x72\x73\xa");
+    BIO_printf(out, "\x41\x76\x61\x69\x6c\x61\x62\x6c\x65\x20\x43\x53\x50\x73\x3a\xa");
     for (idx = 0;; idx++) {
         ret = capi_get_provname(ctx, &provname, &ptype, idx);
         if (ret == 2)
             break;
         if (ret == 0)
             break;
-        BIO_printf(out, "%d. %s, type %d\n", idx, provname, ptype);
+        BIO_printf(out, "\x25\x64\x2e\x20\x25\x73\x2c\x20\x74\x79\x70\x65\x20\x25\x64\xa", idx, provname, ptype);
         OPENSSL_free(provname);
     }
     return 1;
@@ -1155,7 +1155,7 @@ static int capi_list_containers(CAPI_CTX * ctx, BIO *out)
     LPSTR cname;
     LPTSTR cspname = NULL;
 
-    CAPI_trace(ctx, "Listing containers CSP=%s, type = %d\n", ctx->cspname,
+    CAPI_trace(ctx, "\x4c\x69\x73\x74\x69\x6e\x67\x20\x63\x6f\x6e\x74\x61\x69\x6e\x65\x72\x73\x20\x43\x53\x50\x3d\x25\x73\x2c\x20\x74\x79\x70\x65\x20\x3d\x20\x25\x64\xa", ctx->cspname,
                ctx->csptype);
     if (ctx->cspname && sizeof(TCHAR) != sizeof(char)) {
         if ((clen =
@@ -1185,7 +1185,7 @@ static int capi_list_containers(CAPI_CTX * ctx, BIO *out)
         CryptReleaseContext(hprov, 0);
         return 0;
     }
-    CAPI_trace(ctx, "Got max container len %d\n", buflen);
+    CAPI_trace(ctx, "\x47\x6f\x74\x20\x6d\x61\x78\x20\x63\x6f\x6e\x74\x61\x69\x6e\x65\x72\x20\x6c\x65\x6e\x20\x25\x64\xa", buflen);
     if (buflen == 0)
         buflen = 1024;
     cname = OPENSSL_malloc(buflen);
@@ -1211,13 +1211,13 @@ static int capi_list_containers(CAPI_CTX * ctx, BIO *out)
             capi_adderror(err);
             goto err;
         }
-        CAPI_trace(ctx, "Container name %s, len=%d, index=%d, flags=%d\n",
+        CAPI_trace(ctx, "\x43\x6f\x6e\x74\x61\x69\x6e\x65\x72\x20\x6e\x61\x6d\x65\x20\x25\x73\x2c\x20\x6c\x65\x6e\x3d\x25\x64\x2c\x20\x69\x6e\x64\x65\x78\x3d\x25\x64\x2c\x20\x66\x6c\x61\x67\x73\x3d\x25\x64\xa",
                    cname, clen, idx, flags);
         if (!cname[0] && (clen == buflen)) {
-            CAPI_trace(ctx, "Enumerate bug: using workaround\n");
+            CAPI_trace(ctx, "\x45\x6e\x75\x6d\x65\x72\x61\x74\x65\x20\x62\x75\x67\x3a\x20\x75\x73\x69\x6e\x67\x20\x77\x6f\x72\x6b\x61\x72\x6f\x75\x6e\x64\xa");
             goto done;
         }
-        BIO_printf(out, "%d. %s\n", idx, cname);
+        BIO_printf(out, "\x25\x64\x2e\x20\x25\x73\xa", idx, cname);
     }
  err:
 
@@ -1260,7 +1260,7 @@ static void capi_dump_prov_info(CAPI_CTX * ctx, BIO *out,
 {
     char *provname = NULL, *contname = NULL;
     if (!pinfo) {
-        BIO_printf(out, "  No Private Key\n");
+        BIO_printf(out, "\x20\x20\x4e\x6f\x20\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79\xa");
         return;
     }
     provname = wide_to_asc(pinfo->pwszProvName);
@@ -1268,10 +1268,10 @@ static void capi_dump_prov_info(CAPI_CTX * ctx, BIO *out,
     if (!provname || !contname)
         goto err;
 
-    BIO_printf(out, "  Private Key Info:\n");
-    BIO_printf(out, "    Provider Name:  %s, Provider Type %d\n", provname,
+    BIO_printf(out, "\x20\x20\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79\x20\x49\x6e\x66\x6f\x3a\xa");
+    BIO_printf(out, "\x20\x20\x20\x20\x50\x72\x6f\x76\x69\x64\x65\x72\x20\x4e\x61\x6d\x65\x3a\x20\x20\x25\x73\x2c\x20\x50\x72\x6f\x76\x69\x64\x65\x72\x20\x54\x79\x70\x65\x20\x25\x64\xa", provname,
                pinfo->dwProvType);
-    BIO_printf(out, "    Container Name: %s, Key Type %d\n", contname,
+    BIO_printf(out, "\x20\x20\x20\x20\x43\x6f\x6e\x74\x61\x69\x6e\x65\x72\x20\x4e\x61\x6d\x65\x3a\x20\x25\x73\x2c\x20\x4b\x65\x79\x20\x54\x79\x70\x65\x20\x25\x64\xa", contname,
                pinfo->dwKeySpec);
  err:
     if (provname)
@@ -1285,7 +1285,7 @@ char *capi_cert_get_fname(CAPI_CTX * ctx, PCCERT_CONTEXT cert)
     LPWSTR wfname;
     DWORD dlen;
 
-    CAPI_trace(ctx, "capi_cert_get_fname\n");
+    CAPI_trace(ctx, "\x63\x61\x70\x69\x5f\x63\x65\x72\x74\x5f\x67\x65\x74\x5f\x66\x6e\x61\x6d\x65\xa");
     if (!CertGetCertificateContextProperty
         (cert, CERT_FRIENDLY_NAME_PROP_ID, NULL, &dlen))
         return NULL;
@@ -1316,22 +1316,22 @@ void capi_dump_cert(CAPI_CTX * ctx, BIO *out, PCCERT_CONTEXT cert)
         char *fname;
         fname = capi_cert_get_fname(ctx, cert);
         if (fname) {
-            BIO_printf(out, "  Friendly Name \"%s\"\n", fname);
+            BIO_printf(out, "\x20\x20\x46\x72\x69\x65\x6e\x64\x6c\x79\x20\x4e\x61\x6d\x65\x20\x22\x25\x73\x22\xa", fname);
             OPENSSL_free(fname);
         } else
-            BIO_printf(out, "  <No Friendly Name>\n");
+            BIO_printf(out, "\x20\x20\x3c\x4e\x6f\x20\x46\x72\x69\x65\x6e\x64\x6c\x79\x20\x4e\x61\x6d\x65\x3e\xa");
     }
 
     p = cert->pbCertEncoded;
     x = d2i_X509(NULL, &p, cert->cbCertEncoded);
     if (!x)
-        BIO_printf(out, "  <Can't parse certificate>\n");
+        BIO_printf(out, "\x20\x20\x3c\x43\x61\x6e\x27\x74\x20\x70\x61\x72\x73\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x3e\xa");
     if (flags & CAPI_DMP_SUMMARY) {
-        BIO_printf(out, "  Subject: ");
+        BIO_printf(out, "\x20\x20\x53\x75\x62\x6a\x65\x63\x74\x3a\x20");
         X509_NAME_print_ex(out, X509_get_subject_name(x), 0, XN_FLAG_ONELINE);
-        BIO_printf(out, "\n  Issuer: ");
+        BIO_printf(out, "\xa\x20\x20\x49\x73\x73\x75\x65\x72\x3a\x20");
         X509_NAME_print_ex(out, X509_get_issuer_name(x), 0, XN_FLAG_ONELINE);
-        BIO_printf(out, "\n");
+        BIO_printf(out, "\xa");
     }
     if (flags & CAPI_DMP_FULL)
         X509_print_ex(out, x, XN_FLAG_ONELINE, 0);
@@ -1356,8 +1356,8 @@ HCERTSTORE capi_open_store(CAPI_CTX * ctx, char *storename)
     if (!storename)
         storename = ctx->storename;
     if (!storename)
-        storename = "MY";
-    CAPI_trace(ctx, "Opening certificate store %s\n", storename);
+        storename = "\x4d\x59";
+    CAPI_trace(ctx, "\x4f\x70\x65\x6e\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x74\x6f\x72\x65\x20\x25\x73\xa", storename);
 
     hstore = CertOpenStore(CERT_STORE_PROV_SYSTEM_A, 0, 0,
                            ctx->store_flags, storename);
@@ -1378,8 +1378,8 @@ int capi_list_certs(CAPI_CTX * ctx, BIO *out, char *id)
 
     storename = ctx->storename;
     if (!storename)
-        storename = "MY";
-    CAPI_trace(ctx, "Listing certs for store %s\n", storename);
+        storename = "\x4d\x59";
+    CAPI_trace(ctx, "\x4c\x69\x73\x74\x69\x6e\x67\x20\x63\x65\x72\x74\x73\x20\x66\x6f\x72\x20\x73\x74\x6f\x72\x65\x20\x25\x73\xa", storename);
 
     hstore = capi_open_store(ctx, storename);
     if (!hstore)
@@ -1397,7 +1397,7 @@ int capi_list_certs(CAPI_CTX * ctx, BIO *out, char *id)
             cert = CertEnumCertificatesInStore(hstore, cert);
             if (!cert)
                 break;
-            BIO_printf(out, "Certificate %d\n", idx);
+            BIO_printf(out, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x25\x64\xa", idx);
             capi_dump_cert(ctx, out, cert);
         }
     }
@@ -1450,14 +1450,14 @@ static CAPI_KEY *capi_get_key(CAPI_CTX * ctx, const TCHAR *contname,
         goto err;
     }
     if (sizeof(TCHAR) == sizeof(char))
-        CAPI_trace(ctx, "capi_get_key, contname=%s, provname=%s, type=%d\n",
+        CAPI_trace(ctx, "\x63\x61\x70\x69\x5f\x67\x65\x74\x5f\x6b\x65\x79\x2c\x20\x63\x6f\x6e\x74\x6e\x61\x6d\x65\x3d\x25\x73\x2c\x20\x70\x72\x6f\x76\x6e\x61\x6d\x65\x3d\x25\x73\x2c\x20\x74\x79\x70\x65\x3d\x25\x64\xa",
                    contname, provname, ptype);
     else if (ctx && ctx->debug_level >= CAPI_DBG_TRACE && ctx->debug_file) {
         /* above 'if' is optimization to minimize malloc-ations */
         char *_contname = wide_to_asc((WCHAR *)contname);
         char *_provname = wide_to_asc((WCHAR *)provname);
 
-        CAPI_trace(ctx, "capi_get_key, contname=%s, provname=%s, type=%d\n",
+        CAPI_trace(ctx, "\x63\x61\x70\x69\x5f\x67\x65\x74\x5f\x6b\x65\x79\x2c\x20\x63\x6f\x6e\x74\x6e\x61\x6d\x65\x3d\x25\x73\x2c\x20\x70\x72\x6f\x76\x6e\x61\x6d\x65\x3d\x25\x73\x2c\x20\x74\x79\x70\x65\x3d\x25\x64\xa",
                    _contname, _provname, ptype);
         if (_provname)
             OPENSSL_free(_provname);
@@ -1604,7 +1604,7 @@ static CAPI_CTX *capi_ctx_new()
 
 static void capi_ctx_free(CAPI_CTX * ctx)
 {
-    CAPI_trace(ctx, "Calling capi_ctx_free with %lx\n", ctx);
+    CAPI_trace(ctx, "\x43\x61\x6c\x6c\x69\x6e\x67\x20\x63\x61\x70\x69\x5f\x63\x74\x78\x5f\x66\x72\x65\x65\x20\x77\x69\x74\x68\x20\x25\x6c\x78\xa", ctx);
     if (!ctx)
         return;
     if (ctx->cspname)
@@ -1621,7 +1621,7 @@ static void capi_ctx_free(CAPI_CTX * ctx)
 static int capi_ctx_set_provname(CAPI_CTX * ctx, LPSTR pname, DWORD type,
                                  int check)
 {
-    CAPI_trace(ctx, "capi_ctx_set_provname, name=%s, type=%d\n", pname, type);
+    CAPI_trace(ctx, "\x63\x61\x70\x69\x5f\x63\x74\x78\x5f\x73\x65\x74\x5f\x70\x72\x6f\x76\x6e\x61\x6d\x65\x2c\x20\x6e\x61\x6d\x65\x3d\x25\x73\x2c\x20\x74\x79\x70\x65\x3d\x25\x64\xa", pname, type);
     if (check) {
         HCRYPTPROV hprov;
         LPTSTR name = NULL;
@@ -1700,7 +1700,7 @@ static int capi_load_ssl_client_cert(ENGINE *e, SSL *ssl,
 
     storename = ctx->ssl_client_store;
     if (!storename)
-        storename = "MY";
+        storename = "\x4d\x59";
 
     hstore = capi_open_store(ctx, storename);
     if (!hstore)
@@ -1713,7 +1713,7 @@ static int capi_load_ssl_client_cert(ENGINE *e, SSL *ssl,
         p = cert->pbCertEncoded;
         x = d2i_X509(NULL, &p, cert->cbCertEncoded);
         if (!x) {
-            CAPI_trace(ctx, "Can't Parse Certificate %d\n", i);
+            CAPI_trace(ctx, "\x43\x61\x6e\x27\x74\x20\x50\x61\x72\x73\x65\x20\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x25\x64\xa", i);
             continue;
         }
         if (cert_issuer_match(ca_dn, x)
@@ -1804,8 +1804,8 @@ static int cert_select_simple(ENGINE *e, SSL *ssl, STACK_OF(X509) *certs)
 #   define CRYPTUI_SELECT_INTENDEDUSE_COLUMN                0x000000004
 #  endif
 
-#  define dlg_title L"OpenSSL Application SSL Client Certificate Selection"
-#  define dlg_prompt L"Select a certificate to use for authentication"
+#  define dlg_title L"\x4f\x70\x65\x6e\x53\x53\x4c\x20\x41\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x20\x53\x53\x4c\x20\x43\x6c\x69\x65\x6e\x74\x20\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x53\x65\x6c\x65\x63\x74\x69\x6f\x6e"
+#  define dlg_prompt L"\x53\x65\x6c\x65\x63\x74\x20\x61\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x74\x6f\x20\x75\x73\x65\x20\x66\x6f\x72\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e"
 #  define dlg_columns      CRYPTUI_SELECT_LOCATION_COLUMN \
                         |CRYPTUI_SELECT_INTENDEDUSE_COLUMN
 

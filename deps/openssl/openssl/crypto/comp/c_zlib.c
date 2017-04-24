@@ -9,7 +9,7 @@ COMP_METHOD *COMP_zlib(void);
 
 static COMP_METHOD zlib_method_nozlib = {
     NID_undef,
-    "(undef)",
+    "\x28\x75\x6e\x64\x65\x66\x29",
     NULL,
     NULL,
     NULL,
@@ -211,9 +211,9 @@ static int zlib_stateful_compress_block(COMP_CTX *ctx, unsigned char *out,
     if (err != Z_OK)
         return -1;
 # ifdef DEBUG_ZLIB
-    fprintf(stderr, "compress(%4d)->%4d %s\n",
+    fprintf(stderr, "\x63\x6f\x6d\x70\x72\x65\x73\x73\x28\x25\x34\x64\x29\x2d\x3e\x25\x34\x64\x20\x25\x73\xa",
             ilen, olen - state->ostream.avail_out,
-            (ilen != olen - state->ostream.avail_out) ? "zlib" : "clear");
+            (ilen != olen - state->ostream.avail_out) ? "\x7a\x6c\x69\x62" : "\x63\x6c\x65\x61\x72");
 # endif
     return olen - state->ostream.avail_out;
 }
@@ -240,9 +240,9 @@ static int zlib_stateful_expand_block(COMP_CTX *ctx, unsigned char *out,
     if (err != Z_OK)
         return -1;
 # ifdef DEBUG_ZLIB
-    fprintf(stderr, "expand(%4d)->%4d %s\n",
+    fprintf(stderr, "\x65\x78\x70\x61\x6e\x64\x28\x25\x34\x64\x29\x2d\x3e\x25\x34\x64\x20\x25\x73\xa",
             ilen, olen - state->istream.avail_out,
-            (ilen != olen - state->istream.avail_out) ? "zlib" : "clear");
+            (ilen != olen - state->istream.avail_out) ? "\x7a\x6c\x69\x62" : "\x63\x6c\x65\x61\x72");
 # endif
     return olen - state->istream.avail_out;
 }
@@ -273,8 +273,8 @@ static int zlib_compress_block(COMP_CTX *ctx, unsigned char *out,
         l = ilen + 1;
     }
 #  ifdef DEBUG_ZLIB
-    fprintf(stderr, "compress(%4d)->%4d %s\n",
-            ilen, (int)l, (clear) ? "clear" : "zlib");
+    fprintf(stderr, "\x63\x6f\x6d\x70\x72\x65\x73\x73\x28\x25\x34\x64\x29\x2d\x3e\x25\x34\x64\x20\x25\x73\xa",
+            ilen, (int)l, (clear) ? "\x63\x6c\x65\x61\x72" : "\x7a\x6c\x69\x62");
 #  endif
     return ((int)l);
 }
@@ -296,8 +296,8 @@ static int zlib_expand_block(COMP_CTX *ctx, unsigned char *out,
         l = ilen - 1;
     }
 #  ifdef DEBUG_ZLIB
-    fprintf(stderr, "expand  (%4d)->%4d %s\n",
-            ilen, (int)l, in[0] ? "zlib" : "clear");
+    fprintf(stderr, "\x65\x78\x70\x61\x6e\x64\x20\x20\x28\x25\x34\x64\x29\x2d\x3e\x25\x34\x64\x20\x25\x73\xa",
+            ilen, (int)l, in[0] ? "\x7a\x6c\x69\x62" : "\x63\x6c\x65\x61\x72");
 #  endif
     return ((int)l);
 }
@@ -347,23 +347,23 @@ COMP_METHOD *COMP_zlib(void)
 #ifdef ZLIB_SHARED
     if (!zlib_loaded) {
 # if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32)
-        zlib_dso = DSO_load(NULL, "ZLIB1", NULL, 0);
+        zlib_dso = DSO_load(NULL, "\x5a\x4c\x49\x42\x31", NULL, 0);
 # else
-        zlib_dso = DSO_load(NULL, "z", NULL, 0);
+        zlib_dso = DSO_load(NULL, "\x7a", NULL, 0);
 # endif
         if (zlib_dso != NULL) {
-            p_compress = (compress_ft) DSO_bind_func(zlib_dso, "compress");
+            p_compress = (compress_ft) DSO_bind_func(zlib_dso, "\x63\x6f\x6d\x70\x72\x65\x73\x73");
             p_inflateEnd
-                = (inflateEnd_ft) DSO_bind_func(zlib_dso, "inflateEnd");
-            p_inflate = (inflate_ft) DSO_bind_func(zlib_dso, "inflate");
+                = (inflateEnd_ft) DSO_bind_func(zlib_dso, "\x69\x6e\x66\x6c\x61\x74\x65\x45\x6e\x64");
+            p_inflate = (inflate_ft) DSO_bind_func(zlib_dso, "\x69\x6e\x66\x6c\x61\x74\x65");
             p_inflateInit_
-                = (inflateInit__ft) DSO_bind_func(zlib_dso, "inflateInit_");
+                = (inflateInit__ft) DSO_bind_func(zlib_dso, "\x69\x6e\x66\x6c\x61\x74\x65\x49\x6e\x69\x74\x5f");
             p_deflateEnd
-                = (deflateEnd_ft) DSO_bind_func(zlib_dso, "deflateEnd");
-            p_deflate = (deflate_ft) DSO_bind_func(zlib_dso, "deflate");
+                = (deflateEnd_ft) DSO_bind_func(zlib_dso, "\x64\x65\x66\x6c\x61\x74\x65\x45\x6e\x64");
+            p_deflate = (deflate_ft) DSO_bind_func(zlib_dso, "\x64\x65\x66\x6c\x61\x74\x65");
             p_deflateInit_
-                = (deflateInit__ft) DSO_bind_func(zlib_dso, "deflateInit_");
-            p_zError = (zError__ft) DSO_bind_func(zlib_dso, "zError");
+                = (deflateInit__ft) DSO_bind_func(zlib_dso, "\x64\x65\x66\x6c\x61\x74\x65\x49\x6e\x69\x74\x5f");
+            p_zError = (zError__ft) DSO_bind_func(zlib_dso, "\x7a\x45\x72\x72\x6f\x72");
 
             if (p_compress && p_inflateEnd && p_inflate
                 && p_inflateInit_ && p_deflateEnd
@@ -438,7 +438,7 @@ static long bio_zlib_callback_ctrl(BIO *b, int cmd, bio_info_cb *fp);
 
 static BIO_METHOD bio_meth_zlib = {
     BIO_TYPE_COMP,
-    "zlib",
+    "\x7a\x6c\x69\x62",
     bio_zlib_write,
     bio_zlib_read,
     NULL,
@@ -546,7 +546,7 @@ static int bio_zlib_read(BIO *b, char *out, int outl)
             ret = inflate(zin, 0);
             if ((ret != Z_OK) && (ret != Z_STREAM_END)) {
                 COMPerr(COMP_F_BIO_ZLIB_READ, COMP_R_ZLIB_INFLATE_ERROR);
-                ERR_add_error_data(2, "zlib error:", zError(ret));
+                ERR_add_error_data(2, "\x7a\x6c\x69\x62\x20\x65\x72\x72\x6f\x72\x3a", zError(ret));
                 return 0;
             }
             /* If EOF or we've read everything then return */
@@ -630,7 +630,7 @@ static int bio_zlib_write(BIO *b, const char *in, int inl)
         ret = deflate(zout, 0);
         if (ret != Z_OK) {
             COMPerr(COMP_F_BIO_ZLIB_WRITE, COMP_R_ZLIB_DEFLATE_ERROR);
-            ERR_add_error_data(2, "zlib error:", zError(ret));
+            ERR_add_error_data(2, "\x7a\x6c\x69\x62\x20\x65\x72\x72\x6f\x72\x3a", zError(ret));
             return 0;
         }
         ctx->ocount = ctx->obufsize - zout->avail_out;
@@ -677,7 +677,7 @@ static int bio_zlib_flush(BIO *b)
             ctx->odone = 1;
         else if (ret != Z_OK) {
             COMPerr(COMP_F_BIO_ZLIB_FLUSH, COMP_R_ZLIB_DEFLATE_ERROR);
-            ERR_add_error_data(2, "zlib error:", zError(ret));
+            ERR_add_error_data(2, "\x7a\x6c\x69\x62\x20\x65\x72\x72\x6f\x72\x3a", zError(ret));
             return 0;
         }
         ctx->ocount = ctx->obufsize - zout->avail_out;

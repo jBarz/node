@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,11 +111,11 @@ static int sxnet_i2r(X509V3_EXT_METHOD *method, SXNET *sx, BIO *out,
     SXNETID *id;
     int i;
     v = ASN1_INTEGER_get(sx->version);
-    BIO_printf(out, "%*sVersion: %ld (0x%lX)", indent, "", v + 1, v);
+    BIO_printf(out, "\x25\x2a\x73\x56\x65\x72\x73\x69\x6f\x6e\x3a\x20\x25\x6c\x64\x20\x28\x30\x78\x25\x6c\x58\x29", indent, "", v + 1, v);
     for (i = 0; i < sk_SXNETID_num(sx->ids); i++) {
         id = sk_SXNETID_value(sx->ids, i);
         tmp = i2s_ASN1_INTEGER(NULL, id->zone);
-        BIO_printf(out, "\n%*sZone: %s, User: ", indent, "", tmp);
+        BIO_printf(out, "\xa\x25\x2a\x73\x5a\x6f\x6e\x65\x3a\x20\x25\x73\x2c\x20\x55\x73\x65\x72\x3a\x20", indent, "", tmp);
         OPENSSL_free(tmp);
         M_ASN1_OCTET_STRING_print(out, id->user);
     }

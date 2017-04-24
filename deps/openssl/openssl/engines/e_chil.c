@@ -24,13 +24,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -92,7 +92,7 @@
 #   include "vendor_defns/hwcryptohook.h"
 #  endif
 
-#  define HWCRHK_LIB_NAME "CHIL engine"
+#  define HWCRHK_LIB_NAME "\x43\x48\x49\x4c\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "e_chil_err.c"
 
 static int hwcrhk_destroy(ENGINE *e);
@@ -162,24 +162,24 @@ static void hwcrhk_log_message(void *logstr, const char *message);
 #  define HWCRHK_CMD_SET_CALLBACK_DATA    (ENGINE_CMD_BASE + 4)
 static const ENGINE_CMD_DEFN hwcrhk_cmd_defns[] = {
     {HWCRHK_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'hwcrhk' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x68\x77\x63\x72\x68\x6b\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {HWCRHK_CMD_FORK_CHECK,
-     "FORK_CHECK",
-     "Turns fork() checking on (non-zero) or off (zero)",
+     "\x46\x4f\x52\x4b\x5f\x43\x48\x45\x43\x4b",
+     "\x54\x75\x72\x6e\x73\x20\x66\x6f\x72\x6b\x28\x29\x20\x63\x68\x65\x63\x6b\x69\x6e\x67\x20\x6f\x6e\x20\x28\x6e\x6f\x6e\x2d\x7a\x65\x72\x6f\x29\x20\x6f\x72\x20\x6f\x66\x66\x20\x28\x7a\x65\x72\x6f\x29",
      ENGINE_CMD_FLAG_NUMERIC},
     {HWCRHK_CMD_THREAD_LOCKING,
-     "THREAD_LOCKING",
-     "Turns thread-safe locking on (zero) or off (non-zero)",
+     "\x54\x48\x52\x45\x41\x44\x5f\x4c\x4f\x43\x4b\x49\x4e\x47",
+     "\x54\x75\x72\x6e\x73\x20\x74\x68\x72\x65\x61\x64\x2d\x73\x61\x66\x65\x20\x6c\x6f\x63\x6b\x69\x6e\x67\x20\x6f\x6e\x20\x28\x7a\x65\x72\x6f\x29\x20\x6f\x72\x20\x6f\x66\x66\x20\x28\x6e\x6f\x6e\x2d\x7a\x65\x72\x6f\x29",
      ENGINE_CMD_FLAG_NUMERIC},
     {HWCRHK_CMD_SET_USER_INTERFACE,
-     "SET_USER_INTERFACE",
-     "Set the global user interface (internal)",
+     "\x53\x45\x54\x5f\x55\x53\x45\x52\x5f\x49\x4e\x54\x45\x52\x46\x41\x43\x45",
+     "\x53\x65\x74\x20\x74\x68\x65\x20\x67\x6c\x6f\x62\x61\x6c\x20\x75\x73\x65\x72\x20\x69\x6e\x74\x65\x72\x66\x61\x63\x65\x20\x28\x69\x6e\x74\x65\x72\x6e\x61\x6c\x29",
      ENGINE_CMD_FLAG_INTERNAL},
     {HWCRHK_CMD_SET_CALLBACK_DATA,
-     "SET_CALLBACK_DATA",
-     "Set the global user interface extra data (internal)",
+     "\x53\x45\x54\x5f\x43\x41\x4c\x4c\x42\x41\x43\x4b\x5f\x44\x41\x54\x41",
+     "\x53\x65\x74\x20\x74\x68\x65\x20\x67\x6c\x6f\x62\x61\x6c\x20\x75\x73\x65\x72\x20\x69\x6e\x74\x65\x72\x66\x61\x63\x65\x20\x65\x78\x74\x72\x61\x20\x64\x61\x74\x61\x20\x28\x69\x6e\x74\x65\x72\x6e\x61\x6c\x29",
      ENGINE_CMD_FLAG_INTERNAL},
     {0, NULL, NULL, 0}
 };
@@ -187,7 +187,7 @@ static const ENGINE_CMD_DEFN hwcrhk_cmd_defns[] = {
 #  ifndef OPENSSL_NO_RSA
 /* Our internal RSA_METHOD that we provide pointers to */
 static RSA_METHOD hwcrhk_rsa = {
-    "CHIL RSA method",
+    "\x43\x48\x49\x4c\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     NULL,
@@ -207,7 +207,7 @@ static RSA_METHOD hwcrhk_rsa = {
 #  ifndef OPENSSL_NO_DH
 /* Our internal DH_METHOD that we provide pointers to */
 static DH_METHOD hwcrhk_dh = {
-    "CHIL DH method",
+    "\x43\x48\x49\x4c\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     hwcrhk_mod_exp_dh,
@@ -230,11 +230,11 @@ static RAND_METHOD hwcrhk_rand = {
 };
 
 /* Constants used when creating the ENGINE */
-static const char *engine_hwcrhk_id = "chil";
-static const char *engine_hwcrhk_name = "CHIL hardware engine support";
+static const char *engine_hwcrhk_id = "\x63\x68\x69\x6c";
+static const char *engine_hwcrhk_name = "\x43\x48\x49\x4c\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 #  ifndef OPENSSL_NO_DYNAMIC_ENGINE
 /* Compatibility hack, the dynamic library uses this form in the path */
-static const char *engine_hwcrhk_id_alt = "ncipher";
+static const char *engine_hwcrhk_id_alt = "\x6e\x63\x69\x70\x68\x65\x72";
 #  endif
 
 /* Internal stuff for HWCryptoHook */
@@ -471,7 +471,7 @@ static const char *get_HWCRHK_LIBNAME(void)
 {
     if (HWCRHK_LIBNAME)
         return HWCRHK_LIBNAME;
-    return "nfhwcrhk";
+    return "\x6e\x66\x68\x77\x63\x72\x68\x6b";
 }
 
 static long set_HWCRHK_LIBNAME(const char *name)
@@ -480,19 +480,19 @@ static long set_HWCRHK_LIBNAME(const char *name)
     return (((HWCRHK_LIBNAME = BUF_strdup(name)) != NULL) ? 1 : 0);
 }
 
-static const char *n_hwcrhk_Init = "HWCryptoHook_Init";
-static const char *n_hwcrhk_Finish = "HWCryptoHook_Finish";
-static const char *n_hwcrhk_ModExp = "HWCryptoHook_ModExp";
+static const char *n_hwcrhk_Init = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x49\x6e\x69\x74";
+static const char *n_hwcrhk_Finish = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x46\x69\x6e\x69\x73\x68";
+static const char *n_hwcrhk_ModExp = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x4d\x6f\x64\x45\x78\x70";
 #  ifndef OPENSSL_NO_RSA
-static const char *n_hwcrhk_RSA = "HWCryptoHook_RSA";
+static const char *n_hwcrhk_RSA = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x52\x53\x41";
 #  endif
-static const char *n_hwcrhk_RandomBytes = "HWCryptoHook_RandomBytes";
+static const char *n_hwcrhk_RandomBytes = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x52\x61\x6e\x64\x6f\x6d\x42\x79\x74\x65\x73";
 #  ifndef OPENSSL_NO_RSA
-static const char *n_hwcrhk_RSALoadKey = "HWCryptoHook_RSALoadKey";
-static const char *n_hwcrhk_RSAGetPublicKey = "HWCryptoHook_RSAGetPublicKey";
-static const char *n_hwcrhk_RSAUnloadKey = "HWCryptoHook_RSAUnloadKey";
+static const char *n_hwcrhk_RSALoadKey = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x52\x53\x41\x4c\x6f\x61\x64\x4b\x65\x79";
+static const char *n_hwcrhk_RSAGetPublicKey = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x52\x53\x41\x47\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79";
+static const char *n_hwcrhk_RSAUnloadKey = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x52\x53\x41\x55\x6e\x6c\x6f\x61\x64\x4b\x65\x79";
 #  endif
-static const char *n_hwcrhk_ModExpCRT = "HWCryptoHook_ModExpCRT";
+static const char *n_hwcrhk_ModExpCRT = "\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x5f\x4d\x6f\x64\x45\x78\x70\x43\x52\x54";
 
 /*
  * HWCryptoHook library functions and mechanics - these are used by the
@@ -618,7 +618,7 @@ static int hwcrhk_init(ENGINE *e)
 #  ifndef OPENSSL_NO_RSA
     if (hndidx_rsa == -1)
         hndidx_rsa = RSA_get_ex_new_index(0,
-                                          "nFast HWCryptoHook RSA key handle",
+                                          "\x6e\x46\x61\x73\x74\x20\x48\x57\x43\x72\x79\x70\x74\x6f\x48\x6f\x6f\x6b\x20\x52\x53\x41\x20\x6b\x65\x79\x20\x68\x61\x6e\x64\x6c\x65",
                                           NULL, NULL, NULL);
 #  endif
     return 1;
@@ -1237,7 +1237,7 @@ static int hwcrhk_get_pass(const char *prompt_info,
         if (ui) {
             int ok;
             char *prompt = UI_construct_prompt(ui,
-                                               "pass phrase", prompt_info);
+                                               "\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65", prompt_info);
 
             ok = UI_add_input_string(ui, prompt,
                                      UI_INPUT_FLAG_DEFAULT_PWD,
@@ -1295,7 +1295,7 @@ static int hwcrhk_insert_card(const char *prompt_info,
     ui = UI_new_method(ui_method);
 
     if (ui) {
-        char answer = '\0';
+        char answer = '\x0';
         char buf[BUFSIZ];
         /*
          * Despite what the documentation says wrong_info can be an empty
@@ -1303,16 +1303,16 @@ static int hwcrhk_insert_card(const char *prompt_info,
          */
         if (wrong_info && *wrong_info)
             BIO_snprintf(buf, sizeof(buf) - 1,
-                         "Current card: \"%s\"\n", wrong_info);
+                         "\x43\x75\x72\x72\x65\x6e\x74\x20\x63\x61\x72\x64\x3a\x20\x22\x25\x73\x22\xa", wrong_info);
         else
             buf[0] = 0;
         ok = UI_dup_info_string(ui, buf);
         if (ok >= 0 && prompt_info) {
             BIO_snprintf(buf, sizeof(buf) - 1,
-                         "Insert card \"%s\"", prompt_info);
+                         "\x49\x6e\x73\x65\x72\x74\x20\x63\x61\x72\x64\x20\x22\x25\x73\x22", prompt_info);
             ok = UI_dup_input_boolean(ui, buf,
-                                      "\n then hit <enter> or C<enter> to cancel\n",
-                                      "\r\n", "Cc", UI_INPUT_FLAG_ECHO,
+                                      "\xa\x20\x74\x68\x65\x6e\x20\x68\x69\x74\x20\x3c\x65\x6e\x74\x65\x72\x3e\x20\x6f\x72\x20\x43\x3c\x65\x6e\x74\x65\x72\x3e\x20\x74\x6f\x20\x63\x61\x6e\x63\x65\x6c\xa",
+                                      "\xd\xa", "\x43\x63", UI_INPUT_FLAG_ECHO,
                                       &answer);
         }
         UI_add_user_data(ui, callback_data);
@@ -1321,7 +1321,7 @@ static int hwcrhk_insert_card(const char *prompt_info,
             ok = UI_process(ui);
         UI_free(ui);
 
-        if (ok == -2 || (ok >= 0 && answer == 'C'))
+        if (ok == -2 || (ok >= 0 && answer == '\x43'))
             ok = 1;
         else if (ok < 0)
             ok = -1;
@@ -1339,7 +1339,7 @@ static void hwcrhk_log_message(void *logstr, const char *message)
     if (logstr)
         lstream = *(BIO **)logstr;
     if (lstream) {
-        BIO_printf(lstream, "%s\n", message);
+        BIO_printf(lstream, "\x25\x73\xa", message);
     }
     CRYPTO_w_unlock(CRYPTO_LOCK_BIO);
 }

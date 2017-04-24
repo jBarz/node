@@ -61,7 +61,7 @@ unsigned long buffer_total_out(buffer_t * buf)
  * higher-level "buffer_[to|from]_[fd|SSL|BIO]" functions should alter these
  * values.
  */
-# if 0                          /* To avoid "unused" warnings */
+# if 0                          /* To avoid "\x75\x6e\x75\x73\x65\x64" warnings */
 static unsigned int buffer_adddata(buffer_t * buf, const unsigned char *ptr,
                                    unsigned int size)
 {

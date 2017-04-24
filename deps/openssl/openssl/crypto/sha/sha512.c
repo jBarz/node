@@ -50,7 +50,7 @@
 
 # include "cryptlib.h"
 
-const char SHA512_version[] = "SHA-512" OPENSSL_VERSION_PTEXT;
+const char SHA512_version[] = "\x53\x48\x41\x2d\x35\x31\x32" OPENSSL_VERSION_PTEXT;
 
 # if defined(__i386) || defined(__i386__) || defined(_M_IX86) || \
     defined(__x86_64) || defined(_M_AMD64) || defined(_M_X64) || \
@@ -321,50 +321,50 @@ static const SHA_LONG64 K512[80] = {
 #   if defined(__GNUC__) && __GNUC__>=2 && !defined(OPENSSL_NO_ASM) && !defined(OPENSSL_NO_INLINE_ASM)
 #    if defined(__x86_64) || defined(__x86_64__)
 #     define ROTR(a,n)    ({ SHA_LONG64 ret;              \
-                                asm ("rorq %1,%0"       \
-                                : "=r"(ret)             \
-                                : "J"(n),"0"(a)         \
-                                : "cc"); ret;           })
+                                asm ("\x72\x6f\x72\x71\x20\x25\x31\x2c\x25\x30"       \
+                                : "\x3d\x72"(ret)             \
+                                : "\x4a"(n),"\x30"(a)         \
+                                : "\x63\x63"); ret;           })
 #     if !defined(B_ENDIAN)
 #      define PULL64(x) ({ SHA_LONG64 ret=*((const SHA_LONG64 *)(&(x)));  \
-                                asm ("bswapq    %0"             \
-                                : "=r"(ret)                     \
-                                : "0"(ret)); ret;               })
+                                asm ("\x62\x73\x77\x61\x70\x71\x20\x20\x20\x20\x25\x30"             \
+                                : "\x3d\x72"(ret)                     \
+                                : "\x30"(ret)); ret;               })
 #     endif
 #    elif (defined(__i386) || defined(__i386__)) && !defined(B_ENDIAN)
 #     if defined(I386_ONLY)
 #      define PULL64(x) ({ const unsigned int *p=(const unsigned int *)(&(x));\
                          unsigned int hi=p[0],lo=p[1];          \
-                                asm("xchgb %%ah,%%al;xchgb %%dh,%%dl;"\
-                                    "roll $16,%%eax; roll $16,%%edx; "\
-                                    "xchgb %%ah,%%al;xchgb %%dh,%%dl;" \
-                                : "=a"(lo),"=d"(hi)             \
-                                : "0"(lo),"1"(hi) : "cc");      \
+                                asm("\x78\x63\x68\x67\x62\x20\x25\x25\x61\x68\x2c\x25\x25\x61\x6c\x3b\x78\x63\x68\x67\x62\x20\x25\x25\x64\x68\x2c\x25\x25\x64\x6c\x3b"\
+                                    "\x72\x6f\x6c\x6c\x20\x24\x31\x36\x2c\x25\x25\x65\x61\x78\x3b\x20\x72\x6f\x6c\x6c\x20\x24\x31\x36\x2c\x25\x25\x65\x64\x78\x3b\x20"\
+                                    "\x78\x63\x68\x67\x62\x20\x25\x25\x61\x68\x2c\x25\x25\x61\x6c\x3b\x78\x63\x68\x67\x62\x20\x25\x25\x64\x68\x2c\x25\x25\x64\x6c\x3b" \
+                                : "\x3d\x61"(lo),"\x3d\x64"(hi)             \
+                                : "\x30"(lo),"\x31"(hi) : "\x63\x63");      \
                                 ((SHA_LONG64)hi)<<32|lo;        })
 #     else
 #      define PULL64(x) ({ const unsigned int *p=(const unsigned int *)(&(x));\
                          unsigned int hi=p[0],lo=p[1];          \
-                                asm ("bswapl %0; bswapl %1;"    \
-                                : "=r"(lo),"=r"(hi)             \
-                                : "0"(lo),"1"(hi));             \
+                                asm ("\x62\x73\x77\x61\x70\x6c\x20\x25\x30\x3b\x20\x62\x73\x77\x61\x70\x6c\x20\x25\x31\x3b"    \
+                                : "\x3d\x72"(lo),"\x3d\x72"(hi)             \
+                                : "\x30"(lo),"\x31"(hi));             \
                                 ((SHA_LONG64)hi)<<32|lo;        })
 #     endif
 #    elif (defined(_ARCH_PPC) && defined(__64BIT__)) || defined(_ARCH_PPC64)
 #     define ROTR(a,n)    ({ SHA_LONG64 ret;              \
-                                asm ("rotrdi %0,%1,%2"  \
-                                : "=r"(ret)             \
-                                : "r"(a),"K"(n)); ret;  })
+                                asm ("\x72\x6f\x74\x72\x64\x69\x20\x25\x30\x2c\x25\x31\x2c\x25\x32"  \
+                                : "\x3d\x72"(ret)             \
+                                : "\x72"(a),"\x4b"(n)); ret;  })
 #    elif defined(__aarch64__)
 #     define ROTR(a,n)    ({ SHA_LONG64 ret;              \
-                                asm ("ror %0,%1,%2"     \
-                                : "=r"(ret)             \
-                                : "r"(a),"I"(n)); ret;  })
+                                asm ("\x72\x6f\x72\x20\x25\x30\x2c\x25\x31\x2c\x25\x32"     \
+                                : "\x3d\x72"(ret)             \
+                                : "\x72"(a),"\x49"(n)); ret;  })
 #     if  defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && \
         __BYTE_ORDER__==__ORDER_LITTLE_ENDIAN__
 #      define PULL64(x)   ({ SHA_LONG64 ret;                      \
-                                asm ("rev       %0,%1"          \
-                                : "=r"(ret)                     \
-                                : "r"(*((const SHA_LONG64 *)(&(x))))); ret;             })
+                                asm ("\x72\x65\x76\x20\x20\x20\x20\x20\x20\x20\x25\x30\x2c\x25\x31"          \
+                                : "\x3d\x72"(ret)                     \
+                                : "\x72"(*((const SHA_LONG64 *)(&(x))))); ret;             })
 #     endif
 #    endif
 #   elif defined(_MSC_VER)

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -129,7 +129,7 @@ EVP_PKEY *PEM_read_bio_PrivateKey(BIO *bp, EVP_PKEY **x, pem_password_cb *cb,
             *x = ret;
         }
         PKCS8_PRIV_KEY_INFO_free(p8inf);
-    } else if ((slen = pem_check_suffix(nm, "PRIVATE KEY")) > 0) {
+    } else if ((slen = pem_check_suffix(nm, "\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59")) > 0) {
         const EVP_PKEY_ASN1_METHOD *ameth;
         ameth = EVP_PKEY_asn1_find_str(NULL, nm, slen);
         if (!ameth || !ameth->old_priv_decode)
@@ -155,7 +155,7 @@ int PEM_write_bio_PrivateKey(BIO *bp, EVP_PKEY *x, const EVP_CIPHER *enc,
         return PEM_write_bio_PKCS8PrivateKey(bp, x, enc,
                                              (char *)kstr, klen, cb, u);
 
-    BIO_snprintf(pem_str, 80, "%s PRIVATE KEY", x->ameth->pem_str);
+    BIO_snprintf(pem_str, 80, "\x25\x73\x20\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59", x->ameth->pem_str);
     return PEM_ASN1_write_bio((i2d_of_void *)i2d_PrivateKey,
                               pem_str, bp, x, enc, kstr, klen, cb, u);
 }
@@ -174,7 +174,7 @@ EVP_PKEY *PEM_read_bio_Parameters(BIO *bp, EVP_PKEY **x)
         return NULL;
     p = data;
 
-    if ((slen = pem_check_suffix(nm, "PARAMETERS")) > 0) {
+    if ((slen = pem_check_suffix(nm, "\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53")) > 0) {
         ret = EVP_PKEY_new();
         if (!ret)
             goto err;
@@ -205,7 +205,7 @@ int PEM_write_bio_Parameters(BIO *bp, EVP_PKEY *x)
     if (!x->ameth || !x->ameth->param_encode)
         return 0;
 
-    BIO_snprintf(pem_str, 80, "%s PARAMETERS", x->ameth->pem_str);
+    BIO_snprintf(pem_str, 80, "\x25\x73\x20\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53", x->ameth->pem_str);
     return PEM_ASN1_write_bio((i2d_of_void *)x->ameth->param_encode,
                               pem_str, bp, x, NULL, NULL, 0, 0, NULL);
 }

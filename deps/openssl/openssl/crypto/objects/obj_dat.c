@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -492,7 +492,7 @@ int OBJ_obj2txt(char *buf, int buf_len, const ASN1_OBJECT *a, int no_name)
 
     /* Ensure that, at every state, |buf| is NUL-terminated. */
     if (buf && buf_len > 0)
-        buf[0] = '\0';
+        buf[0] = '\x0';
 
     if ((a == NULL) || (a->data == NULL))
         return (0);
@@ -559,8 +559,8 @@ int OBJ_obj2txt(char *buf, int buf_len, const ASN1_OBJECT *a, int no_name)
                 l -= (long)(i * 40);
             }
             if (buf && (buf_len > 1)) {
-                *buf++ = i + '0';
-                *buf = '\0';
+                *buf++ = i + '\x30';
+                *buf = '\x0';
                 buf_len--;
             }
             n++;
@@ -574,8 +574,8 @@ int OBJ_obj2txt(char *buf, int buf_len, const ASN1_OBJECT *a, int no_name)
             i = strlen(bndec);
             if (buf) {
                 if (buf_len > 1) {
-                    *buf++ = '.';
-                    *buf = '\0';
+                    *buf++ = '\x2e';
+                    *buf = '\x0';
                     buf_len--;
                 }
                 BUF_strlcpy(buf, bndec, buf_len);
@@ -591,7 +591,7 @@ int OBJ_obj2txt(char *buf, int buf_len, const ASN1_OBJECT *a, int no_name)
             n += i;
             OPENSSL_free(bndec);
         } else {
-            BIO_snprintf(tbuf, sizeof tbuf, ".%lu", l);
+            BIO_snprintf(tbuf, sizeof tbuf, "\x2e\x25\x6c\x75", l);
             i = strlen(tbuf);
             if (buf && (buf_len > 0)) {
                 BUF_strlcpy(buf, tbuf, buf_len);
@@ -736,34 +736,34 @@ int OBJ_create_objects(BIO *in)
         i = BIO_gets(in, buf, 512);
         if (i <= 0)
             return (num);
-        buf[i - 1] = '\0';
+        buf[i - 1] = '\x0';
         if (!isalnum((unsigned char)buf[0]))
             return (num);
         o = s = buf;
-        while (isdigit((unsigned char)*s) || (*s == '.'))
+        while (isdigit((unsigned char)*s) || (*s == '\x2e'))
             s++;
-        if (*s != '\0') {
-            *(s++) = '\0';
+        if (*s != '\x0') {
+            *(s++) = '\x0';
             while (isspace((unsigned char)*s))
                 s++;
-            if (*s == '\0')
+            if (*s == '\x0')
                 s = NULL;
             else {
                 l = s;
-                while ((*l != '\0') && !isspace((unsigned char)*l))
+                while ((*l != '\x0') && !isspace((unsigned char)*l))
                     l++;
-                if (*l != '\0') {
-                    *(l++) = '\0';
+                if (*l != '\x0') {
+                    *(l++) = '\x0';
                     while (isspace((unsigned char)*l))
                         l++;
-                    if (*l == '\0')
+                    if (*l == '\x0')
                         l = NULL;
                 } else
                     l = NULL;
             }
         } else
             s = NULL;
-        if ((o == NULL) || (*o == '\0'))
+        if ((o == NULL) || (*o == '\x0'))
             return (num);
         if (!OBJ_create(o, s, l))
             return (num);

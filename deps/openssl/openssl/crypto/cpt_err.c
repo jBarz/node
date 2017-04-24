@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,23 +70,23 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_CRYPTO,0,reason)
 
 static ERR_STRING_DATA CRYPTO_str_functs[] = {
-    {ERR_FUNC(CRYPTO_F_CRYPTO_GET_EX_NEW_INDEX), "CRYPTO_get_ex_new_index"},
-    {ERR_FUNC(CRYPTO_F_CRYPTO_GET_NEW_DYNLOCKID), "CRYPTO_get_new_dynlockid"},
-    {ERR_FUNC(CRYPTO_F_CRYPTO_GET_NEW_LOCKID), "CRYPTO_get_new_lockid"},
-    {ERR_FUNC(CRYPTO_F_CRYPTO_SET_EX_DATA), "CRYPTO_set_ex_data"},
-    {ERR_FUNC(CRYPTO_F_DEF_ADD_INDEX), "DEF_ADD_INDEX"},
-    {ERR_FUNC(CRYPTO_F_DEF_GET_CLASS), "DEF_GET_CLASS"},
-    {ERR_FUNC(CRYPTO_F_FIPS_MODE_SET), "FIPS_mode_set"},
-    {ERR_FUNC(CRYPTO_F_INT_DUP_EX_DATA), "INT_DUP_EX_DATA"},
-    {ERR_FUNC(CRYPTO_F_INT_FREE_EX_DATA), "INT_FREE_EX_DATA"},
-    {ERR_FUNC(CRYPTO_F_INT_NEW_EX_DATA), "INT_NEW_EX_DATA"},
+    {ERR_FUNC(CRYPTO_F_CRYPTO_GET_EX_NEW_INDEX), "\x43\x52\x59\x50\x54\x4f\x5f\x67\x65\x74\x5f\x65\x78\x5f\x6e\x65\x77\x5f\x69\x6e\x64\x65\x78"},
+    {ERR_FUNC(CRYPTO_F_CRYPTO_GET_NEW_DYNLOCKID), "\x43\x52\x59\x50\x54\x4f\x5f\x67\x65\x74\x5f\x6e\x65\x77\x5f\x64\x79\x6e\x6c\x6f\x63\x6b\x69\x64"},
+    {ERR_FUNC(CRYPTO_F_CRYPTO_GET_NEW_LOCKID), "\x43\x52\x59\x50\x54\x4f\x5f\x67\x65\x74\x5f\x6e\x65\x77\x5f\x6c\x6f\x63\x6b\x69\x64"},
+    {ERR_FUNC(CRYPTO_F_CRYPTO_SET_EX_DATA), "\x43\x52\x59\x50\x54\x4f\x5f\x73\x65\x74\x5f\x65\x78\x5f\x64\x61\x74\x61"},
+    {ERR_FUNC(CRYPTO_F_DEF_ADD_INDEX), "\x44\x45\x46\x5f\x41\x44\x44\x5f\x49\x4e\x44\x45\x58"},
+    {ERR_FUNC(CRYPTO_F_DEF_GET_CLASS), "\x44\x45\x46\x5f\x47\x45\x54\x5f\x43\x4c\x41\x53\x53"},
+    {ERR_FUNC(CRYPTO_F_FIPS_MODE_SET), "\x46\x49\x50\x53\x5f\x6d\x6f\x64\x65\x5f\x73\x65\x74"},
+    {ERR_FUNC(CRYPTO_F_INT_DUP_EX_DATA), "\x49\x4e\x54\x5f\x44\x55\x50\x5f\x45\x58\x5f\x44\x41\x54\x41"},
+    {ERR_FUNC(CRYPTO_F_INT_FREE_EX_DATA), "\x49\x4e\x54\x5f\x46\x52\x45\x45\x5f\x45\x58\x5f\x44\x41\x54\x41"},
+    {ERR_FUNC(CRYPTO_F_INT_NEW_EX_DATA), "\x49\x4e\x54\x5f\x4e\x45\x57\x5f\x45\x58\x5f\x44\x41\x54\x41"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA CRYPTO_str_reasons[] = {
-    {ERR_REASON(CRYPTO_R_FIPS_MODE_NOT_SUPPORTED), "fips mode not supported"},
+    {ERR_REASON(CRYPTO_R_FIPS_MODE_NOT_SUPPORTED), "\x66\x69\x70\x73\x20\x6d\x6f\x64\x65\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64"},
     {ERR_REASON(CRYPTO_R_NO_DYNLOCK_CREATE_CALLBACK),
-     "no dynlock create callback"},
+     "\x6e\x6f\x20\x64\x79\x6e\x6c\x6f\x63\x6b\x20\x63\x72\x65\x61\x74\x65\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b"},
     {0, NULL}
 };
 

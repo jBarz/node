@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -74,20 +74,20 @@ int ASN1_PRINTABLE_type(const unsigned char *s, int len)
     while ((*s) && (len-- != 0)) {
         c = *(s++);
 #ifndef CHARSET_EBCDIC
-        if (!(((c >= 'a') && (c <= 'z')) ||
-              ((c >= 'A') && (c <= 'Z')) ||
-              (c == ' ') ||
-              ((c >= '0') && (c <= '9')) ||
-              (c == ' ') || (c == '\'') ||
-              (c == '(') || (c == ')') ||
-              (c == '+') || (c == ',') ||
-              (c == '-') || (c == '.') ||
-              (c == '/') || (c == ':') || (c == '=') || (c == '?')))
+        if (!(((c >= '\x61') && (c <= '\x7a')) ||
+              ((c >= '\x41') && (c <= '\x5a')) ||
+              (c == '\x20') ||
+              ((c >= '\x30') && (c <= '\x39')) ||
+              (c == '\x20') || (c == '\x27') ||
+              (c == '\x28') || (c == '\x29') ||
+              (c == '\x2b') || (c == '\x2c') ||
+              (c == '\x2d') || (c == '\x2e') ||
+              (c == '\x2f') || (c == '\x3a') || (c == '\x3d') || (c == '\x3f')))
             ia5 = 1;
         if (c & 0x80)
             t61 = 1;
 #else
-        if (!isalnum(c) && (c != ' ') && strchr("'()+,-./:=?", c) == NULL)
+        if (!isalnum(c) && (c != '\x20') && strchr("\x27\x28\x29\x2b\x2c\x2d\x2e\x2f\x3a\x3d\x3f", c) == NULL)
             ia5 = 1;
         if (os_toascii[c] & 0x80)
             t61 = 1;
@@ -111,7 +111,7 @@ int ASN1_UNIVERSALSTRING_to_string(ASN1_UNIVERSALSTRING *s)
         return (0);
     p = s->data;
     for (i = 0; i < s->length; i += 4) {
-        if ((p[0] != '\0') || (p[1] != '\0') || (p[2] != '\0'))
+        if ((p[0] != '\x0') || (p[1] != '\x0') || (p[2] != '\x0'))
             break;
         else
             p += 4;
@@ -122,7 +122,7 @@ int ASN1_UNIVERSALSTRING_to_string(ASN1_UNIVERSALSTRING *s)
     for (i = 3; i < s->length; i += 4) {
         *(p++) = s->data[i];
     }
-    *(p) = '\0';
+    *(p) = '\x0';
     s->length /= 4;
     s->type = ASN1_PRINTABLE_type(s->data, s->length);
     return (1);

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -61,8 +61,8 @@
 #include <openssl/opensslv.h>
 #include <openssl/bio.h>
 
-OPENSSL_GLOBAL const char libdes_version[] = "libdes" OPENSSL_VERSION_PTEXT;
-OPENSSL_GLOBAL const char DES_version[] = "DES" OPENSSL_VERSION_PTEXT;
+OPENSSL_GLOBAL const char libdes_version[] = "\x6c\x69\x62\x64\x65\x73" OPENSSL_VERSION_PTEXT;
+OPENSSL_GLOBAL const char DES_version[] = "\x44\x45\x53" OPENSSL_VERSION_PTEXT;
 
 const char *DES_options(void)
 {
@@ -73,30 +73,30 @@ const char *DES_options(void)
         const char *ptr, *unroll, *risc, *size;
 
 #ifdef DES_PTR
-        ptr = "ptr";
+        ptr = "\x70\x74\x72";
 #else
-        ptr = "idx";
+        ptr = "\x69\x64\x78";
 #endif
 #if defined(DES_RISC1) || defined(DES_RISC2)
 # ifdef DES_RISC1
-        risc = "risc1";
+        risc = "\x72\x69\x73\x63\x31";
 # endif
 # ifdef DES_RISC2
-        risc = "risc2";
+        risc = "\x72\x69\x73\x63\x32";
 # endif
 #else
-        risc = "cisc";
+        risc = "\x63\x69\x73\x63";
 #endif
 #ifdef DES_UNROLL
-        unroll = "16";
+        unroll = "\x31\x36";
 #else
-        unroll = "2";
+        unroll = "\x32";
 #endif
         if (sizeof(DES_LONG) != sizeof(long))
-            size = "int";
+            size = "\x69\x6e\x74";
         else
-            size = "long";
-        BIO_snprintf(buf, sizeof buf, "des(%s,%s,%s,%s)", ptr, risc, unroll,
+            size = "\x6c\x6f\x6e\x67";
+        BIO_snprintf(buf, sizeof buf, "\x64\x65\x73\x28\x25\x73\x2c\x25\x73\x2c\x25\x73\x2c\x25\x73\x29", ptr, risc, unroll,
                      size);
         init = 0;
     }

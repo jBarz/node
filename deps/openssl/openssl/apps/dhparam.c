@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -181,51 +181,51 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-inform") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             informat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-outform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             outformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-in") == 0) {
+        } else if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
         }
 # ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*argv, "-engine") == 0) {
+        else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine = *(++argv);
         }
 # endif
-        else if (strcmp(*argv, "-check") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x68\x65\x63\x6b") == 0)
             check = 1;
-        else if (strcmp(*argv, "-text") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x65\x78\x74") == 0)
             text = 1;
 # ifndef OPENSSL_NO_DSA
-        else if (strcmp(*argv, "-dsaparam") == 0)
+        else if (strcmp(*argv, "\x2d\x64\x73\x61\x70\x61\x72\x61\x6d") == 0)
             dsaparam = 1;
 # endif
-        else if (strcmp(*argv, "-C") == 0)
+        else if (strcmp(*argv, "\x2d\x43") == 0)
             C = 1;
-        else if (strcmp(*argv, "-noout") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x6f\x6f\x75\x74") == 0)
             noout = 1;
-        else if (strcmp(*argv, "-2") == 0)
+        else if (strcmp(*argv, "\x2d\x32") == 0)
             g = 2;
-        else if (strcmp(*argv, "-5") == 0)
+        else if (strcmp(*argv, "\x2d\x35") == 0)
             g = 5;
-        else if (strcmp(*argv, "-rand") == 0) {
+        else if (strcmp(*argv, "\x2d\x72\x61\x6e\x64") == 0) {
             if (--argc < 1)
                 goto bad;
             inrand = *(++argv);
-        } else if (((sscanf(*argv, "%d", &num) == 0) || (num <= 0)))
+        } else if (((sscanf(*argv, "\x25\x64", &num) == 0) || (num <= 0)))
             goto bad;
         argv++;
         argc--;
@@ -233,37 +233,37 @@ int MAIN(int argc, char **argv)
 
     if (badops) {
  bad:
-        BIO_printf(bio_err, "%s [options] [numbits]\n", prog);
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, " -inform arg   input format - one of DER PEM\n");
+        BIO_printf(bio_err, "\x25\x73\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\x20\x5b\x6e\x75\x6d\x62\x69\x74\x73\x5d\xa", prog);
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x6f\x6e\x65\x20\x6f\x66\x20\x44\x45\x52\x20\x50\x45\x4d\xa");
         BIO_printf(bio_err,
-                   " -outform arg  output format - one of DER PEM\n");
-        BIO_printf(bio_err, " -in arg       input file\n");
-        BIO_printf(bio_err, " -out arg      output file\n");
+                   "\x20\x2d\x6f\x75\x74\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x6f\x6e\x65\x20\x6f\x66\x20\x44\x45\x52\x20\x50\x45\x4d\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
 # ifndef OPENSSL_NO_DSA
         BIO_printf(bio_err,
-                   " -dsaparam     read or generate DSA parameters, convert to DH\n");
+                   "\x20\x2d\x64\x73\x61\x70\x61\x72\x61\x6d\x20\x20\x20\x20\x20\x72\x65\x61\x64\x20\x6f\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x44\x53\x41\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x2c\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x74\x6f\x20\x44\x48\xa");
 # endif
-        BIO_printf(bio_err, " -check        check the DH parameters\n");
+        BIO_printf(bio_err, "\x20\x2d\x63\x68\x65\x63\x6b\x20\x20\x20\x20\x20\x20\x20\x20\x63\x68\x65\x63\x6b\x20\x74\x68\x65\x20\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
         BIO_printf(bio_err,
-                   " -text         print a text form of the DH parameters\n");
-        BIO_printf(bio_err, " -C            Output C code\n");
+                   "\x20\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x72\x69\x6e\x74\x20\x61\x20\x74\x65\x78\x74\x20\x66\x6f\x72\x6d\x20\x6f\x66\x20\x74\x68\x65\x20\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
+        BIO_printf(bio_err, "\x20\x2d\x43\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x4f\x75\x74\x70\x75\x74\x20\x43\x20\x63\x6f\x64\x65\xa");
         BIO_printf(bio_err,
-                   " -2            generate parameters using  2 as the generator value\n");
+                   "\x20\x2d\x32\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x20\x75\x73\x69\x6e\x67\x20\x20\x32\x20\x61\x73\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x76\x61\x6c\x75\x65\xa");
         BIO_printf(bio_err,
-                   " -5            generate parameters using  5 as the generator value\n");
+                   "\x20\x2d\x35\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x20\x75\x73\x69\x6e\x67\x20\x20\x35\x20\x61\x73\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x76\x61\x6c\x75\x65\xa");
         BIO_printf(bio_err,
-                   " numbits       number of bits in to generate (default 2048)\n");
+                   "\x20\x6e\x75\x6d\x62\x69\x74\x73\x20\x20\x20\x20\x20\x20\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x62\x69\x74\x73\x20\x69\x6e\x20\x74\x6f\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x32\x30\x34\x38\x29\xa");
 # ifndef OPENSSL_NO_ENGINE
         BIO_printf(bio_err,
-                   " -engine e     use engine e, possibly a hardware device.\n");
+                   "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 # endif
-        BIO_printf(bio_err, " -rand file%cfile%c...\n", LIST_SEPARATOR_CHAR,
+        BIO_printf(bio_err, "\x20\x2d\x72\x61\x6e\x64\x20\x66\x69\x6c\x65\x25\x63\x66\x69\x6c\x65\x25\x63\x2e\x2e\x2e\xa", LIST_SEPARATOR_CHAR,
                    LIST_SEPARATOR_CHAR);
         BIO_printf(bio_err,
-                   "               - load the file (or the files in the directory) into\n");
-        BIO_printf(bio_err, "               the random number generator\n");
-        BIO_printf(bio_err, " -noout        no output\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6c\x6f\x61\x64\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x20\x28\x6f\x72\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x73\x20\x69\x6e\x20\x74\x68\x65\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x29\x20\x69\x6e\x74\x6f\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6e\x6f\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x20\x6e\x6f\x20\x6f\x75\x74\x70\x75\x74\xa");
         goto end;
     }
 
@@ -278,7 +278,7 @@ int MAIN(int argc, char **argv)
     if (dsaparam) {
         if (g) {
             BIO_printf(bio_err,
-                       "generator may not be chosen for DSA parameters\n");
+                       "\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x6d\x61\x79\x20\x6e\x6f\x74\x20\x62\x65\x20\x63\x68\x6f\x73\x65\x6e\x20\x66\x6f\x72\x20\x44\x53\x41\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
             goto end;
         }
     } else
@@ -295,10 +295,10 @@ int MAIN(int argc, char **argv)
         BN_GENCB_set(&cb, dh_cb, bio_err);
         if (!app_RAND_load_file(NULL, bio_err, 1) && inrand == NULL) {
             BIO_printf(bio_err,
-                       "warning, not much extra random data, consider using the -rand option\n");
+                       "\x77\x61\x72\x6e\x69\x6e\x67\x2c\x20\x6e\x6f\x74\x20\x6d\x75\x63\x68\x20\x65\x78\x74\x72\x61\x20\x72\x61\x6e\x64\x6f\x6d\x20\x64\x61\x74\x61\x2c\x20\x63\x6f\x6e\x73\x69\x64\x65\x72\x20\x75\x73\x69\x6e\x67\x20\x74\x68\x65\x20\x2d\x72\x61\x6e\x64\x20\x6f\x70\x74\x69\x6f\x6e\xa");
         }
         if (inrand != NULL)
-            BIO_printf(bio_err, "%ld semi-random bytes loaded\n",
+            BIO_printf(bio_err, "\x25\x6c\x64\x20\x73\x65\x6d\x69\x2d\x72\x61\x6e\x64\x6f\x6d\x20\x62\x79\x74\x65\x73\x20\x6c\x6f\x61\x64\x65\x64\xa",
                        app_RAND_load_files(inrand));
 
 # ifndef OPENSSL_NO_DSA
@@ -306,7 +306,7 @@ int MAIN(int argc, char **argv)
             DSA *dsa = DSA_new();
 
             BIO_printf(bio_err,
-                       "Generating DSA parameters, %d bit long prime\n", num);
+                       "\x47\x65\x6e\x65\x72\x61\x74\x69\x6e\x67\x20\x44\x53\x41\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x2c\x20\x25\x64\x20\x62\x69\x74\x20\x6c\x6f\x6e\x67\x20\x70\x72\x69\x6d\x65\xa", num);
             if (!dsa
                 || !DSA_generate_parameters_ex(dsa, num, NULL, 0, NULL, NULL,
                                                &cb)) {
@@ -327,9 +327,9 @@ int MAIN(int argc, char **argv)
         {
             dh = DH_new();
             BIO_printf(bio_err,
-                       "Generating DH parameters, %d bit long safe prime, generator %d\n",
+                       "\x47\x65\x6e\x65\x72\x61\x74\x69\x6e\x67\x20\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x2c\x20\x25\x64\x20\x62\x69\x74\x20\x6c\x6f\x6e\x67\x20\x73\x61\x66\x65\x20\x70\x72\x69\x6d\x65\x2c\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x25\x64\xa",
                        num, g);
-            BIO_printf(bio_err, "This is going to take a long time\n");
+            BIO_printf(bio_err, "\x54\x68\x69\x73\x20\x69\x73\x20\x67\x6f\x69\x6e\x67\x20\x74\x6f\x20\x74\x61\x6b\x65\x20\x61\x20\x6c\x6f\x6e\x67\x20\x74\x69\x6d\x65\xa");
             if (!dh || !DH_generate_parameters_ex(dh, num, g, &cb)) {
                 ERR_print_errors(bio_err);
                 goto end;
@@ -354,7 +354,7 @@ int MAIN(int argc, char **argv)
         }
 
         if (informat != FORMAT_ASN1 && informat != FORMAT_PEM) {
-            BIO_printf(bio_err, "bad input format specified\n");
+            BIO_printf(bio_err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
             goto end;
         }
 # ifndef OPENSSL_NO_DSA
@@ -367,7 +367,7 @@ int MAIN(int argc, char **argv)
                 dsa = PEM_read_bio_DSAparams(in, NULL, NULL, NULL);
 
             if (dsa == NULL) {
-                BIO_printf(bio_err, "unable to load DSA parameters\n");
+                BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x44\x53\x41\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
                 ERR_print_errors(bio_err);
                 goto end;
             }
@@ -387,7 +387,7 @@ int MAIN(int argc, char **argv)
                 dh = PEM_read_bio_DHparams(in, NULL, NULL, NULL);
 
             if (dh == NULL) {
-                BIO_printf(bio_err, "unable to load DH parameters\n");
+                BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
                 ERR_print_errors(bio_err);
                 goto end;
             }
@@ -426,15 +426,15 @@ int MAIN(int argc, char **argv)
             goto end;
         }
         if (i & DH_CHECK_P_NOT_PRIME)
-            printf("p value is not prime\n");
+            printf("\x70\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x70\x72\x69\x6d\x65\xa");
         if (i & DH_CHECK_P_NOT_SAFE_PRIME)
-            printf("p value is not a safe prime\n");
+            printf("\x70\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x20\x73\x61\x66\x65\x20\x70\x72\x69\x6d\x65\xa");
         if (i & DH_UNABLE_TO_CHECK_GENERATOR)
-            printf("unable to check the generator value\n");
+            printf("\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x63\x68\x65\x63\x6b\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x76\x61\x6c\x75\x65\xa");
         if (i & DH_NOT_SUITABLE_GENERATOR)
-            printf("the g value is not a generator\n");
+            printf("\x74\x68\x65\x20\x67\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\xa");
         if (i == 0)
-            printf("DH parameters appear to be ok.\n");
+            printf("\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x20\x61\x70\x70\x65\x61\x72\x20\x74\x6f\x20\x62\x65\x20\x6f\x6b\x2e\xa");
     }
     if (C) {
         unsigned char *data;
@@ -444,42 +444,42 @@ int MAIN(int argc, char **argv)
         bits = BN_num_bits(dh->p);
         data = (unsigned char *)OPENSSL_malloc(len);
         if (data == NULL) {
-            perror("OPENSSL_malloc");
+            perror("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x6d\x61\x6c\x6c\x6f\x63");
             goto end;
         }
-        printf("#ifndef HEADER_DH_H\n"
-               "#include <openssl/dh.h>\n" "#endif\n");
-        printf("DH *get_dh%d()\n\t{\n", bits);
+        printf("\x23\x69\x66\x6e\x64\x65\x66\x20\x48\x45\x41\x44\x45\x52\x5f\x44\x48\x5f\x48\xa"
+               "\x23\x69\x6e\x63\x6c\x75\x64\x65\x20\x3c\x6f\x70\x65\x6e\x73\x73\x6c\x2f\x64\x68\x2e\x68\x3e\xa" "\x23\x65\x6e\x64\x69\x66\xa");
+        printf("\x44\x48\x20\x2a\x67\x65\x74\x5f\x64\x68\x25\x64\x28\x29\xa\x9\x7b\xa", bits);
 
         l = BN_bn2bin(dh->p, data);
-        printf("\tstatic unsigned char dh%d_p[]={", bits);
+        printf("\x9\x73\x74\x61\x74\x69\x63\x20\x75\x6e\x73\x69\x67\x6e\x65\x64\x20\x63\x68\x61\x72\x20\x64\x68\x25\x64\x5f\x70\x5b\x5d\x3d\x7b", bits);
         for (i = 0; i < l; i++) {
             if ((i % 12) == 0)
-                printf("\n\t\t");
-            printf("0x%02X,", data[i]);
+                printf("\xa\x9\x9");
+            printf("\x30\x78\x25\x30\x32\x58\x2c", data[i]);
         }
-        printf("\n\t\t};\n");
+        printf("\xa\x9\x9\x7d\x3b\xa");
 
         l = BN_bn2bin(dh->g, data);
-        printf("\tstatic unsigned char dh%d_g[]={", bits);
+        printf("\x9\x73\x74\x61\x74\x69\x63\x20\x75\x6e\x73\x69\x67\x6e\x65\x64\x20\x63\x68\x61\x72\x20\x64\x68\x25\x64\x5f\x67\x5b\x5d\x3d\x7b", bits);
         for (i = 0; i < l; i++) {
             if ((i % 12) == 0)
-                printf("\n\t\t");
-            printf("0x%02X,", data[i]);
+                printf("\xa\x9\x9");
+            printf("\x30\x78\x25\x30\x32\x58\x2c", data[i]);
         }
-        printf("\n\t\t};\n");
+        printf("\xa\x9\x9\x7d\x3b\xa");
 
-        printf("\tDH *dh;\n\n");
-        printf("\tif ((dh=DH_new()) == NULL) return(NULL);\n");
-        printf("\tdh->p=BN_bin2bn(dh%d_p,sizeof(dh%d_p),NULL);\n",
+        printf("\x9D\x48\x20\x2a\x64\x68\x3b\xa\xa");
+        printf("\x9\x69\x66\x20\x28\x28\x64\x68\x3d\x44\x48\x5f\x6e\x65\x77\x28\x29\x29\x20\x3d\x3d\x20\x4e\x55\x4c\x4c\x29\x20\x72\x65\x74\x75\x72\x6e\x28\x4e\x55\x4c\x4c\x29\x3b\xa");
+        printf("\x9d\x68\x2d\x3e\x70\x3d\x42\x4e\x5f\x62\x69\x6e\x32\x62\x6e\x28\x64\x68\x25\x64\x5f\x70\x2c\x73\x69\x7a\x65\x6f\x66\x28\x64\x68\x25\x64\x5f\x70\x29\x2c\x4e\x55\x4c\x4c\x29\x3b\xa",
                bits, bits);
-        printf("\tdh->g=BN_bin2bn(dh%d_g,sizeof(dh%d_g),NULL);\n",
+        printf("\x9d\x68\x2d\x3e\x67\x3d\x42\x4e\x5f\x62\x69\x6e\x32\x62\x6e\x28\x64\x68\x25\x64\x5f\x67\x2c\x73\x69\x7a\x65\x6f\x66\x28\x64\x68\x25\x64\x5f\x67\x29\x2c\x4e\x55\x4c\x4c\x29\x3b\xa",
                bits, bits);
-        printf("\tif ((dh->p == NULL) || (dh->g == NULL))\n");
-        printf("\t\t{ DH_free(dh); return(NULL); }\n");
+        printf("\x9\x69\x66\x20\x28\x28\x64\x68\x2d\x3e\x70\x20\x3d\x3d\x20\x4e\x55\x4c\x4c\x29\x20\x7c\x7c\x20\x28\x64\x68\x2d\x3e\x67\x20\x3d\x3d\x20\x4e\x55\x4c\x4c\x29\x29\xa");
+        printf("\x9\x9\x7b\x20\x44\x48\x5f\x66\x72\x65\x65\x28\x64\x68\x29\x3b\x20\x72\x65\x74\x75\x72\x6e\x28\x4e\x55\x4c\x4c\x29\x3b\x20\x7d\xa");
         if (dh->length)
-            printf("\tdh->length = %ld;\n", dh->length);
-        printf("\treturn(dh);\n\t}\n");
+            printf("\x9d\x68\x2d\x3e\x6c\x65\x6e\x67\x74\x68\x20\x3d\x20\x25\x6c\x64\x3b\xa", dh->length);
+        printf("\x9\x72\x65\x74\x75\x72\x6e\x28\x64\x68\x29\x3b\xa\x9\x7d\xa");
         OPENSSL_free(data);
     }
 
@@ -492,11 +492,11 @@ int MAIN(int argc, char **argv)
             else
                 i = PEM_write_bio_DHparams(out, dh);
         } else {
-            BIO_printf(bio_err, "bad output format specified for outfile\n");
+            BIO_printf(bio_err, "\x62\x61\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6f\x75\x74\x66\x69\x6c\x65\xa");
             goto end;
         }
         if (!i) {
-            BIO_printf(bio_err, "unable to write DH parameters\n");
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x44\x48\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -517,16 +517,16 @@ int MAIN(int argc, char **argv)
 /* dh_cb is identical to dsa_cb in apps/dsaparam.c */
 static int MS_CALLBACK dh_cb(int p, int n, BN_GENCB *cb)
 {
-    char c = '*';
+    char c = '\x2a';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     BIO_write(cb->arg, &c, 1);
     (void)BIO_flush(cb->arg);
 # ifdef LINT

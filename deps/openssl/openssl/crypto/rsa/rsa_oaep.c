@@ -1,6 +1,6 @@
 /* crypto/rsa/rsa_oaep.c */
 /*
- * Written by Ulf Moeller. This software is distributed on an "AS IS" basis,
+ * Written by Ulf Moeller. This software is distributed on an "\x41\x53\x20\x49\x53" basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied.
  */
 

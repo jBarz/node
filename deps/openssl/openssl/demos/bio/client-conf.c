@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     CONF *conf = NULL;
     STACK_OF(CONF_VALUE) *sect = NULL;
     CONF_VALUE *cnf;
-    const char *connect_str = "localhost:4433";
+    const char *connect_str = "\x6c\x6f\x63\x61\x6c\x68\x6f\x73\x74\x3a\x34\x34\x33\x33";
     long errline = -1;
 
     ERR_load_crypto_strings();
@@ -22,18 +22,18 @@ int main(int argc, char **argv)
 
     conf = NCONF_new(NULL);
 
-    if (NCONF_load(conf, "connect.cnf", &errline) <= 0) {
+    if (NCONF_load(conf, "\x63\x6f\x6e\x6e\x65\x63\x74\x2e\x63\x6e\x66", &errline) <= 0) {
         if (errline <= 0)
-            fprintf(stderr, "Error processing config file\n");
+            fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\xa");
         else
-            fprintf(stderr, "Error on line %ld\n", errline);
+            fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x6f\x6e\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\xa", errline);
         goto end;
     }
 
-    sect = NCONF_get_section(conf, "default");
+    sect = NCONF_get_section(conf, "\x64\x65\x66\x61\x75\x6c\x74");
 
     if (sect == NULL) {
-        fprintf(stderr, "Error retrieving default section\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x72\x65\x74\x72\x69\x65\x76\x69\x6e\x67\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x65\x63\x74\x69\x6f\x6e\xa");
         goto end;
     }
 
@@ -48,21 +48,21 @@ int main(int argc, char **argv)
         if (rv > 0)
             continue;
         if (rv != -2) {
-            fprintf(stderr, "Error processing %s = %s\n",
+            fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\x20\x25\x73\x20\x3d\x20\x25\x73\xa",
                     cnf->name, cnf->value);
             ERR_print_errors_fp(stderr);
             goto end;
         }
-        if (!strcmp(cnf->name, "Connect")) {
+        if (!strcmp(cnf->name, "\x43\x6f\x6e\x6e\x65\x63\x74")) {
             connect_str = cnf->value;
         } else {
-            fprintf(stderr, "Unknown configuration option %s\n", cnf->name);
+            fprintf(stderr, "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x6f\x6e\x66\x69\x67\x75\x72\x61\x74\x69\x6f\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", cnf->name);
             goto end;
         }
     }
 
     if (!SSL_CONF_CTX_finish(cctx)) {
-        fprintf(stderr, "Finish error\n");
+        fprintf(stderr, "\x46\x69\x6e\x69\x73\x68\x20\x65\x72\x72\x6f\x72\xa");
         ERR_print_errors_fp(stderr);
         goto err;
     }
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     BIO_get_ssl(sbio, &ssl);
 
     if (!ssl) {
-        fprintf(stderr, "Can't locate SSL pointer\n");
+        fprintf(stderr, "\x43\x61\x6e\x27\x74\x20\x6c\x6f\x63\x61\x74\x65\x20\x53\x53\x4c\x20\x70\x6f\x69\x6e\x74\x65\x72\xa");
         goto end;
     }
 
@@ -91,20 +91,20 @@ int main(int argc, char **argv)
 
     out = BIO_new_fp(stdout, BIO_NOCLOSE);
     if (BIO_do_connect(sbio) <= 0) {
-        fprintf(stderr, "Error connecting to server\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6e\x67\x20\x74\x6f\x20\x73\x65\x72\x76\x65\x72\xa");
         ERR_print_errors_fp(stderr);
         goto end;
     }
 
     if (BIO_do_handshake(sbio) <= 0) {
-        fprintf(stderr, "Error establishing SSL connection\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x65\x73\x74\x61\x62\x6c\x69\x73\x68\x69\x6e\x67\x20\x53\x53\x4c\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\xa");
         ERR_print_errors_fp(stderr);
         goto end;
     }
 
     /* Could examine ssl here to get connection info */
 
-    BIO_puts(sbio, "GET / HTTP/1.0\n\n");
+    BIO_puts(sbio, "\x47\x45\x54\x20\x2f\x20\x48\x54\x54\x50\x2f\x31\x2e\x30\xa\xa");
     for (;;) {
         len = BIO_read(sbio, tmpbuf, 1024);
         if (len <= 0)

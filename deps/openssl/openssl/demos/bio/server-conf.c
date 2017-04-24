@@ -15,7 +15,7 @@
 
 int main(int argc, char *argv[])
 {
-    char *port = "*:4433";
+    char *port = "\x2a\x3a\x34\x34\x33\x33";
     BIO *in = NULL;
     BIO *ssl_bio, *tmp;
     SSL_CTX *ctx;
@@ -34,18 +34,18 @@ int main(int argc, char *argv[])
 
     conf = NCONF_new(NULL);
 
-    if (NCONF_load(conf, "accept.cnf", &errline) <= 0) {
+    if (NCONF_load(conf, "\x61\x63\x63\x65\x70\x74\x2e\x63\x6e\x66", &errline) <= 0) {
         if (errline <= 0)
-            fprintf(stderr, "Error processing config file\n");
+            fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\xa");
         else
-            fprintf(stderr, "Error on line %ld\n", errline);
+            fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x6f\x6e\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\xa", errline);
         goto err;
     }
 
-    sect = NCONF_get_section(conf, "default");
+    sect = NCONF_get_section(conf, "\x64\x65\x66\x61\x75\x6c\x74");
 
     if (sect == NULL) {
-        fprintf(stderr, "Error retrieving default section\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x72\x65\x74\x72\x69\x65\x76\x69\x6e\x67\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x65\x63\x74\x69\x6f\x6e\xa");
         goto err;
     }
 
@@ -62,21 +62,21 @@ int main(int argc, char *argv[])
         if (rv > 0)
             continue;
         if (rv != -2) {
-            fprintf(stderr, "Error processing %s = %s\n",
+            fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\x20\x25\x73\x20\x3d\x20\x25\x73\xa",
                     cnf->name, cnf->value);
             ERR_print_errors_fp(stderr);
             goto err;
         }
-        if (!strcmp(cnf->name, "Port")) {
+        if (!strcmp(cnf->name, "\x50\x6f\x72\x74")) {
             port = cnf->value;
         } else {
-            fprintf(stderr, "Unknown configuration option %s\n", cnf->name);
+            fprintf(stderr, "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x6f\x6e\x66\x69\x67\x75\x72\x61\x74\x69\x6f\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", cnf->name);
             goto err;
         }
     }
 
     if (!SSL_CONF_CTX_finish(cctx)) {
-        fprintf(stderr, "Finish error\n");
+        fprintf(stderr, "\x46\x69\x6e\x69\x73\x68\x20\x65\x72\x72\x6f\x72\xa");
         ERR_print_errors_fp(stderr);
         goto err;
     }
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
              * next time we call any function for this BIO, it will attempt
              * to do an accept
              */
-            printf("Done\n");
+            printf("\x44\x6f\x6e\x65\xa");
             tmp = BIO_pop(in);
             BIO_free_all(tmp);
             goto again;

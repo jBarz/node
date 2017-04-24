@@ -24,13 +24,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -74,7 +74,7 @@
 # elif (BN_BYTES == 4)
 #  define bn_pack4(a1,a2,a3,a4)  ((a3##UL<<16)|a4##UL), ((a1##UL<<16)|a2##UL)
 # else
-#  error "unsupported BN_BYTES"
+#  error "\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x42\x4e\x5f\x42\x59\x54\x45\x53"
 # endif
 
 # include "srp_grps.h"
@@ -226,7 +226,7 @@ BIGNUM *SRP_Calc_x(BIGNUM *s, const char *user, const char *pass)
     EVP_MD_CTX_init(&ctxt);
     EVP_DigestInit_ex(&ctxt, EVP_sha1(), NULL);
     EVP_DigestUpdate(&ctxt, user, strlen(user));
-    EVP_DigestUpdate(&ctxt, ":", 1);
+    EVP_DigestUpdate(&ctxt, "\x3a", 1);
     EVP_DigestUpdate(&ctxt, pass, strlen(pass));
     EVP_DigestFinal_ex(&ctxt, dig, NULL);
 

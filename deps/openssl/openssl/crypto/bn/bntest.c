@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -58,7 +58,7 @@
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
  *
- * Portions of the attached software ("Contribution") are developed by
+ * Portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") are developed by
  * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
  *
  * The Contribution is licensed pursuant to the Eric Young open source
@@ -130,14 +130,14 @@ static unsigned char lst[] =
     "\x9B\x04\x5D\x48\x36\xC2\xFD\x16\xC9\x64\xF0";
 
 static const char rnd_seed[] =
-    "string to make the random number generator think it has entropy";
+    "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 
 static void message(BIO *out, char *m)
 {
-    fprintf(stderr, "test %s\n", m);
-    BIO_puts(out, "print \"test ");
+    fprintf(stderr, "\x74\x65\x73\x74\x20\x25\x73\xa", m);
+    BIO_puts(out, "\x70\x72\x69\x6e\x74\x20\x22\x74\x65\x73\x74\x20");
     BIO_puts(out, m);
-    BIO_puts(out, "\\n\"\n");
+    BIO_puts(out, "\x5c\x6e\x22\xa");
 }
 
 int main(int argc, char *argv[])
@@ -153,9 +153,9 @@ int main(int argc, char *argv[])
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-results") == 0)
+        if (strcmp(*argv, "\x2d\x72\x65\x73\x75\x6c\x74\x73") == 0)
             results = 1;
-        else if (strcmp(*argv, "-out") == 0) {
+        else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 break;
             outfile = *(++argv);
@@ -181,151 +181,151 @@ int main(int argc, char *argv[])
     }
 
     if (!results)
-        BIO_puts(out, "obase=16\nibase=16\n");
+        BIO_puts(out, "\x6f\x62\x61\x73\x65\x3d\x31\x36\xa\x69\x62\x61\x73\x65\x3d\x31\x36\xa");
 
-    message(out, "BN_add");
+    message(out, "\x42\x4e\x5f\x61\x64\x64");
     if (!test_add(out))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_sub");
+    message(out, "\x42\x4e\x5f\x73\x75\x62");
     if (!test_sub(out))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_lshift1");
+    message(out, "\x42\x4e\x5f\x6c\x73\x68\x69\x66\x74\x31");
     if (!test_lshift1(out))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_lshift (fixed)");
+    message(out, "\x42\x4e\x5f\x6c\x73\x68\x69\x66\x74\x20\x28\x66\x69\x78\x65\x64\x29");
     if (!test_lshift(out, ctx, BN_bin2bn(lst, sizeof(lst) - 1, NULL)))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_lshift");
+    message(out, "\x42\x4e\x5f\x6c\x73\x68\x69\x66\x74");
     if (!test_lshift(out, ctx, NULL))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_rshift1");
+    message(out, "\x42\x4e\x5f\x72\x73\x68\x69\x66\x74\x31");
     if (!test_rshift1(out))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_rshift");
+    message(out, "\x42\x4e\x5f\x72\x73\x68\x69\x66\x74");
     if (!test_rshift(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_sqr");
+    message(out, "\x42\x4e\x5f\x73\x71\x72");
     if (!test_sqr(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_mul");
+    message(out, "\x42\x4e\x5f\x6d\x75\x6c");
     if (!test_mul(out))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_div");
+    message(out, "\x42\x4e\x5f\x64\x69\x76");
     if (!test_div(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_div_word");
+    message(out, "\x42\x4e\x5f\x64\x69\x76\x5f\x77\x6f\x72\x64");
     if (!test_div_word(out))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_div_recp");
+    message(out, "\x42\x4e\x5f\x64\x69\x76\x5f\x72\x65\x63\x70");
     if (!test_div_recp(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_mod");
+    message(out, "\x42\x4e\x5f\x6d\x6f\x64");
     if (!test_mod(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_mod_mul");
+    message(out, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x6d\x75\x6c");
     if (!test_mod_mul(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_mont");
+    message(out, "\x42\x4e\x5f\x6d\x6f\x6e\x74");
     if (!test_mont(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_mod_exp");
+    message(out, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70");
     if (!test_mod_exp(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_mod_exp_mont_consttime");
+    message(out, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x6d\x6f\x6e\x74\x5f\x63\x6f\x6e\x73\x74\x74\x69\x6d\x65");
     if (!test_mod_exp_mont_consttime(out, ctx))
         goto err;
     if (!test_mod_exp_mont5(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_exp");
+    message(out, "\x42\x4e\x5f\x65\x78\x70");
     if (!test_exp(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_kronecker");
+    message(out, "\x42\x4e\x5f\x6b\x72\x6f\x6e\x65\x63\x6b\x65\x72");
     if (!test_kron(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_mod_sqrt");
+    message(out, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x73\x71\x72\x74");
     if (!test_sqrt(out, ctx))
         goto err;
     (void)BIO_flush(out);
 #ifndef OPENSSL_NO_EC2M
-    message(out, "BN_GF2m_add");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x61\x64\x64");
     if (!test_gf2m_add(out))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_GF2m_mod");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x6d\x6f\x64");
     if (!test_gf2m_mod(out))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_GF2m_mod_mul");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x6d\x6f\x64\x5f\x6d\x75\x6c");
     if (!test_gf2m_mod_mul(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_GF2m_mod_sqr");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x6d\x6f\x64\x5f\x73\x71\x72");
     if (!test_gf2m_mod_sqr(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_GF2m_mod_inv");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x6d\x6f\x64\x5f\x69\x6e\x76");
     if (!test_gf2m_mod_inv(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_GF2m_mod_div");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x6d\x6f\x64\x5f\x64\x69\x76");
     if (!test_gf2m_mod_div(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_GF2m_mod_exp");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x6d\x6f\x64\x5f\x65\x78\x70");
     if (!test_gf2m_mod_exp(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_GF2m_mod_sqrt");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x6d\x6f\x64\x5f\x73\x71\x72\x74");
     if (!test_gf2m_mod_sqrt(out, ctx))
         goto err;
     (void)BIO_flush(out);
 
-    message(out, "BN_GF2m_mod_solve_quad");
+    message(out, "\x42\x4e\x5f\x47\x46\x32\x6d\x5f\x6d\x6f\x64\x5f\x73\x6f\x6c\x76\x65\x5f\x71\x75\x61\x64");
     if (!test_gf2m_mod_solve_quad(out, ctx))
         goto err;
     (void)BIO_flush(out);
@@ -335,7 +335,7 @@ int main(int argc, char *argv[])
 
     EXIT(0);
  err:
-    BIO_puts(out, "1\n");       /* make sure the Perl script fed by bc
+    BIO_puts(out, "\x31\xa");       /* make sure the Perl script fed by bc
                                  * notices the failure, see test_bn in
                                  * test/Makefile.ssl */
     (void)BIO_flush(out);
@@ -363,19 +363,19 @@ int test_add(BIO *bp)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " + ");
+                BIO_puts(bp, "\x20\x2b\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &c);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         a.neg = !a.neg;
         b.neg = !b.neg;
         BN_add(&c, &c, &b);
         BN_add(&c, &c, &a);
         if (!BN_is_zero(&c)) {
-            fprintf(stderr, "Add test failed!\n");
+            fprintf(stderr, "\x41\x64\x64\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -410,17 +410,17 @@ int test_sub(BIO *bp)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &c);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_add(&c, &c, &b);
         BN_sub(&c, &c, &a);
         if (!BN_is_zero(&c)) {
-            fprintf(stderr, "Subtract test failed!\n");
+            fprintf(stderr, "\x53\x75\x62\x74\x72\x61\x63\x74\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -445,7 +445,7 @@ int test_div(BIO *bp, BN_CTX *ctx)
     BN_zero(&b);
 
     if (BN_div(&d, &c, &a, &b, ctx)) {
-        fprintf(stderr, "Division by zero succeeded!\n");
+        fprintf(stderr, "\x44\x69\x76\x69\x73\x69\x6f\x6e\x20\x62\x79\x20\x7a\x65\x72\x6f\x20\x73\x75\x63\x63\x65\x65\x64\x65\x64\x21\xa");
         return 0;
     }
 
@@ -463,27 +463,27 @@ int test_div(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " / ");
+                BIO_puts(bp, "\x20\x2f\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &d);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
 
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " % ");
+                BIO_puts(bp, "\x20\x25\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &c);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_mul(&e, &d, &b, ctx);
         BN_add(&d, &e, &c);
         BN_sub(&d, &d, &a);
         if (!BN_is_zero(&d)) {
-            fprintf(stderr, "Division test failed!\n");
+            fprintf(stderr, "\x44\x69\x76\x69\x73\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -502,9 +502,9 @@ static void print_word(BIO *bp, BN_ULONG w)
         unsigned long h = (unsigned long)(w >> 32), l = (unsigned long)(w);
 
         if (h)
-            BIO_printf(bp, "%lX%08lX", h, l);
+            BIO_printf(bp, "\x25\x6c\x58\x25\x30\x38\x6c\x58", h, l);
         else
-            BIO_printf(bp, "%lX", l);
+            BIO_printf(bp, "\x25\x6c\x58", l);
         return;
     }
 #endif
@@ -532,34 +532,34 @@ int test_div_word(BIO *bp)
         r = BN_div_word(&b, s);
 
         if (rmod != r) {
-            fprintf(stderr, "Mod (word) test failed!\n");
+            fprintf(stderr, "\x4d\x6f\x64\x20\x28\x77\x6f\x72\x64\x29\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
 
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " / ");
+                BIO_puts(bp, "\x20\x2f\x20");
                 print_word(bp, s);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &b);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
 
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " % ");
+                BIO_puts(bp, "\x20\x25\x20");
                 print_word(bp, s);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             print_word(bp, r);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_mul_word(&b, s);
         BN_add_word(&b, r);
         BN_sub(&b, &a, &b);
         if (!BN_is_zero(&b)) {
-            fprintf(stderr, "Division (word) test failed!\n");
+            fprintf(stderr, "\x44\x69\x76\x69\x73\x69\x6f\x6e\x20\x28\x77\x6f\x72\x64\x29\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -596,32 +596,32 @@ int test_div_recp(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " / ");
+                BIO_puts(bp, "\x20\x2f\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &d);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
 
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " % ");
+                BIO_puts(bp, "\x20\x25\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &c);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_mul(&e, &d, &b, ctx);
         BN_add(&d, &e, &c);
         BN_sub(&d, &d, &a);
         if (!BN_is_zero(&d)) {
-            fprintf(stderr, "Reciprocal division test failed!\n");
-            fprintf(stderr, "a=");
+            fprintf(stderr, "\x52\x65\x63\x69\x70\x72\x6f\x63\x61\x6c\x20\x64\x69\x76\x69\x73\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
+            fprintf(stderr, "\x61\x3d");
             BN_print_fp(stderr, &a);
-            fprintf(stderr, "\nb=");
+            fprintf(stderr, "\xab\x3d");
             BN_print_fp(stderr, &b);
-            fprintf(stderr, "\n");
+            fprintf(stderr, "\xa");
             return 0;
         }
     }
@@ -662,17 +662,17 @@ int test_mul(BIO *bp)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " * ");
+                BIO_puts(bp, "\x20\x2a\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &c);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_div(&d, &e, &c, &a, ctx);
         BN_sub(&d, &d, &b);
         if (!BN_is_zero(&d) || !BN_is_zero(&e)) {
-            fprintf(stderr, "Multiplication test failed!\n");
+            fprintf(stderr, "\x4d\x75\x6c\x74\x69\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -705,62 +705,62 @@ int test_sqr(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " * ");
+                BIO_puts(bp, "\x20\x2a\x20");
                 BN_print(bp, a);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, c);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_div(d, e, c, a, ctx);
         BN_sub(d, d, a);
         if (!BN_is_zero(d) || !BN_is_zero(e)) {
-            fprintf(stderr, "Square test failed!\n");
+            fprintf(stderr, "\x53\x71\x75\x61\x72\x65\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             goto err;
         }
     }
 
     /* Regression test for a BN_sqr overflow bug. */
     BN_hex2bn(&a,
-              "80000000000000008000000000000001"
-              "FFFFFFFFFFFFFFFE0000000000000000");
+              "\x38\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x38\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x31"
+              "\x46\x46\x46\x46\x46\x46\x46\x46\x46\x46\x46\x46\x46\x46\x46\x45\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30");
     BN_sqr(c, a, ctx);
     if (bp != NULL) {
         if (!results) {
             BN_print(bp, a);
-            BIO_puts(bp, " * ");
+            BIO_puts(bp, "\x20\x2a\x20");
             BN_print(bp, a);
-            BIO_puts(bp, " - ");
+            BIO_puts(bp, "\x20\x2d\x20");
         }
         BN_print(bp, c);
-        BIO_puts(bp, "\n");
+        BIO_puts(bp, "\xa");
     }
     BN_mul(d, a, a, ctx);
     if (BN_cmp(c, d)) {
-        fprintf(stderr, "Square test failed: BN_sqr and BN_mul produce "
-                "different results!\n");
+        fprintf(stderr, "\x53\x71\x75\x61\x72\x65\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x42\x4e\x5f\x73\x71\x72\x20\x61\x6e\x64\x20\x42\x4e\x5f\x6d\x75\x6c\x20\x70\x72\x6f\x64\x75\x63\x65\x20"
+                "\x64\x69\x66\x66\x65\x72\x65\x6e\x74\x20\x72\x65\x73\x75\x6c\x74\x73\x21\xa");
         goto err;
     }
 
     /* Regression test for a BN_sqr overflow bug. */
     BN_hex2bn(&a,
-              "80000000000000000000000080000001"
-              "FFFFFFFE000000000000000000000000");
+              "\x38\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x38\x30\x30\x30\x30\x30\x30\x31"
+              "\x46\x46\x46\x46\x46\x46\x46\x45\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30");
     BN_sqr(c, a, ctx);
     if (bp != NULL) {
         if (!results) {
             BN_print(bp, a);
-            BIO_puts(bp, " * ");
+            BIO_puts(bp, "\x20\x2a\x20");
             BN_print(bp, a);
-            BIO_puts(bp, " - ");
+            BIO_puts(bp, "\x20\x2d\x20");
         }
         BN_print(bp, c);
-        BIO_puts(bp, "\n");
+        BIO_puts(bp, "\xa");
     }
     BN_mul(d, a, a, ctx);
     if (BN_cmp(c, d)) {
-        fprintf(stderr, "Square test failed: BN_sqr and BN_mul produce "
-                "different results!\n");
+        fprintf(stderr, "\x53\x71\x75\x61\x72\x65\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x42\x4e\x5f\x73\x71\x72\x20\x61\x6e\x64\x20\x42\x4e\x5f\x6d\x75\x6c\x20\x70\x72\x6f\x64\x75\x63\x65\x20"
+                "\x64\x69\x66\x66\x65\x72\x65\x6e\x74\x20\x72\x65\x73\x75\x6c\x74\x73\x21\xa");
         goto err;
     }
     ret = 1;
@@ -797,13 +797,13 @@ int test_mont(BIO *bp, BN_CTX *ctx)
 
     BN_zero(&n);
     if (BN_MONT_CTX_set(mont, &n, ctx)) {
-        fprintf(stderr, "BN_MONT_CTX_set succeeded for zero modulus!\n");
+        fprintf(stderr, "\x42\x4e\x5f\x4d\x4f\x4e\x54\x5f\x43\x54\x58\x5f\x73\x65\x74\x20\x73\x75\x63\x63\x65\x65\x64\x65\x64\x20\x66\x6f\x72\x20\x7a\x65\x72\x6f\x20\x6d\x6f\x64\x75\x6c\x75\x73\x21\xa");
         return 0;
     }
 
     BN_set_word(&n, 16);
     if (BN_MONT_CTX_set(mont, &n, ctx)) {
-        fprintf(stderr, "BN_MONT_CTX_set succeeded for even modulus!\n");
+        fprintf(stderr, "\x42\x4e\x5f\x4d\x4f\x4e\x54\x5f\x43\x54\x58\x5f\x73\x65\x74\x20\x73\x75\x63\x63\x65\x65\x64\x65\x64\x20\x66\x6f\x72\x20\x65\x76\x65\x6e\x20\x6d\x6f\x64\x75\x6c\x75\x73\x21\xa");
         return 0;
     }
 
@@ -828,24 +828,24 @@ int test_mont(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
 #ifdef undef
-                fprintf(stderr, "%d * %d %% %d\n",
+                fprintf(stderr, "\x25\x64\x20\x2a\x20\x25\x64\x20\x25\x25\x20\x25\x64\xa",
                         BN_num_bits(&a),
                         BN_num_bits(&b), BN_num_bits(mont->N));
 #endif
                 BN_print(bp, &a);
-                BIO_puts(bp, " * ");
+                BIO_puts(bp, "\x20\x2a\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " % ");
+                BIO_puts(bp, "\x20\x25\x20");
                 BN_print(bp, &(mont->N));
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, &A);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_mod_mul(&d, &a, &b, &n, ctx);
         BN_sub(&d, &d, &A);
         if (!BN_is_zero(&d)) {
-            fprintf(stderr, "Montgomery multiplication test failed!\n");
+            fprintf(stderr, "\x4d\x6f\x6e\x74\x67\x6f\x6d\x65\x72\x79\x20\x6d\x75\x6c\x74\x69\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -880,17 +880,17 @@ int test_mod(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " % ");
+                BIO_puts(bp, "\x20\x25\x20");
                 BN_print(bp, b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, c);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_div(d, e, a, b, ctx);
         BN_sub(e, e, c);
         if (!BN_is_zero(e)) {
-            fprintf(stderr, "Modulo test failed!\n");
+            fprintf(stderr, "\x4d\x6f\x64\x75\x6c\x6f\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -917,7 +917,7 @@ int test_mod_mul(BIO *bp, BN_CTX *ctx)
     BN_one(b);
     BN_zero(c);
     if (BN_mod_mul(e, a, b, c, ctx)) {
-        fprintf(stderr, "BN_mod_mul with zero modulus succeeded!\n");
+        fprintf(stderr, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x6d\x75\x6c\x20\x77\x69\x74\x68\x20\x7a\x65\x72\x6f\x20\x6d\x6f\x64\x75\x6c\x75\x73\x20\x73\x75\x63\x63\x65\x65\x64\x65\x64\x21\xa");
         return 0;
     }
 
@@ -932,15 +932,15 @@ int test_mod_mul(BIO *bp, BN_CTX *ctx)
                 unsigned long l;
 
                 while ((l = ERR_get_error()))
-                    fprintf(stderr, "ERROR:%s\n", ERR_error_string(l, NULL));
+                    fprintf(stderr, "\x45\x52\x52\x4f\x52\x3a\x25\x73\xa", ERR_error_string(l, NULL));
                 EXIT(1);
             }
             if (bp != NULL) {
                 if (!results) {
                     BN_print(bp, a);
-                    BIO_puts(bp, " * ");
+                    BIO_puts(bp, "\x20\x2a\x20");
                     BN_print(bp, b);
-                    BIO_puts(bp, " % ");
+                    BIO_puts(bp, "\x20\x25\x20");
                     BN_print(bp, c);
                     if ((a->neg ^ b->neg) && !BN_is_zero(e)) {
                         /*
@@ -949,19 +949,19 @@ int test_mod_mul(BIO *bp, BN_CTX *ctx)
                          * OpenSSL 0.9.7, previous versions of BN_mod_mul
                          * could generate negative results)
                          */
-                        BIO_puts(bp, " + ");
+                        BIO_puts(bp, "\x20\x2b\x20");
                         BN_print(bp, c);
                     }
-                    BIO_puts(bp, " - ");
+                    BIO_puts(bp, "\x20\x2d\x20");
                 }
                 BN_print(bp, e);
-                BIO_puts(bp, "\n");
+                BIO_puts(bp, "\xa");
             }
             BN_mul(d, a, b, ctx);
             BN_sub(d, d, e);
             BN_div(a, b, d, c, ctx);
             if (!BN_is_zero(b)) {
-                fprintf(stderr, "Modulo multiply test failed!\n");
+                fprintf(stderr, "\x4d\x6f\x64\x75\x6c\x6f\x20\x6d\x75\x6c\x74\x69\x70\x6c\x79\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                 ERR_print_errors_fp(stderr);
                 return 0;
             }
@@ -990,7 +990,7 @@ int test_mod_exp(BIO *bp, BN_CTX *ctx)
     BN_one(b);
     BN_zero(c);
     if (BN_mod_exp(d, a, b, c, ctx)) {
-        fprintf(stderr, "BN_mod_exp with zero modulus succeeded!\n");
+        fprintf(stderr, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x20\x77\x69\x74\x68\x20\x7a\x65\x72\x6f\x20\x6d\x6f\x64\x75\x6c\x75\x73\x20\x73\x75\x63\x63\x65\x65\x64\x65\x64\x21\xa");
         return 0;
     }
 
@@ -1005,38 +1005,38 @@ int test_mod_exp(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " ^ ");
+                BIO_puts(bp, "\x20\x5e\x20");
                 BN_print(bp, b);
-                BIO_puts(bp, " % ");
+                BIO_puts(bp, "\x20\x25\x20");
                 BN_print(bp, c);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, d);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_exp(e, a, b, ctx);
         BN_sub(e, e, d);
         BN_div(a, b, e, c, ctx);
         if (!BN_is_zero(b)) {
-            fprintf(stderr, "Modulo exponentiation test failed!\n");
+            fprintf(stderr, "\x4d\x6f\x64\x75\x6c\x6f\x20\x65\x78\x70\x6f\x6e\x65\x6e\x74\x69\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
 
     /* Regression test for carry propagation bug in sqr8x_reduction */
-    BN_hex2bn(&a, "050505050505");
-    BN_hex2bn(&b, "02");
+    BN_hex2bn(&a, "\x30\x35\x30\x35\x30\x35\x30\x35\x30\x35\x30\x35");
+    BN_hex2bn(&b, "\x30\x32");
     BN_hex2bn(&c,
-        "4141414141414141414141274141414141414141414141414141414141414141"
-        "4141414141414141414141414141414141414141414141414141414141414141"
-        "4141414141414141414141800000000000000000000000000000000000000000"
-        "0000000000000000000000000000000000000000000000000000000000000000"
-        "0000000000000000000000000000000000000000000000000000000000000000"
-        "0000000000000000000000000000000000000000000000000000000001");
+        "\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x32\x37\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31"
+        "\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31"
+        "\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x34\x31\x38\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30"
+        "\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30"
+        "\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30"
+        "\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x31");
     BN_mod_exp(d, a, b, c, ctx);
     BN_mul(e, a, a, ctx);
     if (BN_cmp(d, e)) {
-        fprintf(stderr, "BN_mod_exp and BN_mul produce different results!\n");
+        fprintf(stderr, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x20\x61\x6e\x64\x20\x42\x4e\x5f\x6d\x75\x6c\x20\x70\x72\x6f\x64\x75\x63\x65\x20\x64\x69\x66\x66\x65\x72\x65\x6e\x74\x20\x72\x65\x73\x75\x6c\x74\x73\x21\xa");
         return 0;
     }
 
@@ -1063,15 +1063,15 @@ int test_mod_exp_mont_consttime(BIO *bp, BN_CTX *ctx)
     BN_one(b);
     BN_zero(c);
     if (BN_mod_exp_mont_consttime(d, a, b, c, ctx, NULL)) {
-        fprintf(stderr, "BN_mod_exp_mont_consttime with zero modulus "
-                "succeeded\n");
+        fprintf(stderr, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x6d\x6f\x6e\x74\x5f\x63\x6f\x6e\x73\x74\x74\x69\x6d\x65\x20\x77\x69\x74\x68\x20\x7a\x65\x72\x6f\x20\x6d\x6f\x64\x75\x6c\x75\x73\x20"
+                "\x73\x75\x63\x63\x65\x65\x64\x65\x64\xa");
         return 0;
     }
 
     BN_set_word(c, 16);
     if (BN_mod_exp_mont_consttime(d, a, b, c, ctx, NULL)) {
-        fprintf(stderr, "BN_mod_exp_mont_consttime with even modulus "
-                "succeeded\n");
+        fprintf(stderr, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x6d\x6f\x6e\x74\x5f\x63\x6f\x6e\x73\x74\x74\x69\x6d\x65\x20\x77\x69\x74\x68\x20\x65\x76\x65\x6e\x20\x6d\x6f\x64\x75\x6c\x75\x73\x20"
+                "\x73\x75\x63\x63\x65\x65\x64\x65\x64\xa");
         return 0;
     }
 
@@ -1086,20 +1086,20 @@ int test_mod_exp_mont_consttime(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " ^ ");
+                BIO_puts(bp, "\x20\x5e\x20");
                 BN_print(bp, b);
-                BIO_puts(bp, " % ");
+                BIO_puts(bp, "\x20\x25\x20");
                 BN_print(bp, c);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, d);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_exp(e, a, b, ctx);
         BN_sub(e, e, d);
         BN_div(a, b, e, c, ctx);
         if (!BN_is_zero(b)) {
-            fprintf(stderr, "Modulo exponentiation test failed!\n");
+            fprintf(stderr, "\x4d\x6f\x64\x75\x6c\x6f\x20\x65\x78\x70\x6f\x6e\x65\x6e\x74\x69\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -1134,7 +1134,7 @@ int test_mod_exp_mont5(BIO *bp, BN_CTX *ctx)
     if (!BN_mod_exp_mont_consttime(d, a, p, m, ctx, NULL))
         return 0;
     if (!BN_is_one(d)) {
-        fprintf(stderr, "Modular exponentiation test failed!\n");
+        fprintf(stderr, "\x4d\x6f\x64\x75\x6c\x61\x72\x20\x65\x78\x70\x6f\x6e\x65\x6e\x74\x69\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
         return 0;
     }
     /* Zero input */
@@ -1143,7 +1143,7 @@ int test_mod_exp_mont5(BIO *bp, BN_CTX *ctx)
     if (!BN_mod_exp_mont_consttime(d, a, p, m, ctx, NULL))
         return 0;
     if (!BN_is_zero(d)) {
-        fprintf(stderr, "Modular exponentiation test failed!\n");
+        fprintf(stderr, "\x4d\x6f\x64\x75\x6c\x61\x72\x20\x65\x78\x70\x6f\x6e\x65\x6e\x74\x69\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
         return 0;
     }
     /*
@@ -1160,7 +1160,7 @@ int test_mod_exp_mont5(BIO *bp, BN_CTX *ctx)
     if (!BN_mod_exp_simple(a, e, p, m, ctx))
         return 0;
     if (BN_cmp(a, d) != 0) {
-        fprintf(stderr, "Modular exponentiation test failed!\n");
+        fprintf(stderr, "\x4d\x6f\x64\x75\x6c\x61\x72\x20\x65\x78\x70\x6f\x6e\x65\x6e\x74\x69\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
         return 0;
     }
     /* Finally, some regular test vectors. */
@@ -1170,7 +1170,7 @@ int test_mod_exp_mont5(BIO *bp, BN_CTX *ctx)
     if (!BN_mod_exp_simple(a, e, p, m, ctx))
         return 0;
     if (BN_cmp(a, d) != 0) {
-        fprintf(stderr, "Modular exponentiation test failed!\n");
+        fprintf(stderr, "\x4d\x6f\x64\x75\x6c\x61\x72\x20\x65\x78\x70\x6f\x6e\x65\x6e\x74\x69\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
         return 0;
     }
     BN_MONT_CTX_free(mont);
@@ -1204,19 +1204,19 @@ int test_exp(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " ^ ");
+                BIO_puts(bp, "\x20\x5e\x20");
                 BN_print(bp, b);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, d);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_one(e);
         for (; !BN_is_zero(b); BN_sub(b, b, one))
             BN_mul(e, e, a, ctx);
         BN_sub(e, e, d);
         if (!BN_is_zero(e)) {
-            fprintf(stderr, "Exponentiation test failed!\n");
+            fprintf(stderr, "\x45\x78\x70\x6f\x6e\x65\x6e\x74\x69\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -1249,24 +1249,24 @@ int test_gf2m_add(BIO *bp)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, &a);
-                BIO_puts(bp, " ^ ");
+                BIO_puts(bp, "\x20\x5e\x20");
                 BN_print(bp, &b);
-                BIO_puts(bp, " = ");
+                BIO_puts(bp, "\x20\x3d\x20");
             }
             BN_print(bp, &c);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
 # endif
         /* Test that two added values have the correct parity. */
         if ((BN_is_odd(&a) && BN_is_odd(&c))
             || (!BN_is_odd(&a) && !BN_is_odd(&c))) {
-            fprintf(stderr, "GF(2^m) addition test (a) failed!\n");
+            fprintf(stderr, "\x47\x46\x28\x32\x5e\x6d\x29\x20\x61\x64\x64\x69\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x28\x61\x29\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             goto err;
         }
         BN_GF2m_add(&c, &c, &c);
         /* Test that c + c = 0. */
         if (!BN_is_zero(&c)) {
-            fprintf(stderr, "GF(2^m) addition test (b) failed!\n");
+            fprintf(stderr, "\x47\x46\x28\x32\x5e\x6d\x29\x20\x61\x64\x64\x69\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x28\x62\x29\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             goto err;
         }
     }
@@ -1304,11 +1304,11 @@ int test_gf2m_mod(BIO *bp)
             if (bp != NULL) {
                 if (!results) {
                     BN_print(bp, a);
-                    BIO_puts(bp, " % ");
+                    BIO_puts(bp, "\x20\x25\x20");
                     BN_print(bp, b[j]);
-                    BIO_puts(bp, " - ");
+                    BIO_puts(bp, "\x20\x2d\x20");
                     BN_print(bp, c);
-                    BIO_puts(bp, "\n");
+                    BIO_puts(bp, "\xa");
                 }
             }
 # endif
@@ -1316,7 +1316,7 @@ int test_gf2m_mod(BIO *bp)
             BN_GF2m_mod(e, d, b[j]);
             /* Test that a + (a mod p) mod p == 0. */
             if (!BN_is_zero(e)) {
-                fprintf(stderr, "GF(2^m) modulo test failed!\n");
+                fprintf(stderr, "\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x6f\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                 goto err;
             }
         }
@@ -1363,13 +1363,13 @@ int test_gf2m_mod_mul(BIO *bp, BN_CTX *ctx)
             if (bp != NULL) {
                 if (!results) {
                     BN_print(bp, a);
-                    BIO_puts(bp, " * ");
+                    BIO_puts(bp, "\x20\x2a\x20");
                     BN_print(bp, c);
-                    BIO_puts(bp, " % ");
+                    BIO_puts(bp, "\x20\x25\x20");
                     BN_print(bp, b[j]);
-                    BIO_puts(bp, " - ");
+                    BIO_puts(bp, "\x20\x2d\x20");
                     BN_print(bp, e);
-                    BIO_puts(bp, "\n");
+                    BIO_puts(bp, "\xa");
                 }
             }
 # endif
@@ -1381,7 +1381,7 @@ int test_gf2m_mod_mul(BIO *bp, BN_CTX *ctx)
             /* Test that (a+d)*c = a*c + d*c. */
             if (!BN_is_zero(f)) {
                 fprintf(stderr,
-                        "GF(2^m) modular multiplication test failed!\n");
+                        "\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x61\x72\x20\x6d\x75\x6c\x74\x69\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                 goto err;
             }
         }
@@ -1427,20 +1427,20 @@ int test_gf2m_mod_sqr(BIO *bp, BN_CTX *ctx)
             if (bp != NULL) {
                 if (!results) {
                     BN_print(bp, a);
-                    BIO_puts(bp, " ^ 2 % ");
+                    BIO_puts(bp, "\x20\x5e\x20\x32\x20\x25\x20");
                     BN_print(bp, b[j]);
-                    BIO_puts(bp, " = ");
+                    BIO_puts(bp, "\x20\x3d\x20");
                     BN_print(bp, c);
-                    BIO_puts(bp, "; a * a = ");
+                    BIO_puts(bp, "\x3b\x20\x61\x20\x2a\x20\x61\x20\x3d\x20");
                     BN_print(bp, d);
-                    BIO_puts(bp, "\n");
+                    BIO_puts(bp, "\xa");
                 }
             }
 # endif
             BN_GF2m_add(d, c, d);
             /* Test that a*a = a^2. */
             if (!BN_is_zero(d)) {
-                fprintf(stderr, "GF(2^m) modular squaring test failed!\n");
+                fprintf(stderr, "\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x61\x72\x20\x73\x71\x75\x61\x72\x69\x6e\x67\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                 goto err;
             }
         }
@@ -1481,17 +1481,17 @@ int test_gf2m_mod_inv(BIO *bp, BN_CTX *ctx)
             if (bp != NULL) {
                 if (!results) {
                     BN_print(bp, a);
-                    BIO_puts(bp, " * ");
+                    BIO_puts(bp, "\x20\x2a\x20");
                     BN_print(bp, c);
-                    BIO_puts(bp, " - 1 % ");
+                    BIO_puts(bp, "\x20\x2d\x20\x31\x20\x25\x20");
                     BN_print(bp, b[j]);
-                    BIO_puts(bp, "\n");
+                    BIO_puts(bp, "\xa");
                 }
             }
 # endif
             /* Test that ((1/a)*a) = 1. */
             if (!BN_is_one(d)) {
-                fprintf(stderr, "GF(2^m) modular inversion test failed!\n");
+                fprintf(stderr, "\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x61\x72\x20\x69\x6e\x76\x65\x72\x73\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                 goto err;
             }
         }
@@ -1536,19 +1536,19 @@ int test_gf2m_mod_div(BIO *bp, BN_CTX *ctx)
             if (bp != NULL) {
                 if (!results) {
                     BN_print(bp, a);
-                    BIO_puts(bp, " = ");
+                    BIO_puts(bp, "\x20\x3d\x20");
                     BN_print(bp, c);
-                    BIO_puts(bp, " * ");
+                    BIO_puts(bp, "\x20\x2a\x20");
                     BN_print(bp, d);
-                    BIO_puts(bp, " % ");
+                    BIO_puts(bp, "\x20\x25\x20");
                     BN_print(bp, b[j]);
-                    BIO_puts(bp, "\n");
+                    BIO_puts(bp, "\xa");
                 }
             }
 # endif
             /* Test that ((a/c)*c)/a = 1. */
             if (!BN_is_one(f)) {
-                fprintf(stderr, "GF(2^m) modular division test failed!\n");
+                fprintf(stderr, "\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x61\x72\x20\x64\x69\x76\x69\x73\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                 goto err;
             }
         }
@@ -1598,17 +1598,17 @@ int test_gf2m_mod_exp(BIO *bp, BN_CTX *ctx)
             if (bp != NULL) {
                 if (!results) {
                     BN_print(bp, a);
-                    BIO_puts(bp, " ^ (");
+                    BIO_puts(bp, "\x20\x5e\x20\x28");
                     BN_print(bp, c);
-                    BIO_puts(bp, " + ");
+                    BIO_puts(bp, "\x20\x2b\x20");
                     BN_print(bp, d);
-                    BIO_puts(bp, ") = ");
+                    BIO_puts(bp, "\x29\x20\x3d\x20");
                     BN_print(bp, e);
-                    BIO_puts(bp, "; - ");
+                    BIO_puts(bp, "\x3b\x20\x2d\x20");
                     BN_print(bp, f);
-                    BIO_puts(bp, " % ");
+                    BIO_puts(bp, "\x20\x25\x20");
                     BN_print(bp, b[j]);
-                    BIO_puts(bp, "\n");
+                    BIO_puts(bp, "\xa");
                 }
             }
 # endif
@@ -1616,7 +1616,7 @@ int test_gf2m_mod_exp(BIO *bp, BN_CTX *ctx)
             /* Test that a^(c+d)=a^c*a^d. */
             if (!BN_is_zero(f)) {
                 fprintf(stderr,
-                        "GF(2^m) modular exponentiation test failed!\n");
+                        "\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x61\x72\x20\x65\x78\x70\x6f\x6e\x65\x6e\x74\x69\x61\x74\x69\x6f\x6e\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                 goto err;
             }
         }
@@ -1662,16 +1662,16 @@ int test_gf2m_mod_sqrt(BIO *bp, BN_CTX *ctx)
             if (bp != NULL) {
                 if (!results) {
                     BN_print(bp, d);
-                    BIO_puts(bp, " ^ 2 - ");
+                    BIO_puts(bp, "\x20\x5e\x20\x32\x20\x2d\x20");
                     BN_print(bp, a);
-                    BIO_puts(bp, "\n");
+                    BIO_puts(bp, "\xa");
                 }
             }
 # endif
             BN_GF2m_add(f, c, e);
             /* Test that d^2 = a, where d = sqrt(a). */
             if (!BN_is_zero(f)) {
-                fprintf(stderr, "GF(2^m) modular square root test failed!\n");
+                fprintf(stderr, "\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x61\x72\x20\x73\x71\x75\x61\x72\x65\x20\x72\x6f\x6f\x74\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                 goto err;
             }
         }
@@ -1719,11 +1719,11 @@ int test_gf2m_mod_solve_quad(BIO *bp, BN_CTX *ctx)
                 if (bp != NULL) {
                     if (!results) {
                         BN_print(bp, c);
-                        BIO_puts(bp, " is root of z^2 + z = ");
+                        BIO_puts(bp, "\x20\x69\x73\x20\x72\x6f\x6f\x74\x20\x6f\x66\x20\x7a\x5e\x32\x20\x2b\x20\x7a\x20\x3d\x20");
                         BN_print(bp, a);
-                        BIO_puts(bp, " % ");
+                        BIO_puts(bp, "\x20\x25\x20");
                         BN_print(bp, b[j]);
-                        BIO_puts(bp, "\n");
+                        BIO_puts(bp, "\xa");
                     }
                 }
 # endif
@@ -1733,7 +1733,7 @@ int test_gf2m_mod_solve_quad(BIO *bp, BN_CTX *ctx)
                  */
                 if (!BN_is_zero(e)) {
                     fprintf(stderr,
-                            "GF(2^m) modular solve quadratic test failed!\n");
+                            "\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x61\x72\x20\x73\x6f\x6c\x76\x65\x20\x71\x75\x61\x64\x72\x61\x74\x69\x63\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
                     goto err;
                 }
 
@@ -1742,11 +1742,11 @@ int test_gf2m_mod_solve_quad(BIO *bp, BN_CTX *ctx)
                                  * handle GF(2^m) arithmetic */
                 if (bp != NULL) {
                     if (!results) {
-                        BIO_puts(bp, "There are no roots of z^2 + z = ");
+                        BIO_puts(bp, "\x54\x68\x65\x72\x65\x20\x61\x72\x65\x20\x6e\x6f\x20\x72\x6f\x6f\x74\x73\x20\x6f\x66\x20\x7a\x5e\x32\x20\x2b\x20\x7a\x20\x3d\x20");
                         BN_print(bp, a);
-                        BIO_puts(bp, " % ");
+                        BIO_puts(bp, "\x20\x25\x20");
                         BN_print(bp, b[j]);
-                        BIO_puts(bp, "\n");
+                        BIO_puts(bp, "\xa");
                     }
                 }
 # endif
@@ -1755,10 +1755,10 @@ int test_gf2m_mod_solve_quad(BIO *bp, BN_CTX *ctx)
     }
     if (s == 0) {
         fprintf(stderr,
-                "All %i tests of GF(2^m) modular solve quadratic resulted in no roots;\n",
+                "\x41\x6c\x6c\x20\x25\x69\x20\x74\x65\x73\x74\x73\x20\x6f\x66\x20\x47\x46\x28\x32\x5e\x6d\x29\x20\x6d\x6f\x64\x75\x6c\x61\x72\x20\x73\x6f\x6c\x76\x65\x20\x71\x75\x61\x64\x72\x61\x74\x69\x63\x20\x72\x65\x73\x75\x6c\x74\x65\x64\x20\x69\x6e\x20\x6e\x6f\x20\x72\x6f\x6f\x74\x73\x3b\xa",
                 num0);
         fprintf(stderr,
-                "this is very unlikely and probably indicates an error.\n");
+                "\x74\x68\x69\x73\x20\x69\x73\x20\x76\x65\x72\x79\x20\x75\x6e\x6c\x69\x6b\x65\x6c\x79\x20\x61\x6e\x64\x20\x70\x72\x6f\x62\x61\x62\x6c\x79\x20\x69\x6e\x64\x69\x63\x61\x74\x65\x73\x20\x61\x6e\x20\x65\x72\x72\x6f\x72\x2e\xa");
         goto err;
     }
     ret = 1;
@@ -1774,16 +1774,16 @@ int test_gf2m_mod_solve_quad(BIO *bp, BN_CTX *ctx)
 #endif
 static int genprime_cb(int p, int n, BN_GENCB *arg)
 {
-    char c = '*';
+    char c = '\x2a';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     putc(c, stderr);
     fflush(stderr);
     return 1;
@@ -1819,7 +1819,7 @@ int test_kron(BIO *bp, BN_CTX *ctx)
     if (!BN_generate_prime_ex(b, 512, 0, NULL, NULL, &cb))
         goto err;
     b->neg = rand_neg();
-    putc('\n', stderr);
+    putc('\xa', stderr);
 
     for (i = 0; i < num0; i++) {
         if (!BN_bntest_rand(a, 512, 0, 0))
@@ -1849,7 +1849,7 @@ int test_kron(BIO *bp, BN_CTX *ctx)
             if (!BN_add_word(r, 1))
                 goto err;
             if (0 != BN_ucmp(r, b)) {
-                fprintf(stderr, "Legendre symbol computation failed\n");
+                fprintf(stderr, "\x4c\x65\x67\x65\x6e\x64\x72\x65\x20\x73\x79\x6d\x62\x6f\x6c\x20\x63\x6f\x6d\x70\x75\x74\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64\xa");
                 goto err;
             }
             legendre = -1;
@@ -1863,19 +1863,19 @@ int test_kron(BIO *bp, BN_CTX *ctx)
             kronecker = -kronecker;
 
         if (legendre != kronecker) {
-            fprintf(stderr, "legendre != kronecker; a = ");
+            fprintf(stderr, "\x6c\x65\x67\x65\x6e\x64\x72\x65\x20\x21\x3d\x20\x6b\x72\x6f\x6e\x65\x63\x6b\x65\x72\x3b\x20\x61\x20\x3d\x20");
             BN_print_fp(stderr, a);
-            fprintf(stderr, ", b = ");
+            fprintf(stderr, "\x2c\x20\x62\x20\x3d\x20");
             BN_print_fp(stderr, b);
-            fprintf(stderr, "\n");
+            fprintf(stderr, "\xa");
             goto err;
         }
 
-        putc('.', stderr);
+        putc('\x2e', stderr);
         fflush(stderr);
     }
 
-    putc('\n', stderr);
+    putc('\xa', stderr);
     fflush(stderr);
     ret = 1;
  err:
@@ -1919,7 +1919,7 @@ int test_sqrt(BIO *bp, BN_CTX *ctx)
 
             if (!BN_generate_prime_ex(p, 256, 0, a, r, &cb))
                 goto err;
-            putc('\n', stderr);
+            putc('\xa', stderr);
         }
         p->neg = rand_neg();
 
@@ -1955,21 +1955,21 @@ int test_sqrt(BIO *bp, BN_CTX *ctx)
                 goto err;
 
             if (BN_cmp(a, r) != 0) {
-                fprintf(stderr, "BN_mod_sqrt failed: a = ");
+                fprintf(stderr, "\x42\x4e\x5f\x6d\x6f\x64\x5f\x73\x71\x72\x74\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x61\x20\x3d\x20");
                 BN_print_fp(stderr, a);
-                fprintf(stderr, ", r = ");
+                fprintf(stderr, "\x2c\x20\x72\x20\x3d\x20");
                 BN_print_fp(stderr, r);
-                fprintf(stderr, ", p = ");
+                fprintf(stderr, "\x2c\x20\x70\x20\x3d\x20");
                 BN_print_fp(stderr, p);
-                fprintf(stderr, "\n");
+                fprintf(stderr, "\xa");
                 goto err;
             }
 
-            putc('.', stderr);
+            putc('\x2e', stderr);
             fflush(stderr);
         }
 
-        putc('\n', stderr);
+        putc('\xa', stderr);
         fflush(stderr);
     }
     ret = 1;
@@ -2006,26 +2006,26 @@ int test_lshift(BIO *bp, BN_CTX *ctx, BIGNUM *a_)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " * ");
+                BIO_puts(bp, "\x20\x2a\x20");
                 BN_print(bp, c);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, b);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_mul(d, a, c, ctx);
         BN_sub(d, d, b);
         if (!BN_is_zero(d)) {
-            fprintf(stderr, "Left shift test failed!\n");
-            fprintf(stderr, "a=");
+            fprintf(stderr, "\x4c\x65\x66\x74\x20\x73\x68\x69\x66\x74\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
+            fprintf(stderr, "\x61\x3d");
             BN_print_fp(stderr, a);
-            fprintf(stderr, "\nb=");
+            fprintf(stderr, "\xab\x3d");
             BN_print_fp(stderr, b);
-            fprintf(stderr, "\nc=");
+            fprintf(stderr, "\xac\x3d");
             BN_print_fp(stderr, c);
-            fprintf(stderr, "\nd=");
+            fprintf(stderr, "\xad\x3d");
             BN_print_fp(stderr, d);
-            fprintf(stderr, "\n");
+            fprintf(stderr, "\xa");
             return 0;
         }
     }
@@ -2052,16 +2052,16 @@ int test_lshift1(BIO *bp)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " * 2");
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2a\x20\x32");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, b);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_add(c, a, a);
         BN_sub(a, b, c);
         if (!BN_is_zero(a)) {
-            fprintf(stderr, "Left shift one test failed!\n");
+            fprintf(stderr, "\x4c\x65\x66\x74\x20\x73\x68\x69\x66\x74\x20\x6f\x6e\x65\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
 
@@ -2093,17 +2093,17 @@ int test_rshift(BIO *bp, BN_CTX *ctx)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " / ");
+                BIO_puts(bp, "\x20\x2f\x20");
                 BN_print(bp, c);
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, b);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_div(d, e, a, c, ctx);
         BN_sub(d, d, b);
         if (!BN_is_zero(d)) {
-            fprintf(stderr, "Right shift test failed!\n");
+            fprintf(stderr, "\x52\x69\x67\x68\x74\x20\x73\x68\x69\x66\x74\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
     }
@@ -2131,16 +2131,16 @@ int test_rshift1(BIO *bp)
         if (bp != NULL) {
             if (!results) {
                 BN_print(bp, a);
-                BIO_puts(bp, " / 2");
-                BIO_puts(bp, " - ");
+                BIO_puts(bp, "\x20\x2f\x20\x32");
+                BIO_puts(bp, "\x20\x2d\x20");
             }
             BN_print(bp, b);
-            BIO_puts(bp, "\n");
+            BIO_puts(bp, "\xa");
         }
         BN_sub(c, a, b);
         BN_sub(c, c, b);
         if (!BN_is_zero(c) && !BN_abs_is_word(c, 1)) {
-            fprintf(stderr, "Right shift one test failed!\n");
+            fprintf(stderr, "\x52\x69\x67\x68\x74\x20\x73\x68\x69\x66\x74\x20\x6f\x6e\x65\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             return 0;
         }
         BN_copy(a, b);

@@ -32,13 +32,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -298,7 +298,7 @@ static int test_EVP_DigestSignInit(void)
     }
     /* Sanity check for testing. */
     if (sig_len != (size_t)EVP_PKEY_size(pkey)) {
-        fprintf(stderr, "sig_len mismatch\n");
+        fprintf(stderr, "\x73\x69\x67\x5f\x6c\x65\x6e\x20\x6d\x69\x73\x6d\x61\x74\x63\x68\xa");
         goto out;
     }
 
@@ -373,12 +373,12 @@ static int test_d2i_AutoPrivateKey(const unsigned char *input,
     p = input;
     pkey = d2i_AutoPrivateKey(NULL, &p, input_len);
     if (pkey == NULL || p != input + input_len) {
-        fprintf(stderr, "d2i_AutoPrivateKey failed\n");
+        fprintf(stderr, "\x64\x32\x69\x5f\x41\x75\x74\x6f\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto done;
     }
 
     if (EVP_PKEY_id(pkey) != expected_id) {
-        fprintf(stderr, "Did not decode expected type\n");
+        fprintf(stderr, "\x44\x69\x64\x20\x6e\x6f\x74\x20\x64\x65\x63\x6f\x64\x65\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x74\x79\x70\x65\xa");
         goto done;
     }
 
@@ -407,13 +407,13 @@ static int test_EVP_PKCS82PKEY(void)
     p8inf = d2i_PKCS8_PRIV_KEY_INFO(NULL, &derp, sizeof(kExampleBadECKeyDER));
 
     if (!p8inf || derp != kExampleBadECKeyDER + sizeof(kExampleBadECKeyDER)) {
-        fprintf(stderr, "Failed to parse key\n");
+        fprintf(stderr, "\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x70\x61\x72\x73\x65\x20\x6b\x65\x79\xa");
         goto done;
     }
 
     pkey = EVP_PKCS82PKEY(p8inf);
     if (pkey) {
-        fprintf(stderr, "Imported invalid EC key\n");
+        fprintf(stderr, "\x49\x6d\x70\x6f\x72\x74\x65\x64\x20\x69\x6e\x76\x61\x6c\x69\x64\x20\x45\x43\x20\x6b\x65\x79\xa");
         goto done;
     }
 
@@ -444,36 +444,36 @@ int main(void)
     OpenSSL_add_all_digests();
 
     if (!test_EVP_DigestSignInit()) {
-        fprintf(stderr, "EVP_DigestSignInit failed\n");
+        fprintf(stderr, "\x45\x56\x50\x5f\x44\x69\x67\x65\x73\x74\x53\x69\x67\x6e\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
         return 1;
     }
 
     if (!test_EVP_DigestVerifyInit()) {
-        fprintf(stderr, "EVP_DigestVerifyInit failed\n");
+        fprintf(stderr, "\x45\x56\x50\x5f\x44\x69\x67\x65\x73\x74\x56\x65\x72\x69\x66\x79\x49\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
         return 1;
     }
 
     if (!test_d2i_AutoPrivateKey(kExampleRSAKeyDER, sizeof(kExampleRSAKeyDER),
                                  EVP_PKEY_RSA)) {
-        fprintf(stderr, "d2i_AutoPrivateKey(kExampleRSAKeyDER) failed\n");
+        fprintf(stderr, "\x64\x32\x69\x5f\x41\x75\x74\x6f\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79\x28\x6b\x45\x78\x61\x6d\x70\x6c\x65\x52\x53\x41\x4b\x65\x79\x44\x45\x52\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
         return 1;
     }
 
     if (!test_d2i_AutoPrivateKey
         (kExampleRSAKeyPKCS8, sizeof(kExampleRSAKeyPKCS8), EVP_PKEY_RSA)) {
-        fprintf(stderr, "d2i_AutoPrivateKey(kExampleRSAKeyPKCS8) failed\n");
+        fprintf(stderr, "\x64\x32\x69\x5f\x41\x75\x74\x6f\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79\x28\x6b\x45\x78\x61\x6d\x70\x6c\x65\x52\x53\x41\x4b\x65\x79\x50\x4b\x43\x53\x38\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
         return 1;
     }
 
 #ifndef OPENSSL_NO_EC
     if (!test_d2i_AutoPrivateKey(kExampleECKeyDER, sizeof(kExampleECKeyDER),
                                  EVP_PKEY_EC)) {
-        fprintf(stderr, "d2i_AutoPrivateKey(kExampleECKeyDER) failed\n");
+        fprintf(stderr, "\x64\x32\x69\x5f\x41\x75\x74\x6f\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79\x28\x6b\x45\x78\x61\x6d\x70\x6c\x65\x45\x43\x4b\x65\x79\x44\x45\x52\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
         return 1;
     }
 
     if (!test_EVP_PKCS82PKEY()) {
-        fprintf(stderr, "test_EVP_PKCS82PKEY failed\n");
+        fprintf(stderr, "\x74\x65\x73\x74\x5f\x45\x56\x50\x5f\x50\x4b\x43\x53\x38\x32\x50\x4b\x45\x59\x20\x66\x61\x69\x6c\x65\x64\xa");
         return 1;
     }
 #endif
@@ -484,6 +484,6 @@ int main(void)
     ERR_free_strings();
     CRYPTO_mem_leaks_fp(stderr);
 
-    printf("PASS\n");
+    printf("\x50\x41\x53\x53\xa");
     return 0;
 }

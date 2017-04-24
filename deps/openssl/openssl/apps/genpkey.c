@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -102,26 +102,26 @@ int MAIN(int argc, char **argv)
     ERR_load_crypto_strings();
     OpenSSL_add_all_algorithms();
     args = argv + 1;
-    while (!badarg && *args && *args[0] == '-') {
-        if (!strcmp(*args, "-outform")) {
+    while (!badarg && *args && *args[0] == '\x2d') {
+        if (!strcmp(*args, "\x2d\x6f\x75\x74\x66\x6f\x72\x6d")) {
             if (args[1]) {
                 args++;
                 outformat = str2fmt(*args);
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-pass")) {
+        } else if (!strcmp(*args, "\x2d\x70\x61\x73\x73")) {
             if (!args[1])
                 goto bad;
             passarg = *(++args);
         }
 #ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*args, "-engine") == 0) {
+        else if (strcmp(*args, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (!args[1])
                 goto bad;
             e = setup_engine(bio_err, *(++args), 0);
         }
 #endif
-        else if (!strcmp(*args, "-paramfile")) {
+        else if (!strcmp(*args, "\x2d\x70\x61\x72\x61\x6d\x66\x69\x6c\x65")) {
             if (!args[1])
                 goto bad;
             args++;
@@ -129,38 +129,38 @@ int MAIN(int argc, char **argv)
                 goto bad;
             if (!init_keygen_file(bio_err, &ctx, *args, e))
                 goto end;
-        } else if (!strcmp(*args, "-out")) {
+        } else if (!strcmp(*args, "\x2d\x6f\x75\x74")) {
             if (args[1]) {
                 args++;
                 outfile = *args;
             } else
                 badarg = 1;
-        } else if (strcmp(*args, "-algorithm") == 0) {
+        } else if (strcmp(*args, "\x2d\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d") == 0) {
             if (!args[1])
                 goto bad;
             if (!init_gen_str(bio_err, &ctx, *(++args), e, do_param))
                 goto end;
-        } else if (strcmp(*args, "-pkeyopt") == 0) {
+        } else if (strcmp(*args, "\x2d\x70\x6b\x65\x79\x6f\x70\x74") == 0) {
             if (!args[1])
                 goto bad;
             if (!ctx) {
-                BIO_puts(bio_err, "No keytype specified\n");
+                BIO_puts(bio_err, "\x4e\x6f\x20\x6b\x65\x79\x74\x79\x70\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
                 goto bad;
             } else if (pkey_ctrl_string(ctx, *(++args)) <= 0) {
-                BIO_puts(bio_err, "parameter setting error\n");
+                BIO_puts(bio_err, "\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x65\x72\x72\x6f\x72\xa");
                 ERR_print_errors(bio_err);
                 goto end;
             }
-        } else if (strcmp(*args, "-genparam") == 0) {
+        } else if (strcmp(*args, "\x2d\x67\x65\x6e\x70\x61\x72\x61\x6d") == 0) {
             if (ctx)
                 goto bad;
             do_param = 1;
-        } else if (strcmp(*args, "-text") == 0)
+        } else if (strcmp(*args, "\x2d\x74\x65\x78\x74") == 0)
             text = 1;
         else {
             cipher = EVP_get_cipherbyname(*args + 1);
             if (!cipher) {
-                BIO_printf(bio_err, "Unknown cipher %s\n", *args + 1);
+                BIO_printf(bio_err, "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x69\x70\x68\x65\x72\x20\x25\x73\xa", *args + 1);
                 badarg = 1;
             }
             if (do_param == 1)
@@ -174,40 +174,40 @@ int MAIN(int argc, char **argv)
 
     if (badarg) {
  bad:
-        BIO_printf(bio_err, "Usage: genpkey [options]\n");
-        BIO_printf(bio_err, "where options may be\n");
-        BIO_printf(bio_err, "-out file          output file\n");
+        BIO_printf(bio_err, "\x55\x73\x61\x67\x65\x3a\x20\x67\x65\x6e\x70\x6b\x65\x79\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\xa");
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x6d\x61\x79\x20\x62\x65\xa");
+        BIO_printf(bio_err, "\x2d\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   "-outform X         output format (DER or PEM)\n");
+                   "\x2d\x6f\x75\x74\x66\x6f\x72\x6d\x20\x58\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x28\x44\x45\x52\x20\x6f\x72\x20\x50\x45\x4d\x29\xa");
         BIO_printf(bio_err,
-                   "-pass arg          output file pass phrase source\n");
+                   "\x2d\x70\x61\x73\x73\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa");
         BIO_printf(bio_err,
-                   "-<cipher>          use cipher <cipher> to encrypt the key\n");
+                   "\x2d\x3c\x63\x69\x70\x68\x65\x72\x3e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x63\x69\x70\x68\x65\x72\x20\x3c\x63\x69\x70\x68\x65\x72\x3e\x20\x74\x6f\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x74\x68\x65\x20\x6b\x65\x79\xa");
 #ifndef OPENSSL_NO_ENGINE
         BIO_printf(bio_err,
-                   "-engine e          use engine e, possibly a hardware device.\n");
+                   "\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 #endif
-        BIO_printf(bio_err, "-paramfile file    parameters file\n");
-        BIO_printf(bio_err, "-algorithm alg     the public key algorithm\n");
+        BIO_printf(bio_err, "\x2d\x70\x61\x72\x61\x6d\x66\x69\x6c\x65\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x2d\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x61\x6c\x67\x20\x20\x20\x20\x20\x74\x68\x65\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\xa");
         BIO_printf(bio_err,
-                   "-pkeyopt opt:value set the public key algorithm option <opt>\n"
-                   "                   to value <value>\n");
+                   "\x2d\x70\x6b\x65\x79\x6f\x70\x74\x20\x6f\x70\x74\x3a\x76\x61\x6c\x75\x65\x20\x73\x65\x74\x20\x74\x68\x65\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x6f\x70\x74\x69\x6f\x6e\x20\x3c\x6f\x70\x74\x3e\xa"
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x6f\x20\x76\x61\x6c\x75\x65\x20\x3c\x76\x61\x6c\x75\x65\x3e\xa");
         BIO_printf(bio_err,
-                   "-genparam          generate parameters, not key\n");
-        BIO_printf(bio_err, "-text              print the in text\n");
+                   "\x2d\x67\x65\x6e\x70\x61\x72\x61\x6d\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x2c\x20\x6e\x6f\x74\x20\x6b\x65\x79\xa");
+        BIO_printf(bio_err, "\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x72\x69\x6e\x74\x20\x74\x68\x65\x20\x69\x6e\x20\x74\x65\x78\x74\xa");
         BIO_printf(bio_err,
-                   "NB: options order may be important!  See the manual page.\n");
+                   "\x4e\x42\x3a\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x6f\x72\x64\x65\x72\x20\x6d\x61\x79\x20\x62\x65\x20\x69\x6d\x70\x6f\x72\x74\x61\x6e\x74\x21\x20\x20\x53\x65\x65\x20\x74\x68\x65\x20\x6d\x61\x6e\x75\x61\x6c\x20\x70\x61\x67\x65\x2e\xa");
         goto end;
     }
 
     if (!app_passwd(bio_err, passarg, NULL, &pass, NULL)) {
-        BIO_puts(bio_err, "Error getting password\n");
+        BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa");
         goto end;
     }
 
     if (outfile) {
-        if (!(out = BIO_new_file(outfile, "wb"))) {
-            BIO_printf(bio_err, "Can't open output file %s\n", outfile);
+        if (!(out = BIO_new_file(outfile, "\x77\x62"))) {
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x25\x73\xa", outfile);
             goto end;
         }
     } else {
@@ -225,13 +225,13 @@ int MAIN(int argc, char **argv)
 
     if (do_param) {
         if (EVP_PKEY_paramgen(ctx, &pkey) <= 0) {
-            BIO_puts(bio_err, "Error generating parameters\n");
+            BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6e\x67\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
     } else {
         if (EVP_PKEY_keygen(ctx, &pkey) <= 0) {
-            BIO_puts(bio_err, "Error generating key\n");
+            BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6e\x67\x20\x6b\x65\x79\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -244,12 +244,12 @@ int MAIN(int argc, char **argv)
     else if (outformat == FORMAT_ASN1)
         rv = i2d_PrivateKey_bio(out, pkey);
     else {
-        BIO_printf(bio_err, "Bad format specified for key\n");
+        BIO_printf(bio_err, "\x42\x61\x64\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6b\x65\x79\xa");
         goto end;
     }
 
     if (rv <= 0) {
-        BIO_puts(bio_err, "Error writing key\n");
+        BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x77\x72\x69\x74\x69\x6e\x67\x20\x6b\x65\x79\xa");
         ERR_print_errors(bio_err);
     }
 
@@ -260,7 +260,7 @@ int MAIN(int argc, char **argv)
             rv = EVP_PKEY_print_private(out, pkey, 0, NULL);
 
         if (rv <= 0) {
-            BIO_puts(bio_err, "Error printing key\n");
+            BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x72\x69\x6e\x74\x69\x6e\x67\x20\x6b\x65\x79\xa");
             ERR_print_errors(bio_err);
         }
     }
@@ -288,13 +288,13 @@ static int init_keygen_file(BIO *err, EVP_PKEY_CTX **pctx,
     EVP_PKEY *pkey = NULL;
     EVP_PKEY_CTX *ctx = NULL;
     if (*pctx) {
-        BIO_puts(err, "Parameters already set!\n");
+        BIO_puts(err, "\x50\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x20\x61\x6c\x72\x65\x61\x64\x79\x20\x73\x65\x74\x21\xa");
         return 0;
     }
 
-    pbio = BIO_new_file(file, "r");
+    pbio = BIO_new_file(file, "\x72");
     if (!pbio) {
-        BIO_printf(err, "Can't open parameter file %s\n", file);
+        BIO_printf(err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x66\x69\x6c\x65\x20\x25\x73\xa", file);
         return 0;
     }
 
@@ -302,7 +302,7 @@ static int init_keygen_file(BIO *err, EVP_PKEY_CTX **pctx,
     BIO_free(pbio);
 
     if (!pkey) {
-        BIO_printf(bio_err, "Error reading parameter file %s\n", file);
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x66\x69\x6c\x65\x20\x25\x73\xa", file);
         return 0;
     }
 
@@ -316,7 +316,7 @@ static int init_keygen_file(BIO *err, EVP_PKEY_CTX **pctx,
     return 1;
 
  err:
-    BIO_puts(err, "Error initializing context\n");
+    BIO_puts(err, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x69\x6e\x67\x20\x63\x6f\x6e\x74\x65\x78\x74\xa");
     ERR_print_errors(err);
     if (ctx)
         EVP_PKEY_CTX_free(ctx);
@@ -335,7 +335,7 @@ int init_gen_str(BIO *err, EVP_PKEY_CTX **pctx,
     int pkey_id;
 
     if (*pctx) {
-        BIO_puts(err, "Algorithm already set!\n");
+        BIO_puts(err, "\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x61\x6c\x72\x65\x61\x64\x79\x20\x73\x65\x74\x21\xa");
         return 0;
     }
 
@@ -347,7 +347,7 @@ int init_gen_str(BIO *err, EVP_PKEY_CTX **pctx,
 #endif
 
     if (!ameth) {
-        BIO_printf(bio_err, "Algorithm %s not found\n", algname);
+        BIO_printf(bio_err, "\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x25\x73\x20\x6e\x6f\x74\x20\x66\x6f\x75\x6e\x64\xa", algname);
         return 0;
     }
 
@@ -374,7 +374,7 @@ int init_gen_str(BIO *err, EVP_PKEY_CTX **pctx,
     return 1;
 
  err:
-    BIO_printf(err, "Error initializing %s context\n", algname);
+    BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x69\x6e\x67\x20\x25\x73\x20\x63\x6f\x6e\x74\x65\x78\x74\xa", algname);
     ERR_print_errors(err);
     if (ctx)
         EVP_PKEY_CTX_free(ctx);
@@ -384,18 +384,18 @@ int init_gen_str(BIO *err, EVP_PKEY_CTX **pctx,
 
 static int genpkey_cb(EVP_PKEY_CTX *ctx)
 {
-    char c = '*';
+    char c = '\x2a';
     BIO *b = EVP_PKEY_CTX_get_app_data(ctx);
     int p;
     p = EVP_PKEY_CTX_get_keygen_info(ctx, 0);
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     BIO_write(b, &c, 1);
     (void)BIO_flush(b);
 #ifdef LINT

@@ -38,7 +38,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -195,7 +195,7 @@ static int ssl_sock_init(void)
         memset(&wsa_state, 0, sizeof(wsa_state));
         if (WSAStartup(0x0101, &wsa_state) != 0) {
             err = WSAGetLastError();
-            BIO_printf(bio_err, "unable to start WINSOCK, error code=%d\n",
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x73\x74\x61\x72\x74\x20\x57\x49\x4e\x53\x4f\x43\x4b\x2c\x20\x65\x72\x72\x6f\x72\x20\x63\x6f\x64\x65\x3d\x25\x64\xa",
                        err);
             return (0);
         }
@@ -222,7 +222,7 @@ static int ssl_sock_init(void)
         wVerReq = MAKEWORD(2, 0);
         err = WSAStartup(wVerReq, &wsaData);
         if (err != 0) {
-            BIO_printf(bio_err, "unable to start WINSOCK2, error code=%d\n",
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x73\x74\x61\x72\x74\x20\x57\x49\x4e\x53\x4f\x43\x4b\x32\x2c\x20\x65\x72\x72\x6f\x72\x20\x63\x6f\x64\x65\x3d\x25\x64\xa",
                        err);
             return (0);
         }
@@ -235,7 +235,7 @@ int init_client(int *sock, char *host, int port, int type)
 {
     unsigned char ip[4];
 
-    memset(ip, '\0', sizeof ip);
+    memset(ip, '\x0', sizeof ip);
     if (!host_ip(host, &(ip[0])))
         return 0;
     return init_client_ip(sock, ip, port, type);
@@ -265,7 +265,7 @@ static int init_client_ip(int *sock, unsigned char ip[4], int port, int type)
         s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
     if (s == INVALID_SOCKET) {
-        perror("socket");
+        perror("\x73\x6f\x63\x6b\x65\x74");
         return (0);
     }
 # if defined(SO_KEEPALIVE) && !defined(OPENSSL_SYS_MPE)
@@ -274,7 +274,7 @@ static int init_client_ip(int *sock, unsigned char ip[4], int port, int type)
         i = setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (char *)&i, sizeof(i));
         if (i < 0) {
             closesocket(s);
-            perror("keepalive");
+            perror("\x6b\x65\x65\x70\x61\x6c\x69\x76\x65");
             return (0);
         }
     }
@@ -282,7 +282,7 @@ static int init_client_ip(int *sock, unsigned char ip[4], int port, int type)
 
     if (connect(s, (struct sockaddr *)&them, sizeof(them)) == -1) {
         closesocket(s);
-        perror("connect");
+        perror("\x63\x6f\x6e\x6e\x65\x63\x74");
         return (0);
     }
     *sock = s;
@@ -365,7 +365,7 @@ static int init_server_long(int *sock, int port, char *ip, int type)
 # endif
     if (bind(s, (struct sockaddr *)&server, sizeof(server)) == -1) {
 # ifndef OPENSSL_SYS_WINDOWS
-        perror("bind");
+        perror("\x62\x69\x6e\x64");
 # endif
         goto err;
     }
@@ -414,7 +414,7 @@ static int do_accept(int acc_sock, int *sock, char **host)
 # if defined(OPENSSL_SYS_WINDOWS) || (defined(OPENSSL_SYS_NETWARE) && !defined(NETWARE_BSDSOCK))
         int i;
         i = WSAGetLastError();
-        BIO_printf(bio_err, "accept error %d\n", i);
+        BIO_printf(bio_err, "\x61\x63\x63\x65\x70\x74\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", i);
 # else
         if (errno == EINTR) {
             /*
@@ -422,8 +422,8 @@ static int do_accept(int acc_sock, int *sock, char **host)
              */
             goto redoit;
         }
-        fprintf(stderr, "errno=%d ", errno);
-        perror("accept");
+        fprintf(stderr, "\x65\x72\x72\x6e\x6f\x3d\x25\x64\x20", errno);
+        perror("\x61\x63\x63\x65\x70\x74");
 # endif
         return (0);
     }
@@ -449,12 +449,12 @@ static int do_accept(int acc_sock, int *sock, char **host)
                        sizeof(struct in_addr), AF_INET);
 # endif
     if (h1 == NULL) {
-        BIO_printf(bio_err, "bad gethostbyaddr\n");
+        BIO_printf(bio_err, "\x62\x61\x64\x20\x67\x65\x74\x68\x6f\x73\x74\x62\x79\x61\x64\x64\x72\xa");
         *host = NULL;
         /* return(0); */
     } else {
         if ((*host = (char *)OPENSSL_malloc(strlen(h1->h_name) + 1)) == NULL) {
-            perror("OPENSSL_malloc");
+            perror("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x6d\x61\x6c\x6c\x6f\x63");
             closesocket(ret);
             return (0);
         }
@@ -462,12 +462,12 @@ static int do_accept(int acc_sock, int *sock, char **host)
 
         h2 = GetHostByName(*host);
         if (h2 == NULL) {
-            BIO_printf(bio_err, "gethostbyname failure\n");
+            BIO_printf(bio_err, "\x67\x65\x74\x68\x6f\x73\x74\x62\x79\x6e\x61\x6d\x65\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
             closesocket(ret);
             return (0);
         }
         if (h2->h_addrtype != AF_INET) {
-            BIO_printf(bio_err, "gethostbyname addr is not AF_INET\n");
+            BIO_printf(bio_err, "\x67\x65\x74\x68\x6f\x73\x74\x62\x79\x6e\x61\x6d\x65\x20\x61\x64\x64\x72\x20\x69\x73\x20\x6e\x6f\x74\x20\x41\x46\x5f\x49\x4e\x45\x54\xa");
             closesocket(ret);
             return (0);
         }
@@ -483,12 +483,12 @@ int extract_host_port(char *str, char **host_ptr, unsigned char *ip,
     char *h, *p;
 
     h = str;
-    p = strchr(str, ':');
+    p = strchr(str, '\x3a');
     if (p == NULL) {
-        BIO_printf(bio_err, "no port defined\n");
+        BIO_printf(bio_err, "\x6e\x6f\x20\x70\x6f\x72\x74\x20\x64\x65\x66\x69\x6e\x65\x64\xa");
         return (0);
     }
-    *(p++) = '\0';
+    *(p++) = '\x0';
 
     if ((ip != NULL) && !host_ip(str, ip))
         goto err;
@@ -507,11 +507,11 @@ static int host_ip(char *str, unsigned char ip[4])
     unsigned int in[4];
     int i;
 
-    if (sscanf(str, "%u.%u.%u.%u", &(in[0]), &(in[1]), &(in[2]), &(in[3])) ==
+    if (sscanf(str, "\x25\x75\x2e\x25\x75\x2e\x25\x75\x2e\x25\x75", &(in[0]), &(in[1]), &(in[2]), &(in[3])) ==
         4) {
         for (i = 0; i < 4; i++)
             if (in[i] > 255) {
-                BIO_printf(bio_err, "invalid IP address\n");
+                BIO_printf(bio_err, "\x69\x6e\x76\x61\x6c\x69\x64\x20\x49\x50\x20\x61\x64\x64\x72\x65\x73\x73\xa");
                 goto err;
             }
         ip[0] = in[0];
@@ -526,12 +526,12 @@ static int host_ip(char *str, unsigned char ip[4])
 
         he = GetHostByName(str);
         if (he == NULL) {
-            BIO_printf(bio_err, "gethostbyname failure\n");
+            BIO_printf(bio_err, "\x67\x65\x74\x68\x6f\x73\x74\x62\x79\x6e\x61\x6d\x65\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
             goto err;
         }
         /* cast to short because of win16 winsock definition */
         if ((short)he->h_addrtype != AF_INET) {
-            BIO_printf(bio_err, "gethostbyname addr is not AF_INET\n");
+            BIO_printf(bio_err, "\x67\x65\x74\x68\x6f\x73\x74\x62\x79\x6e\x61\x6d\x65\x20\x61\x64\x64\x72\x20\x69\x73\x20\x6e\x6f\x74\x20\x41\x46\x5f\x49\x4e\x45\x54\xa");
             return (0);
         }
         ip[0] = he->h_addr_list[0][0];
@@ -553,9 +553,9 @@ int extract_port(char *str, short *port_ptr)
     if (i != 0)
         *port_ptr = (unsigned short)i;
     else {
-        s = getservbyname(str, "tcp");
+        s = getservbyname(str, "\x74\x63\x70");
         if (s == NULL) {
-            BIO_printf(bio_err, "getservbyname failure for %s\n", str);
+            BIO_printf(bio_err, "\x67\x65\x74\x73\x65\x72\x76\x62\x79\x6e\x61\x6d\x65\x20\x66\x61\x69\x6c\x75\x72\x65\x20\x66\x6f\x72\x20\x25\x73\xa", str);
             return (0);
         }
         *port_ptr = ntohs((unsigned short)s->s_port);

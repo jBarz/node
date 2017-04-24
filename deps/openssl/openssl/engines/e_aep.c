@@ -94,7 +94,7 @@ extern int GetThreadID(void);
 #   include "vendor_defns/aep.h"
 #  endif
 
-#  define AEP_LIB_NAME "aep engine"
+#  define AEP_LIB_NAME "\x61\x65\x70\x20\x65\x6e\x67\x69\x6e\x65"
 #  define FAIL_TO_SW 0x10101010
 
 #  include "e_aep_err.c"
@@ -168,8 +168,8 @@ static AEP_RV ConvertAEPBigNum(void *ArbBigNum, AEP_U32 BigNumSize,
 #  define AEP_CMD_SO_PATH         ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN aep_cmd_defns[] = {
     {AEP_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'aep' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x61\x65\x70\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
@@ -177,7 +177,7 @@ static const ENGINE_CMD_DEFN aep_cmd_defns[] = {
 #  ifndef OPENSSL_NO_RSA
 /* Our internal RSA_METHOD that we provide pointers to */
 static RSA_METHOD aep_rsa = {
-    "Aep RSA method",
+    "\x41\x65\x70\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* rsa_pub_encrypt */
     NULL,                       /* rsa_pub_decrypt */
     NULL,                       /* rsa_priv_encrypt */
@@ -197,7 +197,7 @@ static RSA_METHOD aep_rsa = {
 #  ifndef OPENSSL_NO_DSA
 /* Our internal DSA_METHOD that we provide pointers to */
 static DSA_METHOD aep_dsa = {
-    "Aep DSA method",
+    "\x41\x65\x70\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* dsa_do_sign */
     NULL,                       /* dsa_sign_setup */
     NULL,                       /* dsa_do_verify */
@@ -215,7 +215,7 @@ static DSA_METHOD aep_dsa = {
 #  ifndef OPENSSL_NO_DH
 /* Our internal DH_METHOD that we provide pointers to */
 static DH_METHOD aep_dh = {
-    "Aep DH method",
+    "\x41\x65\x70\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     aep_mod_exp_dh,
@@ -258,8 +258,8 @@ static AEP_U32 rand_block_bytes = 0;
 #  endif
 
 /* Constants used when creating the ENGINE */
-static const char *engine_aep_id = "aep";
-static const char *engine_aep_name = "Aep hardware engine support";
+static const char *engine_aep_id = "\x61\x65\x70";
+static const char *engine_aep_name = "\x41\x65\x70\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 static int max_key_len = 2176;
 
@@ -398,7 +398,7 @@ static const char *get_AEP_LIBNAME(void)
 {
     if (AEP_LIBNAME)
         return AEP_LIBNAME;
-    return "aep";
+    return "\x61\x65\x70";
 }
 
 static void free_AEP_LIBNAME(void)
@@ -414,16 +414,16 @@ static long set_AEP_LIBNAME(const char *name)
     return ((AEP_LIBNAME = BUF_strdup(name)) != NULL ? 1 : 0);
 }
 
-static const char *AEP_F1 = "AEP_ModExp";
-static const char *AEP_F2 = "AEP_ModExpCrt";
+static const char *AEP_F1 = "\x41\x45\x50\x5f\x4d\x6f\x64\x45\x78\x70";
+static const char *AEP_F2 = "\x41\x45\x50\x5f\x4d\x6f\x64\x45\x78\x70\x43\x72\x74";
 #  ifdef AEPRAND
-static const char *AEP_F3 = "AEP_GenRandom";
+static const char *AEP_F3 = "\x41\x45\x50\x5f\x47\x65\x6e\x52\x61\x6e\x64\x6f\x6d";
 #  endif
-static const char *AEP_F4 = "AEP_Finalize";
-static const char *AEP_F5 = "AEP_Initialize";
-static const char *AEP_F6 = "AEP_OpenConnection";
-static const char *AEP_F7 = "AEP_SetBNCallBacks";
-static const char *AEP_F8 = "AEP_CloseConnection";
+static const char *AEP_F4 = "\x41\x45\x50\x5f\x46\x69\x6e\x61\x6c\x69\x7a\x65";
+static const char *AEP_F5 = "\x41\x45\x50\x5f\x49\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65";
+static const char *AEP_F6 = "\x41\x45\x50\x5f\x4f\x70\x65\x6e\x43\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e";
+static const char *AEP_F7 = "\x41\x45\x50\x5f\x53\x65\x74\x42\x4e\x43\x61\x6c\x6c\x42\x61\x63\x6b\x73";
+static const char *AEP_F8 = "\x41\x45\x50\x5f\x43\x6c\x6f\x73\x65\x43\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e";
 
 /*
  * These are the function pointers that are (un)set when the library has

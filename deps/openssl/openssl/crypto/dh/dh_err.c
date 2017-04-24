@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,45 +70,45 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_DH,0,reason)
 
 static ERR_STRING_DATA DH_str_functs[] = {
-    {ERR_FUNC(DH_F_COMPUTE_KEY), "COMPUTE_KEY"},
-    {ERR_FUNC(DH_F_DHPARAMS_PRINT_FP), "DHparams_print_fp"},
-    {ERR_FUNC(DH_F_DH_BUILTIN_GENPARAMS), "DH_BUILTIN_GENPARAMS"},
-    {ERR_FUNC(DH_F_DH_CMS_DECRYPT), "DH_CMS_DECRYPT"},
-    {ERR_FUNC(DH_F_DH_CMS_SET_PEERKEY), "DH_CMS_SET_PEERKEY"},
-    {ERR_FUNC(DH_F_DH_CMS_SET_SHARED_INFO), "DH_CMS_SET_SHARED_INFO"},
-    {ERR_FUNC(DH_F_DH_COMPUTE_KEY), "DH_compute_key"},
-    {ERR_FUNC(DH_F_DH_GENERATE_KEY), "DH_generate_key"},
-    {ERR_FUNC(DH_F_DH_GENERATE_PARAMETERS_EX), "DH_generate_parameters_ex"},
-    {ERR_FUNC(DH_F_DH_NEW_METHOD), "DH_new_method"},
-    {ERR_FUNC(DH_F_DH_PARAM_DECODE), "DH_PARAM_DECODE"},
-    {ERR_FUNC(DH_F_DH_PRIV_DECODE), "DH_PRIV_DECODE"},
-    {ERR_FUNC(DH_F_DH_PRIV_ENCODE), "DH_PRIV_ENCODE"},
-    {ERR_FUNC(DH_F_DH_PUB_DECODE), "DH_PUB_DECODE"},
-    {ERR_FUNC(DH_F_DH_PUB_ENCODE), "DH_PUB_ENCODE"},
-    {ERR_FUNC(DH_F_DO_DH_PRINT), "DO_DH_PRINT"},
-    {ERR_FUNC(DH_F_GENERATE_KEY), "GENERATE_KEY"},
-    {ERR_FUNC(DH_F_GENERATE_PARAMETERS), "GENERATE_PARAMETERS"},
-    {ERR_FUNC(DH_F_PKEY_DH_DERIVE), "PKEY_DH_DERIVE"},
-    {ERR_FUNC(DH_F_PKEY_DH_KEYGEN), "PKEY_DH_KEYGEN"},
+    {ERR_FUNC(DH_F_COMPUTE_KEY), "\x43\x4f\x4d\x50\x55\x54\x45\x5f\x4b\x45\x59"},
+    {ERR_FUNC(DH_F_DHPARAMS_PRINT_FP), "\x44\x48\x70\x61\x72\x61\x6d\x73\x5f\x70\x72\x69\x6e\x74\x5f\x66\x70"},
+    {ERR_FUNC(DH_F_DH_BUILTIN_GENPARAMS), "\x44\x48\x5f\x42\x55\x49\x4c\x54\x49\x4e\x5f\x47\x45\x4e\x50\x41\x52\x41\x4d\x53"},
+    {ERR_FUNC(DH_F_DH_CMS_DECRYPT), "\x44\x48\x5f\x43\x4d\x53\x5f\x44\x45\x43\x52\x59\x50\x54"},
+    {ERR_FUNC(DH_F_DH_CMS_SET_PEERKEY), "\x44\x48\x5f\x43\x4d\x53\x5f\x53\x45\x54\x5f\x50\x45\x45\x52\x4b\x45\x59"},
+    {ERR_FUNC(DH_F_DH_CMS_SET_SHARED_INFO), "\x44\x48\x5f\x43\x4d\x53\x5f\x53\x45\x54\x5f\x53\x48\x41\x52\x45\x44\x5f\x49\x4e\x46\x4f"},
+    {ERR_FUNC(DH_F_DH_COMPUTE_KEY), "\x44\x48\x5f\x63\x6f\x6d\x70\x75\x74\x65\x5f\x6b\x65\x79"},
+    {ERR_FUNC(DH_F_DH_GENERATE_KEY), "\x44\x48\x5f\x67\x65\x6e\x65\x72\x61\x74\x65\x5f\x6b\x65\x79"},
+    {ERR_FUNC(DH_F_DH_GENERATE_PARAMETERS_EX), "\x44\x48\x5f\x67\x65\x6e\x65\x72\x61\x74\x65\x5f\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x5f\x65\x78"},
+    {ERR_FUNC(DH_F_DH_NEW_METHOD), "\x44\x48\x5f\x6e\x65\x77\x5f\x6d\x65\x74\x68\x6f\x64"},
+    {ERR_FUNC(DH_F_DH_PARAM_DECODE), "\x44\x48\x5f\x50\x41\x52\x41\x4d\x5f\x44\x45\x43\x4f\x44\x45"},
+    {ERR_FUNC(DH_F_DH_PRIV_DECODE), "\x44\x48\x5f\x50\x52\x49\x56\x5f\x44\x45\x43\x4f\x44\x45"},
+    {ERR_FUNC(DH_F_DH_PRIV_ENCODE), "\x44\x48\x5f\x50\x52\x49\x56\x5f\x45\x4e\x43\x4f\x44\x45"},
+    {ERR_FUNC(DH_F_DH_PUB_DECODE), "\x44\x48\x5f\x50\x55\x42\x5f\x44\x45\x43\x4f\x44\x45"},
+    {ERR_FUNC(DH_F_DH_PUB_ENCODE), "\x44\x48\x5f\x50\x55\x42\x5f\x45\x4e\x43\x4f\x44\x45"},
+    {ERR_FUNC(DH_F_DO_DH_PRINT), "\x44\x4f\x5f\x44\x48\x5f\x50\x52\x49\x4e\x54"},
+    {ERR_FUNC(DH_F_GENERATE_KEY), "\x47\x45\x4e\x45\x52\x41\x54\x45\x5f\x4b\x45\x59"},
+    {ERR_FUNC(DH_F_GENERATE_PARAMETERS), "\x47\x45\x4e\x45\x52\x41\x54\x45\x5f\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53"},
+    {ERR_FUNC(DH_F_PKEY_DH_DERIVE), "\x50\x4b\x45\x59\x5f\x44\x48\x5f\x44\x45\x52\x49\x56\x45"},
+    {ERR_FUNC(DH_F_PKEY_DH_KEYGEN), "\x50\x4b\x45\x59\x5f\x44\x48\x5f\x4b\x45\x59\x47\x45\x4e"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA DH_str_reasons[] = {
-    {ERR_REASON(DH_R_BAD_GENERATOR), "bad generator"},
-    {ERR_REASON(DH_R_BN_DECODE_ERROR), "bn decode error"},
-    {ERR_REASON(DH_R_BN_ERROR), "bn error"},
-    {ERR_REASON(DH_R_DECODE_ERROR), "decode error"},
-    {ERR_REASON(DH_R_INVALID_PUBKEY), "invalid public key"},
-    {ERR_REASON(DH_R_KDF_PARAMETER_ERROR), "kdf parameter error"},
-    {ERR_REASON(DH_R_KEYS_NOT_SET), "keys not set"},
-    {ERR_REASON(DH_R_KEY_SIZE_TOO_SMALL), "key size too small"},
-    {ERR_REASON(DH_R_MODULUS_TOO_LARGE), "modulus too large"},
-    {ERR_REASON(DH_R_NON_FIPS_METHOD), "non fips method"},
-    {ERR_REASON(DH_R_NO_PARAMETERS_SET), "no parameters set"},
-    {ERR_REASON(DH_R_NO_PRIVATE_VALUE), "no private value"},
-    {ERR_REASON(DH_R_PARAMETER_ENCODING_ERROR), "parameter encoding error"},
-    {ERR_REASON(DH_R_PEER_KEY_ERROR), "peer key error"},
-    {ERR_REASON(DH_R_SHARED_INFO_ERROR), "shared info error"},
+    {ERR_REASON(DH_R_BAD_GENERATOR), "\x62\x61\x64\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72"},
+    {ERR_REASON(DH_R_BN_DECODE_ERROR), "\x62\x6e\x20\x64\x65\x63\x6f\x64\x65\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(DH_R_BN_ERROR), "\x62\x6e\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(DH_R_DECODE_ERROR), "\x64\x65\x63\x6f\x64\x65\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(DH_R_INVALID_PUBKEY), "\x69\x6e\x76\x61\x6c\x69\x64\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79"},
+    {ERR_REASON(DH_R_KDF_PARAMETER_ERROR), "\x6b\x64\x66\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(DH_R_KEYS_NOT_SET), "\x6b\x65\x79\x73\x20\x6e\x6f\x74\x20\x73\x65\x74"},
+    {ERR_REASON(DH_R_KEY_SIZE_TOO_SMALL), "\x6b\x65\x79\x20\x73\x69\x7a\x65\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c"},
+    {ERR_REASON(DH_R_MODULUS_TOO_LARGE), "\x6d\x6f\x64\x75\x6c\x75\x73\x20\x74\x6f\x6f\x20\x6c\x61\x72\x67\x65"},
+    {ERR_REASON(DH_R_NON_FIPS_METHOD), "\x6e\x6f\x6e\x20\x66\x69\x70\x73\x20\x6d\x65\x74\x68\x6f\x64"},
+    {ERR_REASON(DH_R_NO_PARAMETERS_SET), "\x6e\x6f\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x20\x73\x65\x74"},
+    {ERR_REASON(DH_R_NO_PRIVATE_VALUE), "\x6e\x6f\x20\x70\x72\x69\x76\x61\x74\x65\x20\x76\x61\x6c\x75\x65"},
+    {ERR_REASON(DH_R_PARAMETER_ENCODING_ERROR), "\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(DH_R_PEER_KEY_ERROR), "\x70\x65\x65\x72\x20\x6b\x65\x79\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(DH_R_SHARED_INFO_ERROR), "\x73\x68\x61\x72\x65\x64\x20\x69\x6e\x66\x6f\x20\x65\x72\x72\x6f\x72"},
     {0, NULL}
 };
 

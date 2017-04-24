@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -111,32 +111,32 @@ extern "C" {
 # define PEM_MD_MD5_RSA          NID_md5WithRSAEncryption
 # define PEM_MD_SHA_RSA          NID_sha1WithRSAEncryption
 
-# define PEM_STRING_X509_OLD     "X509 CERTIFICATE"
-# define PEM_STRING_X509         "CERTIFICATE"
-# define PEM_STRING_X509_PAIR    "CERTIFICATE PAIR"
-# define PEM_STRING_X509_TRUSTED "TRUSTED CERTIFICATE"
-# define PEM_STRING_X509_REQ_OLD "NEW CERTIFICATE REQUEST"
-# define PEM_STRING_X509_REQ     "CERTIFICATE REQUEST"
-# define PEM_STRING_X509_CRL     "X509 CRL"
-# define PEM_STRING_EVP_PKEY     "ANY PRIVATE KEY"
-# define PEM_STRING_PUBLIC       "PUBLIC KEY"
-# define PEM_STRING_RSA          "RSA PRIVATE KEY"
-# define PEM_STRING_RSA_PUBLIC   "RSA PUBLIC KEY"
-# define PEM_STRING_DSA          "DSA PRIVATE KEY"
-# define PEM_STRING_DSA_PUBLIC   "DSA PUBLIC KEY"
-# define PEM_STRING_PKCS7        "PKCS7"
-# define PEM_STRING_PKCS7_SIGNED "PKCS #7 SIGNED DATA"
-# define PEM_STRING_PKCS8        "ENCRYPTED PRIVATE KEY"
-# define PEM_STRING_PKCS8INF     "PRIVATE KEY"
-# define PEM_STRING_DHPARAMS     "DH PARAMETERS"
-# define PEM_STRING_DHXPARAMS    "X9.42 DH PARAMETERS"
-# define PEM_STRING_SSL_SESSION  "SSL SESSION PARAMETERS"
-# define PEM_STRING_DSAPARAMS    "DSA PARAMETERS"
-# define PEM_STRING_ECDSA_PUBLIC "ECDSA PUBLIC KEY"
-# define PEM_STRING_ECPARAMETERS "EC PARAMETERS"
-# define PEM_STRING_ECPRIVATEKEY "EC PRIVATE KEY"
-# define PEM_STRING_PARAMETERS   "PARAMETERS"
-# define PEM_STRING_CMS          "CMS"
+# define PEM_STRING_X509_OLD     "\x58\x35\x30\x39\x20\x43\x45\x52\x54\x49\x46\x49\x43\x41\x54\x45"
+# define PEM_STRING_X509         "\x43\x45\x52\x54\x49\x46\x49\x43\x41\x54\x45"
+# define PEM_STRING_X509_PAIR    "\x43\x45\x52\x54\x49\x46\x49\x43\x41\x54\x45\x20\x50\x41\x49\x52"
+# define PEM_STRING_X509_TRUSTED "\x54\x52\x55\x53\x54\x45\x44\x20\x43\x45\x52\x54\x49\x46\x49\x43\x41\x54\x45"
+# define PEM_STRING_X509_REQ_OLD "\x4e\x45\x57\x20\x43\x45\x52\x54\x49\x46\x49\x43\x41\x54\x45\x20\x52\x45\x51\x55\x45\x53\x54"
+# define PEM_STRING_X509_REQ     "\x43\x45\x52\x54\x49\x46\x49\x43\x41\x54\x45\x20\x52\x45\x51\x55\x45\x53\x54"
+# define PEM_STRING_X509_CRL     "\x58\x35\x30\x39\x20\x43\x52\x4c"
+# define PEM_STRING_EVP_PKEY     "\x41\x4e\x59\x20\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59"
+# define PEM_STRING_PUBLIC       "\x50\x55\x42\x4c\x49\x43\x20\x4b\x45\x59"
+# define PEM_STRING_RSA          "\x52\x53\x41\x20\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59"
+# define PEM_STRING_RSA_PUBLIC   "\x52\x53\x41\x20\x50\x55\x42\x4c\x49\x43\x20\x4b\x45\x59"
+# define PEM_STRING_DSA          "\x44\x53\x41\x20\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59"
+# define PEM_STRING_DSA_PUBLIC   "\x44\x53\x41\x20\x50\x55\x42\x4c\x49\x43\x20\x4b\x45\x59"
+# define PEM_STRING_PKCS7        "\x50\x4b\x43\x53\x37"
+# define PEM_STRING_PKCS7_SIGNED "\x50\x4b\x43\x53\x20\x23\x37\x20\x53\x49\x47\x4e\x45\x44\x20\x44\x41\x54\x41"
+# define PEM_STRING_PKCS8        "\x45\x4e\x43\x52\x59\x50\x54\x45\x44\x20\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59"
+# define PEM_STRING_PKCS8INF     "\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59"
+# define PEM_STRING_DHPARAMS     "\x44\x48\x20\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53"
+# define PEM_STRING_DHXPARAMS    "\x58\x39\x2e\x34\x32\x20\x44\x48\x20\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53"
+# define PEM_STRING_SSL_SESSION  "\x53\x53\x4c\x20\x53\x45\x53\x53\x49\x4f\x4e\x20\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53"
+# define PEM_STRING_DSAPARAMS    "\x44\x53\x41\x20\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53"
+# define PEM_STRING_ECDSA_PUBLIC "\x45\x43\x44\x53\x41\x20\x50\x55\x42\x4c\x49\x43\x20\x4b\x45\x59"
+# define PEM_STRING_ECPARAMETERS "\x45\x43\x20\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53"
+# define PEM_STRING_ECPRIVATEKEY "\x45\x43\x20\x50\x52\x49\x56\x41\x54\x45\x20\x4b\x45\x59"
+# define PEM_STRING_PARAMETERS   "\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53"
+# define PEM_STRING_CMS          "\x43\x4d\x53"
 
   /*
    * Note that this structure is initialised by PEM_SealInit and cleaned up

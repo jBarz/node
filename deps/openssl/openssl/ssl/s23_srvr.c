@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -387,13 +387,13 @@ int ssl23_get_client_hello(SSL *s)
                     type = 3;
                 }
             }
-        } else if ((strncmp("GET ", (char *)p, 4) == 0) ||
-                   (strncmp("POST ", (char *)p, 5) == 0) ||
-                   (strncmp("HEAD ", (char *)p, 5) == 0) ||
-                   (strncmp("PUT ", (char *)p, 4) == 0)) {
+        } else if ((strncmp("\x47\x45\x54\x20", (char *)p, 4) == 0) ||
+                   (strncmp("\x50\x4f\x53\x54\x20", (char *)p, 5) == 0) ||
+                   (strncmp("\x48\x45\x41\x44\x20", (char *)p, 5) == 0) ||
+                   (strncmp("\x50\x55\x54\x20", (char *)p, 4) == 0)) {
             SSLerr(SSL_F_SSL23_GET_CLIENT_HELLO, SSL_R_HTTP_REQUEST);
             goto err;
-        } else if (strncmp("CONNECT", (char *)p, 7) == 0) {
+        } else if (strncmp("\x43\x4f\x4e\x4e\x45\x43\x54", (char *)p, 7) == 0) {
             SSLerr(SSL_F_SSL23_GET_CLIENT_HELLO, SSL_R_HTTPS_PROXY_REQUEST);
             goto err;
         }
@@ -477,7 +477,7 @@ int ssl23_get_client_hello(SSL *s)
                                                           * Client Hello, can
                                                           * we? Error
                                                           * condition should
-                                                          * be * '>'
+                                                          * be * '\x3e'
                                                           * otherweise */
             SSLerr(SSL_F_SSL23_GET_CLIENT_HELLO,
                    SSL_R_RECORD_LENGTH_MISMATCH);

@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -127,11 +127,11 @@ int PKCS12_key_gen_uni(unsigned char *pass, int passlen, unsigned char *salt,
 
     EVP_MD_CTX_init(&ctx);
 #ifdef  DEBUG_KEYGEN
-    fprintf(stderr, "KEYGEN DEBUG\n");
-    fprintf(stderr, "ID %d, ITER %d\n", id, iter);
-    fprintf(stderr, "Password (length %d):\n", passlen);
+    fprintf(stderr, "\x4b\x45\x59\x47\x45\x4e\x20\x44\x45\x42\x55\x47\xa");
+    fprintf(stderr, "\x49\x44\x20\x25\x64\x2c\x20\x49\x54\x45\x52\x20\x25\x64\xa", id, iter);
+    fprintf(stderr, "\x50\x61\x73\x73\x77\x6f\x72\x64\x20\x28\x6c\x65\x6e\x67\x74\x68\x20\x25\x64\x29\x3a\xa", passlen);
     h__dump(pass, passlen);
-    fprintf(stderr, "Salt (length %d):\n", saltlen);
+    fprintf(stderr, "\x53\x61\x6c\x74\x20\x28\x6c\x65\x6e\x67\x74\x68\x20\x25\x64\x29\x3a\xa", saltlen);
     h__dump(salt, saltlen);
 #endif
     v = EVP_MD_block_size(md_type);
@@ -174,7 +174,7 @@ int PKCS12_key_gen_uni(unsigned char *pass, int passlen, unsigned char *salt,
         memcpy(out, Ai, min(n, u));
         if (u >= n) {
 #ifdef DEBUG_KEYGEN
-            fprintf(stderr, "Output KEY (length %d)\n", tmpn);
+            fprintf(stderr, "\x4f\x75\x74\x70\x75\x74\x20\x4b\x45\x59\x20\x28\x6c\x65\x6e\x67\x74\x68\x20\x25\x64\x29\xa", tmpn);
             h__dump(tmpout, tmpn);
 #endif
             ret = 1;
@@ -232,7 +232,7 @@ int PKCS12_key_gen_uni(unsigned char *pass, int passlen, unsigned char *salt,
 void h__dump(unsigned char *p, int len)
 {
     for (; len--; p++)
-        fprintf(stderr, "%02X", *p);
-    fprintf(stderr, "\n");
+        fprintf(stderr, "\x25\x30\x32\x58", *p);
+    fprintf(stderr, "\xa");
 }
 #endif

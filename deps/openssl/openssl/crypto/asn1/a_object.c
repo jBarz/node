@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -102,8 +102,8 @@ int a2d_ASN1_OBJECT(unsigned char *out, int olen, const char *buf, int num)
     p = buf;
     c = *(p++);
     num--;
-    if ((c >= '0') && (c <= '2')) {
-        first = c - '0';
+    if ((c >= '\x30') && (c <= '\x32')) {
+        first = c - '\x30';
     } else {
         ASN1err(ASN1_F_A2D_ASN1_OBJECT, ASN1_R_FIRST_NUM_TOO_LARGE);
         goto err;
@@ -118,7 +118,7 @@ int a2d_ASN1_OBJECT(unsigned char *out, int olen, const char *buf, int num)
     for (;;) {
         if (num <= 0)
             break;
-        if ((c != '.') && (c != ' ')) {
+        if ((c != '\x2e') && (c != '\x20')) {
             ASN1err(ASN1_F_A2D_ASN1_OBJECT, ASN1_R_INVALID_SEPARATOR);
             goto err;
         }
@@ -129,9 +129,9 @@ int a2d_ASN1_OBJECT(unsigned char *out, int olen, const char *buf, int num)
                 break;
             num--;
             c = *(p++);
-            if ((c == ' ') || (c == '.'))
+            if ((c == '\x20') || (c == '\x2e'))
                 break;
-            if ((c < '0') || (c > '9')) {
+            if ((c < '\x30') || (c > '\x39')) {
                 ASN1err(ASN1_F_A2D_ASN1_OBJECT, ASN1_R_INVALID_DIGIT);
                 goto err;
             }
@@ -144,10 +144,10 @@ int a2d_ASN1_OBJECT(unsigned char *out, int olen, const char *buf, int num)
             }
             if (use_bn) {
                 if (!BN_mul_word(bl, 10L)
-                    || !BN_add_word(bl, c - '0'))
+                    || !BN_add_word(bl, c - '\x30'))
                     goto err;
             } else
-                l = l * 10L + (long)(c - '0');
+                l = l * 10L + (long)(c - '\x30');
         }
         if (len == 0) {
             if ((first < 2) && (l >= 40)) {
@@ -225,7 +225,7 @@ int i2a_ASN1_OBJECT(BIO *bp, ASN1_OBJECT *a)
     int i;
 
     if ((a == NULL) || (a->data == NULL))
-        return (BIO_write(bp, "NULL", 4));
+        return (BIO_write(bp, "\x4e\x55\x4c\x4c", 4));
     i = i2t_ASN1_OBJECT(buf, sizeof buf, a);
     if (i > (int)(sizeof(buf) - 1)) {
         p = OPENSSL_malloc(i + 1);
@@ -234,7 +234,7 @@ int i2a_ASN1_OBJECT(BIO *bp, ASN1_OBJECT *a)
         i2t_ASN1_OBJECT(p, i + 1, a);
     }
     if (i <= 0)
-        return BIO_write(bp, "<INVALID>", 9);
+        return BIO_write(bp, "\x3c\x49\x4e\x56\x41\x4c\x49\x44\x3e", 9);
     BIO_write(bp, p, i);
     if (p != buf)
         OPENSSL_free(p);
@@ -367,7 +367,7 @@ void ASN1_OBJECT_free(ASN1_OBJECT *a)
         return;
     if (a->flags & ASN1_OBJECT_FLAG_DYNAMIC_STRINGS) {
 #ifndef CONST_STRICT            /* disable purely for compile-time strict
-                                 * const checking. Doing this on a "real"
+                                 * const checking. Doing this on a "\x72\x65\x61\x6c"
                                  * compile will cause memory leaks */
         if (a->sn != NULL)
             OPENSSL_free((void *)a->sn);

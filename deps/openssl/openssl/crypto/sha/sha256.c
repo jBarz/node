@@ -14,7 +14,7 @@
 # include <openssl/sha.h>
 # include <openssl/opensslv.h>
 
-const char SHA256_version[] = "SHA-256" OPENSSL_VERSION_PTEXT;
+const char SHA256_version[] = "\x53\x48\x41\x2d\x32\x35\x36" OPENSSL_VERSION_PTEXT;
 
 fips_md_init_ctx(SHA224, SHA256)
 {

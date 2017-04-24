@@ -66,7 +66,7 @@ static int app_fileno(FILE *fp)
 
 static int app_fsetmod(FILE *fp, char mod)
 {
-    return _setmode(_fileno(fp), mod == 'b' ? _O_BINARY : _O_TEXT);
+    return _setmode(_fileno(fp), mod == '\x62' ? _O_BINARY : _O_TEXT);
 }
 
 #ifdef __cplusplus

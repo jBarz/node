@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -116,12 +116,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -133,7 +133,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -448,7 +448,7 @@ void ssl_load_ciphers(void)
     }
     ssl_digest_methods[SSL_MD_GOST89MAC_IDX] =
         EVP_get_digestbyname(SN_id_Gost28147_89_MAC);
-    ssl_mac_pkey_id[SSL_MD_GOST89MAC_IDX] = get_optional_pkey_id("gost-mac");
+    ssl_mac_pkey_id[SSL_MD_GOST89MAC_IDX] = get_optional_pkey_id("\x67\x6f\x73\x74\x2d\x6d\x61\x63");
     if (ssl_mac_pkey_id[SSL_MD_GOST89MAC_IDX]) {
         ssl_mac_secret_size[SSL_MD_GOST89MAC_IDX] = 32;
     }
@@ -650,23 +650,23 @@ int ssl_cipher_get_evp(const SSL_SESSION *s, const EVP_CIPHER **enc,
 
         if (c->algorithm_enc == SSL_RC4 &&
             c->algorithm_mac == SSL_MD5 &&
-            (evp = EVP_get_cipherbyname("RC4-HMAC-MD5")))
+            (evp = EVP_get_cipherbyname("\x52\x43\x34\x2d\x48\x4d\x41\x43\x2d\x4d\x44\x35")))
             *enc = evp, *md = NULL;
         else if (c->algorithm_enc == SSL_AES128 &&
                  c->algorithm_mac == SSL_SHA1 &&
-                 (evp = EVP_get_cipherbyname("AES-128-CBC-HMAC-SHA1")))
+                 (evp = EVP_get_cipherbyname("\x41\x45\x53\x2d\x31\x32\x38\x2d\x43\x42\x43\x2d\x48\x4d\x41\x43\x2d\x53\x48\x41\x31")))
             *enc = evp, *md = NULL;
         else if (c->algorithm_enc == SSL_AES256 &&
                  c->algorithm_mac == SSL_SHA1 &&
-                 (evp = EVP_get_cipherbyname("AES-256-CBC-HMAC-SHA1")))
+                 (evp = EVP_get_cipherbyname("\x41\x45\x53\x2d\x32\x35\x36\x2d\x43\x42\x43\x2d\x48\x4d\x41\x43\x2d\x53\x48\x41\x31")))
             *enc = evp, *md = NULL;
         else if (c->algorithm_enc == SSL_AES128 &&
                  c->algorithm_mac == SSL_SHA256 &&
-                 (evp = EVP_get_cipherbyname("AES-128-CBC-HMAC-SHA256")))
+                 (evp = EVP_get_cipherbyname("\x41\x45\x53\x2d\x31\x32\x38\x2d\x43\x42\x43\x2d\x48\x4d\x41\x43\x2d\x53\x48\x41\x32\x35\x36")))
             *enc = evp, *md = NULL;
         else if (c->algorithm_enc == SSL_AES256 &&
                  c->algorithm_mac == SSL_SHA256 &&
-                 (evp = EVP_get_cipherbyname("AES-256-CBC-HMAC-SHA256")))
+                 (evp = EVP_get_cipherbyname("\x41\x45\x53\x2d\x32\x35\x36\x2d\x43\x42\x43\x2d\x48\x4d\x41\x43\x2d\x53\x48\x41\x32\x35\x36")))
             *enc = evp, *md = NULL;
         return (1);
     } else
@@ -687,7 +687,7 @@ int ssl_get_handshake_digest(int idx, long *mask, const EVP_MD **md)
 }
 
 #define ITEM_SEP(a) \
-        (((a) == ':') || ((a) == ' ') || ((a) == ';') || ((a) == ','))
+        (((a) == '\x3a') || ((a) == '\x20') || ((a) == '\x3b') || ((a) == '\x2c'))
 
 static void ll_append_tail(CIPHER_ORDER **head, CIPHER_ORDER *curr,
                            CIPHER_ORDER **tail)
@@ -766,10 +766,10 @@ static void ssl_cipher_get_disabled(unsigned long *mkey, unsigned long *auth,
      * Check for presence of GOST 34.10 algorithms, and if they do not
      * present, disable appropriate auth and key exchange
      */
-    if (!get_optional_pkey_id("gost94")) {
+    if (!get_optional_pkey_id("\x67\x6f\x73\x74\x39\x34")) {
         *auth |= SSL_aGOST94;
     }
-    if (!get_optional_pkey_id("gost2001")) {
+    if (!get_optional_pkey_id("\x67\x6f\x73\x74\x32\x30\x30\x31")) {
         *auth |= SSL_aGOST01;
     }
     /*
@@ -858,7 +858,7 @@ static void ssl_cipher_collect_ciphers(const SSL_METHOD *ssl_method,
             co_list[co_list_num].active = 0;
             co_list_num++;
 #ifdef KSSL_DEBUG
-            fprintf(stderr, "\t%d: %s %lx %lx %lx\n", i, c->name, c->id,
+            fprintf(stderr, "\x9\x25\x64\x3a\x20\x25\x73\x20\x25\x6c\x78\x20\x25\x6c\x78\x20\x25\x6c\x78\xa", i, c->name, c->id,
                     c->algorithm_mkey, c->algorithm_auth);
 #endif                          /* KSSL_DEBUG */
             /*
@@ -976,7 +976,7 @@ static void ssl_cipher_apply_rule(unsigned long cipher_id,
 
 #ifdef CIPHER_DEBUG
     fprintf(stderr,
-            "Applying rule %d with %08lx/%08lx/%08lx/%08lx/%08lx %08lx (%d)\n",
+            "\x41\x70\x70\x6c\x79\x69\x6e\x67\x20\x72\x75\x6c\x65\x20\x25\x64\x20\x77\x69\x74\x68\x20\x25\x30\x38\x6c\x78\x2f\x25\x30\x38\x6c\x78\x2f\x25\x30\x38\x6c\x78\x2f\x25\x30\x38\x6c\x78\x2f\x25\x30\x38\x6c\x78\x20\x25\x30\x38\x6c\x78\x20\x28\x25\x64\x29\xa",
             rule, alg_mkey, alg_auth, alg_enc, alg_mac, alg_ssl,
             algo_strength, strength_bits);
 #endif
@@ -1020,7 +1020,7 @@ static void ssl_cipher_apply_rule(unsigned long cipher_id,
         } else {
 #ifdef CIPHER_DEBUG
             fprintf(stderr,
-                    "\nName: %s:\nAlgo = %08lx/%08lx/%08lx/%08lx/%08lx Algo_strength = %08lx\n",
+                    "\xa\x4e\x61\x6d\x65\x3a\x20\x25\x73\x3a\xaA\x6c\x67\x6f\x20\x3d\x20\x25\x30\x38\x6c\x78\x2f\x25\x30\x38\x6c\x78\x2f\x25\x30\x38\x6c\x78\x2f\x25\x30\x38\x6c\x78\x2f\x25\x30\x38\x6c\x78\x20\x41\x6c\x67\x6f\x5f\x73\x74\x72\x65\x6e\x67\x74\x68\x20\x3d\x20\x25\x30\x38\x6c\x78\xa",
                     cp->name, cp->algorithm_mkey, cp->algorithm_auth,
                     cp->algorithm_enc, cp->algorithm_mac, cp->algorithm_ssl,
                     cp->algo_strength);
@@ -1051,7 +1051,7 @@ static void ssl_cipher_apply_rule(unsigned long cipher_id,
         }
 
 #ifdef CIPHER_DEBUG
-        fprintf(stderr, "Action = %d\n", rule);
+        fprintf(stderr, "\x41\x63\x74\x69\x6f\x6e\x20\x3d\x20\x25\x64\xa", rule);
 #endif
 
         /* add the cipher if it has not been added yet. */
@@ -1166,18 +1166,18 @@ static int ssl_cipher_process_rulestr(const char *rule_str,
     for (;;) {
         ch = *l;
 
-        if (ch == '\0')
+        if (ch == '\x0')
             break;              /* done */
-        if (ch == '-') {
+        if (ch == '\x2d') {
             rule = CIPHER_DEL;
             l++;
-        } else if (ch == '+') {
+        } else if (ch == '\x2b') {
             rule = CIPHER_ORD;
             l++;
-        } else if (ch == '!') {
+        } else if (ch == '\x21') {
             rule = CIPHER_KILL;
             l++;
-        } else if (ch == '@') {
+        } else if (ch == '\x40') {
             rule = CIPHER_SPECIAL;
             l++;
         } else {
@@ -1201,11 +1201,11 @@ static int ssl_cipher_process_rulestr(const char *rule_str,
             buf = l;
             buflen = 0;
 #ifndef CHARSET_EBCDIC
-            while (((ch >= 'A') && (ch <= 'Z')) ||
-                   ((ch >= '0') && (ch <= '9')) ||
-                   ((ch >= 'a') && (ch <= 'z')) || (ch == '-') || (ch == '.'))
+            while (((ch >= '\x41') && (ch <= '\x5a')) ||
+                   ((ch >= '\x30') && (ch <= '\x39')) ||
+                   ((ch >= '\x61') && (ch <= '\x7a')) || (ch == '\x2d') || (ch == '\x2e'))
 #else
-            while (isalnum(ch) || (ch == '-') || (ch == '.'))
+            while (isalnum(ch) || (ch == '\x2d') || (ch == '\x2e'))
 #endif
             {
                 ch = *(++l);
@@ -1231,7 +1231,7 @@ static int ssl_cipher_process_rulestr(const char *rule_str,
             }
 
             /* check for multi-part specification */
-            if (ch == '+') {
+            if (ch == '\x2b') {
                 multi = 1;
                 l++;
             } else
@@ -1252,7 +1252,7 @@ static int ssl_cipher_process_rulestr(const char *rule_str,
             cipher_id = 0;
             while (ca_list[j]) {
                 if (!strncmp(buf, ca_list[j]->name, buflen) &&
-                    (ca_list[j]->name[buflen] == '\0')) {
+                    (ca_list[j]->name[buflen] == '\x0')) {
                     found = 1;
                     break;
                 } else
@@ -1371,7 +1371,7 @@ static int ssl_cipher_process_rulestr(const char *rule_str,
          */
         if (rule == CIPHER_SPECIAL) { /* special command */
             ok = 0;
-            if ((buflen == 8) && !strncmp(buf, "STRENGTH", 8))
+            if ((buflen == 8) && !strncmp(buf, "\x53\x54\x52\x45\x4e\x47\x54\x48", 8))
                 ok = ssl_cipher_strength_sort(head_p, tail_p);
             else
                 SSLerr(SSL_F_SSL_CIPHER_PROCESS_RULESTR,
@@ -1384,7 +1384,7 @@ static int ssl_cipher_process_rulestr(const char *rule_str,
              * rest of the command, if any left, until
              * end or ':' is found.
              */
-            while ((*l != '\0') && !ITEM_SEP(*l))
+            while ((*l != '\x0') && !ITEM_SEP(*l))
                 l++;
         } else if (found) {
             ssl_cipher_apply_rule(cipher_id,
@@ -1392,10 +1392,10 @@ static int ssl_cipher_process_rulestr(const char *rule_str,
                                   alg_ssl, algo_strength, rule, -1, head_p,
                                   tail_p);
         } else {
-            while ((*l != '\0') && !ITEM_SEP(*l))
+            while ((*l != '\x0') && !ITEM_SEP(*l))
                 l++;
         }
-        if (*l == '\0')
+        if (*l == '\x0')
             break;              /* done */
     }
 
@@ -1407,14 +1407,14 @@ static int check_suiteb_cipher_list(const SSL_METHOD *meth, CERT *c,
                                     const char **prule_str)
 {
     unsigned int suiteb_flags = 0, suiteb_comb2 = 0;
-    if (strncmp(*prule_str, "SUITEB128ONLY", 13) == 0) {
+    if (strncmp(*prule_str, "\x53\x55\x49\x54\x45\x42\x31\x32\x38\x4f\x4e\x4c\x59", 13) == 0) {
         suiteb_flags = SSL_CERT_FLAG_SUITEB_128_LOS_ONLY;
-    } else if (strncmp(*prule_str, "SUITEB128C2", 11) == 0) {
+    } else if (strncmp(*prule_str, "\x53\x55\x49\x54\x45\x42\x31\x32\x38\x43\x32", 11) == 0) {
         suiteb_comb2 = 1;
         suiteb_flags = SSL_CERT_FLAG_SUITEB_128_LOS;
-    } else if (strncmp(*prule_str, "SUITEB128", 9) == 0) {
+    } else if (strncmp(*prule_str, "\x53\x55\x49\x54\x45\x42\x31\x32\x38", 9) == 0) {
         suiteb_flags = SSL_CERT_FLAG_SUITEB_128_LOS;
-    } else if (strncmp(*prule_str, "SUITEB192", 9) == 0) {
+    } else if (strncmp(*prule_str, "\x53\x55\x49\x54\x45\x42\x31\x39\x32", 9) == 0) {
         suiteb_flags = SSL_CERT_FLAG_SUITEB_192_LOS;
     }
 
@@ -1441,16 +1441,16 @@ static int check_suiteb_cipher_list(const SSL_METHOD *meth, CERT *c,
     switch (suiteb_flags) {
     case SSL_CERT_FLAG_SUITEB_128_LOS:
         if (suiteb_comb2)
-            *prule_str = "ECDHE-ECDSA-AES256-GCM-SHA384";
+            *prule_str = "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34";
         else
             *prule_str =
-                "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384";
+                "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36\x3a\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34";
         break;
     case SSL_CERT_FLAG_SUITEB_128_LOS_ONLY:
-        *prule_str = "ECDHE-ECDSA-AES128-GCM-SHA256";
+        *prule_str = "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x31\x32\x38\x2d\x47\x43\x4d\x2d\x53\x48\x41\x32\x35\x36";
         break;
     case SSL_CERT_FLAG_SUITEB_192_LOS:
-        *prule_str = "ECDHE-ECDSA-AES256-GCM-SHA384";
+        *prule_str = "\x45\x43\x44\x48\x45\x2d\x45\x43\x44\x53\x41\x2d\x41\x45\x53\x32\x35\x36\x2d\x47\x43\x4d\x2d\x53\x48\x41\x33\x38\x34";
         break;
     }
     /* Set auto ECDH parameter determination */
@@ -1501,7 +1501,7 @@ STACK_OF(SSL_CIPHER) *ssl_create_cipher_list(const SSL_METHOD *ssl_method, STACK
      */
     num_of_ciphers = ssl_method->num_ciphers();
 #ifdef KSSL_DEBUG
-    fprintf(stderr, "ssl_create_cipher_list() for %d ciphers\n",
+    fprintf(stderr, "\x73\x73\x6c\x5f\x63\x72\x65\x61\x74\x65\x5f\x63\x69\x70\x68\x65\x72\x5f\x6c\x69\x73\x74\x28\x29\x20\x66\x6f\x72\x20\x25\x64\x20\x63\x69\x70\x68\x65\x72\x73\xa",
             num_of_ciphers);
 #endif                          /* KSSL_DEBUG */
     co_list =
@@ -1602,11 +1602,11 @@ STACK_OF(SSL_CIPHER) *ssl_create_cipher_list(const SSL_METHOD *ssl_method, STACK
      */
     ok = 1;
     rule_p = rule_str;
-    if (strncmp(rule_str, "DEFAULT", 7) == 0) {
+    if (strncmp(rule_str, "\x44\x45\x46\x41\x55\x4c\x54", 7) == 0) {
         ok = ssl_cipher_process_rulestr(SSL_DEFAULT_CIPHER_LIST,
                                         &head, &tail, ca_list);
         rule_p += 7;
-        if (*rule_p == ':')
+        if (*rule_p == '\x3a')
             rule_p++;
     }
 
@@ -1643,7 +1643,7 @@ STACK_OF(SSL_CIPHER) *ssl_create_cipher_list(const SSL_METHOD *ssl_method, STACK
         {
             sk_SSL_CIPHER_push(cipherstack, curr->cipher);
 #ifdef CIPHER_DEBUG
-            fprintf(stderr, "<%s>\n", curr->cipher->name);
+            fprintf(stderr, "\x3c\x25\x73\x3e\xa", curr->cipher->name);
 #endif
         }
     }
@@ -1675,10 +1675,10 @@ char *SSL_CIPHER_description(const SSL_CIPHER *cipher, char *buf, int len)
     unsigned long alg_mkey, alg_auth, alg_enc, alg_mac, alg_ssl, alg2;
 #ifdef KSSL_DEBUG
     static const char *format =
-        "%-23s %s Kx=%-8s Au=%-4s Enc=%-9s Mac=%-4s%s AL=%lx/%lx/%lx/%lx/%lx\n";
+        "\x25\x2d\x32\x33\x73\x20\x25\x73\x20\x4b\x78\x3d\x25\x2d\x38\x73\x20\x41\x75\x3d\x25\x2d\x34\x73\x20\x45\x6e\x63\x3d\x25\x2d\x39\x73\x20\x4d\x61\x63\x3d\x25\x2d\x34\x73\x25\x73\x20\x41\x4c\x3d\x25\x6c\x78\x2f\x25\x6c\x78\x2f\x25\x6c\x78\x2f\x25\x6c\x78\x2f\x25\x6c\x78\xa";
 #else
     static const char *format =
-        "%-23s %s Kx=%-8s Au=%-4s Enc=%-9s Mac=%-4s%s\n";
+        "\x25\x2d\x32\x33\x73\x20\x25\x73\x20\x4b\x78\x3d\x25\x2d\x38\x73\x20\x41\x75\x3d\x25\x2d\x34\x73\x20\x45\x6e\x63\x3d\x25\x2d\x39\x73\x20\x4d\x61\x63\x3d\x25\x2d\x34\x73\x25\x73\xa";
 #endif                          /* KSSL_DEBUG */
 
     alg_mkey = cipher->algorithm_mkey;
@@ -1692,167 +1692,167 @@ char *SSL_CIPHER_description(const SSL_CIPHER *cipher, char *buf, int len)
     is_export = SSL_C_IS_EXPORT(cipher);
     pkl = SSL_C_EXPORT_PKEYLENGTH(cipher);
     kl = SSL_C_EXPORT_KEYLENGTH(cipher);
-    exp_str = is_export ? " export" : "";
+    exp_str = is_export ? "\x20\x65\x78\x70\x6f\x72\x74" : "";
 
     if (alg_ssl & SSL_SSLV2)
-        ver = "SSLv2";
+        ver = "\x53\x53\x4c\x76\x32";
     else if (alg_ssl & SSL_SSLV3)
-        ver = "SSLv3";
+        ver = "\x53\x53\x4c\x76\x33";
     else if (alg_ssl & SSL_TLSV1_2)
-        ver = "TLSv1.2";
+        ver = "\x54\x4c\x53\x76\x31\x2e\x32";
     else
-        ver = "unknown";
+        ver = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
 
     switch (alg_mkey) {
     case SSL_kRSA:
-        kx = is_export ? (pkl == 512 ? "RSA(512)" : "RSA(1024)") : "RSA";
+        kx = is_export ? (pkl == 512 ? "\x52\x53\x41\x28\x35\x31\x32\x29" : "\x52\x53\x41\x28\x31\x30\x32\x34\x29") : "\x52\x53\x41";
         break;
     case SSL_kDHr:
-        kx = "DH/RSA";
+        kx = "\x44\x48\x2f\x52\x53\x41";
         break;
     case SSL_kDHd:
-        kx = "DH/DSS";
+        kx = "\x44\x48\x2f\x44\x53\x53";
         break;
     case SSL_kKRB5:
-        kx = "KRB5";
+        kx = "\x4b\x52\x42\x35";
         break;
     case SSL_kEDH:
-        kx = is_export ? (pkl == 512 ? "DH(512)" : "DH(1024)") : "DH";
+        kx = is_export ? (pkl == 512 ? "\x44\x48\x28\x35\x31\x32\x29" : "\x44\x48\x28\x31\x30\x32\x34\x29") : "\x44\x48";
         break;
     case SSL_kECDHr:
-        kx = "ECDH/RSA";
+        kx = "\x45\x43\x44\x48\x2f\x52\x53\x41";
         break;
     case SSL_kECDHe:
-        kx = "ECDH/ECDSA";
+        kx = "\x45\x43\x44\x48\x2f\x45\x43\x44\x53\x41";
         break;
     case SSL_kEECDH:
-        kx = "ECDH";
+        kx = "\x45\x43\x44\x48";
         break;
     case SSL_kPSK:
-        kx = "PSK";
+        kx = "\x50\x53\x4b";
         break;
     case SSL_kSRP:
-        kx = "SRP";
+        kx = "\x53\x52\x50";
         break;
     case SSL_kGOST:
-        kx = "GOST";
+        kx = "\x47\x4f\x53\x54";
         break;
     default:
-        kx = "unknown";
+        kx = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
     }
 
     switch (alg_auth) {
     case SSL_aRSA:
-        au = "RSA";
+        au = "\x52\x53\x41";
         break;
     case SSL_aDSS:
-        au = "DSS";
+        au = "\x44\x53\x53";
         break;
     case SSL_aDH:
-        au = "DH";
+        au = "\x44\x48";
         break;
     case SSL_aKRB5:
-        au = "KRB5";
+        au = "\x4b\x52\x42\x35";
         break;
     case SSL_aECDH:
-        au = "ECDH";
+        au = "\x45\x43\x44\x48";
         break;
     case SSL_aNULL:
-        au = "None";
+        au = "\x4e\x6f\x6e\x65";
         break;
     case SSL_aECDSA:
-        au = "ECDSA";
+        au = "\x45\x43\x44\x53\x41";
         break;
     case SSL_aPSK:
-        au = "PSK";
+        au = "\x50\x53\x4b";
         break;
     case SSL_aSRP:
-        au = "SRP";
+        au = "\x53\x52\x50";
         break;
     case SSL_aGOST94:
-        au = "GOST94";
+        au = "\x47\x4f\x53\x54\x39\x34";
         break;
     case SSL_aGOST01:
-        au = "GOST01";
+        au = "\x47\x4f\x53\x54\x30\x31";
         break;
     default:
-        au = "unknown";
+        au = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
         break;
     }
 
     switch (alg_enc) {
     case SSL_DES:
-        enc = (is_export && kl == 5) ? "DES(40)" : "DES(56)";
+        enc = (is_export && kl == 5) ? "\x44\x45\x53\x28\x34\x30\x29" : "\x44\x45\x53\x28\x35\x36\x29";
         break;
     case SSL_3DES:
-        enc = "3DES(168)";
+        enc = "\x33\x44\x45\x53\x28\x31\x36\x38\x29";
         break;
     case SSL_RC4:
-        enc = is_export ? (kl == 5 ? "RC4(40)" : "RC4(56)")
-            : ((alg2 & SSL2_CF_8_BYTE_ENC) ? "RC4(64)" : "RC4(128)");
+        enc = is_export ? (kl == 5 ? "\x52\x43\x34\x28\x34\x30\x29" : "\x52\x43\x34\x28\x35\x36\x29")
+            : ((alg2 & SSL2_CF_8_BYTE_ENC) ? "\x52\x43\x34\x28\x36\x34\x29" : "\x52\x43\x34\x28\x31\x32\x38\x29");
         break;
     case SSL_RC2:
-        enc = is_export ? (kl == 5 ? "RC2(40)" : "RC2(56)") : "RC2(128)";
+        enc = is_export ? (kl == 5 ? "\x52\x43\x32\x28\x34\x30\x29" : "\x52\x43\x32\x28\x35\x36\x29") : "\x52\x43\x32\x28\x31\x32\x38\x29";
         break;
     case SSL_IDEA:
-        enc = "IDEA(128)";
+        enc = "\x49\x44\x45\x41\x28\x31\x32\x38\x29";
         break;
     case SSL_eNULL:
-        enc = "None";
+        enc = "\x4e\x6f\x6e\x65";
         break;
     case SSL_AES128:
-        enc = "AES(128)";
+        enc = "\x41\x45\x53\x28\x31\x32\x38\x29";
         break;
     case SSL_AES256:
-        enc = "AES(256)";
+        enc = "\x41\x45\x53\x28\x32\x35\x36\x29";
         break;
     case SSL_AES128GCM:
-        enc = "AESGCM(128)";
+        enc = "\x41\x45\x53\x47\x43\x4d\x28\x31\x32\x38\x29";
         break;
     case SSL_AES256GCM:
-        enc = "AESGCM(256)";
+        enc = "\x41\x45\x53\x47\x43\x4d\x28\x32\x35\x36\x29";
         break;
     case SSL_CAMELLIA128:
-        enc = "Camellia(128)";
+        enc = "\x43\x61\x6d\x65\x6c\x6c\x69\x61\x28\x31\x32\x38\x29";
         break;
     case SSL_CAMELLIA256:
-        enc = "Camellia(256)";
+        enc = "\x43\x61\x6d\x65\x6c\x6c\x69\x61\x28\x32\x35\x36\x29";
         break;
     case SSL_SEED:
-        enc = "SEED(128)";
+        enc = "\x53\x45\x45\x44\x28\x31\x32\x38\x29";
         break;
     case SSL_eGOST2814789CNT:
-        enc = "GOST89(256)";
+        enc = "\x47\x4f\x53\x54\x38\x39\x28\x32\x35\x36\x29";
         break;
     default:
-        enc = "unknown";
+        enc = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
         break;
     }
 
     switch (alg_mac) {
     case SSL_MD5:
-        mac = "MD5";
+        mac = "\x4d\x44\x35";
         break;
     case SSL_SHA1:
-        mac = "SHA1";
+        mac = "\x53\x48\x41\x31";
         break;
     case SSL_SHA256:
-        mac = "SHA256";
+        mac = "\x53\x48\x41\x32\x35\x36";
         break;
     case SSL_SHA384:
-        mac = "SHA384";
+        mac = "\x53\x48\x41\x33\x38\x34";
         break;
     case SSL_AEAD:
-        mac = "AEAD";
+        mac = "\x41\x45\x41\x44";
         break;
     case SSL_GOST89MAC:
-        mac = "GOST89";
+        mac = "\x47\x4f\x53\x54\x38\x39";
         break;
     case SSL_GOST94:
-        mac = "GOST94";
+        mac = "\x47\x4f\x53\x54\x39\x34";
         break;
     default:
-        mac = "unknown";
+        mac = "\x75\x6e\x6b\x6e\x6f\x77\x6e";
         break;
     }
 
@@ -1860,9 +1860,9 @@ char *SSL_CIPHER_description(const SSL_CIPHER *cipher, char *buf, int len)
         len = 128;
         buf = OPENSSL_malloc(len);
         if (buf == NULL)
-            return ("OPENSSL_malloc Error");
+            return ("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x6d\x61\x6c\x6c\x6f\x63\x20\x45\x72\x72\x6f\x72");
     } else if (len < 128)
-        return ("Buffer too small");
+        return ("\x42\x75\x66\x66\x65\x72\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c");
 
 #ifdef KSSL_DEBUG
     BIO_snprintf(buf, len, format, cipher->name, ver, kx, au, enc, mac,
@@ -1879,14 +1879,14 @@ char *SSL_CIPHER_get_version(const SSL_CIPHER *c)
     int i;
 
     if (c == NULL)
-        return ("(NONE)");
+        return ("\x28\x4e\x4f\x4e\x45\x29");
     i = (int)(c->id >> 24L);
     if (i == 3)
-        return ("TLSv1/SSLv3");
+        return ("\x54\x4c\x53\x76\x31\x2f\x53\x53\x4c\x76\x33");
     else if (i == 2)
-        return ("SSLv2");
+        return ("\x53\x53\x4c\x76\x32");
     else
-        return ("unknown");
+        return ("\x75\x6e\x6b\x6e\x6f\x77\x6e");
 }
 
 /* return the actual cipher being used */
@@ -1894,7 +1894,7 @@ const char *SSL_CIPHER_get_name(const SSL_CIPHER *c)
 {
     if (c != NULL)
         return (c->name);
-    return ("(NONE)");
+    return ("\x28\x4e\x4f\x4e\x45\x29");
 }
 
 /* number of bits for symmetric cipher */

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -64,28 +64,28 @@ int main(int argc, char *argv[])
     DES_cblock k, k1;
     int i;
 
-    printf("read passwd\n");
-    if ((i = des_read_password(&k, "Enter password:", 0)) == 0) {
-        printf("password = ");
+    printf("\x72\x65\x61\x64\x20\x70\x61\x73\x73\x77\x64\xa");
+    if ((i = des_read_password(&k, "\x45\x6e\x74\x65\x72\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x3a", 0)) == 0) {
+        printf("\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x3d\x20");
         for (i = 0; i < 8; i++)
-            printf("%02x ", k[i]);
+            printf("\x25\x30\x32\x78\x20", k[i]);
     } else
-        printf("error %d\n", i);
-    printf("\n");
-    printf("read 2passwds and verify\n");
+        printf("\x65\x72\x72\x6f\x72\x20\x25\x64\xa", i);
+    printf("\xa");
+    printf("\x72\x65\x61\x64\x20\x32\x70\x61\x73\x73\x77\x64\x73\x20\x61\x6e\x64\x20\x76\x65\x72\x69\x66\x79\xa");
     if ((i = des_read_2passwords(&k, &k1,
-                                 "Enter verified password:", 1)) == 0) {
-        printf("password1 = ");
+                                 "\x45\x6e\x74\x65\x72\x20\x76\x65\x72\x69\x66\x69\x65\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x3a", 1)) == 0) {
+        printf("\x70\x61\x73\x73\x77\x6f\x72\x64\x31\x20\x3d\x20");
         for (i = 0; i < 8; i++)
-            printf("%02x ", k[i]);
-        printf("\n");
-        printf("password2 = ");
+            printf("\x25\x30\x32\x78\x20", k[i]);
+        printf("\xa");
+        printf("\x70\x61\x73\x73\x77\x6f\x72\x64\x32\x20\x3d\x20");
         for (i = 0; i < 8; i++)
-            printf("%02x ", k1[i]);
-        printf("\n");
+            printf("\x25\x30\x32\x78\x20", k1[i]);
+        printf("\xa");
         exit(1);
     } else {
-        printf("error %d\n", i);
+        printf("\x65\x72\x72\x6f\x72\x20\x25\x64\xa", i);
         exit(0);
     }
 #ifdef LINT

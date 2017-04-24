@@ -70,14 +70,14 @@ char *DES_crypt(const char *buf, const char *salt)
     char *ret;
 
     /* Copy at most 2 chars of salt */
-    if ((e_salt[0] = salt[0]) != '\0')
+    if ((e_salt[0] = salt[0]) != '\x0')
         e_salt[1] = salt[1];
 
     /* Copy at most 32 chars of password */
     strncpy(e_buf, buf, sizeof(e_buf));
 
     /* Make sure we have a delimiter */
-    e_salt[sizeof(e_salt) - 1] = e_buf[sizeof(e_buf) - 1] = '\0';
+    e_salt[sizeof(e_salt) - 1] = e_buf[sizeof(e_buf) - 1] = '\x0';
 
     /* Convert the e_salt to ASCII, as that's what DES_fcrypt works on */
     ebcdic2ascii(e_salt, e_salt, sizeof e_salt);
@@ -115,14 +115,14 @@ char *DES_fcrypt(const char *buf, const char *salt, char *ret)
      * passwd :-(.
      */
 #ifndef CHARSET_EBCDIC
-    x = ret[0] = ((salt[0] == '\0') ? 'A' : salt[0]);
+    x = ret[0] = ((salt[0] == '\x0') ? '\x41' : salt[0]);
     Eswap0 = con_salt[x] << 2;
-    x = ret[1] = ((salt[1] == '\0') ? 'A' : salt[1]);
+    x = ret[1] = ((salt[1] == '\x0') ? '\x41' : salt[1]);
     Eswap1 = con_salt[x] << 6;
 #else
-    x = ret[0] = ((salt[0] == '\0') ? os_toascii['A'] : salt[0]);
+    x = ret[0] = ((salt[0] == '\x0') ? os_toascii['\x41'] : salt[0]);
     Eswap0 = con_salt[x] << 2;
-    x = ret[1] = ((salt[1] == '\0') ? os_toascii['A'] : salt[1]);
+    x = ret[1] = ((salt[1] == '\x0') ? os_toascii['\x41'] : salt[1]);
     Eswap1 = con_salt[x] << 6;
 #endif
 
@@ -162,6 +162,6 @@ char *DES_fcrypt(const char *buf, const char *salt, char *ret)
         }
         ret[i] = cov_2char[c];
     }
-    ret[13] = '\0';
+    ret[13] = '\x0';
     return (ret);
 }

@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     long len;
     unsigned char *data;
     unsigned char *dataend;
-    char *dummytick = "Hello World!";
+    char *dummytick = "\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64\x21";
     unsigned int tmplen;
     unsigned int type;
     unsigned int size;
@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
                         /* Ticket data is as we expected */
                         testresult = 1;
                     } else {
-                        printf("Received session ticket is not as expected\n");
+                        printf("\x52\x65\x63\x65\x69\x76\x65\x64\x20\x73\x65\x73\x73\x69\x6f\x6e\x20\x74\x69\x63\x6b\x65\x74\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x73\x20\x65\x78\x70\x65\x63\x74\x65\x64\xa");
                     }
                     break;
                 }
@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
         SSL_free(con);
         SSL_CTX_free(ctx);
         if (!testresult) {
-            printf("ClientHello test: FAILED (Test %d)\n", currtest);
+            printf("\x43\x6c\x69\x65\x6e\x74\x48\x65\x6c\x6c\x6f\x20\x74\x65\x73\x74\x3a\x20\x46\x41\x49\x4c\x45\x44\x20\x28\x54\x65\x73\x74\x20\x25\x64\x29\xa", currtest);
             break;
         }
     }

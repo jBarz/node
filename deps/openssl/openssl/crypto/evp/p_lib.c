@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -390,13 +390,13 @@ void EVP_PKEY_free(EVP_PKEY *x)
 
     i = CRYPTO_add(&x->references, -1, CRYPTO_LOCK_EVP_PKEY);
 #ifdef REF_PRINT
-    REF_PRINT("EVP_PKEY", x);
+    REF_PRINT("\x45\x56\x50\x5f\x50\x4b\x45\x59", x);
 #endif
     if (i > 0)
         return;
 #ifdef REF_CHECK
     if (i < 0) {
-        fprintf(stderr, "EVP_PKEY_free, bad reference count\n");
+        fprintf(stderr, "\x45\x56\x50\x5f\x50\x4b\x45\x59\x5f\x66\x72\x65\x65\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
         abort();
     }
 #endif
@@ -424,7 +424,7 @@ static int unsup_alg(BIO *out, const EVP_PKEY *pkey, int indent,
                      const char *kstr)
 {
     BIO_indent(out, indent, 128);
-    BIO_printf(out, "%s algorithm \"%s\" unsupported\n",
+    BIO_printf(out, "\x25\x73\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x22\x25\x73\x22\x20\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\xa",
                kstr, OBJ_nid2ln(pkey->type));
     return 1;
 }
@@ -435,7 +435,7 @@ int EVP_PKEY_print_public(BIO *out, const EVP_PKEY *pkey,
     if (pkey->ameth && pkey->ameth->pub_print)
         return pkey->ameth->pub_print(out, pkey, indent, pctx);
 
-    return unsup_alg(out, pkey, indent, "Public Key");
+    return unsup_alg(out, pkey, indent, "\x50\x75\x62\x6c\x69\x63\x20\x4b\x65\x79");
 }
 
 int EVP_PKEY_print_private(BIO *out, const EVP_PKEY *pkey,
@@ -444,7 +444,7 @@ int EVP_PKEY_print_private(BIO *out, const EVP_PKEY *pkey,
     if (pkey->ameth && pkey->ameth->priv_print)
         return pkey->ameth->priv_print(out, pkey, indent, pctx);
 
-    return unsup_alg(out, pkey, indent, "Private Key");
+    return unsup_alg(out, pkey, indent, "\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79");
 }
 
 int EVP_PKEY_print_params(BIO *out, const EVP_PKEY *pkey,
@@ -452,7 +452,7 @@ int EVP_PKEY_print_params(BIO *out, const EVP_PKEY *pkey,
 {
     if (pkey->ameth && pkey->ameth->param_print)
         return pkey->ameth->param_print(out, pkey, indent, pctx);
-    return unsup_alg(out, pkey, indent, "Parameters");
+    return unsup_alg(out, pkey, indent, "\x50\x61\x72\x61\x6d\x65\x74\x65\x72\x73");
 }
 
 int EVP_PKEY_get_default_digest_nid(EVP_PKEY *pkey, int *pnid)

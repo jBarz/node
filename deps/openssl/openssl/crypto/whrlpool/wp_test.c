@@ -12,7 +12,7 @@
 #if defined(OPENSSL_NO_WHIRLPOOL)
 int main(int argc, char *argv[])
 {
-    printf("No Whirlpool support\n");
+    printf("\x4e\x6f\x20\x57\x68\x69\x72\x6c\x70\x6f\x6f\x6c\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -131,109 +131,109 @@ int main(int argc, char *argv[])
     {
         char *env;
 
-        if ((env = getenv("OPENSSL_ia32cap")))
+        if ((env = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x69\x61\x33\x32\x63\x61\x70")))
             OPENSSL_ia32cap = strtoul(env, NULL, 0);
     }
 # endif
 
-    fprintf(stdout, "Testing Whirlpool ");
+    fprintf(stdout, "\x54\x65\x73\x74\x69\x6e\x67\x20\x57\x68\x69\x72\x6c\x70\x6f\x6f\x6c\x20");
 
     WHIRLPOOL("", 0, md);
     if (memcmp(md, iso_test_1, sizeof(iso_test_1))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 1 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x31\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    WHIRLPOOL("a", 1, md);
+    WHIRLPOOL("\x61", 1, md);
     if (memcmp(md, iso_test_2, sizeof(iso_test_2))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 2 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x32\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    WHIRLPOOL("abc", 3, md);
+    WHIRLPOOL("\x61\x62\x63", 3, md);
     if (memcmp(md, iso_test_3, sizeof(iso_test_3))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 3 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x33\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    WHIRLPOOL("message digest", 14, md);
+    WHIRLPOOL("\x6d\x65\x73\x73\x61\x67\x65\x20\x64\x69\x67\x65\x73\x74", 14, md);
     if (memcmp(md, iso_test_4, sizeof(iso_test_4))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 4 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x34\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    WHIRLPOOL("abcdefghijklmnopqrstuvwxyz", 26, md);
+    WHIRLPOOL("\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a", 26, md);
     if (memcmp(md, iso_test_5, sizeof(iso_test_5))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 5 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x35\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    WHIRLPOOL("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-              "abcdefghijklmnopqrstuvwxyz" "0123456789", 62, md);
+    WHIRLPOOL("\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a"
+              "\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a" "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39", 62, md);
     if (memcmp(md, iso_test_6, sizeof(iso_test_6))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 6 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x36\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    WHIRLPOOL("1234567890" "1234567890" "1234567890" "1234567890"
-              "1234567890" "1234567890" "1234567890" "1234567890", 80, md);
+    WHIRLPOOL("\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30" "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30" "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30" "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30"
+              "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30" "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30" "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30" "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30", 80, md);
     if (memcmp(md, iso_test_7, sizeof(iso_test_7))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 7 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x37\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    WHIRLPOOL("abcdbcdecdefdefgefghfghighijhijk", 32, md);
+    WHIRLPOOL("\x61\x62\x63\x64\x62\x63\x64\x65\x63\x64\x65\x66\x64\x65\x66\x67\x65\x66\x67\x68\x66\x67\x68\x69\x67\x68\x69\x6a\x68\x69\x6a\x6b", 32, md);
     if (memcmp(md, iso_test_8, sizeof(iso_test_8))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 8 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x38\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
     WHIRLPOOL_Init(&ctx);
     for (i = 0; i < 1000000; i += 288)
-        WHIRLPOOL_Update(&ctx, "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa"
-                         "aaaaaaaa" "aaaaaaaa" "aaaaaaaa" "aaaaaaaa",
+        WHIRLPOOL_Update(&ctx, "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61"
+                         "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61" "\x61\x61\x61\x61\x61\x61\x61\x61",
                          (1000000 - i) < 288 ? 1000000 - i : 288);
     WHIRLPOOL_Final(md, &ctx);
     if (memcmp(md, iso_test_9, sizeof(iso_test_9))) {
         fflush(stdout);
-        fprintf(stderr, "\nTEST 9 of 9 failed.\n");
+        fprintf(stderr, "\xa\x54\x45\x53\x54\x20\x39\x20\x6f\x66\x20\x39\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return 1;
     } else
-        fprintf(stdout, ".");
+        fprintf(stdout, "\x2e");
     fflush(stdout);
 
-    fprintf(stdout, " passed.\n");
+    fprintf(stdout, "\x20\x70\x61\x73\x73\x65\x64\x2e\xa");
     fflush(stdout);
 
     return 0;

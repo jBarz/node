@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -122,7 +122,7 @@
 #include <openssl/rand.h>
 #include "ssl_locl.h"
 
-const char tls1_version_str[] = "TLSv1" OPENSSL_VERSION_PTEXT;
+const char tls1_version_str[] = "\x54\x4c\x53\x76\x31" OPENSSL_VERSION_PTEXT;
 
 #ifndef OPENSSL_NO_TLSEXT
 static int tls_decrypt_ticket(SSL *s, const unsigned char *tick, int ticklen,
@@ -724,7 +724,7 @@ int tls1_set_curves_list(unsigned char **pext, size_t *pextlen,
 {
     nid_cb_st ncb;
     ncb.nidcnt = 0;
-    if (!CONF_parse_list(str, ':', 1, nid_cb, &ncb))
+    if (!CONF_parse_list(str, '\x3a', 1, nid_cb, &ncb))
         return 0;
     if (pext == NULL)
         return 1;
@@ -2168,7 +2168,7 @@ static int ssl_scan_clienthello_tlsext(SSL *s, unsigned char **p,
         if (limit - data < size)
             goto err;
 # if 0
-        fprintf(stderr, "Received extension type %d size %d\n", type, size);
+        fprintf(stderr, "\x52\x65\x63\x65\x69\x76\x65\x64\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x20\x74\x79\x70\x65\x20\x25\x64\x20\x73\x69\x7a\x65\x20\x25\x64\xa", type, size);
 # endif
         if (s->tlsext_debug_cb)
             s->tlsext_debug_cb(s, 0, type, data, size, s->tlsext_debug_arg);
@@ -2235,7 +2235,7 @@ static int ssl_scan_clienthello_tlsext(SSL *s, unsigned char **p,
                                 return 0;
                             }
                             memcpy(s->session->tlsext_hostname, sdata, len);
-                            s->session->tlsext_hostname[len] = '\0';
+                            s->session->tlsext_hostname[len] = '\x0';
                             if (strlen(s->session->tlsext_hostname) != len) {
                                 OPENSSL_free(s->session->tlsext_hostname);
                                 s->session->tlsext_hostname = NULL;
@@ -2271,7 +2271,7 @@ static int ssl_scan_clienthello_tlsext(SSL *s, unsigned char **p,
             if ((s->srp_ctx.login = OPENSSL_malloc(len + 1)) == NULL)
                 return -1;
             memcpy(s->srp_ctx.login, &data[1], len);
-            s->srp_ctx.login[len] = '\0';
+            s->srp_ctx.login[len] = '\x0';
 
             if (strlen(s->srp_ctx.login) != len)
                 goto err;
@@ -2304,12 +2304,12 @@ static int ssl_scan_clienthello_tlsext(SSL *s, unsigned char **p,
             }
 #  if 0
             fprintf(stderr,
-                    "ssl_parse_clienthello_tlsext s->session->tlsext_ecpointformatlist (length=%i) ",
+                    "\x73\x73\x6c\x5f\x70\x61\x72\x73\x65\x5f\x63\x6c\x69\x65\x6e\x74\x68\x65\x6c\x6c\x6f\x5f\x74\x6c\x73\x65\x78\x74\x20\x73\x2d\x3e\x73\x65\x73\x73\x69\x6f\x6e\x2d\x3e\x74\x6c\x73\x65\x78\x74\x5f\x65\x63\x70\x6f\x69\x6e\x74\x66\x6f\x72\x6d\x61\x74\x6c\x69\x73\x74\x20\x28\x6c\x65\x6e\x67\x74\x68\x3d\x25\x69\x29\x20",
                     s->session->tlsext_ecpointformatlist_length);
             sdata = s->session->tlsext_ecpointformatlist;
             for (i = 0; i < s->session->tlsext_ecpointformatlist_length; i++)
-                fprintf(stderr, "%i ", *(sdata++));
-            fprintf(stderr, "\n");
+                fprintf(stderr, "\x25\x69\x20", *(sdata++));
+            fprintf(stderr, "\xa");
 #  endif
         } else if (type == TLSEXT_TYPE_elliptic_curves) {
             unsigned char *sdata = data;
@@ -2339,12 +2339,12 @@ static int ssl_scan_clienthello_tlsext(SSL *s, unsigned char **p,
             }
 #  if 0
             fprintf(stderr,
-                    "ssl_parse_clienthello_tlsext s->session->tlsext_ellipticcurvelist (length=%i) ",
+                    "\x73\x73\x6c\x5f\x70\x61\x72\x73\x65\x5f\x63\x6c\x69\x65\x6e\x74\x68\x65\x6c\x6c\x6f\x5f\x74\x6c\x73\x65\x78\x74\x20\x73\x2d\x3e\x73\x65\x73\x73\x69\x6f\x6e\x2d\x3e\x74\x6c\x73\x65\x78\x74\x5f\x65\x6c\x6c\x69\x70\x74\x69\x63\x63\x75\x72\x76\x65\x6c\x69\x73\x74\x20\x28\x6c\x65\x6e\x67\x74\x68\x3d\x25\x69\x29\x20",
                     s->session->tlsext_ellipticcurvelist_length);
             sdata = s->session->tlsext_ellipticcurvelist;
             for (i = 0; i < s->session->tlsext_ellipticcurvelist_length; i++)
-                fprintf(stderr, "%i ", *(sdata++));
-            fprintf(stderr, "\n");
+                fprintf(stderr, "\x25\x69\x20", *(sdata++));
+            fprintf(stderr, "\xa");
 #  endif
         }
 # endif                         /* OPENSSL_NO_EC */
@@ -2730,11 +2730,11 @@ static int ssl_scan_serverhello_tlsext(SSL *s, unsigned char **p,
             }
 #  if 0
             fprintf(stderr,
-                    "ssl_parse_serverhello_tlsext s->session->tlsext_ecpointformatlist ");
+                    "\x73\x73\x6c\x5f\x70\x61\x72\x73\x65\x5f\x73\x65\x72\x76\x65\x72\x68\x65\x6c\x6c\x6f\x5f\x74\x6c\x73\x65\x78\x74\x20\x73\x2d\x3e\x73\x65\x73\x73\x69\x6f\x6e\x2d\x3e\x74\x6c\x73\x65\x78\x74\x5f\x65\x63\x70\x6f\x69\x6e\x74\x66\x6f\x72\x6d\x61\x74\x6c\x69\x73\x74\x20");
             sdata = s->session->tlsext_ecpointformatlist;
             for (i = 0; i < s->session->tlsext_ecpointformatlist_length; i++)
-                fprintf(stderr, "%i ", *(sdata++));
-            fprintf(stderr, "\n");
+                fprintf(stderr, "\x25\x69\x20", *(sdata++));
+            fprintf(stderr, "\xa");
 #  endif
         }
 # endif                         /* OPENSSL_NO_EC */
@@ -4148,7 +4148,7 @@ static int sig_cb(const char *elem, int len, void *arg)
         return 0;
     memcpy(etmp, elem, len);
     etmp[len] = 0;
-    p = strchr(etmp, '+');
+    p = strchr(etmp, '\x2b');
     if (!p)
         return 0;
     *p = 0;
@@ -4156,11 +4156,11 @@ static int sig_cb(const char *elem, int len, void *arg)
     if (!*p)
         return 0;
 
-    if (!strcmp(etmp, "RSA"))
+    if (!strcmp(etmp, "\x52\x53\x41"))
         sig_alg = EVP_PKEY_RSA;
-    else if (!strcmp(etmp, "DSA"))
+    else if (!strcmp(etmp, "\x44\x53\x41"))
         sig_alg = EVP_PKEY_DSA;
-    else if (!strcmp(etmp, "ECDSA"))
+    else if (!strcmp(etmp, "\x45\x43\x44\x53\x41"))
         sig_alg = EVP_PKEY_EC;
     else
         return 0;
@@ -4188,7 +4188,7 @@ int tls1_set_sigalgs_list(CERT *c, const char *str, int client)
 {
     sig_cb_st sig;
     sig.sigalgcnt = 0;
-    if (!CONF_parse_list(str, ':', 1, sig_cb, &sig))
+    if (!CONF_parse_list(str, '\x3a', 1, sig_cb, &sig))
         return 0;
     if (c == NULL)
         return 1;

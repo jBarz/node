@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -74,31 +74,31 @@
 # undef PROG
 # define PROG srp_main
 
-# define BASE_SECTION    "srp"
-# define CONFIG_FILE "openssl.cnf"
+# define BASE_SECTION    "\x73\x72\x70"
+# define CONFIG_FILE "\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x63\x6e\x66"
 
-# define ENV_RANDFILE            "RANDFILE"
+# define ENV_RANDFILE            "\x52\x41\x4e\x44\x46\x49\x4c\x45"
 
-# define ENV_DATABASE            "srpvfile"
-# define ENV_DEFAULT_SRP         "default_srp"
+# define ENV_DATABASE            "\x73\x72\x70\x76\x66\x69\x6c\x65"
+# define ENV_DEFAULT_SRP         "\x64\x65\x66\x61\x75\x6c\x74\x5f\x73\x72\x70"
 
 static char *srp_usage[] = {
-    "usage: srp [args] [user] \n",
-    "\n",
-    " -verbose        Talk alot while doing things\n",
-    " -config file    A config file\n",
-    " -name arg       The particular srp definition to use\n",
-    " -srpvfile arg   The srp verifier file name\n",
-    " -add            add an user and srp verifier\n",
-    " -modify         modify the srp verifier of an existing user\n",
-    " -delete         delete user from verifier file\n",
-    " -list           list user\n",
-    " -gn arg         g and N values to be used for new verifier\n",
-    " -userinfo arg   additional info to be set for user\n",
-    " -passin arg     input file pass phrase source\n",
-    " -passout arg    output file pass phrase source\n",
+    "\x75\x73\x61\x67\x65\x3a\x20\x73\x72\x70\x20\x5b\x61\x72\x67\x73\x5d\x20\x5b\x75\x73\x65\x72\x5d\x20\xa",
+    "\xa",
+    "\x20\x2d\x76\x65\x72\x62\x6f\x73\x65\x20\x20\x20\x20\x20\x20\x20\x20\x54\x61\x6c\x6b\x20\x61\x6c\x6f\x74\x20\x77\x68\x69\x6c\x65\x20\x64\x6f\x69\x6e\x67\x20\x74\x68\x69\x6e\x67\x73\xa",
+    "\x20\x2d\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x41\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\xa",
+    "\x20\x2d\x6e\x61\x6d\x65\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x54\x68\x65\x20\x70\x61\x72\x74\x69\x63\x75\x6c\x61\x72\x20\x73\x72\x70\x20\x64\x65\x66\x69\x6e\x69\x74\x69\x6f\x6e\x20\x74\x6f\x20\x75\x73\x65\xa",
+    "\x20\x2d\x73\x72\x70\x76\x66\x69\x6c\x65\x20\x61\x72\x67\x20\x20\x20\x54\x68\x65\x20\x73\x72\x70\x20\x76\x65\x72\x69\x66\x69\x65\x72\x20\x66\x69\x6c\x65\x20\x6e\x61\x6d\x65\xa",
+    "\x20\x2d\x61\x64\x64\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x61\x64\x64\x20\x61\x6e\x20\x75\x73\x65\x72\x20\x61\x6e\x64\x20\x73\x72\x70\x20\x76\x65\x72\x69\x66\x69\x65\x72\xa",
+    "\x20\x2d\x6d\x6f\x64\x69\x66\x79\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6d\x6f\x64\x69\x66\x79\x20\x74\x68\x65\x20\x73\x72\x70\x20\x76\x65\x72\x69\x66\x69\x65\x72\x20\x6f\x66\x20\x61\x6e\x20\x65\x78\x69\x73\x74\x69\x6e\x67\x20\x75\x73\x65\x72\xa",
+    "\x20\x2d\x64\x65\x6c\x65\x74\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x65\x6c\x65\x74\x65\x20\x75\x73\x65\x72\x20\x66\x72\x6f\x6d\x20\x76\x65\x72\x69\x66\x69\x65\x72\x20\x66\x69\x6c\x65\xa",
+    "\x20\x2d\x6c\x69\x73\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6c\x69\x73\x74\x20\x75\x73\x65\x72\xa",
+    "\x20\x2d\x67\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x67\x20\x61\x6e\x64\x20\x4e\x20\x76\x61\x6c\x75\x65\x73\x20\x74\x6f\x20\x62\x65\x20\x75\x73\x65\x64\x20\x66\x6f\x72\x20\x6e\x65\x77\x20\x76\x65\x72\x69\x66\x69\x65\x72\xa",
+    "\x20\x2d\x75\x73\x65\x72\x69\x6e\x66\x6f\x20\x61\x72\x67\x20\x20\x20\x61\x64\x64\x69\x74\x69\x6f\x6e\x61\x6c\x20\x69\x6e\x66\x6f\x20\x74\x6f\x20\x62\x65\x20\x73\x65\x74\x20\x66\x6f\x72\x20\x75\x73\x65\x72\xa",
+    "\x20\x2d\x70\x61\x73\x73\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa",
+    "\x20\x2d\x70\x61\x73\x73\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa",
 # ifndef OPENSSL_NO_ENGINE
-    " -engine e         - use engine e, possibly a hardware device.\n",
+    "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa",
 # endif
     NULL
 };
@@ -146,16 +146,16 @@ static void print_entry(CA_DB *db, BIO *bio, int indx, int verbose, char *s)
     if (indx >= 0 && verbose) {
         int j;
         char **pp = sk_OPENSSL_PSTRING_value(db->db->data, indx);
-        BIO_printf(bio, "%s \"%s\"\n", s, pp[DB_srpid]);
+        BIO_printf(bio, "\x25\x73\x20\x22\x25\x73\x22\xa", s, pp[DB_srpid]);
         for (j = 0; j < DB_NUMBER; j++) {
-            BIO_printf(bio_err, "  %d = \"%s\"\n", j, pp[j]);
+            BIO_printf(bio_err, "\x20\x20\x25\x64\x20\x3d\x20\x22\x25\x73\x22\xa", j, pp[j]);
         }
     }
 }
 
 static void print_index(CA_DB *db, BIO *bio, int indexindex, int verbose)
 {
-    print_entry(db, bio, indexindex, verbose, "g N entry");
+    print_entry(db, bio, indexindex, verbose, "\x67\x20\x4e\x20\x65\x6e\x74\x72\x79");
 }
 
 static void print_user(CA_DB *db, BIO *bio, int userindex, int verbose)
@@ -163,10 +163,10 @@ static void print_user(CA_DB *db, BIO *bio, int userindex, int verbose)
     if (verbose > 0) {
         char **pp = sk_OPENSSL_PSTRING_value(db->db->data, userindex);
 
-        if (pp[DB_srptype][0] != 'I') {
-            print_entry(db, bio, userindex, verbose, "User entry");
-            print_entry(db, bio, get_index(db, pp[DB_srpgN], 'I'), verbose,
-                        "g N entry");
+        if (pp[DB_srptype][0] != '\x49') {
+            print_entry(db, bio, userindex, verbose, "\x55\x73\x65\x72\x20\x65\x6e\x74\x72\x79");
+            print_entry(db, bio, get_index(db, pp[DB_srpgN], '\x49'), verbose,
+                        "\x67\x20\x4e\x20\x65\x6e\x74\x72\x79");
         }
 
     }
@@ -179,7 +179,7 @@ static int update_index(CA_DB *db, BIO *bio, char **row)
 
     if ((irow =
          (char **)OPENSSL_malloc(sizeof(char *) * (DB_NUMBER + 1))) == NULL) {
-        BIO_printf(bio_err, "Memory allocation failure\n");
+        BIO_printf(bio_err, "\x4d\x65\x6d\x6f\x72\x79\x20\x61\x6c\x6c\x6f\x63\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
         return 0;
     }
 
@@ -190,8 +190,8 @@ static int update_index(CA_DB *db, BIO *bio, char **row)
     irow[DB_NUMBER] = NULL;
 
     if (!TXT_DB_insert(db->db, irow)) {
-        BIO_printf(bio, "failed to update srpvfile\n");
-        BIO_printf(bio, "TXT_DB error number %ld\n", db->db->error);
+        BIO_printf(bio, "\x66\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x75\x70\x64\x61\x74\x65\x20\x73\x72\x70\x76\x66\x69\x6c\x65\xa");
+        BIO_printf(bio, "\x54\x58\x54\x5f\x44\x42\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x25\x6c\x64\xa", db->db->error);
         OPENSSL_free(irow);
         return 0;
     }
@@ -200,7 +200,7 @@ static int update_index(CA_DB *db, BIO *bio, char **row)
 
 static void lookup_fail(const char *name, char *tag)
 {
-    BIO_printf(bio_err, "variable lookup failed for %s::%s\n", name, tag);
+    BIO_printf(bio_err, "\x76\x61\x72\x69\x61\x62\x6c\x65\x20\x6c\x6f\x6f\x6b\x75\x70\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x25\x73\x3a\x3a\x25\x73\xa", name, tag);
 }
 
 static char *srp_verify_user(const char *user, const char *srp_verifier,
@@ -217,15 +217,15 @@ static char *srp_verify_user(const char *user, const char *srp_verifier,
 
     if (password_callback(password, 1024, 0, &cb_tmp) > 0) {
         VERBOSE BIO_printf(bio,
-                           "Validating\n   user=\"%s\"\n srp_verifier=\"%s\"\n srp_usersalt=\"%s\"\n g=\"%s\"\n N=\"%s\"\n",
+                           "\x56\x61\x6c\x69\x64\x61\x74\x69\x6e\x67\xa\x20\x20\x20\x75\x73\x65\x72\x3d\x22\x25\x73\x22\xa\x20\x73\x72\x70\x5f\x76\x65\x72\x69\x66\x69\x65\x72\x3d\x22\x25\x73\x22\xa\x20\x73\x72\x70\x5f\x75\x73\x65\x72\x73\x61\x6c\x74\x3d\x22\x25\x73\x22\xa\x20\x67\x3d\x22\x25\x73\x22\xa\x20\x4e\x3d\x22\x25\x73\x22\xa",
                            user, srp_verifier, srp_usersalt, g, N);
-        BIO_printf(bio, "Pass %s\n", password);
+        BIO_printf(bio, "\x50\x61\x73\x73\x20\x25\x73\xa", password);
 
         if (!
             (gNid =
              SRP_create_verifier(user, password, &srp_usersalt, &verifier, N,
                                  g))) {
-            BIO_printf(bio, "Internal error validating SRP verifier\n");
+            BIO_printf(bio, "\x49\x6e\x74\x65\x72\x6e\x61\x6c\x20\x65\x72\x72\x6f\x72\x20\x76\x61\x6c\x69\x64\x61\x74\x69\x6e\x67\x20\x53\x52\x50\x20\x76\x65\x72\x69\x66\x69\x65\x72\xa");
         } else {
             if (strcmp(verifier, srp_verifier))
                 gNid = NULL;
@@ -248,16 +248,16 @@ static char *srp_create_user(char *user, char **srp_verifier,
 
     if (password_callback(password, 1024, 1, &cb_tmp) > 0) {
         VERBOSE BIO_printf(bio,
-                           "Creating\n user=\"%s\"\n g=\"%s\"\n N=\"%s\"\n",
+                           "\x43\x72\x65\x61\x74\x69\x6e\x67\xa\x20\x75\x73\x65\x72\x3d\x22\x25\x73\x22\xa\x20\x67\x3d\x22\x25\x73\x22\xa\x20\x4e\x3d\x22\x25\x73\x22\xa",
                            user, g, N);
         if (!
             (gNid =
              SRP_create_verifier(user, password, &salt, srp_verifier, N,
                                  g))) {
-            BIO_printf(bio, "Internal error creating SRP verifier\n");
+            BIO_printf(bio, "\x49\x6e\x74\x65\x72\x6e\x61\x6c\x20\x65\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x53\x52\x50\x20\x76\x65\x72\x69\x66\x69\x65\x72\xa");
         } else
             *srp_usersalt = salt;
-        VVERBOSE BIO_printf(bio, "gNid=%s salt =\"%s\"\n verifier =\"%s\"\n",
+        VVERBOSE BIO_printf(bio, "\x67\x4e\x69\x64\x3d\x25\x73\x20\x73\x61\x6c\x74\x20\x3d\x22\x25\x73\x22\xa\x20\x76\x65\x72\x69\x66\x69\x65\x72\x20\x3d\x22\x25\x73\x22\xa",
                             gNid, salt, *srp_verifier);
 
     }
@@ -316,56 +316,56 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc >= 1 && badops == 0) {
-        if (strcmp(*argv, "-verbose") == 0)
+        if (strcmp(*argv, "\x2d\x76\x65\x72\x62\x6f\x73\x65") == 0)
             verbose++;
-        else if (strcmp(*argv, "-config") == 0) {
+        else if (strcmp(*argv, "\x2d\x63\x6f\x6e\x66\x69\x67") == 0) {
             if (--argc < 1)
                 goto bad;
             configfile = *(++argv);
-        } else if (strcmp(*argv, "-name") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6e\x61\x6d\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             section = *(++argv);
-        } else if (strcmp(*argv, "-srpvfile") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x72\x70\x76\x66\x69\x6c\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             dbfile = *(++argv);
-        } else if (strcmp(*argv, "-add") == 0)
+        } else if (strcmp(*argv, "\x2d\x61\x64\x64") == 0)
             add_user = 1;
-        else if (strcmp(*argv, "-delete") == 0)
+        else if (strcmp(*argv, "\x2d\x64\x65\x6c\x65\x74\x65") == 0)
             delete_user = 1;
-        else if (strcmp(*argv, "-modify") == 0)
+        else if (strcmp(*argv, "\x2d\x6d\x6f\x64\x69\x66\x79") == 0)
             modify_user = 1;
-        else if (strcmp(*argv, "-list") == 0)
+        else if (strcmp(*argv, "\x2d\x6c\x69\x73\x74") == 0)
             list_user = 1;
-        else if (strcmp(*argv, "-gn") == 0) {
+        else if (strcmp(*argv, "\x2d\x67\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             gN = *(++argv);
-        } else if (strcmp(*argv, "-userinfo") == 0) {
+        } else if (strcmp(*argv, "\x2d\x75\x73\x65\x72\x69\x6e\x66\x6f") == 0) {
             if (--argc < 1)
                 goto bad;
             userinfo = *(++argv);
-        } else if (strcmp(*argv, "-passin") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x61\x73\x73\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             passargin = *(++argv);
-        } else if (strcmp(*argv, "-passout") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x61\x73\x73\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             passargout = *(++argv);
         }
 # ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*argv, "-engine") == 0) {
+        else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine = *(++argv);
         }
 # endif
 
-        else if (**argv == '-') {
+        else if (**argv == '\x2d') {
  bad:
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badops = 1;
             break;
         } else
@@ -377,34 +377,34 @@ int MAIN(int argc, char **argv)
 
     if (dbfile && configfile) {
         BIO_printf(bio_err,
-                   "-dbfile and -configfile cannot be specified together.\n");
+                   "\x2d\x64\x62\x66\x69\x6c\x65\x20\x61\x6e\x64\x20\x2d\x63\x6f\x6e\x66\x69\x67\x66\x69\x6c\x65\x20\x63\x61\x6e\x6e\x6f\x74\x20\x62\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x74\x6f\x67\x65\x74\x68\x65\x72\x2e\xa");
         badops = 1;
     }
     if (add_user + delete_user + modify_user + list_user != 1) {
         BIO_printf(bio_err,
-                   "Exactly one of the options -add, -delete, -modify -list must be specified.\n");
+                   "\x45\x78\x61\x63\x74\x6c\x79\x20\x6f\x6e\x65\x20\x6f\x66\x20\x74\x68\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x2d\x61\x64\x64\x2c\x20\x2d\x64\x65\x6c\x65\x74\x65\x2c\x20\x2d\x6d\x6f\x64\x69\x66\x79\x20\x2d\x6c\x69\x73\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x2e\xa");
         badops = 1;
     }
     if (delete_user + modify_user + delete_user == 1 && argc <= 0) {
         BIO_printf(bio_err,
-                   "Need at least one user for options -add, -delete, -modify. \n");
+                   "\x4e\x65\x65\x64\x20\x61\x74\x20\x6c\x65\x61\x73\x74\x20\x6f\x6e\x65\x20\x75\x73\x65\x72\x20\x66\x6f\x72\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x2d\x61\x64\x64\x2c\x20\x2d\x64\x65\x6c\x65\x74\x65\x2c\x20\x2d\x6d\x6f\x64\x69\x66\x79\x2e\x20\xa");
         badops = 1;
     }
     if ((passin || passout) && argc != 1) {
         BIO_printf(bio_err,
-                   "-passin, -passout arguments only valid with one user.\n");
+                   "\x2d\x70\x61\x73\x73\x69\x6e\x2c\x20\x2d\x70\x61\x73\x73\x6f\x75\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x20\x6f\x6e\x6c\x79\x20\x76\x61\x6c\x69\x64\x20\x77\x69\x74\x68\x20\x6f\x6e\x65\x20\x75\x73\x65\x72\x2e\xa");
         badops = 1;
     }
 
     if (badops) {
         for (pp = srp_usage; (*pp != NULL); pp++)
-            BIO_printf(bio_err, "%s", *pp);
+            BIO_printf(bio_err, "\x25\x73", *pp);
 
-        BIO_printf(bio_err, " -rand file%cfile%c...\n", LIST_SEPARATOR_CHAR,
+        BIO_printf(bio_err, "\x20\x2d\x72\x61\x6e\x64\x20\x66\x69\x6c\x65\x25\x63\x66\x69\x6c\x65\x25\x63\x2e\x2e\x2e\xa", LIST_SEPARATOR_CHAR,
                    LIST_SEPARATOR_CHAR);
         BIO_printf(bio_err,
-                   "                 load the file (or the files in the directory) into\n");
-        BIO_printf(bio_err, "                 the random number generator\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6c\x6f\x61\x64\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x20\x28\x6f\x72\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x73\x20\x69\x6e\x20\x74\x68\x65\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x29\x20\x69\x6e\x74\x6f\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\xa");
         goto err;
     }
 
@@ -413,7 +413,7 @@ int MAIN(int argc, char **argv)
     e = setup_engine(bio_err, engine, 0);
 
     if (!app_passwd(bio_err, passargin, passargout, &passin, &passout)) {
-        BIO_printf(bio_err, "Error getting passwords\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x73\xa");
         goto err;
     }
 
@@ -422,9 +422,9 @@ int MAIN(int argc, char **argv)
         /*****************************************************************/
         tofree = NULL;
         if (configfile == NULL)
-            configfile = getenv("OPENSSL_CONF");
+            configfile = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x43\x4f\x4e\x46");
         if (configfile == NULL)
-            configfile = getenv("SSLEAY_CONF");
+            configfile = getenv("\x53\x53\x4c\x45\x41\x59\x5f\x43\x4f\x4e\x46");
         if (configfile == NULL) {
             const char *s = X509_get_default_cert_area();
             size_t len;
@@ -433,7 +433,7 @@ int MAIN(int argc, char **argv)
             len = strlen(s) + sizeof(CONFIG_FILE);
             tofree = OPENSSL_malloc(len);
             if (!tofree) {
-                BIO_printf(bio_err, "Out of memory\n");
+                BIO_printf(bio_err, "\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
                 goto err;
             }
             strcpy(tofree, s);
@@ -441,25 +441,25 @@ int MAIN(int argc, char **argv)
             len = strlen(s) + sizeof(CONFIG_FILE) + 1;
             tofree = OPENSSL_malloc(len);
             if (!tofree) {
-                BIO_printf(bio_err, "Out of memory\n");
+                BIO_printf(bio_err, "\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
                 goto err;
             }
             BUF_strlcpy(tofree, s, len);
-            BUF_strlcat(tofree, "/", len);
+            BUF_strlcat(tofree, "\x2f", len);
 # endif
             BUF_strlcat(tofree, CONFIG_FILE, len);
             configfile = tofree;
         }
 
-        VERBOSE BIO_printf(bio_err, "Using configuration from %s\n",
+        VERBOSE BIO_printf(bio_err, "\x55\x73\x69\x6e\x67\x20\x63\x6f\x6e\x66\x69\x67\x75\x72\x61\x74\x69\x6f\x6e\x20\x66\x72\x6f\x6d\x20\x25\x73\xa",
                            configfile);
         conf = NCONF_new(NULL);
         if (NCONF_load(conf, configfile, &errorline) <= 0) {
             if (errorline <= 0)
-                BIO_printf(bio_err, "error loading the config file '%s'\n",
+                BIO_printf(bio_err, "\x65\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x74\x68\x65\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x27\x25\x73\x27\xa",
                            configfile);
             else
-                BIO_printf(bio_err, "error on line %ld of config file '%s'\n",
+                BIO_printf(bio_err, "\x65\x72\x72\x6f\x72\x20\x6f\x6e\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\x20\x6f\x66\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x27\x25\x73\x27\xa",
                            errorline, configfile);
             goto err;
         }
@@ -474,8 +474,8 @@ int MAIN(int argc, char **argv)
         /* Lets get the config section we are using */
         if (section == NULL) {
             VERBOSE BIO_printf(bio_err,
-                               "trying to read " ENV_DEFAULT_SRP
-                               " in \" BASE_SECTION \"\n");
+                               "\x74\x72\x79\x69\x6e\x67\x20\x74\x6f\x20\x72\x65\x61\x64\x20" ENV_DEFAULT_SRP
+                               "\x20\x69\x6e\x20\x22\x20\x42\x41\x53\x45\x5f\x53\x45\x43\x54\x49\x4f\x4e\x20\x22\xa");
 
             section = NCONF_get_string(conf, BASE_SECTION, ENV_DEFAULT_SRP);
             if (section == NULL) {
@@ -485,11 +485,11 @@ int MAIN(int argc, char **argv)
         }
 
         if (randfile == NULL && conf)
-            randfile = NCONF_get_string(conf, BASE_SECTION, "RANDFILE");
+            randfile = NCONF_get_string(conf, BASE_SECTION, "\x52\x41\x4e\x44\x46\x49\x4c\x45");
 
         VERBOSE BIO_printf(bio_err,
-                           "trying to read " ENV_DATABASE
-                           " in section \"%s\"\n", section);
+                           "\x74\x72\x79\x69\x6e\x67\x20\x74\x6f\x20\x72\x65\x61\x64\x20" ENV_DATABASE
+                           "\x20\x69\x6e\x20\x73\x65\x63\x74\x69\x6f\x6e\x20\x22\x25\x73\x22\xa", section);
 
         if ((dbfile = NCONF_get_string(conf, section, ENV_DATABASE)) == NULL) {
             lookup_fail(section, ENV_DATABASE);
@@ -502,7 +502,7 @@ int MAIN(int argc, char **argv)
     else
         app_RAND_load_file(randfile, bio_err, 0);
 
-    VERBOSE BIO_printf(bio_err, "Trying to read SRP verifier file \"%s\"\n",
+    VERBOSE BIO_printf(bio_err, "\x54\x72\x79\x69\x6e\x67\x20\x74\x6f\x20\x72\x65\x61\x64\x20\x53\x52\x50\x20\x76\x65\x72\x69\x66\x69\x65\x72\x20\x66\x69\x6c\x65\x20\x22\x25\x73\x22\xa",
                        dbfile);
 
     db = load_index(dbfile, &db_attr);
@@ -522,20 +522,20 @@ int MAIN(int argc, char **argv)
         }
     }
 
-    VERBOSE BIO_printf(bio_err, "Database initialised\n");
+    VERBOSE BIO_printf(bio_err, "\x44\x61\x74\x61\x62\x61\x73\x65\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x65\x64\xa");
 
     if (gNindex >= 0) {
         gNrow = sk_OPENSSL_PSTRING_value(db->db->data, gNindex);
-        print_entry(db, bio_err, gNindex, verbose > 1, "Default g and N");
+        print_entry(db, bio_err, gNindex, verbose > 1, "\x44\x65\x66\x61\x75\x6c\x74\x20\x67\x20\x61\x6e\x64\x20\x4e");
     } else if (maxgN > 0 && !SRP_get_default_gN(gN)) {
-        BIO_printf(bio_err, "No g and N value for index \"%s\"\n", gN);
+        BIO_printf(bio_err, "\x4e\x6f\x20\x67\x20\x61\x6e\x64\x20\x4e\x20\x76\x61\x6c\x75\x65\x20\x66\x6f\x72\x20\x69\x6e\x64\x65\x78\x20\x22\x25\x73\x22\xa", gN);
         goto err;
     } else {
-        VERBOSE BIO_printf(bio_err, "Database has no g N information.\n");
+        VERBOSE BIO_printf(bio_err, "\x44\x61\x74\x61\x62\x61\x73\x65\x20\x68\x61\x73\x20\x6e\x6f\x20\x67\x20\x4e\x20\x69\x6e\x66\x6f\x72\x6d\x61\x74\x69\x6f\x6e\x2e\xa");
         gNrow = NULL;
     }
 
-    VVERBOSE BIO_printf(bio_err, "Starting user processing\n");
+    VVERBOSE BIO_printf(bio_err, "\x53\x74\x61\x72\x74\x69\x6e\x67\x20\x75\x73\x65\x72\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\xa");
 
     if (argc > 0)
         user = *(argv++);
@@ -543,14 +543,14 @@ int MAIN(int argc, char **argv)
     while (list_user || user) {
         int userindex = -1;
         if (user)
-            VVERBOSE BIO_printf(bio_err, "Processing user \"%s\"\n", user);
-        if ((userindex = get_index(db, user, 'U')) >= 0) {
+            VVERBOSE BIO_printf(bio_err, "\x50\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\x20\x75\x73\x65\x72\x20\x22\x25\x73\x22\xa", user);
+        if ((userindex = get_index(db, user, '\x55')) >= 0) {
             print_user(db, bio_err, userindex, (verbose > 0) || list_user);
         }
 
         if (list_user) {
             if (user == NULL) {
-                BIO_printf(bio_err, "List all users\n");
+                BIO_printf(bio_err, "\x4c\x69\x73\x74\x20\x61\x6c\x6c\x20\x75\x73\x65\x72\x73\xa");
 
                 for (i = 0; i < sk_OPENSSL_PSTRING_num(db->db->data); i++) {
                     print_user(db, bio_err, i, 1);
@@ -558,7 +558,7 @@ int MAIN(int argc, char **argv)
                 list_user = 0;
             } else if (userindex < 0) {
                 BIO_printf(bio_err,
-                           "user \"%s\" does not exist, ignored. t\n", user);
+                           "\x75\x73\x65\x72\x20\x22\x25\x73\x22\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x65\x78\x69\x73\x74\x2c\x20\x69\x67\x6e\x6f\x72\x65\x64\x2e\x20\x74\xa", user);
                 errors++;
             }
         } else if (add_user) {
@@ -566,8 +566,8 @@ int MAIN(int argc, char **argv)
                 /* reactivation of a new user */
                 char **row =
                     sk_OPENSSL_PSTRING_value(db->db->data, userindex);
-                BIO_printf(bio_err, "user \"%s\" reactivated.\n", user);
-                row[DB_srptype][0] = 'V';
+                BIO_printf(bio_err, "\x75\x73\x65\x72\x20\x22\x25\x73\x22\x20\x72\x65\x61\x63\x74\x69\x76\x61\x74\x65\x64\x2e\xa", user);
+                row[DB_srptype][0] = '\x56';
 
                 doupdatedb = 1;
             } else {
@@ -584,13 +584,13 @@ int MAIN(int argc, char **argv)
                                      gNrow ? gNrow[DB_srpverifier] : NULL,
                                      passout, bio_err, verbose))) {
                     BIO_printf(bio_err,
-                               "Cannot create srp verifier for user \"%s\", operation abandoned .\n",
+                               "\x43\x61\x6e\x6e\x6f\x74\x20\x63\x72\x65\x61\x74\x65\x20\x73\x72\x70\x20\x76\x65\x72\x69\x66\x69\x65\x72\x20\x66\x6f\x72\x20\x75\x73\x65\x72\x20\x22\x25\x73\x22\x2c\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x61\x62\x61\x6e\x64\x6f\x6e\x65\x64\x20\x2e\xa",
                                user);
                     errors++;
                     goto err;
                 }
                 row[DB_srpid] = BUF_strdup(user);
-                row[DB_srptype] = BUF_strdup("v");
+                row[DB_srptype] = BUF_strdup("\x76");
                 row[DB_srpgN] = BUF_strdup(gNid);
 
                 if (!row[DB_srpid] || !row[DB_srpgN] || !row[DB_srptype]
@@ -621,7 +621,7 @@ int MAIN(int argc, char **argv)
         } else if (modify_user) {
             if (userindex < 0) {
                 BIO_printf(bio_err,
-                           "user \"%s\" does not exist, operation ignored.\n",
+                           "\x75\x73\x65\x72\x20\x22\x25\x73\x22\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x65\x78\x69\x73\x74\x2c\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x69\x67\x6e\x6f\x72\x65\x64\x2e\xa",
                            user);
                 errors++;
             } else {
@@ -629,19 +629,19 @@ int MAIN(int argc, char **argv)
                 char **row =
                     sk_OPENSSL_PSTRING_value(db->db->data, userindex);
                 char type = row[DB_srptype][0];
-                if (type == 'v') {
+                if (type == '\x76') {
                     BIO_printf(bio_err,
-                               "user \"%s\" already updated, operation ignored.\n",
+                               "\x75\x73\x65\x72\x20\x22\x25\x73\x22\x20\x61\x6c\x72\x65\x61\x64\x79\x20\x75\x70\x64\x61\x74\x65\x64\x2c\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x69\x67\x6e\x6f\x72\x65\x64\x2e\xa",
                                user);
                     errors++;
                 } else {
                     char *gNid;
 
-                    if (row[DB_srptype][0] == 'V') {
+                    if (row[DB_srptype][0] == '\x56') {
                         int user_gN;
                         char **irow = NULL;
                         VERBOSE BIO_printf(bio_err,
-                                           "Verifying password for user \"%s\"\n",
+                                           "\x56\x65\x72\x69\x66\x79\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x66\x6f\x72\x20\x75\x73\x65\x72\x20\x22\x25\x73\x22\xa",
                                            user);
                         if ((user_gN =
                              get_index(db, row[DB_srpgN], DB_SRP_INDEX)) >= 0)
@@ -656,14 +656,14 @@ int MAIN(int argc, char **argv)
                              irow ? irow[DB_srpverifier] : NULL, passin,
                              bio_err, verbose)) {
                             BIO_printf(bio_err,
-                                       "Invalid password for user \"%s\", operation abandoned.\n",
+                                       "\x49\x6e\x76\x61\x6c\x69\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x66\x6f\x72\x20\x75\x73\x65\x72\x20\x22\x25\x73\x22\x2c\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x61\x62\x61\x6e\x64\x6f\x6e\x65\x64\x2e\xa",
                                        user);
                             errors++;
                             goto err;
                         }
                     }
                     VERBOSE BIO_printf(bio_err,
-                                       "Password for user \"%s\" ok.\n",
+                                       "\x50\x61\x73\x73\x77\x6f\x72\x64\x20\x66\x6f\x72\x20\x75\x73\x65\x72\x20\x22\x25\x73\x22\x20\x6f\x6b\x2e\xa",
                                        user);
 
                     if (!
@@ -674,13 +674,13 @@ int MAIN(int argc, char **argv)
                                          gNrow ? gNrow[DB_srpverifier] : NULL,
                                          passout, bio_err, verbose))) {
                         BIO_printf(bio_err,
-                                   "Cannot create srp verifier for user \"%s\", operation abandoned.\n",
+                                   "\x43\x61\x6e\x6e\x6f\x74\x20\x63\x72\x65\x61\x74\x65\x20\x73\x72\x70\x20\x76\x65\x72\x69\x66\x69\x65\x72\x20\x66\x6f\x72\x20\x75\x73\x65\x72\x20\x22\x25\x73\x22\x2c\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x61\x62\x61\x6e\x64\x6f\x6e\x65\x64\x2e\xa",
                                    user);
                         errors++;
                         goto err;
                     }
 
-                    row[DB_srptype][0] = 'v';
+                    row[DB_srptype][0] = '\x76';
                     row[DB_srpgN] = BUF_strdup(gNid);
 
                     if (!row[DB_srpid] || !row[DB_srpgN] || !row[DB_srptype]
@@ -695,15 +695,15 @@ int MAIN(int argc, char **argv)
         } else if (delete_user) {
             if (userindex < 0) {
                 BIO_printf(bio_err,
-                           "user \"%s\" does not exist, operation ignored. t\n",
+                           "\x75\x73\x65\x72\x20\x22\x25\x73\x22\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x65\x78\x69\x73\x74\x2c\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x69\x67\x6e\x6f\x72\x65\x64\x2e\x20\x74\xa",
                            user);
                 errors++;
             } else {
                 char **xpp =
                     sk_OPENSSL_PSTRING_value(db->db->data, userindex);
-                BIO_printf(bio_err, "user \"%s\" revoked. t\n", user);
+                BIO_printf(bio_err, "\x75\x73\x65\x72\x20\x22\x25\x73\x22\x20\x72\x65\x76\x6f\x6b\x65\x64\x2e\x20\x74\xa", user);
 
-                xpp[DB_srptype][0] = 'R';
+                xpp[DB_srptype][0] = '\x52';
 
                 doupdatedb = 1;
             }
@@ -716,36 +716,36 @@ int MAIN(int argc, char **argv)
         }
     }
 
-    VERBOSE BIO_printf(bio_err, "User procession done.\n");
+    VERBOSE BIO_printf(bio_err, "\x55\x73\x65\x72\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6f\x6e\x20\x64\x6f\x6e\x65\x2e\xa");
 
     if (doupdatedb) {
         /* Lets check some fields */
         for (i = 0; i < sk_OPENSSL_PSTRING_num(db->db->data); i++) {
             pp = sk_OPENSSL_PSTRING_value(db->db->data, i);
 
-            if (pp[DB_srptype][0] == 'v') {
-                pp[DB_srptype][0] = 'V';
+            if (pp[DB_srptype][0] == '\x76') {
+                pp[DB_srptype][0] = '\x56';
                 print_user(db, bio_err, i, verbose);
             }
         }
 
-        VERBOSE BIO_printf(bio_err, "Trying to update srpvfile.\n");
-        if (!save_index(dbfile, "new", db))
+        VERBOSE BIO_printf(bio_err, "\x54\x72\x79\x69\x6e\x67\x20\x74\x6f\x20\x75\x70\x64\x61\x74\x65\x20\x73\x72\x70\x76\x66\x69\x6c\x65\x2e\xa");
+        if (!save_index(dbfile, "\x6e\x65\x77", db))
             goto err;
 
-        VERBOSE BIO_printf(bio_err, "Temporary srpvfile created.\n");
-        if (!rotate_index(dbfile, "new", "old"))
+        VERBOSE BIO_printf(bio_err, "\x54\x65\x6d\x70\x6f\x72\x61\x72\x79\x20\x73\x72\x70\x76\x66\x69\x6c\x65\x20\x63\x72\x65\x61\x74\x65\x64\x2e\xa");
+        if (!rotate_index(dbfile, "\x6e\x65\x77", "\x6f\x6c\x64"))
             goto err;
 
-        VERBOSE BIO_printf(bio_err, "srpvfile updated.\n");
+        VERBOSE BIO_printf(bio_err, "\x73\x72\x70\x76\x66\x69\x6c\x65\x20\x75\x70\x64\x61\x74\x65\x64\x2e\xa");
     }
 
     ret = (errors != 0);
  err:
     if (errors != 0)
-        VERBOSE BIO_printf(bio_err, "User errors %d.\n", errors);
+        VERBOSE BIO_printf(bio_err, "\x55\x73\x65\x72\x20\x65\x72\x72\x6f\x72\x73\x20\x25\x64\x2e\xa", errors);
 
-    VERBOSE BIO_printf(bio_err, "SRP terminating with code %d.\n", ret);
+    VERBOSE BIO_printf(bio_err, "\x53\x52\x50\x20\x74\x65\x72\x6d\x69\x6e\x61\x74\x69\x6e\x67\x20\x77\x69\x74\x68\x20\x63\x6f\x64\x65\x20\x25\x64\x2e\xa", ret);
     if (tofree)
         OPENSSL_free(tofree);
     if (ret)

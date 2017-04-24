@@ -21,13 +21,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -170,11 +170,11 @@ static int ssl_set_option_list(const char *elem, int len, void *usr)
     if (elem == NULL)
         return 0;
     if (len != -1) {
-        if (*elem == '+') {
+        if (*elem == '\x2b') {
             elem++;
             len--;
             onoff = 1;
-        } else if (*elem == '-') {
+        } else if (*elem == '\x2d') {
             elem++;
             len--;
             onoff = 0;
@@ -191,29 +191,29 @@ static int ssl_set_option_list(const char *elem, int len, void *usr)
 static int ctrl_str_option(SSL_CONF_CTX *cctx, const char *cmd)
 {
     static const ssl_flag_tbl ssl_option_single[] = {
-        SSL_FLAG_TBL("no_ssl2", SSL_OP_NO_SSLv2),
-        SSL_FLAG_TBL("no_ssl3", SSL_OP_NO_SSLv3),
-        SSL_FLAG_TBL("no_tls1", SSL_OP_NO_TLSv1),
-        SSL_FLAG_TBL("no_tls1_1", SSL_OP_NO_TLSv1_1),
-        SSL_FLAG_TBL("no_tls1_2", SSL_OP_NO_TLSv1_2),
-        SSL_FLAG_TBL("bugs", SSL_OP_ALL),
-        SSL_FLAG_TBL("no_comp", SSL_OP_NO_COMPRESSION),
-        SSL_FLAG_TBL_SRV("ecdh_single", SSL_OP_SINGLE_ECDH_USE),
+        SSL_FLAG_TBL("\x6e\x6f\x5f\x73\x73\x6c\x32", SSL_OP_NO_SSLv2),
+        SSL_FLAG_TBL("\x6e\x6f\x5f\x73\x73\x6c\x33", SSL_OP_NO_SSLv3),
+        SSL_FLAG_TBL("\x6e\x6f\x5f\x74\x6c\x73\x31", SSL_OP_NO_TLSv1),
+        SSL_FLAG_TBL("\x6e\x6f\x5f\x74\x6c\x73\x31\x5f\x31", SSL_OP_NO_TLSv1_1),
+        SSL_FLAG_TBL("\x6e\x6f\x5f\x74\x6c\x73\x31\x5f\x32", SSL_OP_NO_TLSv1_2),
+        SSL_FLAG_TBL("\x62\x75\x67\x73", SSL_OP_ALL),
+        SSL_FLAG_TBL("\x6e\x6f\x5f\x63\x6f\x6d\x70", SSL_OP_NO_COMPRESSION),
+        SSL_FLAG_TBL_SRV("\x65\x63\x64\x68\x5f\x73\x69\x6e\x67\x6c\x65", SSL_OP_SINGLE_ECDH_USE),
 #ifndef OPENSSL_NO_TLSEXT
-        SSL_FLAG_TBL("no_ticket", SSL_OP_NO_TICKET),
+        SSL_FLAG_TBL("\x6e\x6f\x5f\x74\x69\x63\x6b\x65\x74", SSL_OP_NO_TICKET),
 #endif
-        SSL_FLAG_TBL_SRV("serverpref", SSL_OP_CIPHER_SERVER_PREFERENCE),
-        SSL_FLAG_TBL("legacy_renegotiation",
+        SSL_FLAG_TBL_SRV("\x73\x65\x72\x76\x65\x72\x70\x72\x65\x66", SSL_OP_CIPHER_SERVER_PREFERENCE),
+        SSL_FLAG_TBL("\x6c\x65\x67\x61\x63\x79\x5f\x72\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x69\x6f\x6e",
                      SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION),
-        SSL_FLAG_TBL_SRV("legacy_server_connect",
+        SSL_FLAG_TBL_SRV("\x6c\x65\x67\x61\x63\x79\x5f\x73\x65\x72\x76\x65\x72\x5f\x63\x6f\x6e\x6e\x65\x63\x74",
                          SSL_OP_LEGACY_SERVER_CONNECT),
-        SSL_FLAG_TBL_SRV("no_resumption_on_reneg",
+        SSL_FLAG_TBL_SRV("\x6e\x6f\x5f\x72\x65\x73\x75\x6d\x70\x74\x69\x6f\x6e\x5f\x6f\x6e\x5f\x72\x65\x6e\x65\x67",
                          SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION),
-        SSL_FLAG_TBL_SRV_INV("no_legacy_server_connect",
+        SSL_FLAG_TBL_SRV_INV("\x6e\x6f\x5f\x6c\x65\x67\x61\x63\x79\x5f\x73\x65\x72\x76\x65\x72\x5f\x63\x6f\x6e\x6e\x65\x63\x74",
                              SSL_OP_LEGACY_SERVER_CONNECT),
-        SSL_FLAG_TBL_CERT("strict", SSL_CERT_FLAG_TLS_STRICT),
+        SSL_FLAG_TBL_CERT("\x73\x74\x72\x69\x63\x74", SSL_CERT_FLAG_TLS_STRICT),
 #ifdef OPENSSL_SSL_DEBUG_BROKEN_PROTOCOL
-        SSL_FLAG_TBL_CERT("debug_broken_protocol",
+        SSL_FLAG_TBL_CERT("\x64\x65\x62\x75\x67\x5f\x62\x72\x6f\x6b\x65\x6e\x5f\x70\x72\x6f\x74\x6f\x63\x6f\x6c",
                           SSL_CERT_FLAG_BROKEN_PROTOCOL),
 #endif
     };
@@ -266,21 +266,21 @@ static int cmd_ECDHParameters(SSL_CONF_CTX *cctx, const char *value)
     if (!(cctx->flags & SSL_CONF_FLAG_SERVER))
         return -2;
     if (cctx->flags & SSL_CONF_FLAG_FILE) {
-        if (*value == '+') {
+        if (*value == '\x2b') {
             onoff = 1;
             value++;
         }
-        if (*value == '-') {
+        if (*value == '\x2d') {
             onoff = 0;
             value++;
         }
-        if (!strcasecmp(value, "automatic")) {
+        if (!strcasecmp(value, "\x61\x75\x74\x6f\x6d\x61\x74\x69\x63")) {
             if (onoff == -1)
                 onoff = 1;
         } else if (onoff != -1)
             return 0;
     } else if (cctx->flags & SSL_CONF_FLAG_CMDLINE) {
-        if (!strcmp(value, "auto"))
+        if (!strcmp(value, "\x61\x75\x74\x6f"))
             onoff = 1;
     }
 
@@ -323,12 +323,12 @@ static int cmd_CipherString(SSL_CONF_CTX *cctx, const char *value)
 static int cmd_Protocol(SSL_CONF_CTX *cctx, const char *value)
 {
     static const ssl_flag_tbl ssl_protocol_list[] = {
-        SSL_FLAG_TBL_INV("ALL", SSL_OP_NO_SSL_MASK),
-        SSL_FLAG_TBL_INV("SSLv2", SSL_OP_NO_SSLv2),
-        SSL_FLAG_TBL_INV("SSLv3", SSL_OP_NO_SSLv3),
-        SSL_FLAG_TBL_INV("TLSv1", SSL_OP_NO_TLSv1),
-        SSL_FLAG_TBL_INV("TLSv1.1", SSL_OP_NO_TLSv1_1),
-        SSL_FLAG_TBL_INV("TLSv1.2", SSL_OP_NO_TLSv1_2)
+        SSL_FLAG_TBL_INV("\x41\x4c\x4c", SSL_OP_NO_SSL_MASK),
+        SSL_FLAG_TBL_INV("\x53\x53\x4c\x76\x32", SSL_OP_NO_SSLv2),
+        SSL_FLAG_TBL_INV("\x53\x53\x4c\x76\x33", SSL_OP_NO_SSLv3),
+        SSL_FLAG_TBL_INV("\x54\x4c\x53\x76\x31", SSL_OP_NO_TLSv1),
+        SSL_FLAG_TBL_INV("\x54\x4c\x53\x76\x31\x2e\x31", SSL_OP_NO_TLSv1_1),
+        SSL_FLAG_TBL_INV("\x54\x4c\x53\x76\x31\x2e\x32", SSL_OP_NO_TLSv1_2)
     };
     int ret;
     int sslv2off;
@@ -339,7 +339,7 @@ static int cmd_Protocol(SSL_CONF_CTX *cctx, const char *value)
     cctx->ntbl = sizeof(ssl_protocol_list) / sizeof(ssl_flag_tbl);
 
     sslv2off = *cctx->poptions & SSL_OP_NO_SSLv2;
-    ret = CONF_parse_list(value, ',', 1, ssl_set_option_list, cctx);
+    ret = CONF_parse_list(value, '\x2c', 1, ssl_set_option_list, cctx);
     /* Never turn on SSLv2 through configuration */
     *cctx->poptions |= sslv2off;
     return ret;
@@ -348,17 +348,17 @@ static int cmd_Protocol(SSL_CONF_CTX *cctx, const char *value)
 static int cmd_Options(SSL_CONF_CTX *cctx, const char *value)
 {
     static const ssl_flag_tbl ssl_option_list[] = {
-        SSL_FLAG_TBL_INV("SessionTicket", SSL_OP_NO_TICKET),
-        SSL_FLAG_TBL_INV("EmptyFragments",
+        SSL_FLAG_TBL_INV("\x53\x65\x73\x73\x69\x6f\x6e\x54\x69\x63\x6b\x65\x74", SSL_OP_NO_TICKET),
+        SSL_FLAG_TBL_INV("\x45\x6d\x70\x74\x79\x46\x72\x61\x67\x6d\x65\x6e\x74\x73",
                          SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS),
-        SSL_FLAG_TBL("Bugs", SSL_OP_ALL),
-        SSL_FLAG_TBL_INV("Compression", SSL_OP_NO_COMPRESSION),
-        SSL_FLAG_TBL_SRV("ServerPreference", SSL_OP_CIPHER_SERVER_PREFERENCE),
-        SSL_FLAG_TBL_SRV("NoResumptionOnRenegotiation",
+        SSL_FLAG_TBL("\x42\x75\x67\x73", SSL_OP_ALL),
+        SSL_FLAG_TBL_INV("\x43\x6f\x6d\x70\x72\x65\x73\x73\x69\x6f\x6e", SSL_OP_NO_COMPRESSION),
+        SSL_FLAG_TBL_SRV("\x53\x65\x72\x76\x65\x72\x50\x72\x65\x66\x65\x72\x65\x6e\x63\x65", SSL_OP_CIPHER_SERVER_PREFERENCE),
+        SSL_FLAG_TBL_SRV("\x4e\x6f\x52\x65\x73\x75\x6d\x70\x74\x69\x6f\x6e\x4f\x6e\x52\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x69\x6f\x6e",
                          SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION),
-        SSL_FLAG_TBL_SRV("DHSingle", SSL_OP_SINGLE_DH_USE),
-        SSL_FLAG_TBL_SRV("ECDHSingle", SSL_OP_SINGLE_ECDH_USE),
-        SSL_FLAG_TBL("UnsafeLegacyRenegotiation",
+        SSL_FLAG_TBL_SRV("\x44\x48\x53\x69\x6e\x67\x6c\x65", SSL_OP_SINGLE_DH_USE),
+        SSL_FLAG_TBL_SRV("\x45\x43\x44\x48\x53\x69\x6e\x67\x6c\x65", SSL_OP_SINGLE_ECDH_USE),
+        SSL_FLAG_TBL("\x55\x6e\x73\x61\x66\x65\x4c\x65\x67\x61\x63\x79\x52\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x69\x6f\x6e",
                      SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION),
     };
     if (!(cctx->flags & SSL_CONF_FLAG_FILE))
@@ -367,7 +367,7 @@ static int cmd_Options(SSL_CONF_CTX *cctx, const char *value)
         return -3;
     cctx->tbl = ssl_option_list;
     cctx->ntbl = sizeof(ssl_option_list) / sizeof(ssl_flag_tbl);
-    return CONF_parse_list(value, ',', 1, ssl_set_option_list, cctx);
+    return CONF_parse_list(value, '\x2c', 1, ssl_set_option_list, cctx);
 }
 
 static int cmd_Certificate(SSL_CONF_CTX *cctx, const char *value)
@@ -445,28 +445,28 @@ typedef struct {
 } ssl_conf_cmd_tbl;
 
 /* Table of supported parameters */
-
+#define USTR(x) u8##x
 #define SSL_CONF_CMD(name, cmdopt, type) \
-        {cmd_##name, #name, cmdopt, type}
+        {cmd_##name,  USTR(#name), cmdopt, type}
 
 #define SSL_CONF_CMD_STRING(name, cmdopt) \
         SSL_CONF_CMD(name, cmdopt, SSL_CONF_TYPE_STRING)
 
 static const ssl_conf_cmd_tbl ssl_conf_cmds[] = {
-    SSL_CONF_CMD_STRING(SignatureAlgorithms, "sigalgs"),
-    SSL_CONF_CMD_STRING(ClientSignatureAlgorithms, "client_sigalgs"),
-    SSL_CONF_CMD_STRING(Curves, "curves"),
+    SSL_CONF_CMD_STRING(SignatureAlgorithms, "\x73\x69\x67\x61\x6c\x67\x73"),
+    SSL_CONF_CMD_STRING(ClientSignatureAlgorithms, "\x63\x6c\x69\x65\x6e\x74\x5f\x73\x69\x67\x61\x6c\x67\x73"),
+    SSL_CONF_CMD_STRING(Curves, "\x63\x75\x72\x76\x65\x73"),
 #ifndef OPENSSL_NO_ECDH
-    SSL_CONF_CMD_STRING(ECDHParameters, "named_curve"),
+    SSL_CONF_CMD_STRING(ECDHParameters, "\x6e\x61\x6d\x65\x64\x5f\x63\x75\x72\x76\x65"),
 #endif
-    SSL_CONF_CMD_STRING(CipherString, "cipher"),
+    SSL_CONF_CMD_STRING(CipherString, "\x63\x69\x70\x68\x65\x72"),
     SSL_CONF_CMD_STRING(Protocol, NULL),
     SSL_CONF_CMD_STRING(Options, NULL),
-    SSL_CONF_CMD(Certificate, "cert", SSL_CONF_TYPE_FILE),
-    SSL_CONF_CMD(PrivateKey, "key", SSL_CONF_TYPE_FILE),
+    SSL_CONF_CMD(Certificate, "\x63\x65\x72\x74", SSL_CONF_TYPE_FILE),
+    SSL_CONF_CMD(PrivateKey, "\x6b\x65\x79", SSL_CONF_TYPE_FILE),
     SSL_CONF_CMD(ServerInfoFile, NULL, SSL_CONF_TYPE_FILE),
 #ifndef OPENSSL_NO_DH
-    SSL_CONF_CMD(DHParameters, "dhparam", SSL_CONF_TYPE_FILE)
+    SSL_CONF_CMD(DHParameters, "\x64\x68\x70\x61\x72\x61\x6d", SSL_CONF_TYPE_FILE)
 #endif
 };
 
@@ -486,7 +486,7 @@ static int ssl_conf_cmd_skip_prefix(SSL_CONF_CTX *cctx, const char **pcmd)
             return 0;
         *pcmd += cctx->prefixlen;
     } else if (cctx->flags & SSL_CONF_FLAG_CMDLINE) {
-        if (**pcmd != '-' || !(*pcmd)[1])
+        if (**pcmd != '\x2d' || !(*pcmd)[1])
             return 0;
         *pcmd += 1;
     }
@@ -540,7 +540,7 @@ int SSL_CONF_cmd(SSL_CONF_CTX *cctx, const char *cmd, const char *value)
             return -2;
         if (cctx->flags & SSL_CONF_FLAG_SHOW_ERRORS) {
             SSLerr(SSL_F_SSL_CONF_CMD, SSL_R_BAD_VALUE);
-            ERR_add_error_data(4, "cmd=", cmd, ", value=", value);
+            ERR_add_error_data(4, "\x63\x6d\x64\x3d", cmd, "\x2c\x20\x76\x61\x6c\x75\x65\x3d", value);
         }
         return 0;
     }
@@ -552,7 +552,7 @@ int SSL_CONF_cmd(SSL_CONF_CTX *cctx, const char *cmd, const char *value)
 
     if (cctx->flags & SSL_CONF_FLAG_SHOW_ERRORS) {
         SSLerr(SSL_F_SSL_CONF_CMD, SSL_R_UNKNOWN_CMD_NAME);
-        ERR_add_error_data(2, "cmd=", cmd);
+        ERR_add_error_data(2, "\x63\x6d\x64\x3d", cmd);
     }
 
     return -2;

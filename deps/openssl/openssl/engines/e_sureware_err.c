@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,33 +70,33 @@
 # define ERR_REASON(reason) ERR_PACK(0,0,reason)
 
 static ERR_STRING_DATA SUREWARE_str_functs[] = {
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_CTRL), "SUREWAREHK_CTRL"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_DH_EX_FREE), "SUREWAREHK_DH_EX_FREE"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_DSA_DO_SIGN), "SUREWAREHK_DSA_DO_SIGN"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_EX_FREE), "SUREWAREHK_EX_FREE"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_FINISH), "SUREWAREHK_FINISH"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_INIT), "SUREWAREHK_INIT"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_LOAD_PRIVKEY), "SUREWAREHK_LOAD_PRIVKEY"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_LOAD_PUBKEY), "SUREWAREHK_LOAD_PUBKEY"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_MODEXP), "SUREWAREHK_MODEXP"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_RAND_BYTES), "SUREWAREHK_RAND_BYTES"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_RAND_SEED), "SUREWAREHK_RAND_SEED"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_RSA_PRIV_DEC), "SUREWAREHK_RSA_PRIV_DEC"},
-    {ERR_FUNC(SUREWARE_F_SUREWAREHK_RSA_SIGN), "SUREWAREHK_RSA_SIGN"},
-    {ERR_FUNC(SUREWARE_F_SUREWARE_LOAD_PUBLIC), "SUREWARE_LOAD_PUBLIC"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_CTRL), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x43\x54\x52\x4c"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_DH_EX_FREE), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x44\x48\x5f\x45\x58\x5f\x46\x52\x45\x45"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_DSA_DO_SIGN), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x44\x53\x41\x5f\x44\x4f\x5f\x53\x49\x47\x4e"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_EX_FREE), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x45\x58\x5f\x46\x52\x45\x45"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_FINISH), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x46\x49\x4e\x49\x53\x48"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_INIT), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x49\x4e\x49\x54"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_LOAD_PRIVKEY), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x4c\x4f\x41\x44\x5f\x50\x52\x49\x56\x4b\x45\x59"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_LOAD_PUBKEY), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x4c\x4f\x41\x44\x5f\x50\x55\x42\x4b\x45\x59"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_MODEXP), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x4d\x4f\x44\x45\x58\x50"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_RAND_BYTES), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x52\x41\x4e\x44\x5f\x42\x59\x54\x45\x53"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_RAND_SEED), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x52\x41\x4e\x44\x5f\x53\x45\x45\x44"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_RSA_PRIV_DEC), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x52\x53\x41\x5f\x50\x52\x49\x56\x5f\x44\x45\x43"},
+    {ERR_FUNC(SUREWARE_F_SUREWAREHK_RSA_SIGN), "\x53\x55\x52\x45\x57\x41\x52\x45\x48\x4b\x5f\x52\x53\x41\x5f\x53\x49\x47\x4e"},
+    {ERR_FUNC(SUREWARE_F_SUREWARE_LOAD_PUBLIC), "\x53\x55\x52\x45\x57\x41\x52\x45\x5f\x4c\x4f\x41\x44\x5f\x50\x55\x42\x4c\x49\x43"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA SUREWARE_str_reasons[] = {
-    {ERR_REASON(SUREWARE_R_BIO_WAS_FREED), "bio was freed"},
-    {ERR_REASON(SUREWARE_R_MISSING_KEY_COMPONENTS), "missing key components"},
-    {ERR_REASON(SUREWARE_R_PADDING_CHECK_FAILED), "padding check failed"},
-    {ERR_REASON(SUREWARE_R_REQUEST_FAILED), "request failed"},
-    {ERR_REASON(SUREWARE_R_REQUEST_FALLBACK), "request fallback"},
+    {ERR_REASON(SUREWARE_R_BIO_WAS_FREED), "\x62\x69\x6f\x20\x77\x61\x73\x20\x66\x72\x65\x65\x64"},
+    {ERR_REASON(SUREWARE_R_MISSING_KEY_COMPONENTS), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x6b\x65\x79\x20\x63\x6f\x6d\x70\x6f\x6e\x65\x6e\x74\x73"},
+    {ERR_REASON(SUREWARE_R_PADDING_CHECK_FAILED), "\x70\x61\x64\x64\x69\x6e\x67\x20\x63\x68\x65\x63\x6b\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(SUREWARE_R_REQUEST_FAILED), "\x72\x65\x71\x75\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(SUREWARE_R_REQUEST_FALLBACK), "\x72\x65\x71\x75\x65\x73\x74\x20\x66\x61\x6c\x6c\x62\x61\x63\x6b"},
     {ERR_REASON(SUREWARE_R_SIZE_TOO_LARGE_OR_TOO_SMALL),
-     "size too large or too small"},
-    {ERR_REASON(SUREWARE_R_UNIT_FAILURE), "unit failure"},
-    {ERR_REASON(SUREWARE_R_UNKNOWN_PADDING_TYPE), "unknown padding type"},
+     "\x73\x69\x7a\x65\x20\x74\x6f\x6f\x20\x6c\x61\x72\x67\x65\x20\x6f\x72\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c"},
+    {ERR_REASON(SUREWARE_R_UNIT_FAILURE), "\x75\x6e\x69\x74\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {ERR_REASON(SUREWARE_R_UNKNOWN_PADDING_TYPE), "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x70\x61\x64\x64\x69\x6e\x67\x20\x74\x79\x70\x65"},
     {0, NULL}
 };
 

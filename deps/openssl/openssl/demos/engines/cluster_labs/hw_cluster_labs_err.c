@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -66,35 +66,35 @@
 /* BEGIN ERROR CODES */
 #ifndef OPENSSL_NO_ERR
 static ERR_STRING_DATA CL_str_functs[] = {
-    {ERR_PACK(0, CL_F_CLUSTER_LABS_CTRL, 0), "CLUSTER_LABS_CTRL"},
-    {ERR_PACK(0, CL_F_CLUSTER_LABS_DSA_SIGN, 0), "CLUSTER_LABS_DSA_SIGN"},
-    {ERR_PACK(0, CL_F_CLUSTER_LABS_DSA_VERIFY, 0), "CLUSTER_LABS_DSA_VERIFY"},
-    {ERR_PACK(0, CL_F_CLUSTER_LABS_FINISH, 0), "CLUSTER_LABS_FINISH"},
-    {ERR_PACK(0, CL_F_CLUSTER_LABS_INIT, 0), "CLUSTER_LABS_INIT"},
-    {ERR_PACK(0, CL_F_CLUSTER_LABS_MOD_EXP, 0), "CLUSTER_LABS_MOD_EXP"},
+    {ERR_PACK(0, CL_F_CLUSTER_LABS_CTRL, 0), "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x43\x54\x52\x4c"},
+    {ERR_PACK(0, CL_F_CLUSTER_LABS_DSA_SIGN, 0), "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x44\x53\x41\x5f\x53\x49\x47\x4e"},
+    {ERR_PACK(0, CL_F_CLUSTER_LABS_DSA_VERIFY, 0), "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x44\x53\x41\x5f\x56\x45\x52\x49\x46\x59"},
+    {ERR_PACK(0, CL_F_CLUSTER_LABS_FINISH, 0), "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x46\x49\x4e\x49\x53\x48"},
+    {ERR_PACK(0, CL_F_CLUSTER_LABS_INIT, 0), "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x49\x4e\x49\x54"},
+    {ERR_PACK(0, CL_F_CLUSTER_LABS_MOD_EXP, 0), "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {ERR_PACK(0, CL_F_CLUSTER_LABS_MOD_EXP_CRT, 0),
-     "CLUSTER_LABS_MOD_EXP_CRT"},
-    {ERR_PACK(0, CL_F_CLUSTER_LABS_RAND_BYTES, 0), "CLUSTER_LABS_RAND_BYTES"},
+     "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x4d\x4f\x44\x5f\x45\x58\x50\x5f\x43\x52\x54"},
+    {ERR_PACK(0, CL_F_CLUSTER_LABS_RAND_BYTES, 0), "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x52\x41\x4e\x44\x5f\x42\x59\x54\x45\x53"},
     {ERR_PACK(0, CL_F_CLUSTER_LABS_RSA_MOD_EXP, 0),
-     "CLUSTER_LABS_RSA_MOD_EXP"},
+     "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x52\x53\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {ERR_PACK(0, CL_F_CLUSTER_LABS_RSA_PRIV_DEC, 0),
-     "CLUSTER_LABS_RSA_PRIV_DEC"},
+     "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x52\x53\x41\x5f\x50\x52\x49\x56\x5f\x44\x45\x43"},
     {ERR_PACK(0, CL_F_CLUSTER_LABS_RSA_PRIV_ENC, 0),
-     "CLUSTER_LABS_RSA_PRIV_ENC"},
+     "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x52\x53\x41\x5f\x50\x52\x49\x56\x5f\x45\x4e\x43"},
     {ERR_PACK(0, CL_F_CLUSTER_LABS_RSA_PUB_DEC, 0),
-     "CLUSTER_LABS_RSA_PUB_DEC"},
+     "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x52\x53\x41\x5f\x50\x55\x42\x5f\x44\x45\x43"},
     {ERR_PACK(0, CL_F_CLUSTER_LABS_RSA_PUB_ENC, 0),
-     "CLUSTER_LABS_RSA_PUB_ENC"},
+     "\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\x5f\x52\x53\x41\x5f\x50\x55\x42\x5f\x45\x4e\x43"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA CL_str_reasons[] = {
-    {CL_R_ALREADY_LOADED, "already loaded"},
-    {CL_R_COMMAND_NOT_IMPLEMENTED, "command not implemented"},
-    {CL_R_DSO_FAILURE, "dso failure"},
-    {CL_R_FUNCTION_NOT_BINDED, "function not binded"},
-    {CL_R_INIT_FAILED, "init failed"},
-    {CL_R_NOT_LOADED, "not loaded"},
+    {CL_R_ALREADY_LOADED, "\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x61\x64\x65\x64"},
+    {CL_R_COMMAND_NOT_IMPLEMENTED, "\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x6e\x6f\x74\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64"},
+    {CL_R_DSO_FAILURE, "\x64\x73\x6f\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {CL_R_FUNCTION_NOT_BINDED, "\x66\x75\x6e\x63\x74\x69\x6f\x6e\x20\x6e\x6f\x74\x20\x62\x69\x6e\x64\x65\x64"},
+    {CL_R_INIT_FAILED, "\x69\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64"},
+    {CL_R_NOT_LOADED, "\x6e\x6f\x74\x20\x6c\x6f\x61\x64\x65\x64"},
     {0, NULL}
 };
 

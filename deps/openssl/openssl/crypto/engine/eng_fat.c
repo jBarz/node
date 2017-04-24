@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -105,29 +105,29 @@ static int int_def_cb(const char *alg, int len, void *arg)
     unsigned int *pflags = arg;
     if (alg == NULL)
         return 0;
-    if (!strncmp(alg, "ALL", len))
+    if (!strncmp(alg, "\x41\x4c\x4c", len))
         *pflags |= ENGINE_METHOD_ALL;
-    else if (!strncmp(alg, "RSA", len))
+    else if (!strncmp(alg, "\x52\x53\x41", len))
         *pflags |= ENGINE_METHOD_RSA;
-    else if (!strncmp(alg, "DSA", len))
+    else if (!strncmp(alg, "\x44\x53\x41", len))
         *pflags |= ENGINE_METHOD_DSA;
-    else if (!strncmp(alg, "ECDH", len))
+    else if (!strncmp(alg, "\x45\x43\x44\x48", len))
         *pflags |= ENGINE_METHOD_ECDH;
-    else if (!strncmp(alg, "ECDSA", len))
+    else if (!strncmp(alg, "\x45\x43\x44\x53\x41", len))
         *pflags |= ENGINE_METHOD_ECDSA;
-    else if (!strncmp(alg, "DH", len))
+    else if (!strncmp(alg, "\x44\x48", len))
         *pflags |= ENGINE_METHOD_DH;
-    else if (!strncmp(alg, "RAND", len))
+    else if (!strncmp(alg, "\x52\x41\x4e\x44", len))
         *pflags |= ENGINE_METHOD_RAND;
-    else if (!strncmp(alg, "CIPHERS", len))
+    else if (!strncmp(alg, "\x43\x49\x50\x48\x45\x52\x53", len))
         *pflags |= ENGINE_METHOD_CIPHERS;
-    else if (!strncmp(alg, "DIGESTS", len))
+    else if (!strncmp(alg, "\x44\x49\x47\x45\x53\x54\x53", len))
         *pflags |= ENGINE_METHOD_DIGESTS;
-    else if (!strncmp(alg, "PKEY", len))
+    else if (!strncmp(alg, "\x50\x4b\x45\x59", len))
         *pflags |= ENGINE_METHOD_PKEY_METHS | ENGINE_METHOD_PKEY_ASN1_METHS;
-    else if (!strncmp(alg, "PKEY_CRYPTO", len))
+    else if (!strncmp(alg, "\x50\x4b\x45\x59\x5f\x43\x52\x59\x50\x54\x4f", len))
         *pflags |= ENGINE_METHOD_PKEY_METHS;
-    else if (!strncmp(alg, "PKEY_ASN1", len))
+    else if (!strncmp(alg, "\x50\x4b\x45\x59\x5f\x41\x53\x4e\x31", len))
         *pflags |= ENGINE_METHOD_PKEY_ASN1_METHS;
     else
         return 0;
@@ -137,10 +137,10 @@ static int int_def_cb(const char *alg, int len, void *arg)
 int ENGINE_set_default_string(ENGINE *e, const char *def_list)
 {
     unsigned int flags = 0;
-    if (!CONF_parse_list(def_list, ',', 1, int_def_cb, &flags)) {
+    if (!CONF_parse_list(def_list, '\x2c', 1, int_def_cb, &flags)) {
         ENGINEerr(ENGINE_F_ENGINE_SET_DEFAULT_STRING,
                   ENGINE_R_INVALID_STRING);
-        ERR_add_error_data(2, "str=", def_list);
+        ERR_add_error_data(2, "\x73\x74\x72\x3d", def_list);
         return 0;
     }
     return ENGINE_set_default(e, flags);

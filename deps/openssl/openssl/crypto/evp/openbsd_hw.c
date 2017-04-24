@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -87,7 +87,7 @@ typedef struct session_op session_op;
 
 static void err(const char *str)
 {
-    fprintf(stderr, "%s: errno %d\n", str, errno);
+    fprintf(stderr, "\x25\x73\x3a\x20\x65\x72\x72\x6e\x6f\x20\x25\x64\xa", str, errno);
 }
 
 static int dev_crypto_init(session_op *ses)
@@ -97,13 +97,13 @@ static int dev_crypto_init(session_op *ses)
     if (!fd) {
         int cryptodev_fd;
 
-        if ((cryptodev_fd = open("/dev/crypto", O_RDWR, 0)) < 0) {
-            err("/dev/crypto");
+        if ((cryptodev_fd = open("\x2f\x64\x65\x76\x2f\x63\x72\x79\x70\x74\x6f", O_RDWR, 0)) < 0) {
+            err("\x2f\x64\x65\x76\x2f\x63\x72\x79\x70\x74\x6f");
             dev_failed = 1;
             return 0;
         }
         if (ioctl(cryptodev_fd, CRIOGET, &fd) == -1) {
-            err("CRIOGET failed");
+            err("\x43\x52\x49\x4f\x47\x45\x54\x20\x66\x61\x69\x6c\x65\x64");
             close(cryptodev_fd);
             dev_failed = 1;
             return 0;
@@ -111,7 +111,7 @@ static int dev_crypto_init(session_op *ses)
         close(cryptodev_fd);
     }
     assert(ses);
-    memset(ses, '\0', sizeof *ses);
+    memset(ses, '\x0', sizeof *ses);
 
     return 1;
 }
@@ -119,7 +119,7 @@ static int dev_crypto_init(session_op *ses)
 static int dev_crypto_cleanup(EVP_CIPHER_CTX *ctx)
 {
     if (ioctl(fd, CIOCFSESSION, &CDATA(ctx)->ses) == -1)
-        err("CIOCFSESSION failed");
+        err("\x43\x49\x4f\x43\x46\x53\x45\x53\x53\x49\x4f\x4e\x20\x66\x61\x69\x6c\x65\x64");
 
     OPENSSL_free(CDATA(ctx)->key);
 
@@ -134,7 +134,7 @@ static int dev_crypto_init_key(EVP_CIPHER_CTX *ctx, int cipher,
 
     CDATA(ctx)->key = OPENSSL_malloc(MAX_HW_KEY);
     if (CDATA(ctx)->key == NULL {
-        err("CDATA(ctx)->key memory allocation failed");
+        err("\x43\x44\x41\x54\x41\x28\x63\x74\x78\x29\x2d\x3e\x6b\x65\x79\x20\x6d\x65\x6d\x6f\x72\x79\x20\x61\x6c\x6c\x6f\x63\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64");
         return 0;
     }
 
@@ -146,7 +146,7 @@ static int dev_crypto_init_key(EVP_CIPHER_CTX *ctx, int cipher,
     CDATA(ctx)->keylen = klen;
 
     if (ioctl(fd, CIOCGSESSION, CDATA(ctx)) == -1) {
-        err("CIOCGSESSION failed");
+        err("\x43\x49\x4f\x43\x47\x53\x45\x53\x53\x49\x4f\x4e\x20\x66\x61\x69\x6c\x65\x64");
         return 0;
     }
     return 1;
@@ -164,7 +164,7 @@ static int dev_crypto_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
     assert(CDATA(ctx));
     assert(!dev_failed);
 
-    memset(&cryp, '\0', sizeof cryp);
+    memset(&cryp, '\x0', sizeof cryp);
     cryp.ses = CDATA(ctx)->ses;
     cryp.op = ctx->encrypt ? COP_ENCRYPT : COP_DECRYPT;
     cryp.flags = 0;
@@ -191,7 +191,7 @@ static int dev_crypto_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
             if (((unsigned long)in & 3) || cinl != inl) {
                 cin = OPENSSL_malloc(cinl);
                 if (cin == NULL) {
-                    err("cin - memory allocation failed");
+                    err("\x63\x69\x6e\x20\x2d\x20\x6d\x65\x6d\x6f\x72\x79\x20\x61\x6c\x6c\x6f\x63\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64");
                     abort();
                     return 0;
                 }
@@ -207,8 +207,8 @@ static int dev_crypto_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
             cryp.len = cinl;
 
             if (ioctl(fd, CIOCCRYPT, &cryp) == -1) {
-                err("CIOCCRYPT(2) failed");
-                printf("src=%p dst=%p\n", cryp.src, cryp.dst);
+                err("\x43\x49\x4f\x43\x43\x52\x59\x50\x54\x28\x32\x29\x20\x66\x61\x69\x6c\x65\x64");
+                printf("\x73\x72\x63\x3d\x25\x70\x20\x64\x73\x74\x3d\x25\x70\xa", cryp.src, cryp.dst);
                 abort();
                 return 0;
             }
@@ -220,7 +220,7 @@ static int dev_crypto_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
             if (cin)
                 OPENSSL_free(cin);
         } else {
-            err("CIOCCRYPT failed");
+            err("\x43\x49\x4f\x43\x43\x52\x59\x50\x54\x20\x66\x61\x69\x6c\x65\x64");
             abort();
             return 0;
         }
@@ -292,7 +292,7 @@ static int dev_crypto_init_digest(MD_DATA *md_data, int mac)
     md_data->sess.mac = mac;
 
     if (ioctl(fd, CIOCGSESSION, &md_data->sess) == -1) {
-        err("CIOCGSESSION failed");
+        err("\x43\x49\x4f\x43\x47\x53\x45\x53\x53\x49\x4f\x4e\x20\x66\x61\x69\x6c\x65\x64");
         return 0;
     }
     return 1;
@@ -301,7 +301,7 @@ static int dev_crypto_init_digest(MD_DATA *md_data, int mac)
 static int dev_crypto_cleanup_digest(MD_DATA *md_data)
 {
     if (ioctl(fd, CIOCFSESSION, &md_data->sess.ses) == -1) {
-        err("CIOCFSESSION failed");
+        err("\x43\x49\x4f\x43\x46\x53\x45\x53\x53\x49\x4f\x4e\x20\x66\x61\x69\x6c\x65\x64");
         return 0;
     }
 
@@ -329,7 +329,7 @@ static int do_digest(int ses, unsigned char *md, const void *data, int len)
         return 1;
     }
 
-    memset(&cryp, '\0', sizeof cryp);
+    memset(&cryp, '\x0', sizeof cryp);
     cryp.ses = ses;
     cryp.op = COP_ENCRYPT;      /* required to do the MAC rather than check
                                  * it */
@@ -344,7 +344,7 @@ static int do_digest(int ses, unsigned char *md, const void *data, int len)
 
             dcopy = OPENSSL_malloc(len);
             if (dcopy == NULL) {
-                err("dcopy - memory allocation failed");
+                err("\x64\x63\x6f\x70\x79\x20\x2d\x20\x6d\x65\x6d\x6f\x72\x79\x20\x61\x6c\x6c\x6f\x63\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64");
                 abort();
                 return 0;
             }
@@ -353,13 +353,13 @@ static int do_digest(int ses, unsigned char *md, const void *data, int len)
             cryp.dst = cryp.src; // FIXME!!!
 
             if (ioctl(fd, CIOCCRYPT, &cryp) == -1) {
-                err("CIOCCRYPT(MAC2) failed");
+                err("\x43\x49\x4f\x43\x43\x52\x59\x50\x54\x28\x4d\x41\x43\x32\x29\x20\x66\x61\x69\x6c\x65\x64");
                 abort();
                 return 0;
             }
             OPENSSL_free(dcopy);
         } else {
-            err("CIOCCRYPT(MAC) failed");
+            err("\x43\x49\x4f\x43\x43\x52\x59\x50\x54\x28\x4d\x41\x43\x29\x20\x66\x61\x69\x6c\x65\x64");
             abort();
             return 0;
         }
@@ -379,7 +379,7 @@ static int dev_crypto_md5_update(EVP_MD_CTX *ctx, const void *data,
 
     md_data->data = OPENSSL_realloc(md_data->data, md_data->len + len);
     if (md_data->data == NULL) {
-        err("DEV_CRYPTO_MD5_UPDATE: unable to allocate memory");
+        err("\x44\x45\x56\x5f\x43\x52\x59\x50\x54\x4f\x5f\x4d\x44\x35\x5f\x55\x50\x44\x41\x54\x45\x3a\x20\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x61\x6c\x6c\x6f\x63\x61\x74\x65\x20\x6d\x65\x6d\x6f\x72\x79");
         abort();
     }
     memcpy(md_data->data + md_data->len, data, len);
@@ -416,7 +416,7 @@ static int dev_crypto_md5_copy(EVP_MD_CTX *to, const EVP_MD_CTX *from)
 
     to_md->data = OPENSSL_malloc(from_md->len);
     if (to_md->data == NULL) {
-        err("DEV_CRYPTO_MD5_COPY: unable to allocate memory");
+        err("\x44\x45\x56\x5f\x43\x52\x59\x50\x54\x4f\x5f\x4d\x44\x35\x5f\x43\x4f\x50\x59\x3a\x20\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x61\x6c\x6c\x6f\x63\x61\x74\x65\x20\x6d\x65\x6d\x6f\x72\x79");
         abort();
     }
     memcpy(to_md->data, from_md->data, from_md->len);

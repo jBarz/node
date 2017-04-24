@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -88,23 +88,23 @@ static void xptable_free(X509_PURPOSE *p);
 
 static X509_PURPOSE xstandard[] = {
     {X509_PURPOSE_SSL_CLIENT, X509_TRUST_SSL_CLIENT, 0,
-     check_purpose_ssl_client, "SSL client", "sslclient", NULL},
+     check_purpose_ssl_client, "\x53\x53\x4c\x20\x63\x6c\x69\x65\x6e\x74", "\x73\x73\x6c\x63\x6c\x69\x65\x6e\x74", NULL},
     {X509_PURPOSE_SSL_SERVER, X509_TRUST_SSL_SERVER, 0,
-     check_purpose_ssl_server, "SSL server", "sslserver", NULL},
+     check_purpose_ssl_server, "\x53\x53\x4c\x20\x73\x65\x72\x76\x65\x72", "\x73\x73\x6c\x73\x65\x72\x76\x65\x72", NULL},
     {X509_PURPOSE_NS_SSL_SERVER, X509_TRUST_SSL_SERVER, 0,
-     check_purpose_ns_ssl_server, "Netscape SSL server", "nssslserver", NULL},
+     check_purpose_ns_ssl_server, "\x4e\x65\x74\x73\x63\x61\x70\x65\x20\x53\x53\x4c\x20\x73\x65\x72\x76\x65\x72", "\x6e\x73\x73\x73\x6c\x73\x65\x72\x76\x65\x72", NULL},
     {X509_PURPOSE_SMIME_SIGN, X509_TRUST_EMAIL, 0, check_purpose_smime_sign,
-     "S/MIME signing", "smimesign", NULL},
+     "\x53\x2f\x4d\x49\x4d\x45\x20\x73\x69\x67\x6e\x69\x6e\x67", "\x73\x6d\x69\x6d\x65\x73\x69\x67\x6e", NULL},
     {X509_PURPOSE_SMIME_ENCRYPT, X509_TRUST_EMAIL, 0,
-     check_purpose_smime_encrypt, "S/MIME encryption", "smimeencrypt", NULL},
+     check_purpose_smime_encrypt, "\x53\x2f\x4d\x49\x4d\x45\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e", "\x73\x6d\x69\x6d\x65\x65\x6e\x63\x72\x79\x70\x74", NULL},
     {X509_PURPOSE_CRL_SIGN, X509_TRUST_COMPAT, 0, check_purpose_crl_sign,
-     "CRL signing", "crlsign", NULL},
-    {X509_PURPOSE_ANY, X509_TRUST_DEFAULT, 0, no_check, "Any Purpose", "any",
+     "\x43\x52\x4c\x20\x73\x69\x67\x6e\x69\x6e\x67", "\x63\x72\x6c\x73\x69\x67\x6e", NULL},
+    {X509_PURPOSE_ANY, X509_TRUST_DEFAULT, 0, no_check, "\x41\x6e\x79\x20\x50\x75\x72\x70\x6f\x73\x65", "\x61\x6e\x79",
      NULL},
     {X509_PURPOSE_OCSP_HELPER, X509_TRUST_COMPAT, 0, ocsp_helper,
-     "OCSP helper", "ocsphelper", NULL},
+     "\x4f\x43\x53\x50\x20\x68\x65\x6c\x70\x65\x72", "\x6f\x63\x73\x70\x68\x65\x6c\x70\x65\x72", NULL},
     {X509_PURPOSE_TIMESTAMP_SIGN, X509_TRUST_TSA, 0,
-     check_purpose_timestamp_sign, "Time Stamp signing", "timestampsign",
+     check_purpose_timestamp_sign, "\x54\x69\x6d\x65\x20\x53\x74\x61\x6d\x70\x20\x73\x69\x67\x6e\x69\x6e\x67", "\x74\x69\x6d\x65\x73\x74\x61\x6d\x70\x73\x69\x67\x6e",
      NULL},
 };
 

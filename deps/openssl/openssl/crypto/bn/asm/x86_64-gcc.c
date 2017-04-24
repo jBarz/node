@@ -71,39 +71,39 @@
  */
 # define mul_add(r,a,word,carry) do {   \
         register BN_ULONG high,low;     \
-        asm ("mulq %3"                  \
-                : "=a"(low),"=d"(high)  \
-                : "a"(word),"m"(a)      \
-                : "cc");                \
-        asm ("addq %2,%0; adcq %3,%1"   \
-                : "+r"(carry),"+d"(high)\
-                : "a"(low),"g"(0)       \
-                : "cc");                \
-        asm ("addq %2,%0; adcq %3,%1"   \
-                : "+m"(r),"+d"(high)    \
-                : "r"(carry),"g"(0)     \
-                : "cc");                \
+        asm ("\x6d\x75\x6c\x71\x20\x25\x33"                  \
+                : "\x3d\x61"(low),"\x3d\x64"(high)  \
+                : "\x61"(word),"\x6d"(a)      \
+                : "\x63\x63");                \
+        asm ("\x61\x64\x64\x71\x20\x25\x32\x2c\x25\x30\x3b\x20\x61\x64\x63\x71\x20\x25\x33\x2c\x25\x31"   \
+                : "\x2b\x72"(carry),"\x2b\x64"(high)\
+                : "\x61"(low),"\x67"(0)       \
+                : "\x63\x63");                \
+        asm ("\x61\x64\x64\x71\x20\x25\x32\x2c\x25\x30\x3b\x20\x61\x64\x63\x71\x20\x25\x33\x2c\x25\x31"   \
+                : "\x2b\x6d"(r),"\x2b\x64"(high)    \
+                : "\x72"(carry),"\x67"(0)     \
+                : "\x63\x63");                \
         carry=high;                     \
         } while (0)
 
 # define mul(r,a,word,carry) do {       \
         register BN_ULONG high,low;     \
-        asm ("mulq %3"                  \
-                : "=a"(low),"=d"(high)  \
-                : "a"(word),"g"(a)      \
-                : "cc");                \
-        asm ("addq %2,%0; adcq %3,%1"   \
-                : "+r"(carry),"+d"(high)\
-                : "a"(low),"g"(0)       \
-                : "cc");                \
+        asm ("\x6d\x75\x6c\x71\x20\x25\x33"                  \
+                : "\x3d\x61"(low),"\x3d\x64"(high)  \
+                : "\x61"(word),"\x67"(a)      \
+                : "\x63\x63");                \
+        asm ("\x61\x64\x64\x71\x20\x25\x32\x2c\x25\x30\x3b\x20\x61\x64\x63\x71\x20\x25\x33\x2c\x25\x31"   \
+                : "\x2b\x72"(carry),"\x2b\x64"(high)\
+                : "\x61"(low),"\x67"(0)       \
+                : "\x63\x63");                \
         (r)=carry, carry=high;          \
         } while (0)
 # undef sqr
 # define sqr(r0,r1,a)                   \
-        asm ("mulq %2"                  \
-                : "=a"(r0),"=d"(r1)     \
-                : "a"(a)                \
-                : "cc");
+        asm ("\x6d\x75\x6c\x71\x20\x25\x32"                  \
+                : "\x3d\x61"(r0),"\x3d\x64"(r1)     \
+                : "\x61"(a)                \
+                : "\x63\x63");
 
 BN_ULONG bn_mul_add_words(BN_ULONG *rp, const BN_ULONG *ap, int num,
                           BN_ULONG w)
@@ -193,9 +193,9 @@ BN_ULONG bn_div_words(BN_ULONG h, BN_ULONG l, BN_ULONG d)
 {
     BN_ULONG ret, waste;
 
- asm("divq      %4":"=a"(ret), "=d"(waste)
- :     "a"(l), "d"(h), "r"(d)
- :     "cc");
+ asm("\x64\x69\x76\x71\x20\x20\x20\x20\x20\x20\x25\x34":"\x3d\x61"(ret), "\x3d\x64"(waste)
+ :     "\x61"(l), "\x64"(h), "\x72"(d)
+ :     "\x63\x63");
 
     return ret;
 }
@@ -209,18 +209,18 @@ BN_ULONG bn_add_words(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
     if (n <= 0)
         return 0;
 
-    asm volatile ("       subq    %0,%0           \n" /* clear carry */
-                  "       jmp     1f              \n"
-                  ".p2align 4                     \n"
-                  "1:     movq    (%4,%2,8),%0    \n"
-                  "       adcq    (%5,%2,8),%0    \n"
-                  "       movq    %0,(%3,%2,8)    \n"
-                  "       lea     1(%2),%2        \n"
-                  "       loop    1b              \n"
-                  "       sbbq    %0,%0           \n":"=&r" (ret), "+c"(n),
-                  "+r"(i)
-                  :"r"(rp), "r"(ap), "r"(bp)
-                  :"cc", "memory");
+    asm volatile ("\x20\x20\x20\x20\x20\x20\x20\x73\x75\x62\x71\x20\x20\x20\x20\x25\x30\x2c\x25\x30\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa" /* clear carry */
+                  "\x20\x20\x20\x20\x20\x20\x20\x6a\x6d\x70\x20\x20\x20\x20\x20\x31\x66\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa"
+                  "\x2e\x70\x32\x61\x6c\x69\x67\x6e\x20\x34\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa"
+                  "\x31\x3a\x20\x20\x20\x20\x20\x6d\x6f\x76\x71\x20\x20\x20\x20\x28\x25\x34\x2c\x25\x32\x2c\x38\x29\x2c\x25\x30\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x61\x64\x63\x71\x20\x20\x20\x20\x28\x25\x35\x2c\x25\x32\x2c\x38\x29\x2c\x25\x30\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6d\x6f\x76\x71\x20\x20\x20\x20\x25\x30\x2c\x28\x25\x33\x2c\x25\x32\x2c\x38\x29\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6c\x65\x61\x20\x20\x20\x20\x20\x31\x28\x25\x32\x29\x2c\x25\x32\x20\x20\x20\x20\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6c\x6f\x6f\x70\x20\x20\x20\x20\x31\x62\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x73\x62\x62\x71\x20\x20\x20\x20\x25\x30\x2c\x25\x30\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa":"\x3d\x26\x72" (ret), "\x2b\x63"(n),
+                  "\x2b\x72"(i)
+                  :"\x72"(rp), "\x72"(ap), "\x72"(bp)
+                  :"\x63\x63", "\x6d\x65\x6d\x6f\x72\x79");
 
     return ret & 1;
 }
@@ -235,18 +235,18 @@ BN_ULONG bn_sub_words(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
     if (n <= 0)
         return 0;
 
-    asm volatile ("       subq    %0,%0           \n" /* clear borrow */
-                  "       jmp     1f              \n"
-                  ".p2align 4                     \n"
-                  "1:     movq    (%4,%2,8),%0    \n"
-                  "       sbbq    (%5,%2,8),%0    \n"
-                  "       movq    %0,(%3,%2,8)    \n"
-                  "       lea     1(%2),%2        \n"
-                  "       loop    1b              \n"
-                  "       sbbq    %0,%0           \n":"=&r" (ret), "+c"(n),
-                  "+r"(i)
-                  :"r"(rp), "r"(ap), "r"(bp)
-                  :"cc", "memory");
+    asm volatile ("\x20\x20\x20\x20\x20\x20\x20\x73\x75\x62\x71\x20\x20\x20\x20\x25\x30\x2c\x25\x30\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa" /* clear borrow */
+                  "\x20\x20\x20\x20\x20\x20\x20\x6a\x6d\x70\x20\x20\x20\x20\x20\x31\x66\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa"
+                  "\x2e\x70\x32\x61\x6c\x69\x67\x6e\x20\x34\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa"
+                  "\x31\x3a\x20\x20\x20\x20\x20\x6d\x6f\x76\x71\x20\x20\x20\x20\x28\x25\x34\x2c\x25\x32\x2c\x38\x29\x2c\x25\x30\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x73\x62\x62\x71\x20\x20\x20\x20\x28\x25\x35\x2c\x25\x32\x2c\x38\x29\x2c\x25\x30\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6d\x6f\x76\x71\x20\x20\x20\x20\x25\x30\x2c\x28\x25\x33\x2c\x25\x32\x2c\x38\x29\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6c\x65\x61\x20\x20\x20\x20\x20\x31\x28\x25\x32\x29\x2c\x25\x32\x20\x20\x20\x20\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x6c\x6f\x6f\x70\x20\x20\x20\x20\x31\x62\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa"
+                  "\x20\x20\x20\x20\x20\x20\x20\x73\x62\x62\x71\x20\x20\x20\x20\x25\x30\x2c\x25\x30\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xa":"\x3d\x26\x72" (ret), "\x2b\x63"(n),
+                  "\x2b\x72"(i)
+                  :"\x72"(rp), "\x72"(ap), "\x72"(bp)
+                  :"\x63\x63", "\x6d\x65\x6d\x6f\x72\x79");
 
     return ret & 1;
 }
@@ -344,42 +344,42 @@ BN_ULONG bn_sub_words(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n)
 # else
 #  define mul_add_c(a,b,c0,c1,c2) do {  \
         BN_ULONG t1,t2;                 \
-        asm ("mulq %3"                  \
-                : "=a"(t1),"=d"(t2)     \
-                : "a"(a),"m"(b)         \
-                : "cc");                \
-        asm ("addq %3,%0; adcq %4,%1; adcq %5,%2"       \
-                : "+r"(c0),"+r"(c1),"+r"(c2)            \
-                : "r"(t1),"r"(t2),"g"(0)                \
-                : "cc");                                \
+        asm ("\x6d\x75\x6c\x71\x20\x25\x33"                  \
+                : "\x3d\x61"(t1),"\x3d\x64"(t2)     \
+                : "\x61"(a),"\x6d"(b)         \
+                : "\x63\x63");                \
+        asm ("\x61\x64\x64\x71\x20\x25\x33\x2c\x25\x30\x3b\x20\x61\x64\x63\x71\x20\x25\x34\x2c\x25\x31\x3b\x20\x61\x64\x63\x71\x20\x25\x35\x2c\x25\x32"       \
+                : "\x2b\x72"(c0),"\x2b\x72"(c1),"\x2b\x72"(c2)            \
+                : "\x72"(t1),"\x72"(t2),"\x67"(0)                \
+                : "\x63\x63");                                \
         } while (0)
 
 #  define sqr_add_c(a,i,c0,c1,c2) do {  \
         BN_ULONG t1,t2;                 \
-        asm ("mulq %2"                  \
-                : "=a"(t1),"=d"(t2)     \
-                : "a"(a[i])             \
-                : "cc");                \
-        asm ("addq %3,%0; adcq %4,%1; adcq %5,%2"       \
-                : "+r"(c0),"+r"(c1),"+r"(c2)            \
-                : "r"(t1),"r"(t2),"g"(0)                \
-                : "cc");                                \
+        asm ("\x6d\x75\x6c\x71\x20\x25\x32"                  \
+                : "\x3d\x61"(t1),"\x3d\x64"(t2)     \
+                : "\x61"(a[i])             \
+                : "\x63\x63");                \
+        asm ("\x61\x64\x64\x71\x20\x25\x33\x2c\x25\x30\x3b\x20\x61\x64\x63\x71\x20\x25\x34\x2c\x25\x31\x3b\x20\x61\x64\x63\x71\x20\x25\x35\x2c\x25\x32"       \
+                : "\x2b\x72"(c0),"\x2b\x72"(c1),"\x2b\x72"(c2)            \
+                : "\x72"(t1),"\x72"(t2),"\x67"(0)                \
+                : "\x63\x63");                                \
         } while (0)
 
 #  define mul_add_c2(a,b,c0,c1,c2) do { \
         BN_ULONG t1,t2;                 \
-        asm ("mulq %3"                  \
-                : "=a"(t1),"=d"(t2)     \
-                : "a"(a),"m"(b)         \
-                : "cc");                \
-        asm ("addq %3,%0; adcq %4,%1; adcq %5,%2"       \
-                : "+r"(c0),"+r"(c1),"+r"(c2)            \
-                : "r"(t1),"r"(t2),"g"(0)                \
-                : "cc");                                \
-        asm ("addq %3,%0; adcq %4,%1; adcq %5,%2"       \
-                : "+r"(c0),"+r"(c1),"+r"(c2)            \
-                : "r"(t1),"r"(t2),"g"(0)                \
-                : "cc");                                \
+        asm ("\x6d\x75\x6c\x71\x20\x25\x33"                  \
+                : "\x3d\x61"(t1),"\x3d\x64"(t2)     \
+                : "\x61"(a),"\x6d"(b)         \
+                : "\x63\x63");                \
+        asm ("\x61\x64\x64\x71\x20\x25\x33\x2c\x25\x30\x3b\x20\x61\x64\x63\x71\x20\x25\x34\x2c\x25\x31\x3b\x20\x61\x64\x63\x71\x20\x25\x35\x2c\x25\x32"       \
+                : "\x2b\x72"(c0),"\x2b\x72"(c1),"\x2b\x72"(c2)            \
+                : "\x72"(t1),"\x72"(t2),"\x67"(0)                \
+                : "\x63\x63");                                \
+        asm ("\x61\x64\x64\x71\x20\x25\x33\x2c\x25\x30\x3b\x20\x61\x64\x63\x71\x20\x25\x34\x2c\x25\x31\x3b\x20\x61\x64\x63\x71\x20\x25\x35\x2c\x25\x32"       \
+                : "\x2b\x72"(c0),"\x2b\x72"(c1),"\x2b\x72"(c2)            \
+                : "\x72"(t1),"\x72"(t2),"\x67"(0)                \
+                : "\x63\x63");                                \
         } while (0)
 # endif
 

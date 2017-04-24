@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -210,11 +210,11 @@ main()
     for (i = 0; i < sizeof(sigoid_srt) / sizeof(nid_triple); i++) {
         n1 = sigoid_srt[i][0];
         rv = OBJ_find_sigid_algs(n1, &n2, &n3);
-        printf("Forward: %d, %s %s %s\n", rv,
+        printf("\x46\x6f\x72\x77\x61\x72\x64\x3a\x20\x25\x64\x2c\x20\x25\x73\x20\x25\x73\x20\x25\x73\xa", rv,
                OBJ_nid2ln(n1), OBJ_nid2ln(n2), OBJ_nid2ln(n3));
         n1 = 0;
         rv = OBJ_find_sigid_by_algs(&n1, n2, n3);
-        printf("Reverse: %d, %s %s %s\n", rv,
+        printf("\x52\x65\x76\x65\x72\x73\x65\x3a\x20\x25\x64\x2c\x20\x25\x73\x20\x25\x73\x20\x25\x73\xa", rv,
                OBJ_nid2ln(n1), OBJ_nid2ln(n2), OBJ_nid2ln(n3));
     }
 }

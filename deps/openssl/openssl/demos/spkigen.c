@@ -18,7 +18,7 @@
  * The following two don't exist in SSLeay but they are in here as examples
  */
 #define PEM_write_SPKI(fp,x) \
-        PEM_ASN1_write((int (*)())i2d_NETSCAPE_SPKI,"SPKI",fp,\
+        PEM_ASN1_write((int (*)())i2d_NETSCAPE_SPKI,"\x53\x50\x4b\x49",fp,\
                         (char *)x,NULL,NULL,0,NULL)
 int SPKI_set_pubkey(NETSCAPE_SPKI *x, EVP_PKEY *pkey);
 
@@ -46,11 +46,11 @@ char *argv[];
          * Generate an RSA key, the random state should have been seeded with
          * lots of calls to RAND_seed(....)
          */
-        fprintf(stderr, "generating RSA key, could take some time...\n");
+        fprintf(stderr, "\x67\x65\x6e\x65\x72\x61\x74\x69\x6e\x67\x20\x52\x53\x41\x20\x6b\x65\x79\x2c\x20\x63\x6f\x75\x6c\x64\x20\x74\x61\x6b\x65\x20\x73\x6f\x6d\x65\x20\x74\x69\x6d\x65\x2e\x2e\x2e\xa");
         if ((rsa = RSA_generate_key(512, RSA_F4, NULL)) == NULL)
             goto err;
     } else {
-        if ((fp = fopen(argv[1], "r")) == NULL) {
+        if ((fp = fopen(argv[1], "\x72")) == NULL) {
             perror(argv[1]);
             goto err;
         }
@@ -70,13 +70,13 @@ char *argv[];
     if (!SPKI_set_pubkey(spki, pkey))
         goto err;
 
-    fprintf(stderr, "please enter challenge string:");
+    fprintf(stderr, "\x70\x6c\x65\x61\x73\x65\x20\x65\x6e\x74\x65\x72\x20\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x73\x74\x72\x69\x6e\x67\x3a");
     fflush(stderr);
-    buf[0] = '\0';
+    buf[0] = '\x0';
     fgets(buf, sizeof buf, stdin);
     i = strlen(buf);
     if (i > 0)
-        buf[--i] = '\0';
+        buf[--i] = '\x0';
     if (!ASN1_STRING_set((ASN1_STRING *)spki->spkac->challenge, buf, i))
         goto err;
 
@@ -89,7 +89,7 @@ char *argv[];
     ok = 1;
  err:
     if (!ok) {
-        fprintf(stderr, "something bad happened....");
+        fprintf(stderr, "\x73\x6f\x6d\x65\x74\x68\x69\x6e\x67\x20\x62\x61\x64\x20\x68\x61\x70\x70\x65\x6e\x65\x64\x2e\x2e\x2e\x2e");
         ERR_print_errors_fp(stderr);
     }
     NETSCAPE_SPKI_free(spki);

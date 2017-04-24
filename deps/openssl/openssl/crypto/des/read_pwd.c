@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -256,7 +256,7 @@ static void read_till_nl(FILE *in)
 
     do {
         fgets(buf, SIZE, in);
-    } while (strchr(buf, '\n') == NULL);
+    } while (strchr(buf, '\xa') == NULL);
 }
 
 /* return 0 if ok, 1 (or -1) otherwise */
@@ -265,7 +265,7 @@ int des_read_pw(char *buf, char *buff, int size, const char *prompt,
 {
 # ifdef OPENSSL_SYS_VMS
     struct IOSB iosb;
-    $DESCRIPTOR(terminal, "TT");
+    $DESCRIPTOR(terminal, "\x54\x54");
     long tty_orig[3], tty_new[3];
     long status;
     unsigned short channel = 0;
@@ -296,13 +296,13 @@ int des_read_pw(char *buf, char *buff, int size, const char *prompt,
     tty = NULL;
 
 # ifdef OPENSSL_SYS_MSDOS
-    if ((tty = fopen("con", "r")) == NULL)
+    if ((tty = fopen("\x63\x6f\x6e", "\x72")) == NULL)
         tty = stdin;
 # elif defined(MAC_OS_pre_X) || defined(OPENSSL_SYS_VXWORKS)
     tty = stdin;
 # else
 #  ifndef OPENSSL_SYS_MPE
-    if ((tty = fopen("/dev/tty", "r")) == NULL)
+    if ((tty = fopen("\x2f\x64\x65\x76\x2f\x74\x74\x79", "\x72")) == NULL)
 #  endif
         tty = stdin;
 # endif
@@ -369,30 +369,30 @@ int des_read_pw(char *buf, char *buff, int size, const char *prompt,
         fputs(prompt, stderr);
         fflush(stderr);
 
-        buf[0] = '\0';
+        buf[0] = '\x0';
         fgets(buf, size, tty);
         if (feof(tty))
             goto error;
         if (ferror(tty))
             goto error;
-        if ((p = (char *)strchr(buf, '\n')) != NULL)
-            *p = '\0';
+        if ((p = (char *)strchr(buf, '\xa')) != NULL)
+            *p = '\x0';
         else
             read_till_nl(tty);
         if (verify) {
-            fprintf(stderr, "\nVerifying password - %s", prompt);
+            fprintf(stderr, "\xa\x56\x65\x72\x69\x66\x79\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x2d\x20\x25\x73", prompt);
             fflush(stderr);
-            buff[0] = '\0';
+            buff[0] = '\x0';
             fgets(buff, size, tty);
             if (feof(tty))
                 goto error;
-            if ((p = (char *)strchr(buff, '\n')) != NULL)
-                *p = '\0';
+            if ((p = (char *)strchr(buff, '\xa')) != NULL)
+                *p = '\x0';
             else
                 read_till_nl(tty);
 
             if (strcmp(buf, buff) != 0) {
-                fprintf(stderr, "\nVerify failure");
+                fprintf(stderr, "\xa\x56\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65");
                 fflush(stderr);
                 break;
                 /* continue; */
@@ -402,9 +402,9 @@ int des_read_pw(char *buf, char *buff, int size, const char *prompt,
     }
 
  error:
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 # if 0
-    perror("fgets(tty)");
+    perror("\x66\x67\x65\x74\x73\x28\x74\x74\x79\x29");
 # endif
     /* What can we do if there is an error? */
 # if defined(TTY_set) && !defined(OPENSSL_SYS_VMS)
@@ -497,7 +497,7 @@ static int noecho_fgets(char *buf, int size, FILE *tty)
     p = buf;
     for (;;) {
         if (size == 0) {
-            *p = '\0';
+            *p = '\x0';
             break;
         }
         size--;
@@ -506,11 +506,11 @@ static int noecho_fgets(char *buf, int size, FILE *tty)
 #  else
         i = getch();
 #  endif
-        if (i == '\r')
-            i = '\n';
+        if (i == '\xd')
+            i = '\xa';
         *(p++) = i;
-        if (i == '\n') {
-            *p = '\0';
+        if (i == '\xa') {
+            *p = '\x0';
             break;
         }
     }

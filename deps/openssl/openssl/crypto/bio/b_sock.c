@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -161,7 +161,7 @@ int BIO_get_host_ip(const char *str, unsigned char *ip)
     if (locked)
         CRYPTO_w_unlock(CRYPTO_LOCK_GETHOSTBYNAME);
     if (err) {
-        ERR_add_error_data(2, "host=", str);
+        ERR_add_error_data(2, "\x68\x6f\x73\x74\x3d", str);
         return 0;
     } else
         return 1;
@@ -186,35 +186,35 @@ int BIO_get_port(const char *str, unsigned short *port_ptr)
          * is 'char *', instead of 'const char *'
          */
 # ifndef CONST_STRICT
-        s = getservbyname((char *)str, "tcp");
+        s = getservbyname((char *)str, "\x74\x63\x70");
 # else
-        s = getservbyname(str, "tcp");
+        s = getservbyname(str, "\x74\x63\x70");
 # endif
         if (s != NULL)
             *port_ptr = ntohs((unsigned short)s->s_port);
         CRYPTO_w_unlock(CRYPTO_LOCK_GETSERVBYNAME);
         if (s == NULL) {
-            if (strcmp(str, "http") == 0)
+            if (strcmp(str, "\x68\x74\x74\x70") == 0)
                 *port_ptr = 80;
-            else if (strcmp(str, "telnet") == 0)
+            else if (strcmp(str, "\x74\x65\x6c\x6e\x65\x74") == 0)
                 *port_ptr = 23;
-            else if (strcmp(str, "socks") == 0)
+            else if (strcmp(str, "\x73\x6f\x63\x6b\x73") == 0)
                 *port_ptr = 1080;
-            else if (strcmp(str, "https") == 0)
+            else if (strcmp(str, "\x68\x74\x74\x70\x73") == 0)
                 *port_ptr = 443;
-            else if (strcmp(str, "ssl") == 0)
+            else if (strcmp(str, "\x73\x73\x6c") == 0)
                 *port_ptr = 443;
-            else if (strcmp(str, "ftp") == 0)
+            else if (strcmp(str, "\x66\x74\x70") == 0)
                 *port_ptr = 21;
-            else if (strcmp(str, "gopher") == 0)
+            else if (strcmp(str, "\x67\x6f\x70\x68\x65\x72") == 0)
                 *port_ptr = 70;
 # if 0
-            else if (strcmp(str, "wais") == 0)
+            else if (strcmp(str, "\x77\x61\x69\x73") == 0)
                 *port_ptr = 21;
 # endif
             else {
                 SYSerr(SYS_F_GETSERVBYNAME, get_last_socket_error());
-                ERR_add_error_data(3, "service='", str, "'");
+                ERR_add_error_data(3, "\x73\x65\x72\x76\x69\x63\x65\x3d\x27", str, "\x27");
                 return (0);
             }
         }
@@ -271,7 +271,7 @@ long BIO_ghbn_ctrl(int cmd, int iarg, char *parg)
             if (p == NULL)
                 return (0);
             *p = ghbn_cache[iarg].name;
-            ghbn_cache[iarg].name[128] = '\0';
+            ghbn_cache[iarg].name[128] = '\x0';
             return (1);
         }
         return (0);
@@ -433,7 +433,7 @@ struct hostent *BIO_gethostbyname(const char *name)
         /* else add to cache */
         if (ghbn_cache[lowi].ent != NULL)
             ghbn_free(ghbn_cache[lowi].ent); /* XXX not thread-safe */
-        ghbn_cache[lowi].name[0] = '\0';
+        ghbn_cache[lowi].name[0] = '\x0';
 
         if ((ret = ghbn_cache[lowi].ent = ghbn_dup(ret)) == NULL) {
             BIOerr(BIO_F_BIO_GETHOSTBYNAME, ERR_R_MALLOC_FAILURE);
@@ -578,19 +578,19 @@ static int get_ip(const char *str, unsigned char ip[4])
 
     for (;;) {
         c = *(str++);
-        if ((c >= '0') && (c <= '9')) {
+        if ((c >= '\x30') && (c <= '\x39')) {
             ok = 1;
-            tmp[num] = tmp[num] * 10 + c - '0';
+            tmp[num] = tmp[num] * 10 + c - '\x30';
             if (tmp[num] > 255)
                 return (0);
-        } else if (c == '.') {
+        } else if (c == '\x2e') {
             if (!ok)
                 return (-1);
             if (num == 3)
                 return (0);
             num++;
             ok = 0;
-        } else if (c == '\0' && (num == 3) && ok)
+        } else if (c == '\x0' && (num == 3) && ok)
             break;
         else
             return (0);
@@ -629,15 +629,15 @@ int BIO_get_accept_socket(char *host, int bind_mode)
     h = p = NULL;
     h = str;
     for (e = str; *e; e++) {
-        if (*e == ':') {
+        if (*e == '\x3a') {
             p = e;
-        } else if (*e == '/') {
-            *e = '\0';
+        } else if (*e == '\x2f') {
+            *e = '\x0';
             break;
         }
     }
     if (p)
-        *p++ = '\0';            /* points at last ':', '::port' is special
+        *p++ = '\x0';            /* points at last '\x3a', '::port' is special
                                  * [see below] */
     else
         p = h, h = NULL;
@@ -660,9 +660,9 @@ int BIO_get_accept_socket(char *host, int bind_mode)
         struct addrinfo *res, hint;
 
         if (p_getaddrinfo.p == NULL) {
-            if ((p_getaddrinfo.p = DSO_global_lookup("getaddrinfo")) == NULL
+            if ((p_getaddrinfo.p = DSO_global_lookup("\x67\x65\x74\x61\x64\x64\x72\x69\x6e\x66\x6f")) == NULL
                 || (p_freeaddrinfo.p =
-                    DSO_global_lookup("freeaddrinfo")) == NULL)
+                    DSO_global_lookup("\x66\x72\x65\x65\x61\x64\x64\x72\x69\x6e\x66\x6f")) == NULL)
                 p_getaddrinfo.p = (void *)-1;
         }
         if (p_getaddrinfo.p == (void *)-1)
@@ -676,15 +676,15 @@ int BIO_get_accept_socket(char *host, int bind_mode)
         memset(&hint, 0, sizeof(hint));
         hint.ai_flags = AI_PASSIVE;
         if (h) {
-            if (strchr(h, ':')) {
-                if (h[1] == '\0')
+            if (strchr(h, '\x3a')) {
+                if (h[1] == '\x0')
                     h = NULL;
 #  if OPENSSL_USE_IPV6
                 hint.ai_family = AF_INET6;
 #  else
                 h = NULL;
 #  endif
-            } else if (h[0] == '*' && h[1] == '\0') {
+            } else if (h[0] == '\x2a' && h[1] == '\x0') {
                 hint.ai_family = AF_INET;
                 h = NULL;
             }
@@ -710,7 +710,7 @@ int BIO_get_accept_socket(char *host, int bind_mode)
     server.sa_in.sin_port = htons(port);
     addrlen = sizeof(server.sa_in);
 
-    if (h == NULL || strcmp(h, "*") == 0)
+    if (h == NULL || strcmp(h, "\x2a") == 0)
         server.sa_in.sin_addr.s_addr = INADDR_ANY;
     else {
         if (!BIO_get_host_ip(h, &(ip[0])))
@@ -726,7 +726,7 @@ int BIO_get_accept_socket(char *host, int bind_mode)
     s = socket(server.sa.sa_family, SOCK_STREAM, SOCKET_PROTOCOL);
     if (s == INVALID_SOCKET) {
         SYSerr(SYS_F_SOCKET, get_last_socket_error());
-        ERR_add_error_data(3, "port='", host, "'");
+        ERR_add_error_data(3, "\x70\x6f\x72\x74\x3d\x27", host, "\x27");
         BIOerr(BIO_F_BIO_GET_ACCEPT_SOCKET, BIO_R_UNABLE_TO_CREATE_SOCKET);
         goto err;
     }
@@ -752,7 +752,7 @@ int BIO_get_accept_socket(char *host, int bind_mode)
 #  endif
         {
             client = server;
-            if (h == NULL || strcmp(h, "*") == 0) {
+            if (h == NULL || strcmp(h, "\x2a") == 0) {
 #  if OPENSSL_USE_IPV6
                 if (client.sa.sa_family == AF_INET6) {
                     memset(&client.sa_in6.sin6_addr, 0,
@@ -781,13 +781,13 @@ int BIO_get_accept_socket(char *host, int bind_mode)
         }
 # endif
         SYSerr(SYS_F_BIND, err_num);
-        ERR_add_error_data(3, "port='", host, "'");
+        ERR_add_error_data(3, "\x70\x6f\x72\x74\x3d\x27", host, "\x27");
         BIOerr(BIO_F_BIO_GET_ACCEPT_SOCKET, BIO_R_UNABLE_TO_BIND_SOCKET);
         goto err;
     }
     if (listen(s, MAX_LISTEN) == -1) {
         SYSerr(SYS_F_BIND, get_last_socket_error());
-        ERR_add_error_data(3, "port='", host, "'");
+        ERR_add_error_data(3, "\x70\x6f\x72\x74\x3d\x27", host, "\x27");
         BIOerr(BIO_F_BIO_GET_ACCEPT_SOCKET, BIO_R_UNABLE_TO_LISTEN_SOCKET);
         goto err;
     }
@@ -883,7 +883,7 @@ int BIO_accept(int sock, char **addr)
          */
 
         if (p_getnameinfo.p == NULL) {
-            if ((p_getnameinfo.p = DSO_global_lookup("getnameinfo")) == NULL)
+            if ((p_getnameinfo.p = DSO_global_lookup("\x67\x65\x74\x6e\x61\x6d\x65\x69\x6e\x66\x6f")) == NULL)
                 p_getnameinfo.p = (void *)-1;
         }
         if (p_getnameinfo.p == (void *)-1)
@@ -895,7 +895,7 @@ int BIO_accept(int sock, char **addr)
         nl = strlen(h) + strlen(s) + 2;
         p = *addr;
         if (p) {
-            *p = '\0';
+            *p = '\x0';
             p = OPENSSL_realloc(p, nl);
         } else {
             p = OPENSSL_malloc(nl);
@@ -905,7 +905,7 @@ int BIO_accept(int sock, char **addr)
             goto end;
         }
         *addr = p;
-        BIO_snprintf(*addr, nl, "%s:%s", h, s);
+        BIO_snprintf(*addr, nl, "\x25\x73\x3a\x25\x73", h, s);
         goto end;
     } while (0);
 # endif
@@ -920,7 +920,7 @@ int BIO_accept(int sock, char **addr)
         }
         *addr = p;
     }
-    BIO_snprintf(*addr, 24, "%d.%d.%d.%d:%d",
+    BIO_snprintf(*addr, 24, "\x25\x64\x2e\x25\x64\x2e\x25\x64\x2e\x25\x64\x3a\x25\x64",
                  (unsigned char)(l >> 24L) & 0xff,
                  (unsigned char)(l >> 16L) & 0xff,
                  (unsigned char)(l >> 8L) & 0xff,

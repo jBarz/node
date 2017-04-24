@@ -39,34 +39,34 @@ typedef unsigned char u8;
 # if defined(__GNUC__) && __GNUC__>=2
 #  if defined(__x86_64) || defined(__x86_64__)
 #   define BSWAP8(x) ({ u64 ret_=(x);                   \
-                        asm ("bswapq %0"                \
-                        : "+r"(ret_));   ret_;          })
+                        asm ("\x62\x73\x77\x61\x70\x71\x20\x25\x30"                \
+                        : "\x2b\x72"(ret_));   ret_;          })
 #   define BSWAP4(x) ({ u32 ret_=(x);                   \
-                        asm ("bswapl %0"                \
-                        : "+r"(ret_));   ret_;          })
+                        asm ("\x62\x73\x77\x61\x70\x6c\x20\x25\x30"                \
+                        : "\x2b\x72"(ret_));   ret_;          })
 #  elif (defined(__i386) || defined(__i386__)) && !defined(I386_ONLY)
 #   define BSWAP8(x) ({ u32 lo_=(u64)(x)>>32,hi_=(x);   \
-                        asm ("bswapl %0; bswapl %1"     \
-                        : "+r"(hi_),"+r"(lo_));         \
+                        asm ("\x62\x73\x77\x61\x70\x6c\x20\x25\x30\x3b\x20\x62\x73\x77\x61\x70\x6c\x20\x25\x31"     \
+                        : "\x2b\x72"(hi_),"\x2b\x72"(lo_));         \
                         (u64)hi_<<32|lo_;               })
 #   define BSWAP4(x) ({ u32 ret_=(x);                   \
-                        asm ("bswapl %0"                \
-                        : "+r"(ret_));   ret_;          })
+                        asm ("\x62\x73\x77\x61\x70\x6c\x20\x25\x30"                \
+                        : "\x2b\x72"(ret_));   ret_;          })
 #  elif defined(__aarch64__)
 #   define BSWAP8(x) ({ u64 ret_;                       \
-                        asm ("rev %0,%1"                \
-                        : "=r"(ret_) : "r"(x)); ret_;   })
+                        asm ("\x72\x65\x76\x20\x25\x30\x2c\x25\x31"                \
+                        : "\x3d\x72"(ret_) : "\x72"(x)); ret_;   })
 #   define BSWAP4(x) ({ u32 ret_;                       \
-                        asm ("rev %w0,%w1"              \
-                        : "=r"(ret_) : "r"(x)); ret_;   })
+                        asm ("\x72\x65\x76\x20\x25\x77\x30\x2c\x25\x77\x31"              \
+                        : "\x3d\x72"(ret_) : "\x72"(x)); ret_;   })
 #  elif (defined(__arm__) || defined(__arm)) && !defined(STRICT_ALIGNMENT)
 #   define BSWAP8(x) ({ u32 lo_=(u64)(x)>>32,hi_=(x);   \
-                        asm ("rev %0,%0; rev %1,%1"     \
-                        : "+r"(hi_),"+r"(lo_));         \
+                        asm ("\x72\x65\x76\x20\x25\x30\x2c\x25\x30\x3b\x20\x72\x65\x76\x20\x25\x31\x2c\x25\x31"     \
+                        : "\x2b\x72"(hi_),"\x2b\x72"(lo_));         \
                         (u64)hi_<<32|lo_;               })
 #   define BSWAP4(x) ({ u32 ret_;                       \
-                        asm ("rev %0,%1"                \
-                        : "=r"(ret_) : "r"((u32)(x)));  \
+                        asm ("\x72\x65\x76\x20\x25\x30\x2c\x25\x31"                \
+                        : "\x3d\x72"(ret_) : "\x72"((u32)(x)));  \
                         ret_;                           })
 #  endif
 # elif defined(_MSC_VER)
@@ -107,7 +107,7 @@ struct gcm128_context {
     union {
         u64 u[2];
         u32 d[4];
-        u8 c[16];
+         u8 c[16];
         size_t t[16 / sizeof(size_t)];
     } Yi, EKi, EK0, len, Xi, H;
     /*
@@ -119,7 +119,7 @@ struct gcm128_context {
 #else
     u128 Htable[16];
     void (*gmult) (u64 Xi[2], const u128 Htable[16]);
-    void (*ghash) (u64 Xi[2], const u128 Htable[16], const u8 *inp,
+    void (*ghash) (u64 Xi[2], const u128 Htable[16], const  u8 *inp,
                    size_t len);
 #endif
     unsigned int mres, ares;
@@ -135,7 +135,7 @@ struct xts128_context {
 struct ccm128_context {
     union {
         u64 u[2];
-        u8 c[16];
+         u8 c[16];
     } nonce, cmac;
     u64 blocks;
     block128_f block;

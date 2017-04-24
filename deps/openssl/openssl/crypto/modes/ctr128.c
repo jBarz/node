@@ -110,7 +110,7 @@ static void ctr128_inc_aligned(unsigned char *counter)
  * extra state information to record how much of the 128bit block we have
  * used is contained in *num, and the encrypted counter is kept in
  * ecount_buf.  Both *num and ecount_buf must be initialised with zeros
- * before the first call to CRYPTO_ctr128_encrypt(). This algorithm assumes
+ * before the first call to CRYPTO_ctr128_encrypt(u8). This algorithm assumes
  * that the counter is in the x lower bits of the IV (ivec), and that the
  * application has full control over overflow and the rest of the IV.  This
  * implementation takes NO responsability for checking that the counter

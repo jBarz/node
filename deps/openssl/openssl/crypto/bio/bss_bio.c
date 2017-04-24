@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -106,7 +106,7 @@ static void bio_destroy_pair(BIO *bio);
 
 static BIO_METHOD methods_biop = {
     BIO_TYPE_BIO,
-    "BIO pair",
+    "\x42\x49\x4f\x20\x70\x61\x69\x72",
     bio_write,
     bio_read,
     bio_puts,
@@ -125,14 +125,14 @@ BIO_METHOD *BIO_s_bio(void)
 struct bio_bio_st {
     BIO *peer;                  /* NULL if buf == NULL. If peer != NULL, then
                                  * peer->ptr is also a bio_bio_st, and its
-                                 * "peer" member points back to us. peer !=
+                                 * "\x70\x65\x65\x72" member points back to us. peer !=
                                  * NULL iff init != 0 in the BIO. */
     /* This is for what we write (i.e. reading uses peer's struct): */
     int closed;                 /* valid iff peer != NULL */
     size_t len;                 /* valid iff buf != NULL; 0 if peer == NULL */
     size_t offset;              /* valid iff buf != NULL; 0 if len == 0 */
     size_t size;
-    char *buf;                  /* "size" elements (if != NULL) */
+    char *buf;                  /* "\x73\x69\x7a\x65" elements (if != NULL) */
     size_t request;             /* valid iff peer != NULL; 0 if len != 0,
                                  * otherwise set by peer to number of bytes
                                  * it (unsuccessfully) tried to read, never
@@ -201,7 +201,7 @@ static int bio_read(BIO *bio, char *buf, int size_)
     assert(peer_b != NULL);
     assert(peer_b->buf != NULL);
 
-    peer_b->request = 0;        /* will be set in "retry_read" situation */
+    peer_b->request = 0;        /* will be set in "\x72\x65\x74\x72\x79\x5f\x72\x65\x61\x64" situation */
 
     if (buf == NULL || size == 0)
         return 0;

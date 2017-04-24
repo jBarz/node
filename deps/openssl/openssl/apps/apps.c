@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -181,7 +181,7 @@ int args_from_file(char *file, int *argc, char **argv[])
     static char **arg = NULL;
     char *p;
 
-    fp = fopen(file, "r");
+    fp = fopen(file, "\x72");
     if (fp == NULL)
         return (0);
 
@@ -206,11 +206,11 @@ int args_from_file(char *file, int *argc, char **argv[])
     len = fread(buf, 1, len, fp);
     if (len <= 1)
         return (0);
-    buf[len] = '\0';
+    buf[len] = '\x0';
 
     i = 0;
     for (p = buf; *p; p++)
-        if (*p == '\n')
+        if (*p == '\xa')
             i++;
     if (arg != NULL)
         OPENSSL_free(arg);
@@ -223,40 +223,40 @@ int args_from_file(char *file, int *argc, char **argv[])
     for (;;) {
         if (!*p)
             break;
-        if (*p == '#') {        /* comment line */
-            while (*p && (*p != '\n'))
+        if (*p == '\x23') {        /* comment line */
+            while (*p && (*p != '\xa'))
                 p++;
             continue;
         }
         /* else we have a line */
         *(arg++) = p;
         num++;
-        while (*p && ((*p != ' ') && (*p != '\t') && (*p != '\n')))
+        while (*p && ((*p != '\x20') && (*p != '\x9') && (*p != '\xa')))
             p++;
         if (!*p)
             break;
-        if (*p == '\n') {
-            *(p++) = '\0';
+        if (*p == '\xa') {
+            *(p++) = '\x0';
             continue;
         }
         /* else it is a tab or space */
         p++;
-        while (*p && ((*p == ' ') || (*p == '\t') || (*p == '\n')))
+        while (*p && ((*p == '\x20') || (*p == '\x9') || (*p == '\xa')))
             p++;
         if (!*p)
             break;
-        if (*p == '\n') {
+        if (*p == '\xa') {
             p++;
             continue;
         }
         *(arg++) = p++;
         num++;
-        while (*p && (*p != '\n'))
+        while (*p && (*p != '\xa'))
             p++;
         if (!*p)
             break;
         /* else *p == '\n' */
-        *(p++) = '\0';
+        *(p++) = '\x0';
     }
     *argc = num;
     return (1);
@@ -267,26 +267,26 @@ int str2fmt(char *s)
 {
     if (s == NULL)
         return FORMAT_UNDEF;
-    if ((*s == 'D') || (*s == 'd'))
+    if ((*s == '\x44') || (*s == '\x64'))
         return (FORMAT_ASN1);
-    else if ((*s == 'T') || (*s == 't'))
+    else if ((*s == '\x54') || (*s == '\x74'))
         return (FORMAT_TEXT);
-    else if ((*s == 'N') || (*s == 'n'))
+    else if ((*s == '\x4e') || (*s == '\x6e'))
         return (FORMAT_NETSCAPE);
-    else if ((*s == 'S') || (*s == 's'))
+    else if ((*s == '\x53') || (*s == '\x73'))
         return (FORMAT_SMIME);
-    else if ((*s == 'M') || (*s == 'm'))
+    else if ((*s == '\x4d') || (*s == '\x6d'))
         return (FORMAT_MSBLOB);
-    else if ((*s == '1')
-             || (strcmp(s, "PKCS12") == 0) || (strcmp(s, "pkcs12") == 0)
-             || (strcmp(s, "P12") == 0) || (strcmp(s, "p12") == 0))
+    else if ((*s == '\x31')
+             || (strcmp(s, "\x50\x4b\x43\x53\x31\x32") == 0) || (strcmp(s, "\x70\x6b\x63\x73\x31\x32") == 0)
+             || (strcmp(s, "\x50\x31\x32") == 0) || (strcmp(s, "\x70\x31\x32") == 0))
         return (FORMAT_PKCS12);
-    else if ((*s == 'E') || (*s == 'e'))
+    else if ((*s == '\x45') || (*s == '\x65'))
         return (FORMAT_ENGINE);
-    else if ((*s == 'H') || (*s == 'h'))
+    else if ((*s == '\x48') || (*s == '\x68'))
         return FORMAT_HTTP;
-    else if ((*s == 'P') || (*s == 'p')) {
-        if (s[1] == 'V' || s[1] == 'v')
+    else if ((*s == '\x50') || (*s == '\x70')) {
+        if (s[1] == '\x56' || s[1] == '\x76')
             return FORMAT_PVK;
         else
             return (FORMAT_PEM);
@@ -303,7 +303,7 @@ void program_name(char *in, char *out, int size)
     n = strlen(in);
     /* find the last '/', '\' or ':' */
     for (i = n - 1; i > 0; i--) {
-        if ((in[i] == '/') || (in[i] == '\\') || (in[i] == ':')) {
+        if ((in[i] == '\x2f') || (in[i] == '\x5c') || (in[i] == '\x3a')) {
             p = &(in[i + 1]);
             break;
         }
@@ -314,17 +314,17 @@ void program_name(char *in, char *out, int size)
 
 # if defined(OPENSSL_SYS_NETWARE)
     /* strip off trailing .nlm if present. */
-    if ((n > 4) && (p[n - 4] == '.') &&
-        ((p[n - 3] == 'n') || (p[n - 3] == 'N')) &&
-        ((p[n - 2] == 'l') || (p[n - 2] == 'L')) &&
-        ((p[n - 1] == 'm') || (p[n - 1] == 'M')))
+    if ((n > 4) && (p[n - 4] == '\x2e') &&
+        ((p[n - 3] == '\x6e') || (p[n - 3] == '\x4e')) &&
+        ((p[n - 2] == '\x6c') || (p[n - 2] == '\x4c')) &&
+        ((p[n - 1] == '\x6d') || (p[n - 1] == '\x4d')))
         n -= 4;
 # else
     /* strip off trailing .exe if present. */
-    if ((n > 4) && (p[n - 4] == '.') &&
-        ((p[n - 3] == 'e') || (p[n - 3] == 'E')) &&
-        ((p[n - 2] == 'x') || (p[n - 2] == 'X')) &&
-        ((p[n - 1] == 'e') || (p[n - 1] == 'E')))
+    if ((n > 4) && (p[n - 4] == '\x2e') &&
+        ((p[n - 3] == '\x65') || (p[n - 3] == '\x45')) &&
+        ((p[n - 2] == '\x78') || (p[n - 2] == '\x58')) &&
+        ((p[n - 1] == '\x65') || (p[n - 1] == '\x45')))
         n -= 4;
 # endif
 
@@ -332,35 +332,35 @@ void program_name(char *in, char *out, int size)
         n = size - 1;
 
     for (i = 0; i < n; i++) {
-        if ((p[i] >= 'A') && (p[i] <= 'Z'))
-            out[i] = p[i] - 'A' + 'a';
+        if ((p[i] >= '\x41') && (p[i] <= '\x5a'))
+            out[i] = p[i] - '\x41' + '\x61';
         else
             out[i] = p[i];
     }
-    out[n] = '\0';
+    out[n] = '\x0';
 }
 #else
 # ifdef OPENSSL_SYS_VMS
 void program_name(char *in, char *out, int size)
 {
     char *p = in, *q;
-    char *chars = ":]>";
+    char *chars = "\x3a\x5d\x3e";
 
-    while (*chars != '\0') {
+    while (*chars != '\x0') {
         q = strrchr(p, *chars);
         if (q > p)
             p = q + 1;
         chars++;
     }
 
-    q = strrchr(p, '.');
+    q = strrchr(p, '\x2e');
     if (q == NULL)
         q = p + strlen(p);
     strncpy(out, p, size - 1);
     if (q - p >= size) {
-        out[size - 1] = '\0';
+        out[size - 1] = '\x0';
     } else {
-        out[q - p] = '\0';
+        out[q - p] = '\x0';
     }
 }
 # else
@@ -368,7 +368,7 @@ void program_name(char *in, char *out, int size)
 {
     char *p;
 
-    p = strrchr(in, '/');
+    p = strrchr(in, '\x2f');
     if (p != NULL)
         p++;
     else
@@ -402,7 +402,7 @@ int chopup_args(ARGS *arg, char *buf, int *argc, char **argv[])
         /* first scan over white space */
         if (!*p)
             break;
-        while (*p && ((*p == ' ') || (*p == '\t') || (*p == '\n')))
+        while (*p && ((*p == '\x20') || (*p == '\x9') || (*p == '\xa')))
             p++;
         if (!*p)
             break;
@@ -424,20 +424,20 @@ int chopup_args(ARGS *arg, char *buf, int *argc, char **argv[])
         arg->data[num++] = p;
 
         /* now look for the end of this */
-        if ((*p == '\'') || (*p == '\"')) { /* scan for closing quote */
+        if ((*p == '\x27') || (*p == '\x22')) { /* scan for closing quote */
             i = *(p++);
             arg->data[num - 1]++; /* jump over quote */
             while (*p && (*p != i))
                 p++;
-            *p = '\0';
+            *p = '\x0';
         } else {
-            while (*p && ((*p != ' ') && (*p != '\t') && (*p != '\n')))
+            while (*p && ((*p != '\x20') && (*p != '\x9') && (*p != '\xa')))
                 p++;
 
-            if (*p == '\0')
+            if (*p == '\x0')
                 p--;
             else
-                *p = '\0';
+                *p = '\x0';
         }
         p++;
     }
@@ -458,14 +458,14 @@ int dump_cert_text(BIO *out, X509 *x)
     char *p;
 
     p = X509_NAME_oneline(X509_get_subject_name(x), NULL, 0);
-    BIO_puts(out, "subject=");
+    BIO_puts(out, "\x73\x75\x62\x6a\x65\x63\x74\x3d");
     BIO_puts(out, p);
     OPENSSL_free(p);
 
     p = X509_NAME_oneline(X509_get_issuer_name(x), NULL, 0);
-    BIO_puts(out, "\nissuer=");
+    BIO_puts(out, "\xa\x69\x73\x73\x75\x65\x72\x3d");
     BIO_puts(out, p);
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
     OPENSSL_free(p);
 
     return 0;
@@ -486,7 +486,7 @@ static int ui_read(UI *ui, UI_STRING *uis)
             {
                 const char *password =
                     ((PW_CB_DATA *)UI_get0_user_data(ui))->password;
-                if (password && password[0] != '\0') {
+                if (password && password[0] != '\x0') {
                     UI_set_result(ui, uis, password);
                     return 1;
                 }
@@ -508,7 +508,7 @@ static int ui_write(UI *ui, UI_STRING *uis)
             {
                 const char *password =
                     ((PW_CB_DATA *)UI_get0_user_data(ui))->password;
-                if (password && password[0] != '\0')
+                if (password && password[0] != '\x0')
                     return 1;
             }
         default:
@@ -525,7 +525,7 @@ static int ui_close(UI *ui)
 
 int setup_ui_method(void)
 {
-    ui_method = UI_create_method("OpenSSL application user interface");
+    ui_method = UI_create_method("\x4f\x70\x65\x6e\x53\x53\x4c\x20\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x20\x75\x73\x65\x72\x20\x69\x6e\x74\x65\x72\x66\x61\x63\x65");
     UI_method_set_opener(ui_method, ui_open);
     UI_method_set_reader(ui_method, ui_read);
     UI_method_set_writer(ui_method, ui_write);
@@ -571,9 +571,9 @@ int password_callback(char *buf, int bufsiz, int verify, PW_CB_DATA *cb_tmp)
         int ui_flags = 0;
         char *prompt = NULL;
 
-        prompt = UI_construct_prompt(ui, "pass phrase", prompt_info);
+        prompt = UI_construct_prompt(ui, "\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65", prompt_info);
         if (!prompt) {
-            BIO_printf(bio_err, "Out of memory\n");
+            BIO_printf(bio_err, "\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
             UI_free(ui);
             return 0;
         }
@@ -587,7 +587,7 @@ int password_callback(char *buf, int bufsiz, int verify, PW_CB_DATA *cb_tmp)
         if (ok >= 0 && verify) {
             buff = (char *)OPENSSL_malloc(bufsiz);
             if (!buff) {
-                BIO_printf(bio_err, "Out of memory\n");
+                BIO_printf(bio_err, "\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
                 UI_free(ui);
                 OPENSSL_free(prompt);
                 return 0;
@@ -609,13 +609,13 @@ int password_callback(char *buf, int bufsiz, int verify, PW_CB_DATA *cb_tmp)
         if (ok >= 0)
             res = strlen(buf);
         if (ok == -1) {
-            BIO_printf(bio_err, "User interface error\n");
+            BIO_printf(bio_err, "\x55\x73\x65\x72\x20\x69\x6e\x74\x65\x72\x66\x61\x63\x65\x20\x65\x72\x72\x6f\x72\xa");
             ERR_print_errors(bio_err);
             OPENSSL_cleanse(buf, (unsigned int)bufsiz);
             res = 0;
         }
         if (ok == -2) {
-            BIO_printf(bio_err, "aborted!\n");
+            BIO_printf(bio_err, "\x61\x62\x6f\x72\x74\x65\x64\x21\xa");
             OPENSSL_cleanse(buf, (unsigned int)bufsiz);
             res = 0;
         }
@@ -654,21 +654,21 @@ static char *app_get_pass(BIO *err, char *arg, int keepbio)
     char *tmp, tpass[APP_PASS_LEN];
     static BIO *pwdbio = NULL;
     int i;
-    if (!strncmp(arg, "pass:", 5))
+    if (!strncmp(arg, "\x70\x61\x73\x73\x3a", 5))
         return BUF_strdup(arg + 5);
-    if (!strncmp(arg, "env:", 4)) {
+    if (!strncmp(arg, "\x65\x6e\x76\x3a", 4)) {
         tmp = getenv(arg + 4);
         if (!tmp) {
-            BIO_printf(err, "Can't read environment variable %s\n", arg + 4);
+            BIO_printf(err, "\x43\x61\x6e\x27\x74\x20\x72\x65\x61\x64\x20\x65\x6e\x76\x69\x72\x6f\x6e\x6d\x65\x6e\x74\x20\x76\x61\x72\x69\x61\x62\x6c\x65\x20\x25\x73\xa", arg + 4);
             return NULL;
         }
         return BUF_strdup(tmp);
     }
     if (!keepbio || !pwdbio) {
-        if (!strncmp(arg, "file:", 5)) {
-            pwdbio = BIO_new_file(arg + 5, "r");
+        if (!strncmp(arg, "\x66\x69\x6c\x65\x3a", 5)) {
+            pwdbio = BIO_new_file(arg + 5, "\x72");
             if (!pwdbio) {
-                BIO_printf(err, "Can't open file %s\n", arg + 5);
+                BIO_printf(err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x66\x69\x6c\x65\x20\x25\x73\xa", arg + 5);
                 return NULL;
             }
 #if !defined(_WIN32)
@@ -680,13 +680,13 @@ static char *app_get_pass(BIO *err, char *arg, int keepbio)
              * on real Windows descriptors, such as those obtained
              * with CreateFile.
              */
-        } else if (!strncmp(arg, "fd:", 3)) {
+        } else if (!strncmp(arg, "\x66\x64\x3a", 3)) {
             BIO *btmp;
             i = atoi(arg + 3);
             if (i >= 0)
                 pwdbio = BIO_new_fd(i, BIO_NOCLOSE);
             if ((i < 0) || !pwdbio) {
-                BIO_printf(err, "Can't access file descriptor %s\n", arg + 3);
+                BIO_printf(err, "\x43\x61\x6e\x27\x74\x20\x61\x63\x63\x65\x73\x73\x20\x66\x69\x6c\x65\x20\x64\x65\x73\x63\x72\x69\x70\x74\x6f\x72\x20\x25\x73\xa", arg + 3);
                 return NULL;
             }
             /*
@@ -695,14 +695,14 @@ static char *app_get_pass(BIO *err, char *arg, int keepbio)
             btmp = BIO_new(BIO_f_buffer());
             pwdbio = BIO_push(btmp, pwdbio);
 #endif
-        } else if (!strcmp(arg, "stdin")) {
+        } else if (!strcmp(arg, "\x73\x74\x64\x69\x6e")) {
             pwdbio = BIO_new_fp(stdin, BIO_NOCLOSE);
             if (!pwdbio) {
-                BIO_printf(err, "Can't open BIO for stdin\n");
+                BIO_printf(err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x42\x49\x4f\x20\x66\x6f\x72\x20\x73\x74\x64\x69\x6e\xa");
                 return NULL;
             }
         } else {
-            BIO_printf(err, "Invalid password argument \"%s\"\n", arg);
+            BIO_printf(err, "\x49\x6e\x76\x61\x6c\x69\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x22\x25\x73\x22\xa", arg);
             return NULL;
         }
     }
@@ -712,10 +712,10 @@ static char *app_get_pass(BIO *err, char *arg, int keepbio)
         pwdbio = NULL;
     }
     if (i <= 0) {
-        BIO_printf(err, "Error reading password from BIO\n");
+        BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x66\x72\x6f\x6d\x20\x42\x49\x4f\xa");
         return NULL;
     }
-    tmp = strchr(tpass, '\n');
+    tmp = strchr(tpass, '\xa');
     if (tmp)
         *tmp = 0;
     return BUF_strdup(tpass);
@@ -727,18 +727,18 @@ int add_oid_section(BIO *err, CONF *conf)
     STACK_OF(CONF_VALUE) *sktmp;
     CONF_VALUE *cnf;
     int i;
-    if (!(p = NCONF_get_string(conf, NULL, "oid_section"))) {
+    if (!(p = NCONF_get_string(conf, NULL, "\x6f\x69\x64\x5f\x73\x65\x63\x74\x69\x6f\x6e"))) {
         ERR_clear_error();
         return 1;
     }
     if (!(sktmp = NCONF_get_section(conf, p))) {
-        BIO_printf(err, "problem loading oid section %s\n", p);
+        BIO_printf(err, "\x70\x72\x6f\x62\x6c\x65\x6d\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x6f\x69\x64\x20\x73\x65\x63\x74\x69\x6f\x6e\x20\x25\x73\xa", p);
         return 0;
     }
     for (i = 0; i < sk_CONF_VALUE_num(sktmp); i++) {
         cnf = sk_CONF_VALUE_value(sktmp, i);
         if (OBJ_create(cnf->value, cnf->name, cnf->name) == NID_undef) {
-            BIO_printf(err, "problem creating object %s=%s\n",
+            BIO_printf(err, "\x70\x72\x6f\x62\x6c\x65\x6d\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x6f\x62\x6a\x65\x63\x74\x20\x25\x73\x3d\x25\x73\xa",
                        cnf->name, cnf->value);
             return 0;
         }
@@ -756,7 +756,7 @@ static int load_pkcs12(BIO *err, BIO *in, const char *desc,
     PKCS12 *p12;
     p12 = d2i_PKCS12_bio(in, NULL);
     if (p12 == NULL) {
-        BIO_printf(err, "Error loading PKCS12 file for %s\n", desc);
+        BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x50\x4b\x43\x53\x31\x32\x20\x66\x69\x6c\x65\x20\x66\x6f\x72\x20\x25\x73\xa", desc);
         goto die;
     }
     /* See if an empty password will do */
@@ -767,14 +767,14 @@ static int load_pkcs12(BIO *err, BIO *in, const char *desc,
             pem_cb = (pem_password_cb *)password_callback;
         len = pem_cb(tpass, PEM_BUFSIZE, 0, cb_data);
         if (len < 0) {
-            BIO_printf(err, "Passpharse callback error for %s\n", desc);
+            BIO_printf(err, "\x50\x61\x73\x73\x70\x68\x61\x72\x73\x65\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b\x20\x65\x72\x72\x6f\x72\x20\x66\x6f\x72\x20\x25\x73\xa", desc);
             goto die;
         }
         if (len < PEM_BUFSIZE)
             tpass[len] = 0;
         if (!PKCS12_verify_mac(p12, tpass, len)) {
             BIO_printf(err,
-                       "Mac verify error (wrong password?) in PKCS12 file for %s\n",
+                       "\x4d\x61\x63\x20\x76\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72\x20\x28\x77\x72\x6f\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x3f\x29\x20\x69\x6e\x20\x50\x4b\x43\x53\x31\x32\x20\x66\x69\x6c\x65\x20\x66\x6f\x72\x20\x25\x73\xa",
                        desc);
             goto die;
         }
@@ -798,7 +798,7 @@ int load_cert_crl_http(const char *url, BIO *err,
         goto err;
     if (use_ssl) {
         if (err)
-            BIO_puts(err, "https not supported\n");
+            BIO_puts(err, "\x68\x74\x74\x70\x73\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\xa");
         goto err;
     }
     bio = BIO_new_connect(host);
@@ -807,9 +807,9 @@ int load_cert_crl_http(const char *url, BIO *err,
     rctx = OCSP_REQ_CTX_new(bio, 1024);
     if (!rctx)
         goto err;
-    if (!OCSP_REQ_CTX_http(rctx, "GET", path))
+    if (!OCSP_REQ_CTX_http(rctx, "\x47\x45\x54", path))
         goto err;
-    if (!OCSP_REQ_CTX_add1_header(rctx, "Host", host))
+    if (!OCSP_REQ_CTX_add1_header(rctx, "\x48\x6f\x73\x74", host))
         goto err;
     if (pcert) {
         do {
@@ -835,8 +835,8 @@ int load_cert_crl_http(const char *url, BIO *err,
         OCSP_REQ_CTX_free(rctx);
     if (rv != 1) {
         if (bio && err)
-            BIO_printf(bio_err, "Error loading %s from %s\n",
-                       pcert ? "certificate" : "CRL", url);
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x25\x73\x20\x66\x72\x6f\x6d\x20\x25\x73\xa",
+                       pcert ? "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65" : "\x43\x52\x4c", url);
         ERR_print_errors(bio_err);
     }
     return rv;
@@ -867,7 +867,7 @@ X509 *load_cert(BIO *err, const char *file, int format,
         BIO_set_fp(cert, stdin, BIO_NOCLOSE);
     } else {
         if (BIO_read_filename(cert, file) <= 0) {
-            BIO_printf(err, "Error opening %s %s\n", cert_descrip, file);
+            BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x25\x73\x20\x25\x73\xa", cert_descrip, file);
             ERR_print_errors(err);
             goto end;
         }
@@ -884,7 +884,7 @@ X509 *load_cert(BIO *err, const char *file, int format,
         if ((strncmp(NETSCAPE_CERT_HDR, (char *)nx->header->data,
                      nx->header->length) != 0)) {
             NETSCAPE_X509_free(nx);
-            BIO_printf(err, "Error reading header on certificate\n");
+            BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x68\x65\x61\x64\x65\x72\x20\x6f\x6e\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
             goto end;
         }
         x = nx->cert;
@@ -897,12 +897,12 @@ X509 *load_cert(BIO *err, const char *file, int format,
         if (!load_pkcs12(err, cert, cert_descrip, NULL, NULL, NULL, &x, NULL))
             goto end;
     } else {
-        BIO_printf(err, "bad input format specified for %s\n", cert_descrip);
+        BIO_printf(err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x25\x73\xa", cert_descrip);
         goto end;
     }
  end:
     if (x == NULL) {
-        BIO_printf(err, "unable to load certificate\n");
+        BIO_printf(err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
         ERR_print_errors(err);
     }
     if (cert != NULL)
@@ -939,11 +939,11 @@ X509_CRL *load_crl(const char *infile, int format)
     else if (format == FORMAT_PEM)
         x = PEM_read_bio_X509_CRL(in, NULL, NULL, NULL);
     else {
-        BIO_printf(bio_err, "bad input format specified for input crl\n");
+        BIO_printf(bio_err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x69\x6e\x70\x75\x74\x20\x63\x72\x6c\xa");
         goto end;
     }
     if (x == NULL) {
-        BIO_printf(bio_err, "unable to load CRL\n");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x43\x52\x4c\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -964,20 +964,20 @@ EVP_PKEY *load_key(BIO *err, const char *file, int format, int maybe_stdin,
     cb_data.prompt_info = file;
 
     if (file == NULL && (!maybe_stdin || format == FORMAT_ENGINE)) {
-        BIO_printf(err, "no keyfile specified\n");
+        BIO_printf(err, "\x6e\x6f\x20\x6b\x65\x79\x66\x69\x6c\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
         goto end;
     }
 #ifndef OPENSSL_NO_ENGINE
     if (format == FORMAT_ENGINE) {
         if (!e)
-            BIO_printf(err, "no engine specified\n");
+            BIO_printf(err, "\x6e\x6f\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
         else {
             if (ENGINE_init(e)) {
                 pkey = ENGINE_load_private_key(e, file, ui_method, &cb_data);
                 ENGINE_finish(e);
             }
             if (!pkey) {
-                BIO_printf(err, "cannot load %s from engine\n", key_descrip);
+                BIO_printf(err, "\x63\x61\x6e\x6e\x6f\x74\x20\x6c\x6f\x61\x64\x20\x25\x73\x20\x66\x72\x6f\x6d\x20\x65\x6e\x67\x69\x6e\x65\xa", key_descrip);
                 ERR_print_errors(err);
             }
         }
@@ -997,7 +997,7 @@ EVP_PKEY *load_key(BIO *err, const char *file, int format, int maybe_stdin,
 #endif
         BIO_set_fp(key, stdin, BIO_NOCLOSE);
     } else if (BIO_read_filename(key, file) <= 0) {
-        BIO_printf(err, "Error opening %s %s\n", key_descrip, file);
+        BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x25\x73\x20\x25\x73\xa", key_descrip, file);
         ERR_print_errors(err);
         goto end;
     }
@@ -1026,14 +1026,14 @@ EVP_PKEY *load_key(BIO *err, const char *file, int format, int maybe_stdin,
                            &cb_data);
 #endif
     else {
-        BIO_printf(err, "bad input format specified for key file\n");
+        BIO_printf(err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6b\x65\x79\x20\x66\x69\x6c\x65\xa");
         goto end;
     }
  end:
     if (key != NULL)
         BIO_free(key);
     if (pkey == NULL) {
-        BIO_printf(err, "unable to load %s\n", key_descrip);
+        BIO_printf(err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x25\x73\xa", key_descrip);
         ERR_print_errors(err);
     }
     return (pkey);
@@ -1050,13 +1050,13 @@ EVP_PKEY *load_pubkey(BIO *err, const char *file, int format, int maybe_stdin,
     cb_data.prompt_info = file;
 
     if (file == NULL && (!maybe_stdin || format == FORMAT_ENGINE)) {
-        BIO_printf(err, "no keyfile specified\n");
+        BIO_printf(err, "\x6e\x6f\x20\x6b\x65\x79\x66\x69\x6c\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
         goto end;
     }
 #ifndef OPENSSL_NO_ENGINE
     if (format == FORMAT_ENGINE) {
         if (!e)
-            BIO_printf(bio_err, "no engine specified\n");
+            BIO_printf(bio_err, "\x6e\x6f\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
         else
             pkey = ENGINE_load_public_key(e, file, ui_method, &cb_data);
         goto end;
@@ -1075,7 +1075,7 @@ EVP_PKEY *load_pubkey(BIO *err, const char *file, int format, int maybe_stdin,
 #endif
         BIO_set_fp(key, stdin, BIO_NOCLOSE);
     } else if (BIO_read_filename(key, file) <= 0) {
-        BIO_printf(err, "Error opening %s %s\n", key_descrip, file);
+        BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x25\x73\x20\x25\x73\xa", key_descrip, file);
         ERR_print_errors(err);
         goto end;
     }
@@ -1121,14 +1121,14 @@ EVP_PKEY *load_pubkey(BIO *err, const char *file, int format, int maybe_stdin,
         pkey = b2i_PublicKey_bio(key);
 #endif
     else {
-        BIO_printf(err, "bad input format specified for key file\n");
+        BIO_printf(err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6b\x65\x79\x20\x66\x69\x6c\x65\xa");
         goto end;
     }
  end:
     if (key != NULL)
         BIO_free(key);
     if (pkey == NULL)
-        BIO_printf(err, "unable to load %s\n", key_descrip);
+        BIO_printf(err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x25\x73\xa", key_descrip);
     return (pkey);
 }
 
@@ -1155,7 +1155,7 @@ static EVP_PKEY *load_netscape_key(BIO *err, BIO *key, const char *file,
         if (i == 0)
             break;
         if (i < 0) {
-            BIO_printf(err, "Error reading %s %s", key_descrip, file);
+            BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x25\x73\x20\x25\x73", key_descrip, file);
             goto error;
         }
     }
@@ -1190,17 +1190,17 @@ static int load_certs_crls(BIO *err, const char *file, int format,
     cb_data.prompt_info = file;
 
     if (format != FORMAT_PEM) {
-        BIO_printf(err, "bad input format specified for %s\n", desc);
+        BIO_printf(err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x25\x73\xa", desc);
         return 0;
     }
 
     if (file == NULL)
         bio = BIO_new_fp(stdin, BIO_NOCLOSE);
     else
-        bio = BIO_new_file(file, "r");
+        bio = BIO_new_file(file, "\x72");
 
     if (bio == NULL) {
-        BIO_printf(err, "Error opening %s %s\n", desc, file ? file : "stdin");
+        BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x25\x73\x20\x25\x73\xa", desc, file ? file : "\x73\x74\x64\x69\x6e");
         ERR_print_errors(err);
         return 0;
     }
@@ -1257,8 +1257,8 @@ static int load_certs_crls(BIO *err, const char *file, int format,
             sk_X509_CRL_pop_free(*pcrls, X509_CRL_free);
             *pcrls = NULL;
         }
-        BIO_printf(err, "unable to load %s\n",
-                   pcerts ? "certificates" : "CRLs");
+        BIO_printf(err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x25\x73\xa",
+                   pcerts ? "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73" : "\x43\x52\x4c\x73");
         ERR_print_errors(err);
     }
     return rv;
@@ -1298,24 +1298,24 @@ STACK_OF(X509_CRL) *load_crls(BIO *err, const char *file, int format,
 int set_cert_ex(unsigned long *flags, const char *arg)
 {
     static const NAME_EX_TBL cert_tbl[] = {
-        {"compatible", X509_FLAG_COMPAT, 0xffffffffl},
-        {"ca_default", X509_FLAG_CA, 0xffffffffl},
-        {"no_header", X509_FLAG_NO_HEADER, 0},
-        {"no_version", X509_FLAG_NO_VERSION, 0},
-        {"no_serial", X509_FLAG_NO_SERIAL, 0},
-        {"no_signame", X509_FLAG_NO_SIGNAME, 0},
-        {"no_validity", X509_FLAG_NO_VALIDITY, 0},
-        {"no_subject", X509_FLAG_NO_SUBJECT, 0},
-        {"no_issuer", X509_FLAG_NO_ISSUER, 0},
-        {"no_pubkey", X509_FLAG_NO_PUBKEY, 0},
-        {"no_extensions", X509_FLAG_NO_EXTENSIONS, 0},
-        {"no_sigdump", X509_FLAG_NO_SIGDUMP, 0},
-        {"no_aux", X509_FLAG_NO_AUX, 0},
-        {"no_attributes", X509_FLAG_NO_ATTRIBUTES, 0},
-        {"ext_default", X509V3_EXT_DEFAULT, X509V3_EXT_UNKNOWN_MASK},
-        {"ext_error", X509V3_EXT_ERROR_UNKNOWN, X509V3_EXT_UNKNOWN_MASK},
-        {"ext_parse", X509V3_EXT_PARSE_UNKNOWN, X509V3_EXT_UNKNOWN_MASK},
-        {"ext_dump", X509V3_EXT_DUMP_UNKNOWN, X509V3_EXT_UNKNOWN_MASK},
+        {"\x63\x6f\x6d\x70\x61\x74\x69\x62\x6c\x65", X509_FLAG_COMPAT, 0xffffffffl},
+        {"\x63\x61\x5f\x64\x65\x66\x61\x75\x6c\x74", X509_FLAG_CA, 0xffffffffl},
+        {"\x6e\x6f\x5f\x68\x65\x61\x64\x65\x72", X509_FLAG_NO_HEADER, 0},
+        {"\x6e\x6f\x5f\x76\x65\x72\x73\x69\x6f\x6e", X509_FLAG_NO_VERSION, 0},
+        {"\x6e\x6f\x5f\x73\x65\x72\x69\x61\x6c", X509_FLAG_NO_SERIAL, 0},
+        {"\x6e\x6f\x5f\x73\x69\x67\x6e\x61\x6d\x65", X509_FLAG_NO_SIGNAME, 0},
+        {"\x6e\x6f\x5f\x76\x61\x6c\x69\x64\x69\x74\x79", X509_FLAG_NO_VALIDITY, 0},
+        {"\x6e\x6f\x5f\x73\x75\x62\x6a\x65\x63\x74", X509_FLAG_NO_SUBJECT, 0},
+        {"\x6e\x6f\x5f\x69\x73\x73\x75\x65\x72", X509_FLAG_NO_ISSUER, 0},
+        {"\x6e\x6f\x5f\x70\x75\x62\x6b\x65\x79", X509_FLAG_NO_PUBKEY, 0},
+        {"\x6e\x6f\x5f\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73", X509_FLAG_NO_EXTENSIONS, 0},
+        {"\x6e\x6f\x5f\x73\x69\x67\x64\x75\x6d\x70", X509_FLAG_NO_SIGDUMP, 0},
+        {"\x6e\x6f\x5f\x61\x75\x78", X509_FLAG_NO_AUX, 0},
+        {"\x6e\x6f\x5f\x61\x74\x74\x72\x69\x62\x75\x74\x65\x73", X509_FLAG_NO_ATTRIBUTES, 0},
+        {"\x65\x78\x74\x5f\x64\x65\x66\x61\x75\x6c\x74", X509V3_EXT_DEFAULT, X509V3_EXT_UNKNOWN_MASK},
+        {"\x65\x78\x74\x5f\x65\x72\x72\x6f\x72", X509V3_EXT_ERROR_UNKNOWN, X509V3_EXT_UNKNOWN_MASK},
+        {"\x65\x78\x74\x5f\x70\x61\x72\x73\x65", X509V3_EXT_PARSE_UNKNOWN, X509V3_EXT_UNKNOWN_MASK},
+        {"\x65\x78\x74\x5f\x64\x75\x6d\x70", X509V3_EXT_DUMP_UNKNOWN, X509V3_EXT_UNKNOWN_MASK},
         {NULL, 0, 0}
     };
     return set_multi_opts(flags, arg, cert_tbl);
@@ -1324,33 +1324,33 @@ int set_cert_ex(unsigned long *flags, const char *arg)
 int set_name_ex(unsigned long *flags, const char *arg)
 {
     static const NAME_EX_TBL ex_tbl[] = {
-        {"esc_2253", ASN1_STRFLGS_ESC_2253, 0},
-        {"esc_ctrl", ASN1_STRFLGS_ESC_CTRL, 0},
-        {"esc_msb", ASN1_STRFLGS_ESC_MSB, 0},
-        {"use_quote", ASN1_STRFLGS_ESC_QUOTE, 0},
-        {"utf8", ASN1_STRFLGS_UTF8_CONVERT, 0},
-        {"ignore_type", ASN1_STRFLGS_IGNORE_TYPE, 0},
-        {"show_type", ASN1_STRFLGS_SHOW_TYPE, 0},
-        {"dump_all", ASN1_STRFLGS_DUMP_ALL, 0},
-        {"dump_nostr", ASN1_STRFLGS_DUMP_UNKNOWN, 0},
-        {"dump_der", ASN1_STRFLGS_DUMP_DER, 0},
-        {"compat", XN_FLAG_COMPAT, 0xffffffffL},
-        {"sep_comma_plus", XN_FLAG_SEP_COMMA_PLUS, XN_FLAG_SEP_MASK},
-        {"sep_comma_plus_space", XN_FLAG_SEP_CPLUS_SPC, XN_FLAG_SEP_MASK},
-        {"sep_semi_plus_space", XN_FLAG_SEP_SPLUS_SPC, XN_FLAG_SEP_MASK},
-        {"sep_multiline", XN_FLAG_SEP_MULTILINE, XN_FLAG_SEP_MASK},
-        {"dn_rev", XN_FLAG_DN_REV, 0},
-        {"nofname", XN_FLAG_FN_NONE, XN_FLAG_FN_MASK},
-        {"sname", XN_FLAG_FN_SN, XN_FLAG_FN_MASK},
-        {"lname", XN_FLAG_FN_LN, XN_FLAG_FN_MASK},
-        {"align", XN_FLAG_FN_ALIGN, 0},
-        {"oid", XN_FLAG_FN_OID, XN_FLAG_FN_MASK},
-        {"space_eq", XN_FLAG_SPC_EQ, 0},
-        {"dump_unknown", XN_FLAG_DUMP_UNKNOWN_FIELDS, 0},
-        {"RFC2253", XN_FLAG_RFC2253, 0xffffffffL},
-        {"oneline", XN_FLAG_ONELINE, 0xffffffffL},
-        {"multiline", XN_FLAG_MULTILINE, 0xffffffffL},
-        {"ca_default", XN_FLAG_MULTILINE, 0xffffffffL},
+        {"\x65\x73\x63\x5f\x32\x32\x35\x33", ASN1_STRFLGS_ESC_2253, 0},
+        {"\x65\x73\x63\x5f\x63\x74\x72\x6c", ASN1_STRFLGS_ESC_CTRL, 0},
+        {"\x65\x73\x63\x5f\x6d\x73\x62", ASN1_STRFLGS_ESC_MSB, 0},
+        {"\x75\x73\x65\x5f\x71\x75\x6f\x74\x65", ASN1_STRFLGS_ESC_QUOTE, 0},
+        {"\x75\x74\x66\x38", ASN1_STRFLGS_UTF8_CONVERT, 0},
+        {"\x69\x67\x6e\x6f\x72\x65\x5f\x74\x79\x70\x65", ASN1_STRFLGS_IGNORE_TYPE, 0},
+        {"\x73\x68\x6f\x77\x5f\x74\x79\x70\x65", ASN1_STRFLGS_SHOW_TYPE, 0},
+        {"\x64\x75\x6d\x70\x5f\x61\x6c\x6c", ASN1_STRFLGS_DUMP_ALL, 0},
+        {"\x64\x75\x6d\x70\x5f\x6e\x6f\x73\x74\x72", ASN1_STRFLGS_DUMP_UNKNOWN, 0},
+        {"\x64\x75\x6d\x70\x5f\x64\x65\x72", ASN1_STRFLGS_DUMP_DER, 0},
+        {"\x63\x6f\x6d\x70\x61\x74", XN_FLAG_COMPAT, 0xffffffffL},
+        {"\x73\x65\x70\x5f\x63\x6f\x6d\x6d\x61\x5f\x70\x6c\x75\x73", XN_FLAG_SEP_COMMA_PLUS, XN_FLAG_SEP_MASK},
+        {"\x73\x65\x70\x5f\x63\x6f\x6d\x6d\x61\x5f\x70\x6c\x75\x73\x5f\x73\x70\x61\x63\x65", XN_FLAG_SEP_CPLUS_SPC, XN_FLAG_SEP_MASK},
+        {"\x73\x65\x70\x5f\x73\x65\x6d\x69\x5f\x70\x6c\x75\x73\x5f\x73\x70\x61\x63\x65", XN_FLAG_SEP_SPLUS_SPC, XN_FLAG_SEP_MASK},
+        {"\x73\x65\x70\x5f\x6d\x75\x6c\x74\x69\x6c\x69\x6e\x65", XN_FLAG_SEP_MULTILINE, XN_FLAG_SEP_MASK},
+        {"\x64\x6e\x5f\x72\x65\x76", XN_FLAG_DN_REV, 0},
+        {"\x6e\x6f\x66\x6e\x61\x6d\x65", XN_FLAG_FN_NONE, XN_FLAG_FN_MASK},
+        {"\x73\x6e\x61\x6d\x65", XN_FLAG_FN_SN, XN_FLAG_FN_MASK},
+        {"\x6c\x6e\x61\x6d\x65", XN_FLAG_FN_LN, XN_FLAG_FN_MASK},
+        {"\x61\x6c\x69\x67\x6e", XN_FLAG_FN_ALIGN, 0},
+        {"\x6f\x69\x64", XN_FLAG_FN_OID, XN_FLAG_FN_MASK},
+        {"\x73\x70\x61\x63\x65\x5f\x65\x71", XN_FLAG_SPC_EQ, 0},
+        {"\x64\x75\x6d\x70\x5f\x75\x6e\x6b\x6e\x6f\x77\x6e", XN_FLAG_DUMP_UNKNOWN_FIELDS, 0},
+        {"\x52\x46\x43\x32\x32\x35\x33", XN_FLAG_RFC2253, 0xffffffffL},
+        {"\x6f\x6e\x65\x6c\x69\x6e\x65", XN_FLAG_ONELINE, 0xffffffffL},
+        {"\x6d\x75\x6c\x74\x69\x6c\x69\x6e\x65", XN_FLAG_MULTILINE, 0xffffffffL},
+        {"\x63\x61\x5f\x64\x65\x66\x61\x75\x6c\x74", XN_FLAG_MULTILINE, 0xffffffffL},
         {NULL, 0, 0}
     };
     if (set_multi_opts(flags, arg, ex_tbl) == 0)
@@ -1362,11 +1362,11 @@ int set_name_ex(unsigned long *flags, const char *arg)
 
 int set_ext_copy(int *copy_type, const char *arg)
 {
-    if (!strcasecmp(arg, "none"))
+    if (!strcasecmp(arg, "\x6e\x6f\x6e\x65"))
         *copy_type = EXT_COPY_NONE;
-    else if (!strcasecmp(arg, "copy"))
+    else if (!strcasecmp(arg, "\x63\x6f\x70\x79"))
         *copy_type = EXT_COPY_ADD;
-    else if (!strcasecmp(arg, "copyall"))
+    else if (!strcasecmp(arg, "\x63\x6f\x70\x79\x61\x6c\x6c"))
         *copy_type = EXT_COPY_ALL;
     else
         return 0;
@@ -1438,10 +1438,10 @@ static int set_table_opts(unsigned long *flags, const char *arg,
     const NAME_EX_TBL *ptbl;
     c = arg[0];
 
-    if (c == '-') {
+    if (c == '\x2d') {
         c = 0;
         arg++;
-    } else if (c == '+') {
+    } else if (c == '\x2b') {
         c = 1;
         arg++;
     } else
@@ -1476,13 +1476,13 @@ void print_name(BIO *out, const char *title, X509_NAME *nm,
     if (lflags == XN_FLAG_COMPAT) {
         buf = X509_NAME_oneline(nm, 0, 0);
         BIO_puts(out, buf);
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
         OPENSSL_free(buf);
     } else {
         if (mline)
-            BIO_puts(out, "\n");
+            BIO_puts(out, "\xa");
         X509_NAME_print_ex(out, nm, indent, lflags);
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     }
 }
 
@@ -1497,7 +1497,7 @@ X509_STORE *setup_verify(BIO *bp, char *CAfile, char *CApath)
         goto end;
     if (CAfile) {
         if (!X509_LOOKUP_load_file(lookup, CAfile, X509_FILETYPE_PEM)) {
-            BIO_printf(bp, "Error loading file %s\n", CAfile);
+            BIO_printf(bp, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x66\x69\x6c\x65\x20\x25\x73\xa", CAfile);
             goto end;
         }
     } else
@@ -1508,7 +1508,7 @@ X509_STORE *setup_verify(BIO *bp, char *CAfile, char *CApath)
         goto end;
     if (CApath) {
         if (!X509_LOOKUP_add_dir(lookup, CApath, X509_FILETYPE_PEM)) {
-            BIO_printf(bp, "Error loading directory %s\n", CApath);
+            BIO_printf(bp, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x20\x25\x73\xa", CApath);
             goto end;
         }
     } else
@@ -1525,10 +1525,10 @@ X509_STORE *setup_verify(BIO *bp, char *CAfile, char *CApath)
 /* Try to load an engine in a shareable library */
 static ENGINE *try_load_engine(BIO *err, const char *engine, int debug)
 {
-    ENGINE *e = ENGINE_by_id("dynamic");
+    ENGINE *e = ENGINE_by_id("\x64\x79\x6e\x61\x6d\x69\x63");
     if (e) {
-        if (!ENGINE_ctrl_cmd_string(e, "SO_PATH", engine, 0)
-            || !ENGINE_ctrl_cmd_string(e, "LOAD", NULL, 0)) {
+        if (!ENGINE_ctrl_cmd_string(e, "\x53\x4f\x5f\x50\x41\x54\x48", engine, 0)
+            || !ENGINE_ctrl_cmd_string(e, "\x4c\x4f\x41\x44", NULL, 0)) {
             ENGINE_free(e);
             e = NULL;
         }
@@ -1543,29 +1543,29 @@ ENGINE *setup_engine(BIO *err, const char *engine, int debug)
 
 #ifndef OPENSSL_NO_ENGINE
     if (engine) {
-        if (strcmp(engine, "auto") == 0) {
-            BIO_printf(err, "enabling auto ENGINE support\n");
+        if (strcmp(engine, "\x61\x75\x74\x6f") == 0) {
+            BIO_printf(err, "\x65\x6e\x61\x62\x6c\x69\x6e\x67\x20\x61\x75\x74\x6f\x20\x45\x4e\x47\x49\x4e\x45\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
             ENGINE_register_all_complete();
             return NULL;
         }
         if ((e = ENGINE_by_id(engine)) == NULL
             && (e = try_load_engine(err, engine, debug)) == NULL) {
-            BIO_printf(err, "invalid engine \"%s\"\n", engine);
+            BIO_printf(err, "\x69\x6e\x76\x61\x6c\x69\x64\x20\x65\x6e\x67\x69\x6e\x65\x20\x22\x25\x73\x22\xa", engine);
             ERR_print_errors(err);
             return NULL;
         }
         if (debug) {
             ENGINE_ctrl(e, ENGINE_CTRL_SET_LOGSTREAM, 0, err, 0);
         }
-        ENGINE_ctrl_cmd(e, "SET_USER_INTERFACE", 0, ui_method, 0, 1);
+        ENGINE_ctrl_cmd(e, "\x53\x45\x54\x5f\x55\x53\x45\x52\x5f\x49\x4e\x54\x45\x52\x46\x41\x43\x45", 0, ui_method, 0, 1);
         if (!ENGINE_set_default(e, ENGINE_METHOD_ALL)) {
-            BIO_printf(err, "can't use that engine\n");
+            BIO_printf(err, "\x63\x61\x6e\x27\x74\x20\x75\x73\x65\x20\x74\x68\x61\x74\x20\x65\x6e\x67\x69\x6e\x65\xa");
             ERR_print_errors(err);
             ENGINE_free(e);
             return NULL;
         }
 
-        BIO_printf(err, "engine \"%s\" set.\n", ENGINE_get_id(e));
+        BIO_printf(err, "\x65\x6e\x67\x69\x6e\x65\x20\x22\x25\x73\x22\x20\x73\x65\x74\x2e\xa", ENGINE_get_id(e));
     }
 #endif
     return e;
@@ -1594,7 +1594,7 @@ int load_config(BIO *err, CONF *cnf)
     OPENSSL_load_builtin_modules();
 
     if (CONF_modules_load(cnf, NULL, 0) <= 0) {
-        BIO_printf(err, "Error configuring OpenSSL\n");
+        BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x63\x6f\x6e\x66\x69\x67\x75\x72\x69\x6e\x67\x20\x4f\x70\x65\x6e\x53\x53\x4c\xa");
         ERR_print_errors(err);
         return 0;
     }
@@ -1613,7 +1613,7 @@ char *make_config_name()
         return NULL;
     BUF_strlcpy(p, t, len);
 #ifndef OPENSSL_SYS_VMS
-    BUF_strlcat(p, "/", len);
+    BUF_strlcat(p, "\x2f", len);
 #endif
     BUF_strlcat(p, OPENSSL_CONF, len);
 
@@ -1625,7 +1625,7 @@ static unsigned long index_serial_hash(const OPENSSL_CSTRING *a)
     const char *n;
 
     n = a[DB_serial];
-    while (*n == '0')
+    while (*n == '\x30')
         n++;
     return (lh_strhash(n));
 }
@@ -1635,14 +1635,14 @@ static int index_serial_cmp(const OPENSSL_CSTRING *a,
 {
     const char *aa, *bb;
 
-    for (aa = a[DB_serial]; *aa == '0'; aa++) ;
-    for (bb = b[DB_serial]; *bb == '0'; bb++) ;
+    for (aa = a[DB_serial]; *aa == '\x30'; aa++) ;
+    for (bb = b[DB_serial]; *bb == '\x30'; bb++) ;
     return (strcmp(aa, bb));
 }
 
 static int index_name_qual(char **a)
 {
-    return (a[0][0] == 'V');
+    return (a[0][0] == '\x56');
 }
 
 static unsigned long index_name_hash(const OPENSSL_CSTRING *a)
@@ -1684,18 +1684,18 @@ BIGNUM *load_serial(char *serialfile, int create, ASN1_INTEGER **retai)
         } else {
             ret = BN_new();
             if (ret == NULL || !rand_serial(ret, ai))
-                BIO_printf(bio_err, "Out of memory\n");
+                BIO_printf(bio_err, "\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
         }
     } else {
         if (!a2i_ASN1_INTEGER(in, ai, buf, 1024)) {
-            BIO_printf(bio_err, "unable to load number from %s\n",
+            BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x6e\x75\x6d\x62\x65\x72\x20\x66\x72\x6f\x6d\x20\x25\x73\xa",
                        serialfile);
             goto err;
         }
         ret = ASN1_INTEGER_to_BN(ai, NULL);
         if (ret == NULL) {
             BIO_printf(bio_err,
-                       "error converting number from bin to BIGNUM\n");
+                       "\x65\x72\x72\x6f\x72\x20\x63\x6f\x6e\x76\x65\x72\x74\x69\x6e\x67\x20\x6e\x75\x6d\x62\x65\x72\x20\x66\x72\x6f\x6d\x20\x62\x69\x6e\x20\x74\x6f\x20\x42\x49\x47\x4e\x55\x4d\xa");
             goto err;
         }
     }
@@ -1726,7 +1726,7 @@ int save_serial(char *serialfile, char *suffix, BIGNUM *serial,
     else
         j = strlen(serialfile) + strlen(suffix) + 1;
     if (j >= BSIZE) {
-        BIO_printf(bio_err, "file name too long\n");
+        BIO_printf(bio_err, "\x66\x69\x6c\x65\x20\x6e\x61\x6d\x65\x20\x74\x6f\x6f\x20\x6c\x6f\x6e\x67\xa");
         goto err;
     }
 
@@ -1734,13 +1734,13 @@ int save_serial(char *serialfile, char *suffix, BIGNUM *serial,
         BUF_strlcpy(buf[0], serialfile, BSIZE);
     else {
 #ifndef OPENSSL_SYS_VMS
-        j = BIO_snprintf(buf[0], sizeof buf[0], "%s.%s", serialfile, suffix);
+        j = BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2e\x25\x73", serialfile, suffix);
 #else
-        j = BIO_snprintf(buf[0], sizeof buf[0], "%s-%s", serialfile, suffix);
+        j = BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2d\x25\x73", serialfile, suffix);
 #endif
     }
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: writing \"%s\"\n", buf[0]);
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x77\x72\x69\x74\x69\x6e\x67\x20\x22\x25\x73\x22\xa", buf[0]);
 #endif
     out = BIO_new(BIO_s_file());
     if (out == NULL) {
@@ -1753,11 +1753,11 @@ int save_serial(char *serialfile, char *suffix, BIGNUM *serial,
     }
 
     if ((ai = BN_to_ASN1_INTEGER(serial, NULL)) == NULL) {
-        BIO_printf(bio_err, "error converting serial to ASN.1 format\n");
+        BIO_printf(bio_err, "\x65\x72\x72\x6f\x72\x20\x63\x6f\x6e\x76\x65\x72\x74\x69\x6e\x67\x20\x73\x65\x72\x69\x61\x6c\x20\x74\x6f\x20\x41\x53\x4e\x2e\x31\x20\x66\x6f\x72\x6d\x61\x74\xa");
         goto err;
     }
     i2a_ASN1_INTEGER(out, ai);
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
     ret = 1;
     if (retai) {
         *retai = ai;
@@ -1781,21 +1781,21 @@ int rotate_serial(char *serialfile, char *new_suffix, char *old_suffix)
     if (i > j)
         j = i;
     if (j + 1 >= BSIZE) {
-        BIO_printf(bio_err, "file name too long\n");
+        BIO_printf(bio_err, "\x66\x69\x6c\x65\x20\x6e\x61\x6d\x65\x20\x74\x6f\x6f\x20\x6c\x6f\x6e\x67\xa");
         goto err;
     }
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[0], sizeof buf[0], "%s.%s", serialfile, new_suffix);
+    j = BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2e\x25\x73", serialfile, new_suffix);
 #else
-    j = BIO_snprintf(buf[0], sizeof buf[0], "%s-%s", serialfile, new_suffix);
+    j = BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2d\x25\x73", serialfile, new_suffix);
 #endif
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[1], sizeof buf[1], "%s.%s", serialfile, old_suffix);
+    j = BIO_snprintf(buf[1], sizeof buf[1], "\x25\x73\x2e\x25\x73", serialfile, old_suffix);
 #else
-    j = BIO_snprintf(buf[1], sizeof buf[1], "%s-%s", serialfile, old_suffix);
+    j = BIO_snprintf(buf[1], sizeof buf[1], "\x25\x73\x2d\x25\x73", serialfile, old_suffix);
 #endif
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: renaming \"%s\" to \"%s\"\n",
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x72\x65\x6e\x61\x6d\x69\x6e\x67\x20\x22\x25\x73\x22\x20\x74\x6f\x20\x22\x25\x73\x22\xa",
                serialfile, buf[1]);
 #endif
     if (rename(serialfile, buf[1]) < 0 && errno != ENOENT
@@ -1804,18 +1804,18 @@ int rotate_serial(char *serialfile, char *new_suffix, char *old_suffix)
 #endif
         ) {
         BIO_printf(bio_err,
-                   "unable to rename %s to %s\n", serialfile, buf[1]);
-        perror("reason");
+                   "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x72\x65\x6e\x61\x6d\x65\x20\x25\x73\x20\x74\x6f\x20\x25\x73\xa", serialfile, buf[1]);
+        perror("\x72\x65\x61\x73\x6f\x6e");
         goto err;
     }
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: renaming \"%s\" to \"%s\"\n",
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x72\x65\x6e\x61\x6d\x69\x6e\x67\x20\x22\x25\x73\x22\x20\x74\x6f\x20\x22\x25\x73\x22\xa",
                buf[0], serialfile);
 #endif
     if (rename(buf[0], serialfile) < 0) {
         BIO_printf(bio_err,
-                   "unable to rename %s to %s\n", buf[0], serialfile);
-        perror("reason");
+                   "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x72\x65\x6e\x61\x6d\x65\x20\x25\x73\x20\x74\x6f\x20\x25\x73\xa", buf[0], serialfile);
+        perror("\x72\x65\x61\x73\x6f\x6e");
         rename(buf[1], serialfile);
         goto err;
     }
@@ -1866,22 +1866,22 @@ CA_DB *load_index(char *dbfile, DB_ATTR *db_attr)
     }
     if (BIO_read_filename(in, dbfile) <= 0) {
         perror(dbfile);
-        BIO_printf(bio_err, "unable to open '%s'\n", dbfile);
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6f\x70\x65\x6e\x20\x27\x25\x73\x27\xa", dbfile);
         goto err;
     }
     if ((tmpdb = TXT_DB_read(in, DB_NUMBER)) == NULL)
         goto err;
 
 #ifndef OPENSSL_SYS_VMS
-    BIO_snprintf(buf[0], sizeof buf[0], "%s.attr", dbfile);
+    BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2e\x61\x74\x74\x72", dbfile);
 #else
-    BIO_snprintf(buf[0], sizeof buf[0], "%s-attr", dbfile);
+    BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2d\x61\x74\x74\x72", dbfile);
 #endif
     dbattr_conf = NCONF_new(NULL);
     if (NCONF_load(dbattr_conf, buf[0], &errorline) <= 0) {
         if (errorline > 0) {
             BIO_printf(bio_err,
-                       "error on line %ld of db attribute file '%s'\n",
+                       "\x65\x72\x72\x6f\x72\x20\x6f\x6e\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\x20\x6f\x66\x20\x64\x62\x20\x61\x74\x74\x72\x69\x62\x75\x74\x65\x20\x66\x69\x6c\x65\x20\x27\x25\x73\x27\xa",
                        errorline, buf[0]);
             goto err;
         } else {
@@ -1891,7 +1891,7 @@ CA_DB *load_index(char *dbfile, DB_ATTR *db_attr)
     }
 
     if ((retdb = OPENSSL_malloc(sizeof(CA_DB))) == NULL) {
-        fprintf(stderr, "Out of memory\n");
+        fprintf(stderr, "\x4f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
         goto err;
     }
 
@@ -1904,11 +1904,11 @@ CA_DB *load_index(char *dbfile, DB_ATTR *db_attr)
     }
 
     if (dbattr_conf) {
-        char *p = NCONF_get_string(dbattr_conf, NULL, "unique_subject");
+        char *p = NCONF_get_string(dbattr_conf, NULL, "\x75\x6e\x69\x71\x75\x65\x5f\x73\x75\x62\x6a\x65\x63\x74");
         if (p) {
 #ifdef RL_DEBUG
             BIO_printf(bio_err,
-                       "DEBUG[load_index]: unique_subject = \"%s\"\n", p);
+                       "\x44\x45\x42\x55\x47\x5b\x6c\x6f\x61\x64\x5f\x69\x6e\x64\x65\x78\x5d\x3a\x20\x75\x6e\x69\x71\x75\x65\x5f\x73\x75\x62\x6a\x65\x63\x74\x20\x3d\x20\x22\x25\x73\x22\xa", p);
 #endif
             retdb->attributes.unique_subject = parse_yesno(p, 1);
         }
@@ -1930,7 +1930,7 @@ int index_index(CA_DB *db)
                              LHASH_HASH_FN(index_serial),
                              LHASH_COMP_FN(index_serial))) {
         BIO_printf(bio_err,
-                   "error creating serial number index:(%ld,%ld,%ld)\n",
+                   "\x65\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x73\x65\x72\x69\x61\x6c\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x6e\x64\x65\x78\x3a\x28\x25\x6c\x64\x2c\x25\x6c\x64\x2c\x25\x6c\x64\x29\xa",
                    db->db->error, db->db->arg1, db->db->arg2);
         return 0;
     }
@@ -1939,7 +1939,7 @@ int index_index(CA_DB *db)
         && !TXT_DB_create_index(db->db, DB_name, index_name_qual,
                                 LHASH_HASH_FN(index_name),
                                 LHASH_COMP_FN(index_name))) {
-        BIO_printf(bio_err, "error creating name index:(%ld,%ld,%ld)\n",
+        BIO_printf(bio_err, "\x65\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x6e\x61\x6d\x65\x20\x69\x6e\x64\x65\x78\x3a\x28\x25\x6c\x64\x2c\x25\x6c\x64\x2c\x25\x6c\x64\x29\xa",
                    db->db->error, db->db->arg1, db->db->arg2);
         return 0;
     }
@@ -1959,30 +1959,30 @@ int save_index(const char *dbfile, const char *suffix, CA_DB *db)
 
     j = strlen(dbfile) + strlen(suffix);
     if (j + 6 >= BSIZE) {
-        BIO_printf(bio_err, "file name too long\n");
+        BIO_printf(bio_err, "\x66\x69\x6c\x65\x20\x6e\x61\x6d\x65\x20\x74\x6f\x6f\x20\x6c\x6f\x6e\x67\xa");
         goto err;
     }
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[2], sizeof buf[2], "%s.attr", dbfile);
+    j = BIO_snprintf(buf[2], sizeof buf[2], "\x25\x73\x2e\x61\x74\x74\x72", dbfile);
 #else
-    j = BIO_snprintf(buf[2], sizeof buf[2], "%s-attr", dbfile);
+    j = BIO_snprintf(buf[2], sizeof buf[2], "\x25\x73\x2d\x61\x74\x74\x72", dbfile);
 #endif
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[1], sizeof buf[1], "%s.attr.%s", dbfile, suffix);
+    j = BIO_snprintf(buf[1], sizeof buf[1], "\x25\x73\x2e\x61\x74\x74\x72\x2e\x25\x73", dbfile, suffix);
 #else
-    j = BIO_snprintf(buf[1], sizeof buf[1], "%s-attr-%s", dbfile, suffix);
+    j = BIO_snprintf(buf[1], sizeof buf[1], "\x25\x73\x2d\x61\x74\x74\x72\x2d\x25\x73", dbfile, suffix);
 #endif
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[0], sizeof buf[0], "%s.%s", dbfile, suffix);
+    j = BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2e\x25\x73", dbfile, suffix);
 #else
-    j = BIO_snprintf(buf[0], sizeof buf[0], "%s-%s", dbfile, suffix);
+    j = BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2d\x25\x73", dbfile, suffix);
 #endif
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: writing \"%s\"\n", buf[0]);
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x77\x72\x69\x74\x69\x6e\x67\x20\x22\x25\x73\x22\xa", buf[0]);
 #endif
     if (BIO_write_filename(out, buf[0]) <= 0) {
         perror(dbfile);
-        BIO_printf(bio_err, "unable to open '%s'\n", dbfile);
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6f\x70\x65\x6e\x20\x27\x25\x73\x27\xa", dbfile);
         goto err;
     }
     j = TXT_DB_write(out, db->db);
@@ -1993,15 +1993,15 @@ int save_index(const char *dbfile, const char *suffix, CA_DB *db)
 
     out = BIO_new(BIO_s_file());
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: writing \"%s\"\n", buf[1]);
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x77\x72\x69\x74\x69\x6e\x67\x20\x22\x25\x73\x22\xa", buf[1]);
 #endif
     if (BIO_write_filename(out, buf[1]) <= 0) {
         perror(buf[2]);
-        BIO_printf(bio_err, "unable to open '%s'\n", buf[2]);
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6f\x70\x65\x6e\x20\x27\x25\x73\x27\xa", buf[2]);
         goto err;
     }
-    BIO_printf(out, "unique_subject = %s\n",
-               db->attributes.unique_subject ? "yes" : "no");
+    BIO_printf(out, "\x75\x6e\x69\x71\x75\x65\x5f\x73\x75\x62\x6a\x65\x63\x74\x20\x3d\x20\x25\x73\xa",
+               db->attributes.unique_subject ? "\x79\x65\x73" : "\x6e\x6f");
     BIO_free(out);
 
     return 1;
@@ -2020,75 +2020,75 @@ int rotate_index(const char *dbfile, const char *new_suffix,
     if (i > j)
         j = i;
     if (j + 6 >= BSIZE) {
-        BIO_printf(bio_err, "file name too long\n");
+        BIO_printf(bio_err, "\x66\x69\x6c\x65\x20\x6e\x61\x6d\x65\x20\x74\x6f\x6f\x20\x6c\x6f\x6e\x67\xa");
         goto err;
     }
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[4], sizeof buf[4], "%s.attr", dbfile);
+    j = BIO_snprintf(buf[4], sizeof buf[4], "\x25\x73\x2e\x61\x74\x74\x72", dbfile);
 #else
-    j = BIO_snprintf(buf[4], sizeof buf[4], "%s-attr", dbfile);
+    j = BIO_snprintf(buf[4], sizeof buf[4], "\x25\x73\x2d\x61\x74\x74\x72", dbfile);
 #endif
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[2], sizeof buf[2], "%s.attr.%s", dbfile, new_suffix);
+    j = BIO_snprintf(buf[2], sizeof buf[2], "\x25\x73\x2e\x61\x74\x74\x72\x2e\x25\x73", dbfile, new_suffix);
 #else
-    j = BIO_snprintf(buf[2], sizeof buf[2], "%s-attr-%s", dbfile, new_suffix);
+    j = BIO_snprintf(buf[2], sizeof buf[2], "\x25\x73\x2d\x61\x74\x74\x72\x2d\x25\x73", dbfile, new_suffix);
 #endif
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[0], sizeof buf[0], "%s.%s", dbfile, new_suffix);
+    j = BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2e\x25\x73", dbfile, new_suffix);
 #else
-    j = BIO_snprintf(buf[0], sizeof buf[0], "%s-%s", dbfile, new_suffix);
+    j = BIO_snprintf(buf[0], sizeof buf[0], "\x25\x73\x2d\x25\x73", dbfile, new_suffix);
 #endif
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[1], sizeof buf[1], "%s.%s", dbfile, old_suffix);
+    j = BIO_snprintf(buf[1], sizeof buf[1], "\x25\x73\x2e\x25\x73", dbfile, old_suffix);
 #else
-    j = BIO_snprintf(buf[1], sizeof buf[1], "%s-%s", dbfile, old_suffix);
+    j = BIO_snprintf(buf[1], sizeof buf[1], "\x25\x73\x2d\x25\x73", dbfile, old_suffix);
 #endif
 #ifndef OPENSSL_SYS_VMS
-    j = BIO_snprintf(buf[3], sizeof buf[3], "%s.attr.%s", dbfile, old_suffix);
+    j = BIO_snprintf(buf[3], sizeof buf[3], "\x25\x73\x2e\x61\x74\x74\x72\x2e\x25\x73", dbfile, old_suffix);
 #else
-    j = BIO_snprintf(buf[3], sizeof buf[3], "%s-attr-%s", dbfile, old_suffix);
+    j = BIO_snprintf(buf[3], sizeof buf[3], "\x25\x73\x2d\x61\x74\x74\x72\x2d\x25\x73", dbfile, old_suffix);
 #endif
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: renaming \"%s\" to \"%s\"\n", dbfile, buf[1]);
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x72\x65\x6e\x61\x6d\x69\x6e\x67\x20\x22\x25\x73\x22\x20\x74\x6f\x20\x22\x25\x73\x22\xa", dbfile, buf[1]);
 #endif
     if (rename(dbfile, buf[1]) < 0 && errno != ENOENT
 #ifdef ENOTDIR
         && errno != ENOTDIR
 #endif
         ) {
-        BIO_printf(bio_err, "unable to rename %s to %s\n", dbfile, buf[1]);
-        perror("reason");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x72\x65\x6e\x61\x6d\x65\x20\x25\x73\x20\x74\x6f\x20\x25\x73\xa", dbfile, buf[1]);
+        perror("\x72\x65\x61\x73\x6f\x6e");
         goto err;
     }
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: renaming \"%s\" to \"%s\"\n", buf[0], dbfile);
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x72\x65\x6e\x61\x6d\x69\x6e\x67\x20\x22\x25\x73\x22\x20\x74\x6f\x20\x22\x25\x73\x22\xa", buf[0], dbfile);
 #endif
     if (rename(buf[0], dbfile) < 0) {
-        BIO_printf(bio_err, "unable to rename %s to %s\n", buf[0], dbfile);
-        perror("reason");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x72\x65\x6e\x61\x6d\x65\x20\x25\x73\x20\x74\x6f\x20\x25\x73\xa", buf[0], dbfile);
+        perror("\x72\x65\x61\x73\x6f\x6e");
         rename(buf[1], dbfile);
         goto err;
     }
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: renaming \"%s\" to \"%s\"\n", buf[4], buf[3]);
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x72\x65\x6e\x61\x6d\x69\x6e\x67\x20\x22\x25\x73\x22\x20\x74\x6f\x20\x22\x25\x73\x22\xa", buf[4], buf[3]);
 #endif
     if (rename(buf[4], buf[3]) < 0 && errno != ENOENT
 #ifdef ENOTDIR
         && errno != ENOTDIR
 #endif
         ) {
-        BIO_printf(bio_err, "unable to rename %s to %s\n", buf[4], buf[3]);
-        perror("reason");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x72\x65\x6e\x61\x6d\x65\x20\x25\x73\x20\x74\x6f\x20\x25\x73\xa", buf[4], buf[3]);
+        perror("\x72\x65\x61\x73\x6f\x6e");
         rename(dbfile, buf[0]);
         rename(buf[1], dbfile);
         goto err;
     }
 #ifdef RL_DEBUG
-    BIO_printf(bio_err, "DEBUG: renaming \"%s\" to \"%s\"\n", buf[2], buf[4]);
+    BIO_printf(bio_err, "\x44\x45\x42\x55\x47\x3a\x20\x72\x65\x6e\x61\x6d\x69\x6e\x67\x20\x22\x25\x73\x22\x20\x74\x6f\x20\x22\x25\x73\x22\xa", buf[2], buf[4]);
 #endif
     if (rename(buf[2], buf[4]) < 0) {
-        BIO_printf(bio_err, "unable to rename %s to %s\n", buf[2], buf[4]);
-        perror("reason");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x72\x65\x6e\x61\x6d\x65\x20\x25\x73\x20\x74\x6f\x20\x25\x73\xa", buf[2], buf[4]);
+        perror("\x72\x65\x61\x73\x6f\x6e");
         rename(buf[3], buf[4]);
         rename(dbfile, buf[0]);
         rename(buf[1], dbfile);
@@ -2113,18 +2113,18 @@ int parse_yesno(const char *str, int def)
     int ret = def;
     if (str) {
         switch (*str) {
-        case 'f':              /* false */
-        case 'F':              /* FALSE */
-        case 'n':              /* no */
-        case 'N':              /* NO */
-        case '0':              /* 0 */
+        case '\x66':              /* false */
+        case '\x46':              /* FALSE */
+        case '\x6e':              /* no */
+        case '\x4e':              /* NO */
+        case '\x30':              /* 0 */
             ret = 0;
             break;
-        case 't':              /* true */
-        case 'T':              /* TRUE */
-        case 'y':              /* yes */
-        case 'Y':              /* YES */
-        case '1':              /* 1 */
+        case '\x74':              /* true */
+        case '\x54':              /* TRUE */
+        case '\x79':              /* yes */
+        case '\x59':              /* YES */
+        case '\x31':              /* 1 */
             ret = 1;
             break;
         default:
@@ -2157,12 +2157,12 @@ X509_NAME *parse_name(char *subject, long chtype, int multirdn)
     int nid;
 
     if (!buf || !ne_types || !ne_values || !mval) {
-        BIO_printf(bio_err, "malloc error\n");
+        BIO_printf(bio_err, "\x6d\x61\x6c\x6c\x6f\x63\x20\x65\x72\x72\x6f\x72\xa");
         goto error;
     }
 
-    if (*subject != '/') {
-        BIO_printf(bio_err, "Subject does not start with '/'.\n");
+    if (*subject != '\x2f') {
+        BIO_printf(bio_err, "\x53\x75\x62\x6a\x65\x63\x74\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x73\x74\x61\x72\x74\x20\x77\x69\x74\x68\x20\x27\x2f\x27\x2e\xa");
         goto error;
     }
     sp++;                       /* skip leading / */
@@ -2174,44 +2174,44 @@ X509_NAME *parse_name(char *subject, long chtype, int multirdn)
         /* collect type */
         ne_types[ne_num] = bp;
         while (*sp) {
-            if (*sp == '\\') {  /* is there anything to escape in the
+            if (*sp == '\x5c') {  /* is there anything to escape in the
                                  * type...? */
                 if (*++sp)
                     *bp++ = *sp++;
                 else {
                     BIO_printf(bio_err,
-                               "escape character at end of string\n");
+                               "\x65\x73\x63\x61\x70\x65\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x20\x61\x74\x20\x65\x6e\x64\x20\x6f\x66\x20\x73\x74\x72\x69\x6e\x67\xa");
                     goto error;
                 }
-            } else if (*sp == '=') {
+            } else if (*sp == '\x3d') {
                 sp++;
-                *bp++ = '\0';
+                *bp++ = '\x0';
                 break;
             } else
                 *bp++ = *sp++;
         }
         if (!*sp) {
             BIO_printf(bio_err,
-                       "end of string encountered while processing type of subject name element #%d\n",
+                       "\x65\x6e\x64\x20\x6f\x66\x20\x73\x74\x72\x69\x6e\x67\x20\x65\x6e\x63\x6f\x75\x6e\x74\x65\x72\x65\x64\x20\x77\x68\x69\x6c\x65\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\x20\x74\x79\x70\x65\x20\x6f\x66\x20\x73\x75\x62\x6a\x65\x63\x74\x20\x6e\x61\x6d\x65\x20\x65\x6c\x65\x6d\x65\x6e\x74\x20\x23\x25\x64\xa",
                        ne_num);
             goto error;
         }
         ne_values[ne_num] = bp;
         while (*sp) {
-            if (*sp == '\\') {
+            if (*sp == '\x5c') {
                 if (*++sp)
                     *bp++ = *sp++;
                 else {
                     BIO_printf(bio_err,
-                               "escape character at end of string\n");
+                               "\x65\x73\x63\x61\x70\x65\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x20\x61\x74\x20\x65\x6e\x64\x20\x6f\x66\x20\x73\x74\x72\x69\x6e\x67\xa");
                     goto error;
                 }
-            } else if (*sp == '/') {
+            } else if (*sp == '\x2f') {
                 sp++;
                 /* no multivalued RDN by default */
                 mval[ne_num + 1] = 0;
                 break;
-            } else if (*sp == '+' && multirdn) {
+            } else if (*sp == '\x2b' && multirdn) {
                 /*
                  * a not escaped + signals a mutlivalued RDN
                  */
@@ -2221,7 +2221,7 @@ X509_NAME *parse_name(char *subject, long chtype, int multirdn)
             } else
                 *bp++ = *sp++;
         }
-        *bp++ = '\0';
+        *bp++ = '\x0';
         ne_num++;
     }
 
@@ -2231,14 +2231,14 @@ X509_NAME *parse_name(char *subject, long chtype, int multirdn)
     for (i = 0; i < ne_num; i++) {
         if ((nid = OBJ_txt2nid(ne_types[i])) == NID_undef) {
             BIO_printf(bio_err,
-                       "Subject Attribute %s has no known NID, skipped\n",
+                       "\x53\x75\x62\x6a\x65\x63\x74\x20\x41\x74\x74\x72\x69\x62\x75\x74\x65\x20\x25\x73\x20\x68\x61\x73\x20\x6e\x6f\x20\x6b\x6e\x6f\x77\x6e\x20\x4e\x49\x44\x2c\x20\x73\x6b\x69\x70\x70\x65\x64\xa",
                        ne_types[i]);
             continue;
         }
 
         if (!*ne_values[i]) {
             BIO_printf(bio_err,
-                       "No value provided for Subject Attribute %s, skipped\n",
+                       "\x4e\x6f\x20\x76\x61\x6c\x75\x65\x20\x70\x72\x6f\x76\x69\x64\x65\x64\x20\x66\x6f\x72\x20\x53\x75\x62\x6a\x65\x63\x74\x20\x41\x74\x74\x72\x69\x62\x75\x74\x65\x20\x25\x73\x2c\x20\x73\x6b\x69\x70\x70\x65\x64\xa",
                        ne_types[i]);
             continue;
         }
@@ -2280,25 +2280,25 @@ int args_verify(char ***pargs, int *pargc,
     char *hostname = NULL;
     char *email = NULL;
     char *ipasc = NULL;
-    if (!strcmp(arg, "-policy")) {
+    if (!strcmp(arg, "\x2d\x70\x6f\x6c\x69\x63\x79")) {
         if (!argn)
             *badarg = 1;
         else {
             otmp = OBJ_txt2obj(argn, 0);
             if (!otmp) {
-                BIO_printf(err, "Invalid Policy \"%s\"\n", argn);
+                BIO_printf(err, "\x49\x6e\x76\x61\x6c\x69\x64\x20\x50\x6f\x6c\x69\x63\x79\x20\x22\x25\x73\x22\xa", argn);
                 *badarg = 1;
             }
         }
         (*pargs)++;
-    } else if (strcmp(arg, "-purpose") == 0) {
+    } else if (strcmp(arg, "\x2d\x70\x75\x72\x70\x6f\x73\x65") == 0) {
         X509_PURPOSE *xptmp;
         if (!argn)
             *badarg = 1;
         else {
             i = X509_PURPOSE_get_by_sname(argn);
             if (i < 0) {
-                BIO_printf(err, "unrecognized purpose\n");
+                BIO_printf(err, "\x75\x6e\x72\x65\x63\x6f\x67\x6e\x69\x7a\x65\x64\x20\x70\x75\x72\x70\x6f\x73\x65\xa");
                 *badarg = 1;
             } else {
                 xptmp = X509_PURPOSE_get0(i);
@@ -2306,18 +2306,18 @@ int args_verify(char ***pargs, int *pargc,
             }
         }
         (*pargs)++;
-    } else if (strcmp(arg, "-verify_depth") == 0) {
+    } else if (strcmp(arg, "\x2d\x76\x65\x72\x69\x66\x79\x5f\x64\x65\x70\x74\x68") == 0) {
         if (!argn)
             *badarg = 1;
         else {
             depth = atoi(argn);
             if (depth < 0) {
-                BIO_printf(err, "invalid depth\n");
+                BIO_printf(err, "\x69\x6e\x76\x61\x6c\x69\x64\x20\x64\x65\x70\x74\x68\xa");
                 *badarg = 1;
             }
         }
         (*pargs)++;
-    } else if (strcmp(arg, "-attime") == 0) {
+    } else if (strcmp(arg, "\x2d\x61\x74\x74\x69\x6d\x65") == 0) {
         if (!argn)
             *badarg = 1;
         else {
@@ -2325,68 +2325,68 @@ int args_verify(char ***pargs, int *pargc,
             /*
              * interpret the -attime argument as seconds since Epoch
              */
-            if (sscanf(argn, "%li", &timestamp) != 1) {
-                BIO_printf(bio_err, "Error parsing timestamp %s\n", argn);
+            if (sscanf(argn, "\x25\x6c\x69", &timestamp) != 1) {
+                BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x74\x69\x6d\x65\x73\x74\x61\x6d\x70\x20\x25\x73\xa", argn);
                 *badarg = 1;
             }
             /* on some platforms time_t may be a float */
             at_time = (time_t)timestamp;
         }
         (*pargs)++;
-    } else if (strcmp(arg, "-verify_hostname") == 0) {
+    } else if (strcmp(arg, "\x2d\x76\x65\x72\x69\x66\x79\x5f\x68\x6f\x73\x74\x6e\x61\x6d\x65") == 0) {
         if (!argn)
             *badarg = 1;
         hostname = argn;
         (*pargs)++;
-    } else if (strcmp(arg, "-verify_email") == 0) {
+    } else if (strcmp(arg, "\x2d\x76\x65\x72\x69\x66\x79\x5f\x65\x6d\x61\x69\x6c") == 0) {
         if (!argn)
             *badarg = 1;
         email = argn;
         (*pargs)++;
-    } else if (strcmp(arg, "-verify_ip") == 0) {
+    } else if (strcmp(arg, "\x2d\x76\x65\x72\x69\x66\x79\x5f\x69\x70") == 0) {
         if (!argn)
             *badarg = 1;
         ipasc = argn;
         (*pargs)++;
-    } else if (!strcmp(arg, "-ignore_critical"))
+    } else if (!strcmp(arg, "\x2d\x69\x67\x6e\x6f\x72\x65\x5f\x63\x72\x69\x74\x69\x63\x61\x6c"))
         flags |= X509_V_FLAG_IGNORE_CRITICAL;
-    else if (!strcmp(arg, "-issuer_checks"))
+    else if (!strcmp(arg, "\x2d\x69\x73\x73\x75\x65\x72\x5f\x63\x68\x65\x63\x6b\x73"))
         flags |= X509_V_FLAG_CB_ISSUER_CHECK;
-    else if (!strcmp(arg, "-crl_check"))
+    else if (!strcmp(arg, "\x2d\x63\x72\x6c\x5f\x63\x68\x65\x63\x6b"))
         flags |= X509_V_FLAG_CRL_CHECK;
-    else if (!strcmp(arg, "-crl_check_all"))
+    else if (!strcmp(arg, "\x2d\x63\x72\x6c\x5f\x63\x68\x65\x63\x6b\x5f\x61\x6c\x6c"))
         flags |= X509_V_FLAG_CRL_CHECK | X509_V_FLAG_CRL_CHECK_ALL;
-    else if (!strcmp(arg, "-policy_check"))
+    else if (!strcmp(arg, "\x2d\x70\x6f\x6c\x69\x63\x79\x5f\x63\x68\x65\x63\x6b"))
         flags |= X509_V_FLAG_POLICY_CHECK;
-    else if (!strcmp(arg, "-explicit_policy"))
+    else if (!strcmp(arg, "\x2d\x65\x78\x70\x6c\x69\x63\x69\x74\x5f\x70\x6f\x6c\x69\x63\x79"))
         flags |= X509_V_FLAG_EXPLICIT_POLICY;
-    else if (!strcmp(arg, "-inhibit_any"))
+    else if (!strcmp(arg, "\x2d\x69\x6e\x68\x69\x62\x69\x74\x5f\x61\x6e\x79"))
         flags |= X509_V_FLAG_INHIBIT_ANY;
-    else if (!strcmp(arg, "-inhibit_map"))
+    else if (!strcmp(arg, "\x2d\x69\x6e\x68\x69\x62\x69\x74\x5f\x6d\x61\x70"))
         flags |= X509_V_FLAG_INHIBIT_MAP;
-    else if (!strcmp(arg, "-x509_strict"))
+    else if (!strcmp(arg, "\x2d\x78\x35\x30\x39\x5f\x73\x74\x72\x69\x63\x74"))
         flags |= X509_V_FLAG_X509_STRICT;
-    else if (!strcmp(arg, "-extended_crl"))
+    else if (!strcmp(arg, "\x2d\x65\x78\x74\x65\x6e\x64\x65\x64\x5f\x63\x72\x6c"))
         flags |= X509_V_FLAG_EXTENDED_CRL_SUPPORT;
-    else if (!strcmp(arg, "-use_deltas"))
+    else if (!strcmp(arg, "\x2d\x75\x73\x65\x5f\x64\x65\x6c\x74\x61\x73"))
         flags |= X509_V_FLAG_USE_DELTAS;
-    else if (!strcmp(arg, "-policy_print"))
+    else if (!strcmp(arg, "\x2d\x70\x6f\x6c\x69\x63\x79\x5f\x70\x72\x69\x6e\x74"))
         flags |= X509_V_FLAG_NOTIFY_POLICY;
-    else if (!strcmp(arg, "-check_ss_sig"))
+    else if (!strcmp(arg, "\x2d\x63\x68\x65\x63\x6b\x5f\x73\x73\x5f\x73\x69\x67"))
         flags |= X509_V_FLAG_CHECK_SS_SIGNATURE;
-    else if (!strcmp(arg, "-trusted_first"))
+    else if (!strcmp(arg, "\x2d\x74\x72\x75\x73\x74\x65\x64\x5f\x66\x69\x72\x73\x74"))
         flags |= X509_V_FLAG_TRUSTED_FIRST;
-    else if (!strcmp(arg, "-suiteB_128_only"))
+    else if (!strcmp(arg, "\x2d\x73\x75\x69\x74\x65\x42\x5f\x31\x32\x38\x5f\x6f\x6e\x6c\x79"))
         flags |= X509_V_FLAG_SUITEB_128_LOS_ONLY;
-    else if (!strcmp(arg, "-suiteB_128"))
+    else if (!strcmp(arg, "\x2d\x73\x75\x69\x74\x65\x42\x5f\x31\x32\x38"))
         flags |= X509_V_FLAG_SUITEB_128_LOS;
-    else if (!strcmp(arg, "-suiteB_192"))
+    else if (!strcmp(arg, "\x2d\x73\x75\x69\x74\x65\x42\x5f\x31\x39\x32"))
         flags |= X509_V_FLAG_SUITEB_192_LOS;
-    else if (!strcmp(arg, "-partial_chain"))
+    else if (!strcmp(arg, "\x2d\x70\x61\x72\x74\x69\x61\x6c\x5f\x63\x68\x61\x69\x6e"))
         flags |= X509_V_FLAG_PARTIAL_CHAIN;
-    else if (!strcmp(arg, "-no_alt_chains"))
+    else if (!strcmp(arg, "\x2d\x6e\x6f\x5f\x61\x6c\x74\x5f\x63\x68\x61\x69\x6e\x73"))
         flags |= X509_V_FLAG_NO_ALT_CHAINS;
-    else if (!strcmp(arg, "-allow_proxy_certs"))
+    else if (!strcmp(arg, "\x2d\x61\x6c\x6c\x6f\x77\x5f\x70\x72\x6f\x78\x79\x5f\x63\x65\x72\x74\x73"))
         flags |= X509_V_FLAG_ALLOW_PROXY_CERTS;
     else
         return 0;
@@ -2484,7 +2484,7 @@ int pkey_ctrl_string(EVP_PKEY_CTX *ctx, const char *value)
     stmp = BUF_strdup(value);
     if (!stmp)
         return -1;
-    vtmp = strchr(stmp, ':');
+    vtmp = strchr(stmp, '\x3a');
     if (vtmp) {
         *vtmp = 0;
         vtmp++;
@@ -2499,15 +2499,15 @@ static void nodes_print(BIO *out, const char *name,
 {
     X509_POLICY_NODE *node;
     int i;
-    BIO_printf(out, "%s Policies:", name);
+    BIO_printf(out, "\x25\x73\x20\x50\x6f\x6c\x69\x63\x69\x65\x73\x3a", name);
     if (nodes) {
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
         for (i = 0; i < sk_X509_POLICY_NODE_num(nodes); i++) {
             node = sk_X509_POLICY_NODE_value(nodes, i);
             X509_POLICY_NODE_print(out, node, 2);
         }
     } else
-        BIO_puts(out, " <empty>\n");
+        BIO_puts(out, "\x20\x3c\x65\x6d\x70\x74\x79\x3e\xa");
 }
 
 void policies_print(BIO *out, X509_STORE_CTX *ctx)
@@ -2522,11 +2522,11 @@ void policies_print(BIO *out, X509_STORE_CTX *ctx)
     tree = X509_STORE_CTX_get0_policy_tree(ctx);
     explicit_policy = X509_STORE_CTX_get_explicit_policy(ctx);
 
-    BIO_printf(out, "Require explicit Policy: %s\n",
-               explicit_policy ? "True" : "False");
+    BIO_printf(out, "\x52\x65\x71\x75\x69\x72\x65\x20\x65\x78\x70\x6c\x69\x63\x69\x74\x20\x50\x6f\x6c\x69\x63\x79\x3a\x20\x25\x73\xa",
+               explicit_policy ? "\x54\x72\x75\x65" : "\x46\x61\x6c\x73\x65");
 
-    nodes_print(out, "Authority", X509_policy_tree_get0_policies(tree));
-    nodes_print(out, "User", X509_policy_tree_get0_user_policies(tree));
+    nodes_print(out, "\x41\x75\x74\x68\x6f\x72\x69\x74\x79", X509_policy_tree_get0_policies(tree));
+    nodes_print(out, "\x55\x73\x65\x72", X509_policy_tree_get0_user_policies(tree));
     if (free_out)
         BIO_free(out);
 }
@@ -2544,7 +2544,7 @@ static JPAKE_CTX *jpake_init(const char *us, const char *them,
 
     /* Use a safe prime for p (that we found earlier) */
     BN_hex2bn(&p,
-              "F9E5B365665EA7A05A9C534502780FEE6F1AB5BD4F49947FD036DBD7E905269AF46EF28B0FC07487EE4F5D20FB3C0AF8E700F3A2FA3414970CBED44FEDFF80CE78D800F184BB82435D137AADA2C6C16523247930A63B85661D1FC817A51ACD96168E95898A1F83A79FFB529368AA7833ABD1B0C3AEDDB14D2E1A2F71D99F763F");
+              "\x46\x39\x45\x35\x42\x33\x36\x35\x36\x36\x35\x45\x41\x37\x41\x30\x35\x41\x39\x43\x35\x33\x34\x35\x30\x32\x37\x38\x30\x46\x45\x45\x36\x46\x31\x41\x42\x35\x42\x44\x34\x46\x34\x39\x39\x34\x37\x46\x44\x30\x33\x36\x44\x42\x44\x37\x45\x39\x30\x35\x32\x36\x39\x41\x46\x34\x36\x45\x46\x32\x38\x42\x30\x46\x43\x30\x37\x34\x38\x37\x45\x45\x34\x46\x35\x44\x32\x30\x46\x42\x33\x43\x30\x41\x46\x38\x45\x37\x30\x30\x46\x33\x41\x32\x46\x41\x33\x34\x31\x34\x39\x37\x30\x43\x42\x45\x44\x34\x34\x46\x45\x44\x46\x46\x38\x30\x43\x45\x37\x38\x44\x38\x30\x30\x46\x31\x38\x34\x42\x42\x38\x32\x34\x33\x35\x44\x31\x33\x37\x41\x41\x44\x41\x32\x43\x36\x43\x31\x36\x35\x32\x33\x32\x34\x37\x39\x33\x30\x41\x36\x33\x42\x38\x35\x36\x36\x31\x44\x31\x46\x43\x38\x31\x37\x41\x35\x31\x41\x43\x44\x39\x36\x31\x36\x38\x45\x39\x35\x38\x39\x38\x41\x31\x46\x38\x33\x41\x37\x39\x46\x46\x42\x35\x32\x39\x33\x36\x38\x41\x41\x37\x38\x33\x33\x41\x42\x44\x31\x42\x30\x43\x33\x41\x45\x44\x44\x42\x31\x34\x44\x32\x45\x31\x41\x32\x46\x37\x31\x44\x39\x39\x46\x37\x36\x33\x46");
     g = BN_new();
     BN_set_word(g, 2);
     q = BN_new();
@@ -2564,11 +2564,11 @@ static JPAKE_CTX *jpake_init(const char *us, const char *them,
 static void jpake_send_part(BIO *conn, const JPAKE_STEP_PART *p)
 {
     BN_print(conn, p->gx);
-    BIO_puts(conn, "\n");
+    BIO_puts(conn, "\xa");
     BN_print(conn, p->zkpx.gr);
-    BIO_puts(conn, "\n");
+    BIO_puts(conn, "\xa");
     BN_print(conn, p->zkpx.b);
-    BIO_puts(conn, "\n");
+    BIO_puts(conn, "\xa");
 }
 
 static void jpake_send_step1(BIO *bconn, JPAKE_CTX *ctx)
@@ -2623,8 +2623,8 @@ static void readbn(BIGNUM **bn, BIO *bconn)
 
     l = BIO_gets(bconn, buf, sizeof buf);
     assert(l > 0);
-    assert(buf[l - 1] == '\n');
-    buf[l - 1] = '\0';
+    assert(buf[l - 1] == '\xa');
+    buf[l - 1] = '\x0';
     BN_hex2bn(bn, buf);
 }
 
@@ -2697,9 +2697,9 @@ void jpake_client_auth(BIO *out, BIO *conn, const char *secret)
     JPAKE_CTX *ctx;
     BIO *bconn;
 
-    BIO_puts(out, "Authenticating with JPAKE\n");
+    BIO_puts(out, "\x41\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6e\x67\x20\x77\x69\x74\x68\x20\x4a\x50\x41\x4b\x45\xa");
 
-    ctx = jpake_init("client", "server", secret);
+    ctx = jpake_init("\x63\x6c\x69\x65\x6e\x74", "\x73\x65\x72\x76\x65\x72", secret);
 
     bconn = BIO_new(BIO_f_buffer());
     BIO_push(bconn, conn);
@@ -2711,7 +2711,7 @@ void jpake_client_auth(BIO *out, BIO *conn, const char *secret)
     jpake_send_step3a(bconn, ctx);
     jpake_receive_step3b(ctx, bconn);
 
-    BIO_puts(out, "JPAKE authentication succeeded, setting PSK\n");
+    BIO_puts(out, "\x4a\x50\x41\x4b\x45\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e\x20\x73\x75\x63\x63\x65\x65\x64\x65\x64\x2c\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x50\x53\x4b\xa");
 
     if (psk_key)
         OPENSSL_free(psk_key);
@@ -2729,9 +2729,9 @@ void jpake_server_auth(BIO *out, BIO *conn, const char *secret)
     JPAKE_CTX *ctx;
     BIO *bconn;
 
-    BIO_puts(out, "Authenticating with JPAKE\n");
+    BIO_puts(out, "\x41\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6e\x67\x20\x77\x69\x74\x68\x20\x4a\x50\x41\x4b\x45\xa");
 
-    ctx = jpake_init("server", "client", secret);
+    ctx = jpake_init("\x73\x65\x72\x76\x65\x72", "\x63\x6c\x69\x65\x6e\x74", secret);
 
     bconn = BIO_new(BIO_f_buffer());
     BIO_push(bconn, conn);
@@ -2743,7 +2743,7 @@ void jpake_server_auth(BIO *out, BIO *conn, const char *secret)
     jpake_receive_step3a(ctx, bconn);
     jpake_send_step3b(bconn, ctx);
 
-    BIO_puts(out, "JPAKE authentication succeeded, setting PSK\n");
+    BIO_puts(out, "\x4a\x50\x41\x4b\x45\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e\x20\x73\x75\x63\x63\x65\x65\x64\x65\x64\x2c\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x50\x53\x4b\xa");
 
     if (psk_key)
         OPENSSL_free(psk_key);
@@ -2783,7 +2783,7 @@ unsigned char *next_protos_parse(unsigned short *outlen, const char *in)
         return NULL;
 
     for (i = 0; i <= len; ++i) {
-        if (i == len || in[i] == ',') {
+        if (i == len || in[i] == '\x2c') {
             if (i - start > 255) {
                 OPENSSL_free(out);
                 return NULL;
@@ -2806,20 +2806,20 @@ void print_cert_checks(BIO *bio, X509 *x,
     if (x == NULL)
         return;
     if (checkhost) {
-        BIO_printf(bio, "Hostname %s does%s match certificate\n",
+        BIO_printf(bio, "\x48\x6f\x73\x74\x6e\x61\x6d\x65\x20\x25\x73\x20\x64\x6f\x65\x73\x25\x73\x20\x6d\x61\x74\x63\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa",
                    checkhost, X509_check_host(x, checkhost, 0, 0, NULL) == 1
-                   ? "" : " NOT");
+                   ? "" : "\x20\x4e\x4f\x54");
     }
 
     if (checkemail) {
-        BIO_printf(bio, "Email %s does%s match certificate\n",
+        BIO_printf(bio, "\x45\x6d\x61\x69\x6c\x20\x25\x73\x20\x64\x6f\x65\x73\x25\x73\x20\x6d\x61\x74\x63\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa",
                    checkemail, X509_check_email(x, checkemail, 0,
-                                                0) ? "" : " NOT");
+                                                0) ? "" : "\x20\x4e\x4f\x54");
     }
 
     if (checkip) {
-        BIO_printf(bio, "IP %s does%s match certificate\n",
-                   checkip, X509_check_ip_asc(x, checkip, 0) ? "" : " NOT");
+        BIO_printf(bio, "\x49\x50\x20\x25\x73\x20\x64\x6f\x65\x73\x25\x73\x20\x6d\x61\x74\x63\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa",
+                   checkip, X509_check_ip_asc(x, checkip, 0) ? "" : "\x20\x4e\x4f\x54");
     }
 }
 
@@ -2839,7 +2839,7 @@ static const char *get_dp_url(DIST_POINT *dp)
         uri = GENERAL_NAME_get0_value(gen, &gtype);
         if (gtype == GEN_URI && ASN1_STRING_length(uri) > 6) {
             char *uptr = (char *)ASN1_STRING_data(uri);
-            if (!strncmp(uptr, "http://", 7))
+            if (!strncmp(uptr, "\x68\x74\x74\x70\x3a\x2f\x2f", 7))
                 return uptr;
         }
     }
@@ -2989,8 +2989,8 @@ double app_tminterval(int stop, int usertime)
         SYSTEMTIME systime;
 
         if (usertime && warning) {
-            BIO_printf(bio_err, "To get meaningful results, run "
-                       "this program on idle system.\n");
+            BIO_printf(bio_err, "\x54\x6f\x20\x67\x65\x74\x20\x6d\x65\x61\x6e\x69\x6e\x67\x66\x75\x6c\x20\x72\x65\x73\x75\x6c\x74\x73\x2c\x20\x72\x75\x6e\x20"
+                       "\x74\x68\x69\x73\x20\x70\x72\x6f\x67\x72\x61\x6d\x20\x6f\x6e\x20\x69\x64\x6c\x65\x20\x73\x79\x73\x74\x65\x6d\x2e\xa");
             warning = 0;
         }
         GetSystemTime(&systime);
@@ -3022,8 +3022,8 @@ double app_tminterval(int stop, int usertime)
     static int warning = 1;
 
     if (usertime && warning) {
-        BIO_printf(bio_err, "To get meaningful results, run "
-                   "this program on idle system.\n");
+        BIO_printf(bio_err, "\x54\x6f\x20\x67\x65\x74\x20\x6d\x65\x61\x6e\x69\x6e\x67\x66\x75\x6c\x20\x72\x65\x73\x75\x6c\x74\x73\x2c\x20\x72\x75\x6e\x20"
+                   "\x74\x68\x69\x73\x20\x70\x72\x6f\x67\x72\x61\x6d\x20\x6f\x6e\x20\x69\x64\x6c\x65\x20\x73\x79\x73\x74\x65\x6d\x2e\xa");
         warning = 0;
     }
 
@@ -3051,8 +3051,8 @@ double app_tminterval(int stop, int usertime)
     static int warning = 1;
 
     if (usertime && warning) {
-        BIO_printf(bio_err, "To get meaningful results, run "
-                   "this program on idle system.\n");
+        BIO_printf(bio_err, "\x54\x6f\x20\x67\x65\x74\x20\x6d\x65\x61\x6e\x69\x6e\x67\x66\x75\x6c\x20\x72\x65\x73\x75\x6c\x74\x73\x2c\x20\x72\x75\x6e\x20"
+                   "\x74\x68\x69\x73\x20\x70\x72\x6f\x67\x72\x61\x6d\x20\x6f\x6e\x20\x69\x64\x6c\x65\x20\x73\x79\x73\x74\x65\x6d\x2e\xa");
         warning = 0;
     }
 # ifdef CLOCK_REALTIME

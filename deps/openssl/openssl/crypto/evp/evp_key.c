@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -69,16 +69,16 @@ static char prompt_string[80];
 void EVP_set_pw_prompt(const char *prompt)
 {
     if (prompt == NULL)
-        prompt_string[0] = '\0';
+        prompt_string[0] = '\x0';
     else {
         strncpy(prompt_string, prompt, 79);
-        prompt_string[79] = '\0';
+        prompt_string[79] = '\x0';
     }
 }
 
 char *EVP_get_pw_prompt(void)
 {
-    if (prompt_string[0] == '\0')
+    if (prompt_string[0] == '\x0')
         return (NULL);
     else
         return (prompt_string);
@@ -101,7 +101,7 @@ int EVP_read_pw_string_min(char *buf, int min, int len, const char *prompt,
     char buff[BUFSIZ];
     UI *ui;
 
-    if ((prompt == NULL) && (prompt_string[0] != '\0'))
+    if ((prompt == NULL) && (prompt_string[0] != '\x0'))
         prompt = prompt_string;
     ui = UI_new();
     if (ui == NULL)

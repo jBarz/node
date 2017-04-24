@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -209,15 +209,15 @@ void CRYPTO_thread_cleanup(void)
 void solaris_locking_callback(int mode, int type, char *file, int line)
 {
 # if 0
-    fprintf(stderr, "thread=%4d mode=%s lock=%s %s:%d\n",
+    fprintf(stderr, "\x74\x68\x72\x65\x61\x64\x3d\x25\x34\x64\x20\x6d\x6f\x64\x65\x3d\x25\x73\x20\x6c\x6f\x63\x6b\x3d\x25\x73\x20\x25\x73\x3a\x25\x64\xa",
             CRYPTO_thread_id(),
-            (mode & CRYPTO_LOCK) ? "l" : "u",
-            (type & CRYPTO_READ) ? "r" : "w", file, line);
+            (mode & CRYPTO_LOCK) ? "\x6c" : "\x75",
+            (type & CRYPTO_READ) ? "\x72" : "\x77", file, line);
 # endif
 
 # if 0
     if (CRYPTO_LOCK_SSL_CERT == type)
-        fprintf(stderr, "(t,m,f,l) %ld %d %s %d\n",
+        fprintf(stderr, "\x28\x74\x2c\x6d\x2c\x66\x2c\x6c\x29\x20\x25\x6c\x64\x20\x25\x64\x20\x25\x73\x20\x25\x64\xa",
                 CRYPTO_thread_id(), mode, file, line);
 # endif
     if (mode & CRYPTO_LOCK) {
@@ -265,7 +265,7 @@ void CRYPTO_thread_setup(void)
         return;
     }
 
-    strcpy(filename, "/tmp/mttest.XXXXXX");
+    strcpy(filename, "\x2f\x74\x6d\x70\x2f\x6d\x74\x74\x65\x73\x74\x2e\x58\x58\x58\x58\x58\x58");
     mktemp(filename);
 
     usconfig(CONF_STHREADIOOFF);
@@ -291,7 +291,7 @@ void CRYPTO_thread_cleanup(void)
     for (i = 0; i < CRYPTO_num_locks(); i++) {
         char buf[10];
 
-        sprintf(buf, "%2d:", i);
+        sprintf(buf, "\x25\x32\x64\x3a", i);
         usdumpsema(lock_cs[i], stdout, buf);
         usfreesema(lock_cs[i], arena);
     }
@@ -360,14 +360,14 @@ void thread_cleanup(void)
 void pthreads_locking_callback(int mode, int type, char *file, int line)
 {
 # if 0
-    fprintf(stderr, "thread=%4d mode=%s lock=%s %s:%d\n",
+    fprintf(stderr, "\x74\x68\x72\x65\x61\x64\x3d\x25\x34\x64\x20\x6d\x6f\x64\x65\x3d\x25\x73\x20\x6c\x6f\x63\x6b\x3d\x25\x73\x20\x25\x73\x3a\x25\x64\xa",
             CRYPTO_thread_id(),
-            (mode & CRYPTO_LOCK) ? "l" : "u",
-            (type & CRYPTO_READ) ? "r" : "w", file, line);
+            (mode & CRYPTO_LOCK) ? "\x6c" : "\x75",
+            (type & CRYPTO_READ) ? "\x72" : "\x77", file, line);
 # endif
 # if 0
     if (CRYPTO_LOCK_SSL_CERT == type)
-        fprintf(stderr, "(t,m,f,l) %ld %d %s %d\n",
+        fprintf(stderr, "\x28\x74\x2c\x6d\x2c\x66\x2c\x6c\x29\x20\x25\x6c\x64\x20\x25\x64\x20\x25\x73\x20\x25\x64\xa",
                 CRYPTO_thread_id(), mode, file, line);
 # endif
     if (mode & CRYPTO_LOCK) {

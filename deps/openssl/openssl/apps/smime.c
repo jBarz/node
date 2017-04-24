@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -91,7 +91,7 @@ int MAIN(int argc, char **argv)
     int operation = 0;
     int ret = 0;
     char **args;
-    const char *inmode = "r", *outmode = "w";
+    const char *inmode = "\x72", *outmode = "\x77";
     char *infile = NULL, *outfile = NULL;
     char *signerfile = NULL, *recipfile = NULL;
     STACK_OF(OPENSSL_STRING) *sksigners = NULL, *skkeys = NULL;
@@ -131,84 +131,84 @@ int MAIN(int argc, char **argv)
     if (!load_config(bio_err, NULL))
         goto end;
 
-    while (!badarg && *args && *args[0] == '-') {
-        if (!strcmp(*args, "-encrypt"))
+    while (!badarg && *args && *args[0] == '\x2d') {
+        if (!strcmp(*args, "\x2d\x65\x6e\x63\x72\x79\x70\x74"))
             operation = SMIME_ENCRYPT;
-        else if (!strcmp(*args, "-decrypt"))
+        else if (!strcmp(*args, "\x2d\x64\x65\x63\x72\x79\x70\x74"))
             operation = SMIME_DECRYPT;
-        else if (!strcmp(*args, "-sign"))
+        else if (!strcmp(*args, "\x2d\x73\x69\x67\x6e"))
             operation = SMIME_SIGN;
-        else if (!strcmp(*args, "-resign"))
+        else if (!strcmp(*args, "\x2d\x72\x65\x73\x69\x67\x6e"))
             operation = SMIME_RESIGN;
-        else if (!strcmp(*args, "-verify"))
+        else if (!strcmp(*args, "\x2d\x76\x65\x72\x69\x66\x79"))
             operation = SMIME_VERIFY;
-        else if (!strcmp(*args, "-pk7out"))
+        else if (!strcmp(*args, "\x2d\x70\x6b\x37\x6f\x75\x74"))
             operation = SMIME_PK7OUT;
 #ifndef OPENSSL_NO_DES
-        else if (!strcmp(*args, "-des3"))
+        else if (!strcmp(*args, "\x2d\x64\x65\x73\x33"))
             cipher = EVP_des_ede3_cbc();
-        else if (!strcmp(*args, "-des"))
+        else if (!strcmp(*args, "\x2d\x64\x65\x73"))
             cipher = EVP_des_cbc();
 #endif
 #ifndef OPENSSL_NO_SEED
-        else if (!strcmp(*args, "-seed"))
+        else if (!strcmp(*args, "\x2d\x73\x65\x65\x64"))
             cipher = EVP_seed_cbc();
 #endif
 #ifndef OPENSSL_NO_RC2
-        else if (!strcmp(*args, "-rc2-40"))
+        else if (!strcmp(*args, "\x2d\x72\x63\x32\x2d\x34\x30"))
             cipher = EVP_rc2_40_cbc();
-        else if (!strcmp(*args, "-rc2-128"))
+        else if (!strcmp(*args, "\x2d\x72\x63\x32\x2d\x31\x32\x38"))
             cipher = EVP_rc2_cbc();
-        else if (!strcmp(*args, "-rc2-64"))
+        else if (!strcmp(*args, "\x2d\x72\x63\x32\x2d\x36\x34"))
             cipher = EVP_rc2_64_cbc();
 #endif
 #ifndef OPENSSL_NO_AES
-        else if (!strcmp(*args, "-aes128"))
+        else if (!strcmp(*args, "\x2d\x61\x65\x73\x31\x32\x38"))
             cipher = EVP_aes_128_cbc();
-        else if (!strcmp(*args, "-aes192"))
+        else if (!strcmp(*args, "\x2d\x61\x65\x73\x31\x39\x32"))
             cipher = EVP_aes_192_cbc();
-        else if (!strcmp(*args, "-aes256"))
+        else if (!strcmp(*args, "\x2d\x61\x65\x73\x32\x35\x36"))
             cipher = EVP_aes_256_cbc();
 #endif
 #ifndef OPENSSL_NO_CAMELLIA
-        else if (!strcmp(*args, "-camellia128"))
+        else if (!strcmp(*args, "\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x31\x32\x38"))
             cipher = EVP_camellia_128_cbc();
-        else if (!strcmp(*args, "-camellia192"))
+        else if (!strcmp(*args, "\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x31\x39\x32"))
             cipher = EVP_camellia_192_cbc();
-        else if (!strcmp(*args, "-camellia256"))
+        else if (!strcmp(*args, "\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x32\x35\x36"))
             cipher = EVP_camellia_256_cbc();
 #endif
-        else if (!strcmp(*args, "-text"))
+        else if (!strcmp(*args, "\x2d\x74\x65\x78\x74"))
             flags |= PKCS7_TEXT;
-        else if (!strcmp(*args, "-nointern"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x69\x6e\x74\x65\x72\x6e"))
             flags |= PKCS7_NOINTERN;
-        else if (!strcmp(*args, "-noverify"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x76\x65\x72\x69\x66\x79"))
             flags |= PKCS7_NOVERIFY;
-        else if (!strcmp(*args, "-nochain"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x63\x68\x61\x69\x6e"))
             flags |= PKCS7_NOCHAIN;
-        else if (!strcmp(*args, "-nocerts"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x63\x65\x72\x74\x73"))
             flags |= PKCS7_NOCERTS;
-        else if (!strcmp(*args, "-noattr"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x61\x74\x74\x72"))
             flags |= PKCS7_NOATTR;
-        else if (!strcmp(*args, "-nodetach"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x64\x65\x74\x61\x63\x68"))
             flags &= ~PKCS7_DETACHED;
-        else if (!strcmp(*args, "-nosmimecap"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x73\x6d\x69\x6d\x65\x63\x61\x70"))
             flags |= PKCS7_NOSMIMECAP;
-        else if (!strcmp(*args, "-binary"))
+        else if (!strcmp(*args, "\x2d\x62\x69\x6e\x61\x72\x79"))
             flags |= PKCS7_BINARY;
-        else if (!strcmp(*args, "-nosigs"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x73\x69\x67\x73"))
             flags |= PKCS7_NOSIGS;
-        else if (!strcmp(*args, "-stream"))
+        else if (!strcmp(*args, "\x2d\x73\x74\x72\x65\x61\x6d"))
             indef = 1;
-        else if (!strcmp(*args, "-indef"))
+        else if (!strcmp(*args, "\x2d\x69\x6e\x64\x65\x66"))
             indef = 1;
-        else if (!strcmp(*args, "-noindef"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x69\x6e\x64\x65\x66"))
             indef = 0;
-        else if (!strcmp(*args, "-nooldmime"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x6f\x6c\x64\x6d\x69\x6d\x65"))
             flags |= PKCS7_NOOLDMIMETYPE;
-        else if (!strcmp(*args, "-crlfeol"))
+        else if (!strcmp(*args, "\x2d\x63\x72\x6c\x66\x65\x6f\x6c"))
             flags |= PKCS7_CRLFEOL;
-        else if (!strcmp(*args, "-rand")) {
+        else if (!strcmp(*args, "\x2d\x72\x61\x6e\x64")) {
             if (!args[1])
                 goto argerr;
             args++;
@@ -216,29 +216,29 @@ int MAIN(int argc, char **argv)
             need_rand = 1;
         }
 #ifndef OPENSSL_NO_ENGINE
-        else if (!strcmp(*args, "-engine")) {
+        else if (!strcmp(*args, "\x2d\x65\x6e\x67\x69\x6e\x65")) {
             if (!args[1])
                 goto argerr;
             engine = *++args;
         }
 #endif
-        else if (!strcmp(*args, "-passin")) {
+        else if (!strcmp(*args, "\x2d\x70\x61\x73\x73\x69\x6e")) {
             if (!args[1])
                 goto argerr;
             passargin = *++args;
-        } else if (!strcmp(*args, "-to")) {
+        } else if (!strcmp(*args, "\x2d\x74\x6f")) {
             if (!args[1])
                 goto argerr;
             to = *++args;
-        } else if (!strcmp(*args, "-from")) {
+        } else if (!strcmp(*args, "\x2d\x66\x72\x6f\x6d")) {
             if (!args[1])
                 goto argerr;
             from = *++args;
-        } else if (!strcmp(*args, "-subject")) {
+        } else if (!strcmp(*args, "\x2d\x73\x75\x62\x6a\x65\x63\x74")) {
             if (!args[1])
                 goto argerr;
             subject = *++args;
-        } else if (!strcmp(*args, "-signer")) {
+        } else if (!strcmp(*args, "\x2d\x73\x69\x67\x6e\x65\x72")) {
             if (!args[1])
                 goto argerr;
             /* If previous -signer argument add signer to list */
@@ -255,25 +255,25 @@ int MAIN(int argc, char **argv)
                 keyfile = NULL;
             }
             signerfile = *++args;
-        } else if (!strcmp(*args, "-recip")) {
+        } else if (!strcmp(*args, "\x2d\x72\x65\x63\x69\x70")) {
             if (!args[1])
                 goto argerr;
             recipfile = *++args;
-        } else if (!strcmp(*args, "-md")) {
+        } else if (!strcmp(*args, "\x2d\x6d\x64")) {
             if (!args[1])
                 goto argerr;
             sign_md = EVP_get_digestbyname(*++args);
             if (sign_md == NULL) {
-                BIO_printf(bio_err, "Unknown digest %s\n", *args);
+                BIO_printf(bio_err, "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x64\x69\x67\x65\x73\x74\x20\x25\x73\xa", *args);
                 goto argerr;
             }
-        } else if (!strcmp(*args, "-inkey")) {
+        } else if (!strcmp(*args, "\x2d\x69\x6e\x6b\x65\x79")) {
             if (!args[1])
                 goto argerr;
             /* If previous -inkey arument add signer to list */
             if (keyfile) {
                 if (!signerfile) {
-                    BIO_puts(bio_err, "Illegal -inkey without -signer\n");
+                    BIO_puts(bio_err, "\x49\x6c\x6c\x65\x67\x61\x6c\x20\x2d\x69\x6e\x6b\x65\x79\x20\x77\x69\x74\x68\x6f\x75\x74\x20\x2d\x73\x69\x67\x6e\x65\x72\xa");
                     goto argerr;
                 }
                 if (!sksigners)
@@ -285,39 +285,39 @@ int MAIN(int argc, char **argv)
                 sk_OPENSSL_STRING_push(skkeys, keyfile);
             }
             keyfile = *++args;
-        } else if (!strcmp(*args, "-keyform")) {
+        } else if (!strcmp(*args, "\x2d\x6b\x65\x79\x66\x6f\x72\x6d")) {
             if (!args[1])
                 goto argerr;
             keyform = str2fmt(*++args);
-        } else if (!strcmp(*args, "-certfile")) {
+        } else if (!strcmp(*args, "\x2d\x63\x65\x72\x74\x66\x69\x6c\x65")) {
             if (!args[1])
                 goto argerr;
             certfile = *++args;
-        } else if (!strcmp(*args, "-CAfile")) {
+        } else if (!strcmp(*args, "\x2d\x43\x41\x66\x69\x6c\x65")) {
             if (!args[1])
                 goto argerr;
             CAfile = *++args;
-        } else if (!strcmp(*args, "-CApath")) {
+        } else if (!strcmp(*args, "\x2d\x43\x41\x70\x61\x74\x68")) {
             if (!args[1])
                 goto argerr;
             CApath = *++args;
-        } else if (!strcmp(*args, "-in")) {
+        } else if (!strcmp(*args, "\x2d\x69\x6e")) {
             if (!args[1])
                 goto argerr;
             infile = *++args;
-        } else if (!strcmp(*args, "-inform")) {
+        } else if (!strcmp(*args, "\x2d\x69\x6e\x66\x6f\x72\x6d")) {
             if (!args[1])
                 goto argerr;
             informat = str2fmt(*++args);
-        } else if (!strcmp(*args, "-outform")) {
+        } else if (!strcmp(*args, "\x2d\x6f\x75\x74\x66\x6f\x72\x6d")) {
             if (!args[1])
                 goto argerr;
             outformat = str2fmt(*++args);
-        } else if (!strcmp(*args, "-out")) {
+        } else if (!strcmp(*args, "\x2d\x6f\x75\x74")) {
             if (!args[1])
                 goto argerr;
             outfile = *++args;
-        } else if (!strcmp(*args, "-content")) {
+        } else if (!strcmp(*args, "\x2d\x63\x6f\x6e\x74\x65\x6e\x74")) {
             if (!args[1])
                 goto argerr;
             contfile = *++args;
@@ -329,14 +329,14 @@ int MAIN(int argc, char **argv)
     }
 
     if (!(operation & SMIME_SIGNERS) && (skkeys || sksigners)) {
-        BIO_puts(bio_err, "Multiple signers or keys not allowed\n");
+        BIO_puts(bio_err, "\x4d\x75\x6c\x74\x69\x70\x6c\x65\x20\x73\x69\x67\x6e\x65\x72\x73\x20\x6f\x72\x20\x6b\x65\x79\x73\x20\x6e\x6f\x74\x20\x61\x6c\x6c\x6f\x77\x65\x64\xa");
         goto argerr;
     }
 
     if (operation & SMIME_SIGNERS) {
         /* Check to see if any final signer needs to be appended */
         if (keyfile && !signerfile) {
-            BIO_puts(bio_err, "Illegal -inkey without -signer\n");
+            BIO_puts(bio_err, "\x49\x6c\x6c\x65\x67\x61\x6c\x20\x2d\x69\x6e\x6b\x65\x79\x20\x77\x69\x74\x68\x6f\x75\x74\x20\x2d\x73\x69\x67\x6e\x65\x72\xa");
             goto argerr;
         }
         if (signerfile) {
@@ -350,7 +350,7 @@ int MAIN(int argc, char **argv)
             sk_OPENSSL_STRING_push(skkeys, keyfile);
         }
         if (!sksigners) {
-            BIO_printf(bio_err, "No signer certificate specified\n");
+            BIO_printf(bio_err, "\x4e\x6f\x20\x73\x69\x67\x6e\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
             badarg = 1;
         }
         signerfile = NULL;
@@ -359,12 +359,12 @@ int MAIN(int argc, char **argv)
     } else if (operation == SMIME_DECRYPT) {
         if (!recipfile && !keyfile) {
             BIO_printf(bio_err,
-                       "No recipient certificate or key specified\n");
+                       "\x4e\x6f\x20\x72\x65\x63\x69\x70\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6f\x72\x20\x6b\x65\x79\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
             badarg = 1;
         }
     } else if (operation == SMIME_ENCRYPT) {
         if (!*args) {
-            BIO_printf(bio_err, "No recipient(s) certificate(s) specified\n");
+            BIO_printf(bio_err, "\x4e\x6f\x20\x72\x65\x63\x69\x70\x69\x65\x6e\x74\x28\x73\x29\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x28\x73\x29\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
             badarg = 1;
         }
         need_rand = 1;
@@ -373,103 +373,103 @@ int MAIN(int argc, char **argv)
 
     if (badarg) {
  argerr:
-        BIO_printf(bio_err, "Usage smime [options] cert.pem ...\n");
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, "-encrypt       encrypt message\n");
-        BIO_printf(bio_err, "-decrypt       decrypt encrypted message\n");
-        BIO_printf(bio_err, "-sign          sign message\n");
-        BIO_printf(bio_err, "-verify        verify signed message\n");
-        BIO_printf(bio_err, "-pk7out        output PKCS#7 structure\n");
+        BIO_printf(bio_err, "\x55\x73\x61\x67\x65\x20\x73\x6d\x69\x6d\x65\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\x20\x63\x65\x72\x74\x2e\x70\x65\x6d\x20\x2e\x2e\x2e\xa");
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x2d\x65\x6e\x63\x72\x79\x70\x74\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x6d\x65\x73\x73\x61\x67\x65\xa");
+        BIO_printf(bio_err, "\x2d\x64\x65\x63\x72\x79\x70\x74\x20\x20\x20\x20\x20\x20\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x65\x64\x20\x6d\x65\x73\x73\x61\x67\x65\xa");
+        BIO_printf(bio_err, "\x2d\x73\x69\x67\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x73\x69\x67\x6e\x20\x6d\x65\x73\x73\x61\x67\x65\xa");
+        BIO_printf(bio_err, "\x2d\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x20\x20\x20\x20\x76\x65\x72\x69\x66\x79\x20\x73\x69\x67\x6e\x65\x64\x20\x6d\x65\x73\x73\x61\x67\x65\xa");
+        BIO_printf(bio_err, "\x2d\x70\x6b\x37\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x50\x4b\x43\x53\x23\x37\x20\x73\x74\x72\x75\x63\x74\x75\x72\x65\xa");
 #ifndef OPENSSL_NO_DES
-        BIO_printf(bio_err, "-des3          encrypt with triple DES\n");
-        BIO_printf(bio_err, "-des           encrypt with DES\n");
+        BIO_printf(bio_err, "\x2d\x64\x65\x73\x33\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x77\x69\x74\x68\x20\x74\x72\x69\x70\x6c\x65\x20\x44\x45\x53\xa");
+        BIO_printf(bio_err, "\x2d\x64\x65\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x77\x69\x74\x68\x20\x44\x45\x53\xa");
 #endif
 #ifndef OPENSSL_NO_SEED
-        BIO_printf(bio_err, "-seed          encrypt with SEED\n");
+        BIO_printf(bio_err, "\x2d\x73\x65\x65\x64\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x77\x69\x74\x68\x20\x53\x45\x45\x44\xa");
 #endif
 #ifndef OPENSSL_NO_RC2
-        BIO_printf(bio_err, "-rc2-40        encrypt with RC2-40 (default)\n");
-        BIO_printf(bio_err, "-rc2-64        encrypt with RC2-64\n");
-        BIO_printf(bio_err, "-rc2-128       encrypt with RC2-128\n");
+        BIO_printf(bio_err, "\x2d\x72\x63\x32\x2d\x34\x30\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x77\x69\x74\x68\x20\x52\x43\x32\x2d\x34\x30\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29\xa");
+        BIO_printf(bio_err, "\x2d\x72\x63\x32\x2d\x36\x34\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x77\x69\x74\x68\x20\x52\x43\x32\x2d\x36\x34\xa");
+        BIO_printf(bio_err, "\x2d\x72\x63\x32\x2d\x31\x32\x38\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x77\x69\x74\x68\x20\x52\x43\x32\x2d\x31\x32\x38\xa");
 #endif
 #ifndef OPENSSL_NO_AES
-        BIO_printf(bio_err, "-aes128, -aes192, -aes256\n");
+        BIO_printf(bio_err, "\x2d\x61\x65\x73\x31\x32\x38\x2c\x20\x2d\x61\x65\x73\x31\x39\x32\x2c\x20\x2d\x61\x65\x73\x32\x35\x36\xa");
         BIO_printf(bio_err,
-                   "               encrypt PEM output with cbc aes\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x50\x45\x4d\x20\x6f\x75\x74\x70\x75\x74\x20\x77\x69\x74\x68\x20\x63\x62\x63\x20\x61\x65\x73\xa");
 #endif
 #ifndef OPENSSL_NO_CAMELLIA
-        BIO_printf(bio_err, "-camellia128, -camellia192, -camellia256\n");
+        BIO_printf(bio_err, "\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x31\x32\x38\x2c\x20\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x31\x39\x32\x2c\x20\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x32\x35\x36\xa");
         BIO_printf(bio_err,
-                   "               encrypt PEM output with cbc camellia\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x50\x45\x4d\x20\x6f\x75\x74\x70\x75\x74\x20\x77\x69\x74\x68\x20\x63\x62\x63\x20\x63\x61\x6d\x65\x6c\x6c\x69\x61\xa");
 #endif
         BIO_printf(bio_err,
-                   "-nointern      don't search certificates in message for signer\n");
+                   "\x2d\x6e\x6f\x69\x6e\x74\x65\x72\x6e\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x73\x65\x61\x72\x63\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x69\x6e\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x66\x6f\x72\x20\x73\x69\x67\x6e\x65\x72\xa");
         BIO_printf(bio_err,
-                   "-nosigs        don't verify message signature\n");
+                   "\x2d\x6e\x6f\x73\x69\x67\x73\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x76\x65\x72\x69\x66\x79\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\xa");
         BIO_printf(bio_err,
-                   "-noverify      don't verify signers certificate\n");
+                   "\x2d\x6e\x6f\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x76\x65\x72\x69\x66\x79\x20\x73\x69\x67\x6e\x65\x72\x73\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
         BIO_printf(bio_err,
-                   "-nocerts       don't include signers certificate when signing\n");
-        BIO_printf(bio_err, "-nodetach      use opaque signing\n");
+                   "\x2d\x6e\x6f\x63\x65\x72\x74\x73\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x20\x73\x69\x67\x6e\x65\x72\x73\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x77\x68\x65\x6e\x20\x73\x69\x67\x6e\x69\x6e\x67\xa");
+        BIO_printf(bio_err, "\x2d\x6e\x6f\x64\x65\x74\x61\x63\x68\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x6f\x70\x61\x71\x75\x65\x20\x73\x69\x67\x6e\x69\x6e\x67\xa");
         BIO_printf(bio_err,
-                   "-noattr        don't include any signed attributes\n");
+                   "\x2d\x6e\x6f\x61\x74\x74\x72\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x20\x61\x6e\x79\x20\x73\x69\x67\x6e\x65\x64\x20\x61\x74\x74\x72\x69\x62\x75\x74\x65\x73\xa");
         BIO_printf(bio_err,
-                   "-binary        don't translate message to text\n");
-        BIO_printf(bio_err, "-certfile file other certificates file\n");
-        BIO_printf(bio_err, "-signer file   signer certificate file\n");
+                   "\x2d\x62\x69\x6e\x61\x72\x79\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x74\x72\x61\x6e\x73\x6c\x61\x74\x65\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x74\x6f\x20\x74\x65\x78\x74\xa");
+        BIO_printf(bio_err, "\x2d\x63\x65\x72\x74\x66\x69\x6c\x65\x20\x66\x69\x6c\x65\x20\x6f\x74\x68\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x2d\x73\x69\x67\x6e\x65\x72\x20\x66\x69\x6c\x65\x20\x20\x20\x73\x69\x67\x6e\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   "-recip  file   recipient certificate file for decryption\n");
-        BIO_printf(bio_err, "-in file       input file\n");
+                   "\x2d\x72\x65\x63\x69\x70\x20\x20\x66\x69\x6c\x65\x20\x20\x20\x72\x65\x63\x69\x70\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65\x20\x66\x6f\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\xa");
+        BIO_printf(bio_err, "\x2d\x69\x6e\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   "-inform arg    input format SMIME (default), PEM or DER\n");
+                   "\x2d\x69\x6e\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x53\x4d\x49\x4d\x45\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29\x2c\x20\x50\x45\x4d\x20\x6f\x72\x20\x44\x45\x52\xa");
         BIO_printf(bio_err,
-                   "-inkey file    input private key (if not signer or recipient)\n");
+                   "\x2d\x69\x6e\x6b\x65\x79\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x28\x69\x66\x20\x6e\x6f\x74\x20\x73\x69\x67\x6e\x65\x72\x20\x6f\x72\x20\x72\x65\x63\x69\x70\x69\x65\x6e\x74\x29\xa");
         BIO_printf(bio_err,
-                   "-keyform arg   input private key format (PEM or ENGINE)\n");
-        BIO_printf(bio_err, "-out file      output file\n");
+                   "\x2d\x6b\x65\x79\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x66\x6f\x72\x6d\x61\x74\x20\x28\x50\x45\x4d\x20\x6f\x72\x20\x45\x4e\x47\x49\x4e\x45\x29\xa");
+        BIO_printf(bio_err, "\x2d\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   "-outform arg   output format SMIME (default), PEM or DER\n");
+                   "\x2d\x6f\x75\x74\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x53\x4d\x49\x4d\x45\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29\x2c\x20\x50\x45\x4d\x20\x6f\x72\x20\x44\x45\x52\xa");
         BIO_printf(bio_err,
-                   "-content file  supply or override content for detached signature\n");
-        BIO_printf(bio_err, "-to addr       to address\n");
-        BIO_printf(bio_err, "-from ad       from address\n");
-        BIO_printf(bio_err, "-subject s     subject\n");
+                   "\x2d\x63\x6f\x6e\x74\x65\x6e\x74\x20\x66\x69\x6c\x65\x20\x20\x73\x75\x70\x70\x6c\x79\x20\x6f\x72\x20\x6f\x76\x65\x72\x72\x69\x64\x65\x20\x63\x6f\x6e\x74\x65\x6e\x74\x20\x66\x6f\x72\x20\x64\x65\x74\x61\x63\x68\x65\x64\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\xa");
+        BIO_printf(bio_err, "\x2d\x74\x6f\x20\x61\x64\x64\x72\x20\x20\x20\x20\x20\x20\x20\x74\x6f\x20\x61\x64\x64\x72\x65\x73\x73\xa");
+        BIO_printf(bio_err, "\x2d\x66\x72\x6f\x6d\x20\x61\x64\x20\x20\x20\x20\x20\x20\x20\x66\x72\x6f\x6d\x20\x61\x64\x64\x72\x65\x73\x73\xa");
+        BIO_printf(bio_err, "\x2d\x73\x75\x62\x6a\x65\x63\x74\x20\x73\x20\x20\x20\x20\x20\x73\x75\x62\x6a\x65\x63\x74\xa");
         BIO_printf(bio_err,
-                   "-text          include or delete text MIME headers\n");
+                   "\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x63\x6c\x75\x64\x65\x20\x6f\x72\x20\x64\x65\x6c\x65\x74\x65\x20\x74\x65\x78\x74\x20\x4d\x49\x4d\x45\x20\x68\x65\x61\x64\x65\x72\x73\xa");
         BIO_printf(bio_err,
-                   "-CApath dir    trusted certificates directory\n");
-        BIO_printf(bio_err, "-CAfile file   trusted certificates file\n");
+                   "\x2d\x43\x41\x70\x61\x74\x68\x20\x64\x69\x72\x20\x20\x20\x20\x74\x72\x75\x73\x74\x65\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\xa");
+        BIO_printf(bio_err, "\x2d\x43\x41\x66\x69\x6c\x65\x20\x66\x69\x6c\x65\x20\x20\x20\x74\x72\x75\x73\x74\x65\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   "-no_alt_chains only ever use the first certificate chain found\n");
+                   "\x2d\x6e\x6f\x5f\x61\x6c\x74\x5f\x63\x68\x61\x69\x6e\x73\x20\x6f\x6e\x6c\x79\x20\x65\x76\x65\x72\x20\x75\x73\x65\x20\x74\x68\x65\x20\x66\x69\x72\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x63\x68\x61\x69\x6e\x20\x66\x6f\x75\x6e\x64\xa");
         BIO_printf(bio_err,
-                   "-crl_check     check revocation status of signer's certificate using CRLs\n");
+                   "\x2d\x63\x72\x6c\x5f\x63\x68\x65\x63\x6b\x20\x20\x20\x20\x20\x63\x68\x65\x63\x6b\x20\x72\x65\x76\x6f\x63\x61\x74\x69\x6f\x6e\x20\x73\x74\x61\x74\x75\x73\x20\x6f\x66\x20\x73\x69\x67\x6e\x65\x72\x27\x73\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x75\x73\x69\x6e\x67\x20\x43\x52\x4c\x73\xa");
         BIO_printf(bio_err,
-                   "-crl_check_all check revocation status of signer's certificate chain using CRLs\n");
+                   "\x2d\x63\x72\x6c\x5f\x63\x68\x65\x63\x6b\x5f\x61\x6c\x6c\x20\x63\x68\x65\x63\x6b\x20\x72\x65\x76\x6f\x63\x61\x74\x69\x6f\x6e\x20\x73\x74\x61\x74\x75\x73\x20\x6f\x66\x20\x73\x69\x67\x6e\x65\x72\x27\x73\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x63\x68\x61\x69\x6e\x20\x75\x73\x69\x6e\x67\x20\x43\x52\x4c\x73\xa");
 #ifndef OPENSSL_NO_ENGINE
         BIO_printf(bio_err,
-                   "-engine e      use engine e, possibly a hardware device.\n");
+                   "\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 #endif
-        BIO_printf(bio_err, "-passin arg    input file pass phrase source\n");
-        BIO_printf(bio_err, "-rand file%cfile%c...\n", LIST_SEPARATOR_CHAR,
+        BIO_printf(bio_err, "\x2d\x70\x61\x73\x73\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa");
+        BIO_printf(bio_err, "\x2d\x72\x61\x6e\x64\x20\x66\x69\x6c\x65\x25\x63\x66\x69\x6c\x65\x25\x63\x2e\x2e\x2e\xa", LIST_SEPARATOR_CHAR,
                    LIST_SEPARATOR_CHAR);
         BIO_printf(bio_err,
-                   "               load the file (or the files in the directory) into\n");
-        BIO_printf(bio_err, "               the random number generator\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6c\x6f\x61\x64\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x20\x28\x6f\x72\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x73\x20\x69\x6e\x20\x74\x68\x65\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x29\x20\x69\x6e\x74\x6f\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\xa");
         BIO_printf(bio_err,
-                   "cert.pem       recipient certificate(s) for encryption\n");
+                   "\x63\x65\x72\x74\x2e\x70\x65\x6d\x20\x20\x20\x20\x20\x20\x20\x72\x65\x63\x69\x70\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x28\x73\x29\x20\x66\x6f\x72\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\xa");
         goto end;
     }
     e = setup_engine(bio_err, engine, 0);
 
     if (!app_passwd(bio_err, passargin, NULL, &passin, NULL)) {
-        BIO_printf(bio_err, "Error getting password\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa");
         goto end;
     }
 
     if (need_rand) {
         app_RAND_load_file(NULL, bio_err, (inrand != NULL));
         if (inrand != NULL)
-            BIO_printf(bio_err, "%ld semi-random bytes loaded\n",
+            BIO_printf(bio_err, "\x25\x6c\x64\x20\x73\x65\x6d\x69\x2d\x72\x61\x6e\x64\x6f\x6d\x20\x62\x79\x74\x65\x73\x20\x6c\x6f\x61\x64\x65\x64\xa",
                        app_RAND_load_files(inrand));
     }
 
@@ -480,18 +480,18 @@ int MAIN(int argc, char **argv)
 
     if (operation & SMIME_OP) {
         if (outformat == FORMAT_ASN1)
-            outmode = "wb";
+            outmode = "\x77\x62";
     } else {
         if (flags & PKCS7_BINARY)
-            outmode = "wb";
+            outmode = "\x77\x62";
     }
 
     if (operation & SMIME_IP) {
         if (informat == FORMAT_ASN1)
-            inmode = "rb";
+            inmode = "\x72\x62";
     } else {
         if (flags & PKCS7_BINARY)
-            inmode = "rb";
+            inmode = "\x72\x62";
     }
 
     if (operation == SMIME_ENCRYPT) {
@@ -499,17 +499,17 @@ int MAIN(int argc, char **argv)
 #ifndef OPENSSL_NO_DES
             cipher = EVP_des_ede3_cbc();
 #else
-            BIO_printf(bio_err, "No cipher selected\n");
+            BIO_printf(bio_err, "\x4e\x6f\x20\x63\x69\x70\x68\x65\x72\x20\x73\x65\x6c\x65\x63\x74\x65\x64\xa");
             goto end;
 #endif
         }
         encerts = sk_X509_new_null();
         while (*args) {
             if (!(cert = load_cert(bio_err, *args, FORMAT_PEM,
-                                   NULL, e, "recipient certificate file"))) {
+                                   NULL, e, "\x72\x65\x63\x69\x70\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65"))) {
 #if 0                           /* An appropriate message is already printed */
                 BIO_printf(bio_err,
-                           "Can't read recipient certificate file %s\n",
+                           "\x43\x61\x6e\x27\x74\x20\x72\x65\x61\x64\x20\x72\x65\x63\x69\x70\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65\x20\x25\x73\xa",
                            *args);
 #endif
                 goto end;
@@ -522,7 +522,7 @@ int MAIN(int argc, char **argv)
 
     if (certfile) {
         if (!(other = load_certs(bio_err, certfile, FORMAT_PEM, NULL,
-                                 e, "certificate file"))) {
+                                 e, "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65"))) {
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -530,7 +530,7 @@ int MAIN(int argc, char **argv)
 
     if (recipfile && (operation == SMIME_DECRYPT)) {
         if (!(recip = load_cert(bio_err, recipfile, FORMAT_PEM, NULL,
-                                e, "recipient certificate file"))) {
+                                e, "\x72\x65\x63\x69\x70\x69\x65\x6e\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65"))) {
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -547,14 +547,14 @@ int MAIN(int argc, char **argv)
 
     if (keyfile) {
         key = load_key(bio_err, keyfile, keyform, 0, passin, e,
-                       "signing key file");
+                       "\x73\x69\x67\x6e\x69\x6e\x67\x20\x6b\x65\x79\x20\x66\x69\x6c\x65");
         if (!key)
             goto end;
     }
 
     if (infile) {
         if (!(in = BIO_new_file(infile, inmode))) {
-            BIO_printf(bio_err, "Can't open input file %s\n", infile);
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x25\x73\xa", infile);
             goto end;
         }
     } else
@@ -568,18 +568,18 @@ int MAIN(int argc, char **argv)
         else if (informat == FORMAT_ASN1)
             p7 = d2i_PKCS7_bio(in, NULL);
         else {
-            BIO_printf(bio_err, "Bad input format for PKCS#7 file\n");
+            BIO_printf(bio_err, "\x42\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x66\x6f\x72\x20\x50\x4b\x43\x53\x23\x37\x20\x66\x69\x6c\x65\xa");
             goto end;
         }
 
         if (!p7) {
-            BIO_printf(bio_err, "Error reading S/MIME message\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x53\x2f\x4d\x49\x4d\x45\x20\x6d\x65\x73\x73\x61\x67\x65\xa");
             goto end;
         }
         if (contfile) {
             BIO_free(indata);
-            if (!(indata = BIO_new_file(contfile, "rb"))) {
-                BIO_printf(bio_err, "Can't read content file %s\n", contfile);
+            if (!(indata = BIO_new_file(contfile, "\x72\x62"))) {
+                BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x72\x65\x61\x64\x20\x63\x6f\x6e\x74\x65\x6e\x74\x20\x66\x69\x6c\x65\x20\x25\x73\xa", contfile);
                 goto end;
             }
         }
@@ -587,7 +587,7 @@ int MAIN(int argc, char **argv)
 
     if (outfile) {
         if (!(out = BIO_new_file(outfile, outmode))) {
-            BIO_printf(bio_err, "Can't open output file %s\n", outfile);
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x25\x73\xa", outfile);
             goto end;
         }
     } else {
@@ -642,11 +642,11 @@ int MAIN(int argc, char **argv)
             signerfile = sk_OPENSSL_STRING_value(sksigners, i);
             keyfile = sk_OPENSSL_STRING_value(skkeys, i);
             signer = load_cert(bio_err, signerfile, FORMAT_PEM, NULL,
-                               e, "signer certificate");
+                               e, "\x73\x69\x67\x6e\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
             if (!signer)
                 goto end;
             key = load_key(bio_err, keyfile, keyform, 0, passin, e,
-                           "signing key file");
+                           "\x73\x69\x67\x6e\x69\x6e\x67\x20\x6b\x65\x79\x20\x66\x69\x6c\x65");
             if (!key)
                 goto end;
             if (!PKCS7_sign_add_signer(p7, signer, key, sign_md, flags))
@@ -664,27 +664,27 @@ int MAIN(int argc, char **argv)
     }
 
     if (!p7) {
-        BIO_printf(bio_err, "Error creating PKCS#7 structure\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x50\x4b\x43\x53\x23\x37\x20\x73\x74\x72\x75\x63\x74\x75\x72\x65\xa");
         goto end;
     }
 
     ret = 4;
     if (operation == SMIME_DECRYPT) {
         if (!PKCS7_decrypt(p7, key, recip, out, flags)) {
-            BIO_printf(bio_err, "Error decrypting PKCS#7 structure\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6e\x67\x20\x50\x4b\x43\x53\x23\x37\x20\x73\x74\x72\x75\x63\x74\x75\x72\x65\xa");
             goto end;
         }
     } else if (operation == SMIME_VERIFY) {
         STACK_OF(X509) *signers;
         if (PKCS7_verify(p7, other, store, indata, out, flags))
-            BIO_printf(bio_err, "Verification successful\n");
+            BIO_printf(bio_err, "\x56\x65\x72\x69\x66\x69\x63\x61\x74\x69\x6f\x6e\x20\x73\x75\x63\x63\x65\x73\x73\x66\x75\x6c\xa");
         else {
-            BIO_printf(bio_err, "Verification failure\n");
+            BIO_printf(bio_err, "\x56\x65\x72\x69\x66\x69\x63\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
             goto end;
         }
         signers = PKCS7_get0_signers(p7, other, flags);
         if (!save_certs(signerfile, signers)) {
-            BIO_printf(bio_err, "Error writing signers to %s\n", signerfile);
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x77\x72\x69\x74\x69\x6e\x67\x20\x73\x69\x67\x6e\x65\x72\x73\x20\x74\x6f\x20\x25\x73\xa", signerfile);
             ret = 5;
             goto end;
         }
@@ -693,11 +693,11 @@ int MAIN(int argc, char **argv)
         PEM_write_bio_PKCS7(out, p7);
     else {
         if (to)
-            BIO_printf(out, "To: %s\n", to);
+            BIO_printf(out, "\x54\x6f\x3a\x20\x25\x73\xa", to);
         if (from)
-            BIO_printf(out, "From: %s\n", from);
+            BIO_printf(out, "\x46\x72\x6f\x6d\x3a\x20\x25\x73\xa", from);
         if (subject)
-            BIO_printf(out, "Subject: %s\n", subject);
+            BIO_printf(out, "\x53\x75\x62\x6a\x65\x63\x74\x3a\x20\x25\x73\xa", subject);
         if (outformat == FORMAT_SMIME) {
             if (operation == SMIME_RESIGN)
                 SMIME_write_PKCS7(out, p7, indata, flags);
@@ -708,7 +708,7 @@ int MAIN(int argc, char **argv)
         else if (outformat == FORMAT_ASN1)
             i2d_PKCS7_bio_stream(out, p7, in, flags);
         else {
-            BIO_printf(bio_err, "Bad output format for PKCS#7 file\n");
+            BIO_printf(bio_err, "\x42\x61\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x66\x6f\x72\x20\x50\x4b\x43\x53\x23\x37\x20\x66\x69\x6c\x65\xa");
             goto end;
         }
     }
@@ -747,7 +747,7 @@ static int save_certs(char *signerfile, STACK_OF(X509) *signers)
     BIO *tmp;
     if (!signerfile)
         return 1;
-    tmp = BIO_new_file(signerfile, "w");
+    tmp = BIO_new_file(signerfile, "\x77");
     if (!tmp)
         return 0;
     for (i = 0; i < sk_X509_num(signers); i++)

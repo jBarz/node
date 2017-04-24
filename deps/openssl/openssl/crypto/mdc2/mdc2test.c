@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -69,7 +69,7 @@
 #ifdef OPENSSL_NO_MDC2
 int main(int argc, char *argv[])
 {
-    printf("No MDC2 support\n");
+    printf("\x4e\x6f\x20\x4d\x44\x43\x32\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
     unsigned char md[MDC2_DIGEST_LENGTH];
     int i;
     EVP_MD_CTX c;
-    static char *text = "Now is the time for all ";
+    static char *text = "\x4e\x6f\x77\x20\x69\x73\x20\x74\x68\x65\x20\x74\x69\x6d\x65\x20\x66\x6f\x72\x20\x61\x6c\x6c\x20";
 
 # ifdef CHARSET_EBCDIC
     ebcdic2ascii(text, text, strlen(text));
@@ -109,14 +109,14 @@ int main(int argc, char *argv[])
 
     if (memcmp(md, pad1, MDC2_DIGEST_LENGTH) != 0) {
         for (i = 0; i < MDC2_DIGEST_LENGTH; i++)
-            printf("%02X", md[i]);
-        printf(" <- generated\n");
+            printf("\x25\x30\x32\x58", md[i]);
+        printf("\x20\x3c\x2d\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x64\xa");
         for (i = 0; i < MDC2_DIGEST_LENGTH; i++)
-            printf("%02X", pad1[i]);
-        printf(" <- correct\n");
+            printf("\x25\x30\x32\x58", pad1[i]);
+        printf("\x20\x3c\x2d\x20\x63\x6f\x72\x72\x65\x63\x74\xa");
         ret = 1;
     } else
-        printf("pad1 - ok\n");
+        printf("\x70\x61\x64\x31\x20\x2d\x20\x6f\x6b\xa");
 
     EVP_DigestInit_ex(&c, EVP_mdc2(), NULL);
     /* FIXME: use a ctl function? */
@@ -126,19 +126,19 @@ int main(int argc, char *argv[])
 
     if (memcmp(md, pad2, MDC2_DIGEST_LENGTH) != 0) {
         for (i = 0; i < MDC2_DIGEST_LENGTH; i++)
-            printf("%02X", md[i]);
-        printf(" <- generated\n");
+            printf("\x25\x30\x32\x58", md[i]);
+        printf("\x20\x3c\x2d\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x64\xa");
         for (i = 0; i < MDC2_DIGEST_LENGTH; i++)
-            printf("%02X", pad2[i]);
-        printf(" <- correct\n");
+            printf("\x25\x30\x32\x58", pad2[i]);
+        printf("\x20\x3c\x2d\x20\x63\x6f\x72\x72\x65\x63\x74\xa");
         ret = 1;
     } else
-        printf("pad2 - ok\n");
+        printf("\x70\x61\x64\x32\x20\x2d\x20\x6f\x6b\xa");
 
     EVP_MD_CTX_cleanup(&c);
 # ifdef OPENSSL_SYS_NETWARE
     if (ret)
-        printf("ERROR: %d\n", ret);
+        printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", ret);
 # endif
     EXIT(ret);
     return (ret);

@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -149,15 +149,15 @@ int ASN1_mbstring_ncopy(ASN1_STRING **out, const unsigned char *in, int len,
 
     if ((minsize > 0) && (nchar < minsize)) {
         ASN1err(ASN1_F_ASN1_MBSTRING_NCOPY, ASN1_R_STRING_TOO_SHORT);
-        BIO_snprintf(strbuf, sizeof strbuf, "%ld", minsize);
-        ERR_add_error_data(2, "minsize=", strbuf);
+        BIO_snprintf(strbuf, sizeof strbuf, "\x25\x6c\x64", minsize);
+        ERR_add_error_data(2, "\x6d\x69\x6e\x73\x69\x7a\x65\x3d", strbuf);
         return -1;
     }
 
     if ((maxsize > 0) && (nchar > maxsize)) {
         ASN1err(ASN1_F_ASN1_MBSTRING_NCOPY, ASN1_R_STRING_TOO_LONG);
-        BIO_snprintf(strbuf, sizeof strbuf, "%ld", maxsize);
-        ERR_add_error_data(2, "maxsize=", strbuf);
+        BIO_snprintf(strbuf, sizeof strbuf, "\x25\x6c\x64", maxsize);
+        ERR_add_error_data(2, "\x6d\x61\x78\x73\x69\x7a\x65\x3d", strbuf);
         return -1;
     }
 
@@ -401,22 +401,22 @@ static int is_printable(unsigned long value)
      * count as alphanumeric in some environments.
      */
 #ifndef CHARSET_EBCDIC
-    if ((ch >= 'a') && (ch <= 'z'))
+    if ((ch >= '\x61') && (ch <= '\x7a'))
         return 1;
-    if ((ch >= 'A') && (ch <= 'Z'))
+    if ((ch >= '\x41') && (ch <= '\x5a'))
         return 1;
-    if ((ch >= '0') && (ch <= '9'))
+    if ((ch >= '\x30') && (ch <= '\x39'))
         return 1;
-    if ((ch == ' ') || strchr("'()+,-./:=?", ch))
+    if ((ch == '\x20') || strchr("\x27\x28\x29\x2b\x2c\x2d\x2e\x2f\x3a\x3d\x3f", ch))
         return 1;
 #else                           /* CHARSET_EBCDIC */
-    if ((ch >= os_toascii['a']) && (ch <= os_toascii['z']))
+    if ((ch >= os_toascii['\x61']) && (ch <= os_toascii['\x7a']))
         return 1;
-    if ((ch >= os_toascii['A']) && (ch <= os_toascii['Z']))
+    if ((ch >= os_toascii['\x41']) && (ch <= os_toascii['\x5a']))
         return 1;
-    if ((ch >= os_toascii['0']) && (ch <= os_toascii['9']))
+    if ((ch >= os_toascii['\x30']) && (ch <= os_toascii['\x39']))
         return 1;
-    if ((ch == os_toascii[' ']) || strchr("'()+,-./:=?", os_toebcdic[ch]))
+    if ((ch == os_toascii['\x20']) || strchr("\x27\x28\x29\x2b\x2c\x2d\x2e\x2f\x3a\x3d\x3f", os_toebcdic[ch]))
         return 1;
 #endif                          /* CHARSET_EBCDIC */
     return 0;

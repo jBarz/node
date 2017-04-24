@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -70,25 +70,25 @@ int ASN1_bn_print(BIO *bp, const char *number, const BIGNUM *num,
 
     if (num == NULL)
         return (1);
-    neg = (BN_is_negative(num)) ? "-" : "";
+    neg = (BN_is_negative(num)) ? "\x2d" : "";
     if (!BIO_indent(bp, off, 128))
         return 0;
     if (BN_is_zero(num)) {
-        if (BIO_printf(bp, "%s 0\n", number) <= 0)
+        if (BIO_printf(bp, "\x25\x73\x20\x30\xa", number) <= 0)
             return 0;
         return 1;
     }
 
     if (BN_num_bytes(num) <= BN_BYTES) {
-        if (BIO_printf(bp, "%s %s%lu (%s0x%lx)\n", number, neg,
+        if (BIO_printf(bp, "\x25\x73\x20\x25\x73\x25\x6c\x75\x20\x28\x25\x73\x30\x78\x25\x6c\x78\x29\xa", number, neg,
                        (unsigned long)num->d[0], neg,
                        (unsigned long)num->d[0])
             <= 0)
             return (0);
     } else {
         buf[0] = 0;
-        if (BIO_printf(bp, "%s%s", number,
-                       (neg[0] == '-') ? " (Negative)" : "") <= 0)
+        if (BIO_printf(bp, "\x25\x73\x25\x73", number,
+                       (neg[0] == '\x2d') ? "\x20\x28\x4e\x65\x67\x61\x74\x69\x76\x65\x29" : "") <= 0)
             return (0);
         n = BN_bn2bin(num, &buf[1]);
 
@@ -99,14 +99,14 @@ int ASN1_bn_print(BIO *bp, const char *number, const BIGNUM *num,
 
         for (i = 0; i < n; i++) {
             if ((i % 15) == 0) {
-                if (BIO_puts(bp, "\n") <= 0 || !BIO_indent(bp, off + 4, 128))
+                if (BIO_puts(bp, "\xa") <= 0 || !BIO_indent(bp, off + 4, 128))
                     return 0;
             }
-            if (BIO_printf(bp, "%02x%s", buf[i], ((i + 1) == n) ? "" : ":")
+            if (BIO_printf(bp, "\x25\x30\x32\x78\x25\x73", buf[i], ((i + 1) == n) ? "" : "\x3a")
                 <= 0)
                 return (0);
         }
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             return (0);
     }
     return (1);

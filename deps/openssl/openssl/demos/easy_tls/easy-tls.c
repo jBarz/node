@@ -19,7 +19,7 @@
  * modification, are permitted provided that each of the following
  * conditions is met:
  *
- * 1. Redistributions qualify as "freeware" or "Open Source Software" under
+ * 1. Redistributions qualify as "\x66\x72\x65\x65\x77\x61\x72\x65" or "\x4f\x70\x65\x6e\x20\x53\x6f\x75\x72\x63\x65\x20\x53\x6f\x66\x74\x77\x61\x72\x65" under
  *    one of the following terms:
  *
  *    (a) Redistributions are made at no charge beyond the reasonable cost of
@@ -42,12 +42,12 @@
  *
  * 4. All advertising materials mentioning features or use of this
  *    software must display the following acknowledgment:
- *    "This product includes software developed by Bodo Moeller."
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x64\x65\x76\x65\x6c\x6f\x70\x65\x64\x20\x62\x79\x20\x42\x6f\x64\x6f\x20\x4d\x6f\x65\x6c\x6c\x65\x72\x2e"
  *    (If available, substitute umlauted o for oe.)
  *
  * 5. Redistributions of any form whatsoever must retain the following
  *    acknowledgment:
- *    "This product includes software developed by Bodo Moeller."
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x64\x65\x76\x65\x6c\x6f\x70\x65\x64\x20\x62\x79\x20\x42\x6f\x64\x6f\x20\x4d\x6f\x65\x6c\x6c\x65\x72\x2e"
  *
  * THIS SOFTWARE IS PROVIDED BY BODO MOELLER ``AS IS'' AND ANY
  * EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -73,7 +73,7 @@
  */
 
 static char const rcsid[] =
-    "$Id: easy-tls.c,v 1.4 2002/03/05 09:07:16 bodo Exp $";
+    "\x24\x49\x64\x3a\x20\x65\x61\x73\x79\x2d\x74\x6c\x73\x2e\x63\x2c\x76\x20\x31\x2e\x34\x20\x32\x30\x30\x32\x2f\x30\x33\x2f\x30\x35\x20\x30\x39\x3a\x30\x37\x3a\x31\x36\x20\x62\x6f\x64\x6f\x20\x45\x78\x70\x20\x24";
 
 #include <assert.h>
 #include <errno.h>
@@ -106,7 +106,7 @@ static char const rcsid[] =
 #include <openssl/x509_vfy.h>
 
 #if OPENSSL_VERSION_NUMBER < 0x00904000L /* 0.9.4-dev */
-# error "This program needs OpenSSL 0.9.4 or later."
+# error "\x54\x68\x69\x73\x20\x70\x72\x6f\x67\x72\x61\x6d\x20\x6e\x65\x65\x64\x73\x20\x4f\x70\x65\x6e\x53\x53\x4c\x20\x30\x2e\x39\x2e\x34\x20\x6f\x72\x20\x6c\x61\x74\x65\x72\x2e"
 #endif
 
 #include "easy-tls.h"           /* include after <openssl/ssl.h> if both are
@@ -114,9 +114,9 @@ static char const rcsid[] =
 
 #if TLS_INFO_SIZE > PIPE_BUF
 # if PIPE_BUF < 512
-#  error "PIPE_BUF < 512"       /* non-POSIX */
+#  error "\x50\x49\x50\x45\x5f\x42\x55\x46\x20\x3c\x20\x35\x31\x32"       /* non-POSIX */
 # endif
-# error "TLS_INFO_SIZE > PIPE_BUF"
+# error "\x54\x4c\x53\x5f\x49\x4e\x46\x4f\x5f\x53\x49\x5a\x45\x20\x3e\x20\x50\x49\x50\x45\x5f\x42\x55\x46"
 #endif
 
 /*****************************************************************************/
@@ -140,8 +140,8 @@ static char const rcsid[] =
 #ifndef TLS_ERROR_BUFSIZ
 # define TLS_ERROR_BUFSIZ (10*160)
 #endif
-#if TLS_ERROR_BUFSIZ < 2        /* {'\n',0} */
-# error "TLS_ERROR_BUFSIZE is too small."
+#if TLS_ERROR_BUFSIZ < 2        /* {'\xa',0} */
+# error "\x54\x4c\x53\x5f\x45\x52\x52\x4f\x52\x5f\x42\x55\x46\x53\x49\x5a\x45\x20\x69\x73\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c\x2e"
 #endif
 
 #ifndef TLS_APP_ERRFLUSH
@@ -156,8 +156,8 @@ tls_app_errflush(int child_p, char *errbuf, size_t num, void *apparg)
 /*****************************************************************************/
 
 #ifdef DEBUG_TLS
-# define DEBUG_MSG(x) fprintf(stderr,"  %s\n",x)
-# define DEBUG_MSG2(x,y) fprintf(stderr, "  %s: %d\n",x,y)
+# define DEBUG_MSG(x) fprintf(stderr,"\x20\x20\x25\x73\xa",x)
+# define DEBUG_MSG2(x,y) fprintf(stderr, "\x20\x20\x25\x73\x3a\x20\x25\x64\xa",x,y)
 static int tls_loop_count = 0;
 static int tls_select_count = 0;
 #else
@@ -202,8 +202,8 @@ int tls_start_proxy(struct tls_start_proxy_args a, void *apparg)
     int r, getfd, getfl;
     int ret;
 
-    DEBUG_MSG2("tls_start_proxy fd", a.fd);
-    DEBUG_MSG2("tls_start_proxy client_p", a.client_p);
+    DEBUG_MSG2("\x74\x6c\x73\x5f\x73\x74\x61\x72\x74\x5f\x70\x72\x6f\x78\x79\x20\x66\x64", a.fd);
+    DEBUG_MSG2("\x74\x6c\x73\x5f\x73\x74\x61\x72\x74\x5f\x70\x72\x6f\x78\x79\x20\x63\x6c\x69\x65\x6e\x74\x5f\x70", a.client_p);
 
     if (a.fd == -1 || a.client_p == -1 || a.ctx == NULL)
         return 1;
@@ -236,14 +236,14 @@ int tls_start_proxy(struct tls_start_proxy_args a, void *apparg)
         goto err;
     }
     if (r == 0) {
-        DEBUG_MSG("fork");
+        DEBUG_MSG("\x66\x6f\x72\x6b");
         tls_child_p = 1;
         tls_child_apparg = apparg;
         close(fds[1]);
         if (infofds[0] != -1)
             close(infofds[0]);
         TLS_APP_PROCESS_INIT(a.fd, a.client_p, apparg);
-        DEBUG_MSG("TLS_APP_PROCESS_INIT");
+        DEBUG_MSG("\x54\x4c\x53\x5f\x41\x50\x50\x5f\x50\x52\x4f\x43\x45\x53\x53\x5f\x49\x4e\x49\x54");
         tls_proxy(fds[0], a.fd, infofds[1], a.ctx, a.client_p);
         exit(0);
     }
@@ -299,7 +299,7 @@ static void tls_errflush(void *apparg)
     assert(errbuf[errbuf_i] == 0);
     if (errbuf_i == sizeof errbuf - 1) {
         /* make sure we have a newline, even if string has been truncated */
-        errbuf[errbuf_i - 1] = '\n';
+        errbuf[errbuf_i - 1] = '\xa';
     }
 
     /*
@@ -329,7 +329,7 @@ static void tls_errprintf(int flush, void *apparg, const char *fmt, ...)
             errbuf_i += r;
         } else {
             errbuf_i = sizeof errbuf - 1;
-            errbuf[errbuf_i] = '\0';
+            errbuf[errbuf_i] = '\x0';
         }
         assert(errbuf_i < sizeof errbuf);
         assert(errbuf[errbuf_i] == 0);
@@ -366,7 +366,7 @@ static char *tls_openssl_errors(const char *app_prefix_1,
     assert(app_prefix_2 != NULL);
 
     if (default_text == NULL)
-        default_text = "?" "?" "?";
+        default_text = "\x3f" "\x3f" "\x3f";
 
     while ((err = ERR_get_error_line_data(&file, &line, &data, &flags)) != 0) {
         if (reasons_i < sizeof reasons) {
@@ -374,8 +374,8 @@ static char *tls_openssl_errors(const char *app_prefix_1,
             int r;
 
             n = (sizeof reasons) - reasons_i;
-            r = snprintf(reasons + reasons_i, n, "%s%s",
-                         (reasons_i > 0 ? ", " : ""),
+            r = snprintf(reasons + reasons_i, n, "\x25\x73\x25\x73",
+                         (reasons_i > 0 ? "\x2c\x20" : ""),
                          ERR_reason_error_string(err));
             if (r >= n)
                 r = n - 1;
@@ -389,7 +389,7 @@ static char *tls_openssl_errors(const char *app_prefix_1,
 
         errstring = ERR_error_string(err, NULL);
         assert(errstring != NULL);
-        tls_errprintf(0, apparg, "OpenSSL error%s%s: %s:%s:%d:%s\n",
+        tls_errprintf(0, apparg, "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x65\x72\x72\x6f\x72\x25\x73\x25\x73\x3a\x20\x25\x73\x3a\x25\x73\x3a\x25\x64\x3a\x25\x73\xa",
                       app_prefix_1, app_prefix_2, errstring, file, line,
                       (flags & ERR_TXT_STRING) ? data : "");
         printed_something = 1;
@@ -397,8 +397,8 @@ static char *tls_openssl_errors(const char *app_prefix_1,
 
     if (!printed_something) {
         assert(reasons_i == 0);
-        snprintf(reasons, sizeof reasons, "%s", default_text);
-        tls_errprintf(0, apparg, "OpenSSL error%s%s: %s\n", app_prefix_1,
+        snprintf(reasons, sizeof reasons, "\x25\x73", default_text);
+        tls_errprintf(0, apparg, "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x65\x72\x72\x6f\x72\x25\x73\x25\x73\x3a\x20\x25\x73\xa", app_prefix_1,
                       app_prefix_2, default_text);
     }
 #ifdef TLS_CUMULATE_ERRORS
@@ -420,7 +420,7 @@ static int tls_init(void *apparg)
 
     SSL_load_error_strings();
     if (!SSL_library_init() /* aka SSLeay_add_ssl_algorithms() */ ) {
-        tls_errprintf(1, apparg, "SSL_library_init failed.\n");
+        tls_errprintf(1, apparg, "\x53\x53\x4c\x5f\x6c\x69\x62\x72\x61\x72\x79\x5f\x69\x6e\x69\x74\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         return -1;
     }
     tls_init_done = 1;
@@ -501,7 +501,7 @@ int tls_rand_seed_from_file(const char *filename, size_t n, void *apparg)
         n = my_MIN_SEED_BYTES;
     if (r < n) {
         tls_errprintf(1, apparg,
-                      "rand_seed_from_file: could not read %d bytes from %s.\n",
+                      "\x72\x61\x6e\x64\x5f\x73\x65\x65\x64\x5f\x66\x72\x6f\x6d\x5f\x66\x69\x6c\x65\x3a\x20\x63\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x72\x65\x61\x64\x20\x25\x64\x20\x62\x79\x74\x65\x73\x20\x66\x72\x6f\x6d\x20\x25\x73\x2e\xa",
                       n, filename);
         return -1;
     } else {
@@ -536,17 +536,17 @@ tls_get_x509_subject_name_oneline(X509 *cert,
     X509_NAME *name;
 
     if (cert == NULL) {
-        namestring->str[0] = '\0';
+        namestring->str[0] = '\x0';
         return;
     }
 
     name = X509_get_subject_name(cert); /* does not increment any reference
                                          * counter */
 
-    assert(sizeof namestring->str >= 4); /* "?" or "...", plus 0 */
+    assert(sizeof namestring->str >= 4); /* "\x3f" or "\x2e\x2e\x2e", plus 0 */
 
     if (name == NULL) {
-        namestring->str[0] = '?';
+        namestring->str[0] = '\x3f';
         namestring->str[1] = 0;
     } else {
         size_t len;
@@ -564,9 +564,9 @@ tls_get_x509_subject_name_oneline(X509 *cert,
              */
 
             assert(namestring->str[len] == 0);
-            namestring->str[--len] = '.';
-            namestring->str[--len] = '.';
-            namestring->str[--len] = '.';
+            namestring->str[--len] = '\x2e';
+            namestring->str[--len] = '\x2e';
+            namestring->str[--len] = '\x2e';
         }
     }
 }
@@ -607,11 +607,11 @@ void tls_set_dhe1024(int i, void *apparg)
 {
     DSA *dsaparams;
     DH *dhparams;
-    const char *seed[] = { ";-)  :-(  :-)  :-(  ",
-        ";-)  :-(  :-)  :-(  ",
-        "Random String no. 12",
-        ";-)  :-(  :-)  :-(  ",
-        "hackers have even mo", /* from jargon file */
+    const char *seed[] = { "\x3b\x2d\x29\x20\x20\x3a\x2d\x28\x20\x20\x3a\x2d\x29\x20\x20\x3a\x2d\x28\x20\x20",
+        "\x3b\x2d\x29\x20\x20\x3a\x2d\x28\x20\x20\x3a\x2d\x29\x20\x20\x3a\x2d\x28\x20\x20",
+        "\x52\x61\x6e\x64\x6f\x6d\x20\x53\x74\x72\x69\x6e\x67\x20\x6e\x6f\x2e\x20\x31\x32",
+        "\x3b\x2d\x29\x20\x20\x3a\x2d\x28\x20\x20\x3a\x2d\x29\x20\x20\x3a\x2d\x28\x20\x20",
+        "\x68\x61\x63\x6b\x65\x72\x73\x20\x68\x61\x76\x65\x20\x65\x76\x65\x6e\x20\x6d\x6f", /* from jargon file */
     };
     unsigned char seedbuf[20];
 
@@ -680,11 +680,11 @@ SSL_CTX *tls_create_ctx(struct tls_create_ctx_args a, void *apparg)
 
     if ((a.certificate_file != NULL) || (a.key_file != NULL)) {
         if (a.key_file == NULL) {
-            tls_errprintf(1, apparg, "Need a key file.\n");
+            tls_errprintf(1, apparg, "\x4e\x65\x65\x64\x20\x61\x20\x6b\x65\x79\x20\x66\x69\x6c\x65\x2e\xa");
             goto err_return;
         }
         if (a.certificate_file == NULL) {
-            tls_errprintf(1, apparg, "Need a certificate chain file.\n");
+            tls_errprintf(1, apparg, "\x4e\x65\x65\x64\x20\x61\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x63\x68\x61\x69\x6e\x20\x66\x69\x6c\x65\x2e\xa");
             goto err_return;
         }
 
@@ -702,7 +702,7 @@ SSL_CTX *tls_create_ctx(struct tls_create_ctx_args a, void *apparg)
             goto err;
         if (!SSL_CTX_check_private_key(ret)) {
             tls_errprintf(1, apparg,
-                          "Private key \"%s\" does not match certificate \"%s\".\n",
+                          "\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x22\x25\x73\x22\x20\x64\x6f\x65\x73\x20\x6e\x6f\x74\x20\x6d\x61\x74\x63\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x22\x25\x73\x22\x2e\xa",
                           a.key_file, a.certificate_file);
             goto err_peek;
         }
@@ -730,7 +730,7 @@ SSL_CTX *tls_create_ctx(struct tls_create_ctx_args a, void *apparg)
             /* NULL argument means no CA-directory */
             r = SSL_CTX_load_verify_locations(ret, a.ca_file, NULL);
             if (!r) {
-                err_pref_1 = " while processing certificate file ";
+                err_pref_1 = "\x20\x77\x68\x69\x6c\x65\x20\x70\x72\x6f\x63\x65\x73\x73\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65\x20";
                 err_pref_2 = a.ca_file;
                 goto err;
             }
@@ -750,7 +750,7 @@ SSL_CTX *tls_create_ctx(struct tls_create_ctx_args a, void *apparg)
                  */
                 if (SSL_CTX_get_client_CA_list(ret) == NULL) {
                     tls_errprintf(1, apparg,
-                                  "Could not set client CA list from \"%s\".\n",
+                                  "\x43\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x73\x65\x74\x20\x63\x6c\x69\x65\x6e\x74\x20\x43\x41\x20\x6c\x69\x73\x74\x20\x66\x72\x6f\x6d\x20\x22\x25\x73\x22\x2e\xa",
                                   a.ca_file);
                     goto err_peek;
                 }
@@ -893,9 +893,9 @@ tls_sockets_select(int read_select_1, int read_select_2, int write_select_1,
     } else
         timeout_p = NULL;
 
-    DEBUG_MSG2("select no.", ++tls_select_count);
+    DEBUG_MSG2("\x73\x65\x6c\x65\x63\x74\x20\x6e\x6f\x2e", ++tls_select_count);
     select(maxfd + 1, &reads, &writes, (fd_set *) NULL, timeout_p);
-    DEBUG_MSG("cont.");
+    DEBUG_MSG("\x63\x6f\x6e\x74\x2e");
 }
 
 /*****************************************************************************/
@@ -938,9 +938,9 @@ static void write_info(SSL *ssl, int *info_fd)
         char infobuf[TLS_INFO_SIZE];
         int r;
 
-        DEBUG_MSG("write_info");
+        DEBUG_MSG("\x77\x72\x69\x74\x65\x5f\x69\x6e\x66\x6f");
         v = SSL_get_verify_result(ssl);
-        v_ok = (v == X509_V_OK) ? 'A' : 'E'; /* Auth./Error */
+        v_ok = (v == X509_V_OK) ? '\x41' : '\x45'; /* Auth./Error */
         {
             X509 *peercert;
 
@@ -949,15 +949,15 @@ static void write_info(SSL *ssl, int *info_fd)
             if (peercert != NULL)
                 X509_free(peercert);
         }
-        if (peer.str[0] == '\0')
-            v_ok = '0';         /* no cert at all */
-        else if (strchr(peer.str, '\n')) {
+        if (peer.str[0] == '\x0')
+            v_ok = '\x30';         /* no cert at all */
+        else if (strchr(peer.str, '\xa')) {
             /* should not happen, but make sure */
-            *strchr(peer.str, '\n') = '\0';
+            *strchr(peer.str, '\xa') = '\x0';
         }
-        r = snprintf(infobuf, sizeof infobuf, "%c:%s\n%s\n", v_ok,
+        r = snprintf(infobuf, sizeof infobuf, "\x25\x63\x3a\x25\x73\xa\x25\x73\xa", v_ok,
                      X509_verify_cert_error_string(v), peer.str);
-        DEBUG_MSG2("snprintf", r);
+        DEBUG_MSG2("\x73\x6e\x70\x72\x69\x6e\x74\x66", r);
         if (r == -1 || r >= sizeof infobuf)
             r = sizeof infobuf - 1;
         write(*info_fd, infobuf, r);
@@ -987,14 +987,14 @@ tls_proxy(int clear_fd, int tls_fd, int info_fd, SSL_CTX *ctx, int client_p)
     tls_rand_seed_uniquely();
 
     tls_socket_nonblocking(clear_fd);
-    DEBUG_MSG2("clear_fd", clear_fd);
+    DEBUG_MSG2("\x63\x6c\x65\x61\x72\x5f\x66\x64", clear_fd);
     tls_socket_nonblocking(tls_fd);
-    DEBUG_MSG2("tls_fd", tls_fd);
+    DEBUG_MSG2("\x74\x6c\x73\x5f\x66\x64", tls_fd);
 
     ssl = SSL_new(ctx);
     if (ssl == NULL)
         goto err;
-    DEBUG_MSG("SSL_new");
+    DEBUG_MSG("\x53\x53\x4c\x5f\x6e\x65\x77");
     if (!SSL_set_fd(ssl, tls_fd))
         goto err;
     rbio = SSL_get_rbio(ssl);
@@ -1013,7 +1013,7 @@ tls_proxy(int clear_fd, int tls_fd, int info_fd, SSL_CTX *ctx, int client_p)
     clear_to_tls.len = 0;
     clear_to_tls.offset = 0;
 
-    err_def = "I/O error";
+    err_def = "\x49\x2f\x4f\x20\x65\x72\x72\x6f\x72";
 
     /*
      * loop finishes as soon as we detect that one side closed; when all
@@ -1027,10 +1027,10 @@ tls_proxy(int clear_fd, int tls_fd, int info_fd, SSL_CTX *ctx, int client_p)
         unsigned long num_read = BIO_number_read(rbio),
             num_written = BIO_number_written(wbio);
 
-        DEBUG_MSG2("loop iteration", ++tls_loop_count);
+        DEBUG_MSG2("\x6c\x6f\x6f\x70\x20\x69\x74\x65\x72\x61\x74\x69\x6f\x6e", ++tls_loop_count);
 
         if (in_handshake) {
-            DEBUG_MSG("in_handshake");
+            DEBUG_MSG("\x69\x6e\x5f\x68\x61\x6e\x64\x73\x68\x61\x6b\x65");
             if (client_p)
                 r = tls_connect_attempt(ssl, &tls_write_select,
                                         &tls_read_select, &closed, &progress,
@@ -1089,7 +1089,7 @@ tls_proxy(int clear_fd, int tls_fd, int info_fd, SSL_CTX *ctx, int client_p)
                     goto err_return;
                 if (closed) {
                     r = SSL_shutdown(ssl);
-                    DEBUG_MSG2("SSL_shutdown", r);
+                    DEBUG_MSG2("\x53\x53\x4c\x5f\x73\x68\x75\x74\x64\x6f\x77\x6e", r);
                 }
             }
         }
@@ -1104,19 +1104,19 @@ tls_proxy(int clear_fd, int tls_fd, int info_fd, SSL_CTX *ctx, int client_p)
                     goto err;
                 if (closed) {
                     r = SSL_shutdown(ssl);
-                    DEBUG_MSG2("SSL_shutdown", r);
+                    DEBUG_MSG2("\x53\x53\x4c\x5f\x73\x68\x75\x74\x64\x6f\x77\x6e", r);
                 }
             }
         }
 
         if (!progress) {
-            DEBUG_MSG("!progress?");
+            DEBUG_MSG("\x21\x70\x72\x6f\x67\x72\x65\x73\x73\x3f");
             if (num_read != BIO_number_read(rbio)
                 || num_written != BIO_number_written(wbio))
                 progress = 1;
 
             if (!progress) {
-                DEBUG_MSG("!progress");
+                DEBUG_MSG("\x21\x70\x72\x6f\x67\x72\x65\x73\x73");
                 assert(clear_read_select || tls_read_select
                        || clear_write_select || tls_write_select);
                 tls_sockets_select(clear_read_select ? clear_fd : -1,
@@ -1173,12 +1173,12 @@ tls_connect_attempt(SSL *ssl, int *write_select, int *read_select,
 {
     int n, r;
 
-    DEBUG_MSG("tls_connect_attempt");
+    DEBUG_MSG("\x74\x6c\x73\x5f\x63\x6f\x6e\x6e\x65\x63\x74\x5f\x61\x74\x74\x65\x6d\x70\x74");
     n = SSL_connect(ssl);
-    DEBUG_MSG2("SSL_connect", n);
+    DEBUG_MSG2("\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74", n);
     r = tls_get_error(ssl, n, write_select, read_select, closed, progress);
     if (r == -1)
-        *err_pref = " during SSL_connect";
+        *err_pref = "\x20\x64\x75\x72\x69\x6e\x67\x20\x53\x53\x4c\x5f\x63\x6f\x6e\x6e\x65\x63\x74";
     return r;
 }
 
@@ -1188,12 +1188,12 @@ tls_accept_attempt(SSL *ssl, int *write_select, int *read_select, int *closed,
 {
     int n, r;
 
-    DEBUG_MSG("tls_accept_attempt");
+    DEBUG_MSG("\x74\x6c\x73\x5f\x61\x63\x63\x65\x70\x74\x5f\x61\x74\x74\x65\x6d\x70\x74");
     n = SSL_accept(ssl);
-    DEBUG_MSG2("SSL_accept", n);
+    DEBUG_MSG2("\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74", n);
     r = tls_get_error(ssl, n, write_select, read_select, closed, progress);
     if (r == -1)
-        *err_pref = " during SSL_accept";
+        *err_pref = "\x20\x64\x75\x72\x69\x6e\x67\x20\x53\x53\x4c\x5f\x61\x63\x63\x65\x70\x74";
     return r;
 }
 
@@ -1204,9 +1204,9 @@ tls_write_attempt(SSL *ssl, struct tunnelbuf *buf, int *write_select,
 {
     int n, r;
 
-    DEBUG_MSG("tls_write_attempt");
+    DEBUG_MSG("\x74\x6c\x73\x5f\x77\x72\x69\x74\x65\x5f\x61\x74\x74\x65\x6d\x70\x74");
     n = SSL_write(ssl, buf->buf + buf->offset, buf->len);
-    DEBUG_MSG2("SSL_write", n);
+    DEBUG_MSG2("\x53\x53\x4c\x5f\x77\x72\x69\x74\x65", n);
     r = tls_get_error(ssl, n, write_select, read_select, closed, progress);
     if (n > 0) {
         buf->len -= n;
@@ -1217,7 +1217,7 @@ tls_write_attempt(SSL *ssl, struct tunnelbuf *buf, int *write_select,
             buf->offset += n;
     }
     if (r == -1)
-        *err_pref = " during SSL_write";
+        *err_pref = "\x20\x64\x75\x72\x69\x6e\x67\x20\x53\x53\x4c\x5f\x77\x72\x69\x74\x65";
     return r;
 }
 
@@ -1229,18 +1229,18 @@ tls_read_attempt(SSL *ssl, struct tunnelbuf *buf, int *write_select,
     int n, r;
     size_t total;
 
-    DEBUG_MSG("tls_read_attempt");
+    DEBUG_MSG("\x74\x6c\x73\x5f\x72\x65\x61\x64\x5f\x61\x74\x74\x65\x6d\x70\x74");
     total = buf->offset + buf->len;
     assert(total < sizeof buf->buf);
     n = SSL_read(ssl, buf->buf + total, (sizeof buf->buf) - total);
-    DEBUG_MSG2("SSL_read", n);
+    DEBUG_MSG2("\x53\x53\x4c\x5f\x72\x65\x61\x64", n);
     r = tls_get_error(ssl, n, write_select, read_select, closed, progress);
     if (n > 0) {
         buf->len += n;
         assert(buf->offset + buf->len <= sizeof buf->buf);
     }
     if (r == -1)
-        *err_pref = " during SSL_read";
+        *err_pref = "\x20\x64\x75\x72\x69\x6e\x67\x20\x53\x53\x4c\x5f\x72\x65\x61\x64";
     return r;
 }
 
@@ -1270,9 +1270,9 @@ static int write_attempt(int fd, struct tunnelbuf *buf, int *select,
 {
     int n, r;
 
-    DEBUG_MSG("write_attempt");
+    DEBUG_MSG("\x77\x72\x69\x74\x65\x5f\x61\x74\x74\x65\x6d\x70\x74");
     n = write(fd, buf->buf + buf->offset, buf->len);
-    DEBUG_MSG2("write", n);
+    DEBUG_MSG2("\x77\x72\x69\x74\x65", n);
     r = get_error(n, select, closed, progress);
     if (n > 0) {
         buf->len -= n;
@@ -1283,7 +1283,7 @@ static int write_attempt(int fd, struct tunnelbuf *buf, int *select,
             buf->offset += n;
     }
     if (r == -1)
-        tls_errprintf(1, tls_child_apparg, "write error: %s\n",
+        tls_errprintf(1, tls_child_apparg, "\x77\x72\x69\x74\x65\x20\x65\x72\x72\x6f\x72\x3a\x20\x25\x73\xa",
                       strerror(errno));
     return r;
 }
@@ -1295,18 +1295,18 @@ read_attempt(int fd, struct tunnelbuf *buf, int *select, int *closed,
     int n, r;
     size_t total;
 
-    DEBUG_MSG("read_attempt");
+    DEBUG_MSG("\x72\x65\x61\x64\x5f\x61\x74\x74\x65\x6d\x70\x74");
     total = buf->offset + buf->len;
     assert(total < sizeof buf->buf);
     n = read(fd, buf->buf + total, (sizeof buf->buf) - total);
-    DEBUG_MSG2("read", n);
+    DEBUG_MSG2("\x72\x65\x61\x64", n);
     r = get_error(n, select, closed, progress);
     if (n > 0) {
         buf->len += n;
         assert(buf->offset + buf->len <= sizeof buf->buf);
     }
     if (r == -1)
-        tls_errprintf(1, tls_child_apparg, "read error: %s\n",
+        tls_errprintf(1, tls_child_apparg, "\x72\x65\x61\x64\x20\x65\x72\x72\x6f\x72\x3a\x20\x25\x73\xa",
                       strerror(errno));
     return r;
 }

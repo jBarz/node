@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -64,7 +64,7 @@
 #include <openssl/conf_api.h>
 #include <openssl/lhash.h>
 
-const char CONF_version[] = "CONF" OPENSSL_VERSION_PTEXT;
+const char CONF_version[] = "\x43\x4f\x4e\x46" OPENSSL_VERSION_PTEXT;
 
 static CONF_METHOD *default_CONF_method = NULL;
 
@@ -97,9 +97,9 @@ LHASH_OF(CONF_VALUE) *CONF_load(LHASH_OF(CONF_VALUE) *conf, const char *file,
     BIO *in = NULL;
 
 #ifdef OPENSSL_SYS_VMS
-    in = BIO_new_file(file, "r");
+    in = BIO_new_file(file, "\x72");
 #else
-    in = BIO_new_file(file, "rb");
+    in = BIO_new_file(file, "\x72\x62");
 #endif
     if (in == NULL) {
         CONFerr(CONF_F_CONF_LOAD, ERR_R_SYS_LIB);
@@ -322,7 +322,7 @@ char *NCONF_get_string(const CONF *conf, const char *group, const char *name)
         return NULL;
     }
     CONFerr(CONF_F_NCONF_GET_STRING, CONF_R_NO_VALUE);
-    ERR_add_error_data(4, "group=", group, " name=", name);
+    ERR_add_error_data(4, "\x67\x72\x6f\x75\x70\x3d", group, "\x20\x6e\x61\x6d\x65\x3d", name);
     return NULL;
 }
 

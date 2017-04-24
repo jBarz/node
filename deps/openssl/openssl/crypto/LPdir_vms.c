@@ -90,14 +90,14 @@ const char *LP_find_file(LP_DIR_CTX **ctx, const char *directory)
         }
 
         /* MUST be a VMS directory specification!  Let's estimate if it is. */
-        if (directory[filespeclen - 1] != ']'
-            && directory[filespeclen - 1] != '>'
-            && directory[filespeclen - 1] != ':') {
+        if (directory[filespeclen - 1] != '\x5d'
+            && directory[filespeclen - 1] != '\x3e'
+            && directory[filespeclen - 1] != '\x3a') {
             errno = EINVAL;
             return 0;
         }
 
-        filespeclen += 4;       /* "*.*;" */
+        filespeclen += 4;       /* "\x2a\x2e\x2a\x3b" */
 
         if (filespeclen > NAMX_MAXRSS) {
             errno = ENAMETOOLONG;
@@ -109,10 +109,10 @@ const char *LP_find_file(LP_DIR_CTX **ctx, const char *directory)
             errno = ENOMEM;
             return 0;
         }
-        memset(*ctx, '\0', sizeof(LP_DIR_CTX));
+        memset(*ctx, '\x0', sizeof(LP_DIR_CTX));
 
         strcpy((*ctx)->filespec, directory);
-        strcat((*ctx)->filespec, "*.*;");
+        strcat((*ctx)->filespec, "\x2a\x2e\x2a\x3b");
 
 /* Arrange 32-bit pointer to (copied) string storage, if needed. */
 #if __INITIAL_POINTER_SIZE == 64
@@ -158,19 +158,19 @@ const char *LP_find_file(LP_DIR_CTX **ctx, const char *directory)
     p = (*ctx)->result_dsc.dsc$a_pointer;
     r = p;
     for (; *p; p++) {
-        if (*p == '^' && p[1] != '\0') { /* Take care of ODS-5 escapes */
+        if (*p == '\x5e' && p[1] != '\x0') { /* Take care of ODS-5 escapes */
             p++;
-        } else if (*p == ':' || *p == '>' || *p == ']') {
+        } else if (*p == '\x3a' || *p == '\x3e' || *p == '\x5d') {
             l -= p + 1 - r;
             r = p + 1;
-        } else if (*p == ';') {
+        } else if (*p == '\x3b') {
             l = p - r;
             break;
         }
     }
 
     strncpy((*ctx)->result, r, l);
-    (*ctx)->result[l] = '\0';
+    (*ctx)->result[l] = '\x0';
     str$free1_dx(&(*ctx)->result_dsc);
 
     return (*ctx)->result;

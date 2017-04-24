@@ -16,7 +16,7 @@
 #include <openssl/err.h>
 #include <openssl/ssl.h>
 
-#define CERT_FILE       "server.pem"
+#define CERT_FILE       "\x73\x65\x72\x76\x65\x72\x2e\x70\x65\x6d"
 
 BIO *in = NULL;
 
@@ -38,7 +38,7 @@ char *argv[];
     int ret = 1, i;
 
     if (argc <= 1)
-        port = "*:4433";
+        port = "\x2a\x3a\x34\x34\x33\x33";
     else
         port = argv[1];
 
@@ -94,7 +94,7 @@ char *argv[];
              * next time we call any function for this BIO, it will attempt
              * to do an accept
              */
-            printf("Done\n");
+            printf("\x44\x6f\x6e\x65\xa");
             tmp = BIO_pop(in);
             BIO_free_all(tmp);
             goto again;

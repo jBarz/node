@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -75,41 +75,41 @@ int X509_CERT_AUX_print(BIO *out, X509_CERT_AUX *aux, int indent)
         return 1;
     if (aux->trust) {
         first = 1;
-        BIO_printf(out, "%*sTrusted Uses:\n%*s", indent, "", indent + 2, "");
+        BIO_printf(out, "\x25\x2a\x73\x54\x72\x75\x73\x74\x65\x64\x20\x55\x73\x65\x73\x3a\xa\x25\x2a\x73", indent, "", indent + 2, "");
         for (i = 0; i < sk_ASN1_OBJECT_num(aux->trust); i++) {
             if (!first)
-                BIO_puts(out, ", ");
+                BIO_puts(out, "\x2c\x20");
             else
                 first = 0;
             OBJ_obj2txt(oidstr, sizeof oidstr,
                         sk_ASN1_OBJECT_value(aux->trust, i), 0);
             BIO_puts(out, oidstr);
         }
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     } else
-        BIO_printf(out, "%*sNo Trusted Uses.\n", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x4e\x6f\x20\x54\x72\x75\x73\x74\x65\x64\x20\x55\x73\x65\x73\x2e\xa", indent, "");
     if (aux->reject) {
         first = 1;
-        BIO_printf(out, "%*sRejected Uses:\n%*s", indent, "", indent + 2, "");
+        BIO_printf(out, "\x25\x2a\x73\x52\x65\x6a\x65\x63\x74\x65\x64\x20\x55\x73\x65\x73\x3a\xa\x25\x2a\x73", indent, "", indent + 2, "");
         for (i = 0; i < sk_ASN1_OBJECT_num(aux->reject); i++) {
             if (!first)
-                BIO_puts(out, ", ");
+                BIO_puts(out, "\x2c\x20");
             else
                 first = 0;
             OBJ_obj2txt(oidstr, sizeof oidstr,
                         sk_ASN1_OBJECT_value(aux->reject, i), 0);
             BIO_puts(out, oidstr);
         }
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     } else
-        BIO_printf(out, "%*sNo Rejected Uses.\n", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x4e\x6f\x20\x52\x65\x6a\x65\x63\x74\x65\x64\x20\x55\x73\x65\x73\x2e\xa", indent, "");
     if (aux->alias)
-        BIO_printf(out, "%*sAlias: %s\n", indent, "", aux->alias->data);
+        BIO_printf(out, "\x25\x2a\x73\x41\x6c\x69\x61\x73\x3a\x20\x25\x73\xa", indent, "", aux->alias->data);
     if (aux->keyid) {
-        BIO_printf(out, "%*sKey Id: ", indent, "");
+        BIO_printf(out, "\x25\x2a\x73\x4b\x65\x79\x20\x49\x64\x3a\x20", indent, "");
         for (i = 0; i < aux->keyid->length; i++)
-            BIO_printf(out, "%s%02X", i ? ":" : "", aux->keyid->data[i]);
-        BIO_write(out, "\n", 1);
+            BIO_printf(out, "\x25\x73\x25\x30\x32\x58", i ? "\x3a" : "", aux->keyid->data[i]);
+        BIO_write(out, "\xa", 1);
     }
     return 1;
 }

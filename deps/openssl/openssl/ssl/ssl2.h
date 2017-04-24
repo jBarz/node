@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -104,20 +104,20 @@ extern "C" {
 # define SSL2_CK_DES_64_CFB64_WITH_MD5_1         0x02ff0800/* SSLeay */
 # define SSL2_CK_NULL                            0x02ff0810/* SSLeay */
 
-# define SSL2_TXT_DES_64_CFB64_WITH_MD5_1        "DES-CFB-M1"
-# define SSL2_TXT_NULL_WITH_MD5                  "NULL-MD5"
-# define SSL2_TXT_RC4_128_WITH_MD5               "RC4-MD5"
-# define SSL2_TXT_RC4_128_EXPORT40_WITH_MD5      "EXP-RC4-MD5"
-# define SSL2_TXT_RC2_128_CBC_WITH_MD5           "RC2-CBC-MD5"
-# define SSL2_TXT_RC2_128_CBC_EXPORT40_WITH_MD5  "EXP-RC2-CBC-MD5"
-# define SSL2_TXT_IDEA_128_CBC_WITH_MD5          "IDEA-CBC-MD5"
-# define SSL2_TXT_DES_64_CBC_WITH_MD5            "DES-CBC-MD5"
-# define SSL2_TXT_DES_64_CBC_WITH_SHA            "DES-CBC-SHA"
-# define SSL2_TXT_DES_192_EDE3_CBC_WITH_MD5      "DES-CBC3-MD5"
-# define SSL2_TXT_DES_192_EDE3_CBC_WITH_SHA      "DES-CBC3-SHA"
-# define SSL2_TXT_RC4_64_WITH_MD5                "RC4-64-MD5"
+# define SSL2_TXT_DES_64_CFB64_WITH_MD5_1        "\x44\x45\x53\x2d\x43\x46\x42\x2d\x4d\x31"
+# define SSL2_TXT_NULL_WITH_MD5                  "\x4e\x55\x4c\x4c\x2d\x4d\x44\x35"
+# define SSL2_TXT_RC4_128_WITH_MD5               "\x52\x43\x34\x2d\x4d\x44\x35"
+# define SSL2_TXT_RC4_128_EXPORT40_WITH_MD5      "\x45\x58\x50\x2d\x52\x43\x34\x2d\x4d\x44\x35"
+# define SSL2_TXT_RC2_128_CBC_WITH_MD5           "\x52\x43\x32\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define SSL2_TXT_RC2_128_CBC_EXPORT40_WITH_MD5  "\x45\x58\x50\x2d\x52\x43\x32\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define SSL2_TXT_IDEA_128_CBC_WITH_MD5          "\x49\x44\x45\x41\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define SSL2_TXT_DES_64_CBC_WITH_MD5            "\x44\x45\x53\x2d\x43\x42\x43\x2d\x4d\x44\x35"
+# define SSL2_TXT_DES_64_CBC_WITH_SHA            "\x44\x45\x53\x2d\x43\x42\x43\x2d\x53\x48\x41"
+# define SSL2_TXT_DES_192_EDE3_CBC_WITH_MD5      "\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x4d\x44\x35"
+# define SSL2_TXT_DES_192_EDE3_CBC_WITH_SHA      "\x44\x45\x53\x2d\x43\x42\x43\x33\x2d\x53\x48\x41"
+# define SSL2_TXT_RC4_64_WITH_MD5                "\x52\x43\x34\x2d\x36\x34\x2d\x4d\x44\x35"
 
-# define SSL2_TXT_NULL                           "NULL"
+# define SSL2_TXT_NULL                           "\x4e\x55\x4c\x4c"
 
 /* Flags for the SSL_CIPHER.algorithm2 field */
 # define SSL2_CF_5_BYTE_ENC                      0x01

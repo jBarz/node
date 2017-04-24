@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -263,12 +263,12 @@ static int pkey_dh_ctrl(EVP_PKEY_CTX *ctx, int type, int p1, void *p2)
 static int pkey_dh_ctrl_str(EVP_PKEY_CTX *ctx,
                             const char *type, const char *value)
 {
-    if (!strcmp(type, "dh_paramgen_prime_len")) {
+    if (!strcmp(type, "\x64\x68\x5f\x70\x61\x72\x61\x6d\x67\x65\x6e\x5f\x70\x72\x69\x6d\x65\x5f\x6c\x65\x6e")) {
         int len;
         len = atoi(value);
         return EVP_PKEY_CTX_set_dh_paramgen_prime_len(ctx, len);
     }
-    if (!strcmp(type, "dh_rfc5114")) {
+    if (!strcmp(type, "\x64\x68\x5f\x72\x66\x63\x35\x31\x31\x34")) {
         DH_PKEY_CTX *dctx = ctx->data;
         int len;
         len = atoi(value);
@@ -277,17 +277,17 @@ static int pkey_dh_ctrl_str(EVP_PKEY_CTX *ctx,
         dctx->rfc5114_param = len;
         return 1;
     }
-    if (!strcmp(type, "dh_paramgen_generator")) {
+    if (!strcmp(type, "\x64\x68\x5f\x70\x61\x72\x61\x6d\x67\x65\x6e\x5f\x67\x65\x6e\x65\x72\x61\x74\x6f\x72")) {
         int len;
         len = atoi(value);
         return EVP_PKEY_CTX_set_dh_paramgen_generator(ctx, len);
     }
-    if (!strcmp(type, "dh_paramgen_subprime_len")) {
+    if (!strcmp(type, "\x64\x68\x5f\x70\x61\x72\x61\x6d\x67\x65\x6e\x5f\x73\x75\x62\x70\x72\x69\x6d\x65\x5f\x6c\x65\x6e")) {
         int len;
         len = atoi(value);
         return EVP_PKEY_CTX_set_dh_paramgen_subprime_len(ctx, len);
     }
-    if (!strcmp(type, "dh_paramgen_type")) {
+    if (!strcmp(type, "\x64\x68\x5f\x70\x61\x72\x61\x6d\x67\x65\x6e\x5f\x74\x79\x70\x65")) {
         int typ;
         typ = atoi(value);
         return EVP_PKEY_CTX_set_dh_paramgen_type(ctx, typ);

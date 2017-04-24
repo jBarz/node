@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,17 +70,17 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_COMP,0,reason)
 
 static ERR_STRING_DATA COMP_str_functs[] = {
-    {ERR_FUNC(COMP_F_BIO_ZLIB_FLUSH), "BIO_ZLIB_FLUSH"},
-    {ERR_FUNC(COMP_F_BIO_ZLIB_NEW), "BIO_ZLIB_NEW"},
-    {ERR_FUNC(COMP_F_BIO_ZLIB_READ), "BIO_ZLIB_READ"},
-    {ERR_FUNC(COMP_F_BIO_ZLIB_WRITE), "BIO_ZLIB_WRITE"},
+    {ERR_FUNC(COMP_F_BIO_ZLIB_FLUSH), "\x42\x49\x4f\x5f\x5a\x4c\x49\x42\x5f\x46\x4c\x55\x53\x48"},
+    {ERR_FUNC(COMP_F_BIO_ZLIB_NEW), "\x42\x49\x4f\x5f\x5a\x4c\x49\x42\x5f\x4e\x45\x57"},
+    {ERR_FUNC(COMP_F_BIO_ZLIB_READ), "\x42\x49\x4f\x5f\x5a\x4c\x49\x42\x5f\x52\x45\x41\x44"},
+    {ERR_FUNC(COMP_F_BIO_ZLIB_WRITE), "\x42\x49\x4f\x5f\x5a\x4c\x49\x42\x5f\x57\x52\x49\x54\x45"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA COMP_str_reasons[] = {
-    {ERR_REASON(COMP_R_ZLIB_DEFLATE_ERROR), "zlib deflate error"},
-    {ERR_REASON(COMP_R_ZLIB_INFLATE_ERROR), "zlib inflate error"},
-    {ERR_REASON(COMP_R_ZLIB_NOT_SUPPORTED), "zlib not supported"},
+    {ERR_REASON(COMP_R_ZLIB_DEFLATE_ERROR), "\x7a\x6c\x69\x62\x20\x64\x65\x66\x6c\x61\x74\x65\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(COMP_R_ZLIB_INFLATE_ERROR), "\x7a\x6c\x69\x62\x20\x69\x6e\x66\x6c\x61\x74\x65\x20\x65\x72\x72\x6f\x72"},
+    {ERR_REASON(COMP_R_ZLIB_NOT_SUPPORTED), "\x7a\x6c\x69\x62\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64"},
     {0, NULL}
 };
 

@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
      * as expected after various SSL_CONF_cmd("Protocol", ...) calls.
      */
     for (currtest = 0; currtest < TOTAL_NUM_TESTS; currtest++) {
-        BIO_printf(err, "SSLv2 CONF Test number %d\n", currtest);
+        BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x20\x6e\x75\x6d\x62\x65\x72\x20\x25\x64\xa", currtest);
         if (currtest == TEST_SSL_CTX)
             SSL_CONF_CTX_set_ssl_ctx(confctx, ctx);
         else
@@ -119,42 +119,42 @@ int main(int argc, char *argv[])
 
         /* SSLv2 should be off by default */
         if (!checksslv2(currtest, SSLV2OFF)) {
-            BIO_printf(err, "SSLv2 CONF Test: Off by default test FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x4f\x66\x66\x20\x62\x79\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x74\x65\x73\x74\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
-        if (SSL_CONF_cmd(confctx, "Protocol", "ALL") != 2
+        if (SSL_CONF_cmd(confctx, "\x50\x72\x6f\x74\x6f\x63\x6f\x6c", "\x41\x4c\x4c") != 2
                 || !SSL_CONF_CTX_finish(confctx)) {
-            BIO_printf(err, "SSLv2 CONF Test: SSL_CONF command FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x53\x53\x4c\x5f\x43\x4f\x4e\x46\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
         /* Should still be off even after ALL Protocols on */
         if (!checksslv2(currtest, SSLV2OFF)) {
-            BIO_printf(err, "SSLv2 CONF Test: Off after config #1 FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x4f\x66\x66\x20\x61\x66\x74\x65\x72\x20\x63\x6f\x6e\x66\x69\x67\x20\x23\x31\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
-        if (SSL_CONF_cmd(confctx, "Protocol", "SSLv2") != 2
+        if (SSL_CONF_cmd(confctx, "\x50\x72\x6f\x74\x6f\x63\x6f\x6c", "\x53\x53\x4c\x76\x32") != 2
                 || !SSL_CONF_CTX_finish(confctx)) {
-            BIO_printf(err, "SSLv2 CONF Test: SSL_CONF command FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x53\x53\x4c\x5f\x43\x4f\x4e\x46\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
         /* Should still be off even if explicitly asked for */
         if (!checksslv2(currtest, SSLV2OFF)) {
-            BIO_printf(err, "SSLv2 CONF Test: Off after config #2 FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x4f\x66\x66\x20\x61\x66\x74\x65\x72\x20\x63\x6f\x6e\x66\x69\x67\x20\x23\x32\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
-        if (SSL_CONF_cmd(confctx, "Protocol", "-SSLv2") != 2
+        if (SSL_CONF_cmd(confctx, "\x50\x72\x6f\x74\x6f\x63\x6f\x6c", "\x2d\x53\x53\x4c\x76\x32") != 2
                 || !SSL_CONF_CTX_finish(confctx)) {
-            BIO_printf(err, "SSLv2 CONF Test: SSL_CONF command FAIL\n");;
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x53\x53\x4c\x5f\x43\x4f\x4e\x46\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x46\x41\x49\x4c\xa");;
             goto end;
         }
 
         if (!checksslv2(currtest, SSLV2OFF)) {
-            BIO_printf(err, "SSLv2 CONF Test: Off after config #3 FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x4f\x66\x66\x20\x61\x66\x74\x65\x72\x20\x63\x6f\x6e\x66\x69\x67\x20\x23\x33\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
@@ -164,43 +164,43 @@ int main(int argc, char *argv[])
             SSL_clear_options(ssl, SSL_OP_NO_SSLv2);
 
         if (!checksslv2(currtest, SSLV2ON)) {
-            BIO_printf(err, "SSLv2 CONF Test: On after clear FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x4f\x6e\x20\x61\x66\x74\x65\x72\x20\x63\x6c\x65\x61\x72\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
-        if (SSL_CONF_cmd(confctx, "Protocol", "ALL") != 2
+        if (SSL_CONF_cmd(confctx, "\x50\x72\x6f\x74\x6f\x63\x6f\x6c", "\x41\x4c\x4c") != 2
                 || !SSL_CONF_CTX_finish(confctx)) {
-            BIO_printf(err, "SSLv2 CONF Test: SSL_CONF command FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x53\x53\x4c\x5f\x43\x4f\x4e\x46\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
         /* Option has been cleared and config says have SSLv2 so should be on */
         if (!checksslv2(currtest, SSLV2ON)) {
-            BIO_printf(err, "SSLv2 CONF Test: On after config #1 FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x4f\x6e\x20\x61\x66\x74\x65\x72\x20\x63\x6f\x6e\x66\x69\x67\x20\x23\x31\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
-        if (SSL_CONF_cmd(confctx, "Protocol", "SSLv2") != 2
+        if (SSL_CONF_cmd(confctx, "\x50\x72\x6f\x74\x6f\x63\x6f\x6c", "\x53\x53\x4c\x76\x32") != 2
                 || !SSL_CONF_CTX_finish(confctx)) {
-            BIO_printf(err, "SSLv2 CONF Test: SSL_CONF command FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x53\x53\x4c\x5f\x43\x4f\x4e\x46\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
         /* Option has been cleared and config says have SSLv2 so should be on */
         if (!checksslv2(currtest, SSLV2ON)) {
-            BIO_printf(err, "SSLv2 CONF Test: On after config #2 FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x4f\x6e\x20\x61\x66\x74\x65\x72\x20\x63\x6f\x6e\x66\x69\x67\x20\x23\x32\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
-        if (SSL_CONF_cmd(confctx, "Protocol", "-SSLv2") != 2
+        if (SSL_CONF_cmd(confctx, "\x50\x72\x6f\x74\x6f\x63\x6f\x6c", "\x2d\x53\x53\x4c\x76\x32") != 2
                 || !SSL_CONF_CTX_finish(confctx)) {
-            BIO_printf(err, "SSLv2 CONF Test: SSL_CONF command FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x53\x53\x4c\x5f\x43\x4f\x4e\x46\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
         /* Option has been cleared but config says no SSLv2 so should be off */
         if (!checksslv2(currtest, SSLV2OFF)) {
-            BIO_printf(err, "SSLv2 CONF Test: Off after config #4 FAIL\n");
+            BIO_printf(err, "\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x54\x65\x73\x74\x3a\x20\x4f\x66\x66\x20\x61\x66\x74\x65\x72\x20\x63\x6f\x6e\x66\x69\x67\x20\x23\x34\x20\x46\x41\x49\x4c\xa");
             goto end;
         }
 
@@ -214,10 +214,10 @@ int main(int argc, char *argv[])
     SSL_CONF_CTX_free(confctx);
 
     if (!testresult) {
-        printf("SSLv2 CONF test: FAILED (Test %d)\n", currtest);
+        printf("\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x74\x65\x73\x74\x3a\x20\x46\x41\x49\x4c\x45\x44\x20\x28\x54\x65\x73\x74\x20\x25\x64\x29\xa", currtest);
         ERR_print_errors(err);
     } else {
-        printf("SSLv2 CONF test: PASSED\n");
+        printf("\x53\x53\x4c\x76\x32\x20\x43\x4f\x4e\x46\x20\x74\x65\x73\x74\x3a\x20\x50\x41\x53\x53\x45\x44\xa");
     }
 
     ERR_free_strings();

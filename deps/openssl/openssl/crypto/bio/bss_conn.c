@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -110,7 +110,7 @@ void BIO_CONNECT_free(BIO_CONNECT *a);
 
 static BIO_METHOD methods_connectp = {
     BIO_TYPE_CONNECT,
-    "socket connect",
+    "\x73\x6f\x63\x6b\x65\x74\x20\x63\x6f\x6e\x6e\x65\x63\x74",
     conn_write,
     conn_read,
     conn_puts,
@@ -139,19 +139,19 @@ static int conn_state(BIO *b, BIO_CONNECT *c)
                 BIOerr(BIO_F_CONN_STATE, BIO_R_NO_HOSTNAME_SPECIFIED);
                 goto exit_loop;
             }
-            for (; *p != '\0'; p++) {
-                if ((*p == ':') || (*p == '/'))
+            for (; *p != '\x0'; p++) {
+                if ((*p == '\x3a') || (*p == '\x2f'))
                     break;
             }
 
             i = *p;
-            if ((i == ':') || (i == '/')) {
+            if ((i == '\x3a') || (i == '\x2f')) {
 
-                *(p++) = '\0';
-                if (i == ':') {
+                *(p++) = '\x0';
+                if (i == '\x3a') {
                     for (q = p; *q; q++)
-                        if (*q == '/') {
-                            *q = '\0';
+                        if (*q == '\x2f') {
+                            *q = '\x0';
                             break;
                         }
                     if (c->param_port != NULL)
@@ -162,7 +162,7 @@ static int conn_state(BIO *b, BIO_CONNECT *c)
 
             if (c->param_port == NULL) {
                 BIOerr(BIO_F_CONN_STATE, BIO_R_NO_PORT_SPECIFIED);
-                ERR_add_error_data(2, "host=", c->param_hostname);
+                ERR_add_error_data(2, "\x68\x6f\x73\x74\x3d", c->param_hostname);
                 goto exit_loop;
             }
             c->state = BIO_CONN_S_GET_IP;
@@ -198,8 +198,8 @@ static int conn_state(BIO *b, BIO_CONNECT *c)
             ret = socket(AF_INET, SOCK_STREAM, SOCKET_PROTOCOL);
             if (ret == INVALID_SOCKET) {
                 SYSerr(SYS_F_SOCKET, get_last_socket_error());
-                ERR_add_error_data(4, "host=", c->param_hostname,
-                                   ":", c->param_port);
+                ERR_add_error_data(4, "\x68\x6f\x73\x74\x3d", c->param_hostname,
+                                   "\x3a", c->param_port);
                 BIOerr(BIO_F_CONN_STATE, BIO_R_UNABLE_TO_CREATE_SOCKET);
                 goto exit_loop;
             }
@@ -211,8 +211,8 @@ static int conn_state(BIO *b, BIO_CONNECT *c)
             if (c->nbio) {
                 if (!BIO_socket_nbio(b->num, 1)) {
                     BIOerr(BIO_F_CONN_STATE, BIO_R_ERROR_SETTING_NBIO);
-                    ERR_add_error_data(4, "host=",
-                                       c->param_hostname, ":", c->param_port);
+                    ERR_add_error_data(4, "\x68\x6f\x73\x74\x3d",
+                                       c->param_hostname, "\x3a", c->param_port);
                     goto exit_loop;
                 }
             }
@@ -224,8 +224,8 @@ static int conn_state(BIO *b, BIO_CONNECT *c)
                            sizeof(i));
             if (i < 0) {
                 SYSerr(SYS_F_SOCKET, get_last_socket_error());
-                ERR_add_error_data(4, "host=", c->param_hostname,
-                                   ":", c->param_port);
+                ERR_add_error_data(4, "\x68\x6f\x73\x74\x3d", c->param_hostname,
+                                   "\x3a", c->param_port);
                 BIOerr(BIO_F_CONN_STATE, BIO_R_KEEPALIVE);
                 goto exit_loop;
             }
@@ -244,8 +244,8 @@ static int conn_state(BIO *b, BIO_CONNECT *c)
                     b->retry_reason = BIO_RR_CONNECT;
                 } else {
                     SYSerr(SYS_F_CONNECT, get_last_socket_error());
-                    ERR_add_error_data(4, "host=",
-                                       c->param_hostname, ":", c->param_port);
+                    ERR_add_error_data(4, "\x68\x6f\x73\x74\x3d",
+                                       c->param_hostname, "\x3a", c->param_port);
                     BIOerr(BIO_F_CONN_STATE, BIO_R_CONNECT_ERROR);
                 }
                 goto exit_loop;
@@ -258,8 +258,8 @@ static int conn_state(BIO *b, BIO_CONNECT *c)
             if (i) {
                 BIO_clear_retry_flags(b);
                 SYSerr(SYS_F_CONNECT, i);
-                ERR_add_error_data(4, "host=",
-                                   c->param_hostname, ":", c->param_port);
+                ERR_add_error_data(4, "\x68\x6f\x73\x74\x3d",
+                                   c->param_hostname, "\x3a", c->param_port);
                 BIOerr(BIO_F_CONN_STATE, BIO_R_NBIO_CONNECT_ERROR);
                 ret = 0;
                 goto exit_loop;
@@ -462,7 +462,7 @@ static long conn_ctrl(BIO *b, int cmd, long num, void *ptr)
             }
         } else {
             if (pptr != NULL)
-                *pptr = "not initialized";
+                *pptr = "\x6e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64";
             ret = 0;
         }
         break;
@@ -481,7 +481,7 @@ static long conn_ctrl(BIO *b, int cmd, long num, void *ptr)
                 char buf[16];
                 unsigned char *p = ptr;
 
-                BIO_snprintf(buf, sizeof buf, "%d.%d.%d.%d",
+                BIO_snprintf(buf, sizeof buf, "\x25\x64\x2e\x25\x64\x2e\x25\x64\x2e\x25\x64",
                              p[0], p[1], p[2], p[3]);
                 if (data->param_hostname != NULL)
                     OPENSSL_free(data->param_hostname);
@@ -490,7 +490,7 @@ static long conn_ctrl(BIO *b, int cmd, long num, void *ptr)
             } else if (num == 3) {
                 char buf[DECIMAL_SIZE(int) + 1];
 
-                BIO_snprintf(buf, sizeof buf, "%d", *(int *)ptr);
+                BIO_snprintf(buf, sizeof buf, "\x25\x64", *(int *)ptr);
                 if (data->param_port != NULL)
                     OPENSSL_free(data->param_port);
                 data->param_port = BUF_strdup(buf);

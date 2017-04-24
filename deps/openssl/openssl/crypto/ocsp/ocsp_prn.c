@@ -71,17 +71,17 @@
 
 static int ocsp_certid_print(BIO *bp, OCSP_CERTID *a, int indent)
 {
-    BIO_printf(bp, "%*sCertificate ID:\n", indent, "");
+    BIO_printf(bp, "\x25\x2a\x73\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x49\x44\x3a\xa", indent, "");
     indent += 2;
-    BIO_printf(bp, "%*sHash Algorithm: ", indent, "");
+    BIO_printf(bp, "\x25\x2a\x73\x48\x61\x73\x68\x20\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\x3a\x20", indent, "");
     i2a_ASN1_OBJECT(bp, a->hashAlgorithm->algorithm);
-    BIO_printf(bp, "\n%*sIssuer Name Hash: ", indent, "");
+    BIO_printf(bp, "\xa\x25\x2a\x73\x49\x73\x73\x75\x65\x72\x20\x4e\x61\x6d\x65\x20\x48\x61\x73\x68\x3a\x20", indent, "");
     i2a_ASN1_STRING(bp, a->issuerNameHash, V_ASN1_OCTET_STRING);
-    BIO_printf(bp, "\n%*sIssuer Key Hash: ", indent, "");
+    BIO_printf(bp, "\xa\x25\x2a\x73\x49\x73\x73\x75\x65\x72\x20\x4b\x65\x79\x20\x48\x61\x73\x68\x3a\x20", indent, "");
     i2a_ASN1_STRING(bp, a->issuerKeyHash, V_ASN1_OCTET_STRING);
-    BIO_printf(bp, "\n%*sSerial Number: ", indent, "");
+    BIO_printf(bp, "\xa\x25\x2a\x73\x53\x65\x72\x69\x61\x6c\x20\x4e\x75\x6d\x62\x65\x72\x3a\x20", indent, "");
     i2a_ASN1_INTEGER(bp, a->serialNumber);
-    BIO_printf(bp, "\n");
+    BIO_printf(bp, "\xa");
     return 1;
 }
 
@@ -96,18 +96,18 @@ static const char *table2string(long s, const OCSP_TBLSTR *ts, int len)
     for (p = ts; p < ts + len; p++)
         if (p->t == s)
             return p->m;
-    return "(UNKNOWN)";
+    return "\x28\x55\x4e\x4b\x4e\x4f\x57\x4e\x29";
 }
 
 const char *OCSP_response_status_str(long s)
 {
     static const OCSP_TBLSTR rstat_tbl[] = {
-        {OCSP_RESPONSE_STATUS_SUCCESSFUL, "successful"},
-        {OCSP_RESPONSE_STATUS_MALFORMEDREQUEST, "malformedrequest"},
-        {OCSP_RESPONSE_STATUS_INTERNALERROR, "internalerror"},
-        {OCSP_RESPONSE_STATUS_TRYLATER, "trylater"},
-        {OCSP_RESPONSE_STATUS_SIGREQUIRED, "sigrequired"},
-        {OCSP_RESPONSE_STATUS_UNAUTHORIZED, "unauthorized"}
+        {OCSP_RESPONSE_STATUS_SUCCESSFUL, "\x73\x75\x63\x63\x65\x73\x73\x66\x75\x6c"},
+        {OCSP_RESPONSE_STATUS_MALFORMEDREQUEST, "\x6d\x61\x6c\x66\x6f\x72\x6d\x65\x64\x72\x65\x71\x75\x65\x73\x74"},
+        {OCSP_RESPONSE_STATUS_INTERNALERROR, "\x69\x6e\x74\x65\x72\x6e\x61\x6c\x65\x72\x72\x6f\x72"},
+        {OCSP_RESPONSE_STATUS_TRYLATER, "\x74\x72\x79\x6c\x61\x74\x65\x72"},
+        {OCSP_RESPONSE_STATUS_SIGREQUIRED, "\x73\x69\x67\x72\x65\x71\x75\x69\x72\x65\x64"},
+        {OCSP_RESPONSE_STATUS_UNAUTHORIZED, "\x75\x6e\x61\x75\x74\x68\x6f\x72\x69\x7a\x65\x64"}
     };
     return table2string(s, rstat_tbl, 6);
 }
@@ -115,9 +115,9 @@ const char *OCSP_response_status_str(long s)
 const char *OCSP_cert_status_str(long s)
 {
     static const OCSP_TBLSTR cstat_tbl[] = {
-        {V_OCSP_CERTSTATUS_GOOD, "good"},
-        {V_OCSP_CERTSTATUS_REVOKED, "revoked"},
-        {V_OCSP_CERTSTATUS_UNKNOWN, "unknown"}
+        {V_OCSP_CERTSTATUS_GOOD, "\x67\x6f\x6f\x64"},
+        {V_OCSP_CERTSTATUS_REVOKED, "\x72\x65\x76\x6f\x6b\x65\x64"},
+        {V_OCSP_CERTSTATUS_UNKNOWN, "\x75\x6e\x6b\x6e\x6f\x77\x6e"}
     };
     return table2string(s, cstat_tbl, 3);
 }
@@ -125,14 +125,14 @@ const char *OCSP_cert_status_str(long s)
 const char *OCSP_crl_reason_str(long s)
 {
     static const OCSP_TBLSTR reason_tbl[] = {
-        {OCSP_REVOKED_STATUS_UNSPECIFIED, "unspecified"},
-        {OCSP_REVOKED_STATUS_KEYCOMPROMISE, "keyCompromise"},
-        {OCSP_REVOKED_STATUS_CACOMPROMISE, "cACompromise"},
-        {OCSP_REVOKED_STATUS_AFFILIATIONCHANGED, "affiliationChanged"},
-        {OCSP_REVOKED_STATUS_SUPERSEDED, "superseded"},
-        {OCSP_REVOKED_STATUS_CESSATIONOFOPERATION, "cessationOfOperation"},
-        {OCSP_REVOKED_STATUS_CERTIFICATEHOLD, "certificateHold"},
-        {OCSP_REVOKED_STATUS_REMOVEFROMCRL, "removeFromCRL"}
+        {OCSP_REVOKED_STATUS_UNSPECIFIED, "\x75\x6e\x73\x70\x65\x63\x69\x66\x69\x65\x64"},
+        {OCSP_REVOKED_STATUS_KEYCOMPROMISE, "\x6b\x65\x79\x43\x6f\x6d\x70\x72\x6f\x6d\x69\x73\x65"},
+        {OCSP_REVOKED_STATUS_CACOMPROMISE, "\x63\x41\x43\x6f\x6d\x70\x72\x6f\x6d\x69\x73\x65"},
+        {OCSP_REVOKED_STATUS_AFFILIATIONCHANGED, "\x61\x66\x66\x69\x6c\x69\x61\x74\x69\x6f\x6e\x43\x68\x61\x6e\x67\x65\x64"},
+        {OCSP_REVOKED_STATUS_SUPERSEDED, "\x73\x75\x70\x65\x72\x73\x65\x64\x65\x64"},
+        {OCSP_REVOKED_STATUS_CESSATIONOFOPERATION, "\x63\x65\x73\x73\x61\x74\x69\x6f\x6e\x4f\x66\x4f\x70\x65\x72\x61\x74\x69\x6f\x6e"},
+        {OCSP_REVOKED_STATUS_CERTIFICATEHOLD, "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x48\x6f\x6c\x64"},
+        {OCSP_REVOKED_STATUS_REMOVEFROMCRL, "\x72\x65\x6d\x6f\x76\x65\x46\x72\x6f\x6d\x43\x52\x4c"}
     };
     return table2string(s, reason_tbl, 8);
 }
@@ -146,28 +146,28 @@ int OCSP_REQUEST_print(BIO *bp, OCSP_REQUEST *o, unsigned long flags)
     OCSP_REQINFO *inf = o->tbsRequest;
     OCSP_SIGNATURE *sig = o->optionalSignature;
 
-    if (BIO_write(bp, "OCSP Request Data:\n", 19) <= 0)
+    if (BIO_write(bp, "\x4f\x43\x53\x50\x20\x52\x65\x71\x75\x65\x73\x74\x20\x44\x61\x74\x61\x3a\xa", 19) <= 0)
         goto err;
     l = ASN1_INTEGER_get(inf->version);
-    if (BIO_printf(bp, "    Version: %lu (0x%lx)", l + 1, l) <= 0)
+    if (BIO_printf(bp, "\x20\x20\x20\x20\x56\x65\x72\x73\x69\x6f\x6e\x3a\x20\x25\x6c\x75\x20\x28\x30\x78\x25\x6c\x78\x29", l + 1, l) <= 0)
         goto err;
     if (inf->requestorName != NULL) {
-        if (BIO_write(bp, "\n    Requestor Name: ", 21) <= 0)
+        if (BIO_write(bp, "\xa\x20\x20\x20\x20\x52\x65\x71\x75\x65\x73\x74\x6f\x72\x20\x4e\x61\x6d\x65\x3a\x20", 21) <= 0)
             goto err;
         GENERAL_NAME_print(bp, inf->requestorName);
     }
-    if (BIO_write(bp, "\n    Requestor List:\n", 21) <= 0)
+    if (BIO_write(bp, "\xa\x20\x20\x20\x20\x52\x65\x71\x75\x65\x73\x74\x6f\x72\x20\x4c\x69\x73\x74\x3a\xa", 21) <= 0)
         goto err;
     for (i = 0; i < sk_OCSP_ONEREQ_num(inf->requestList); i++) {
         one = sk_OCSP_ONEREQ_value(inf->requestList, i);
         cid = one->reqCert;
         ocsp_certid_print(bp, cid, 8);
         if (!X509V3_extensions_print(bp,
-                                     "Request Single Extensions",
+                                     "\x52\x65\x71\x75\x65\x73\x74\x20\x53\x69\x6e\x67\x6c\x65\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73",
                                      one->singleRequestExtensions, flags, 8))
             goto err;
     }
-    if (!X509V3_extensions_print(bp, "Request Extensions",
+    if (!X509V3_extensions_print(bp, "\x52\x65\x71\x75\x65\x73\x74\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73",
                                  inf->requestExtensions, flags, 4))
         goto err;
     if (sig) {
@@ -195,20 +195,20 @@ int OCSP_RESPONSE_print(BIO *bp, OCSP_RESPONSE *o, unsigned long flags)
     OCSP_SINGLERESP *single = NULL;
     OCSP_RESPBYTES *rb = o->responseBytes;
 
-    if (BIO_puts(bp, "OCSP Response Data:\n") <= 0)
+    if (BIO_puts(bp, "\x4f\x43\x53\x50\x20\x52\x65\x73\x70\x6f\x6e\x73\x65\x20\x44\x61\x74\x61\x3a\xa") <= 0)
         goto err;
     l = ASN1_ENUMERATED_get(o->responseStatus);
-    if (BIO_printf(bp, "    OCSP Response Status: %s (0x%lx)\n",
+    if (BIO_printf(bp, "\x20\x20\x20\x20\x4f\x43\x53\x50\x20\x52\x65\x73\x70\x6f\x6e\x73\x65\x20\x53\x74\x61\x74\x75\x73\x3a\x20\x25\x73\x20\x28\x30\x78\x25\x6c\x78\x29\xa",
                    OCSP_response_status_str(l), l) <= 0)
         goto err;
     if (rb == NULL)
         return 1;
-    if (BIO_puts(bp, "    Response Type: ") <= 0)
+    if (BIO_puts(bp, "\x20\x20\x20\x20\x52\x65\x73\x70\x6f\x6e\x73\x65\x20\x54\x79\x70\x65\x3a\x20") <= 0)
         goto err;
     if (i2a_ASN1_OBJECT(bp, rb->responseType) <= 0)
         goto err;
     if (OBJ_obj2nid(rb->responseType) != NID_id_pkix_OCSP_basic) {
-        BIO_puts(bp, " (unknown response type)\n");
+        BIO_puts(bp, "\x20\x28\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x74\x79\x70\x65\x29\xa");
         return 1;
     }
 
@@ -216,9 +216,9 @@ int OCSP_RESPONSE_print(BIO *bp, OCSP_RESPONSE *o, unsigned long flags)
         goto err;
     rd = br->tbsResponseData;
     l = ASN1_INTEGER_get(rd->version);
-    if (BIO_printf(bp, "\n    Version: %lu (0x%lx)\n", l + 1, l) <= 0)
+    if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x56\x65\x72\x73\x69\x6f\x6e\x3a\x20\x25\x6c\x75\x20\x28\x30\x78\x25\x6c\x78\x29\xa", l + 1, l) <= 0)
         goto err;
-    if (BIO_puts(bp, "    Responder Id: ") <= 0)
+    if (BIO_puts(bp, "\x20\x20\x20\x20\x52\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x49\x64\x3a\x20") <= 0)
         goto err;
 
     rid = rd->responderId;
@@ -231,11 +231,11 @@ int OCSP_RESPONSE_print(BIO *bp, OCSP_RESPONSE *o, unsigned long flags)
         break;
     }
 
-    if (BIO_printf(bp, "\n    Produced At: ") <= 0)
+    if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x50\x72\x6f\x64\x75\x63\x65\x64\x20\x41\x74\x3a\x20") <= 0)
         goto err;
     if (!ASN1_GENERALIZEDTIME_print(bp, rd->producedAt))
         goto err;
-    if (BIO_printf(bp, "\n    Responses:\n") <= 0)
+    if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x52\x65\x73\x70\x6f\x6e\x73\x65\x73\x3a\xa") <= 0)
         goto err;
     for (i = 0; i < sk_OCSP_SINGLERESP_num(rd->responses); i++) {
         if (!sk_OCSP_SINGLERESP_value(rd->responses, i))
@@ -245,43 +245,43 @@ int OCSP_RESPONSE_print(BIO *bp, OCSP_RESPONSE *o, unsigned long flags)
         if (ocsp_certid_print(bp, cid, 4) <= 0)
             goto err;
         cst = single->certStatus;
-        if (BIO_printf(bp, "    Cert Status: %s",
+        if (BIO_printf(bp, "\x20\x20\x20\x20\x43\x65\x72\x74\x20\x53\x74\x61\x74\x75\x73\x3a\x20\x25\x73",
                        OCSP_cert_status_str(cst->type)) <= 0)
             goto err;
         if (cst->type == V_OCSP_CERTSTATUS_REVOKED) {
             rev = cst->value.revoked;
-            if (BIO_printf(bp, "\n    Revocation Time: ") <= 0)
+            if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x52\x65\x76\x6f\x63\x61\x74\x69\x6f\x6e\x20\x54\x69\x6d\x65\x3a\x20") <= 0)
                 goto err;
             if (!ASN1_GENERALIZEDTIME_print(bp, rev->revocationTime))
                 goto err;
             if (rev->revocationReason) {
                 l = ASN1_ENUMERATED_get(rev->revocationReason);
                 if (BIO_printf(bp,
-                               "\n    Revocation Reason: %s (0x%lx)",
+                               "\xa\x20\x20\x20\x20\x52\x65\x76\x6f\x63\x61\x74\x69\x6f\x6e\x20\x52\x65\x61\x73\x6f\x6e\x3a\x20\x25\x73\x20\x28\x30\x78\x25\x6c\x78\x29",
                                OCSP_crl_reason_str(l), l) <= 0)
                     goto err;
             }
         }
-        if (BIO_printf(bp, "\n    This Update: ") <= 0)
+        if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x54\x68\x69\x73\x20\x55\x70\x64\x61\x74\x65\x3a\x20") <= 0)
             goto err;
         if (!ASN1_GENERALIZEDTIME_print(bp, single->thisUpdate))
             goto err;
         if (single->nextUpdate) {
-            if (BIO_printf(bp, "\n    Next Update: ") <= 0)
+            if (BIO_printf(bp, "\xa\x20\x20\x20\x20\x4e\x65\x78\x74\x20\x55\x70\x64\x61\x74\x65\x3a\x20") <= 0)
                 goto err;
             if (!ASN1_GENERALIZEDTIME_print(bp, single->nextUpdate))
                 goto err;
         }
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             goto err;
         if (!X509V3_extensions_print(bp,
-                                     "Response Single Extensions",
+                                     "\x52\x65\x73\x70\x6f\x6e\x73\x65\x20\x53\x69\x6e\x67\x6c\x65\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73",
                                      single->singleExtensions, flags, 8))
             goto err;
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             goto err;
     }
-    if (!X509V3_extensions_print(bp, "Response Extensions",
+    if (!X509V3_extensions_print(bp, "\x52\x65\x73\x70\x6f\x6e\x73\x65\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73",
                                  rd->responseExtensions, flags, 4))
         goto err;
     if (X509_signature_print(bp, br->signatureAlgorithm, br->signature) <= 0)

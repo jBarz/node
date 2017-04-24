@@ -24,13 +24,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -88,7 +88,7 @@ int MAIN(int argc, char **argv)
     int verify = 0, noout = 0, pubkey = 0;
     char *infile = NULL, *outfile = NULL, *prog;
     char *passargin = NULL, *passin = NULL;
-    const char *spkac = "SPKAC", *spksect = "default";
+    const char *spkac = "\x53\x50\x4b\x41\x43", *spksect = "\x64\x65\x66\x61\x75\x6c\x74";
     char *spkstr = NULL;
     char *challenge = NULL, *keyfile = NULL;
     CONF *conf = NULL;
@@ -108,47 +108,47 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-in") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-passin") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x61\x73\x73\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             passargin = *(++argv);
-        } else if (strcmp(*argv, "-key") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79") == 0) {
             if (--argc < 1)
                 goto bad;
             keyfile = *(++argv);
-        } else if (strcmp(*argv, "-challenge") == 0) {
+        } else if (strcmp(*argv, "\x2d\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             challenge = *(++argv);
-        } else if (strcmp(*argv, "-spkac") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x70\x6b\x61\x63") == 0) {
             if (--argc < 1)
                 goto bad;
             spkac = *(++argv);
-        } else if (strcmp(*argv, "-spksect") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x70\x6b\x73\x65\x63\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             spksect = *(++argv);
         }
 #ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*argv, "-engine") == 0) {
+        else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine = *(++argv);
         }
 #endif
-        else if (strcmp(*argv, "-noout") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x6f\x6f\x75\x74") == 0)
             noout = 1;
-        else if (strcmp(*argv, "-pubkey") == 0)
+        else if (strcmp(*argv, "\x2d\x70\x75\x62\x6b\x65\x79") == 0)
             pubkey = 1;
-        else if (strcmp(*argv, "-verify") == 0)
+        else if (strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79") == 0)
             verify = 1;
         else
             badops = 1;
@@ -158,37 +158,37 @@ int MAIN(int argc, char **argv)
 
     if (badops) {
  bad:
-        BIO_printf(bio_err, "%s [options]\n", prog);
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, " -in arg        input file\n");
-        BIO_printf(bio_err, " -out arg       output file\n");
+        BIO_printf(bio_err, "\x25\x73\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\xa", prog);
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   " -key arg       create SPKAC using private key\n");
+                   "\x20\x2d\x6b\x65\x79\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x63\x72\x65\x61\x74\x65\x20\x53\x50\x4b\x41\x43\x20\x75\x73\x69\x6e\x67\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\xa");
         BIO_printf(bio_err,
-                   " -passin arg    input file pass phrase source\n");
-        BIO_printf(bio_err, " -challenge arg challenge string\n");
-        BIO_printf(bio_err, " -spkac arg     alternative SPKAC name\n");
-        BIO_printf(bio_err, " -noout         don't print SPKAC\n");
-        BIO_printf(bio_err, " -pubkey        output public key\n");
-        BIO_printf(bio_err, " -verify        verify SPKAC signature\n");
+                   "\x20\x2d\x70\x61\x73\x73\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x61\x72\x67\x20\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x73\x74\x72\x69\x6e\x67\xa");
+        BIO_printf(bio_err, "\x20\x2d\x73\x70\x6b\x61\x63\x20\x61\x72\x67\x20\x20\x20\x20\x20\x61\x6c\x74\x65\x72\x6e\x61\x74\x69\x76\x65\x20\x53\x50\x4b\x41\x43\x20\x6e\x61\x6d\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6e\x6f\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x70\x72\x69\x6e\x74\x20\x53\x50\x4b\x41\x43\xa");
+        BIO_printf(bio_err, "\x20\x2d\x70\x75\x62\x6b\x65\x79\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
+        BIO_printf(bio_err, "\x20\x2d\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x20\x20\x20\x20\x76\x65\x72\x69\x66\x79\x20\x53\x50\x4b\x41\x43\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\xa");
 #ifndef OPENSSL_NO_ENGINE
         BIO_printf(bio_err,
-                   " -engine e      use engine e, possibly a hardware device.\n");
+                   "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 #endif
         goto end;
     }
 
     ERR_load_crypto_strings();
     if (!app_passwd(bio_err, passargin, NULL, &passin, NULL)) {
-        BIO_printf(bio_err, "Error getting password\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa");
         goto end;
     }
     e = setup_engine(bio_err, engine, 0);
 
     if (keyfile) {
         pkey = load_key(bio_err,
-                        strcmp(keyfile, "-") ? keyfile : NULL,
-                        FORMAT_PEM, 1, passin, e, "private key");
+                        strcmp(keyfile, "\x2d") ? keyfile : NULL,
+                        FORMAT_PEM, 1, passin, e, "\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
         if (!pkey) {
             goto end;
         }
@@ -201,7 +201,7 @@ int MAIN(int argc, char **argv)
         spkstr = NETSCAPE_SPKI_b64_encode(spki);
 
         if (outfile)
-            out = BIO_new_file(outfile, "w");
+            out = BIO_new_file(outfile, "\x77");
         else {
             out = BIO_new_fp(stdout, BIO_NOCLOSE);
 #ifdef OPENSSL_SYS_VMS
@@ -213,23 +213,23 @@ int MAIN(int argc, char **argv)
         }
 
         if (!out) {
-            BIO_printf(bio_err, "Error opening output file\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
-        BIO_printf(out, "SPKAC=%s\n", spkstr);
+        BIO_printf(out, "\x53\x50\x4b\x41\x43\x3d\x25\x73\xa", spkstr);
         OPENSSL_free(spkstr);
         ret = 0;
         goto end;
     }
 
     if (infile)
-        in = BIO_new_file(infile, "r");
+        in = BIO_new_file(infile, "\x72");
     else
         in = BIO_new_fp(stdin, BIO_NOCLOSE);
 
     if (!in) {
-        BIO_printf(bio_err, "Error opening input file\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -238,7 +238,7 @@ int MAIN(int argc, char **argv)
     i = NCONF_load_bio(conf, in, NULL);
 
     if (!i) {
-        BIO_printf(bio_err, "Error parsing config file\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -246,7 +246,7 @@ int MAIN(int argc, char **argv)
     spkstr = NCONF_get_string(conf, spksect, spkac);
 
     if (!spkstr) {
-        BIO_printf(bio_err, "Can't find SPKAC called \"%s\"\n", spkac);
+        BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x66\x69\x6e\x64\x20\x53\x50\x4b\x41\x43\x20\x63\x61\x6c\x6c\x65\x64\x20\x22\x25\x73\x22\xa", spkac);
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -254,13 +254,13 @@ int MAIN(int argc, char **argv)
     spki = NETSCAPE_SPKI_b64_decode(spkstr, -1);
 
     if (!spki) {
-        BIO_printf(bio_err, "Error loading SPKAC\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x53\x50\x4b\x41\x43\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
 
     if (outfile)
-        out = BIO_new_file(outfile, "w");
+        out = BIO_new_file(outfile, "\x77");
     else {
         out = BIO_new_fp(stdout, BIO_NOCLOSE);
 #ifdef OPENSSL_SYS_VMS
@@ -272,7 +272,7 @@ int MAIN(int argc, char **argv)
     }
 
     if (!out) {
-        BIO_printf(bio_err, "Error opening output file\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -283,9 +283,9 @@ int MAIN(int argc, char **argv)
     if (verify) {
         i = NETSCAPE_SPKI_verify(spki, pkey);
         if (i > 0)
-            BIO_printf(bio_err, "Signature OK\n");
+            BIO_printf(bio_err, "\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x4f\x4b\xa");
         else {
-            BIO_printf(bio_err, "Signature Failure\n");
+            BIO_printf(bio_err, "\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x46\x61\x69\x6c\x75\x72\x65\xa");
             ERR_print_errors(bio_err);
             goto end;
         }

@@ -104,7 +104,7 @@ void OPENSSL_cpuid_setup(void)
     sigdelset(&all_masked, SIGBUS);
     sigdelset(&all_masked, SIGSEGV);
 
-    if ((e = getenv("OPENSSL_ppccap"))) {
+    if ((e = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x70\x70\x63\x63\x61\x70"))) {
         OPENSSL_ppccap_P = strtoul(e, NULL, 0);
         return;
     }
@@ -133,7 +133,7 @@ void OPENSSL_cpuid_setup(void)
     if (sizeof(size_t) == 4) {
 #ifdef __linux
         struct utsname uts;
-        if (uname(&uts) == 0 && strcmp(uts.machine, "ppc64") == 0)
+        if (uname(&uts) == 0 && strcmp(uts.machine, "\x70\x70\x63\x36\x34") == 0)
 #endif
             if (sigsetjmp(ill_jmp, 1) == 0) {
                 OPENSSL_ppc64_probe();

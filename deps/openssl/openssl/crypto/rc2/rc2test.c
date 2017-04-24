@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -70,7 +70,7 @@
 #ifdef OPENSSL_NO_RC2
 int main(int argc, char *argv[])
 {
-    printf("No RC2 support\n");
+    printf("\x4e\x6f\x20\x52\x43\x32\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -113,7 +113,7 @@ unsigned char c[8] = { 0x11, 0xFB, 0xED, 0x2B, 0x01, 0x98, 0x6D, 0xE5 };
 
 unsigned char out[80];
 
-char *text = "Hello to all people out there";
+char *text = "\x48\x65\x6c\x6c\x6f\x20\x74\x6f\x20\x61\x6c\x6c\x20\x70\x65\x6f\x70\x6c\x65\x20\x6f\x75\x74\x20\x74\x68\x65\x72\x65";
 
 static unsigned char cfb_key[16] = {
     0xe1, 0xf0, 0xc3, 0xd2, 0xa5, 0xb4, 0x87, 0x96,
@@ -156,35 +156,35 @@ int main(int argc, char *argv[])
 
         RC2_ecb_encrypt(&(RC2plain[n][0]), buf, &key, RC2_ENCRYPT);
         if (memcmp(&(RC2cipher[n][0]), buf, 8) != 0) {
-            printf("ecb rc2 error encrypting\n");
-            printf("got     :");
+            printf("\x65\x63\x62\x20\x72\x63\x32\x20\x65\x72\x72\x6f\x72\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6e\x67\xa");
+            printf("\x67\x6f\x74\x20\x20\x20\x20\x20\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", buf[i]);
-            printf("\n");
-            printf("expected:");
+                printf("\x25\x30\x32\x58\x20", buf[i]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x65\x64\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", RC2cipher[n][i]);
+                printf("\x25\x30\x32\x58\x20", RC2cipher[n][i]);
             err = 20;
-            printf("\n");
+            printf("\xa");
         }
 
         RC2_ecb_encrypt(buf, buf2, &key, RC2_DECRYPT);
         if (memcmp(&(RC2plain[n][0]), buf2, 8) != 0) {
-            printf("ecb RC2 error decrypting\n");
-            printf("got     :");
+            printf("\x65\x63\x62\x20\x52\x43\x32\x20\x65\x72\x72\x6f\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6e\x67\xa");
+            printf("\x67\x6f\x74\x20\x20\x20\x20\x20\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", buf[i]);
-            printf("\n");
-            printf("expected:");
+                printf("\x25\x30\x32\x58\x20", buf[i]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x65\x64\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", RC2plain[n][i]);
-            printf("\n");
+                printf("\x25\x30\x32\x58\x20", RC2plain[n][i]);
+            printf("\xa");
             err = 3;
         }
     }
 
     if (err == 0)
-        printf("ecb RC2 ok\n");
+        printf("\x65\x63\x62\x20\x52\x43\x32\x20\x6f\x6b\xa");
 # ifdef undef
     memcpy(iv, k, 8);
     idea_cbc_encrypt((unsigned char *)text, out, strlen(text) + 1, &key, iv,
@@ -194,22 +194,22 @@ int main(int argc, char *argv[])
     idea_cbc_encrypt(&(out[8]), &(out[8]), strlen(text) + 1 - 8, &dkey, iv,
                      0);
     if (memcmp(text, out, strlen(text) + 1) != 0) {
-        printf("cbc idea bad\n");
+        printf("\x63\x62\x63\x20\x69\x64\x65\x61\x20\x62\x61\x64\xa");
         err = 4;
     } else
-        printf("cbc idea ok\n");
+        printf("\x63\x62\x63\x20\x69\x64\x65\x61\x20\x6f\x6b\xa");
 
-    printf("cfb64 idea ");
+    printf("\x63\x66\x62\x36\x34\x20\x69\x64\x65\x61\x20");
     if (cfb64_test(cfb_cipher64)) {
-        printf("bad\n");
+        printf("\x62\x61\x64\xa");
         err = 5;
     } else
-        printf("ok\n");
+        printf("\x6f\x6b\xa");
 # endif
 
 # ifdef OPENSSL_SYS_NETWARE
     if (err)
-        printf("ERROR: %d\n", err);
+        printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", err);
 # endif
     EXIT(err);
     return (err);
@@ -232,9 +232,9 @@ static int cfb64_test(unsigned char *cfb_cipher)
                        cfb_tmp, &n, IDEA_ENCRYPT);
     if (memcmp(cfb_cipher, cfb_buf1, CFB_TEST_SIZE) != 0) {
         err = 1;
-        printf("idea_cfb64_encrypt encrypt error\n");
+        printf("\x69\x64\x65\x61\x5f\x63\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < CFB_TEST_SIZE; i += 8)
-            printf("%s\n", pt(&(cfb_buf1[i])));
+            printf("\x25\x73\xa", pt(&(cfb_buf1[i])));
     }
     memcpy(cfb_tmp, cfb_iv, 8);
     n = 0;
@@ -245,9 +245,9 @@ static int cfb64_test(unsigned char *cfb_cipher)
                        cfb_tmp, &n, IDEA_DECRYPT);
     if (memcmp(plain, cfb_buf2, CFB_TEST_SIZE) != 0) {
         err = 1;
-        printf("idea_cfb_encrypt decrypt error\n");
+        printf("\x69\x64\x65\x61\x5f\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < 24; i += 8)
-            printf("%s\n", pt(&(cfb_buf2[i])));
+            printf("\x25\x73\xa", pt(&(cfb_buf2[i])));
     }
     return (err);
 }
@@ -258,7 +258,7 @@ static char *pt(unsigned char *p)
     static int bnum = 0;
     char *ret;
     int i;
-    static char *f = "0123456789ABCDEF";
+    static char *f = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
 
     ret = &(bufs[bnum++][0]);
     bnum %= 10;
@@ -266,7 +266,7 @@ static char *pt(unsigned char *p)
         ret[i * 2] = f[(p[i] >> 4) & 0xf];
         ret[i * 2 + 1] = f[p[i] & 0xf];
     }
-    ret[16] = '\0';
+    ret[16] = '\x0';
     return (ret);
 }
 

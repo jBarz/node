@@ -15,9 +15,9 @@
 #include <openssl/obj_mac.h>
 #include "e_gost_err.h"
 #include "gost_lcl.h"
-static const char *engine_gost_id = "gost";
+static const char *engine_gost_id = "\x67\x6f\x73\x74";
 static const char *engine_gost_name =
-    "Reference implementation of GOST engine";
+    "\x52\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x61\x74\x69\x6f\x6e\x20\x6f\x66\x20\x47\x4f\x53\x54\x20\x65\x6e\x67\x69\x6e\x65";
 
 /* Symmetric cipher and digest function registrar */
 
@@ -77,41 +77,41 @@ static int bind_gost(ENGINE *e, const char *id)
     if (id && strcmp(id, engine_gost_id))
         return 0;
     if (ameth_GostR3410_94) {
-        printf("GOST engine already loaded\n");
+        printf("\x47\x4f\x53\x54\x20\x65\x6e\x67\x69\x6e\x65\x20\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x61\x64\x65\x64\xa");
         goto end;
     }
 
     if (!ENGINE_set_id(e, engine_gost_id)) {
-        printf("ENGINE_set_id failed\n");
+        printf("\x45\x4e\x47\x49\x4e\x45\x5f\x73\x65\x74\x5f\x69\x64\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end;
     }
     if (!ENGINE_set_name(e, engine_gost_name)) {
-        printf("ENGINE_set_name failed\n");
+        printf("\x45\x4e\x47\x49\x4e\x45\x5f\x73\x65\x74\x5f\x6e\x61\x6d\x65\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end;
     }
     if (!ENGINE_set_digests(e, gost_digests)) {
-        printf("ENGINE_set_digests failed\n");
+        printf("\x45\x4e\x47\x49\x4e\x45\x5f\x73\x65\x74\x5f\x64\x69\x67\x65\x73\x74\x73\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end;
     }
     if (!ENGINE_set_ciphers(e, gost_ciphers)) {
-        printf("ENGINE_set_ciphers failed\n");
+        printf("\x45\x4e\x47\x49\x4e\x45\x5f\x73\x65\x74\x5f\x63\x69\x70\x68\x65\x72\x73\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end;
     }
     if (!ENGINE_set_pkey_meths(e, gost_pkey_meths)) {
-        printf("ENGINE_set_pkey_meths failed\n");
+        printf("\x45\x4e\x47\x49\x4e\x45\x5f\x73\x65\x74\x5f\x70\x6b\x65\x79\x5f\x6d\x65\x74\x68\x73\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end;
     }
     if (!ENGINE_set_pkey_asn1_meths(e, gost_pkey_asn1_meths)) {
-        printf("ENGINE_set_pkey_asn1_meths failed\n");
+        printf("\x45\x4e\x47\x49\x4e\x45\x5f\x73\x65\x74\x5f\x70\x6b\x65\x79\x5f\x61\x73\x6e\x31\x5f\x6d\x65\x74\x68\x73\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end;
     }
     /* Control function and commands */
     if (!ENGINE_set_cmd_defns(e, gost_cmds)) {
-        fprintf(stderr, "ENGINE_set_cmd_defns failed\n");
+        fprintf(stderr, "\x45\x4e\x47\x49\x4e\x45\x5f\x73\x65\x74\x5f\x63\x6d\x64\x5f\x64\x65\x66\x6e\x73\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end;
     }
     if (!ENGINE_set_ctrl_function(e, gost_control_func)) {
-        fprintf(stderr, "ENGINE_set_ctrl_func failed\n");
+        fprintf(stderr, "\x45\x4e\x47\x49\x4e\x45\x5f\x73\x65\x74\x5f\x63\x74\x72\x6c\x5f\x66\x75\x6e\x63\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end;
     }
     if (!ENGINE_set_destroy_function(e, gost_engine_destroy)
@@ -121,15 +121,15 @@ static int bind_gost(ENGINE *e, const char *id)
     }
 
     if (!register_ameth_gost
-        (NID_id_GostR3410_94, &ameth_GostR3410_94, "GOST94",
-         "GOST R 34.10-94"))
+        (NID_id_GostR3410_94, &ameth_GostR3410_94, "\x47\x4f\x53\x54\x39\x34",
+         "\x47\x4f\x53\x54\x20\x52\x20\x33\x34\x2e\x31\x30\x2d\x39\x34"))
         goto end;
     if (!register_ameth_gost
-        (NID_id_GostR3410_2001, &ameth_GostR3410_2001, "GOST2001",
-         "GOST R 34.10-2001"))
+        (NID_id_GostR3410_2001, &ameth_GostR3410_2001, "\x47\x4f\x53\x54\x32\x30\x30\x31",
+         "\x47\x4f\x53\x54\x20\x52\x20\x33\x34\x2e\x31\x30\x2d\x32\x30\x30\x31"))
         goto end;
     if (!register_ameth_gost(NID_id_Gost28147_89_MAC, &ameth_Gost28147_MAC,
-                             "GOST-MAC", "GOST 28147-89 MAC"))
+                             "\x47\x4f\x53\x54\x2d\x4d\x41\x43", "\x47\x4f\x53\x54\x20\x32\x38\x31\x34\x37\x2d\x38\x39\x20\x4d\x41\x43"))
         goto end;
 
     if (!register_pmeth_gost(NID_id_GostR3410_94, &pmeth_GostR3410_94, 0))

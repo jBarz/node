@@ -74,9 +74,9 @@ const char *LP_find_file(LP_DIR_CTX **ctx, const char *directory)
             errno = ENOMEM;
             return 0;
         }
-        memset(*ctx, '\0', sizeof(LP_DIR_CTX));
+        memset(*ctx, '\x0', sizeof(LP_DIR_CTX));
 
-        if (directory[dirlen - 1] != '*') {
+        if (directory[dirlen - 1] != '\x2a') {
             extdirbuf = (char *)malloc(dirlen + 3);
             if (extdirbuf == NULL) {
                 free(*ctx);
@@ -84,10 +84,10 @@ const char *LP_find_file(LP_DIR_CTX **ctx, const char *directory)
                 errno = ENOMEM;
                 return 0;
             }
-            if (directory[dirlen - 1] != '/' && directory[dirlen - 1] != '\\')
-                extdir = strcat(strcpy(extdirbuf, directory), "/*");
+            if (directory[dirlen - 1] != '\x2f' && directory[dirlen - 1] != '\x5c')
+                extdir = strcat(strcpy(extdirbuf, directory), "\x2f\x2a");
             else
-                extdir = strcat(strcpy(extdirbuf, directory), "*");
+                extdir = strcat(strcpy(extdirbuf, directory), "\x2a");
         }
 
         if (sizeof(TCHAR) != sizeof(char)) {
@@ -152,7 +152,7 @@ const char *LP_find_file(LP_DIR_CTX **ctx, const char *directory)
         strncpy((*ctx)->entry_name, (const char *)(*ctx)->ctx.cFileName,
                 sizeof((*ctx)->entry_name) - 1);
 
-    (*ctx)->entry_name[sizeof((*ctx)->entry_name) - 1] = '\0';
+    (*ctx)->entry_name[sizeof((*ctx)->entry_name) - 1] = '\x0';
 
     return (*ctx)->entry_name;
 }

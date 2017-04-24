@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -153,7 +153,7 @@ int i2d_RSA_NET(const RSA *a, unsigned char **pp,
 
     enckey->enckey->digest->length = pkeylen;
 
-    enckey->os->length = 11;    /* "private-key" */
+    enckey->os->length = 11;    /* "\x70\x72\x69\x76\x61\x74\x65\x2d\x6b\x65\x79" */
 
     enckey->enckey->algor->algorithm = OBJ_nid2obj(NID_rc4);
     if ((enckey->enckey->algor->parameter = ASN1_TYPE_new()) == NULL)
@@ -182,7 +182,7 @@ int i2d_RSA_NET(const RSA *a, unsigned char **pp,
         goto err;
     }
 
-    if (!ASN1_STRING_set(enckey->os, "private-key", -1)) {
+    if (!ASN1_STRING_set(enckey->os, "\x70\x72\x69\x76\x61\x74\x65\x2d\x6b\x65\x79", -1)) {
         ASN1err(ASN1_F_I2D_RSA_NET, ERR_R_MALLOC_FAILURE);
         goto err;
     }
@@ -194,7 +194,7 @@ int i2d_RSA_NET(const RSA *a, unsigned char **pp,
 
     if (cb == NULL)
         cb = EVP_read_pw_string;
-    i = cb((char *)buf, 256, "Enter Private Key password:", 1);
+    i = cb((char *)buf, 256, "\x45\x6e\x74\x65\x72\x20\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x3a", 1);
     if (i != 0) {
         ASN1err(ASN1_F_I2D_RSA_NET, ASN1_R_BAD_PASSWORD_READ);
         goto err;
@@ -204,7 +204,7 @@ int i2d_RSA_NET(const RSA *a, unsigned char **pp,
     if (sgckey) {
         if (!EVP_Digest(buf, i, buf, NULL, EVP_md5(), NULL))
             goto err;
-        memcpy(buf + 16, "SGCKEYSALT", 10);
+        memcpy(buf + 16, "\x53\x47\x43\x4b\x45\x59\x53\x41\x4c\x54", 10);
         i = 26;
     }
 
@@ -252,7 +252,7 @@ RSA *d2i_RSA_NET(RSA **a, const unsigned char **pp, long length,
         return NULL;
     }
 
-    if ((enckey->os->length != 11) || (strncmp("private-key",
+    if ((enckey->os->length != 11) || (strncmp("\x70\x72\x69\x76\x61\x74\x65\x2d\x6b\x65\x79",
                                                (char *)enckey->os->data,
                                                11) != 0)) {
         ASN1err(ASN1_F_D2I_RSA_NET, ASN1_R_PRIVATE_KEY_HEADER_MISSING);
@@ -289,7 +289,7 @@ static RSA *d2i_RSA_NET_2(RSA **a, ASN1_OCTET_STRING *os,
     EVP_CIPHER_CTX ctx;
     EVP_CIPHER_CTX_init(&ctx);
 
-    i = cb((char *)buf, 256, "Enter Private Key password:", 0);
+    i = cb((char *)buf, 256, "\x45\x6e\x74\x65\x72\x20\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x3a", 0);
     if (i != 0) {
         ASN1err(ASN1_F_D2I_RSA_NET_2, ASN1_R_BAD_PASSWORD_READ);
         goto err;
@@ -299,7 +299,7 @@ static RSA *d2i_RSA_NET_2(RSA **a, ASN1_OCTET_STRING *os,
     if (sgckey) {
         if (!EVP_Digest(buf, i, buf, NULL, EVP_md5(), NULL))
             goto err;
-        memcpy(buf + 16, "SGCKEYSALT", 10);
+        memcpy(buf + 16, "\x53\x47\x43\x4b\x45\x59\x53\x41\x4c\x54", 10);
         i = 26;
     }
 

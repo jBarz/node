@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -95,7 +95,7 @@
 #   include "vendor_defns/cswift.h"
 #  endif
 
-#  define CSWIFT_LIB_NAME "cswift engine"
+#  define CSWIFT_LIB_NAME "\x63\x73\x77\x69\x66\x74\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "e_cswift_err.c"
 
 #  define DECIMAL_SIZE(type)      ((sizeof(type)*8+2)/3+1)
@@ -153,8 +153,8 @@ static int cswift_rand_status(void);
 #  define CSWIFT_CMD_SO_PATH              ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN cswift_cmd_defns[] = {
     {CSWIFT_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'cswift' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x63\x73\x77\x69\x66\x74\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
@@ -162,7 +162,7 @@ static const ENGINE_CMD_DEFN cswift_cmd_defns[] = {
 #  ifndef OPENSSL_NO_RSA
 /* Our internal RSA_METHOD that we provide pointers to */
 static RSA_METHOD cswift_rsa = {
-    "CryptoSwift RSA method",
+    "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     NULL,
@@ -182,7 +182,7 @@ static RSA_METHOD cswift_rsa = {
 #  ifndef OPENSSL_NO_DSA
 /* Our internal DSA_METHOD that we provide pointers to */
 static DSA_METHOD cswift_dsa = {
-    "CryptoSwift DSA method",
+    "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     cswift_dsa_sign,
     NULL,                       /* dsa_sign_setup */
     cswift_dsa_verify,
@@ -200,7 +200,7 @@ static DSA_METHOD cswift_dsa = {
 #  ifndef OPENSSL_NO_DH
 /* Our internal DH_METHOD that we provide pointers to */
 static DH_METHOD cswift_dh = {
-    "CryptoSwift DH method",
+    "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     cswift_mod_exp_dh,
@@ -223,8 +223,8 @@ static RAND_METHOD cswift_random = {
 };
 
 /* Constants used when creating the ENGINE */
-static const char *engine_cswift_id = "cswift";
-static const char *engine_cswift_name = "CryptoSwift hardware engine support";
+static const char *engine_cswift_id = "\x63\x73\x77\x69\x66\x74";
+static const char *engine_cswift_name = "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /*
  * This internal function is used by ENGINE_cswift() and possibly by the
@@ -333,7 +333,7 @@ static const char *get_CSWIFT_LIBNAME(void)
 {
     if (CSWIFT_LIBNAME)
         return CSWIFT_LIBNAME;
-    return "swift";
+    return "\x73\x77\x69\x66\x74";
 }
 
 static void free_CSWIFT_LIBNAME(void)
@@ -349,10 +349,10 @@ static long set_CSWIFT_LIBNAME(const char *name)
     return (((CSWIFT_LIBNAME = BUF_strdup(name)) != NULL) ? 1 : 0);
 }
 
-static const char *CSWIFT_F1 = "swAcquireAccContext";
-static const char *CSWIFT_F2 = "swAttachKeyParam";
-static const char *CSWIFT_F3 = "swSimpleRequest";
-static const char *CSWIFT_F4 = "swReleaseAccContext";
+static const char *CSWIFT_F1 = "\x73\x77\x41\x63\x71\x75\x69\x72\x65\x41\x63\x63\x43\x6f\x6e\x74\x65\x78\x74";
+static const char *CSWIFT_F2 = "\x73\x77\x41\x74\x74\x61\x63\x68\x4b\x65\x79\x50\x61\x72\x61\x6d";
+static const char *CSWIFT_F3 = "\x73\x77\x53\x69\x6d\x70\x6c\x65\x52\x65\x71\x75\x65\x73\x74";
+static const char *CSWIFT_F4 = "\x73\x77\x52\x65\x6c\x65\x61\x73\x65\x41\x63\x63\x43\x6f\x6e\x74\x65\x78\x74";
 
 /*
  * CryptoSwift library functions and mechanics - these are used by the
@@ -546,8 +546,8 @@ static int cswift_mod_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
         {
             char tmpbuf[DECIMAL_SIZE(sw_status) + 1];
             CSWIFTerr(CSWIFT_F_CSWIFT_MOD_EXP, CSWIFT_R_REQUEST_FAILED);
-            sprintf(tmpbuf, "%ld", sw_status);
-            ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+            sprintf(tmpbuf, "\x25\x6c\x64", sw_status);
+            ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
         }
         goto err;
     }
@@ -562,8 +562,8 @@ static int cswift_mod_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
                                             &res, 1)) != SW_OK) {
         char tmpbuf[DECIMAL_SIZE(sw_status) + 1];
         CSWIFTerr(CSWIFT_F_CSWIFT_MOD_EXP, CSWIFT_R_REQUEST_FAILED);
-        sprintf(tmpbuf, "%ld", sw_status);
-        ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+        sprintf(tmpbuf, "\x25\x6c\x64", sw_status);
+        ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
         goto err;
     }
     /* Convert the response */
@@ -683,8 +683,8 @@ static int cswift_mod_exp_crt(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
         {
             char tmpbuf[DECIMAL_SIZE(sw_status) + 1];
             CSWIFTerr(CSWIFT_F_CSWIFT_MOD_EXP_CRT, CSWIFT_R_REQUEST_FAILED);
-            sprintf(tmpbuf, "%ld", sw_status);
-            ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+            sprintf(tmpbuf, "\x25\x6c\x64", sw_status);
+            ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
         }
         goto err;
     }
@@ -699,8 +699,8 @@ static int cswift_mod_exp_crt(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
                                             &res, 1)) != SW_OK) {
         char tmpbuf[DECIMAL_SIZE(sw_status) + 1];
         CSWIFTerr(CSWIFT_F_CSWIFT_MOD_EXP_CRT, CSWIFT_R_REQUEST_FAILED);
-        sprintf(tmpbuf, "%ld", sw_status);
-        ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+        sprintf(tmpbuf, "\x25\x6c\x64", sw_status);
+        ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
         goto err;
     }
     /* Convert the response */
@@ -855,8 +855,8 @@ static DSA_SIG *cswift_dsa_sign(const unsigned char *dgst, int dlen, DSA *dsa)
         {
             char tmpbuf[DECIMAL_SIZE(sw_status) + 1];
             CSWIFTerr(CSWIFT_F_CSWIFT_DSA_SIGN, CSWIFT_R_REQUEST_FAILED);
-            sprintf(tmpbuf, "%ld", sw_status);
-            ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+            sprintf(tmpbuf, "\x25\x6c\x64", sw_status);
+            ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
         }
         goto err;
     }
@@ -872,8 +872,8 @@ static DSA_SIG *cswift_dsa_sign(const unsigned char *dgst, int dlen, DSA *dsa)
     if (sw_status != SW_OK) {
         char tmpbuf[DECIMAL_SIZE(sw_status) + 1];
         CSWIFTerr(CSWIFT_F_CSWIFT_DSA_SIGN, CSWIFT_R_REQUEST_FAILED);
-        sprintf(tmpbuf, "%ld", sw_status);
-        ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+        sprintf(tmpbuf, "\x25\x6c\x64", sw_status);
+        ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
         goto err;
     }
     /* Convert the response */
@@ -957,8 +957,8 @@ static int cswift_dsa_verify(const unsigned char *dgst, int dgst_len,
         {
             char tmpbuf[DECIMAL_SIZE(sw_status) + 1];
             CSWIFTerr(CSWIFT_F_CSWIFT_DSA_VERIFY, CSWIFT_R_REQUEST_FAILED);
-            sprintf(tmpbuf, "%ld", sw_status);
-            ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+            sprintf(tmpbuf, "\x25\x6c\x64", sw_status);
+            ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
         }
         goto err;
     }
@@ -978,8 +978,8 @@ static int cswift_dsa_verify(const unsigned char *dgst, int dgst_len,
     if (sw_status != SW_OK) {
         char tmpbuf[DECIMAL_SIZE(sw_status) + 1];
         CSWIFTerr(CSWIFT_F_CSWIFT_DSA_VERIFY, CSWIFT_R_REQUEST_FAILED);
-        sprintf(tmpbuf, "%ld", sw_status);
-        ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+        sprintf(tmpbuf, "\x25\x6c\x64", sw_status);
+        ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
         goto err;
     }
     /* Convert the response */
@@ -1047,8 +1047,8 @@ static int cswift_rand_bytes(unsigned char *buf, int num)
         if (swrc != SW_OK) {
             char tmpbuf[20];
             CSWIFTerr(CSWIFT_F_CSWIFT_RAND_BYTES, CSWIFT_R_REQUEST_FAILED);
-            sprintf(tmpbuf, "%ld", swrc);
-            ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+            sprintf(tmpbuf, "\x25\x6c\x64", swrc);
+            ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
             goto err;
         }
         buf += sizeof(buf32);
@@ -1062,8 +1062,8 @@ static int cswift_rand_bytes(unsigned char *buf, int num)
         if (swrc != SW_OK) {
             char tmpbuf[20];
             CSWIFTerr(CSWIFT_F_CSWIFT_RAND_BYTES, CSWIFT_R_REQUEST_FAILED);
-            sprintf(tmpbuf, "%ld", swrc);
-            ERR_add_error_data(2, "CryptoSwift error number is ", tmpbuf);
+            sprintf(tmpbuf, "\x25\x6c\x64", swrc);
+            ERR_add_error_data(2, "\x43\x72\x79\x70\x74\x6f\x53\x77\x69\x66\x74\x20\x65\x72\x72\x6f\x72\x20\x6e\x75\x6d\x62\x65\x72\x20\x69\x73\x20", tmpbuf);
             goto err;
         }
         memcpy(buf, largenum.value, num);

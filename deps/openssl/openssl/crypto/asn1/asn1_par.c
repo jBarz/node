@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -73,27 +73,27 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
 static int asn1_print_info(BIO *bp, int tag, int xclass, int constructed,
                            int indent)
 {
-    static const char fmt[] = "%-18s";
+    static const char fmt[] = "\x25\x2d\x31\x38\x73";
     char str[128];
     const char *p;
 
     if (constructed & V_ASN1_CONSTRUCTED)
-        p = "cons: ";
+        p = "\x63\x6f\x6e\x73\x3a\x20";
     else
-        p = "prim: ";
+        p = "\x70\x72\x69\x6d\x3a\x20";
     if (BIO_write(bp, p, 6) < 6)
         goto err;
     BIO_indent(bp, indent, 128);
 
     p = str;
     if ((xclass & V_ASN1_PRIVATE) == V_ASN1_PRIVATE)
-        BIO_snprintf(str, sizeof str, "priv [ %d ] ", tag);
+        BIO_snprintf(str, sizeof str, "\x70\x72\x69\x76\x20\x5b\x20\x25\x64\x20\x5d\x20", tag);
     else if ((xclass & V_ASN1_CONTEXT_SPECIFIC) == V_ASN1_CONTEXT_SPECIFIC)
-        BIO_snprintf(str, sizeof str, "cont [ %d ]", tag);
+        BIO_snprintf(str, sizeof str, "\x63\x6f\x6e\x74\x20\x5b\x20\x25\x64\x20\x5d", tag);
     else if ((xclass & V_ASN1_APPLICATION) == V_ASN1_APPLICATION)
-        BIO_snprintf(str, sizeof str, "appl [ %d ]", tag);
+        BIO_snprintf(str, sizeof str, "\x61\x70\x70\x6c\x20\x5b\x20\x25\x64\x20\x5d", tag);
     else if (tag > 30)
-        BIO_snprintf(str, sizeof str, "<ASN1 %d>", tag);
+        BIO_snprintf(str, sizeof str, "\x3c\x41\x53\x4e\x31\x20\x25\x64\x3e", tag);
     else
         p = ASN1_tag2str(tag);
 
@@ -134,7 +134,7 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
 #endif
 
     if (depth > ASN1_PARSE_MAXDEPTH) {
-            BIO_puts(bp, "BAD RECURSION DEPTH\n");
+            BIO_puts(bp, "\x42\x41\x44\x20\x52\x45\x43\x55\x52\x53\x49\x4f\x4e\x20\x44\x45\x50\x54\x48\xa");
             return 0;
     }
 
@@ -148,7 +148,7 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
         j = j;
 #endif
         if (j & 0x80) {
-            if (BIO_write(bp, "Error in encoding\n", 18) <= 0)
+            if (BIO_write(bp, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67\xa", 18) <= 0)
                 goto end;
             ret = 0;
             goto end;
@@ -158,16 +158,16 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
         /*
          * if j == 0x21 it is a constructed indefinite length object
          */
-        if (BIO_printf(bp, "%5ld:", (long)offset + (long)(op - *pp))
+        if (BIO_printf(bp, "\x25\x35\x6c\x64\x3a", (long)offset + (long)(op - *pp))
             <= 0)
             goto end;
 
         if (j != (V_ASN1_CONSTRUCTED | 1)) {
-            if (BIO_printf(bp, "d=%-2d hl=%ld l=%4ld ",
+            if (BIO_printf(bp, "\x64\x3d\x25\x2d\x32\x64\x20\x68\x6c\x3d\x25\x6c\x64\x20\x6c\x3d\x25\x34\x6c\x64\x20",
                            depth, (long)hl, len) <= 0)
                 goto end;
         } else {
-            if (BIO_printf(bp, "d=%-2d hl=%ld l=inf  ", depth, (long)hl) <= 0)
+            if (BIO_printf(bp, "\x64\x3d\x25\x2d\x32\x64\x20\x68\x6c\x3d\x25\x6c\x64\x20\x6c\x3d\x69\x6e\x66\x20\x20", depth, (long)hl) <= 0)
                 goto end;
         }
         if (!asn1_print_info(bp, tag, xclass, j, (indent) ? depth : 0))
@@ -176,10 +176,10 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
             const unsigned char *sp;
 
             ep = p + len;
-            if (BIO_write(bp, "\n", 1) <= 0)
+            if (BIO_write(bp, "\xa", 1) <= 0)
                 goto end;
             if (len > length) {
-                BIO_printf(bp, "length is greater than %ld\n", length);
+                BIO_printf(bp, "\x6c\x65\x6e\x67\x74\x68\x20\x69\x73\x20\x67\x72\x65\x61\x74\x65\x72\x20\x74\x68\x61\x6e\x20\x25\x6c\x64\xa", length);
                 ret = 0;
                 goto end;
             }
@@ -214,7 +214,7 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
             }
         } else if (xclass != 0) {
             p += len;
-            if (BIO_write(bp, "\n", 1) <= 0)
+            if (BIO_write(bp, "\xa", 1) <= 0)
                 goto end;
         } else {
             nl = 0;
@@ -225,7 +225,7 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
                 (tag == V_ASN1_NUMERICSTRING) ||
                 (tag == V_ASN1_UTF8STRING) ||
                 (tag == V_ASN1_UTCTIME) || (tag == V_ASN1_GENERALIZEDTIME)) {
-                if (BIO_write(bp, ":", 1) <= 0)
+                if (BIO_write(bp, "\x3a", 1) <= 0)
                     goto end;
                 if ((len > 0) && BIO_write(bp, (const char *)p, (int)len)
                     != (int)len)
@@ -233,11 +233,11 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
             } else if (tag == V_ASN1_OBJECT) {
                 opp = op;
                 if (d2i_ASN1_OBJECT(&o, &opp, len + hl) != NULL) {
-                    if (BIO_write(bp, ":", 1) <= 0)
+                    if (BIO_write(bp, "\x3a", 1) <= 0)
                         goto end;
                     i2a_ASN1_OBJECT(bp, o);
                 } else {
-                    if (BIO_write(bp, ":BAD OBJECT", 11) <= 0)
+                    if (BIO_write(bp, "\x3a\x42\x41\x44\x20\x4f\x42\x4a\x45\x43\x54", 11) <= 0)
                         goto end;
                 }
             } else if (tag == V_ASN1_BOOLEAN) {
@@ -246,10 +246,10 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
                 opp = op;
                 ii = d2i_ASN1_BOOLEAN(NULL, &opp, len + hl);
                 if (ii < 0) {
-                    if (BIO_write(bp, "Bad boolean\n", 12) <= 0)
+                    if (BIO_write(bp, "\x42\x61\x64\x20\x62\x6f\x6f\x6c\x65\x61\x6e\xa", 12) <= 0)
                         goto end;
                 }
-                BIO_printf(bp, ":%d", ii);
+                BIO_printf(bp, "\x3a\x25\x64", ii);
             } else if (tag == V_ASN1_BMPSTRING) {
                 /* do the BMP thang */
             } else if (tag == V_ASN1_OCTET_STRING) {
@@ -263,10 +263,10 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
                      * testing whether the octet string is printable
                      */
                     for (i = 0; i < os->length; i++) {
-                        if (((opp[i] < ' ') &&
-                             (opp[i] != '\n') &&
-                             (opp[i] != '\r') &&
-                             (opp[i] != '\t')) || (opp[i] > '~')) {
+                        if (((opp[i] < '\x20') &&
+                             (opp[i] != '\xa') &&
+                             (opp[i] != '\xd') &&
+                             (opp[i] != '\x9')) || (opp[i] > '\x7e')) {
                             printable = 0;
                             break;
                         }
@@ -274,7 +274,7 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
                     if (printable)
                         /* printable string */
                     {
-                        if (BIO_write(bp, ":", 1) <= 0)
+                        if (BIO_write(bp, "\x3a", 1) <= 0)
                             goto end;
                         if (BIO_write(bp, (const char *)opp, os->length) <= 0)
                             goto end;
@@ -283,17 +283,17 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
                          * not printable => print octet string as hex dump
                          */
                     {
-                        if (BIO_write(bp, "[HEX DUMP]:", 11) <= 0)
+                        if (BIO_write(bp, "\x5b\x48\x45\x58\x20\x44\x55\x4d\x50\x5d\x3a", 11) <= 0)
                             goto end;
                         for (i = 0; i < os->length; i++) {
-                            if (BIO_printf(bp, "%02X", opp[i]) <= 0)
+                            if (BIO_printf(bp, "\x25\x30\x32\x58", opp[i]) <= 0)
                                 goto end;
                         }
                     } else
                         /* print the normal dump */
                     {
                         if (!nl) {
-                            if (BIO_write(bp, "\n", 1) <= 0)
+                            if (BIO_write(bp, "\xa", 1) <= 0)
                                 goto end;
                         }
                         if (BIO_dump_indent(bp,
@@ -317,21 +317,21 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
                 opp = op;
                 bs = d2i_ASN1_INTEGER(NULL, &opp, len + hl);
                 if (bs != NULL) {
-                    if (BIO_write(bp, ":", 1) <= 0)
+                    if (BIO_write(bp, "\x3a", 1) <= 0)
                         goto end;
                     if (bs->type == V_ASN1_NEG_INTEGER)
-                        if (BIO_write(bp, "-", 1) <= 0)
+                        if (BIO_write(bp, "\x2d", 1) <= 0)
                             goto end;
                     for (i = 0; i < bs->length; i++) {
-                        if (BIO_printf(bp, "%02X", bs->data[i]) <= 0)
+                        if (BIO_printf(bp, "\x25\x30\x32\x58", bs->data[i]) <= 0)
                             goto end;
                     }
                     if (bs->length == 0) {
-                        if (BIO_write(bp, "00", 2) <= 0)
+                        if (BIO_write(bp, "\x30\x30", 2) <= 0)
                             goto end;
                     }
                 } else {
-                    if (BIO_write(bp, "BAD INTEGER", 11) <= 0)
+                    if (BIO_write(bp, "\x42\x41\x44\x20\x49\x4e\x54\x45\x47\x45\x52", 11) <= 0)
                         goto end;
                 }
                 M_ASN1_INTEGER_free(bs);
@@ -342,27 +342,27 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
                 opp = op;
                 bs = d2i_ASN1_ENUMERATED(NULL, &opp, len + hl);
                 if (bs != NULL) {
-                    if (BIO_write(bp, ":", 1) <= 0)
+                    if (BIO_write(bp, "\x3a", 1) <= 0)
                         goto end;
                     if (bs->type == V_ASN1_NEG_ENUMERATED)
-                        if (BIO_write(bp, "-", 1) <= 0)
+                        if (BIO_write(bp, "\x2d", 1) <= 0)
                             goto end;
                     for (i = 0; i < bs->length; i++) {
-                        if (BIO_printf(bp, "%02X", bs->data[i]) <= 0)
+                        if (BIO_printf(bp, "\x25\x30\x32\x58", bs->data[i]) <= 0)
                             goto end;
                     }
                     if (bs->length == 0) {
-                        if (BIO_write(bp, "00", 2) <= 0)
+                        if (BIO_write(bp, "\x30\x30", 2) <= 0)
                             goto end;
                     }
                 } else {
-                    if (BIO_write(bp, "BAD ENUMERATED", 14) <= 0)
+                    if (BIO_write(bp, "\x42\x41\x44\x20\x45\x4e\x55\x4d\x45\x52\x41\x54\x45\x44", 14) <= 0)
                         goto end;
                 }
                 M_ASN1_ENUMERATED_free(bs);
             } else if (len > 0 && dump) {
                 if (!nl) {
-                    if (BIO_write(bp, "\n", 1) <= 0)
+                    if (BIO_write(bp, "\xa", 1) <= 0)
                         goto end;
                 }
                 if (BIO_dump_indent(bp, (const char *)p,
@@ -373,7 +373,7 @@ static int asn1_parse2(BIO *bp, const unsigned char **pp, long length,
             }
 
             if (!nl) {
-                if (BIO_write(bp, "\n", 1) <= 0)
+                if (BIO_write(bp, "\xa", 1) <= 0)
                     goto end;
             }
             p += len;
@@ -398,27 +398,27 @@ const char *ASN1_tag2str(int tag)
 {
     static const char *const tag2str[] = {
         /* 0-4 */
-        "EOC", "BOOLEAN", "INTEGER", "BIT STRING", "OCTET STRING",
+        "\x45\x4f\x43", "\x42\x4f\x4f\x4c\x45\x41\x4e", "\x49\x4e\x54\x45\x47\x45\x52", "\x42\x49\x54\x20\x53\x54\x52\x49\x4e\x47", "\x4f\x43\x54\x45\x54\x20\x53\x54\x52\x49\x4e\x47",
         /* 5-9 */
-        "NULL", "OBJECT", "OBJECT DESCRIPTOR", "EXTERNAL", "REAL",
+        "\x4e\x55\x4c\x4c", "\x4f\x42\x4a\x45\x43\x54", "\x4f\x42\x4a\x45\x43\x54\x20\x44\x45\x53\x43\x52\x49\x50\x54\x4f\x52", "\x45\x58\x54\x45\x52\x4e\x41\x4c", "\x52\x45\x41\x4c",
         /* 10-13 */
-        "ENUMERATED", "<ASN1 11>", "UTF8STRING", "<ASN1 13>",
+        "\x45\x4e\x55\x4d\x45\x52\x41\x54\x45\x44", "\x3c\x41\x53\x4e\x31\x20\x31\x31\x3e", "\x55\x54\x46\x38\x53\x54\x52\x49\x4e\x47", "\x3c\x41\x53\x4e\x31\x20\x31\x33\x3e",
         /* 15-17 */
-        "<ASN1 14>", "<ASN1 15>", "SEQUENCE", "SET",
+        "\x3c\x41\x53\x4e\x31\x20\x31\x34\x3e", "\x3c\x41\x53\x4e\x31\x20\x31\x35\x3e", "\x53\x45\x51\x55\x45\x4e\x43\x45", "\x53\x45\x54",
         /* 18-20 */
-        "NUMERICSTRING", "PRINTABLESTRING", "T61STRING",
+        "\x4e\x55\x4d\x45\x52\x49\x43\x53\x54\x52\x49\x4e\x47", "\x50\x52\x49\x4e\x54\x41\x42\x4c\x45\x53\x54\x52\x49\x4e\x47", "\x54\x36\x31\x53\x54\x52\x49\x4e\x47",
         /* 21-24 */
-        "VIDEOTEXSTRING", "IA5STRING", "UTCTIME", "GENERALIZEDTIME",
+        "\x56\x49\x44\x45\x4f\x54\x45\x58\x53\x54\x52\x49\x4e\x47", "\x49\x41\x35\x53\x54\x52\x49\x4e\x47", "\x55\x54\x43\x54\x49\x4d\x45", "\x47\x45\x4e\x45\x52\x41\x4c\x49\x5a\x45\x44\x54\x49\x4d\x45",
         /* 25-27 */
-        "GRAPHICSTRING", "VISIBLESTRING", "GENERALSTRING",
+        "\x47\x52\x41\x50\x48\x49\x43\x53\x54\x52\x49\x4e\x47", "\x56\x49\x53\x49\x42\x4c\x45\x53\x54\x52\x49\x4e\x47", "\x47\x45\x4e\x45\x52\x41\x4c\x53\x54\x52\x49\x4e\x47",
         /* 28-30 */
-        "UNIVERSALSTRING", "<ASN1 29>", "BMPSTRING"
+        "\x55\x4e\x49\x56\x45\x52\x53\x41\x4c\x53\x54\x52\x49\x4e\x47", "\x3c\x41\x53\x4e\x31\x20\x32\x39\x3e", "\x42\x4d\x50\x53\x54\x52\x49\x4e\x47"
     };
 
     if ((tag == V_ASN1_NEG_INTEGER) || (tag == V_ASN1_NEG_ENUMERATED))
         tag &= ~0x100;
 
     if (tag < 0 || tag > 30)
-        return "(unknown)";
+        return "\x28\x75\x6e\x6b\x6e\x6f\x77\x6e\x29";
     return tag2str[tag];
 }

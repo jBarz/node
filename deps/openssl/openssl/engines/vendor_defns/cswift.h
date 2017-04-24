@@ -85,8 +85,8 @@ extern "C" {
                               (SW_ERR_BASE-15) /* Not implemented */
 #define SW_ERR_BAD_COMMAND    (SW_ERR_BASE-16) /* Bad command code */
 #define SW_ERR_BAD_ITEM_SIZE  (SW_ERR_BASE-17) /* too small or too large in */
-    /*    the "initems" or       */
-    /*    "outitems".            */
+    /*    the "\x69\x6e\x69\x74\x65\x6d\x73" or       */
+    /*    "\x6f\x75\x74\x69\x74\x65\x6d\x73".            */
 #define SW_ERR_BAD_ACCNUM     (SW_ERR_BASE-18) /* Bad accelerator number */
 #define SW_ERR_SELFTEST_FAIL  (SW_ERR_BASE-19) /* At least one of the self */
     /*    test fail, look at the */
@@ -150,7 +150,7 @@ extern "C" {
     typedef SW_U32 SW_COMMAND_BITMAP[4]; /* bitmap */
 
     typedef struct _SW_LARGENUMBER {
-        SW_U32 nbytes;          /* number of bytes in the buffer "value" */
+        SW_U32 nbytes;          /* number of bytes in the buffer "\x76\x61\x6c\x75\x65" */
         SW_BYTE *value;         /* the large integer as a string of */
         /*   bytes in network (big endian) order  */
     } SW_LARGENUMBER;

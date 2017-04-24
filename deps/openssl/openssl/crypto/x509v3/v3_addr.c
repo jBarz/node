@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -181,7 +181,7 @@ static int i2r_address(BIO *out,
     case IANA_AFI_IPV4:
         if (!addr_expand(addr, bs, 4, fill))
             return 0;
-        BIO_printf(out, "%d.%d.%d.%d", addr[0], addr[1], addr[2], addr[3]);
+        BIO_printf(out, "\x25\x64\x2e\x25\x64\x2e\x25\x64\x2e\x25\x64", addr[0], addr[1], addr[2], addr[3]);
         break;
     case IANA_AFI_IPV6:
         if (!addr_expand(addr, bs, 16, fill))
@@ -189,17 +189,17 @@ static int i2r_address(BIO *out,
         for (n = 16; n > 1 && addr[n - 1] == 0x00 && addr[n - 2] == 0x00;
              n -= 2) ;
         for (i = 0; i < n; i += 2)
-            BIO_printf(out, "%x%s", (addr[i] << 8) | addr[i + 1],
-                       (i < 14 ? ":" : ""));
+            BIO_printf(out, "\x25\x78\x25\x73", (addr[i] << 8) | addr[i + 1],
+                       (i < 14 ? "\x3a" : ""));
         if (i < 16)
-            BIO_puts(out, ":");
+            BIO_puts(out, "\x3a");
         if (i == 0)
-            BIO_puts(out, ":");
+            BIO_puts(out, "\x3a");
         break;
     default:
         for (i = 0; i < bs->length; i++)
-            BIO_printf(out, "%s%02x", (i > 0 ? ":" : ""), bs->data[i]);
-        BIO_printf(out, "[%d]", (int)(bs->flags & 7));
+            BIO_printf(out, "\x25\x73\x25\x30\x32\x78", (i > 0 ? "\x3a" : ""), bs->data[i]);
+        BIO_printf(out, "\x5b\x25\x64\x5d", (int)(bs->flags & 7));
         break;
     }
     return 1;
@@ -216,20 +216,20 @@ static int i2r_IPAddressOrRanges(BIO *out,
     int i;
     for (i = 0; i < sk_IPAddressOrRange_num(aors); i++) {
         const IPAddressOrRange *aor = sk_IPAddressOrRange_value(aors, i);
-        BIO_printf(out, "%*s", indent, "");
+        BIO_printf(out, "\x25\x2a\x73", indent, "");
         switch (aor->type) {
         case IPAddressOrRange_addressPrefix:
             if (!i2r_address(out, afi, 0x00, aor->u.addressPrefix))
                 return 0;
-            BIO_printf(out, "/%d\n", addr_prefixlen(aor->u.addressPrefix));
+            BIO_printf(out, "\x2f\x25\x64\xa", addr_prefixlen(aor->u.addressPrefix));
             continue;
         case IPAddressOrRange_addressRange:
             if (!i2r_address(out, afi, 0x00, aor->u.addressRange->min))
                 return 0;
-            BIO_puts(out, "-");
+            BIO_puts(out, "\x2d");
             if (!i2r_address(out, afi, 0xFF, aor->u.addressRange->max))
                 return 0;
-            BIO_puts(out, "\n");
+            BIO_puts(out, "\xa");
             continue;
         }
     }
@@ -249,53 +249,53 @@ static int i2r_IPAddrBlocks(const X509V3_EXT_METHOD *method,
         const unsigned int afi = v3_addr_get_afi(f);
         switch (afi) {
         case IANA_AFI_IPV4:
-            BIO_printf(out, "%*sIPv4", indent, "");
+            BIO_printf(out, "\x25\x2a\x73\x49\x50\x76\x34", indent, "");
             break;
         case IANA_AFI_IPV6:
-            BIO_printf(out, "%*sIPv6", indent, "");
+            BIO_printf(out, "\x25\x2a\x73\x49\x50\x76\x36", indent, "");
             break;
         default:
-            BIO_printf(out, "%*sUnknown AFI %u", indent, "", afi);
+            BIO_printf(out, "\x25\x2a\x73\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x41\x46\x49\x20\x25\x75", indent, "", afi);
             break;
         }
         if (f->addressFamily->length > 2) {
             switch (f->addressFamily->data[2]) {
             case 1:
-                BIO_puts(out, " (Unicast)");
+                BIO_puts(out, "\x20\x28\x55\x6e\x69\x63\x61\x73\x74\x29");
                 break;
             case 2:
-                BIO_puts(out, " (Multicast)");
+                BIO_puts(out, "\x20\x28\x4d\x75\x6c\x74\x69\x63\x61\x73\x74\x29");
                 break;
             case 3:
-                BIO_puts(out, " (Unicast/Multicast)");
+                BIO_puts(out, "\x20\x28\x55\x6e\x69\x63\x61\x73\x74\x2f\x4d\x75\x6c\x74\x69\x63\x61\x73\x74\x29");
                 break;
             case 4:
-                BIO_puts(out, " (MPLS)");
+                BIO_puts(out, "\x20\x28\x4d\x50\x4c\x53\x29");
                 break;
             case 64:
-                BIO_puts(out, " (Tunnel)");
+                BIO_puts(out, "\x20\x28\x54\x75\x6e\x6e\x65\x6c\x29");
                 break;
             case 65:
-                BIO_puts(out, " (VPLS)");
+                BIO_puts(out, "\x20\x28\x56\x50\x4c\x53\x29");
                 break;
             case 66:
-                BIO_puts(out, " (BGP MDT)");
+                BIO_puts(out, "\x20\x28\x42\x47\x50\x20\x4d\x44\x54\x29");
                 break;
             case 128:
-                BIO_puts(out, " (MPLS-labeled VPN)");
+                BIO_puts(out, "\x20\x28\x4d\x50\x4c\x53\x2d\x6c\x61\x62\x65\x6c\x65\x64\x20\x56\x50\x4e\x29");
                 break;
             default:
-                BIO_printf(out, " (Unknown SAFI %u)",
+                BIO_printf(out, "\x20\x28\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x53\x41\x46\x49\x20\x25\x75\x29",
                            (unsigned)f->addressFamily->data[2]);
                 break;
             }
         }
         switch (f->ipAddressChoice->type) {
         case IPAddressChoice_inherit:
-            BIO_puts(out, ": inherit\n");
+            BIO_puts(out, "\x3a\x20\x69\x6e\x68\x65\x72\x69\x74\xa");
             break;
         case IPAddressChoice_addressesOrRanges:
-            BIO_puts(out, ":\n");
+            BIO_puts(out, "\x3a\xa");
             if (!i2r_IPAddressOrRanges(out,
                                        indent + 2,
                                        f->ipAddressChoice->
@@ -931,8 +931,8 @@ static void *v2i_IPAddrBlocks(const struct v3_ext_method *method,
                               struct v3_ext_ctx *ctx,
                               STACK_OF(CONF_VALUE) *values)
 {
-    static const char v4addr_chars[] = "0123456789.";
-    static const char v6addr_chars[] = "0123456789.:abcdefABCDEF";
+    static const char v4addr_chars[] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x2e";
+    static const char v6addr_chars[] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x2e\x3a\x61\x62\x63\x64\x65\x66\x41\x42\x43\x44\x45\x46";
     IPAddrBlocks *addr = NULL;
     char *s = NULL, *t;
     int i;
@@ -949,14 +949,14 @@ static void *v2i_IPAddrBlocks(const struct v3_ext_method *method,
         const char *addr_chars;
         int prefixlen, i1, i2, delim, length;
 
-        if (!name_cmp(val->name, "IPv4")) {
+        if (!name_cmp(val->name, "\x49\x50\x76\x34")) {
             afi = IANA_AFI_IPV4;
-        } else if (!name_cmp(val->name, "IPv6")) {
+        } else if (!name_cmp(val->name, "\x49\x50\x76\x36")) {
             afi = IANA_AFI_IPV6;
-        } else if (!name_cmp(val->name, "IPv4-SAFI")) {
+        } else if (!name_cmp(val->name, "\x49\x50\x76\x34\x2d\x53\x41\x46\x49")) {
             afi = IANA_AFI_IPV4;
             safi = &safi_;
-        } else if (!name_cmp(val->name, "IPv6-SAFI")) {
+        } else if (!name_cmp(val->name, "\x49\x50\x76\x36\x2d\x53\x41\x46\x49")) {
             afi = IANA_AFI_IPV6;
             safi = &safi_;
         } else {
@@ -983,13 +983,13 @@ static void *v2i_IPAddrBlocks(const struct v3_ext_method *method,
          */
         if (safi != NULL) {
             *safi = strtoul(val->value, &t, 0);
-            t += strspn(t, " \t");
-            if (*safi > 0xFF || *t++ != ':') {
+            t += strspn(t, "\x20\x9");
+            if (*safi > 0xFF || *t++ != '\x3a') {
                 X509V3err(X509V3_F_V2I_IPADDRBLOCKS, X509V3_R_INVALID_SAFI);
                 X509V3_conf_err(val);
                 goto err;
             }
-            t += strspn(t, " \t");
+            t += strspn(t, "\x20\x9");
             s = BUF_strdup(t);
         } else {
             s = BUF_strdup(val->value);
@@ -1003,7 +1003,7 @@ static void *v2i_IPAddrBlocks(const struct v3_ext_method *method,
          * Check for inheritance.  Not worth additional complexity to
          * optimize this (seldom-used) case.
          */
-        if (!strcmp(s, "inherit")) {
+        if (!strcmp(s, "\x69\x6e\x68\x65\x72\x69\x74")) {
             if (!v3_addr_add_inherit(addr, afi, safi)) {
                 X509V3err(X509V3_F_V2I_IPADDRBLOCKS,
                           X509V3_R_INVALID_INHERITANCE);
@@ -1016,9 +1016,9 @@ static void *v2i_IPAddrBlocks(const struct v3_ext_method *method,
         }
 
         i1 = strspn(s, addr_chars);
-        i2 = i1 + strspn(s + i1, " \t");
+        i2 = i1 + strspn(s + i1, "\x20\x9");
         delim = s[i2++];
-        s[i1] = '\0';
+        s[i1] = '\x0';
 
         if (a2i_ipadd(min, s) != length) {
             X509V3err(X509V3_F_V2I_IPADDRBLOCKS, X509V3_R_INVALID_IPADDRESS);
@@ -1027,9 +1027,9 @@ static void *v2i_IPAddrBlocks(const struct v3_ext_method *method,
         }
 
         switch (delim) {
-        case '/':
+        case '\x2f':
             prefixlen = (int)strtoul(s + i2, &t, 10);
-            if (t == s + i2 || *t != '\0') {
+            if (t == s + i2 || *t != '\x0') {
                 X509V3err(X509V3_F_V2I_IPADDRBLOCKS,
                           X509V3_R_EXTENSION_VALUE_ERROR);
                 X509V3_conf_err(val);
@@ -1040,10 +1040,10 @@ static void *v2i_IPAddrBlocks(const struct v3_ext_method *method,
                 goto err;
             }
             break;
-        case '-':
-            i1 = i2 + strspn(s + i2, " \t");
+        case '\x2d':
+            i1 = i2 + strspn(s + i2, "\x20\x9");
             i2 = i1 + strspn(s + i1, addr_chars);
-            if (i1 == i2 || s[i2] != '\0') {
+            if (i1 == i2 || s[i2] != '\x0') {
                 X509V3err(X509V3_F_V2I_IPADDRBLOCKS,
                           X509V3_R_EXTENSION_VALUE_ERROR);
                 X509V3_conf_err(val);
@@ -1066,7 +1066,7 @@ static void *v2i_IPAddrBlocks(const struct v3_ext_method *method,
                 goto err;
             }
             break;
-        case '\0':
+        case '\x0':
             if (!v3_addr_add_prefix(addr, afi, safi, min, length * 8)) {
                 X509V3err(X509V3_F_V2I_IPADDRBLOCKS, ERR_R_MALLOC_FAILURE);
                 goto err;

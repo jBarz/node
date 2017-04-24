@@ -15,7 +15,7 @@
 #include "gost_lcl.h"
 
 static char *gost_params[GOST_PARAM_MAX + 1] = { NULL };
-static const char *gost_envnames[] = { "CRYPT_PARAMS" };
+static const char *gost_envnames[] = { "\x43\x52\x59\x50\x54\x5f\x50\x41\x52\x41\x4d\x53" };
 
 const ENGINE_CMD_DEFN gost_cmds[] = {
 /*- { GOST_CTRL_RNG,
@@ -29,8 +29,8 @@ const ENGINE_CMD_DEFN gost_cmds[] = {
     ENGINE_CMD_FLAG_STRING
     },
 */ {GOST_CTRL_CRYPT_PARAMS,
-           "CRYPT_PARAMS",
-           "OID of default GOST 28147-89 parameters",
+           "\x43\x52\x59\x50\x54\x5f\x50\x41\x52\x41\x4d\x53",
+           "\x4f\x49\x44\x20\x6f\x66\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x47\x4f\x53\x54\x20\x32\x38\x31\x34\x37\x2d\x38\x39\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73",
            ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };

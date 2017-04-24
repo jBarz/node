@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -163,18 +163,18 @@ static void lock_dbg_cb(int mode, int type, const char *file, int line)
 
     rw = mode & (CRYPTO_READ | CRYPTO_WRITE);
     if (!((rw == CRYPTO_READ) || (rw == CRYPTO_WRITE))) {
-        errstr = "invalid mode";
+        errstr = "\x69\x6e\x76\x61\x6c\x69\x64\x20\x6d\x6f\x64\x65";
         goto err;
     }
 
     if (type < 0 || type >= CRYPTO_NUM_LOCKS) {
-        errstr = "type out of bounds";
+        errstr = "\x74\x79\x70\x65\x20\x6f\x75\x74\x20\x6f\x66\x20\x62\x6f\x75\x6e\x64\x73";
         goto err;
     }
 
     if (mode & CRYPTO_LOCK) {
         if (modes[type]) {
-            errstr = "already locked";
+            errstr = "\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x63\x6b\x65\x64";
             /*
              * must not happen in a single-threaded program (would deadlock)
              */
@@ -184,19 +184,19 @@ static void lock_dbg_cb(int mode, int type, const char *file, int line)
         modes[type] = rw;
     } else if (mode & CRYPTO_UNLOCK) {
         if (!modes[type]) {
-            errstr = "not locked";
+            errstr = "\x6e\x6f\x74\x20\x6c\x6f\x63\x6b\x65\x64";
             goto err;
         }
 
         if (modes[type] != rw) {
             errstr = (rw == CRYPTO_READ) ?
-                "CRYPTO_r_unlock on write lock" :
-                "CRYPTO_w_unlock on read lock";
+                "\x43\x52\x59\x50\x54\x4f\x5f\x72\x5f\x75\x6e\x6c\x6f\x63\x6b\x20\x6f\x6e\x20\x77\x72\x69\x74\x65\x20\x6c\x6f\x63\x6b" :
+                "\x43\x52\x59\x50\x54\x4f\x5f\x77\x5f\x75\x6e\x6c\x6f\x63\x6b\x20\x6f\x6e\x20\x72\x65\x61\x64\x20\x6c\x6f\x63\x6b";
         }
 
         modes[type] = 0;
     } else {
-        errstr = "invalid mode";
+        errstr = "\x69\x6e\x76\x61\x6c\x69\x64\x20\x6d\x6f\x64\x65";
         goto err;
     }
 
@@ -204,7 +204,7 @@ static void lock_dbg_cb(int mode, int type, const char *file, int line)
     if (errstr) {
         /* we cannot use bio_err here */
         fprintf(stderr,
-                "openssl (lock_dbg_cb): %s (mode=%d, type=%d) at %s:%d\n",
+                "\x6f\x70\x65\x6e\x73\x73\x6c\x20\x28\x6c\x6f\x63\x6b\x5f\x64\x62\x67\x5f\x63\x62\x29\x3a\x20\x25\x73\x20\x28\x6d\x6f\x64\x65\x3d\x25\x64\x2c\x20\x74\x79\x70\x65\x3d\x25\x64\x29\x20\x61\x74\x20\x25\x73\x3a\x25\x64\xa",
                 errstr, mode, type, file, line);
     }
 }
@@ -288,10 +288,10 @@ int main(int Argc, char *ARGV[])
         if ((bio_err = BIO_new(BIO_s_file())) != NULL)
             BIO_set_fp(bio_err, stderr, BIO_NOCLOSE | BIO_FP_TEXT);
 
-    if (getenv("OPENSSL_DEBUG_MEMORY") != NULL) { /* if not defined, use
+    if (getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x4f\x52\x59") != NULL) { /* if not defined, use
                                                    * compiled-in library
                                                    * defaults */
-        if (!(0 == strcmp(getenv("OPENSSL_DEBUG_MEMORY"), "off"))) {
+        if (!(0 == strcmp(getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x4f\x52\x59"), "\x6f\x66\x66"))) {
             CRYPTO_malloc_debug_init();
             CRYPTO_set_mem_debug_options(V_CRYPTO_MDEBUG_ALL);
         } else {
@@ -302,13 +302,13 @@ int main(int Argc, char *ARGV[])
     CRYPTO_mem_ctrl(CRYPTO_MEM_CHECK_ON);
 
 #if 0
-    if (getenv("OPENSSL_DEBUG_LOCKING") != NULL)
+    if (getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x44\x45\x42\x55\x47\x5f\x4c\x4f\x43\x4b\x49\x4e\x47") != NULL)
 #endif
     {
         CRYPTO_set_locking_callback(lock_dbg_cb);
     }
 
-    if (getenv("OPENSSL_FIPS")) {
+    if (getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x46\x49\x50\x53")) {
 #ifdef OPENSSL_FIPS
         if (!FIPS_mode_set(1)) {
             ERR_load_crypto_strings();
@@ -316,7 +316,7 @@ int main(int Argc, char *ARGV[])
             EXIT(1);
         }
 #else
-        fprintf(stderr, "FIPS mode not supported.\n");
+        fprintf(stderr, "\x46\x49\x50\x53\x20\x6d\x6f\x64\x65\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x2e\xa");
         EXIT(1);
 #endif
     }
@@ -324,9 +324,9 @@ int main(int Argc, char *ARGV[])
     apps_startup();
 
     /* Lets load up our environment a little */
-    p = getenv("OPENSSL_CONF");
+    p = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x43\x4f\x4e\x46");
     if (p == NULL)
-        p = getenv("SSLEAY_CONF");
+        p = getenv("\x53\x53\x4c\x45\x41\x59\x5f\x43\x4f\x4e\x46");
     if (p == NULL)
         p = to_free = make_config_name();
 
@@ -337,7 +337,7 @@ int main(int Argc, char *ARGV[])
     if (i == 0) {
         if (ERR_GET_REASON(ERR_peek_last_error())
             == CONF_R_NO_SUCH_FILE) {
-            BIO_printf(bio_err, "WARNING: can't open config file: %s\n", p);
+            BIO_printf(bio_err, "\x57\x41\x52\x4e\x49\x4e\x47\x3a\x20\x63\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x3a\x20\x25\x73\xa", p);
             ERR_clear_error();
             NCONF_free(config);
             config = NULL;
@@ -382,21 +382,21 @@ int main(int Argc, char *ARGV[])
         n = sizeof buf;
         i = 0;
         for (;;) {
-            p[0] = '\0';
+            p[0] = '\x0';
             if (i++)
-                prompt = ">";
+                prompt = "\x3e";
             else
-                prompt = "OpenSSL> ";
+                prompt = "\x4f\x70\x65\x6e\x53\x53\x4c\x3e\x20";
             fputs(prompt, stdout);
             fflush(stdout);
             if (!fgets(p, n, stdin))
                 goto end;
-            if (p[0] == '\0')
+            if (p[0] == '\x0')
                 goto end;
             i = strlen(p);
             if (i <= 1)
                 break;
-            if (p[i - 2] != '\\')
+            if (p[i - 2] != '\x5c')
                 break;
             i -= 2;
             p += i;
@@ -411,10 +411,10 @@ int main(int Argc, char *ARGV[])
             goto end;
         }
         if (ret != 0)
-            BIO_printf(bio_err, "error in %s\n", argv[0]);
+            BIO_printf(bio_err, "\x65\x72\x72\x6f\x72\x20\x69\x6e\x20\x25\x73\xa", argv[0]);
         (void)BIO_flush(bio_err);
     }
-    BIO_printf(bio_err, "bad exit\n");
+    BIO_printf(bio_err, "\x62\x61\x64\x20\x65\x78\x69\x74\xa");
     ret = 1;
  end:
     if (to_free)
@@ -444,12 +444,12 @@ int main(int Argc, char *ARGV[])
     OPENSSL_EXIT(ret);
 }
 
-#define LIST_STANDARD_COMMANDS "list-standard-commands"
-#define LIST_MESSAGE_DIGEST_COMMANDS "list-message-digest-commands"
-#define LIST_MESSAGE_DIGEST_ALGORITHMS "list-message-digest-algorithms"
-#define LIST_CIPHER_COMMANDS "list-cipher-commands"
-#define LIST_CIPHER_ALGORITHMS "list-cipher-algorithms"
-#define LIST_PUBLIC_KEY_ALGORITHMS "list-public-key-algorithms"
+#define LIST_STANDARD_COMMANDS "\x6c\x69\x73\x74\x2d\x73\x74\x61\x6e\x64\x61\x72\x64\x2d\x63\x6f\x6d\x6d\x61\x6e\x64\x73"
+#define LIST_MESSAGE_DIGEST_COMMANDS "\x6c\x69\x73\x74\x2d\x6d\x65\x73\x73\x61\x67\x65\x2d\x64\x69\x67\x65\x73\x74\x2d\x63\x6f\x6d\x6d\x61\x6e\x64\x73"
+#define LIST_MESSAGE_DIGEST_ALGORITHMS "\x6c\x69\x73\x74\x2d\x6d\x65\x73\x73\x61\x67\x65\x2d\x64\x69\x67\x65\x73\x74\x2d\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x73"
+#define LIST_CIPHER_COMMANDS "\x6c\x69\x73\x74\x2d\x63\x69\x70\x68\x65\x72\x2d\x63\x6f\x6d\x6d\x61\x6e\x64\x73"
+#define LIST_CIPHER_ALGORITHMS "\x6c\x69\x73\x74\x2d\x63\x69\x70\x68\x65\x72\x2d\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x73"
+#define LIST_PUBLIC_KEY_ALGORITHMS "\x6c\x69\x73\x74\x2d\x70\x75\x62\x6c\x69\x63\x2d\x6b\x65\x79\x2d\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x73"
 
 static int do_cmd(LHASH_OF(FUNCTION) *prog, int argc, char *argv[])
 {
@@ -475,7 +475,7 @@ static int do_cmd(LHASH_OF(FUNCTION) *prog, int argc, char *argv[])
     }
     if (fp != NULL) {
         ret = fp->func(argc, argv);
-    } else if ((strncmp(argv[0], "no-", 3)) == 0) {
+    } else if ((strncmp(argv[0], "\x6e\x6f\x2d", 3)) == 0) {
         BIO *bio_stdout = BIO_new_fp(stdout, BIO_NOCLOSE);
 #ifdef OPENSSL_SYS_VMS
         {
@@ -486,15 +486,15 @@ static int do_cmd(LHASH_OF(FUNCTION) *prog, int argc, char *argv[])
         f.name = argv[0] + 3;
         ret = (lh_FUNCTION_retrieve(prog, &f) != NULL);
         if (!ret)
-            BIO_printf(bio_stdout, "%s\n", argv[0]);
+            BIO_printf(bio_stdout, "\x25\x73\xa", argv[0]);
         else
-            BIO_printf(bio_stdout, "%s\n", argv[0] + 3);
+            BIO_printf(bio_stdout, "\x25\x73\xa", argv[0] + 3);
         BIO_free_all(bio_stdout);
         goto end;
-    } else if ((strcmp(argv[0], "quit") == 0) ||
-               (strcmp(argv[0], "q") == 0) ||
-               (strcmp(argv[0], "exit") == 0) ||
-               (strcmp(argv[0], "bye") == 0)) {
+    } else if ((strcmp(argv[0], "\x71\x75\x69\x74") == 0) ||
+               (strcmp(argv[0], "\x71") == 0) ||
+               (strcmp(argv[0], "\x65\x78\x69\x74") == 0) ||
+               (strcmp(argv[0], "\x62\x79\x65") == 0)) {
         ret = -1;
         goto end;
     } else if ((strcmp(argv[0], LIST_STANDARD_COMMANDS) == 0) ||
@@ -538,15 +538,15 @@ static int do_cmd(LHASH_OF(FUNCTION) *prog, int argc, char *argv[])
         else {
             for (fp = functions; fp->name != NULL; fp++)
                 if (fp->type == list_type)
-                    BIO_printf(bio_stdout, "%s\n", fp->name);
+                    BIO_printf(bio_stdout, "\x25\x73\xa", fp->name);
         }
         BIO_free_all(bio_stdout);
         ret = 0;
         goto end;
     } else {
-        BIO_printf(bio_err, "openssl:Error: '%s' is an invalid command.\n",
+        BIO_printf(bio_err, "\x6f\x70\x65\x6e\x73\x73\x6c\x3a\x45\x72\x72\x6f\x72\x3a\x20\x27\x25\x73\x27\x20\x69\x73\x20\x61\x6e\x20\x69\x6e\x76\x61\x6c\x69\x64\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x2e\xa",
                    argv[0]);
-        BIO_printf(bio_err, "\nStandard commands");
+        BIO_printf(bio_err, "\xa\x53\x74\x61\x6e\x64\x61\x72\x64\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x73");
         i = 0;
         tp = 0;
         for (fp = functions; fp->name != NULL; fp++) {
@@ -557,30 +557,30 @@ static int do_cmd(LHASH_OF(FUNCTION) *prog, int argc, char *argv[])
             if (((i++) % 4) == 0)
 #endif
             {
-                BIO_printf(bio_err, "\n");
+                BIO_printf(bio_err, "\xa");
                 nl = 1;
             }
             if (fp->type != tp) {
                 tp = fp->type;
                 if (!nl)
-                    BIO_printf(bio_err, "\n");
+                    BIO_printf(bio_err, "\xa");
                 if (tp == FUNC_TYPE_MD) {
                     i = 1;
                     BIO_printf(bio_err,
-                               "\nMessage Digest commands (see the `dgst' command for more details)\n");
+                               "\xa\x4d\x65\x73\x73\x61\x67\x65\x20\x44\x69\x67\x65\x73\x74\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x73\x20\x28\x73\x65\x65\x20\x74\x68\x65\x20\x60\x64\x67\x73\x74\x27\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x66\x6f\x72\x20\x6d\x6f\x72\x65\x20\x64\x65\x74\x61\x69\x6c\x73\x29\xa");
                 } else if (tp == FUNC_TYPE_CIPHER) {
                     i = 1;
                     BIO_printf(bio_err,
-                               "\nCipher commands (see the `enc' command for more details)\n");
+                               "\xaC\x69\x70\x68\x65\x72\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x73\x20\x28\x73\x65\x65\x20\x74\x68\x65\x20\x60\x65\x6e\x63\x27\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x66\x6f\x72\x20\x6d\x6f\x72\x65\x20\x64\x65\x74\x61\x69\x6c\x73\x29\xa");
                 }
             }
 #ifdef OPENSSL_NO_CAMELLIA
-            BIO_printf(bio_err, "%-15s", fp->name);
+            BIO_printf(bio_err, "\x25\x2d\x31\x35\x73", fp->name);
 #else
-            BIO_printf(bio_err, "%-18s", fp->name);
+            BIO_printf(bio_err, "\x25\x2d\x31\x38\x73", fp->name);
 #endif
         }
-        BIO_printf(bio_err, "\n\n");
+        BIO_printf(bio_err, "\xa\xa");
         ret = 0;
     }
  end:
@@ -608,18 +608,18 @@ static void list_pkey(BIO *out)
         EVP_PKEY_asn1_get0_info(&pkey_id, &pkey_base_id, &pkey_flags,
                                 &pinfo, &pem_str, ameth);
         if (pkey_flags & ASN1_PKEY_ALIAS) {
-            BIO_printf(out, "Name: %s\n", OBJ_nid2ln(pkey_id));
-            BIO_printf(out, "\tType: Alias to %s\n",
+            BIO_printf(out, "\x4e\x61\x6d\x65\x3a\x20\x25\x73\xa", OBJ_nid2ln(pkey_id));
+            BIO_printf(out, "\x9\x54\x79\x70\x65\x3a\x20\x41\x6c\x69\x61\x73\x20\x74\x6f\x20\x25\x73\xa",
                        OBJ_nid2ln(pkey_base_id));
         } else {
-            BIO_printf(out, "Name: %s\n", pinfo);
-            BIO_printf(out, "\tType: %s Algorithm\n",
+            BIO_printf(out, "\x4e\x61\x6d\x65\x3a\x20\x25\x73\xa", pinfo);
+            BIO_printf(out, "\x9\x54\x79\x70\x65\x3a\x20\x25\x73\x20\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\xa",
                        pkey_flags & ASN1_PKEY_DYNAMIC ?
-                       "External" : "Builtin");
-            BIO_printf(out, "\tOID: %s\n", OBJ_nid2ln(pkey_id));
+                       "\x45\x78\x74\x65\x72\x6e\x61\x6c" : "\x42\x75\x69\x6c\x74\x69\x6e");
+            BIO_printf(out, "\x9\x4f\x49\x44\x3a\x20\x25\x73\xa", OBJ_nid2ln(pkey_id));
             if (pem_str == NULL)
-                pem_str = "(none)";
-            BIO_printf(out, "\tPEM string: %s\n", pem_str);
+                pem_str = "\x28\x6e\x6f\x6e\x65\x29";
+            BIO_printf(out, "\x9\x50\x45\x4d\x20\x73\x74\x72\x69\x6e\x67\x3a\x20\x25\x73\xa", pem_str);
         }
 
     }
@@ -629,13 +629,13 @@ static void list_cipher_fn(const EVP_CIPHER *c,
                            const char *from, const char *to, void *arg)
 {
     if (c)
-        BIO_printf(arg, "%s\n", EVP_CIPHER_name(c));
+        BIO_printf(arg, "\x25\x73\xa", EVP_CIPHER_name(c));
     else {
         if (!from)
-            from = "<undefined>";
+            from = "\x3c\x75\x6e\x64\x65\x66\x69\x6e\x65\x64\x3e";
         if (!to)
-            to = "<undefined>";
-        BIO_printf(arg, "%s => %s\n", from, to);
+            to = "\x3c\x75\x6e\x64\x65\x66\x69\x6e\x65\x64\x3e";
+        BIO_printf(arg, "\x25\x73\x20\x3d\x3e\x20\x25\x73\xa", from, to);
     }
 }
 
@@ -648,13 +648,13 @@ static void list_md_fn(const EVP_MD *m,
                        const char *from, const char *to, void *arg)
 {
     if (m)
-        BIO_printf(arg, "%s\n", EVP_MD_name(m));
+        BIO_printf(arg, "\x25\x73\xa", EVP_MD_name(m));
     else {
         if (!from)
-            from = "<undefined>";
+            from = "\x3c\x75\x6e\x64\x65\x66\x69\x6e\x65\x64\x3e";
         if (!to)
-            to = "<undefined>";
-        BIO_printf(arg, "%s => %s\n", from, to);
+            to = "\x3c\x75\x6e\x64\x65\x66\x69\x6e\x65\x64\x3e";
+        BIO_printf(arg, "\x25\x73\x20\x3d\x3e\x20\x25\x73\xa", from, to);
     }
 }
 

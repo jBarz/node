@@ -216,13 +216,13 @@ static size_t tls1_1_multi_block_encrypt(EVP_AES_HMAC_SHA1 *key,
     union {
         u64 q[16];
         u32 d[32];
-        u8 c[128];
+         c[128];
     } blocks[8];
     SHA1_MB_CTX *ctx;
     unsigned int frag, last, packlen, i, x4 = 4 * n4x, minblocks, processed =
         0;
     size_t ret = 0;
-    u8 *IVs;
+     *IVs;
 #   if defined(BSWAP8)
     u64 seqnum;
 #   endif
@@ -280,16 +280,16 @@ static size_t tls1_1_multi_block_encrypt(EVP_AES_HMAC_SHA1 *key,
         blocks[i].q[0] = BSWAP8(seqnum + i);
 #   else
         for (carry = i, j = 8; j--;) {
-            blocks[i].c[j] = ((u8 *)key->md.data)[j] + carry;
+            blocks[i].c[j] = (( *)key->md.data)[j] + carry;
             carry = (blocks[i].c[j] - carry) >> (sizeof(carry) * 8 - 1);
         }
 #   endif
-        blocks[i].c[8] = ((u8 *)key->md.data)[8];
-        blocks[i].c[9] = ((u8 *)key->md.data)[9];
-        blocks[i].c[10] = ((u8 *)key->md.data)[10];
+        blocks[i].c[8] = (( *)key->md.data)[8];
+        blocks[i].c[9] = (( *)key->md.data)[9];
+        blocks[i].c[10] = (( *)key->md.data)[10];
         /* fix length */
-        blocks[i].c[11] = (u8)(len >> 8);
-        blocks[i].c[12] = (u8)(len);
+        blocks[i].c[11] = ()(len >> 8);
+        blocks[i].c[12] = ()(len);
 
         memcpy(blocks[i].c + 13, hash_d[i].ptr, 64 - 13);
         hash_d[i].ptr += 64 - 13;
@@ -304,7 +304,7 @@ static size_t tls1_1_multi_block_encrypt(EVP_AES_HMAC_SHA1 *key,
     /* hash bulk inputs */
 #   define MAXCHUNKSIZE    2048
 #   if     MAXCHUNKSIZE%64
-#    error  "MAXCHUNKSIZE is not divisible by 64"
+#    error  "\x4d\x41\x58\x43\x48\x55\x4e\x4b\x53\x49\x5a\x45\x20\x69\x73\x20\x6e\x6f\x74\x20\x64\x69\x76\x69\x73\x69\x62\x6c\x65\x20\x62\x79\x20\x36\x34"
 #   elif   MAXCHUNKSIZE
     /*
      * goal is to minimize pressure on L1 cache by moving in shorter steps,
@@ -434,11 +434,11 @@ static size_t tls1_1_multi_block_encrypt(EVP_AES_HMAC_SHA1 *key,
         len += 16;              /* account for explicit iv */
 
         /* arrange header */
-        out0[0] = ((u8 *)key->md.data)[8];
-        out0[1] = ((u8 *)key->md.data)[9];
-        out0[2] = ((u8 *)key->md.data)[10];
-        out0[3] = (u8)(len >> 8);
-        out0[4] = (u8)(len);
+        out0[0] = (( *)key->md.data)[8];
+        out0[1] = (( *)key->md.data)[9];
+        out0[2] = (( *)key->md.data)[10];
+        out0[3] = ()(len >> 8);
+        out0[4] = ()(len);
 
         ret += len + 5;
         inp += frag;
@@ -503,7 +503,7 @@ static int aesni_cbc_hmac_sha1_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
         sha_off += iv;
         SHA1_Update(&key->md, in + sha_off, plen - sha_off);
 
-        if (plen != len) {      /* "TLS" mode of operation */
+        if (plen != len) {      /* "\x54\x4c\x53" mode of operation */
             if (in != out)
                 memcpy(out + aes_off, in + aes_off, plen - aes_off);
 
@@ -533,7 +533,7 @@ static int aesni_cbc_hmac_sha1_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
         /* arrange cache line alignment */
         pmac = (void *)(((size_t)mac.c + 31) & ((size_t)0 - 32));
 
-        if (plen != NO_PAYLOAD_LENGTH) { /* "TLS" mode of operation */
+        if (plen != NO_PAYLOAD_LENGTH) { /* "\x54\x4c\x53" mode of operation */
             size_t inp_len, mask, j, i;
             unsigned int res, maxpad, pad, bitlen;
             int ret = 1;

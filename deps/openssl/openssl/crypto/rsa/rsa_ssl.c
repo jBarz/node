@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -85,17 +85,17 @@ int RSA_padding_add_SSLv23(unsigned char *to, int tlen,
     if (RAND_bytes(p, j) <= 0)
         return (0);
     for (i = 0; i < j; i++) {
-        if (*p == '\0')
+        if (*p == '\x0')
             do {
                 if (RAND_bytes(p, 1) <= 0)
                     return (0);
-            } while (*p == '\0');
+            } while (*p == '\x0');
         p++;
     }
 
     memset(p, 3, 8);
     p += 8;
-    *(p++) = '\0';
+    *(p++) = '\x0';
 
     memcpy(p, from, (unsigned int)flen);
     return (1);
@@ -137,7 +137,7 @@ int RSA_padding_check_SSLv23(unsigned char *to, int tlen,
         return (-1);
     }
 
-    i++;                        /* Skip over the '\0' */
+    i++;                        /* Skip over the '\x0' */
     j -= i;
     if (j > tlen) {
         RSAerr(RSA_F_RSA_PADDING_CHECK_SSLV23, RSA_R_DATA_TOO_LARGE);

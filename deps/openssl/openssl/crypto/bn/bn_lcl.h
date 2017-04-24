@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -249,22 +249,22 @@ extern "C" {
 #  if defined(__alpha) && (defined(SIXTY_FOUR_BIT_LONG) || defined(SIXTY_FOUR_BIT))
 #   if defined(__DECC)
 #    include <c_asm.h>
-#    define BN_UMULT_HIGH(a,b)   (BN_ULONG)asm("umulh %a0,%a1,%v0",(a),(b))
+#    define BN_UMULT_HIGH(a,b)   (BN_ULONG)asm("\x75\x6d\x75\x6c\x68\x20\x25\x61\x30\x2c\x25\x61\x31\x2c\x25\x76\x30",(a),(b))
 #   elif defined(__GNUC__) && __GNUC__>=2
 #    define BN_UMULT_HIGH(a,b)   ({      \
         register BN_ULONG ret;          \
-        asm ("umulh     %1,%2,%0"       \
-             : "=r"(ret)                \
-             : "r"(a), "r"(b));         \
+        asm ("\x75\x6d\x75\x6c\x68\x20\x20\x20\x20\x20\x25\x31\x2c\x25\x32\x2c\x25\x30"       \
+             : "\x3d\x72"(ret)                \
+             : "\x72"(a), "\x72"(b));         \
         ret;                    })
 #   endif                       /* compiler */
 #  elif defined(_ARCH_PPC) && defined(__64BIT__) && defined(SIXTY_FOUR_BIT_LONG)
 #   if defined(__GNUC__) && __GNUC__>=2
 #    define BN_UMULT_HIGH(a,b)   ({      \
         register BN_ULONG ret;          \
-        asm ("mulhdu    %0,%1,%2"       \
-             : "=r"(ret)                \
-             : "r"(a), "r"(b));         \
+        asm ("\x6d\x75\x6c\x68\x64\x75\x20\x20\x20\x20\x25\x30\x2c\x25\x31\x2c\x25\x32"       \
+             : "\x3d\x72"(ret)                \
+             : "\x72"(a), "\x72"(b));         \
         ret;                    })
 #   endif                       /* compiler */
 #  elif (defined(__x86_64) || defined(__x86_64__)) && \
@@ -272,16 +272,16 @@ extern "C" {
 #   if defined(__GNUC__) && __GNUC__>=2
 #    define BN_UMULT_HIGH(a,b)   ({      \
         register BN_ULONG ret,discard;  \
-        asm ("mulq      %3"             \
-             : "=a"(discard),"=d"(ret)  \
-             : "a"(a), "g"(b)           \
-             : "cc");                   \
+        asm ("\x6d\x75\x6c\x71\x20\x20\x20\x20\x20\x20\x25\x33"             \
+             : "\x3d\x61"(discard),"\x3d\x64"(ret)  \
+             : "\x61"(a), "\x67"(b)           \
+             : "\x63\x63");                   \
         ret;                    })
 #    define BN_UMULT_LOHI(low,high,a,b)  \
-        asm ("mulq      %3"             \
-                : "=a"(low),"=d"(high)  \
-                : "a"(a),"g"(b)         \
-                : "cc");
+        asm ("\x6d\x75\x6c\x71\x20\x20\x20\x20\x20\x20\x25\x33"             \
+                : "\x3d\x61"(low),"\x3d\x64"(high)  \
+                : "\x61"(a),"\x67"(b)         \
+                : "\x63\x63");
 #   endif
 #  elif (defined(_M_AMD64) || defined(_M_X64)) && defined(SIXTY_FOUR_BIT)
 #   if defined(_MSC_VER) && _MSC_VER>=1400
@@ -303,23 +303,23 @@ unsigned __int64 _umul128(unsigned __int64 a, unsigned __int64 b,
 #    else
 #     define BN_UMULT_HIGH(a,b) ({      \
         register BN_ULONG ret;          \
-        asm ("dmultu    %1,%2"          \
-             : "=h"(ret)                \
-             : "r"(a), "r"(b) : "l");   \
+        asm ("\x64\x6d\x75\x6c\x74\x75\x20\x20\x20\x20\x25\x31\x2c\x25\x32"          \
+             : "\x3d\x68"(ret)                \
+             : "\x72"(a), "\x72"(b) : "\x6c");   \
         ret;                    })
 #     define BN_UMULT_LOHI(low,high,a,b)\
-        asm ("dmultu    %2,%3"          \
-             : "=l"(low),"=h"(high)     \
-             : "r"(a), "r"(b));
+        asm ("\x64\x6d\x75\x6c\x74\x75\x20\x20\x20\x20\x25\x32\x2c\x25\x33"          \
+             : "\x3d\x6c"(low),"\x3d\x68"(high)     \
+             : "\x72"(a), "\x72"(b));
 #    endif
 #   endif
 #  elif defined(__aarch64__) && defined(SIXTY_FOUR_BIT_LONG)
 #   if defined(__GNUC__) && __GNUC__>=2
 #    define BN_UMULT_HIGH(a,b)   ({      \
         register BN_ULONG ret;          \
-        asm ("umulh     %0,%1,%2"       \
-             : "=r"(ret)                \
-             : "r"(a), "r"(b));         \
+        asm ("\x75\x6d\x75\x6c\x68\x20\x20\x20\x20\x20\x25\x30\x2c\x25\x31\x2c\x25\x32"       \
+             : "\x3d\x72"(ret)                \
+             : "\x72"(a), "\x72"(b));         \
         ret;                    })
 #   endif
 #  endif                        /* cpu */

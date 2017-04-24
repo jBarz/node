@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -132,7 +132,7 @@ int MAIN(int argc, char **argv)
 {
     ENGINE *e = NULL;
     char **args;
-    char *host = NULL, *port = NULL, *path = "/";
+    char *host = NULL, *port = NULL, *path = "\x2f";
     char *thost = NULL, *tport = NULL, *tpath = NULL;
     char *reqin = NULL, *respin = NULL;
     char *reqout = NULL, *respout = NULL;
@@ -185,24 +185,24 @@ int MAIN(int argc, char **argv)
     args = argv + 1;
     reqnames = sk_OPENSSL_STRING_new_null();
     ids = sk_OCSP_CERTID_new_null();
-    while (!badarg && *args && *args[0] == '-') {
-        if (!strcmp(*args, "-out")) {
+    while (!badarg && *args && *args[0] == '\x2d') {
+        if (!strcmp(*args, "\x2d\x6f\x75\x74")) {
             if (args[1]) {
                 args++;
                 outfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-timeout")) {
+        } else if (!strcmp(*args, "\x2d\x74\x69\x6d\x65\x6f\x75\x74")) {
             if (args[1]) {
                 args++;
                 req_timeout = atol(*args);
                 if (req_timeout < 0) {
-                    BIO_printf(bio_err, "Illegal timeout value %s\n", *args);
+                    BIO_printf(bio_err, "\x49\x6c\x6c\x65\x67\x61\x6c\x20\x74\x69\x6d\x65\x6f\x75\x74\x20\x76\x61\x6c\x75\x65\x20\x25\x73\xa", *args);
                     badarg = 1;
                 }
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-url")) {
+        } else if (!strcmp(*args, "\x2d\x75\x72\x6c")) {
             if (thost)
                 OPENSSL_free(thost);
             if (tport)
@@ -213,7 +213,7 @@ int MAIN(int argc, char **argv)
             if (args[1]) {
                 args++;
                 if (!OCSP_parse_url(*args, &host, &port, &path, &use_ssl)) {
-                    BIO_printf(bio_err, "Error parsing URL\n");
+                    BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x55\x52\x4c\xa");
                     badarg = 1;
                 }
                 thost = host;
@@ -221,106 +221,106 @@ int MAIN(int argc, char **argv)
                 tpath = path;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-host")) {
+        } else if (!strcmp(*args, "\x2d\x68\x6f\x73\x74")) {
             if (args[1]) {
                 args++;
                 host = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-port")) {
+        } else if (!strcmp(*args, "\x2d\x70\x6f\x72\x74")) {
             if (args[1]) {
                 args++;
                 port = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-header")) {
+        } else if (!strcmp(*args, "\x2d\x68\x65\x61\x64\x65\x72")) {
             if (args[1] && args[2]) {
                 if (!X509V3_add_value(args[1], args[2], &headers))
                     goto end;
                 args += 2;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-ignore_err"))
+        } else if (!strcmp(*args, "\x2d\x69\x67\x6e\x6f\x72\x65\x5f\x65\x72\x72"))
             ignore_err = 1;
-        else if (!strcmp(*args, "-noverify"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x76\x65\x72\x69\x66\x79"))
             noverify = 1;
-        else if (!strcmp(*args, "-nonce"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x6e\x63\x65"))
             add_nonce = 2;
-        else if (!strcmp(*args, "-no_nonce"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x5f\x6e\x6f\x6e\x63\x65"))
             add_nonce = 0;
-        else if (!strcmp(*args, "-resp_no_certs"))
+        else if (!strcmp(*args, "\x2d\x72\x65\x73\x70\x5f\x6e\x6f\x5f\x63\x65\x72\x74\x73"))
             rflags |= OCSP_NOCERTS;
-        else if (!strcmp(*args, "-resp_key_id"))
+        else if (!strcmp(*args, "\x2d\x72\x65\x73\x70\x5f\x6b\x65\x79\x5f\x69\x64"))
             rflags |= OCSP_RESPID_KEY;
-        else if (!strcmp(*args, "-no_certs"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x5f\x63\x65\x72\x74\x73"))
             sign_flags |= OCSP_NOCERTS;
-        else if (!strcmp(*args, "-no_signature_verify"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x5f\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x5f\x76\x65\x72\x69\x66\x79"))
             verify_flags |= OCSP_NOSIGS;
-        else if (!strcmp(*args, "-no_cert_verify"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x5f\x63\x65\x72\x74\x5f\x76\x65\x72\x69\x66\x79"))
             verify_flags |= OCSP_NOVERIFY;
-        else if (!strcmp(*args, "-no_chain"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x5f\x63\x68\x61\x69\x6e"))
             verify_flags |= OCSP_NOCHAIN;
-        else if (!strcmp(*args, "-no_cert_checks"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x5f\x63\x65\x72\x74\x5f\x63\x68\x65\x63\x6b\x73"))
             verify_flags |= OCSP_NOCHECKS;
-        else if (!strcmp(*args, "-no_explicit"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x5f\x65\x78\x70\x6c\x69\x63\x69\x74"))
             verify_flags |= OCSP_NOEXPLICIT;
-        else if (!strcmp(*args, "-trust_other"))
+        else if (!strcmp(*args, "\x2d\x74\x72\x75\x73\x74\x5f\x6f\x74\x68\x65\x72"))
             verify_flags |= OCSP_TRUSTOTHER;
-        else if (!strcmp(*args, "-no_intern"))
+        else if (!strcmp(*args, "\x2d\x6e\x6f\x5f\x69\x6e\x74\x65\x72\x6e"))
             verify_flags |= OCSP_NOINTERN;
-        else if (!strcmp(*args, "-badsig"))
+        else if (!strcmp(*args, "\x2d\x62\x61\x64\x73\x69\x67"))
             badsig = 1;
-        else if (!strcmp(*args, "-text")) {
+        else if (!strcmp(*args, "\x2d\x74\x65\x78\x74")) {
             req_text = 1;
             resp_text = 1;
-        } else if (!strcmp(*args, "-req_text"))
+        } else if (!strcmp(*args, "\x2d\x72\x65\x71\x5f\x74\x65\x78\x74"))
             req_text = 1;
-        else if (!strcmp(*args, "-resp_text"))
+        else if (!strcmp(*args, "\x2d\x72\x65\x73\x70\x5f\x74\x65\x78\x74"))
             resp_text = 1;
-        else if (!strcmp(*args, "-reqin")) {
+        else if (!strcmp(*args, "\x2d\x72\x65\x71\x69\x6e")) {
             if (args[1]) {
                 args++;
                 reqin = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-respin")) {
+        } else if (!strcmp(*args, "\x2d\x72\x65\x73\x70\x69\x6e")) {
             if (args[1]) {
                 args++;
                 respin = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-signer")) {
+        } else if (!strcmp(*args, "\x2d\x73\x69\x67\x6e\x65\x72")) {
             if (args[1]) {
                 args++;
                 signfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-VAfile")) {
+        } else if (!strcmp(*args, "\x2d\x56\x41\x66\x69\x6c\x65")) {
             if (args[1]) {
                 args++;
                 verify_certfile = *args;
                 verify_flags |= OCSP_TRUSTOTHER;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-sign_other")) {
+        } else if (!strcmp(*args, "\x2d\x73\x69\x67\x6e\x5f\x6f\x74\x68\x65\x72")) {
             if (args[1]) {
                 args++;
                 sign_certfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-verify_other")) {
+        } else if (!strcmp(*args, "\x2d\x76\x65\x72\x69\x66\x79\x5f\x6f\x74\x68\x65\x72")) {
             if (args[1]) {
                 args++;
                 verify_certfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-CAfile")) {
+        } else if (!strcmp(*args, "\x2d\x43\x41\x66\x69\x6c\x65")) {
             if (args[1]) {
                 args++;
                 CAfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-CApath")) {
+        } else if (!strcmp(*args, "\x2d\x43\x41\x70\x61\x74\x68")) {
             if (args[1]) {
                 args++;
                 CApath = *args;
@@ -330,67 +330,67 @@ int MAIN(int argc, char **argv)
             if (badarg)
                 goto end;
             continue;
-        } else if (!strcmp(*args, "-validity_period")) {
+        } else if (!strcmp(*args, "\x2d\x76\x61\x6c\x69\x64\x69\x74\x79\x5f\x70\x65\x72\x69\x6f\x64")) {
             if (args[1]) {
                 args++;
                 nsec = atol(*args);
                 if (nsec < 0) {
                     BIO_printf(bio_err,
-                               "Illegal validity period %s\n", *args);
+                               "\x49\x6c\x6c\x65\x67\x61\x6c\x20\x76\x61\x6c\x69\x64\x69\x74\x79\x20\x70\x65\x72\x69\x6f\x64\x20\x25\x73\xa", *args);
                     badarg = 1;
                 }
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-status_age")) {
+        } else if (!strcmp(*args, "\x2d\x73\x74\x61\x74\x75\x73\x5f\x61\x67\x65")) {
             if (args[1]) {
                 args++;
                 maxage = atol(*args);
                 if (maxage < 0) {
-                    BIO_printf(bio_err, "Illegal validity age %s\n", *args);
+                    BIO_printf(bio_err, "\x49\x6c\x6c\x65\x67\x61\x6c\x20\x76\x61\x6c\x69\x64\x69\x74\x79\x20\x61\x67\x65\x20\x25\x73\xa", *args);
                     badarg = 1;
                 }
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-signkey")) {
+        } else if (!strcmp(*args, "\x2d\x73\x69\x67\x6e\x6b\x65\x79")) {
             if (args[1]) {
                 args++;
                 keyfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-reqout")) {
+        } else if (!strcmp(*args, "\x2d\x72\x65\x71\x6f\x75\x74")) {
             if (args[1]) {
                 args++;
                 reqout = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-respout")) {
+        } else if (!strcmp(*args, "\x2d\x72\x65\x73\x70\x6f\x75\x74")) {
             if (args[1]) {
                 args++;
                 respout = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-path")) {
+        } else if (!strcmp(*args, "\x2d\x70\x61\x74\x68")) {
             if (args[1]) {
                 args++;
                 path = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-issuer")) {
+        } else if (!strcmp(*args, "\x2d\x69\x73\x73\x75\x65\x72")) {
             if (args[1]) {
                 args++;
                 X509_free(issuer);
                 issuer = load_cert(bio_err, *args, FORMAT_PEM,
-                                   NULL, e, "issuer certificate");
+                                   NULL, e, "\x69\x73\x73\x75\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
                 if (!issuer)
                     goto end;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-cert")) {
+        } else if (!strcmp(*args, "\x2d\x63\x65\x72\x74")) {
             if (args[1]) {
                 args++;
                 X509_free(cert);
                 cert = load_cert(bio_err, *args, FORMAT_PEM,
-                                 NULL, e, "certificate");
+                                 NULL, e, "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
                 if (!cert)
                     goto end;
                 if (!cert_id_md)
@@ -401,7 +401,7 @@ int MAIN(int argc, char **argv)
                     goto end;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-serial")) {
+        } else if (!strcmp(*args, "\x2d\x73\x65\x72\x69\x61\x6c")) {
             if (args[1]) {
                 args++;
                 if (!cert_id_md)
@@ -412,24 +412,24 @@ int MAIN(int argc, char **argv)
                     goto end;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-index")) {
+        } else if (!strcmp(*args, "\x2d\x69\x6e\x64\x65\x78")) {
             if (args[1]) {
                 args++;
                 ridx_filename = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-CA")) {
+        } else if (!strcmp(*args, "\x2d\x43\x41")) {
             if (args[1]) {
                 args++;
                 rca_filename = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-nmin")) {
+        } else if (!strcmp(*args, "\x2d\x6e\x6d\x69\x6e")) {
             if (args[1]) {
                 args++;
                 nmin = atol(*args);
                 if (nmin < 0) {
-                    BIO_printf(bio_err, "Illegal update period %s\n", *args);
+                    BIO_printf(bio_err, "\x49\x6c\x6c\x65\x67\x61\x6c\x20\x75\x70\x64\x61\x74\x65\x20\x70\x65\x72\x69\x6f\x64\x20\x25\x73\xa", *args);
                     badarg = 1;
                 }
             }
@@ -437,45 +437,45 @@ int MAIN(int argc, char **argv)
                 ndays = 0;
             else
                 badarg = 1;
-        } else if (!strcmp(*args, "-nrequest")) {
+        } else if (!strcmp(*args, "\x2d\x6e\x72\x65\x71\x75\x65\x73\x74")) {
             if (args[1]) {
                 args++;
                 accept_count = atol(*args);
                 if (accept_count < 0) {
-                    BIO_printf(bio_err, "Illegal accept count %s\n", *args);
+                    BIO_printf(bio_err, "\x49\x6c\x6c\x65\x67\x61\x6c\x20\x61\x63\x63\x65\x70\x74\x20\x63\x6f\x75\x6e\x74\x20\x25\x73\xa", *args);
                     badarg = 1;
                 }
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-ndays")) {
+        } else if (!strcmp(*args, "\x2d\x6e\x64\x61\x79\x73")) {
             if (args[1]) {
                 args++;
                 ndays = atol(*args);
                 if (ndays < 0) {
-                    BIO_printf(bio_err, "Illegal update period %s\n", *args);
+                    BIO_printf(bio_err, "\x49\x6c\x6c\x65\x67\x61\x6c\x20\x75\x70\x64\x61\x74\x65\x20\x70\x65\x72\x69\x6f\x64\x20\x25\x73\xa", *args);
                     badarg = 1;
                 }
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-rsigner")) {
+        } else if (!strcmp(*args, "\x2d\x72\x73\x69\x67\x6e\x65\x72")) {
             if (args[1]) {
                 args++;
                 rsignfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-rkey")) {
+        } else if (!strcmp(*args, "\x2d\x72\x6b\x65\x79")) {
             if (args[1]) {
                 args++;
                 rkeyfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-rother")) {
+        } else if (!strcmp(*args, "\x2d\x72\x6f\x74\x68\x65\x72")) {
             if (args[1]) {
                 args++;
                 rcertfile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-rmd")) {
+        } else if (!strcmp(*args, "\x2d\x72\x6d\x64")) {
             if (args[1]) {
                 args++;
                 rsign_md = EVP_get_digestbyname(*args);
@@ -494,107 +494,107 @@ int MAIN(int argc, char **argv)
         badarg = 1;
 
     if (badarg) {
-        BIO_printf(bio_err, "OCSP utility\n");
-        BIO_printf(bio_err, "Usage ocsp [options]\n");
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, "-out file            output filename\n");
-        BIO_printf(bio_err, "-issuer file         issuer certificate\n");
-        BIO_printf(bio_err, "-cert file           certificate to check\n");
-        BIO_printf(bio_err, "-serial n            serial number to check\n");
+        BIO_printf(bio_err, "\x4f\x43\x53\x50\x20\x75\x74\x69\x6c\x69\x74\x79\xa");
+        BIO_printf(bio_err, "\x55\x73\x61\x67\x65\x20\x6f\x63\x73\x70\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\xa");
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x2d\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x6e\x61\x6d\x65\xa");
+        BIO_printf(bio_err, "\x2d\x69\x73\x73\x75\x65\x72\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x73\x73\x75\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
+        BIO_printf(bio_err, "\x2d\x63\x65\x72\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x74\x6f\x20\x63\x68\x65\x63\x6b\xa");
+        BIO_printf(bio_err, "\x2d\x73\x65\x72\x69\x61\x6c\x20\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x73\x65\x72\x69\x61\x6c\x20\x6e\x75\x6d\x62\x65\x72\x20\x74\x6f\x20\x63\x68\x65\x63\x6b\xa");
         BIO_printf(bio_err,
-                   "-signer file         certificate to sign OCSP request with\n");
+                   "\x2d\x73\x69\x67\x6e\x65\x72\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x74\x6f\x20\x73\x69\x67\x6e\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\x20\x77\x69\x74\x68\xa");
         BIO_printf(bio_err,
-                   "-signkey file        private key to sign OCSP request with\n");
+                   "\x2d\x73\x69\x67\x6e\x6b\x65\x79\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x74\x6f\x20\x73\x69\x67\x6e\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\x20\x77\x69\x74\x68\xa");
         BIO_printf(bio_err,
-                   "-sign_other file     additional certificates to include in signed request\n");
+                   "\x2d\x73\x69\x67\x6e\x5f\x6f\x74\x68\x65\x72\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x61\x64\x64\x69\x74\x69\x6f\x6e\x61\x6c\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x74\x6f\x20\x69\x6e\x63\x6c\x75\x64\x65\x20\x69\x6e\x20\x73\x69\x67\x6e\x65\x64\x20\x72\x65\x71\x75\x65\x73\x74\xa");
         BIO_printf(bio_err,
-                   "-no_certs            don't include any certificates in signed request\n");
+                   "\x2d\x6e\x6f\x5f\x63\x65\x72\x74\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x20\x61\x6e\x79\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x69\x6e\x20\x73\x69\x67\x6e\x65\x64\x20\x72\x65\x71\x75\x65\x73\x74\xa");
         BIO_printf(bio_err,
-                   "-req_text            print text form of request\n");
+                   "\x2d\x72\x65\x71\x5f\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x72\x69\x6e\x74\x20\x74\x65\x78\x74\x20\x66\x6f\x72\x6d\x20\x6f\x66\x20\x72\x65\x71\x75\x65\x73\x74\xa");
         BIO_printf(bio_err,
-                   "-resp_text           print text form of response\n");
+                   "\x2d\x72\x65\x73\x70\x5f\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x72\x69\x6e\x74\x20\x74\x65\x78\x74\x20\x66\x6f\x72\x6d\x20\x6f\x66\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
         BIO_printf(bio_err,
-                   "-text                print text form of request and response\n");
+                   "\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x72\x69\x6e\x74\x20\x74\x65\x78\x74\x20\x66\x6f\x72\x6d\x20\x6f\x66\x20\x72\x65\x71\x75\x65\x73\x74\x20\x61\x6e\x64\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
         BIO_printf(bio_err,
-                   "-reqout file         write DER encoded OCSP request to \"file\"\n");
+                   "\x2d\x72\x65\x71\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x77\x72\x69\x74\x65\x20\x44\x45\x52\x20\x65\x6e\x63\x6f\x64\x65\x64\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\x20\x74\x6f\x20\x22\x66\x69\x6c\x65\x22\xa");
         BIO_printf(bio_err,
-                   "-respout file        write DER encoded OCSP reponse to \"file\"\n");
+                   "\x2d\x72\x65\x73\x70\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x77\x72\x69\x74\x65\x20\x44\x45\x52\x20\x65\x6e\x63\x6f\x64\x65\x64\x20\x4f\x43\x53\x50\x20\x72\x65\x70\x6f\x6e\x73\x65\x20\x74\x6f\x20\x22\x66\x69\x6c\x65\x22\xa");
         BIO_printf(bio_err,
-                   "-reqin file          read DER encoded OCSP request from \"file\"\n");
+                   "\x2d\x72\x65\x71\x69\x6e\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x72\x65\x61\x64\x20\x44\x45\x52\x20\x65\x6e\x63\x6f\x64\x65\x64\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\x20\x66\x72\x6f\x6d\x20\x22\x66\x69\x6c\x65\x22\xa");
         BIO_printf(bio_err,
-                   "-respin file         read DER encoded OCSP reponse from \"file\"\n");
+                   "\x2d\x72\x65\x73\x70\x69\x6e\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x72\x65\x61\x64\x20\x44\x45\x52\x20\x65\x6e\x63\x6f\x64\x65\x64\x20\x4f\x43\x53\x50\x20\x72\x65\x70\x6f\x6e\x73\x65\x20\x66\x72\x6f\x6d\x20\x22\x66\x69\x6c\x65\x22\xa");
         BIO_printf(bio_err,
-                   "-nonce               add OCSP nonce to request\n");
+                   "\x2d\x6e\x6f\x6e\x63\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x61\x64\x64\x20\x4f\x43\x53\x50\x20\x6e\x6f\x6e\x63\x65\x20\x74\x6f\x20\x72\x65\x71\x75\x65\x73\x74\xa");
         BIO_printf(bio_err,
-                   "-no_nonce            don't add OCSP nonce to request\n");
-        BIO_printf(bio_err, "-url URL             OCSP responder URL\n");
+                   "\x2d\x6e\x6f\x5f\x6e\x6f\x6e\x63\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x61\x64\x64\x20\x4f\x43\x53\x50\x20\x6e\x6f\x6e\x63\x65\x20\x74\x6f\x20\x72\x65\x71\x75\x65\x73\x74\xa");
+        BIO_printf(bio_err, "\x2d\x75\x72\x6c\x20\x55\x52\x4c\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x55\x52\x4c\xa");
         BIO_printf(bio_err,
-                   "-host host:n         send OCSP request to host on port n\n");
+                   "\x2d\x68\x6f\x73\x74\x20\x68\x6f\x73\x74\x3a\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x73\x65\x6e\x64\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\x20\x74\x6f\x20\x68\x6f\x73\x74\x20\x6f\x6e\x20\x70\x6f\x72\x74\x20\x6e\xa");
         BIO_printf(bio_err,
-                   "-path                path to use in OCSP request\n");
+                   "\x2d\x70\x61\x74\x68\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x75\x73\x65\x20\x69\x6e\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\xa");
         BIO_printf(bio_err,
-                   "-CApath dir          trusted certificates directory\n");
+                   "\x2d\x43\x41\x70\x61\x74\x68\x20\x64\x69\x72\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x72\x75\x73\x74\x65\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\xa");
         BIO_printf(bio_err,
-                   "-CAfile file         trusted certificates file\n");
+                   "\x2d\x43\x41\x66\x69\x6c\x65\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x72\x75\x73\x74\x65\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   "-no_alt_chains       only ever use the first certificate chain found\n");
+                   "\x2d\x6e\x6f\x5f\x61\x6c\x74\x5f\x63\x68\x61\x69\x6e\x73\x20\x20\x20\x20\x20\x20\x20\x6f\x6e\x6c\x79\x20\x65\x76\x65\x72\x20\x75\x73\x65\x20\x74\x68\x65\x20\x66\x69\x72\x73\x74\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x63\x68\x61\x69\x6e\x20\x66\x6f\x75\x6e\x64\xa");
         BIO_printf(bio_err,
-                   "-VAfile file         validator certificates file\n");
+                   "\x2d\x56\x41\x66\x69\x6c\x65\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x76\x61\x6c\x69\x64\x61\x74\x6f\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   "-validity_period n   maximum validity discrepancy in seconds\n");
+                   "\x2d\x76\x61\x6c\x69\x64\x69\x74\x79\x5f\x70\x65\x72\x69\x6f\x64\x20\x6e\x20\x20\x20\x6d\x61\x78\x69\x6d\x75\x6d\x20\x76\x61\x6c\x69\x64\x69\x74\x79\x20\x64\x69\x73\x63\x72\x65\x70\x61\x6e\x63\x79\x20\x69\x6e\x20\x73\x65\x63\x6f\x6e\x64\x73\xa");
         BIO_printf(bio_err,
-                   "-status_age n        maximum status age in seconds\n");
+                   "\x2d\x73\x74\x61\x74\x75\x73\x5f\x61\x67\x65\x20\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x6d\x61\x78\x69\x6d\x75\x6d\x20\x73\x74\x61\x74\x75\x73\x20\x61\x67\x65\x20\x69\x6e\x20\x73\x65\x63\x6f\x6e\x64\x73\xa");
         BIO_printf(bio_err,
-                   "-noverify            don't verify response at all\n");
+                   "\x2d\x6e\x6f\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x76\x65\x72\x69\x66\x79\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x61\x74\x20\x61\x6c\x6c\xa");
         BIO_printf(bio_err,
-                   "-verify_other file   additional certificates to search for signer\n");
+                   "\x2d\x76\x65\x72\x69\x66\x79\x5f\x6f\x74\x68\x65\x72\x20\x66\x69\x6c\x65\x20\x20\x20\x61\x64\x64\x69\x74\x69\x6f\x6e\x61\x6c\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x74\x6f\x20\x73\x65\x61\x72\x63\x68\x20\x66\x6f\x72\x20\x73\x69\x67\x6e\x65\x72\xa");
         BIO_printf(bio_err,
-                   "-trust_other         don't verify additional certificates\n");
+                   "\x2d\x74\x72\x75\x73\x74\x5f\x6f\x74\x68\x65\x72\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x76\x65\x72\x69\x66\x79\x20\x61\x64\x64\x69\x74\x69\x6f\x6e\x61\x6c\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\xa");
         BIO_printf(bio_err,
-                   "-no_intern           don't search certificates contained in response for signer\n");
+                   "\x2d\x6e\x6f\x5f\x69\x6e\x74\x65\x72\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x73\x65\x61\x72\x63\x68\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x63\x6f\x6e\x74\x61\x69\x6e\x65\x64\x20\x69\x6e\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x66\x6f\x72\x20\x73\x69\x67\x6e\x65\x72\xa");
         BIO_printf(bio_err,
-                   "-no_signature_verify don't check signature on response\n");
+                   "\x2d\x6e\x6f\x5f\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x5f\x76\x65\x72\x69\x66\x79\x20\x64\x6f\x6e\x27\x74\x20\x63\x68\x65\x63\x6b\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x6f\x6e\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
         BIO_printf(bio_err,
-                   "-no_cert_verify      don't check signing certificate\n");
+                   "\x2d\x6e\x6f\x5f\x63\x65\x72\x74\x5f\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x63\x68\x65\x63\x6b\x20\x73\x69\x67\x6e\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
         BIO_printf(bio_err,
-                   "-no_chain            don't chain verify response\n");
+                   "\x2d\x6e\x6f\x5f\x63\x68\x61\x69\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x63\x68\x61\x69\x6e\x20\x76\x65\x72\x69\x66\x79\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
         BIO_printf(bio_err,
-                   "-no_cert_checks      don't do additional checks on signing certificate\n");
+                   "\x2d\x6e\x6f\x5f\x63\x65\x72\x74\x5f\x63\x68\x65\x63\x6b\x73\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x64\x6f\x20\x61\x64\x64\x69\x74\x69\x6f\x6e\x61\x6c\x20\x63\x68\x65\x63\x6b\x73\x20\x6f\x6e\x20\x73\x69\x67\x6e\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
         BIO_printf(bio_err,
-                   "-port num            port to run responder on\n");
+                   "\x2d\x70\x6f\x72\x74\x20\x6e\x75\x6d\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x6f\x72\x74\x20\x74\x6f\x20\x72\x75\x6e\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x6f\x6e\xa");
         BIO_printf(bio_err,
-                   "-index file          certificate status index file\n");
-        BIO_printf(bio_err, "-CA file             CA certificate\n");
+                   "\x2d\x69\x6e\x64\x65\x78\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x74\x61\x74\x75\x73\x20\x69\x6e\x64\x65\x78\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x2d\x43\x41\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x43\x41\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
         BIO_printf(bio_err,
-                   "-rsigner file        responder certificate to sign responses with\n");
+                   "\x2d\x72\x73\x69\x67\x6e\x65\x72\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x74\x6f\x20\x73\x69\x67\x6e\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x73\x20\x77\x69\x74\x68\xa");
         BIO_printf(bio_err,
-                   "-rkey file           responder key to sign responses with\n");
+                   "\x2d\x72\x6b\x65\x79\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x6b\x65\x79\x20\x74\x6f\x20\x73\x69\x67\x6e\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x73\x20\x77\x69\x74\x68\xa");
         BIO_printf(bio_err,
-                   "-rother file         other certificates to include in response\n");
+                   "\x2d\x72\x6f\x74\x68\x65\x72\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x74\x68\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x74\x6f\x20\x69\x6e\x63\x6c\x75\x64\x65\x20\x69\x6e\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
         BIO_printf(bio_err,
-                   "-resp_no_certs       don't include any certificates in response\n");
+                   "\x2d\x72\x65\x73\x70\x5f\x6e\x6f\x5f\x63\x65\x72\x74\x73\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x20\x61\x6e\x79\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x69\x6e\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
         BIO_printf(bio_err,
-                   "-nmin n              number of minutes before next update\n");
+                   "\x2d\x6e\x6d\x69\x6e\x20\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x6d\x69\x6e\x75\x74\x65\x73\x20\x62\x65\x66\x6f\x72\x65\x20\x6e\x65\x78\x74\x20\x75\x70\x64\x61\x74\x65\xa");
         BIO_printf(bio_err,
-                   "-ndays n             number of days before next update\n");
+                   "\x2d\x6e\x64\x61\x79\x73\x20\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x64\x61\x79\x73\x20\x62\x65\x66\x6f\x72\x65\x20\x6e\x65\x78\x74\x20\x75\x70\x64\x61\x74\x65\xa");
         BIO_printf(bio_err,
-                   "-resp_key_id         identify reponse by signing certificate key ID\n");
+                   "\x2d\x72\x65\x73\x70\x5f\x6b\x65\x79\x5f\x69\x64\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x64\x65\x6e\x74\x69\x66\x79\x20\x72\x65\x70\x6f\x6e\x73\x65\x20\x62\x79\x20\x73\x69\x67\x6e\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6b\x65\x79\x20\x49\x44\xa");
         BIO_printf(bio_err,
-                   "-nrequest n          number of requests to accept (default unlimited)\n");
+                   "\x2d\x6e\x72\x65\x71\x75\x65\x73\x74\x20\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6e\x75\x6d\x62\x65\x72\x20\x6f\x66\x20\x72\x65\x71\x75\x65\x73\x74\x73\x20\x74\x6f\x20\x61\x63\x63\x65\x70\x74\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x20\x75\x6e\x6c\x69\x6d\x69\x74\x65\x64\x29\xa");
         BIO_printf(bio_err,
-                   "-<dgst alg>          use specified digest in the request\n");
+                   "\x2d\x3c\x64\x67\x73\x74\x20\x61\x6c\x67\x3e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x64\x69\x67\x65\x73\x74\x20\x69\x6e\x20\x74\x68\x65\x20\x72\x65\x71\x75\x65\x73\x74\xa");
         BIO_printf(bio_err,
-                   "-timeout n           timeout connection to OCSP responder after n seconds\n");
+                   "\x2d\x74\x69\x6d\x65\x6f\x75\x74\x20\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x69\x6d\x65\x6f\x75\x74\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x74\x6f\x20\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x61\x66\x74\x65\x72\x20\x6e\x20\x73\x65\x63\x6f\x6e\x64\x73\xa");
         goto end;
     }
 
     if (outfile)
-        out = BIO_new_file(outfile, "w");
+        out = BIO_new_file(outfile, "\x77");
     else
         out = BIO_new_fp(stdout, BIO_NOCLOSE);
 
     if (!out) {
-        BIO_printf(bio_err, "Error opening output file\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         goto end;
     }
 
@@ -602,18 +602,18 @@ int MAIN(int argc, char **argv)
         add_nonce = 0;
 
     if (!req && reqin) {
-        if (!strcmp(reqin, "-"))
+        if (!strcmp(reqin, "\x2d"))
             derbio = BIO_new_fp(stdin, BIO_NOCLOSE);
         else
-            derbio = BIO_new_file(reqin, "rb");
+            derbio = BIO_new_file(reqin, "\x72\x62");
         if (!derbio) {
-            BIO_printf(bio_err, "Error Opening OCSP request file\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x4f\x70\x65\x6e\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\x20\x66\x69\x6c\x65\xa");
             goto end;
         }
         req = d2i_OCSP_REQUEST_bio(derbio, NULL);
         BIO_free(derbio);
         if (!req) {
-            BIO_printf(bio_err, "Error reading OCSP request\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\xa");
             goto end;
         }
     }
@@ -628,26 +628,26 @@ int MAIN(int argc, char **argv)
         if (!rkeyfile)
             rkeyfile = rsignfile;
         rsigner = load_cert(bio_err, rsignfile, FORMAT_PEM,
-                            NULL, e, "responder certificate");
+                            NULL, e, "\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
         if (!rsigner) {
-            BIO_printf(bio_err, "Error loading responder certificate\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
             goto end;
         }
         rca_cert = load_cert(bio_err, rca_filename, FORMAT_PEM,
-                             NULL, e, "CA certificate");
+                             NULL, e, "\x43\x41\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
         if (rcertfile) {
             rother = load_certs(bio_err, rcertfile, FORMAT_PEM,
-                                NULL, e, "responder other certificates");
+                                NULL, e, "\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x6f\x74\x68\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73");
             if (!rother)
                 goto end;
         }
         rkey = load_key(bio_err, rkeyfile, FORMAT_PEM, 0, NULL, NULL,
-                        "responder private key");
+                        "\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
         if (!rkey)
             goto end;
     }
     if (acbio)
-        BIO_printf(bio_err, "Waiting for OCSP client connections...\n");
+        BIO_printf(bio_err, "\x57\x61\x69\x74\x69\x6e\x67\x20\x66\x6f\x72\x20\x4f\x43\x53\x50\x20\x63\x6c\x69\x65\x6e\x74\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x2e\x2e\x2e\xa");
 
  redo_accept:
 
@@ -664,7 +664,7 @@ int MAIN(int argc, char **argv)
     }
 
     if (!req && (signfile || reqout || host || add_nonce || ridx_filename)) {
-        BIO_printf(bio_err, "Need an OCSP request for this operation!\n");
+        BIO_printf(bio_err, "\x4e\x65\x65\x64\x20\x61\x6e\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\x20\x66\x6f\x72\x20\x74\x68\x69\x73\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x21\xa");
         goto end;
     }
 
@@ -675,25 +675,25 @@ int MAIN(int argc, char **argv)
         if (!keyfile)
             keyfile = signfile;
         signer = load_cert(bio_err, signfile, FORMAT_PEM,
-                           NULL, e, "signer certificate");
+                           NULL, e, "\x73\x69\x67\x6e\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
         if (!signer) {
-            BIO_printf(bio_err, "Error loading signer certificate\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x73\x69\x67\x6e\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
             goto end;
         }
         if (sign_certfile) {
             sign_other = load_certs(bio_err, sign_certfile, FORMAT_PEM,
-                                    NULL, e, "signer certificates");
+                                    NULL, e, "\x73\x69\x67\x6e\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73");
             if (!sign_other)
                 goto end;
         }
         key = load_key(bio_err, keyfile, FORMAT_PEM, 0, NULL, NULL,
-                       "signer private key");
+                       "\x73\x69\x67\x6e\x65\x72\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
         if (!key)
             goto end;
 
         if (!OCSP_request_sign
             (req, signer, key, NULL, sign_other, sign_flags)) {
-            BIO_printf(bio_err, "Error signing OCSP request\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x73\x69\x67\x6e\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\xa");
             goto end;
         }
     }
@@ -702,12 +702,12 @@ int MAIN(int argc, char **argv)
         OCSP_REQUEST_print(out, req, 0);
 
     if (reqout) {
-        if (!strcmp(reqout, "-"))
+        if (!strcmp(reqout, "\x2d"))
             derbio = BIO_new_fp(stdout, BIO_NOCLOSE);
         else
-            derbio = BIO_new_file(reqout, "wb");
+            derbio = BIO_new_file(reqout, "\x77\x62");
         if (!derbio) {
-            BIO_printf(bio_err, "Error opening file %s\n", reqout);
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x66\x69\x6c\x65\x20\x25\x73\xa", reqout);
             goto end;
         }
         i2d_OCSP_REQUEST_bio(derbio, req);
@@ -716,7 +716,7 @@ int MAIN(int argc, char **argv)
 
     if (ridx_filename && (!rkey || !rsigner || !rca_cert)) {
         BIO_printf(bio_err,
-                   "Need a responder certificate, key and CA for this operation!\n");
+                   "\x4e\x65\x65\x64\x20\x61\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x2c\x20\x6b\x65\x79\x20\x61\x6e\x64\x20\x43\x41\x20\x66\x6f\x72\x20\x74\x68\x69\x73\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x21\xa");
         goto end;
     }
 
@@ -741,22 +741,22 @@ int MAIN(int argc, char **argv)
             goto end;
 # else
         BIO_printf(bio_err,
-                   "Error creating connect BIO - sockets not supported.\n");
+                   "\x45\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x63\x6f\x6e\x6e\x65\x63\x74\x20\x42\x49\x4f\x20\x2d\x20\x73\x6f\x63\x6b\x65\x74\x73\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x2e\xa");
         goto end;
 # endif
     } else if (respin) {
-        if (!strcmp(respin, "-"))
+        if (!strcmp(respin, "\x2d"))
             derbio = BIO_new_fp(stdin, BIO_NOCLOSE);
         else
-            derbio = BIO_new_file(respin, "rb");
+            derbio = BIO_new_file(respin, "\x72\x62");
         if (!derbio) {
-            BIO_printf(bio_err, "Error Opening OCSP response file\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x4f\x70\x65\x6e\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x66\x69\x6c\x65\xa");
             goto end;
         }
         resp = d2i_OCSP_RESPONSE_bio(derbio, NULL);
         BIO_free(derbio);
         if (!resp) {
-            BIO_printf(bio_err, "Error reading OCSP response\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
             goto end;
         }
 
@@ -768,12 +768,12 @@ int MAIN(int argc, char **argv)
  done_resp:
 
     if (respout) {
-        if (!strcmp(respout, "-"))
+        if (!strcmp(respout, "\x2d"))
             derbio = BIO_new_fp(stdout, BIO_NOCLOSE);
         else
-            derbio = BIO_new_file(respout, "wb");
+            derbio = BIO_new_file(respout, "\x77\x62");
         if (!derbio) {
-            BIO_printf(bio_err, "Error opening file %s\n", respout);
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x66\x69\x6c\x65\x20\x25\x73\xa", respout);
             goto end;
         }
         i2d_OCSP_RESPONSE_bio(derbio, resp);
@@ -783,7 +783,7 @@ int MAIN(int argc, char **argv)
     i = OCSP_response_status(resp);
 
     if (i != OCSP_RESPONSE_STATUS_SUCCESSFUL) {
-        BIO_printf(out, "Responder Error: %s (%d)\n",
+        BIO_printf(out, "\x52\x65\x73\x70\x6f\x6e\x64\x65\x72\x20\x45\x72\x72\x6f\x72\x3a\x20\x25\x73\x20\x28\x25\x64\x29\xa",
                    OCSP_response_status_str(i), i);
         if (ignore_err)
             goto redo_accept;
@@ -823,7 +823,7 @@ int MAIN(int argc, char **argv)
         X509_STORE_set1_param(store, vpm);
     if (verify_certfile) {
         verify_other = load_certs(bio_err, verify_certfile, FORMAT_PEM,
-                                  NULL, e, "validator certificate");
+                                  NULL, e, "\x76\x61\x6c\x69\x64\x61\x74\x6f\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
         if (!verify_other)
             goto end;
     }
@@ -831,7 +831,7 @@ int MAIN(int argc, char **argv)
     bs = OCSP_response_get1_basic(resp);
 
     if (!bs) {
-        BIO_printf(bio_err, "Error parsing response\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
         goto end;
     }
 
@@ -840,9 +840,9 @@ int MAIN(int argc, char **argv)
     if (!noverify) {
         if (req && ((i = OCSP_check_nonce(req, bs)) <= 0)) {
             if (i == -1)
-                BIO_printf(bio_err, "WARNING: no nonce in response\n");
+                BIO_printf(bio_err, "\x57\x41\x52\x4e\x49\x4e\x47\x3a\x20\x6e\x6f\x20\x6e\x6f\x6e\x63\x65\x20\x69\x6e\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\xa");
             else {
-                BIO_printf(bio_err, "Nonce Verify error\n");
+                BIO_printf(bio_err, "\x4e\x6f\x6e\x63\x65\x20\x56\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72\xa");
                 ret = 1;
                 goto end;
             }
@@ -850,11 +850,11 @@ int MAIN(int argc, char **argv)
 
         i = OCSP_basic_verify(bs, verify_other, store, verify_flags);
         if (i <= 0) {
-            BIO_printf(bio_err, "Response Verify Failure\n");
+            BIO_printf(bio_err, "\x52\x65\x73\x70\x6f\x6e\x73\x65\x20\x56\x65\x72\x69\x66\x79\x20\x46\x61\x69\x6c\x75\x72\x65\xa");
             ERR_print_errors(bio_err);
             ret = 1;
         } else
-            BIO_printf(bio_err, "Response verify OK\n");
+            BIO_printf(bio_err, "\x52\x65\x73\x70\x6f\x6e\x73\x65\x20\x76\x65\x72\x69\x66\x79\x20\x4f\x4b\xa");
 
     }
 
@@ -902,7 +902,7 @@ static int add_ocsp_cert(OCSP_REQUEST **req, X509 *cert,
 {
     OCSP_CERTID *id;
     if (!issuer) {
-        BIO_printf(bio_err, "No issuer certificate specified\n");
+        BIO_printf(bio_err, "\x4e\x6f\x20\x69\x73\x73\x75\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
         return 0;
     }
     if (!*req)
@@ -917,7 +917,7 @@ static int add_ocsp_cert(OCSP_REQUEST **req, X509 *cert,
     return 1;
 
  err:
-    BIO_printf(bio_err, "Error Creating OCSP request\n");
+    BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x43\x72\x65\x61\x74\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\xa");
     return 0;
 }
 
@@ -930,7 +930,7 @@ static int add_ocsp_serial(OCSP_REQUEST **req, char *serial,
     ASN1_BIT_STRING *ikey;
     ASN1_INTEGER *sno;
     if (!issuer) {
-        BIO_printf(bio_err, "No issuer certificate specified\n");
+        BIO_printf(bio_err, "\x4e\x6f\x20\x69\x73\x73\x75\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
         return 0;
     }
     if (!*req)
@@ -941,7 +941,7 @@ static int add_ocsp_serial(OCSP_REQUEST **req, char *serial,
     ikey = X509_get0_pubkey_bitstr(issuer);
     sno = s2i_ASN1_INTEGER(NULL, serial);
     if (!sno) {
-        BIO_printf(bio_err, "Error converting serial number %s\n", serial);
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x63\x6f\x6e\x76\x65\x72\x74\x69\x6e\x67\x20\x73\x65\x72\x69\x61\x6c\x20\x6e\x75\x6d\x62\x65\x72\x20\x25\x73\xa", serial);
         return 0;
     }
     id = OCSP_cert_id_new(cert_id_md, iname, ikey, sno);
@@ -953,7 +953,7 @@ static int add_ocsp_serial(OCSP_REQUEST **req, char *serial,
     return 1;
 
  err:
-    BIO_printf(bio_err, "Error Creating OCSP request\n");
+    BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x43\x72\x65\x61\x74\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\xa");
     return 0;
 }
 
@@ -977,11 +977,11 @@ static int print_ocsp_summary(BIO *out, OCSP_BASICRESP *bs, OCSP_REQUEST *req,
     for (i = 0; i < sk_OCSP_CERTID_num(ids); i++) {
         id = sk_OCSP_CERTID_value(ids, i);
         name = sk_OPENSSL_STRING_value(names, i);
-        BIO_printf(out, "%s: ", name);
+        BIO_printf(out, "\x25\x73\x3a\x20", name);
 
         if (!OCSP_resp_find_status(bs, id, &status, &reason,
                                    &rev, &thisupd, &nextupd)) {
-            BIO_puts(out, "ERROR: No Status found.\n");
+            BIO_puts(out, "\x45\x52\x52\x4f\x52\x3a\x20\x4e\x6f\x20\x53\x74\x61\x74\x75\x73\x20\x66\x6f\x75\x6e\x64\x2e\xa");
             continue;
         }
 
@@ -990,30 +990,30 @@ static int print_ocsp_summary(BIO *out, OCSP_BASICRESP *bs, OCSP_REQUEST *req,
          * response this refers to.
          */
         if (!OCSP_check_validity(thisupd, nextupd, nsec, maxage)) {
-            BIO_puts(out, "WARNING: Status times invalid.\n");
+            BIO_puts(out, "\x57\x41\x52\x4e\x49\x4e\x47\x3a\x20\x53\x74\x61\x74\x75\x73\x20\x74\x69\x6d\x65\x73\x20\x69\x6e\x76\x61\x6c\x69\x64\x2e\xa");
             ERR_print_errors(out);
         }
-        BIO_printf(out, "%s\n", OCSP_cert_status_str(status));
+        BIO_printf(out, "\x25\x73\xa", OCSP_cert_status_str(status));
 
-        BIO_puts(out, "\tThis Update: ");
+        BIO_puts(out, "\x9\x54\x68\x69\x73\x20\x55\x70\x64\x61\x74\x65\x3a\x20");
         ASN1_GENERALIZEDTIME_print(out, thisupd);
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
 
         if (nextupd) {
-            BIO_puts(out, "\tNext Update: ");
+            BIO_puts(out, "\x9\x4e\x65\x78\x74\x20\x55\x70\x64\x61\x74\x65\x3a\x20");
             ASN1_GENERALIZEDTIME_print(out, nextupd);
-            BIO_puts(out, "\n");
+            BIO_puts(out, "\xa");
         }
 
         if (status != V_OCSP_CERTSTATUS_REVOKED)
             continue;
 
         if (reason != -1)
-            BIO_printf(out, "\tReason: %s\n", OCSP_crl_reason_str(reason));
+            BIO_printf(out, "\x9\x52\x65\x61\x73\x6f\x6e\x3a\x20\x25\x73\xa", OCSP_crl_reason_str(reason));
 
-        BIO_puts(out, "\tRevocation Time: ");
+        BIO_puts(out, "\x9\x52\x65\x76\x6f\x63\x61\x74\x69\x6f\x6e\x20\x54\x69\x6d\x65\x3a\x20");
         ASN1_GENERALIZEDTIME_print(out, rev);
-        BIO_puts(out, "\n");
+        BIO_puts(out, "\xa");
     }
 
     return 1;
@@ -1134,7 +1134,7 @@ static char **lookup_serial(CA_DB *db, ASN1_INTEGER *ser)
     OPENSSL_assert(bn);         /* FIXME: should report an error at this
                                  * point and abort */
     if (BN_is_zero(bn))
-        itmp = BUF_strdup("00");
+        itmp = BUF_strdup("\x30\x30");
     else
         itmp = BN_bn2hex(bn);
     row[DB_serial] = itmp;
@@ -1156,7 +1156,7 @@ static BIO *init_responder(const char *port)
     acbio = BIO_new_accept(port);
 # else
     BIO_printf(bio_err,
-               "Error setting up accept BIO - sockets not supported.\n");
+               "\x45\x72\x72\x6f\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x75\x70\x20\x61\x63\x63\x65\x70\x74\x20\x42\x49\x4f\x20\x2d\x20\x73\x6f\x63\x6b\x65\x74\x73\x20\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x2e\xa");
 # endif
     if (!acbio)
         goto err;
@@ -1164,7 +1164,7 @@ static BIO *init_responder(const char *port)
     bufbio = NULL;
 
     if (BIO_do_accept(acbio) <= 0) {
-        BIO_printf(bio_err, "Error setting up accept BIO\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x75\x70\x20\x61\x63\x63\x65\x70\x74\x20\x42\x49\x4f\xa");
         ERR_print_errors(bio_err);
         goto err;
     }
@@ -1186,7 +1186,7 @@ static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
     BIO *cbio = NULL;
 
     if (BIO_do_accept(acbio) <= 0) {
-        BIO_printf(bio_err, "Error accepting connection\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x61\x63\x63\x65\x70\x74\x69\x6e\x67\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\xa");
         ERR_print_errors(bio_err);
         return 0;
     }
@@ -1200,14 +1200,14 @@ static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
             return 1;
         /* Look for "POST" signalling start of query */
         if (!have_post) {
-            if (strncmp(inbuf, "POST", 4)) {
-                BIO_printf(bio_err, "Invalid request\n");
+            if (strncmp(inbuf, "\x50\x4f\x53\x54", 4)) {
+                BIO_printf(bio_err, "\x49\x6e\x76\x61\x6c\x69\x64\x20\x72\x65\x71\x75\x65\x73\x74\xa");
                 return 1;
             }
             have_post = 1;
         }
         /* Look for end of headers */
-        if ((inbuf[0] == '\r') || (inbuf[0] == '\n'))
+        if ((inbuf[0] == '\xd') || (inbuf[0] == '\xa'))
             break;
     }
 
@@ -1216,7 +1216,7 @@ static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
     req = d2i_OCSP_REQUEST_bio(cbio, NULL);
 
     if (!req) {
-        BIO_printf(bio_err, "Error parsing OCSP request\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74\xa");
         ERR_print_errors(bio_err);
     }
 
@@ -1229,8 +1229,8 @@ static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
 static int send_ocsp_response(BIO *cbio, OCSP_RESPONSE *resp)
 {
     char http_resp[] =
-        "HTTP/1.0 200 OK\r\nContent-type: application/ocsp-response\r\n"
-        "Content-Length: %d\r\n\r\n";
+        "\x48\x54\x54\x50\x2f\x31\x2e\x30\x20\x32\x30\x30\x20\x4f\x4b\xd\xaC\x6f\x6e\x74\x65\x6e\x74\x2d\x74\x79\x70\x65\x3a\x20\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x6f\x63\x73\x70\x2d\x72\x65\x73\x70\x6f\x6e\x73\x65\xd\xa"
+        "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x4c\x65\x6e\x67\x74\x68\x3a\x20\x25\x64\xd\xa\xd\xa";
     if (!cbio)
         return 0;
     BIO_printf(cbio, http_resp, i2d_OCSP_RESPONSE(resp, NULL));
@@ -1257,12 +1257,12 @@ static OCSP_RESPONSE *query_responder(BIO *err, BIO *cbio, const char *path,
     rv = BIO_do_connect(cbio);
 
     if ((rv <= 0) && ((req_timeout == -1) || !BIO_should_retry(cbio))) {
-        BIO_puts(err, "Error connecting BIO\n");
+        BIO_puts(err, "\x45\x72\x72\x6f\x72\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6e\x67\x20\x42\x49\x4f\xa");
         return NULL;
     }
 
     if (BIO_get_fd(cbio, &fd) < 0) {
-        BIO_puts(bio_err, "Can't get connection fd\n");
+        BIO_puts(bio_err, "\x43\x61\x6e\x27\x74\x20\x67\x65\x74\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x66\x64\xa");
         goto err;
     }
 
@@ -1273,7 +1273,7 @@ static OCSP_RESPONSE *query_responder(BIO *err, BIO *cbio, const char *path,
         tv.tv_sec = req_timeout;
         rv = select(fd + 1, NULL, (void *)&confds, NULL, &tv);
         if (rv == 0) {
-            BIO_puts(err, "Timeout on connect\n");
+            BIO_puts(err, "\x54\x69\x6d\x65\x6f\x75\x74\x20\x6f\x6e\x20\x63\x6f\x6e\x6e\x65\x63\x74\xa");
             return NULL;
         }
     }
@@ -1306,15 +1306,15 @@ static OCSP_RESPONSE *query_responder(BIO *err, BIO *cbio, const char *path,
         else if (BIO_should_write(cbio))
             rv = select(fd + 1, NULL, (void *)&confds, NULL, &tv);
         else {
-            BIO_puts(err, "Unexpected retry condition\n");
+            BIO_puts(err, "\x55\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x72\x65\x74\x72\x79\x20\x63\x6f\x6e\x64\x69\x74\x69\x6f\x6e\xa");
             goto err;
         }
         if (rv == 0) {
-            BIO_puts(err, "Timeout on request\n");
+            BIO_puts(err, "\x54\x69\x6d\x65\x6f\x75\x74\x20\x6f\x6e\x20\x72\x65\x71\x75\x65\x73\x74\xa");
             break;
         }
         if (rv == -1) {
-            BIO_puts(err, "Select error\n");
+            BIO_puts(err, "\x53\x65\x6c\x65\x63\x74\x20\x65\x72\x72\x6f\x72\xa");
             break;
         }
 
@@ -1337,7 +1337,7 @@ OCSP_RESPONSE *process_responder(BIO *err, OCSP_REQUEST *req,
     OCSP_RESPONSE *resp = NULL;
     cbio = BIO_new_connect(host);
     if (!cbio) {
-        BIO_printf(err, "Error creating connect BIO\n");
+        BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x63\x6f\x6e\x6e\x65\x63\x74\x20\x42\x49\x4f\xa");
         goto end;
     }
     if (port)
@@ -1346,7 +1346,7 @@ OCSP_RESPONSE *process_responder(BIO *err, OCSP_REQUEST *req,
         BIO *sbio;
         ctx = SSL_CTX_new(SSLv23_client_method());
         if (ctx == NULL) {
-            BIO_printf(err, "Error creating SSL context.\n");
+            BIO_printf(err, "\x45\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x53\x53\x4c\x20\x63\x6f\x6e\x74\x65\x78\x74\x2e\xa");
             goto end;
         }
         SSL_CTX_set_mode(ctx, SSL_MODE_AUTO_RETRY);
@@ -1355,7 +1355,7 @@ OCSP_RESPONSE *process_responder(BIO *err, OCSP_REQUEST *req,
     }
     resp = query_responder(err, cbio, path, headers, req, req_timeout);
     if (!resp)
-        BIO_printf(bio_err, "Error querying OCSP responder\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x71\x75\x65\x72\x79\x69\x6e\x67\x20\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72\xa");
  end:
     if (cbio)
         BIO_free_all(cbio);

@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -83,7 +83,7 @@
 #   include "vendor_defns/hw_ubsec.h"
 #  endif
 
-#  define UBSEC_LIB_NAME "ubsec engine"
+#  define UBSEC_LIB_NAME "\x75\x62\x73\x65\x63\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "e_ubsec_err.c"
 
 #  define FAIL_TO_SOFTWARE -15
@@ -136,8 +136,8 @@ static int ubsec_rand_status(void);
 #  define UBSEC_CMD_SO_PATH               ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN ubsec_cmd_defns[] = {
     {UBSEC_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'ubsec' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x75\x62\x73\x65\x63\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
@@ -145,7 +145,7 @@ static const ENGINE_CMD_DEFN ubsec_cmd_defns[] = {
 #  ifndef OPENSSL_NO_RSA
 /* Our internal RSA_METHOD that we provide pointers to */
 static RSA_METHOD ubsec_rsa = {
-    "UBSEC RSA method",
+    "\x55\x42\x53\x45\x43\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     NULL,
@@ -165,7 +165,7 @@ static RSA_METHOD ubsec_rsa = {
 #  ifndef OPENSSL_NO_DSA
 /* Our internal DSA_METHOD that we provide pointers to */
 static DSA_METHOD ubsec_dsa = {
-    "UBSEC DSA method",
+    "\x55\x42\x53\x45\x43\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     ubsec_dsa_do_sign,          /* dsa_do_sign */
     NULL,                       /* dsa_sign_setup */
     ubsec_dsa_verify,           /* dsa_do_verify */
@@ -183,7 +183,7 @@ static DSA_METHOD ubsec_dsa = {
 #  ifndef OPENSSL_NO_DH
 /* Our internal DH_METHOD that we provide pointers to */
 static DH_METHOD ubsec_dh = {
-    "UBSEC DH method",
+    "\x55\x42\x53\x45\x43\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     ubsec_dh_generate_key,
     ubsec_dh_compute_key,
     ubsec_mod_exp_dh,
@@ -196,8 +196,8 @@ static DH_METHOD ubsec_dh = {
 #  endif
 
 /* Constants used when creating the ENGINE */
-static const char *engine_ubsec_id = "ubsec";
-static const char *engine_ubsec_name = "UBSEC hardware engine support";
+static const char *engine_ubsec_id = "\x75\x62\x73\x65\x63";
+static const char *engine_ubsec_name = "\x55\x42\x53\x45\x43\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /*
  * This internal function is used by ENGINE_ubsec() and possibly by the
@@ -334,7 +334,7 @@ static const char *get_UBSEC_LIBNAME(void)
 {
     if (UBSEC_LIBNAME)
         return UBSEC_LIBNAME;
-    return "ubsec";
+    return "\x75\x62\x73\x65\x63";
 }
 
 static void free_UBSEC_LIBNAME(void)
@@ -350,25 +350,25 @@ static long set_UBSEC_LIBNAME(const char *name)
     return (((UBSEC_LIBNAME = BUF_strdup(name)) != NULL) ? 1 : 0);
 }
 
-static const char *UBSEC_F1 = "ubsec_bytes_to_bits";
-static const char *UBSEC_F2 = "ubsec_bits_to_bytes";
-static const char *UBSEC_F3 = "ubsec_open";
-static const char *UBSEC_F4 = "ubsec_close";
+static const char *UBSEC_F1 = "\x75\x62\x73\x65\x63\x5f\x62\x79\x74\x65\x73\x5f\x74\x6f\x5f\x62\x69\x74\x73";
+static const char *UBSEC_F2 = "\x75\x62\x73\x65\x63\x5f\x62\x69\x74\x73\x5f\x74\x6f\x5f\x62\x79\x74\x65\x73";
+static const char *UBSEC_F3 = "\x75\x62\x73\x65\x63\x5f\x6f\x70\x65\x6e";
+static const char *UBSEC_F4 = "\x75\x62\x73\x65\x63\x5f\x63\x6c\x6f\x73\x65";
 #  ifndef OPENSSL_NO_DH
-static const char *UBSEC_F5 = "diffie_hellman_generate_ioctl";
-static const char *UBSEC_F6 = "diffie_hellman_agree_ioctl";
+static const char *UBSEC_F5 = "\x64\x69\x66\x66\x69\x65\x5f\x68\x65\x6c\x6c\x6d\x61\x6e\x5f\x67\x65\x6e\x65\x72\x61\x74\x65\x5f\x69\x6f\x63\x74\x6c";
+static const char *UBSEC_F6 = "\x64\x69\x66\x66\x69\x65\x5f\x68\x65\x6c\x6c\x6d\x61\x6e\x5f\x61\x67\x72\x65\x65\x5f\x69\x6f\x63\x74\x6c";
 #  endif
 /* #ifndef OPENSSL_NO_RSA */
-static const char *UBSEC_F7 = "rsa_mod_exp_ioctl";
-static const char *UBSEC_F8 = "rsa_mod_exp_crt_ioctl";
+static const char *UBSEC_F7 = "\x72\x73\x61\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x69\x6f\x63\x74\x6c";
+static const char *UBSEC_F8 = "\x72\x73\x61\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x63\x72\x74\x5f\x69\x6f\x63\x74\x6c";
 /* #endif */
 #  ifndef OPENSSL_NO_DSA
-static const char *UBSEC_F9 = "dsa_sign_ioctl";
-static const char *UBSEC_F10 = "dsa_verify_ioctl";
+static const char *UBSEC_F9 = "\x64\x73\x61\x5f\x73\x69\x67\x6e\x5f\x69\x6f\x63\x74\x6c";
+static const char *UBSEC_F10 = "\x64\x73\x61\x5f\x76\x65\x72\x69\x66\x79\x5f\x69\x6f\x63\x74\x6c";
 #  endif
-static const char *UBSEC_F11 = "math_accelerate_ioctl";
-static const char *UBSEC_F12 = "rng_ioctl";
-static const char *UBSEC_F13 = "ubsec_max_key_len_ioctl";
+static const char *UBSEC_F11 = "\x6d\x61\x74\x68\x5f\x61\x63\x63\x65\x6c\x65\x72\x61\x74\x65\x5f\x69\x6f\x63\x74\x6c";
+static const char *UBSEC_F12 = "\x72\x6e\x67\x5f\x69\x6f\x63\x74\x6c";
+static const char *UBSEC_F13 = "\x75\x62\x73\x65\x63\x5f\x6d\x61\x78\x5f\x6b\x65\x79\x5f\x6c\x65\x6e\x5f\x69\x6f\x63\x74\x6c";
 
 /* Destructor (complements the "ENGINE_ubsec()" constructor) */
 static int ubsec_destroy(ENGINE *e)

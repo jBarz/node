@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -93,12 +93,12 @@ static int TS_find_name(STACK_OF(GENERAL_NAME) *gen_names,
  * Don't forget to change TS_STATUS_BUF_SIZE when modifying
  * the elements of this array.
  */
-static const char *TS_status_text[] = { "granted",
-    "grantedWithMods",
-    "rejection",
-    "waiting",
-    "revocationWarning",
-    "revocationNotification"
+static const char *TS_status_text[] = { "\x67\x72\x61\x6e\x74\x65\x64",
+    "\x67\x72\x61\x6e\x74\x65\x64\x57\x69\x74\x68\x4d\x6f\x64\x73",
+    "\x72\x65\x6a\x65\x63\x74\x69\x6f\x6e",
+    "\x77\x61\x69\x74\x69\x6e\x67",
+    "\x72\x65\x76\x6f\x63\x61\x74\x69\x6f\x6e\x57\x61\x72\x6e\x69\x6e\x67",
+    "\x72\x65\x76\x6f\x63\x61\x74\x69\x6f\x6e\x4e\x6f\x74\x69\x66\x69\x63\x61\x74\x69\x6f\x6e"
 };
 
 #define TS_STATUS_TEXT_SIZE     (sizeof(TS_status_text)/sizeof(*TS_status_text))
@@ -114,28 +114,28 @@ static struct {
     const char *text;
 } TS_failure_info[] = {
     {
-        TS_INFO_BAD_ALG, "badAlg"
+        TS_INFO_BAD_ALG, "\x62\x61\x64\x41\x6c\x67"
     },
     {
-        TS_INFO_BAD_REQUEST, "badRequest"
+        TS_INFO_BAD_REQUEST, "\x62\x61\x64\x52\x65\x71\x75\x65\x73\x74"
     },
     {
-        TS_INFO_BAD_DATA_FORMAT, "badDataFormat"
+        TS_INFO_BAD_DATA_FORMAT, "\x62\x61\x64\x44\x61\x74\x61\x46\x6f\x72\x6d\x61\x74"
     },
     {
-        TS_INFO_TIME_NOT_AVAILABLE, "timeNotAvailable"
+        TS_INFO_TIME_NOT_AVAILABLE, "\x74\x69\x6d\x65\x4e\x6f\x74\x41\x76\x61\x69\x6c\x61\x62\x6c\x65"
     },
     {
-        TS_INFO_UNACCEPTED_POLICY, "unacceptedPolicy"
+        TS_INFO_UNACCEPTED_POLICY, "\x75\x6e\x61\x63\x63\x65\x70\x74\x65\x64\x50\x6f\x6c\x69\x63\x79"
     },
     {
-        TS_INFO_UNACCEPTED_EXTENSION, "unacceptedExtension"
+        TS_INFO_UNACCEPTED_EXTENSION, "\x75\x6e\x61\x63\x63\x65\x70\x74\x65\x64\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e"
     },
     {
-        TS_INFO_ADD_INFO_NOT_AVAILABLE, "addInfoNotAvailable"
+        TS_INFO_ADD_INFO_NOT_AVAILABLE, "\x61\x64\x64\x49\x6e\x66\x6f\x4e\x6f\x74\x41\x76\x61\x69\x6c\x61\x62\x6c\x65"
     },
     {
-        TS_INFO_SYSTEM_FAILURE, "systemFailure"
+        TS_INFO_SYSTEM_FAILURE, "\x73\x79\x73\x74\x65\x6d\x46\x61\x69\x6c\x75\x72\x65"
     }
 };
 
@@ -262,7 +262,7 @@ static int TS_verify_cert(X509_STORE *store, STACK_OF(X509) *untrusted,
     if (i <= 0) {
         int j = X509_STORE_CTX_get_error(&cert_ctx);
         TSerr(TS_F_TS_VERIFY_CERT, TS_R_CERTIFICATE_VERIFY_ERROR);
-        ERR_add_error_data(2, "Verify error:",
+        ERR_add_error_data(2, "\x56\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72\x3a",
                            X509_verify_cert_error_string(j));
         ret = 0;
     } else {
@@ -515,7 +515,7 @@ static int TS_check_status_info(TS_RESP *response)
     if (0 <= status && status < (long)TS_STATUS_TEXT_SIZE)
         status_text = TS_status_text[status];
     else
-        status_text = "unknown code";
+        status_text = "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x6f\x64\x65";
 
     /* Set the embedded_status_text to the returned description. */
     if (sk_ASN1_UTF8STRING_num(info->text) > 0
@@ -530,23 +530,23 @@ static int TS_check_status_info(TS_RESP *response)
             if (ASN1_BIT_STRING_get_bit(info->failure_info,
                                         TS_failure_info[i].code)) {
                 if (!first)
-                    strcat(failure_text, ",");
+                    strcat(failure_text, "\x2c");
                 else
                     first = 0;
                 strcat(failure_text, TS_failure_info[i].text);
             }
         }
     }
-    if (failure_text[0] == '\0')
-        strcpy(failure_text, "unspecified");
+    if (failure_text[0] == '\x0')
+        strcpy(failure_text, "\x75\x6e\x73\x70\x65\x63\x69\x66\x69\x65\x64");
 
     /* Making up the error string. */
     TSerr(TS_F_TS_CHECK_STATUS_INFO, TS_R_NO_TIME_STAMP_TOKEN);
     ERR_add_error_data(6,
-                       "status code: ", status_text,
-                       ", status text: ", embedded_status_text ?
-                       embedded_status_text : "unspecified",
-                       ", failure codes: ", failure_text);
+                       "\x73\x74\x61\x74\x75\x73\x20\x63\x6f\x64\x65\x3a\x20", status_text,
+                       "\x2c\x20\x73\x74\x61\x74\x75\x73\x20\x74\x65\x78\x74\x3a\x20", embedded_status_text ?
+                       embedded_status_text : "\x75\x6e\x73\x70\x65\x63\x69\x66\x69\x65\x64",
+                       "\x2c\x20\x66\x61\x69\x6c\x75\x72\x65\x20\x63\x6f\x64\x65\x73\x3a\x20", failure_text);
     OPENSSL_free(embedded_status_text);
 
     return 0;
@@ -577,12 +577,12 @@ static char *TS_get_status_text(STACK_OF(ASN1_UTF8STRING) *text)
         ASN1_UTF8STRING *current = sk_ASN1_UTF8STRING_value(text, i);
         length = ASN1_STRING_length(current);
         if (i > 0)
-            *p++ = '/';
+            *p++ = '\x2f';
         strncpy(p, (const char *)ASN1_STRING_data(current), length);
         p += length;
     }
     /* We do have space for this, too. */
-    *p = '\0';
+    *p = '\x0';
 
     return result;
 }

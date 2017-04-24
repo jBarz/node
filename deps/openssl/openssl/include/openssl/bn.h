@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,7 +111,7 @@
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
  *
- * Portions of the attached software ("Contribution") are developed by
+ * Portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") are developed by
  * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
  *
  * The Contribution is licensed pursuant to the Eric Young open source
@@ -193,11 +193,11 @@ extern "C" {
 #  define BN_MASK2h1      (0xffffffff80000000L)
 #  define BN_TBIT         (0x8000000000000000L)
 #  define BN_DEC_CONV     (10000000000000000000UL)
-#  define BN_DEC_FMT1     "%lu"
-#  define BN_DEC_FMT2     "%019lu"
+#  define BN_DEC_FMT1     "\x25\x6c\x75"
+#  define BN_DEC_FMT2     "\x25\x30\x31\x39\x6c\x75"
 #  define BN_DEC_NUM      19
-#  define BN_HEX_FMT1     "%lX"
-#  define BN_HEX_FMT2     "%016lX"
+#  define BN_HEX_FMT1     "\x25\x6c\x58"
+#  define BN_HEX_FMT2     "\x25\x30\x31\x36\x6c\x58"
 # endif
 
 /*
@@ -221,11 +221,11 @@ extern "C" {
 #  define BN_MASK2h1      (0xffffffff80000000LL)
 #  define BN_TBIT         (0x8000000000000000LL)
 #  define BN_DEC_CONV     (10000000000000000000ULL)
-#  define BN_DEC_FMT1     "%llu"
-#  define BN_DEC_FMT2     "%019llu"
+#  define BN_DEC_FMT1     "\x25\x6c\x6c\x75"
+#  define BN_DEC_FMT2     "\x25\x30\x31\x39\x6c\x6c\x75"
 #  define BN_DEC_NUM      19
-#  define BN_HEX_FMT1     "%llX"
-#  define BN_HEX_FMT2     "%016llX"
+#  define BN_HEX_FMT1     "\x25\x6c\x6c\x58"
+#  define BN_HEX_FMT2     "\x25\x30\x31\x36\x6c\x6c\x58"
 # endif
 
 # ifdef THIRTY_TWO_BIT
@@ -250,11 +250,11 @@ extern "C" {
 #  define BN_MASK2h       (0xffff0000L)
 #  define BN_TBIT         (0x80000000L)
 #  define BN_DEC_CONV     (1000000000L)
-#  define BN_DEC_FMT1     "%u"
-#  define BN_DEC_FMT2     "%09u"
+#  define BN_DEC_FMT1     "\x25\x75"
+#  define BN_DEC_FMT2     "\x25\x30\x39\x75"
 #  define BN_DEC_NUM      9
-#  define BN_HEX_FMT1     "%X"
-#  define BN_HEX_FMT2     "%08X"
+#  define BN_HEX_FMT1     "\x25\x58"
+#  define BN_HEX_FMT2     "\x25\x30\x38\x58"
 # endif
 
 # define BN_DEFAULT_BITS 1280
@@ -328,7 +328,7 @@ struct bn_mont_ctx_st {
     BIGNUM Ni;                  /* R*(1/R mod N) - N*Ni = 1 (Ni is only
                                  * stored for bignum algorithm) */
     BN_ULONG n0[2];             /* least significant word(s) of Ni; (type
-                                 * changed with 0.9.9, was "BN_ULONG n0;"
+                                 * changed with 0.9.9, was "\x42\x4e\x5f\x55\x4c\x4f\x4e\x47\x20\x6e\x30\x3b"
                                  * before) */
     int flags;
 };

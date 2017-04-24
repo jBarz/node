@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -116,62 +116,62 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     if ((osk = sk_OPENSSL_STRING_new_null()) == NULL) {
-        BIO_printf(bio_err, "Memory allocation failure\n");
+        BIO_printf(bio_err, "\x4d\x65\x6d\x6f\x72\x79\x20\x61\x6c\x6c\x6f\x63\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
         goto end;
     }
     while (argc >= 1) {
-        if (strcmp(*argv, "-inform") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             informat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-in") == 0) {
+        } else if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             derfile = *(++argv);
-        } else if (strcmp(*argv, "-i") == 0) {
+        } else if (strcmp(*argv, "\x2d\x69") == 0) {
             indent = 1;
-        } else if (strcmp(*argv, "-noout") == 0)
+        } else if (strcmp(*argv, "\x2d\x6e\x6f\x6f\x75\x74") == 0)
             noout = 1;
-        else if (strcmp(*argv, "-oid") == 0) {
+        else if (strcmp(*argv, "\x2d\x6f\x69\x64") == 0) {
             if (--argc < 1)
                 goto bad;
             oidfile = *(++argv);
-        } else if (strcmp(*argv, "-offset") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x66\x66\x73\x65\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             offset = atoi(*(++argv));
-        } else if (strcmp(*argv, "-length") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6c\x65\x6e\x67\x74\x68") == 0) {
             if (--argc < 1)
                 goto bad;
             length = atoi(*(++argv));
             if (length == 0)
                 goto bad;
-        } else if (strcmp(*argv, "-dump") == 0) {
+        } else if (strcmp(*argv, "\x2d\x64\x75\x6d\x70") == 0) {
             dump = -1;
-        } else if (strcmp(*argv, "-dlimit") == 0) {
+        } else if (strcmp(*argv, "\x2d\x64\x6c\x69\x6d\x69\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             dump = atoi(*(++argv));
             if (dump <= 0)
                 goto bad;
-        } else if (strcmp(*argv, "-strparse") == 0) {
+        } else if (strcmp(*argv, "\x2d\x73\x74\x72\x70\x61\x72\x73\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             sk_OPENSSL_STRING_push(osk, *(++argv));
-        } else if (strcmp(*argv, "-genstr") == 0) {
+        } else if (strcmp(*argv, "\x2d\x67\x65\x6e\x73\x74\x72") == 0) {
             if (--argc < 1)
                 goto bad;
             genstr = *(++argv);
-        } else if (strcmp(*argv, "-genconf") == 0) {
+        } else if (strcmp(*argv, "\x2d\x67\x65\x6e\x63\x6f\x6e\x66") == 0) {
             if (--argc < 1)
                 goto bad;
             genconf = *(++argv);
         } else {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badops = 1;
             break;
         }
@@ -181,28 +181,28 @@ int MAIN(int argc, char **argv)
 
     if (badops) {
  bad:
-        BIO_printf(bio_err, "%s [options] <infile\n", prog);
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, " -inform arg   input format - one of DER PEM\n");
-        BIO_printf(bio_err, " -in arg       input file\n");
+        BIO_printf(bio_err, "\x25\x73\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\x20\x3c\x69\x6e\x66\x69\x6c\x65\xa", prog);
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x6f\x6e\x65\x20\x6f\x66\x20\x44\x45\x52\x20\x50\x45\x4d\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   " -out arg      output file (output format is always DER\n");
-        BIO_printf(bio_err, " -noout arg    don't produce any output\n");
-        BIO_printf(bio_err, " -offset arg   offset into file\n");
-        BIO_printf(bio_err, " -length arg   length of section in file\n");
-        BIO_printf(bio_err, " -i            indent entries\n");
-        BIO_printf(bio_err, " -dump         dump unknown data in hex form\n");
+                   "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x28\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x69\x73\x20\x61\x6c\x77\x61\x79\x73\x20\x44\x45\x52\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6e\x6f\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x70\x72\x6f\x64\x75\x63\x65\x20\x61\x6e\x79\x20\x6f\x75\x74\x70\x75\x74\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x66\x66\x73\x65\x74\x20\x61\x72\x67\x20\x20\x20\x6f\x66\x66\x73\x65\x74\x20\x69\x6e\x74\x6f\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6c\x65\x6e\x67\x74\x68\x20\x61\x72\x67\x20\x20\x20\x6c\x65\x6e\x67\x74\x68\x20\x6f\x66\x20\x73\x65\x63\x74\x69\x6f\x6e\x20\x69\x6e\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x64\x65\x6e\x74\x20\x65\x6e\x74\x72\x69\x65\x73\xa");
+        BIO_printf(bio_err, "\x20\x2d\x64\x75\x6d\x70\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x75\x6d\x70\x20\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x64\x61\x74\x61\x20\x69\x6e\x20\x68\x65\x78\x20\x66\x6f\x72\x6d\xa");
         BIO_printf(bio_err,
-                   " -dlimit arg   dump the first arg bytes of unknown data in hex form\n");
-        BIO_printf(bio_err, " -oid file     file of extra oid definitions\n");
-        BIO_printf(bio_err, " -strparse offset\n");
+                   "\x20\x2d\x64\x6c\x69\x6d\x69\x74\x20\x61\x72\x67\x20\x20\x20\x64\x75\x6d\x70\x20\x74\x68\x65\x20\x66\x69\x72\x73\x74\x20\x61\x72\x67\x20\x62\x79\x74\x65\x73\x20\x6f\x66\x20\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x64\x61\x74\x61\x20\x69\x6e\x20\x68\x65\x78\x20\x66\x6f\x72\x6d\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x69\x64\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x66\x69\x6c\x65\x20\x6f\x66\x20\x65\x78\x74\x72\x61\x20\x6f\x69\x64\x20\x64\x65\x66\x69\x6e\x69\x74\x69\x6f\x6e\x73\xa");
+        BIO_printf(bio_err, "\x20\x2d\x73\x74\x72\x70\x61\x72\x73\x65\x20\x6f\x66\x66\x73\x65\x74\xa");
         BIO_printf(bio_err,
-                   "               a series of these can be used to 'dig' into multiple\n");
-        BIO_printf(bio_err, "               ASN1 blob wrappings\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x61\x20\x73\x65\x72\x69\x65\x73\x20\x6f\x66\x20\x74\x68\x65\x73\x65\x20\x63\x61\x6e\x20\x62\x65\x20\x75\x73\x65\x64\x20\x74\x6f\x20\x27\x64\x69\x67\x27\x20\x69\x6e\x74\x6f\x20\x6d\x75\x6c\x74\x69\x70\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x41\x53\x4e\x31\x20\x62\x6c\x6f\x62\x20\x77\x72\x61\x70\x70\x69\x6e\x67\x73\xa");
         BIO_printf(bio_err,
-                   " -genstr str   string to generate ASN1 structure from\n");
+                   "\x20\x2d\x67\x65\x6e\x73\x74\x72\x20\x73\x74\x72\x20\x20\x20\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x41\x53\x4e\x31\x20\x73\x74\x72\x75\x63\x74\x75\x72\x65\x20\x66\x72\x6f\x6d\xa");
         BIO_printf(bio_err,
-                   " -genconf file file to generate ASN1 structure from\n");
+                   "\x20\x2d\x67\x65\x6e\x63\x6f\x6e\x66\x20\x66\x69\x6c\x65\x20\x66\x69\x6c\x65\x20\x74\x6f\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x41\x53\x4e\x31\x20\x73\x74\x72\x75\x63\x74\x75\x72\x65\x20\x66\x72\x6f\x6d\xa");
         goto end;
     }
 
@@ -224,7 +224,7 @@ int MAIN(int argc, char **argv)
 
     if (oidfile != NULL) {
         if (BIO_read_filename(in, oidfile) <= 0) {
-            BIO_printf(bio_err, "problems opening %s\n", oidfile);
+            BIO_printf(bio_err, "\x70\x72\x6f\x62\x6c\x65\x6d\x73\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x25\x73\xa", oidfile);
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -241,8 +241,8 @@ int MAIN(int argc, char **argv)
     }
 
     if (derfile) {
-        if (!(derout = BIO_new_file(derfile, "wb"))) {
-            BIO_printf(bio_err, "problems opening %s\n", derfile);
+        if (!(derout = BIO_new_file(derfile, "\x77\x62"))) {
+            BIO_printf(bio_err, "\x70\x72\x6f\x62\x6c\x65\x6d\x73\x20\x6f\x70\x65\x6e\x69\x6e\x67\x20\x25\x73\xa", derfile);
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -296,7 +296,7 @@ int MAIN(int argc, char **argv)
             int typ;
             j = atoi(sk_OPENSSL_STRING_value(osk, i));
             if (j == 0) {
-                BIO_printf(bio_err, "'%s' is an invalid number\n",
+                BIO_printf(bio_err, "\x27\x25\x73\x27\x20\x69\x73\x20\x61\x6e\x20\x69\x6e\x76\x61\x6c\x69\x64\x20\x6e\x75\x6d\x62\x65\x72\xa",
                            sk_OPENSSL_STRING_value(osk, i));
                 continue;
             }
@@ -307,7 +307,7 @@ int MAIN(int argc, char **argv)
             at = d2i_ASN1_TYPE(NULL, &ctmpbuf, tmplen);
             ASN1_TYPE_free(atmp);
             if (!at) {
-                BIO_printf(bio_err, "Error parsing structure\n");
+                BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x70\x61\x72\x73\x69\x6e\x67\x20\x73\x74\x72\x75\x63\x74\x75\x72\x65\xa");
                 ERR_print_errors(bio_err);
                 goto end;
             }
@@ -315,7 +315,7 @@ int MAIN(int argc, char **argv)
             if ((typ == V_ASN1_OBJECT)
                 || (typ == V_ASN1_BOOLEAN)
                 || (typ == V_ASN1_NULL)) {
-                BIO_printf(bio_err, "Can't parse %s type\n", ASN1_tag2str(typ));
+                BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x70\x61\x72\x73\x65\x20\x25\x73\x20\x74\x79\x70\x65\xa", ASN1_tag2str(typ));
                 ERR_print_errors(bio_err);
                 goto end;
             }
@@ -328,7 +328,7 @@ int MAIN(int argc, char **argv)
     }
 
     if (offset >= num) {
-        BIO_printf(bio_err, "Error: offset too large\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x3a\x20\x6f\x66\x66\x73\x65\x74\x20\x74\x6f\x6f\x20\x6c\x61\x72\x67\x65\xa");
         goto end;
     }
 
@@ -338,7 +338,7 @@ int MAIN(int argc, char **argv)
         length = (unsigned int)num;
     if (derout) {
         if (BIO_write(derout, str + offset, length) != (int)length) {
-            BIO_printf(bio_err, "Error writing output\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x77\x72\x69\x74\x69\x6e\x67\x20\x6f\x75\x74\x70\x75\x74\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -384,9 +384,9 @@ static int do_generate(BIO *bio, char *genstr, char *genconf, BUF_MEM *buf)
         if (!NCONF_load(cnf, genconf, &errline))
             goto conferr;
         if (!genstr)
-            genstr = NCONF_get_string(cnf, "default", "asn1");
+            genstr = NCONF_get_string(cnf, "\x64\x65\x66\x61\x75\x6c\x74", "\x61\x73\x6e\x31");
         if (!genstr) {
-            BIO_printf(bio, "Can't find 'asn1' in '%s'\n", genconf);
+            BIO_printf(bio, "\x43\x61\x6e\x27\x74\x20\x66\x69\x6e\x64\x20\x27\x61\x73\x6e\x31\x27\x20\x69\x6e\x20\x27\x25\x73\x27\xa", genconf);
             goto err;
         }
     }
@@ -416,10 +416,10 @@ static int do_generate(BIO *bio, char *genstr, char *genconf, BUF_MEM *buf)
  conferr:
 
     if (errline > 0)
-        BIO_printf(bio, "Error on line %ld of config file '%s'\n",
+        BIO_printf(bio, "\x45\x72\x72\x6f\x72\x20\x6f\x6e\x20\x6c\x69\x6e\x65\x20\x25\x6c\x64\x20\x6f\x66\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x27\x25\x73\x27\xa",
                    errline, genconf);
     else
-        BIO_printf(bio, "Error loading config file '%s'\n", genconf);
+        BIO_printf(bio, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x63\x6f\x6e\x66\x69\x67\x20\x66\x69\x6c\x65\x20\x27\x25\x73\x27\xa", genconf);
 
  err:
     NCONF_free(cnf);

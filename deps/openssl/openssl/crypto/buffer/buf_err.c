@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,12 +70,12 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_BUF,0,reason)
 
 static ERR_STRING_DATA BUF_str_functs[] = {
-    {ERR_FUNC(BUF_F_BUF_MEMDUP), "BUF_memdup"},
-    {ERR_FUNC(BUF_F_BUF_MEM_GROW), "BUF_MEM_grow"},
-    {ERR_FUNC(BUF_F_BUF_MEM_GROW_CLEAN), "BUF_MEM_grow_clean"},
-    {ERR_FUNC(BUF_F_BUF_MEM_NEW), "BUF_MEM_new"},
-    {ERR_FUNC(BUF_F_BUF_STRDUP), "BUF_strdup"},
-    {ERR_FUNC(BUF_F_BUF_STRNDUP), "BUF_strndup"},
+    {ERR_FUNC(BUF_F_BUF_MEMDUP), "\x42\x55\x46\x5f\x6d\x65\x6d\x64\x75\x70"},
+    {ERR_FUNC(BUF_F_BUF_MEM_GROW), "\x42\x55\x46\x5f\x4d\x45\x4d\x5f\x67\x72\x6f\x77"},
+    {ERR_FUNC(BUF_F_BUF_MEM_GROW_CLEAN), "\x42\x55\x46\x5f\x4d\x45\x4d\x5f\x67\x72\x6f\x77\x5f\x63\x6c\x65\x61\x6e"},
+    {ERR_FUNC(BUF_F_BUF_MEM_NEW), "\x42\x55\x46\x5f\x4d\x45\x4d\x5f\x6e\x65\x77"},
+    {ERR_FUNC(BUF_F_BUF_STRDUP), "\x42\x55\x46\x5f\x73\x74\x72\x64\x75\x70"},
+    {ERR_FUNC(BUF_F_BUF_STRNDUP), "\x42\x55\x46\x5f\x73\x74\x72\x6e\x64\x75\x70"},
     {0, NULL}
 };
 

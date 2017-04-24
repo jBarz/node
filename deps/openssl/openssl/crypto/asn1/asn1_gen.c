@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -167,7 +167,7 @@ static ASN1_TYPE *generate_v3(char *str, X509V3_CTX *cnf, int depth,
     asn1_tags.imp_class = -1;
     asn1_tags.format = ASN1_GEN_FORMAT_ASCII;
     asn1_tags.exp_count = 0;
-    if (CONF_parse_list(str, ',', 1, asn1_cb, &asn1_tags) != 0) {
+    if (CONF_parse_list(str, '\x2c', 1, asn1_cb, &asn1_tags) != 0) {
         *perr = ASN1_R_UNKNOWN_TAG;
         return NULL;
     }
@@ -304,7 +304,7 @@ static int asn1_cb(const char *elem, int len, void *bitstr)
 
     for (i = 0, p = elem; i < len; p++, i++) {
         /* Look for the ':' in name value pairs */
-        if (*p == ':') {
+        if (*p == '\x3a') {
             vstart = p + 1;
             vlen = len - (vstart - elem);
             len = p - elem;
@@ -316,7 +316,7 @@ static int asn1_cb(const char *elem, int len, void *bitstr)
 
     if (utype == -1) {
         ASN1err(ASN1_F_ASN1_CB, ASN1_R_UNKNOWN_TAG);
-        ERR_add_error_data(2, "tag=", elem);
+        ERR_add_error_data(2, "\x74\x61\x67\x3d", elem);
         return -1;
     }
 
@@ -377,13 +377,13 @@ static int asn1_cb(const char *elem, int len, void *bitstr)
             ASN1err(ASN1_F_ASN1_CB, ASN1_R_UNKNOWN_FORMAT);
             return -1;
         }
-        if (!strncmp(vstart, "ASCII", 5))
+        if (!strncmp(vstart, "\x41\x53\x43\x49\x49", 5))
             arg->format = ASN1_GEN_FORMAT_ASCII;
-        else if (!strncmp(vstart, "UTF8", 4))
+        else if (!strncmp(vstart, "\x55\x54\x46\x38", 4))
             arg->format = ASN1_GEN_FORMAT_UTF8;
-        else if (!strncmp(vstart, "HEX", 3))
+        else if (!strncmp(vstart, "\x48\x45\x58", 3))
             arg->format = ASN1_GEN_FORMAT_HEX;
-        else if (!strncmp(vstart, "BITLIST", 7))
+        else if (!strncmp(vstart, "\x42\x49\x54\x4c\x49\x53\x54", 7))
             arg->format = ASN1_GEN_FORMAT_BITLIST;
         else {
             ASN1err(ASN1_F_ASN1_CB, ASN1_R_UNKOWN_FORMAT);
@@ -421,19 +421,19 @@ static int parse_tagging(const char *vstart, int vlen, int *ptag, int *pclass)
     if (vlen) {
         switch (*eptr) {
 
-        case 'U':
+        case '\x55':
             *pclass = V_ASN1_UNIVERSAL;
             break;
 
-        case 'A':
+        case '\x41':
             *pclass = V_ASN1_APPLICATION;
             break;
 
-        case 'P':
+        case '\x50':
             *pclass = V_ASN1_PRIVATE;
             break;
 
-        case 'C':
+        case '\x43':
             *pclass = V_ASN1_CONTEXT_SPECIFIC;
             break;
 
@@ -441,7 +441,7 @@ static int parse_tagging(const char *vstart, int vlen, int *ptag, int *pclass)
             erch[0] = *eptr;
             erch[1] = 0;
             ASN1err(ASN1_F_PARSE_TAGGING, ASN1_R_INVALID_MODIFIER);
-            ERR_add_error_data(2, "Char=", erch);
+            ERR_add_error_data(2, "\x43\x68\x61\x72\x3d", erch);
             return 0;
             break;
 
@@ -562,64 +562,64 @@ static int asn1_str2tag(const char *tagstr, int len)
 {
     unsigned int i;
     static const struct tag_name_st *tntmp, tnst[] = {
-        ASN1_GEN_STR("BOOL", V_ASN1_BOOLEAN),
-        ASN1_GEN_STR("BOOLEAN", V_ASN1_BOOLEAN),
-        ASN1_GEN_STR("NULL", V_ASN1_NULL),
-        ASN1_GEN_STR("INT", V_ASN1_INTEGER),
-        ASN1_GEN_STR("INTEGER", V_ASN1_INTEGER),
-        ASN1_GEN_STR("ENUM", V_ASN1_ENUMERATED),
-        ASN1_GEN_STR("ENUMERATED", V_ASN1_ENUMERATED),
-        ASN1_GEN_STR("OID", V_ASN1_OBJECT),
-        ASN1_GEN_STR("OBJECT", V_ASN1_OBJECT),
-        ASN1_GEN_STR("UTCTIME", V_ASN1_UTCTIME),
-        ASN1_GEN_STR("UTC", V_ASN1_UTCTIME),
-        ASN1_GEN_STR("GENERALIZEDTIME", V_ASN1_GENERALIZEDTIME),
-        ASN1_GEN_STR("GENTIME", V_ASN1_GENERALIZEDTIME),
-        ASN1_GEN_STR("OCT", V_ASN1_OCTET_STRING),
-        ASN1_GEN_STR("OCTETSTRING", V_ASN1_OCTET_STRING),
-        ASN1_GEN_STR("BITSTR", V_ASN1_BIT_STRING),
-        ASN1_GEN_STR("BITSTRING", V_ASN1_BIT_STRING),
-        ASN1_GEN_STR("UNIVERSALSTRING", V_ASN1_UNIVERSALSTRING),
-        ASN1_GEN_STR("UNIV", V_ASN1_UNIVERSALSTRING),
-        ASN1_GEN_STR("IA5", V_ASN1_IA5STRING),
-        ASN1_GEN_STR("IA5STRING", V_ASN1_IA5STRING),
-        ASN1_GEN_STR("UTF8", V_ASN1_UTF8STRING),
-        ASN1_GEN_STR("UTF8String", V_ASN1_UTF8STRING),
-        ASN1_GEN_STR("BMP", V_ASN1_BMPSTRING),
-        ASN1_GEN_STR("BMPSTRING", V_ASN1_BMPSTRING),
-        ASN1_GEN_STR("VISIBLESTRING", V_ASN1_VISIBLESTRING),
-        ASN1_GEN_STR("VISIBLE", V_ASN1_VISIBLESTRING),
-        ASN1_GEN_STR("PRINTABLESTRING", V_ASN1_PRINTABLESTRING),
-        ASN1_GEN_STR("PRINTABLE", V_ASN1_PRINTABLESTRING),
-        ASN1_GEN_STR("T61", V_ASN1_T61STRING),
-        ASN1_GEN_STR("T61STRING", V_ASN1_T61STRING),
-        ASN1_GEN_STR("TELETEXSTRING", V_ASN1_T61STRING),
-        ASN1_GEN_STR("GeneralString", V_ASN1_GENERALSTRING),
-        ASN1_GEN_STR("GENSTR", V_ASN1_GENERALSTRING),
-        ASN1_GEN_STR("NUMERIC", V_ASN1_NUMERICSTRING),
-        ASN1_GEN_STR("NUMERICSTRING", V_ASN1_NUMERICSTRING),
+        ASN1_GEN_STR("\x42\x4f\x4f\x4c", V_ASN1_BOOLEAN),
+        ASN1_GEN_STR("\x42\x4f\x4f\x4c\x45\x41\x4e", V_ASN1_BOOLEAN),
+        ASN1_GEN_STR("\x4e\x55\x4c\x4c", V_ASN1_NULL),
+        ASN1_GEN_STR("\x49\x4e\x54", V_ASN1_INTEGER),
+        ASN1_GEN_STR("\x49\x4e\x54\x45\x47\x45\x52", V_ASN1_INTEGER),
+        ASN1_GEN_STR("\x45\x4e\x55\x4d", V_ASN1_ENUMERATED),
+        ASN1_GEN_STR("\x45\x4e\x55\x4d\x45\x52\x41\x54\x45\x44", V_ASN1_ENUMERATED),
+        ASN1_GEN_STR("\x4f\x49\x44", V_ASN1_OBJECT),
+        ASN1_GEN_STR("\x4f\x42\x4a\x45\x43\x54", V_ASN1_OBJECT),
+        ASN1_GEN_STR("\x55\x54\x43\x54\x49\x4d\x45", V_ASN1_UTCTIME),
+        ASN1_GEN_STR("\x55\x54\x43", V_ASN1_UTCTIME),
+        ASN1_GEN_STR("\x47\x45\x4e\x45\x52\x41\x4c\x49\x5a\x45\x44\x54\x49\x4d\x45", V_ASN1_GENERALIZEDTIME),
+        ASN1_GEN_STR("\x47\x45\x4e\x54\x49\x4d\x45", V_ASN1_GENERALIZEDTIME),
+        ASN1_GEN_STR("\x4f\x43\x54", V_ASN1_OCTET_STRING),
+        ASN1_GEN_STR("\x4f\x43\x54\x45\x54\x53\x54\x52\x49\x4e\x47", V_ASN1_OCTET_STRING),
+        ASN1_GEN_STR("\x42\x49\x54\x53\x54\x52", V_ASN1_BIT_STRING),
+        ASN1_GEN_STR("\x42\x49\x54\x53\x54\x52\x49\x4e\x47", V_ASN1_BIT_STRING),
+        ASN1_GEN_STR("\x55\x4e\x49\x56\x45\x52\x53\x41\x4c\x53\x54\x52\x49\x4e\x47", V_ASN1_UNIVERSALSTRING),
+        ASN1_GEN_STR("\x55\x4e\x49\x56", V_ASN1_UNIVERSALSTRING),
+        ASN1_GEN_STR("\x49\x41\x35", V_ASN1_IA5STRING),
+        ASN1_GEN_STR("\x49\x41\x35\x53\x54\x52\x49\x4e\x47", V_ASN1_IA5STRING),
+        ASN1_GEN_STR("\x55\x54\x46\x38", V_ASN1_UTF8STRING),
+        ASN1_GEN_STR("\x55\x54\x46\x38\x53\x74\x72\x69\x6e\x67", V_ASN1_UTF8STRING),
+        ASN1_GEN_STR("\x42\x4d\x50", V_ASN1_BMPSTRING),
+        ASN1_GEN_STR("\x42\x4d\x50\x53\x54\x52\x49\x4e\x47", V_ASN1_BMPSTRING),
+        ASN1_GEN_STR("\x56\x49\x53\x49\x42\x4c\x45\x53\x54\x52\x49\x4e\x47", V_ASN1_VISIBLESTRING),
+        ASN1_GEN_STR("\x56\x49\x53\x49\x42\x4c\x45", V_ASN1_VISIBLESTRING),
+        ASN1_GEN_STR("\x50\x52\x49\x4e\x54\x41\x42\x4c\x45\x53\x54\x52\x49\x4e\x47", V_ASN1_PRINTABLESTRING),
+        ASN1_GEN_STR("\x50\x52\x49\x4e\x54\x41\x42\x4c\x45", V_ASN1_PRINTABLESTRING),
+        ASN1_GEN_STR("\x54\x36\x31", V_ASN1_T61STRING),
+        ASN1_GEN_STR("\x54\x36\x31\x53\x54\x52\x49\x4e\x47", V_ASN1_T61STRING),
+        ASN1_GEN_STR("\x54\x45\x4c\x45\x54\x45\x58\x53\x54\x52\x49\x4e\x47", V_ASN1_T61STRING),
+        ASN1_GEN_STR("\x47\x65\x6e\x65\x72\x61\x6c\x53\x74\x72\x69\x6e\x67", V_ASN1_GENERALSTRING),
+        ASN1_GEN_STR("\x47\x45\x4e\x53\x54\x52", V_ASN1_GENERALSTRING),
+        ASN1_GEN_STR("\x4e\x55\x4d\x45\x52\x49\x43", V_ASN1_NUMERICSTRING),
+        ASN1_GEN_STR("\x4e\x55\x4d\x45\x52\x49\x43\x53\x54\x52\x49\x4e\x47", V_ASN1_NUMERICSTRING),
 
         /* Special cases */
-        ASN1_GEN_STR("SEQUENCE", V_ASN1_SEQUENCE),
-        ASN1_GEN_STR("SEQ", V_ASN1_SEQUENCE),
-        ASN1_GEN_STR("SET", V_ASN1_SET),
+        ASN1_GEN_STR("\x53\x45\x51\x55\x45\x4e\x43\x45", V_ASN1_SEQUENCE),
+        ASN1_GEN_STR("\x53\x45\x51", V_ASN1_SEQUENCE),
+        ASN1_GEN_STR("\x53\x45\x54", V_ASN1_SET),
         /* type modifiers */
         /* Explicit tag */
-        ASN1_GEN_STR("EXP", ASN1_GEN_FLAG_EXP),
-        ASN1_GEN_STR("EXPLICIT", ASN1_GEN_FLAG_EXP),
+        ASN1_GEN_STR("\x45\x58\x50", ASN1_GEN_FLAG_EXP),
+        ASN1_GEN_STR("\x45\x58\x50\x4c\x49\x43\x49\x54", ASN1_GEN_FLAG_EXP),
         /* Implicit tag */
-        ASN1_GEN_STR("IMP", ASN1_GEN_FLAG_IMP),
-        ASN1_GEN_STR("IMPLICIT", ASN1_GEN_FLAG_IMP),
+        ASN1_GEN_STR("\x49\x4d\x50", ASN1_GEN_FLAG_IMP),
+        ASN1_GEN_STR("\x49\x4d\x50\x4c\x49\x43\x49\x54", ASN1_GEN_FLAG_IMP),
         /* OCTET STRING wrapper */
-        ASN1_GEN_STR("OCTWRAP", ASN1_GEN_FLAG_OCTWRAP),
+        ASN1_GEN_STR("\x4f\x43\x54\x57\x52\x41\x50", ASN1_GEN_FLAG_OCTWRAP),
         /* SEQUENCE wrapper */
-        ASN1_GEN_STR("SEQWRAP", ASN1_GEN_FLAG_SEQWRAP),
+        ASN1_GEN_STR("\x53\x45\x51\x57\x52\x41\x50", ASN1_GEN_FLAG_SEQWRAP),
         /* SET wrapper */
-        ASN1_GEN_STR("SETWRAP", ASN1_GEN_FLAG_SETWRAP),
+        ASN1_GEN_STR("\x53\x45\x54\x57\x52\x41\x50", ASN1_GEN_FLAG_SETWRAP),
         /* BIT STRING wrapper */
-        ASN1_GEN_STR("BITWRAP", ASN1_GEN_FLAG_BITWRAP),
-        ASN1_GEN_STR("FORM", ASN1_GEN_FLAG_FORMAT),
-        ASN1_GEN_STR("FORMAT", ASN1_GEN_FLAG_FORMAT),
+        ASN1_GEN_STR("\x42\x49\x54\x57\x52\x41\x50", ASN1_GEN_FLAG_BITWRAP),
+        ASN1_GEN_STR("\x46\x4f\x52\x4d", ASN1_GEN_FLAG_FORMAT),
+        ASN1_GEN_STR("\x46\x4f\x52\x4d\x41\x54", ASN1_GEN_FLAG_FORMAT),
     };
 
     if (len == -1)
@@ -773,7 +773,7 @@ static ASN1_TYPE *asn1_str2type(const char *str, int format, int utype)
         else if ((format == ASN1_GEN_FORMAT_BITLIST)
                  && (utype == V_ASN1_BIT_STRING)) {
             if (!CONF_parse_list
-                (str, ',', 1, bitstr_cb, atmp->value.bit_string)) {
+                (str, '\x2c', 1, bitstr_cb, atmp->value.bit_string)) {
                 ASN1err(ASN1_F_ASN1_STR2TYPE, ASN1_R_LIST_ERROR);
                 goto bad_str;
             }
@@ -802,7 +802,7 @@ static ASN1_TYPE *asn1_str2type(const char *str, int format, int utype)
     return atmp;
 
  bad_str:
-    ERR_add_error_data(2, "string=", str);
+    ERR_add_error_data(2, "\x73\x74\x72\x69\x6e\x67\x3d", str);
  bad_form:
 
     ASN1_TYPE_free(atmp);

@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -66,30 +66,30 @@
 /* BEGIN ERROR CODES */
 #ifndef OPENSSL_NO_ERR
 static ERR_STRING_DATA ZENCOD_str_functs[] = {
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_BN_MOD_EXP, 0), "ZENCOD_BN_MOD_EXP"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_CTRL, 0), "ZENCOD_CTRL"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_DH_COMPUTE, 0), "ZENCOD_DH_COMPUTE"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_DH_GENERATE, 0), "ZENCOD_DH_GENERATE"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_DSA_DO_SIGN, 0), "ZENCOD_DSA_DO_SIGN"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_DSA_DO_VERIFY, 0), "ZENCOD_DSA_DO_VERIFY"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_FINISH, 0), "ZENCOD_FINISH"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_INIT, 0), "ZENCOD_INIT"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_RAND, 0), "ZENCOD_RAND"},
-    {ERR_PACK(0, ZENCOD_F_ZENCOD_RSA_MOD_EXP, 0), "ZENCOD_RSA_MOD_EXP"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_BN_MOD_EXP, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x42\x4e\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_CTRL, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x43\x54\x52\x4c"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_DH_COMPUTE, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x44\x48\x5f\x43\x4f\x4d\x50\x55\x54\x45"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_DH_GENERATE, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x44\x48\x5f\x47\x45\x4e\x45\x52\x41\x54\x45"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_DSA_DO_SIGN, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x44\x53\x41\x5f\x44\x4f\x5f\x53\x49\x47\x4e"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_DSA_DO_VERIFY, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x44\x53\x41\x5f\x44\x4f\x5f\x56\x45\x52\x49\x46\x59"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_FINISH, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x46\x49\x4e\x49\x53\x48"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_INIT, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x49\x4e\x49\x54"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_RAND, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x52\x41\x4e\x44"},
+    {ERR_PACK(0, ZENCOD_F_ZENCOD_RSA_MOD_EXP, 0), "\x5a\x45\x4e\x43\x4f\x44\x5f\x52\x53\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {ERR_PACK(0, ZENCOD_F_ZENCOD_RSA_MOD_EXP_CRT, 0),
-     "ZENCOD_RSA_MOD_EXP_CRT"},
+     "\x5a\x45\x4e\x43\x4f\x44\x5f\x52\x53\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50\x5f\x43\x52\x54"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA ZENCOD_str_reasons[] = {
-    {ZENCOD_R_ALREADY_LOADED, "already loaded"},
-    {ZENCOD_R_BAD_KEY_COMPONENTS, "bad key components"},
-    {ZENCOD_R_BN_EXPAND_FAIL, "bn expand fail"},
-    {ZENCOD_R_CTRL_COMMAND_NOT_IMPLEMENTED, "ctrl command not implemented"},
-    {ZENCOD_R_DSO_FAILURE, "dso failure"},
-    {ZENCOD_R_NOT_LOADED, "not loaded"},
-    {ZENCOD_R_REQUEST_FAILED, "request failed"},
-    {ZENCOD_R_UNIT_FAILURE, "unit failure"},
+    {ZENCOD_R_ALREADY_LOADED, "\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x61\x64\x65\x64"},
+    {ZENCOD_R_BAD_KEY_COMPONENTS, "\x62\x61\x64\x20\x6b\x65\x79\x20\x63\x6f\x6d\x70\x6f\x6e\x65\x6e\x74\x73"},
+    {ZENCOD_R_BN_EXPAND_FAIL, "\x62\x6e\x20\x65\x78\x70\x61\x6e\x64\x20\x66\x61\x69\x6c"},
+    {ZENCOD_R_CTRL_COMMAND_NOT_IMPLEMENTED, "\x63\x74\x72\x6c\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x6e\x6f\x74\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64"},
+    {ZENCOD_R_DSO_FAILURE, "\x64\x73\x6f\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {ZENCOD_R_NOT_LOADED, "\x6e\x6f\x74\x20\x6c\x6f\x61\x64\x65\x64"},
+    {ZENCOD_R_REQUEST_FAILED, "\x72\x65\x71\x75\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64"},
+    {ZENCOD_R_UNIT_FAILURE, "\x75\x6e\x69\x74\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {0, NULL}
 };
 

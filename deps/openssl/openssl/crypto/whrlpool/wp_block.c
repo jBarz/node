@@ -90,8 +90,8 @@ typedef unsigned long long u64;
 #elif defined(__GNUC__) && __GNUC__>=2
 # if defined(__x86_64) || defined(__x86_64__)
 #  if defined(L_ENDIAN)
-#   define ROTATE(a,n)       ({ u64 ret; asm ("rolq %1,%0"   \
-                                   : "=r"(ret) : "J"(n),"0"(a) : "cc"); ret; })
+#   define ROTATE(a,n)       ({ u64 ret; asm ("\x72\x6f\x6c\x71\x20\x25\x31\x2c\x25\x30"   \
+                                   : "\x3d\x72"(ret) : "\x4a"(n),"\x30"(a) : "\x63\x63"); ret; })
 #  elif defined(B_ENDIAN)
        /*
         * Most will argue that x86_64 is always little-endian. Well, yes, but
@@ -100,16 +100,16 @@ typedef unsigned long long u64;
         * won't do same for x86_64? Naturally no. And this line is waiting
         * ready for that brave soul:-)
         */
-#   define ROTATE(a,n)       ({ u64 ret; asm ("rorq %1,%0"   \
-                                   : "=r"(ret) : "J"(n),"0"(a) : "cc"); ret; })
+#   define ROTATE(a,n)       ({ u64 ret; asm ("\x72\x6f\x72\x71\x20\x25\x31\x2c\x25\x30"   \
+                                   : "\x3d\x72"(ret) : "\x4a"(n),"\x30"(a) : "\x63\x63"); ret; })
 #  endif
 # elif defined(__ia64) || defined(__ia64__)
 #  if defined(L_ENDIAN)
-#   define ROTATE(a,n)       ({ u64 ret; asm ("shrp %0=%1,%1,%2"     \
-                                   : "=r"(ret) : "r"(a),"M"(64-(n))); ret; })
+#   define ROTATE(a,n)       ({ u64 ret; asm ("\x73\x68\x72\x70\x20\x25\x30\x3d\x25\x31\x2c\x25\x31\x2c\x25\x32"     \
+                                   : "\x3d\x72"(ret) : "\x72"(a),"\x4d"(64-(n))); ret; })
 #  elif defined(B_ENDIAN)
-#   define ROTATE(a,n)       ({ u64 ret; asm ("shrp %0=%1,%1,%2"     \
-                                   : "=r"(ret) : "r"(a),"M"(n)); ret; })
+#   define ROTATE(a,n)       ({ u64 ret; asm ("\x73\x68\x72\x70\x20\x25\x30\x3d\x25\x31\x2c\x25\x31\x2c\x25\x32"     \
+                                   : "\x3d\x72"(ret) : "\x72"(a),"\x4d"(n)); ret; })
 #  endif
 # endif
 #endif
@@ -141,7 +141,7 @@ typedef unsigned long long u64;
 /*
  * Note that every Cn macro expands as two loads: one byte load and
  * one quadword load. One can argue that that many single-byte loads
- * is too excessive, as one could load a quadword and "milk" it for
+ * is too excessive, as one could load a quadword and "\x6d\x69\x6c\x6b" it for
  * eight 8-bit values instead. Well, yes, but in order to do so *and*
  * avoid excessive loads you have to accomodate a handful of 64-bit
  * values in the register bank and issue a bunch of shifts and mask.
@@ -477,7 +477,7 @@ void whirlpool_block(WHIRLPOOL_CTX *ctx, const void *inp, size_t n)
     const u8 *p = inp;
     union {
         u64 q[8];
-        u8 c[64];
+         u8 c[64];
     } S, K, *H = (void *)ctx->H.q;
 
 #ifdef GO_FOR_MMX

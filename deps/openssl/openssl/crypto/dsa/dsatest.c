@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -81,7 +81,7 @@
 #ifdef OPENSSL_NO_DSA
 int main(int argc, char *argv[])
 {
-    printf("No DSA support\n");
+    printf("\x4e\x6f\x20\x44\x53\x41\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -132,10 +132,10 @@ static unsigned char out_g[] = {
     0xc5, 0x72, 0xaf, 0x53, 0xe6, 0xd7, 0x88, 0x02,
 };
 
-static const unsigned char str1[] = "12345678901234567890";
+static const unsigned char str1[] = "\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x30";
 
 static const char rnd_seed[] =
-    "string to make the random number generator think it has entropy";
+    "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 
 static BIO *bio_err = NULL;
 
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
     ERR_load_crypto_strings();
     RAND_seed(rnd_seed, sizeof rnd_seed);
 
-    BIO_printf(bio_err, "test generation of DSA parameters\n");
+    BIO_printf(bio_err, "\x74\x65\x73\x74\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x20\x6f\x66\x20\x44\x53\x41\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
 
     BN_GENCB_set(&cb, dsa_cb, bio_err);
     if (((dsa = DSA_new()) == NULL) || !DSA_generate_parameters_ex(dsa, 512,
@@ -168,41 +168,41 @@ int main(int argc, char **argv)
                                                                    &h, &cb))
         goto end;
 
-    BIO_printf(bio_err, "seed\n");
+    BIO_printf(bio_err, "\x73\x65\x65\x64\xa");
     for (i = 0; i < 20; i += 4) {
-        BIO_printf(bio_err, "%02X%02X%02X%02X ",
+        BIO_printf(bio_err, "\x25\x30\x32\x58\x25\x30\x32\x58\x25\x30\x32\x58\x25\x30\x32\x58\x20",
                    seed[i], seed[i + 1], seed[i + 2], seed[i + 3]);
     }
-    BIO_printf(bio_err, "\ncounter=%d h=%ld\n", counter, h);
+    BIO_printf(bio_err, "\xac\x6f\x75\x6e\x74\x65\x72\x3d\x25\x64\x20\x68\x3d\x25\x6c\x64\xa", counter, h);
 
     DSA_print(bio_err, dsa, 0);
     if (counter != 105) {
-        BIO_printf(bio_err, "counter should be 105\n");
+        BIO_printf(bio_err, "\x63\x6f\x75\x6e\x74\x65\x72\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x31\x30\x35\xa");
         goto end;
     }
     if (h != 2) {
-        BIO_printf(bio_err, "h should be 2\n");
+        BIO_printf(bio_err, "\x68\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x32\xa");
         goto end;
     }
 
     i = BN_bn2bin(dsa->q, buf);
     j = sizeof(out_q);
     if ((i != j) || (memcmp(buf, out_q, i) != 0)) {
-        BIO_printf(bio_err, "q value is wrong\n");
+        BIO_printf(bio_err, "\x71\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x77\x72\x6f\x6e\x67\xa");
         goto end;
     }
 
     i = BN_bn2bin(dsa->p, buf);
     j = sizeof(out_p);
     if ((i != j) || (memcmp(buf, out_p, i) != 0)) {
-        BIO_printf(bio_err, "p value is wrong\n");
+        BIO_printf(bio_err, "\x70\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x77\x72\x6f\x6e\x67\xa");
         goto end;
     }
 
     i = BN_bn2bin(dsa->g, buf);
     j = sizeof(out_g);
     if ((i != j) || (memcmp(buf, out_g, i) != 0)) {
-        BIO_printf(bio_err, "g value is wrong\n");
+        BIO_printf(bio_err, "\x67\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x77\x72\x6f\x6e\x67\xa");
         goto end;
     }
 
@@ -233,7 +233,7 @@ int main(int argc, char **argv)
     }
 # ifdef OPENSSL_SYS_NETWARE
     if (!ret)
-        printf("ERROR\n");
+        printf("\x45\x52\x52\x4f\x52\xa");
 # endif
     EXIT(!ret);
     return (0);
@@ -241,26 +241,26 @@ int main(int argc, char **argv)
 
 static int MS_CALLBACK dsa_cb(int p, int n, BN_GENCB *arg)
 {
-    char c = '*';
+    char c = '\x2a';
     static int ok = 0, num = 0;
 
     if (p == 0) {
-        c = '.';
+        c = '\x2e';
         num++;
     };
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2) {
-        c = '*';
+        c = '\x2a';
         ok++;
     }
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     BIO_write(arg->arg, &c, 1);
     (void)BIO_flush(arg->arg);
 
     if (!ok && (p == 0) && (num > 1)) {
-        BIO_printf((BIO *)arg, "error in dsatest\n");
+        BIO_printf((BIO *)arg, "\x65\x72\x72\x6f\x72\x20\x69\x6e\x20\x64\x73\x61\x74\x65\x73\x74\xa");
         return 0;
     }
     return 1;

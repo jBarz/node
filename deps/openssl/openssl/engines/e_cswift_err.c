@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,29 +70,29 @@
 # define ERR_REASON(reason) ERR_PACK(0,0,reason)
 
 static ERR_STRING_DATA CSWIFT_str_functs[] = {
-    {ERR_FUNC(CSWIFT_F_CSWIFT_CTRL), "CSWIFT_CTRL"},
-    {ERR_FUNC(CSWIFT_F_CSWIFT_DSA_SIGN), "CSWIFT_DSA_SIGN"},
-    {ERR_FUNC(CSWIFT_F_CSWIFT_DSA_VERIFY), "CSWIFT_DSA_VERIFY"},
-    {ERR_FUNC(CSWIFT_F_CSWIFT_FINISH), "CSWIFT_FINISH"},
-    {ERR_FUNC(CSWIFT_F_CSWIFT_INIT), "CSWIFT_INIT"},
-    {ERR_FUNC(CSWIFT_F_CSWIFT_MOD_EXP), "CSWIFT_MOD_EXP"},
-    {ERR_FUNC(CSWIFT_F_CSWIFT_MOD_EXP_CRT), "CSWIFT_MOD_EXP_CRT"},
-    {ERR_FUNC(CSWIFT_F_CSWIFT_RAND_BYTES), "CSWIFT_RAND_BYTES"},
-    {ERR_FUNC(CSWIFT_F_CSWIFT_RSA_MOD_EXP), "CSWIFT_RSA_MOD_EXP"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_CTRL), "\x43\x53\x57\x49\x46\x54\x5f\x43\x54\x52\x4c"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_DSA_SIGN), "\x43\x53\x57\x49\x46\x54\x5f\x44\x53\x41\x5f\x53\x49\x47\x4e"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_DSA_VERIFY), "\x43\x53\x57\x49\x46\x54\x5f\x44\x53\x41\x5f\x56\x45\x52\x49\x46\x59"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_FINISH), "\x43\x53\x57\x49\x46\x54\x5f\x46\x49\x4e\x49\x53\x48"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_INIT), "\x43\x53\x57\x49\x46\x54\x5f\x49\x4e\x49\x54"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_MOD_EXP), "\x43\x53\x57\x49\x46\x54\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_MOD_EXP_CRT), "\x43\x53\x57\x49\x46\x54\x5f\x4d\x4f\x44\x5f\x45\x58\x50\x5f\x43\x52\x54"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_RAND_BYTES), "\x43\x53\x57\x49\x46\x54\x5f\x52\x41\x4e\x44\x5f\x42\x59\x54\x45\x53"},
+    {ERR_FUNC(CSWIFT_F_CSWIFT_RSA_MOD_EXP), "\x43\x53\x57\x49\x46\x54\x5f\x52\x53\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA CSWIFT_str_reasons[] = {
-    {ERR_REASON(CSWIFT_R_ALREADY_LOADED), "already loaded"},
-    {ERR_REASON(CSWIFT_R_BAD_KEY_SIZE), "bad key size"},
-    {ERR_REASON(CSWIFT_R_BN_CTX_FULL), "bn ctx full"},
-    {ERR_REASON(CSWIFT_R_BN_EXPAND_FAIL), "bn expand fail"},
+    {ERR_REASON(CSWIFT_R_ALREADY_LOADED), "\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x61\x64\x65\x64"},
+    {ERR_REASON(CSWIFT_R_BAD_KEY_SIZE), "\x62\x61\x64\x20\x6b\x65\x79\x20\x73\x69\x7a\x65"},
+    {ERR_REASON(CSWIFT_R_BN_CTX_FULL), "\x62\x6e\x20\x63\x74\x78\x20\x66\x75\x6c\x6c"},
+    {ERR_REASON(CSWIFT_R_BN_EXPAND_FAIL), "\x62\x6e\x20\x65\x78\x70\x61\x6e\x64\x20\x66\x61\x69\x6c"},
     {ERR_REASON(CSWIFT_R_CTRL_COMMAND_NOT_IMPLEMENTED),
-     "ctrl command not implemented"},
-    {ERR_REASON(CSWIFT_R_MISSING_KEY_COMPONENTS), "missing key components"},
-    {ERR_REASON(CSWIFT_R_NOT_LOADED), "not loaded"},
-    {ERR_REASON(CSWIFT_R_REQUEST_FAILED), "request failed"},
-    {ERR_REASON(CSWIFT_R_UNIT_FAILURE), "unit failure"},
+     "\x63\x74\x72\x6c\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x6e\x6f\x74\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64"},
+    {ERR_REASON(CSWIFT_R_MISSING_KEY_COMPONENTS), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x6b\x65\x79\x20\x63\x6f\x6d\x70\x6f\x6e\x65\x6e\x74\x73"},
+    {ERR_REASON(CSWIFT_R_NOT_LOADED), "\x6e\x6f\x74\x20\x6c\x6f\x61\x64\x65\x64"},
+    {ERR_REASON(CSWIFT_R_REQUEST_FAILED), "\x72\x65\x71\x75\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(CSWIFT_R_UNIT_FAILURE), "\x75\x6e\x69\x74\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {0, NULL}
 };
 

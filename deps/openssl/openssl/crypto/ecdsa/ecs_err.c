@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,26 +70,26 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_ECDSA,0,reason)
 
 static ERR_STRING_DATA ECDSA_str_functs[] = {
-    {ERR_FUNC(ECDSA_F_ECDSA_CHECK), "ECDSA_CHECK"},
-    {ERR_FUNC(ECDSA_F_ECDSA_DATA_NEW_METHOD), "ECDSA_DATA_NEW_METHOD"},
-    {ERR_FUNC(ECDSA_F_ECDSA_DO_SIGN), "ECDSA_do_sign"},
-    {ERR_FUNC(ECDSA_F_ECDSA_DO_VERIFY), "ECDSA_do_verify"},
-    {ERR_FUNC(ECDSA_F_ECDSA_METHOD_NEW), "ECDSA_METHOD_new"},
-    {ERR_FUNC(ECDSA_F_ECDSA_SIGN_SETUP), "ECDSA_sign_setup"},
+    {ERR_FUNC(ECDSA_F_ECDSA_CHECK), "\x45\x43\x44\x53\x41\x5f\x43\x48\x45\x43\x4b"},
+    {ERR_FUNC(ECDSA_F_ECDSA_DATA_NEW_METHOD), "\x45\x43\x44\x53\x41\x5f\x44\x41\x54\x41\x5f\x4e\x45\x57\x5f\x4d\x45\x54\x48\x4f\x44"},
+    {ERR_FUNC(ECDSA_F_ECDSA_DO_SIGN), "\x45\x43\x44\x53\x41\x5f\x64\x6f\x5f\x73\x69\x67\x6e"},
+    {ERR_FUNC(ECDSA_F_ECDSA_DO_VERIFY), "\x45\x43\x44\x53\x41\x5f\x64\x6f\x5f\x76\x65\x72\x69\x66\x79"},
+    {ERR_FUNC(ECDSA_F_ECDSA_METHOD_NEW), "\x45\x43\x44\x53\x41\x5f\x4d\x45\x54\x48\x4f\x44\x5f\x6e\x65\x77"},
+    {ERR_FUNC(ECDSA_F_ECDSA_SIGN_SETUP), "\x45\x43\x44\x53\x41\x5f\x73\x69\x67\x6e\x5f\x73\x65\x74\x75\x70"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA ECDSA_str_reasons[] = {
-    {ERR_REASON(ECDSA_R_BAD_SIGNATURE), "bad signature"},
+    {ERR_REASON(ECDSA_R_BAD_SIGNATURE), "\x62\x61\x64\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65"},
     {ERR_REASON(ECDSA_R_DATA_TOO_LARGE_FOR_KEY_SIZE),
-     "data too large for key size"},
-    {ERR_REASON(ECDSA_R_ERR_EC_LIB), "err ec lib"},
-    {ERR_REASON(ECDSA_R_MISSING_PARAMETERS), "missing parameters"},
-    {ERR_REASON(ECDSA_R_NEED_NEW_SETUP_VALUES), "need new setup values"},
-    {ERR_REASON(ECDSA_R_NON_FIPS_METHOD), "non fips method"},
+     "\x64\x61\x74\x61\x20\x74\x6f\x6f\x20\x6c\x61\x72\x67\x65\x20\x66\x6f\x72\x20\x6b\x65\x79\x20\x73\x69\x7a\x65"},
+    {ERR_REASON(ECDSA_R_ERR_EC_LIB), "\x65\x72\x72\x20\x65\x63\x20\x6c\x69\x62"},
+    {ERR_REASON(ECDSA_R_MISSING_PARAMETERS), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73"},
+    {ERR_REASON(ECDSA_R_NEED_NEW_SETUP_VALUES), "\x6e\x65\x65\x64\x20\x6e\x65\x77\x20\x73\x65\x74\x75\x70\x20\x76\x61\x6c\x75\x65\x73"},
+    {ERR_REASON(ECDSA_R_NON_FIPS_METHOD), "\x6e\x6f\x6e\x20\x66\x69\x70\x73\x20\x6d\x65\x74\x68\x6f\x64"},
     {ERR_REASON(ECDSA_R_RANDOM_NUMBER_GENERATION_FAILED),
-     "random number generation failed"},
-    {ERR_REASON(ECDSA_R_SIGNATURE_MALLOC_FAILED), "signature malloc failed"},
+     "\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(ECDSA_R_SIGNATURE_MALLOC_FAILED), "\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x6d\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x65\x64"},
     {0, NULL}
 };
 

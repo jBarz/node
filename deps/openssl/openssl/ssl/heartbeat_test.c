@@ -15,18 +15,18 @@
  * of the number of failed tests and return nonzero if any tests fail.
  *
  * It will print the contents of the request and response buffers for each
- * failing test. In a "fixed" version, all the tests should pass and there
+ * failing test. In a "\x66\x69\x78\x65\x64" version, all the tests should pass and there
  * should be no output.
  *
- * In a "bleeding" version, you'll see:
+ * In a "\x62\x6c\x65\x65\x64\x69\x6e\x67" version, you'll see:
  *
  *   test_dtls1_heartbleed failed:
  *     expected payload len: 0
  *     received: 1024
  *   sent 26 characters
- *     "HEARTBLEED                "
+ *     "\x48\x45\x41\x52\x54\x42\x4c\x45\x45\x44\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"
  *   received 1024 characters
- *     "HEARTBLEED                \xde\xad\xbe\xef..."
+ *     "\x48\x45\x41\x52\x54\x42\x4c\x45\x45\x44\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\xde\xad\xbe\xef\x2e\x2e\x2e"
  *   ** test_dtls1_heartbleed failed **
  *
  * The contents of the returned buffer in the failing test will depend on the
@@ -79,7 +79,7 @@ static HEARTBEAT_TEST_FIXTURE set_up(const char *const test_case_name,
 
     fixture.ctx = SSL_CTX_new(meth);
     if (!fixture.ctx) {
-        fprintf(stderr, "Failed to allocate SSL_CTX for test: %s\n",
+        fprintf(stderr, "\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x61\x6c\x6c\x6f\x63\x61\x74\x65\x20\x53\x53\x4c\x5f\x43\x54\x58\x20\x66\x6f\x72\x20\x74\x65\x73\x74\x3a\x20\x25\x73\xa",
                 test_case_name);
         setup_ok = 0;
         goto fail;
@@ -87,21 +87,21 @@ static HEARTBEAT_TEST_FIXTURE set_up(const char *const test_case_name,
 
     fixture.s = SSL_new(fixture.ctx);
     if (!fixture.s) {
-        fprintf(stderr, "Failed to allocate SSL for test: %s\n",
+        fprintf(stderr, "\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x61\x6c\x6c\x6f\x63\x61\x74\x65\x20\x53\x53\x4c\x20\x66\x6f\x72\x20\x74\x65\x73\x74\x3a\x20\x25\x73\xa",
                 test_case_name);
         setup_ok = 0;
         goto fail;
     }
 
     if (!ssl_init_wbio_buffer(fixture.s, 1)) {
-        fprintf(stderr, "Failed to set up wbio buffer for test: %s\n",
+        fprintf(stderr, "\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x74\x20\x75\x70\x20\x77\x62\x69\x6f\x20\x62\x75\x66\x66\x65\x72\x20\x66\x6f\x72\x20\x74\x65\x73\x74\x3a\x20\x25\x73\xa",
                 test_case_name);
         setup_ok = 0;
         goto fail;
     }
 
     if (!ssl3_setup_buffers(fixture.s)) {
-        fprintf(stderr, "Failed to setup buffers for test: %s\n",
+        fprintf(stderr, "\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x74\x75\x70\x20\x62\x75\x66\x66\x65\x72\x73\x20\x66\x6f\x72\x20\x74\x65\x73\x74\x3a\x20\x25\x73\xa",
                 test_case_name);
         setup_ok = 0;
         goto fail;
@@ -177,19 +177,19 @@ static void print_payload(const char *const prefix,
         : MAX_PRINTABLE_CHARACTERS;
     int i = 0;
 
-    printf("%s %d character%s", prefix, n, n == 1 ? "" : "s");
+    printf("\x25\x73\x20\x25\x64\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x25\x73", prefix, n, n == 1 ? "" : "\x73");
     if (end != n)
-        printf(" (first %d shown)", end);
-    printf("\n  \"");
+        printf("\x20\x28\x66\x69\x72\x73\x74\x20\x25\x64\x20\x73\x68\x6f\x77\x6e\x29", end);
+    printf("\xa\x20\x20\x22");
 
     for (; i != end; ++i) {
         const unsigned char c = payload[i];
         if (isprint(c))
             fputc(c, stdout);
         else
-            printf("\\x%02x", c);
+            printf("\x5c\x78\x25\x30\x32\x78", c);
     }
-    printf("\"\n");
+    printf("\x22\xa");
 }
 
 static int execute_heartbeat(HEARTBEAT_TEST_FIXTURE fixture)
@@ -216,7 +216,7 @@ static int execute_heartbeat(HEARTBEAT_TEST_FIXTURE fixture)
     return_value = fixture.process_heartbeat(s);
 
     if (return_value != fixture.expected_return_value) {
-        printf("%s failed: expected return value %d, received %d\n",
+        printf("\x25\x73\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x72\x65\x74\x75\x72\x6e\x20\x76\x61\x6c\x75\x65\x20\x25\x64\x2c\x20\x72\x65\x63\x65\x69\x76\x65\x64\x20\x25\x64\xa",
                fixture.test_case_name, fixture.expected_return_value,
                return_value);
         result = 1;
@@ -231,18 +231,18 @@ static int execute_heartbeat(HEARTBEAT_TEST_FIXTURE fixture)
     n2s(p, actual_payload_len);
 
     if (actual_payload_len != fixture.expected_payload_len) {
-        printf("%s failed:\n  expected payload len: %d\n  received: %d\n",
+        printf("\x25\x73\x20\x66\x61\x69\x6c\x65\x64\x3a\xa\x20\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x70\x61\x79\x6c\x6f\x61\x64\x20\x6c\x65\x6e\x3a\x20\x25\x64\xa\x20\x20\x72\x65\x63\x65\x69\x76\x65\x64\x3a\x20\x25\x64\xa",
                fixture.test_case_name, fixture.expected_payload_len,
                actual_payload_len);
-        print_payload("sent", sent_buf, strlen((const char *)sent_buf));
-        print_payload("received", p, actual_payload_len);
+        print_payload("\x73\x65\x6e\x74", sent_buf, strlen((const char *)sent_buf));
+        print_payload("\x72\x65\x63\x65\x69\x76\x65\x64", p, actual_payload_len);
         result = 1;
     } else {
         char *actual_payload =
             BUF_strndup((const char *)p, actual_payload_len);
         if (strcmp(actual_payload, fixture.expected_return_payload) != 0) {
             printf
-                ("%s failed:\n  expected payload: \"%s\"\n  received: \"%s\"\n",
+                ("\x25\x73\x20\x66\x61\x69\x6c\x65\x64\x3a\xa\x20\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x70\x61\x79\x6c\x6f\x61\x64\x3a\x20\x22\x25\x73\x22\xa\x20\x20\x72\x65\x63\x65\x69\x76\x65\x64\x3a\x20\x22\x25\x73\x22\xa",
                  fixture.test_case_name, fixture.expected_return_payload,
                  actual_payload);
             result = 1;
@@ -251,7 +251,7 @@ static int execute_heartbeat(HEARTBEAT_TEST_FIXTURE fixture)
     }
 
     if (result != 0) {
-        printf("** %s failed **\n--------\n", fixture.test_case_name);
+        printf("\x2a\x2a\x20\x25\x73\x20\x66\x61\x69\x6c\x65\x64\x20\x2a\x2a\xa\x2d\x2d\x2d\x2d\x2d\x2d\x2d\x2d\xa", fixture.test_case_name);
     }
     return result;
 }
@@ -273,7 +273,7 @@ static int test_dtls1_not_bleeding()
     SETUP_HEARTBEAT_TEST_FIXTURE(dtls);
     /* Three-byte pad at the beginning for type and payload length */
     unsigned char payload_buf[MAX_PRINTABLE_CHARACTERS + 4] =
-        "   Not bleeding, sixteen spaces of padding" "                ";
+        "\x20\x20\x20\x4e\x6f\x74\x20\x62\x6c\x65\x65\x64\x69\x6e\x67\x2c\x20\x73\x69\x78\x74\x65\x65\x6e\x20\x73\x70\x61\x63\x65\x73\x20\x6f\x66\x20\x70\x61\x64\x64\x69\x6e\x67" "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20";
     const int payload_buf_len = honest_payload_size(payload_buf);
 
     fixture.payload = &payload_buf[0];
@@ -281,7 +281,7 @@ static int test_dtls1_not_bleeding()
     fixture.expected_return_value = 0;
     fixture.expected_payload_len = payload_buf_len;
     fixture.expected_return_payload =
-        "Not bleeding, sixteen spaces of padding";
+        "\x4e\x6f\x74\x20\x62\x6c\x65\x65\x64\x69\x6e\x67\x2c\x20\x73\x69\x78\x74\x65\x65\x6e\x20\x73\x70\x61\x63\x65\x73\x20\x6f\x66\x20\x70\x61\x64\x64\x69\x6e\x67";
     EXECUTE_HEARTBEAT_TEST();
 }
 
@@ -295,8 +295,8 @@ static int test_dtls1_not_bleeding_empty_payload()
      * NUL at the end
      */
     unsigned char payload_buf[4 + MAX_PRINTABLE_CHARACTERS];
-    memset(payload_buf, ' ', MIN_PADDING_SIZE + 3);
-    payload_buf[MIN_PADDING_SIZE + 3] = '\0';
+    memset(payload_buf, '\x20', MIN_PADDING_SIZE + 3);
+    payload_buf[MIN_PADDING_SIZE + 3] = '\x0';
     payload_buf_len = honest_payload_size(payload_buf);
 
     fixture.payload = &payload_buf[0];
@@ -312,7 +312,7 @@ static int test_dtls1_heartbleed()
     SETUP_HEARTBEAT_TEST_FIXTURE(dtls);
     /* Three-byte pad at the beginning for type and payload length */
     unsigned char payload_buf[4 + MAX_PRINTABLE_CHARACTERS] =
-        "   HEARTBLEED                ";
+        "\x20\x20\x20\x48\x45\x41\x52\x54\x42\x4c\x45\x45\x44\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20";
 
     fixture.payload = &payload_buf[0];
     fixture.sent_payload_len = MAX_PRINTABLE_CHARACTERS;
@@ -330,8 +330,8 @@ static int test_dtls1_heartbleed_empty_payload()
      * + minimum padding
      */
     unsigned char payload_buf[MAX_PRINTABLE_CHARACTERS + 4];
-    memset(payload_buf, ' ', MIN_PADDING_SIZE + 2);
-    payload_buf[MIN_PADDING_SIZE + 2] = '\0';
+    memset(payload_buf, '\x20', MIN_PADDING_SIZE + 2);
+    payload_buf[MIN_PADDING_SIZE + 2] = '\x0';
 
     fixture.payload = &payload_buf[0];
     fixture.sent_payload_len = MAX_PRINTABLE_CHARACTERS;
@@ -349,8 +349,8 @@ static int test_dtls1_heartbleed_excessive_plaintext_length()
      * heartbeat message length
      */
     unsigned char payload_buf[SSL3_RT_MAX_PLAIN_LENGTH + 2];
-    memset(payload_buf, ' ', sizeof(payload_buf));
-    payload_buf[sizeof(payload_buf) - 1] = '\0';
+    memset(payload_buf, '\x20', sizeof(payload_buf));
+    payload_buf[sizeof(payload_buf) - 1] = '\x0';
 
     fixture.payload = &payload_buf[0];
     fixture.sent_payload_len = honest_payload_size(payload_buf);
@@ -365,7 +365,7 @@ static int test_tls1_not_bleeding()
     SETUP_HEARTBEAT_TEST_FIXTURE(tls);
     /* Three-byte pad at the beginning for type and payload length */
     unsigned char payload_buf[MAX_PRINTABLE_CHARACTERS + 4] =
-        "   Not bleeding, sixteen spaces of padding" "                ";
+        "\x20\x20\x20\x4e\x6f\x74\x20\x62\x6c\x65\x65\x64\x69\x6e\x67\x2c\x20\x73\x69\x78\x74\x65\x65\x6e\x20\x73\x70\x61\x63\x65\x73\x20\x6f\x66\x20\x70\x61\x64\x64\x69\x6e\x67" "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20";
     const int payload_buf_len = honest_payload_size(payload_buf);
 
     fixture.payload = &payload_buf[0];
@@ -373,7 +373,7 @@ static int test_tls1_not_bleeding()
     fixture.expected_return_value = 0;
     fixture.expected_payload_len = payload_buf_len;
     fixture.expected_return_payload =
-        "Not bleeding, sixteen spaces of padding";
+        "\x4e\x6f\x74\x20\x62\x6c\x65\x65\x64\x69\x6e\x67\x2c\x20\x73\x69\x78\x74\x65\x65\x6e\x20\x73\x70\x61\x63\x65\x73\x20\x6f\x66\x20\x70\x61\x64\x64\x69\x6e\x67";
     EXECUTE_HEARTBEAT_TEST();
 }
 
@@ -387,8 +387,8 @@ static int test_tls1_not_bleeding_empty_payload()
      * NUL at the end
      */
     unsigned char payload_buf[4 + MAX_PRINTABLE_CHARACTERS];
-    memset(payload_buf, ' ', MIN_PADDING_SIZE + 3);
-    payload_buf[MIN_PADDING_SIZE + 3] = '\0';
+    memset(payload_buf, '\x20', MIN_PADDING_SIZE + 3);
+    payload_buf[MIN_PADDING_SIZE + 3] = '\x0';
     payload_buf_len = honest_payload_size(payload_buf);
 
     fixture.payload = &payload_buf[0];
@@ -404,7 +404,7 @@ static int test_tls1_heartbleed()
     SETUP_HEARTBEAT_TEST_FIXTURE(tls);
     /* Three-byte pad at the beginning for type and payload length */
     unsigned char payload_buf[MAX_PRINTABLE_CHARACTERS + 4] =
-        "   HEARTBLEED                ";
+        "\x20\x20\x20\x48\x45\x41\x52\x54\x42\x4c\x45\x45\x44\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20";
 
     fixture.payload = &payload_buf[0];
     fixture.sent_payload_len = MAX_PRINTABLE_CHARACTERS;
@@ -422,8 +422,8 @@ static int test_tls1_heartbleed_empty_payload()
      * + minimum padding
      */
     unsigned char payload_buf[MAX_PRINTABLE_CHARACTERS + 4];
-    memset(payload_buf, ' ', MIN_PADDING_SIZE + 2);
-    payload_buf[MIN_PADDING_SIZE + 2] = '\0';
+    memset(payload_buf, '\x20', MIN_PADDING_SIZE + 2);
+    payload_buf[MIN_PADDING_SIZE + 2] = '\x0';
 
     fixture.payload = &payload_buf[0];
     fixture.sent_payload_len = MAX_PRINTABLE_CHARACTERS;
@@ -459,7 +459,7 @@ int main(int argc, char *argv[])
     ERR_print_errors_fp(stderr);
 
     if (num_failed != 0) {
-        printf("%d test%s failed\n", num_failed, num_failed != 1 ? "s" : "");
+        printf("\x25\x64\x20\x74\x65\x73\x74\x25\x73\x20\x66\x61\x69\x6c\x65\x64\xa", num_failed, num_failed != 1 ? "\x73" : "");
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

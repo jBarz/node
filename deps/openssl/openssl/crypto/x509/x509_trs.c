@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -78,20 +78,20 @@ static int (*default_trust) (int id, X509 *x, int flags) = obj_trust;
  */
 
 static X509_TRUST trstandard[] = {
-    {X509_TRUST_COMPAT, 0, trust_compat, "compatible", 0, NULL},
-    {X509_TRUST_SSL_CLIENT, 0, trust_1oidany, "SSL Client", NID_client_auth,
+    {X509_TRUST_COMPAT, 0, trust_compat, "\x63\x6f\x6d\x70\x61\x74\x69\x62\x6c\x65", 0, NULL},
+    {X509_TRUST_SSL_CLIENT, 0, trust_1oidany, "\x53\x53\x4c\x20\x43\x6c\x69\x65\x6e\x74", NID_client_auth,
      NULL},
-    {X509_TRUST_SSL_SERVER, 0, trust_1oidany, "SSL Server", NID_server_auth,
+    {X509_TRUST_SSL_SERVER, 0, trust_1oidany, "\x53\x53\x4c\x20\x53\x65\x72\x76\x65\x72", NID_server_auth,
      NULL},
-    {X509_TRUST_EMAIL, 0, trust_1oidany, "S/MIME email", NID_email_protect,
+    {X509_TRUST_EMAIL, 0, trust_1oidany, "\x53\x2f\x4d\x49\x4d\x45\x20\x65\x6d\x61\x69\x6c", NID_email_protect,
      NULL},
-    {X509_TRUST_OBJECT_SIGN, 0, trust_1oidany, "Object Signer", NID_code_sign,
+    {X509_TRUST_OBJECT_SIGN, 0, trust_1oidany, "\x4f\x62\x6a\x65\x63\x74\x20\x53\x69\x67\x6e\x65\x72", NID_code_sign,
      NULL},
-    {X509_TRUST_OCSP_SIGN, 0, trust_1oid, "OCSP responder", NID_OCSP_sign,
+    {X509_TRUST_OCSP_SIGN, 0, trust_1oid, "\x4f\x43\x53\x50\x20\x72\x65\x73\x70\x6f\x6e\x64\x65\x72", NID_OCSP_sign,
      NULL},
-    {X509_TRUST_OCSP_REQUEST, 0, trust_1oid, "OCSP request", NID_ad_OCSP,
+    {X509_TRUST_OCSP_REQUEST, 0, trust_1oid, "\x4f\x43\x53\x50\x20\x72\x65\x71\x75\x65\x73\x74", NID_ad_OCSP,
      NULL},
-    {X509_TRUST_TSA, 0, trust_1oidany, "TSA server", NID_time_stamp, NULL}
+    {X509_TRUST_TSA, 0, trust_1oidany, "\x54\x53\x41\x20\x73\x65\x72\x76\x65\x72", NID_time_stamp, NULL}
 };
 
 #define X509_TRUST_COUNT        (sizeof(trstandard)/sizeof(X509_TRUST))

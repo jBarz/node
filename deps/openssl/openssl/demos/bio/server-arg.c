@@ -14,7 +14,7 @@
 
 int main(int argc, char *argv[])
 {
-    char *port = "*:4433";
+    char *port = "\x2a\x3a\x34\x34\x33\x33";
     BIO *ssl_bio, *tmp;
     SSL_CTX *ctx;
     SSL_CONF_CTX *cctx;
@@ -35,16 +35,16 @@ int main(int argc, char *argv[])
     SSL_CONF_CTX_set_flags(cctx, SSL_CONF_FLAG_SERVER);
     SSL_CONF_CTX_set_flags(cctx, SSL_CONF_FLAG_CERTIFICATE);
     SSL_CONF_CTX_set_ssl_ctx(cctx, ctx);
-    while (*args && **args == '-') {
+    while (*args && **args == '\x2d') {
         int rv;
         /* Parse standard arguments */
         rv = SSL_CONF_cmd_argv(cctx, &nargs, &args);
         if (rv == -3) {
-            fprintf(stderr, "Missing argument for %s\n", *args);
+            fprintf(stderr, "\x4d\x69\x73\x73\x69\x6e\x67\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x66\x6f\x72\x20\x25\x73\xa", *args);
             goto err;
         }
         if (rv < 0) {
-            fprintf(stderr, "Error in command %s\n", *args);
+            fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x25\x73\xa", *args);
             ERR_print_errors_fp(stderr);
             goto err;
         }
@@ -52,23 +52,23 @@ int main(int argc, char *argv[])
         if (rv > 0)
             continue;
         /* Otherwise application specific argument processing */
-        if (!strcmp(*args, "-port")) {
+        if (!strcmp(*args, "\x2d\x70\x6f\x72\x74")) {
             port = args[1];
             if (port == NULL) {
-                fprintf(stderr, "Missing -port argument\n");
+                fprintf(stderr, "\x4d\x69\x73\x73\x69\x6e\x67\x20\x2d\x70\x6f\x72\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\xa");
                 goto err;
             }
             args += 2;
             nargs -= 2;
             continue;
         } else {
-            fprintf(stderr, "Unknown argument %s\n", *args);
+            fprintf(stderr, "\x55\x6e\x6b\x6e\x6f\x77\x6e\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x25\x73\xa", *args);
             goto err;
         }
     }
 
     if (!SSL_CONF_CTX_finish(cctx)) {
-        fprintf(stderr, "Finish error\n");
+        fprintf(stderr, "\x46\x69\x6e\x69\x73\x68\x20\x65\x72\x72\x6f\x72\xa");
         ERR_print_errors_fp(stderr);
         goto err;
     }
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
             X509 *x = SSL_CTX_get0_certificate(ctx);
             X509_NAME_print_ex_fp(stdout, X509_get_subject_name(x), 0,
                                   XN_FLAG_ONELINE);
-            printf("\n");
+            printf("\xa");
             rv = SSL_CTX_set_current_cert(ctx, SSL_CERT_SET_NEXT);
         }
         fflush(stdout);
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
              * next time we call any function for this BIO, it will attempt
              * to do an accept
              */
-            printf("Done\n");
+            printf("\x44\x6f\x6e\x65\xa");
             tmp = BIO_pop(in);
             BIO_free_all(tmp);
             goto again;

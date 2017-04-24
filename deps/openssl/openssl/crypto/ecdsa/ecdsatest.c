@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -58,7 +58,7 @@
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
  *
- * Portions of the attached software ("Contribution") are developed by
+ * Portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") are developed by
  * SUN MICROSYSTEMS, INC., and are contributed to the OpenSSL project.
  *
  * The Contribution is licensed pursuant to the OpenSSL open source
@@ -78,7 +78,7 @@
 #ifdef OPENSSL_NO_ECDSA
 int main(int argc, char *argv[])
 {
-    puts("Elliptic curves are disabled.");
+    puts("\x45\x6c\x6c\x69\x70\x74\x69\x63\x20\x63\x75\x72\x76\x65\x73\x20\x61\x72\x65\x20\x64\x69\x73\x61\x62\x6c\x65\x64\x2e");
     return 0;
 }
 #else
@@ -94,8 +94,8 @@ int main(int argc, char *argv[])
 # include <openssl/err.h>
 # include <openssl/rand.h>
 
-static const char rnd_seed[] = "string to make the random number generator "
-    "think it has entropy";
+static const char rnd_seed[] = "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20"
+    "\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 
 /* declaration of the test functions */
 int x9_62_tests(BIO *);
@@ -139,18 +139,18 @@ int restore_rand(void)
 
 static int fbytes_counter = 0;
 static const char *numbers[8] = {
-    "651056770906015076056810763456358567190100156695615665659",
-    "6140507067065001063065065565667405560006161556565665656654",
-    "8763001015071075675010661307616710783570106710677817767166"
-        "71676178726717",
-    "7000000175690566466555057817571571075705015757757057795755"
-        "55657156756655",
-    "1275552191113212300012030439187146164646146646466749494799",
-    "1542725565216523985789236956265265265235675811949404040041",
-    "1456427555219115346513212300075341203043918714616464614664"
-        "64667494947990",
-    "1712787255652165239672857892369562652652652356758119494040"
-        "40041670216363"
+    "\x36\x35\x31\x30\x35\x36\x37\x37\x30\x39\x30\x36\x30\x31\x35\x30\x37\x36\x30\x35\x36\x38\x31\x30\x37\x36\x33\x34\x35\x36\x33\x35\x38\x35\x36\x37\x31\x39\x30\x31\x30\x30\x31\x35\x36\x36\x39\x35\x36\x31\x35\x36\x36\x35\x36\x35\x39",
+    "\x36\x31\x34\x30\x35\x30\x37\x30\x36\x37\x30\x36\x35\x30\x30\x31\x30\x36\x33\x30\x36\x35\x30\x36\x35\x35\x36\x35\x36\x36\x37\x34\x30\x35\x35\x36\x30\x30\x30\x36\x31\x36\x31\x35\x35\x36\x35\x36\x35\x36\x36\x35\x36\x35\x36\x36\x35\x34",
+    "\x38\x37\x36\x33\x30\x30\x31\x30\x31\x35\x30\x37\x31\x30\x37\x35\x36\x37\x35\x30\x31\x30\x36\x36\x31\x33\x30\x37\x36\x31\x36\x37\x31\x30\x37\x38\x33\x35\x37\x30\x31\x30\x36\x37\x31\x30\x36\x37\x37\x38\x31\x37\x37\x36\x37\x31\x36\x36"
+        "\x37\x31\x36\x37\x36\x31\x37\x38\x37\x32\x36\x37\x31\x37",
+    "\x37\x30\x30\x30\x30\x30\x30\x31\x37\x35\x36\x39\x30\x35\x36\x36\x34\x36\x36\x35\x35\x35\x30\x35\x37\x38\x31\x37\x35\x37\x31\x35\x37\x31\x30\x37\x35\x37\x30\x35\x30\x31\x35\x37\x35\x37\x37\x35\x37\x30\x35\x37\x37\x39\x35\x37\x35\x35"
+        "\x35\x35\x36\x35\x37\x31\x35\x36\x37\x35\x36\x36\x35\x35",
+    "\x31\x32\x37\x35\x35\x35\x32\x31\x39\x31\x31\x31\x33\x32\x31\x32\x33\x30\x30\x30\x31\x32\x30\x33\x30\x34\x33\x39\x31\x38\x37\x31\x34\x36\x31\x36\x34\x36\x34\x36\x31\x34\x36\x36\x34\x36\x34\x36\x36\x37\x34\x39\x34\x39\x34\x37\x39\x39",
+    "\x31\x35\x34\x32\x37\x32\x35\x35\x36\x35\x32\x31\x36\x35\x32\x33\x39\x38\x35\x37\x38\x39\x32\x33\x36\x39\x35\x36\x32\x36\x35\x32\x36\x35\x32\x36\x35\x32\x33\x35\x36\x37\x35\x38\x31\x31\x39\x34\x39\x34\x30\x34\x30\x34\x30\x30\x34\x31",
+    "\x31\x34\x35\x36\x34\x32\x37\x35\x35\x35\x32\x31\x39\x31\x31\x35\x33\x34\x36\x35\x31\x33\x32\x31\x32\x33\x30\x30\x30\x37\x35\x33\x34\x31\x32\x30\x33\x30\x34\x33\x39\x31\x38\x37\x31\x34\x36\x31\x36\x34\x36\x34\x36\x31\x34\x36\x36\x34"
+        "\x36\x34\x36\x36\x37\x34\x39\x34\x39\x34\x37\x39\x39\x30",
+    "\x31\x37\x31\x32\x37\x38\x37\x32\x35\x35\x36\x35\x32\x31\x36\x35\x32\x33\x39\x36\x37\x32\x38\x35\x37\x38\x39\x32\x33\x36\x39\x35\x36\x32\x36\x35\x32\x36\x35\x32\x36\x35\x32\x33\x35\x36\x37\x35\x38\x31\x31\x39\x34\x39\x34\x30\x34\x30"
+        "\x34\x30\x30\x34\x31\x36\x37\x30\x32\x31\x36\x33\x36\x33"
 };
 
 int fbytes(unsigned char *buf, int num)
@@ -181,7 +181,7 @@ int fbytes(unsigned char *buf, int num)
 int x9_62_test_internal(BIO *out, int nid, const char *r_in, const char *s_in)
 {
     int ret = 0;
-    const char message[] = "abc";
+    const char message[] = "\x61\x62\x63";
     unsigned char digest[20];
     unsigned int dgst_len = 0;
     EVP_MD_CTX md_ctx;
@@ -195,19 +195,19 @@ int x9_62_test_internal(BIO *out, int nid, const char *r_in, const char *s_in)
     EVP_DigestUpdate(&md_ctx, (const void *)message, 3);
     EVP_DigestFinal(&md_ctx, digest, &dgst_len);
 
-    BIO_printf(out, "testing %s: ", OBJ_nid2sn(nid));
+    BIO_printf(out, "\x74\x65\x73\x74\x69\x6e\x67\x20\x25\x73\x3a\x20", OBJ_nid2sn(nid));
     /* create the key */
     if ((key = EC_KEY_new_by_curve_name(nid)) == NULL)
         goto x962_int_err;
     if (!EC_KEY_generate_key(key))
         goto x962_int_err;
-    BIO_printf(out, ".");
+    BIO_printf(out, "\x2e");
     (void)BIO_flush(out);
     /* create the signature */
     signature = ECDSA_do_sign(digest, 20, key);
     if (signature == NULL)
         goto x962_int_err;
-    BIO_printf(out, ".");
+    BIO_printf(out, "\x2e");
     (void)BIO_flush(out);
     /* compare the created signature with the expected signature */
     if ((r = BN_new()) == NULL || (s = BN_new()) == NULL)
@@ -216,19 +216,19 @@ int x9_62_test_internal(BIO *out, int nid, const char *r_in, const char *s_in)
         goto x962_int_err;
     if (BN_cmp(signature->r, r) || BN_cmp(signature->s, s))
         goto x962_int_err;
-    BIO_printf(out, ".");
+    BIO_printf(out, "\x2e");
     (void)BIO_flush(out);
     /* verify the signature */
     if (ECDSA_do_verify(digest, 20, signature, key) != 1)
         goto x962_int_err;
-    BIO_printf(out, ".");
+    BIO_printf(out, "\x2e");
     (void)BIO_flush(out);
 
-    BIO_printf(out, " ok\n");
+    BIO_printf(out, "\x20\x6f\x6b\xa");
     ret = 1;
  x962_int_err:
     if (!ret)
-        BIO_printf(out, " failed\n");
+        BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
     if (key)
         EC_KEY_free(key);
     if (signature)
@@ -245,32 +245,32 @@ int x9_62_tests(BIO *out)
 {
     int ret = 0;
 
-    BIO_printf(out, "some tests from X9.62:\n");
+    BIO_printf(out, "\x73\x6f\x6d\x65\x20\x74\x65\x73\x74\x73\x20\x66\x72\x6f\x6d\x20\x58\x39\x2e\x36\x32\x3a\xa");
 
     /* set own rand method */
     if (!change_rand())
         goto x962_err;
 
     if (!x9_62_test_internal(out, NID_X9_62_prime192v1,
-                             "3342403536405981729393488334694600415596881826869351677613",
-                             "5735822328888155254683894997897571951568553642892029982342"))
+                             "\x33\x33\x34\x32\x34\x30\x33\x35\x33\x36\x34\x30\x35\x39\x38\x31\x37\x32\x39\x33\x39\x33\x34\x38\x38\x33\x33\x34\x36\x39\x34\x36\x30\x30\x34\x31\x35\x35\x39\x36\x38\x38\x31\x38\x32\x36\x38\x36\x39\x33\x35\x31\x36\x37\x37\x36\x31\x33",
+                             "\x35\x37\x33\x35\x38\x32\x32\x33\x32\x38\x38\x38\x38\x31\x35\x35\x32\x35\x34\x36\x38\x33\x38\x39\x34\x39\x39\x37\x38\x39\x37\x35\x37\x31\x39\x35\x31\x35\x36\x38\x35\x35\x33\x36\x34\x32\x38\x39\x32\x30\x32\x39\x39\x38\x32\x33\x34\x32"))
         goto x962_err;
     if (!x9_62_test_internal(out, NID_X9_62_prime239v1,
-                             "3086361431751678114926225473006680188549593787585317781474"
-                             "62058306432176",
-                             "3238135532097973577080787768312505059318910517550078427819"
-                             "78505179448783"))
+                             "\x33\x30\x38\x36\x33\x36\x31\x34\x33\x31\x37\x35\x31\x36\x37\x38\x31\x31\x34\x39\x32\x36\x32\x32\x35\x34\x37\x33\x30\x30\x36\x36\x38\x30\x31\x38\x38\x35\x34\x39\x35\x39\x33\x37\x38\x37\x35\x38\x35\x33\x31\x37\x37\x38\x31\x34\x37\x34"
+                             "\x36\x32\x30\x35\x38\x33\x30\x36\x34\x33\x32\x31\x37\x36",
+                             "\x33\x32\x33\x38\x31\x33\x35\x35\x33\x32\x30\x39\x37\x39\x37\x33\x35\x37\x37\x30\x38\x30\x37\x38\x37\x37\x36\x38\x33\x31\x32\x35\x30\x35\x30\x35\x39\x33\x31\x38\x39\x31\x30\x35\x31\x37\x35\x35\x30\x30\x37\x38\x34\x32\x37\x38\x31\x39"
+                             "\x37\x38\x35\x30\x35\x31\x37\x39\x34\x34\x38\x37\x38\x33"))
         goto x962_err;
 # ifndef OPENSSL_NO_EC2M
     if (!x9_62_test_internal(out, NID_X9_62_c2tnb191v1,
-                             "87194383164871543355722284926904419997237591535066528048",
-                             "308992691965804947361541664549085895292153777025772063598"))
+                             "\x38\x37\x31\x39\x34\x33\x38\x33\x31\x36\x34\x38\x37\x31\x35\x34\x33\x33\x35\x35\x37\x32\x32\x32\x38\x34\x39\x32\x36\x39\x30\x34\x34\x31\x39\x39\x39\x37\x32\x33\x37\x35\x39\x31\x35\x33\x35\x30\x36\x36\x35\x32\x38\x30\x34\x38",
+                             "\x33\x30\x38\x39\x39\x32\x36\x39\x31\x39\x36\x35\x38\x30\x34\x39\x34\x37\x33\x36\x31\x35\x34\x31\x36\x36\x34\x35\x34\x39\x30\x38\x35\x38\x39\x35\x32\x39\x32\x31\x35\x33\x37\x37\x37\x30\x32\x35\x37\x37\x32\x30\x36\x33\x35\x39\x38"))
         goto x962_err;
     if (!x9_62_test_internal(out, NID_X9_62_c2tnb239v1,
-                             "2159633321041961198501834003903461262881815148684178964245"
-                             "5876922391552",
-                             "1970303740007316867383349976549972270528498040721988191026"
-                             "49413465737174"))
+                             "\x32\x31\x35\x39\x36\x33\x33\x33\x32\x31\x30\x34\x31\x39\x36\x31\x31\x39\x38\x35\x30\x31\x38\x33\x34\x30\x30\x33\x39\x30\x33\x34\x36\x31\x32\x36\x32\x38\x38\x31\x38\x31\x35\x31\x34\x38\x36\x38\x34\x31\x37\x38\x39\x36\x34\x32\x34\x35"
+                             "\x35\x38\x37\x36\x39\x32\x32\x33\x39\x31\x35\x35\x32",
+                             "\x31\x39\x37\x30\x33\x30\x33\x37\x34\x30\x30\x30\x37\x33\x31\x36\x38\x36\x37\x33\x38\x33\x33\x34\x39\x39\x37\x36\x35\x34\x39\x39\x37\x32\x32\x37\x30\x35\x32\x38\x34\x39\x38\x30\x34\x30\x37\x32\x31\x39\x38\x38\x31\x39\x31\x30\x32\x36"
+                             "\x34\x39\x34\x31\x33\x34\x36\x35\x37\x33\x37\x31\x37\x34"))
         goto x962_err;
 # endif
     ret = 1;
@@ -298,15 +298,15 @@ int test_builtin(BIO *out)
     /* fill digest values with some random data */
     if (RAND_pseudo_bytes(digest, 20) <= 0 ||
         RAND_pseudo_bytes(wrong_digest, 20) <= 0) {
-        BIO_printf(out, "ERROR: unable to get random data\n");
+        BIO_printf(out, "\x45\x52\x52\x4f\x52\x3a\x20\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x67\x65\x74\x20\x72\x61\x6e\x64\x6f\x6d\x20\x64\x61\x74\x61\xa");
         goto builtin_err;
     }
 
     /*
      * create and verify a ecdsa signature with every availble curve (with )
      */
-    BIO_printf(out, "\ntesting ECDSA_sign() and ECDSA_verify() "
-               "with some internal curves:\n");
+    BIO_printf(out, "\xa\x74\x65\x73\x74\x69\x6e\x67\x20\x45\x43\x44\x53\x41\x5f\x73\x69\x67\x6e\x28\x29\x20\x61\x6e\x64\x20\x45\x43\x44\x53\x41\x5f\x76\x65\x72\x69\x66\x79\x28\x29\x20"
+               "\x77\x69\x74\x68\x20\x73\x6f\x6d\x65\x20\x69\x6e\x74\x65\x72\x6e\x61\x6c\x20\x63\x75\x72\x76\x65\x73\x3a\xa");
 
     /* get a list of all internal curves */
     crv_len = EC_get_builtin_curves(NULL, 0);
@@ -314,12 +314,12 @@ int test_builtin(BIO *out)
     curves = OPENSSL_malloc(sizeof(EC_builtin_curve) * crv_len);
 
     if (curves == NULL) {
-        BIO_printf(out, "malloc error\n");
+        BIO_printf(out, "\x6d\x61\x6c\x6c\x6f\x63\x20\x65\x72\x72\x6f\x72\xa");
         goto builtin_err;
     }
 
     if (!EC_get_builtin_curves(curves, crv_len)) {
-        BIO_printf(out, "unable to get internal curves\n");
+        BIO_printf(out, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x67\x65\x74\x20\x69\x6e\x74\x65\x72\x6e\x61\x6c\x20\x63\x75\x72\x76\x65\x73\xa");
         goto builtin_err;
     }
 
@@ -347,10 +347,10 @@ int test_builtin(BIO *out)
             eckey = NULL;
             continue;
         }
-        BIO_printf(out, "%s: ", OBJ_nid2sn(nid));
+        BIO_printf(out, "\x25\x73\x3a\x20", OBJ_nid2sn(nid));
         /* create key */
         if (!EC_KEY_generate_key(eckey)) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
         /* create second key */
@@ -363,56 +363,56 @@ int test_builtin(BIO *out)
             goto builtin_err;
         EC_GROUP_free(group);
         if (!EC_KEY_generate_key(wrong_eckey)) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
 
-        BIO_printf(out, ".");
+        BIO_printf(out, "\x2e");
         (void)BIO_flush(out);
         /* check key */
         if (!EC_KEY_check_key(eckey)) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
-        BIO_printf(out, ".");
+        BIO_printf(out, "\x2e");
         (void)BIO_flush(out);
         /* create signature */
         sig_len = ECDSA_size(eckey);
         if ((signature = OPENSSL_malloc(sig_len)) == NULL)
             goto builtin_err;
         if (!ECDSA_sign(0, digest, 20, signature, &sig_len, eckey)) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
-        BIO_printf(out, ".");
+        BIO_printf(out, "\x2e");
         (void)BIO_flush(out);
         /* verify signature */
         if (ECDSA_verify(0, digest, 20, signature, sig_len, eckey) != 1) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
-        BIO_printf(out, ".");
+        BIO_printf(out, "\x2e");
         (void)BIO_flush(out);
         /* verify signature with the wrong key */
         if (ECDSA_verify(0, digest, 20, signature, sig_len, wrong_eckey) == 1) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
-        BIO_printf(out, ".");
+        BIO_printf(out, "\x2e");
         (void)BIO_flush(out);
         /* wrong digest */
         if (ECDSA_verify(0, wrong_digest, 20, signature, sig_len, eckey) == 1) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
-        BIO_printf(out, ".");
+        BIO_printf(out, "\x2e");
         (void)BIO_flush(out);
         /* wrong length */
         if (ECDSA_verify(0, digest, 20, signature, sig_len - 1, eckey) == 1) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
-        BIO_printf(out, ".");
+        BIO_printf(out, "\x2e");
         (void)BIO_flush(out);
 
         /*
@@ -422,7 +422,7 @@ int test_builtin(BIO *out)
          */
         sig_ptr = signature;
         if ((ecdsa_sig = d2i_ECDSA_SIG(NULL, &sig_ptr, sig_len)) == NULL) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
 
@@ -431,7 +431,7 @@ int test_builtin(BIO *out)
         s_len = BN_num_bytes(ecdsa_sig->s);
         bn_len = (degree + 7) / 8;
         if ((r_len > bn_len) || (s_len > bn_len)) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
         buf_len = 2 * bn_len;
@@ -454,7 +454,7 @@ int test_builtin(BIO *out)
         sig_ptr2 = signature;
         sig_len = i2d_ECDSA_SIG(ecdsa_sig, &sig_ptr2);
         if (ECDSA_verify(0, digest, 20, signature, sig_len, eckey) == 1) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
         /*
@@ -468,13 +468,13 @@ int test_builtin(BIO *out)
         sig_ptr2 = signature;
         sig_len = i2d_ECDSA_SIG(ecdsa_sig, &sig_ptr2);
         if (ECDSA_verify(0, digest, 20, signature, sig_len, eckey) != 1) {
-            BIO_printf(out, " failed\n");
+            BIO_printf(out, "\x20\x66\x61\x69\x6c\x65\x64\xa");
             goto builtin_err;
         }
-        BIO_printf(out, ".");
+        BIO_printf(out, "\x2e");
         (void)BIO_flush(out);
 
-        BIO_printf(out, " ok\n");
+        BIO_printf(out, "\x20\x6f\x6b\xa");
         /* cleanup */
         /* clean bogus errors */
         ERR_clear_error();
@@ -516,8 +516,8 @@ int main(void)
     out = BIO_new_fp(stdout, BIO_NOCLOSE);
 
     /* enable memory leak checking unless explicitly disabled */
-    if (!((getenv("OPENSSL_DEBUG_MEMORY") != NULL) &&
-          (0 == strcmp(getenv("OPENSSL_DEBUG_MEMORY"), "off")))) {
+    if (!((getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x4f\x52\x59") != NULL) &&
+          (0 == strcmp(getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x4f\x52\x59"), "\x6f\x66\x66")))) {
         CRYPTO_malloc_debug_init();
         CRYPTO_set_mem_debug_options(V_CRYPTO_MDEBUG_ALL);
     } else {
@@ -540,9 +540,9 @@ int main(void)
     ret = 0;
  err:
     if (ret)
-        BIO_printf(out, "\nECDSA test failed\n");
+        BIO_printf(out, "\xaE\x43\x44\x53\x41\x20\x74\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\xa");
     else
-        BIO_printf(out, "\nECDSA test passed\n");
+        BIO_printf(out, "\xaE\x43\x44\x53\x41\x20\x74\x65\x73\x74\x20\x70\x61\x73\x73\x65\x64\xa");
     if (ret)
         ERR_print_errors(out);
     CRYPTO_cleanup_all_ex_data();

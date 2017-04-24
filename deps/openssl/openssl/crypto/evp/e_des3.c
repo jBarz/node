@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -154,12 +154,12 @@ static int des_ede_cbc_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
 # ifdef KSSL_DEBUG
     {
         int i;
-        fprintf(stderr, "des_ede_cbc_cipher(ctx=%p, buflen=%d)\n", ctx,
+        fprintf(stderr, "\x64\x65\x73\x5f\x65\x64\x65\x5f\x63\x62\x63\x5f\x63\x69\x70\x68\x65\x72\x28\x63\x74\x78\x3d\x25\x70\x2c\x20\x62\x75\x66\x6c\x65\x6e\x3d\x25\x64\x29\xa", ctx,
                 ctx->buf_len);
-        fprintf(stderr, "\t iv= ");
+        fprintf(stderr, "\x9\x20\x69\x76\x3d\x20");
         for (i = 0; i < 8; i++)
-            fprintf(stderr, "%02X", ctx->iv[i]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x58", ctx->iv[i]);
+        fprintf(stderr, "\xa");
     }
 # endif                         /* KSSL_DEBUG */
     if (dat->stream.cbc) {
@@ -309,16 +309,16 @@ static int des_ede3_init_key(EVP_CIPHER_CTX *ctx, const unsigned char *key,
 # ifdef KSSL_DEBUG
     {
         int i;
-        fprintf(stderr, "des_ede3_init_key(ctx=%p)\n", ctx);
-        fprintf(stderr, "\tKEY= ");
+        fprintf(stderr, "\x64\x65\x73\x5f\x65\x64\x65\x33\x5f\x69\x6e\x69\x74\x5f\x6b\x65\x79\x28\x63\x74\x78\x3d\x25\x70\x29\xa", ctx);
+        fprintf(stderr, "\x9\x4b\x45\x59\x3d\x20");
         for (i = 0; i < 24; i++)
-            fprintf(stderr, "%02X", key[i]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x58", key[i]);
+        fprintf(stderr, "\xa");
         if (iv) {
-            fprintf(stderr, "\t IV= ");
+            fprintf(stderr, "\x9\x20\x49\x56\x3d\x20");
             for (i = 0; i < 8; i++)
-                fprintf(stderr, "%02X", iv[i]);
-            fprintf(stderr, "\n");
+                fprintf(stderr, "\x25\x30\x32\x58", iv[i]);
+            fprintf(stderr, "\xa");
         }
     }
 # endif                         /* KSSL_DEBUG */

@@ -55,16 +55,16 @@ int p;
 int n;
 void *arg;
 {
-    char c = 'B';
+    char c = '\x42';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     fputc(c, stderr);
 }
 
@@ -116,9 +116,9 @@ int days;
      * string type and performing checks on its length. Normally we'd check
      * the return value for errors...
      */
-    X509_NAME_add_entry_by_txt(name, "C", MBSTRING_ASC, "UK", -1, -1, 0);
-    X509_NAME_add_entry_by_txt(name, "CN",
-                               MBSTRING_ASC, "OpenSSL Group", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "\x43", MBSTRING_ASC, "\x55\x4b", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "\x43\x4e",
+                               MBSTRING_ASC, "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x47\x72\x6f\x75\x70", -1, -1, 0);
 
     X509_set_issuer_name(x, name);
 
@@ -129,17 +129,17 @@ int days;
      * access it.
      */
 
-    ex = X509V3_EXT_conf_nid(NULL, NULL, NID_netscape_cert_type, "server");
+    ex = X509V3_EXT_conf_nid(NULL, NULL, NID_netscape_cert_type, "\x73\x65\x72\x76\x65\x72");
     X509_add_ext(x, ex, -1);
     X509_EXTENSION_free(ex);
 
     ex = X509V3_EXT_conf_nid(NULL, NULL, NID_netscape_comment,
-                             "example comment extension");
+                             "\x65\x78\x61\x6d\x70\x6c\x65\x20\x63\x6f\x6d\x6d\x65\x6e\x74\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e");
     X509_add_ext(x, ex, -1);
     X509_EXTENSION_free(ex);
 
     ex = X509V3_EXT_conf_nid(NULL, NULL, NID_netscape_ssl_server_name,
-                             "www.openssl.org");
+                             "\x77\x77\x77\x2e\x6f\x70\x65\x6e\x73\x73\x6c\x2e\x6f\x72\x67");
 
     X509_add_ext(x, ex, -1);
     X509_EXTENSION_free(ex);
@@ -147,7 +147,7 @@ int days;
 #if 0
     /* might want something like this too.... */
     ex = X509V3_EXT_conf_nid(NULL, NULL, NID_basic_constraints,
-                             "critical,CA:TRUE");
+                             "\x63\x72\x69\x74\x69\x63\x61\x6c\x2c\x43\x41\x3a\x54\x52\x55\x45");
 
     X509_add_ext(x, ex, -1);
     X509_EXTENSION_free(ex);
@@ -157,9 +157,9 @@ int days;
     /* Maybe even add our own extension based on existing */
     {
         int nid;
-        nid = OBJ_create("1.2.3.4", "MyAlias", "My Test Alias Extension");
+        nid = OBJ_create("\x31\x2e\x32\x2e\x33\x2e\x34", "\x4d\x79\x41\x6c\x69\x61\x73", "\x4d\x79\x20\x54\x65\x73\x74\x20\x41\x6c\x69\x61\x73\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e");
         X509V3_EXT_add_alias(nid, NID_netscape_comment);
-        ex = X509V3_EXT_conf_nid(NULL, NULL, nid, "example comment alias");
+        ex = X509V3_EXT_conf_nid(NULL, NULL, nid, "\x65\x78\x61\x6d\x70\x6c\x65\x20\x63\x6f\x6d\x6d\x65\x6e\x74\x20\x61\x6c\x69\x61\x73");
         X509_add_ext(x, ex, -1);
         X509_EXTENSION_free(ex);
     }

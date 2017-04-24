@@ -250,8 +250,8 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
 
     if (!(*table)) {
 #ifdef ENGINE_TABLE_DEBUG
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, nothing "
-                "registered!\n", f, l, nid);
+        fprintf(stderr, "\x65\x6e\x67\x69\x6e\x65\x5f\x74\x61\x62\x6c\x65\x5f\x64\x62\x67\x3a\x20\x25\x73\x3a\x25\x64\x2c\x20\x6e\x69\x64\x3d\x25\x64\x2c\x20\x6e\x6f\x74\x68\x69\x6e\x67\x20"
+                "\x72\x65\x67\x69\x73\x74\x65\x72\x65\x64\x21\xa", f, l, nid);
 #endif
         return NULL;
     }
@@ -269,8 +269,8 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
         goto end;
     if (fnd->funct && engine_unlocked_init(fnd->funct)) {
 #ifdef ENGINE_TABLE_DEBUG
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, using "
-                "ENGINE '%s' cached\n", f, l, nid, fnd->funct->id);
+        fprintf(stderr, "\x65\x6e\x67\x69\x6e\x65\x5f\x74\x61\x62\x6c\x65\x5f\x64\x62\x67\x3a\x20\x25\x73\x3a\x25\x64\x2c\x20\x6e\x69\x64\x3d\x25\x64\x2c\x20\x75\x73\x69\x6e\x67\x20"
+                "\x45\x4e\x47\x49\x4e\x45\x20\x27\x25\x73\x27\x20\x63\x61\x63\x68\x65\x64\xa", f, l, nid, fnd->funct->id);
 #endif
         ret = fnd->funct;
         goto end;
@@ -283,8 +283,8 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
     ret = sk_ENGINE_value(fnd->sk, loop++);
     if (!ret) {
 #ifdef ENGINE_TABLE_DEBUG
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, no "
-                "registered implementations would initialise\n", f, l, nid);
+        fprintf(stderr, "\x65\x6e\x67\x69\x6e\x65\x5f\x74\x61\x62\x6c\x65\x5f\x64\x62\x67\x3a\x20\x25\x73\x3a\x25\x64\x2c\x20\x6e\x69\x64\x3d\x25\x64\x2c\x20\x6e\x6f\x20"
+                "\x72\x65\x67\x69\x73\x74\x65\x72\x65\x64\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x61\x74\x69\x6f\x6e\x73\x20\x77\x6f\x75\x6c\x64\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x65\xa", f, l, nid);
 #endif
         goto end;
     }
@@ -301,13 +301,13 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
                 engine_unlocked_finish(fnd->funct, 0);
             fnd->funct = ret;
 #ifdef ENGINE_TABLE_DEBUG
-            fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, "
-                    "setting default to '%s'\n", f, l, nid, ret->id);
+            fprintf(stderr, "\x65\x6e\x67\x69\x6e\x65\x5f\x74\x61\x62\x6c\x65\x5f\x64\x62\x67\x3a\x20\x25\x73\x3a\x25\x64\x2c\x20\x6e\x69\x64\x3d\x25\x64\x2c\x20"
+                    "\x73\x65\x74\x74\x69\x6e\x67\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x74\x6f\x20\x27\x25\x73\x27\xa", f, l, nid, ret->id);
 #endif
         }
 #ifdef ENGINE_TABLE_DEBUG
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, using "
-                "newly initialised '%s'\n", f, l, nid, ret->id);
+        fprintf(stderr, "\x65\x6e\x67\x69\x6e\x65\x5f\x74\x61\x62\x6c\x65\x5f\x64\x62\x67\x3a\x20\x25\x73\x3a\x25\x64\x2c\x20\x6e\x69\x64\x3d\x25\x64\x2c\x20\x75\x73\x69\x6e\x67\x20"
+                "\x6e\x65\x77\x6c\x79\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x65\x64\x20\x27\x25\x73\x27\xa", f, l, nid, ret->id);
 #endif
         goto end;
     }
@@ -321,11 +321,11 @@ ENGINE *engine_table_select_tmp(ENGINE_TABLE **table, int nid, const char *f,
         fnd->uptodate = 1;
 #ifdef ENGINE_TABLE_DEBUG
     if (ret)
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, caching "
-                "ENGINE '%s'\n", f, l, nid, ret->id);
+        fprintf(stderr, "\x65\x6e\x67\x69\x6e\x65\x5f\x74\x61\x62\x6c\x65\x5f\x64\x62\x67\x3a\x20\x25\x73\x3a\x25\x64\x2c\x20\x6e\x69\x64\x3d\x25\x64\x2c\x20\x63\x61\x63\x68\x69\x6e\x67\x20"
+                "\x45\x4e\x47\x49\x4e\x45\x20\x27\x25\x73\x27\xa", f, l, nid, ret->id);
     else
-        fprintf(stderr, "engine_table_dbg: %s:%d, nid=%d, caching "
-                "'no matching ENGINE'\n", f, l, nid);
+        fprintf(stderr, "\x65\x6e\x67\x69\x6e\x65\x5f\x74\x61\x62\x6c\x65\x5f\x64\x62\x67\x3a\x20\x25\x73\x3a\x25\x64\x2c\x20\x6e\x69\x64\x3d\x25\x64\x2c\x20\x63\x61\x63\x68\x69\x6e\x67\x20"
+                "\x27\x6e\x6f\x20\x6d\x61\x74\x63\x68\x69\x6e\x67\x20\x45\x4e\x47\x49\x4e\x45\x27\xa", f, l, nid);
 #endif
     CRYPTO_w_unlock(CRYPTO_LOCK_ENGINE);
     /*

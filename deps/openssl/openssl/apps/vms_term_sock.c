@@ -130,8 +130,8 @@ int main (int argc, char *argv[], char *envp[])
         status,
         len;
 
-    LogMessage ("Enter 'q' or 'Q' to quit ...");
-    while (strcasecmp (TermBuff, "Q")) {
+    LogMessage ("\x45\x6e\x74\x65\x72\x20\x27\x71\x27\x20\x6f\x72\x20\x27\x51\x27\x20\x74\x6f\x20\x71\x75\x69\x74\x20\x2e\x2e\x2e");
+    while (strcasecmp (TermBuff, "\x51")) {
         /*
         ** Create the terminal socket
         */
@@ -142,10 +142,10 @@ int main (int argc, char *argv[], char *envp[])
         /*
         ** Process the terminal input
         */
-        LogMessage ("Waiting on terminal I/O ...\n");
+        LogMessage ("\x57\x61\x69\x74\x69\x6e\x67\x20\x6f\x6e\x20\x74\x65\x72\x6d\x69\x6e\x61\x6c\x20\x49\x2f\x4f\x20\x2e\x2e\x2e\xa");
         len = recv (TermSock, TermBuff, sizeof (TermBuff), 0) ;
-        TermBuff[len] = '\0';
-        LogMessage ("Received terminal I/O [%s]", TermBuff);
+        TermBuff[len] = '\x0';
+        LogMessage ("\x52\x65\x63\x65\x69\x76\x65\x64\x20\x74\x65\x72\x6d\x69\x6e\x61\x6c\x20\x49\x2f\x4f\x20\x5b\x25\x73\x5d", TermBuff);
 
         /*
         ** Delete the terminal socket
@@ -166,7 +166,7 @@ int main (int argc, char *argv[], char *envp[])
 int TerminalSocket (int FunctionCode, int *ReturnSocket)
 {
     int status;
-    $DESCRIPTOR (TerminalDeviceDesc, "SYS$COMMAND");
+    $DESCRIPTOR (TerminalDeviceDesc, "\x53\x59\x53\x24\x43\x4f\x4d\x4d\x41\x4e\x44");
 
     /*
     ** Process the requested function code
@@ -178,7 +178,7 @@ int TerminalSocket (int FunctionCode, int *ReturnSocket)
         */
         status = CreateSocketPair (AF_INET, SOCK_STREAM, 0, TerminalSocketPair);
         if (status == -1) {
-            LogMessage ("TerminalSocket: CreateSocketPair () - %08X", status);
+            LogMessage ("\x54\x65\x72\x6d\x69\x6e\x61\x6c\x53\x6f\x63\x6b\x65\x74\x3a\x20\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
             if (TerminalSocketPair[0])
                 close (TerminalSocketPair[0]);
             if (TerminalSocketPair[1])
@@ -193,7 +193,7 @@ int TerminalSocket (int FunctionCode, int *ReturnSocket)
                              &TerminalDeviceChan,
                              0, 0, 0);
         if (! (status & 1)) {
-            LogMessage ("TerminalSocket: SYS$ASSIGN () - %08X", status);
+            LogMessage ("\x54\x65\x72\x6d\x69\x6e\x61\x6c\x53\x6f\x63\x6b\x65\x74\x3a\x20\x53\x59\x53\x24\x41\x53\x53\x49\x47\x4e\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
             close (TerminalSocketPair[0]);
             close (TerminalSocketPair[1]);
             return (TERM_SOCK_FAILURE);
@@ -212,7 +212,7 @@ int TerminalSocket (int FunctionCode, int *ReturnSocket)
                           sizeof (TerminalDeviceBuff) - 2,
                           0, 0, 0, 0);
         if (! (status & 1)) {
-            LogMessage ("TerminalSocket: SYS$QIO () - %08X", status);
+            LogMessage ("\x54\x65\x72\x6d\x69\x6e\x61\x6c\x53\x6f\x63\x6b\x65\x74\x3a\x20\x53\x59\x53\x24\x51\x49\x4f\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
             close (TerminalSocketPair[0]);
             close (TerminalSocketPair[1]);
             return (TERM_SOCK_FAILURE);
@@ -230,7 +230,7 @@ int TerminalSocket (int FunctionCode, int *ReturnSocket)
         */
         status = sys$cancel (TerminalDeviceChan);
         if (! (status & 1)) {
-            LogMessage ("TerminalSocket: SYS$CANCEL () - %08X", status);
+            LogMessage ("\x54\x65\x72\x6d\x69\x6e\x61\x6c\x53\x6f\x63\x6b\x65\x74\x3a\x20\x53\x59\x53\x24\x43\x41\x4e\x43\x45\x4c\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
             close (TerminalSocketPair[0]);
             close (TerminalSocketPair[1]);
             return (TERM_SOCK_FAILURE);
@@ -241,7 +241,7 @@ int TerminalSocket (int FunctionCode, int *ReturnSocket)
 	*/
         status = sys$dassgn (TerminalDeviceChan);
         if (! (status & 1)) {
-            LogMessage ("TerminalSocket: SYS$DASSGN () - %08X", status);
+            LogMessage ("\x54\x65\x72\x6d\x69\x6e\x61\x6c\x53\x6f\x63\x6b\x65\x74\x3a\x20\x53\x59\x53\x24\x44\x41\x53\x53\x47\x4e\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
             close (TerminalSocketPair[0]);
             close (TerminalSocketPair[1]);
             return (TERM_SOCK_FAILURE);
@@ -263,7 +263,7 @@ int TerminalSocket (int FunctionCode, int *ReturnSocket)
         /*
 	** Invalid function code
 	*/
-        LogMessage ("TerminalSocket: Invalid Function Code - %d", FunctionCode);
+        LogMessage ("\x54\x65\x72\x6d\x69\x6e\x61\x6c\x53\x6f\x63\x6b\x65\x74\x3a\x20\x49\x6e\x76\x61\x6c\x69\x64\x20\x46\x75\x6e\x63\x74\x69\x6f\x6e\x20\x43\x6f\x64\x65\x20\x2d\x20\x25\x64", FunctionCode);
         return (TERM_SOCK_FAILURE);
         break;
     }
@@ -284,7 +284,7 @@ static int CreateSocketPair (int SocketFamily,
                              int *SocketPair)
 {
     struct dsc$descriptor AscTimeDesc = {0, DSC$K_DTYPE_T, DSC$K_CLASS_S, NULL};
-    static const char* LocalHostAddr = {"127.0.0.1"};
+    static const char* LocalHostAddr = {"\x31\x32\x37\x2e\x30\x2e\x30\x2e\x31"};
     unsigned short TcpAcceptChan = 0,
         TcpDeviceChan = 0;
     unsigned long BinTimeBuff[2];
@@ -303,14 +303,14 @@ static int CreateSocketPair (int SocketFamily,
     int SockDesc1 = 0,
         SockDesc2 = 0;
     SPTB sptb;
-    $DESCRIPTOR (TcpDeviceDesc, "TCPIP$DEVICE");
+    $DESCRIPTOR (TcpDeviceDesc, "\x54\x43\x50\x49\x50\x24\x44\x45\x56\x49\x43\x45");
 
     /*
     ** Create a socket
     */
     SockDesc1 = socket (SocketFamily, SocketType, 0);
     if (SockDesc1 < 0) {
-        LogMessage ("CreateSocketPair: socket () - %d", errno);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x73\x6f\x63\x6b\x65\x74\x20\x28\x29\x20\x2d\x20\x25\x64", errno);
         return (-1);
     }
 
@@ -328,7 +328,7 @@ static int CreateSocketPair (int SocketFamily,
     */
     status = bind (SockDesc1, (struct sockaddr *) &sin, slen);
     if (status < 0) {
-        LogMessage ("CreateSocketPair: bind () - %d", errno);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x62\x69\x6e\x64\x20\x28\x29\x20\x2d\x20\x25\x64", errno);
         close (SockDesc1);
         return (-1);
     }
@@ -338,7 +338,7 @@ static int CreateSocketPair (int SocketFamily,
     */
     status = getsockname (SockDesc1, (struct sockaddr *) &sin, &slen);
     if (status < 0) {
-        LogMessage ("CreateSocketPair: getsockname () - %d", errno);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x67\x65\x74\x73\x6f\x63\x6b\x6e\x61\x6d\x65\x20\x28\x29\x20\x2d\x20\x25\x64", errno);
         close (SockDesc1);
         return (-1);
     } else
@@ -352,12 +352,12 @@ static int CreateSocketPair (int SocketFamily,
     /*
     ** Get the binary (64-bit) time of the specified timeout value
     */
-    sprintf (AscTimeBuff, "0 0:0:%02d.00", SOCKET_PAIR_TIMEOUT_VALUE);
+    sprintf (AscTimeBuff, "\x30\x20\x30\x3a\x30\x3a\x25\x30\x32\x64\x2e\x30\x30", SOCKET_PAIR_TIMEOUT_VALUE);
     AscTimeDesc.dsc$w_length = strlen (AscTimeBuff);
     AscTimeDesc.dsc$a_pointer = AscTimeBuff;
     status = sys$bintim (&AscTimeDesc, BinTimeBuff);
     if (! (status & 1)) {
-        LogMessage ("CreateSocketPair: SYS$BINTIM () - %08X", status);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x53\x59\x53\x24\x42\x49\x4e\x54\x49\x4d\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
         close (SockDesc1);
         return (-1);
     }
@@ -368,7 +368,7 @@ static int CreateSocketPair (int SocketFamily,
     */
     status = sys$assign (&TcpDeviceDesc, &TcpDeviceChan, 0, 0, 0);
     if (! (status & 1)) {
-        LogMessage ("CreateSocketPair: SYS$ASSIGN () - %08X", status);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x53\x59\x53\x24\x41\x53\x53\x49\x47\x4e\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
         close (SockDesc1);
         return (-1);
     }
@@ -389,7 +389,7 @@ static int CreateSocketPair (int SocketFamily,
                       &TcpDeviceChan,
                       0, 0);
     if (! (status & 1)) {
-        LogMessage ("CreateSocketPair: SYS$QIO () - %08X", status);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x53\x59\x53\x24\x51\x49\x4f\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
         close (SockDesc1);
         sys$dassgn (TcpDeviceChan);
         return (-1);
@@ -400,7 +400,7 @@ static int CreateSocketPair (int SocketFamily,
     */
     SockDesc2 = socket (SocketFamily, SocketType, 0);
     if (SockDesc2 < 0) {
-        LogMessage ("CreateSocketPair: socket () - %d", errno);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x73\x6f\x63\x6b\x65\x74\x20\x28\x29\x20\x2d\x20\x25\x64", errno);
         sys$cancel (TcpAcceptChan);
         close (SockDesc1);
         sys$dassgn (TcpDeviceChan);
@@ -423,7 +423,7 @@ static int CreateSocketPair (int SocketFamily,
                          &sptb,
                          0);
     if (! (status & 1)) {
-        LogMessage ("CreateSocketPair: SYS$SETIMR () - %08X", status);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x53\x59\x53\x24\x53\x45\x54\x49\x4d\x52\x20\x28\x29\x20\x2d\x20\x25\x30\x38\x58", status);
         sys$cancel (TcpAcceptChan);
         close (SockDesc1);
         close (SockDesc2);
@@ -441,7 +441,7 @@ static int CreateSocketPair (int SocketFamily,
 
     status = connect (SockDesc2, (struct sockaddr *) &sin, sizeof (sin));
     if (status < 0 ) {
-        LogMessage ("CreateSocketPair: connect () - %d", errno);
+        LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x63\x6f\x6e\x6e\x65\x63\x74\x20\x28\x29\x20\x2d\x20\x25\x64", errno);
         sys$cantim (&sptb, 0);
         sys$cancel (TcpAcceptChan);
         close (SockDesc1);
@@ -458,9 +458,9 @@ static int CreateSocketPair (int SocketFamily,
     status = sys$synch (EFN$C_ENF, &iosb);
     if (! (iosb.iosb$w_status & 1)) {
         if (iosb.iosb$w_status == SS$_ABORT)
-            LogMessage ("CreateSocketPair: SYS$QIO(iosb) timeout");
+            LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x53\x59\x53\x24\x51\x49\x4f\x28\x69\x6f\x73\x62\x29\x20\x74\x69\x6d\x65\x6f\x75\x74");
         else {
-            LogMessage ("CreateSocketPair: SYS$QIO(iosb) - %d",
+            LogMessage ("\x43\x72\x65\x61\x74\x65\x53\x6f\x63\x6b\x65\x74\x50\x61\x69\x72\x3a\x20\x53\x59\x53\x24\x51\x49\x4f\x28\x69\x6f\x73\x62\x29\x20\x2d\x20\x25\x64",
                         iosb.iosb$w_status);
             sys$cantim (&sptb, 0);
         }
@@ -509,8 +509,8 @@ static int TerminalDeviceAst (int astparm)
     /*
     ** Terminate the terminal buffer
     */
-    TerminalDeviceBuff[TerminalDeviceIosb.iosb$w_bcnt] = '\0';
-    strcat (TerminalDeviceBuff, "\n");
+    TerminalDeviceBuff[TerminalDeviceIosb.iosb$w_bcnt] = '\x0';
+    strcat (TerminalDeviceBuff, "\xa");
 
     /*
     ** Send the data read from the terminal device throught the socket pair
@@ -543,8 +543,8 @@ static int TerminalDeviceAst (int astparm)
 /*----------------------------------------------------------------------------*/
 static void LogMessage (char *msg, ...)
 {
-    char *Month[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    char *Month[] = {"\x4a\x61\x6e", "\x46\x65\x62", "\x4d\x61\x72", "\x41\x70\x72", "\x4d\x61\x79", "\x4a\x75\x6e",
+                     "\x4a\x75\x6c", "\x41\x75\x67", "\x53\x65\x70", "\x4f\x63\x74", "\x4e\x6f\x76", "\x44\x65\x63"};
     static unsigned int pid = 0;
     va_list args;
     time_t CurTime;
@@ -566,7 +566,7 @@ static void LogMessage (char *msg, ...)
     /*
     ** Format the message buffer
     */
-    sprintf (MsgBuff, "%02d-%s-%04d %02d:%02d:%02d [%08X] %s\n",
+    sprintf (MsgBuff, "\x25\x30\x32\x64\x2d\x25\x73\x2d\x25\x30\x34\x64\x20\x25\x30\x32\x64\x3a\x25\x30\x32\x64\x3a\x25\x30\x32\x64\x20\x5b\x25\x30\x38\x58\x5d\x20\x25\x73\xa",
              LocTime->tm_mday, Month[LocTime->tm_mon],
              (LocTime->tm_year + 1900), LocTime->tm_hour, LocTime->tm_min,
              LocTime->tm_sec, pid, msg);

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -112,12 +112,12 @@ int SSL_library_init(void)
 
 #ifndef OPENSSL_NO_MD5
     EVP_add_digest(EVP_md5());
-    EVP_add_digest_alias(SN_md5, "ssl2-md5");
-    EVP_add_digest_alias(SN_md5, "ssl3-md5");
+    EVP_add_digest_alias(SN_md5, "\x73\x73\x6c\x32\x2d\x6d\x64\x35");
+    EVP_add_digest_alias(SN_md5, "\x73\x73\x6c\x33\x2d\x6d\x64\x35");
 #endif
 #ifndef OPENSSL_NO_SHA
     EVP_add_digest(EVP_sha1()); /* RSA with sha1 */
-    EVP_add_digest_alias(SN_sha1, "ssl3-sha1");
+    EVP_add_digest_alias(SN_sha1, "\x73\x73\x6c\x33\x2d\x73\x68\x61\x31");
     EVP_add_digest_alias(SN_sha1WithRSAEncryption, SN_sha1WithRSA);
 #endif
 #ifndef OPENSSL_NO_SHA256
@@ -131,8 +131,8 @@ int SSL_library_init(void)
 #if !defined(OPENSSL_NO_SHA) && !defined(OPENSSL_NO_DSA)
     EVP_add_digest(EVP_dss1()); /* DSA with sha1 */
     EVP_add_digest_alias(SN_dsaWithSHA1, SN_dsaWithSHA1_2);
-    EVP_add_digest_alias(SN_dsaWithSHA1, "DSS1");
-    EVP_add_digest_alias(SN_dsaWithSHA1, "dss1");
+    EVP_add_digest_alias(SN_dsaWithSHA1, "\x44\x53\x53\x31");
+    EVP_add_digest_alias(SN_dsaWithSHA1, "\x64\x73\x73\x31");
 #endif
 #ifndef OPENSSL_NO_ECDSA
     EVP_add_digest(EVP_ecdsa());

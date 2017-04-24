@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -89,7 +89,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -125,49 +125,49 @@ DECLARE_STACK_OF(CRYPTO_dynlock)
 
 /* real #defines in crypto.h, keep these upto date */
 static const char *const lock_names[CRYPTO_NUM_LOCKS] = {
-    "<<ERROR>>",
-    "err",
-    "ex_data",
-    "x509",
-    "x509_info",
-    "x509_pkey",
-    "x509_crl",
-    "x509_req",
-    "dsa",
-    "rsa",
-    "evp_pkey",
-    "x509_store",
-    "ssl_ctx",
-    "ssl_cert",
-    "ssl_session",
-    "ssl_sess_cert",
-    "ssl",
-    "ssl_method",
-    "rand",
-    "rand2",
-    "debug_malloc",
-    "BIO",
-    "gethostbyname",
-    "getservbyname",
-    "readdir",
-    "RSA_blinding",
-    "dh",
-    "debug_malloc2",
-    "dso",
-    "dynlock",
-    "engine",
-    "ui",
-    "ecdsa",
-    "ec",
-    "ecdh",
-    "bn",
-    "ec_pre_comp",
-    "store",
-    "comp",
-    "fips",
-    "fips2",
+    "\x3c\x3c\x45\x52\x52\x4f\x52\x3e\x3e",
+    "\x65\x72\x72",
+    "\x65\x78\x5f\x64\x61\x74\x61",
+    "\x78\x35\x30\x39",
+    "\x78\x35\x30\x39\x5f\x69\x6e\x66\x6f",
+    "\x78\x35\x30\x39\x5f\x70\x6b\x65\x79",
+    "\x78\x35\x30\x39\x5f\x63\x72\x6c",
+    "\x78\x35\x30\x39\x5f\x72\x65\x71",
+    "\x64\x73\x61",
+    "\x72\x73\x61",
+    "\x65\x76\x70\x5f\x70\x6b\x65\x79",
+    "\x78\x35\x30\x39\x5f\x73\x74\x6f\x72\x65",
+    "\x73\x73\x6c\x5f\x63\x74\x78",
+    "\x73\x73\x6c\x5f\x63\x65\x72\x74",
+    "\x73\x73\x6c\x5f\x73\x65\x73\x73\x69\x6f\x6e",
+    "\x73\x73\x6c\x5f\x73\x65\x73\x73\x5f\x63\x65\x72\x74",
+    "\x73\x73\x6c",
+    "\x73\x73\x6c\x5f\x6d\x65\x74\x68\x6f\x64",
+    "\x72\x61\x6e\x64",
+    "\x72\x61\x6e\x64\x32",
+    "\x64\x65\x62\x75\x67\x5f\x6d\x61\x6c\x6c\x6f\x63",
+    "\x42\x49\x4f",
+    "\x67\x65\x74\x68\x6f\x73\x74\x62\x79\x6e\x61\x6d\x65",
+    "\x67\x65\x74\x73\x65\x72\x76\x62\x79\x6e\x61\x6d\x65",
+    "\x72\x65\x61\x64\x64\x69\x72",
+    "\x52\x53\x41\x5f\x62\x6c\x69\x6e\x64\x69\x6e\x67",
+    "\x64\x68",
+    "\x64\x65\x62\x75\x67\x5f\x6d\x61\x6c\x6c\x6f\x63\x32",
+    "\x64\x73\x6f",
+    "\x64\x79\x6e\x6c\x6f\x63\x6b",
+    "\x65\x6e\x67\x69\x6e\x65",
+    "\x75\x69",
+    "\x65\x63\x64\x73\x61",
+    "\x65\x63",
+    "\x65\x63\x64\x68",
+    "\x62\x6e",
+    "\x65\x63\x5f\x70\x72\x65\x5f\x63\x6f\x6d\x70",
+    "\x73\x74\x6f\x72\x65",
+    "\x63\x6f\x6d\x70",
+    "\x66\x69\x70\x73",
+    "\x66\x69\x70\x73\x32",
 #if CRYPTO_NUM_LOCKS != 41
-# error "Inconsistency between crypto.h and cryptlib.c"
+# error "\x49\x6e\x63\x6f\x6e\x73\x69\x73\x74\x65\x6e\x63\x79\x20\x62\x65\x74\x77\x65\x65\x6e\x20\x63\x72\x79\x70\x74\x6f\x2e\x68\x20\x61\x6e\x64\x20\x63\x72\x79\x70\x74\x6c\x69\x62\x2e\x63"
 #endif
 };
 
@@ -316,7 +316,7 @@ void CRYPTO_destroy_dynlockid(int i)
 #ifdef REF_CHECK
         if (pointer->references < 0) {
             fprintf(stderr,
-                    "CRYPTO_destroy_dynlockid, bad reference count\n");
+                    "\x43\x52\x59\x50\x54\x4f\x5f\x64\x65\x73\x74\x72\x6f\x79\x5f\x64\x79\x6e\x6c\x6f\x63\x6b\x69\x64\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
             abort();
         } else
 #endif
@@ -562,21 +562,21 @@ void CRYPTO_lock(int mode, int type, const char *file, int line)
         char *rw_text, *operation_text;
 
         if (mode & CRYPTO_LOCK)
-            operation_text = "lock  ";
+            operation_text = "\x6c\x6f\x63\x6b\x20\x20";
         else if (mode & CRYPTO_UNLOCK)
-            operation_text = "unlock";
+            operation_text = "\x75\x6e\x6c\x6f\x63\x6b";
         else
-            operation_text = "ERROR ";
+            operation_text = "\x45\x52\x52\x4f\x52\x20";
 
         if (mode & CRYPTO_READ)
-            rw_text = "r";
+            rw_text = "\x72";
         else if (mode & CRYPTO_WRITE)
-            rw_text = "w";
+            rw_text = "\x77";
         else
-            rw_text = "ERROR";
+            rw_text = "\x45\x52\x52\x4f\x52";
 
         CRYPTO_THREADID_current(&id);
-        fprintf(stderr, "lock:%08lx:(%s)%s %-18s %s:%d\n",
+        fprintf(stderr, "\x6c\x6f\x63\x6b\x3a\x25\x30\x38\x6c\x78\x3a\x28\x25\x73\x29\x25\x73\x20\x25\x2d\x31\x38\x73\x20\x25\x73\x3a\x25\x64\xa",
                 CRYPTO_THREADID_hash(&id), rw_text, operation_text,
                 CRYPTO_get_lock_name(type), file, line);
     }
@@ -611,7 +611,7 @@ int CRYPTO_add_lock(int *pointer, int amount, int type, const char *file,
         {
             CRYPTO_THREADID id;
             CRYPTO_THREADID_current(&id);
-            fprintf(stderr, "ladd:%08lx:%2d+%2d->%2d %-18s %s:%d\n",
+            fprintf(stderr, "\x6c\x61\x64\x64\x3a\x25\x30\x38\x6c\x78\x3a\x25\x32\x64\x2b\x25\x32\x64\x2d\x3e\x25\x32\x64\x20\x25\x2d\x31\x38\x73\x20\x25\x73\x3a\x25\x64\xa",
                     CRYPTO_THREADID_hash(&id), before, amount, ret,
                     CRYPTO_get_lock_name(type), file, line);
         }
@@ -624,7 +624,7 @@ int CRYPTO_add_lock(int *pointer, int amount, int type, const char *file,
         {
             CRYPTO_THREADID id;
             CRYPTO_THREADID_current(&id);
-            fprintf(stderr, "ladd:%08lx:%2d+%2d->%2d %-18s %s:%d\n",
+            fprintf(stderr, "\x6c\x61\x64\x64\x3a\x25\x30\x38\x6c\x78\x3a\x25\x32\x64\x2b\x25\x32\x64\x2d\x3e\x25\x32\x64\x20\x25\x2d\x31\x38\x73\x20\x25\x73\x3a\x25\x64\xa",
                     CRYPTO_THREADID_hash(&id),
                     *pointer, amount, ret,
                     CRYPTO_get_lock_name(type), file, line);
@@ -639,11 +639,11 @@ int CRYPTO_add_lock(int *pointer, int amount, int type, const char *file,
 const char *CRYPTO_get_lock_name(int type)
 {
     if (type < 0)
-        return ("dynamic");
+        return ("\x64\x79\x6e\x61\x6d\x69\x63");
     else if (type < CRYPTO_NUM_LOCKS)
         return (lock_names[type]);
     else if (type - CRYPTO_NUM_LOCKS > sk_OPENSSL_STRING_num(app_locks))
-        return ("ERROR");
+        return ("\x45\x52\x52\x4f\x52");
     else
         return (sk_OPENSSL_STRING_value(app_locks, type - CRYPTO_NUM_LOCKS));
 }
@@ -687,25 +687,25 @@ void OPENSSL_cpuid_setup(void)
         return;
 
     trigger = 1;
-    if ((env = getenv("OPENSSL_ia32cap"))) {
-        int off = (env[0] == '~') ? 1 : 0;
+    if ((env = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x69\x61\x33\x32\x63\x61\x70"))) {
+        int off = (env[0] == '\x7e') ? 1 : 0;
 #  if defined(_WIN32)
-        if (!sscanf(env + off, "%I64i", &vec))
+        if (!sscanf(env + off, "\x25\x49\x36\x34\x69", &vec))
             vec = strtoul(env + off, NULL, 0);
 #  else
-        if (!sscanf(env + off, "%lli", (long long *)&vec))
+        if (!sscanf(env + off, "\x25\x6c\x6c\x69", (long long *)&vec))
             vec = strtoul(env + off, NULL, 0);
 #  endif
         if (off)
             vec = OPENSSL_ia32_cpuid(OPENSSL_ia32cap_P) & ~vec;
-        else if (env[0] == ':')
+        else if (env[0] == '\x3a')
             vec = OPENSSL_ia32_cpuid(OPENSSL_ia32cap_P);
 
         OPENSSL_ia32cap_P[2] = 0;
-        if ((env = strchr(env, ':'))) {
+        if ((env = strchr(env, '\x3a'))) {
             unsigned int vecx;
             env++;
-            off = (env[0] == '~') ? 1 : 0;
+            off = (env[0] == '\x7e') ? 1 : 0;
             vecx = strtoul(env + off, NULL, 0);
             if (off)
                 OPENSSL_ia32cap_P[2] &= ~vecx;
@@ -817,7 +817,7 @@ int OPENSSL_isservice(void)
     if (_OPENSSL_isservice.p == NULL) {
         HANDLE h = GetModuleHandle(NULL);
         if (h != NULL)
-            _OPENSSL_isservice.p = GetProcAddress(h, "_OPENSSL_isservice");
+            _OPENSSL_isservice.p = GetProcAddress(h, "\x5f\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x69\x73\x73\x65\x72\x76\x69\x63\x65");
         if (_OPENSSL_isservice.p == NULL)
             _OPENSSL_isservice.p = (void *)-1;
     }
@@ -841,18 +841,18 @@ int OPENSSL_isservice(void)
         return -1;
 
     len++, len &= ~1;           /* paranoia */
-    name[len / sizeof(WCHAR)] = L'\0'; /* paranoia */
+    name[len / sizeof(WCHAR)] = L'\x0'; /* paranoia */
 #  if 1
     /*
      * This doesn't cover "interactive" services [working with real
      * WinSta0's] nor programs started non-interactively by Task Scheduler
      * [those are working with SAWinSta].
      */
-    if (wcsstr(name, L"Service-0x"))
+    if (wcsstr(name, L"\x53\x65\x72\x76\x69\x63\x65\x2d\x30\x78"))
         return 1;
 #  else
     /* This covers all non-interactive programs such as services. */
-    if (!wcsstr(name, L"WinSta0"))
+    if (!wcsstr(name, L"\x57\x69\x6e\x53\x74\x61\x30"))
         return 1;
 #  endif
     else
@@ -897,7 +897,7 @@ void OPENSSL_showfatal(const char *fmta, ...)
 
             fmtw = (WCHAR *)alloca(len_0 * sizeof(WCHAR));
             if (fmtw == NULL) {
-                fmt = (const TCHAR *)L"no stack?";
+                fmt = (const TCHAR *)L"\x6e\x6f\x20\x73\x74\x61\x63\x6b\x3f";
                 break;
             }
 # ifndef OPENSSL_NO_MULTIBYTE
@@ -907,37 +907,37 @@ void OPENSSL_showfatal(const char *fmta, ...)
                     fmtw[i] = (WCHAR)fmta[i];
 
             for (i = 0; i < len_0; i++) {
-                if (fmtw[i] == L'%')
+                if (fmtw[i] == L'\x25')
                     do {
                         keepgoing = 0;
                         switch (fmtw[i + 1]) {
-                        case L'0':
-                        case L'1':
-                        case L'2':
-                        case L'3':
-                        case L'4':
-                        case L'5':
-                        case L'6':
-                        case L'7':
-                        case L'8':
-                        case L'9':
-                        case L'.':
-                        case L'*':
-                        case L'-':
+                        case L'\x30':
+                        case L'\x31':
+                        case L'\x32':
+                        case L'\x33':
+                        case L'\x34':
+                        case L'\x35':
+                        case L'\x36':
+                        case L'\x37':
+                        case L'\x38':
+                        case L'\x39':
+                        case L'\x2e':
+                        case L'\x2a':
+                        case L'\x2d':
                             i++;
                             keepgoing = 1;
                             break;
-                        case L's':
-                            fmtw[i + 1] = L'S';
+                        case L'\x73':
+                            fmtw[i + 1] = L'\x53';
                             break;
-                        case L'S':
-                            fmtw[i + 1] = L's';
+                        case L'\x53':
+                            fmtw[i + 1] = L'\x73';
                             break;
-                        case L'c':
-                            fmtw[i + 1] = L'C';
+                        case L'\x63':
+                            fmtw[i + 1] = L'\x43';
                             break;
-                        case L'C':
-                            fmtw[i + 1] = L'c';
+                        case L'\x43':
+                            fmtw[i + 1] = L'\x63';
                             break;
                         }
                     } while (keepgoing);
@@ -947,13 +947,13 @@ void OPENSSL_showfatal(const char *fmta, ...)
 
     va_start(ap, fmta);
     _vsntprintf(buf, sizeof(buf) / sizeof(TCHAR) - 1, fmt, ap);
-    buf[sizeof(buf) / sizeof(TCHAR) - 1] = _T('\0');
+    buf[sizeof(buf) / sizeof(TCHAR) - 1] = _T('\x0');
     va_end(ap);
 
 # if defined(_WIN32_WINNT) && _WIN32_WINNT>=0x0333
     /* this -------------v--- guards NT-specific calls */
     if (check_winnt() && OPENSSL_isservice() > 0) {
-        HANDLE hEventLog = RegisterEventSource(NULL, _T("OpenSSL"));
+        HANDLE hEventLog = RegisterEventSource(NULL, _T("\x4f\x70\x65\x6e\x53\x53\x4c"));
 
         if (hEventLog != NULL) {
             const TCHAR *pmsg = buf;
@@ -975,7 +975,7 @@ void OPENSSL_showfatal(const char *fmta, ...)
         }
     } else
 # endif
-        MessageBox(NULL, buf, _T("OpenSSL: FATAL"), MB_OK | MB_ICONERROR);
+        MessageBox(NULL, buf, _T("\x4f\x70\x65\x6e\x53\x53\x4c\x3a\x20\x46\x41\x54\x41\x4c"), MB_OK | MB_ICONERROR);
 }
 #else
 void OPENSSL_showfatal(const char *fmta, ...)
@@ -996,7 +996,7 @@ int OPENSSL_isservice(void)
 void OpenSSLDie(const char *file, int line, const char *assertion)
 {
     OPENSSL_showfatal
-        ("%s(%d): OpenSSL internal error, assertion failed: %s\n", file, line,
+        ("\x25\x73\x28\x25\x64\x29\x3a\x20\x4f\x70\x65\x6e\x53\x53\x4c\x20\x69\x6e\x74\x65\x72\x6e\x61\x6c\x20\x65\x72\x72\x6f\x72\x2c\x20\x61\x73\x73\x65\x72\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x25\x73\xa", file, line,
          assertion);
 #if !defined(_WIN32) || defined(__CYGWIN__)
     abort();

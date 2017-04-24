@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -122,70 +122,70 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-inform") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             informat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-outform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             outformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-in") == 0) {
+        } else if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-passin") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x61\x73\x73\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             passargin = *(++argv);
-        } else if (strcmp(*argv, "-passout") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x61\x73\x73\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             passargout = *(++argv);
-        } else if (strcmp(*argv, "-engine") == 0) {
+        } else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine = *(++argv);
-        } else if (strcmp(*argv, "-noout") == 0)
+        } else if (strcmp(*argv, "\x2d\x6e\x6f\x6f\x75\x74") == 0)
             noout = 1;
-        else if (strcmp(*argv, "-text") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x65\x78\x74") == 0)
             text = 1;
-        else if (strcmp(*argv, "-conv_form") == 0) {
+        else if (strcmp(*argv, "\x2d\x63\x6f\x6e\x76\x5f\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             ++argv;
             new_form = 1;
-            if (strcmp(*argv, "compressed") == 0)
+            if (strcmp(*argv, "\x63\x6f\x6d\x70\x72\x65\x73\x73\x65\x64") == 0)
                 form = POINT_CONVERSION_COMPRESSED;
-            else if (strcmp(*argv, "uncompressed") == 0)
+            else if (strcmp(*argv, "\x75\x6e\x63\x6f\x6d\x70\x72\x65\x73\x73\x65\x64") == 0)
                 form = POINT_CONVERSION_UNCOMPRESSED;
-            else if (strcmp(*argv, "hybrid") == 0)
+            else if (strcmp(*argv, "\x68\x79\x62\x72\x69\x64") == 0)
                 form = POINT_CONVERSION_HYBRID;
             else
                 goto bad;
-        } else if (strcmp(*argv, "-param_enc") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x61\x72\x61\x6d\x5f\x65\x6e\x63") == 0) {
             if (--argc < 1)
                 goto bad;
             ++argv;
             new_asn1_flag = 1;
-            if (strcmp(*argv, "named_curve") == 0)
+            if (strcmp(*argv, "\x6e\x61\x6d\x65\x64\x5f\x63\x75\x72\x76\x65") == 0)
                 asn1_flag = OPENSSL_EC_NAMED_CURVE;
-            else if (strcmp(*argv, "explicit") == 0)
+            else if (strcmp(*argv, "\x65\x78\x70\x6c\x69\x63\x69\x74") == 0)
                 asn1_flag = 0;
             else
                 goto bad;
-        } else if (strcmp(*argv, "-param_out") == 0)
+        } else if (strcmp(*argv, "\x2d\x70\x61\x72\x61\x6d\x5f\x6f\x75\x74") == 0)
             param_out = 1;
-        else if (strcmp(*argv, "-pubin") == 0)
+        else if (strcmp(*argv, "\x2d\x70\x75\x62\x69\x6e") == 0)
             pubin = 1;
-        else if (strcmp(*argv, "-pubout") == 0)
+        else if (strcmp(*argv, "\x2d\x70\x75\x62\x6f\x75\x74") == 0)
             pubout = 1;
         else if ((enc = EVP_get_cipherbyname(&(argv[0][1]))) == NULL) {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badops = 1;
             break;
         }
@@ -195,42 +195,42 @@ int MAIN(int argc, char **argv)
 
     if (badops) {
  bad:
-        BIO_printf(bio_err, "%s [options] <infile >outfile\n", prog);
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, " -inform arg     input format - "
-                   "DER or PEM\n");
-        BIO_printf(bio_err, " -outform arg    output format - "
-                   "DER or PEM\n");
-        BIO_printf(bio_err, " -in arg         input file\n");
-        BIO_printf(bio_err, " -passin arg     input file pass "
-                   "phrase source\n");
-        BIO_printf(bio_err, " -out arg        output file\n");
-        BIO_printf(bio_err, " -passout arg    output file pass "
-                   "phrase source\n");
-        BIO_printf(bio_err, " -engine e       use engine e, "
-                   "possibly a hardware device.\n");
-        BIO_printf(bio_err, " -des            encrypt PEM output, "
-                   "instead of 'des' every other \n"
-                   "                 cipher "
-                   "supported by OpenSSL can be used\n");
-        BIO_printf(bio_err, " -text           print the key\n");
-        BIO_printf(bio_err, " -noout          don't print key out\n");
-        BIO_printf(bio_err, " -param_out      print the elliptic "
-                   "curve parameters\n");
-        BIO_printf(bio_err, " -conv_form arg  specifies the "
-                   "point conversion form \n");
-        BIO_printf(bio_err, "                 possible values:"
-                   " compressed\n");
-        BIO_printf(bio_err, "                                 "
-                   " uncompressed (default)\n");
-        BIO_printf(bio_err, "                                  " " hybrid\n");
-        BIO_printf(bio_err, " -param_enc arg  specifies the way"
-                   " the ec parameters are encoded\n");
-        BIO_printf(bio_err, "                 in the asn1 der " "encoding\n");
-        BIO_printf(bio_err, "                 possible values:"
-                   " named_curve (default)\n");
-        BIO_printf(bio_err, "                                  "
-                   "explicit\n");
+        BIO_printf(bio_err, "\x25\x73\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\x20\x3c\x69\x6e\x66\x69\x6c\x65\x20\x3e\x6f\x75\x74\x66\x69\x6c\x65\xa", prog);
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20"
+                   "\x44\x45\x52\x20\x6f\x72\x20\x50\x45\x4d\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x75\x74\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20"
+                   "\x44\x45\x52\x20\x6f\x72\x20\x50\x45\x4d\xa");
+        BIO_printf(bio_err, "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x70\x61\x73\x73\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20"
+                   "\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x70\x61\x73\x73\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20"
+                   "\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20"
+                   "\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
+        BIO_printf(bio_err, "\x20\x2d\x64\x65\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x50\x45\x4d\x20\x6f\x75\x74\x70\x75\x74\x2c\x20"
+                   "\x69\x6e\x73\x74\x65\x61\x64\x20\x6f\x66\x20\x27\x64\x65\x73\x27\x20\x65\x76\x65\x72\x79\x20\x6f\x74\x68\x65\x72\x20\xa"
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x63\x69\x70\x68\x65\x72\x20"
+                   "\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x62\x79\x20\x4f\x70\x65\x6e\x53\x53\x4c\x20\x63\x61\x6e\x20\x62\x65\x20\x75\x73\x65\x64\xa");
+        BIO_printf(bio_err, "\x20\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x72\x69\x6e\x74\x20\x74\x68\x65\x20\x6b\x65\x79\xa");
+        BIO_printf(bio_err, "\x20\x2d\x6e\x6f\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x6f\x6e\x27\x74\x20\x70\x72\x69\x6e\x74\x20\x6b\x65\x79\x20\x6f\x75\x74\xa");
+        BIO_printf(bio_err, "\x20\x2d\x70\x61\x72\x61\x6d\x5f\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x70\x72\x69\x6e\x74\x20\x74\x68\x65\x20\x65\x6c\x6c\x69\x70\x74\x69\x63\x20"
+                   "\x63\x75\x72\x76\x65\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\xa");
+        BIO_printf(bio_err, "\x20\x2d\x63\x6f\x6e\x76\x5f\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x73\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20"
+                   "\x70\x6f\x69\x6e\x74\x20\x63\x6f\x6e\x76\x65\x72\x73\x69\x6f\x6e\x20\x66\x6f\x72\x6d\x20\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x6f\x73\x73\x69\x62\x6c\x65\x20\x76\x61\x6c\x75\x65\x73\x3a"
+                   "\x20\x63\x6f\x6d\x70\x72\x65\x73\x73\x65\x64\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"
+                   "\x20\x75\x6e\x63\x6f\x6d\x70\x72\x65\x73\x73\x65\x64\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20" "\x20\x68\x79\x62\x72\x69\x64\xa");
+        BIO_printf(bio_err, "\x20\x2d\x70\x61\x72\x61\x6d\x5f\x65\x6e\x63\x20\x61\x72\x67\x20\x20\x73\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x77\x61\x79"
+                   "\x20\x74\x68\x65\x20\x65\x63\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x20\x61\x72\x65\x20\x65\x6e\x63\x6f\x64\x65\x64\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x20\x74\x68\x65\x20\x61\x73\x6e\x31\x20\x64\x65\x72\x20" "\x65\x6e\x63\x6f\x64\x69\x6e\x67\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x70\x6f\x73\x73\x69\x62\x6c\x65\x20\x76\x61\x6c\x75\x65\x73\x3a"
+                   "\x20\x6e\x61\x6d\x65\x64\x5f\x63\x75\x72\x76\x65\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20"
+                   "\x65\x78\x70\x6c\x69\x63\x69\x74\xa");
         goto end;
     }
 
@@ -239,7 +239,7 @@ int MAIN(int argc, char **argv)
     e = setup_engine(bio_err, engine, 0);
 
     if (!app_passwd(bio_err, passargin, passargout, &passin, &passout)) {
-        BIO_printf(bio_err, "Error getting passwords\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x73\xa");
         goto end;
     }
 
@@ -259,7 +259,7 @@ int MAIN(int argc, char **argv)
         }
     }
 
-    BIO_printf(bio_err, "read EC key\n");
+    BIO_printf(bio_err, "\x72\x65\x61\x64\x20\x45\x43\x20\x6b\x65\x79\xa");
     if (informat == FORMAT_ASN1) {
         if (pubin)
             eckey = d2i_EC_PUBKEY_bio(in, NULL);
@@ -271,11 +271,11 @@ int MAIN(int argc, char **argv)
         else
             eckey = PEM_read_bio_ECPrivateKey(in, NULL, NULL, passin);
     } else {
-        BIO_printf(bio_err, "bad input format specified for key\n");
+        BIO_printf(bio_err, "\x62\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6b\x65\x79\xa");
         goto end;
     }
     if (eckey == NULL) {
-        BIO_printf(bio_err, "unable to load Key\n");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x4b\x65\x79\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -315,7 +315,7 @@ int MAIN(int argc, char **argv)
         goto end;
     }
 
-    BIO_printf(bio_err, "writing EC key\n");
+    BIO_printf(bio_err, "\x77\x72\x69\x74\x69\x6e\x67\x20\x45\x43\x20\x6b\x65\x79\xa");
     if (outformat == FORMAT_ASN1) {
         if (param_out)
             i = i2d_ECPKParameters_bio(out, group);
@@ -332,12 +332,12 @@ int MAIN(int argc, char **argv)
             i = PEM_write_bio_ECPrivateKey(out, eckey, enc,
                                            NULL, 0, NULL, passout);
     } else {
-        BIO_printf(bio_err, "bad output format specified for " "outfile\n");
+        BIO_printf(bio_err, "\x62\x61\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20" "\x6f\x75\x74\x66\x69\x6c\x65\xa");
         goto end;
     }
 
     if (!i) {
-        BIO_printf(bio_err, "unable to write private key\n");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\xa");
         ERR_print_errors(bio_err);
     } else
         ret = 0;

@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -96,9 +96,9 @@ static int int_x509_param_set_hosts(X509_VERIFY_PARAM_ID *id, int mode,
      */
     if (namelen == 0 || name == NULL)
         namelen = name ? strlen(name) : 0;
-    else if (name && memchr(name, '\0', namelen > 1 ? namelen - 1 : namelen))
+    else if (name && memchr(name, '\x0', namelen > 1 ? namelen - 1 : namelen))
         return 0;
-    if (namelen > 0 && name[namelen - 1] == '\0')
+    if (namelen > 0 && name[namelen - 1] == '\x0')
         --namelen;
 
     if (mode == SET_HOST && id->hosts) {
@@ -534,7 +534,7 @@ static X509_VERIFY_PARAM_ID _empty_id = { NULL, 0U, NULL, NULL, 0, NULL, 0 };
 
 static const X509_VERIFY_PARAM default_table[] = {
     {
-     "default",                 /* X509 default parameters */
+     "\x64\x65\x66\x61\x75\x6c\x74",                 /* X509 default parameters */
      0,                         /* Check time */
      0,                         /* internal flags */
      0,                         /* flags */
@@ -544,7 +544,7 @@ static const X509_VERIFY_PARAM default_table[] = {
      NULL,                      /* policies */
      vpm_empty_id},
     {
-     "pkcs7",                   /* S/MIME sign parameters */
+     "\x70\x6b\x63\x73\x37",                   /* S/MIME sign parameters */
      0,                         /* Check time */
      0,                         /* internal flags */
      0,                         /* flags */
@@ -554,7 +554,7 @@ static const X509_VERIFY_PARAM default_table[] = {
      NULL,                      /* policies */
      vpm_empty_id},
     {
-     "smime_sign",              /* S/MIME sign parameters */
+     "\x73\x6d\x69\x6d\x65\x5f\x73\x69\x67\x6e",              /* S/MIME sign parameters */
      0,                         /* Check time */
      0,                         /* internal flags */
      0,                         /* flags */
@@ -564,7 +564,7 @@ static const X509_VERIFY_PARAM default_table[] = {
      NULL,                      /* policies */
      vpm_empty_id},
     {
-     "ssl_client",              /* SSL/TLS client parameters */
+     "\x73\x73\x6c\x5f\x63\x6c\x69\x65\x6e\x74",              /* SSL/TLS client parameters */
      0,                         /* Check time */
      0,                         /* internal flags */
      0,                         /* flags */
@@ -574,7 +574,7 @@ static const X509_VERIFY_PARAM default_table[] = {
      NULL,                      /* policies */
      vpm_empty_id},
     {
-     "ssl_server",              /* SSL/TLS server parameters */
+     "\x73\x73\x6c\x5f\x73\x65\x72\x76\x65\x72",              /* SSL/TLS server parameters */
      0,                         /* Check time */
      0,                         /* internal flags */
      0,                         /* flags */

@@ -37,11 +37,11 @@ int register_pmeth_gost(int id, EVP_PKEY_METHOD **pmeth, int flags);
 
 /* Gost-specific pmeth control-function parameters */
 /* For GOST R34.10 parameters */
-# define param_ctrl_string "paramset"
+# define param_ctrl_string "\x70\x61\x72\x61\x6d\x73\x65\x74"
 # define EVP_PKEY_CTRL_GOST_PARAMSET (EVP_PKEY_ALG_CTRL+1)
 /* For GOST 28147 MAC */
-# define key_ctrl_string "key"
-# define hexkey_ctrl_string "hexkey"
+# define key_ctrl_string "\x6b\x65\x79"
+# define hexkey_ctrl_string "\x68\x65\x78\x6b\x65\x79"
 # define EVP_PKEY_CTRL_GOST_MAC_HEXKEY (EVP_PKEY_ALG_CTRL+3)
 /* Pmeth internal representation */
 struct gost_pmeth_data {

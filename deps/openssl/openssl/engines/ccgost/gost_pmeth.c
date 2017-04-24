@@ -133,16 +133,16 @@ static int pkey_gost_ctrl94_str(EVP_PKEY_CTX *ctx,
         }
         if (strlen(value) == 1) {
             switch (toupper((unsigned char)value[0])) {
-            case 'A':
+            case '\x41':
                 param_nid = NID_id_GostR3410_94_CryptoPro_A_ParamSet;
                 break;
-            case 'B':
+            case '\x42':
                 param_nid = NID_id_GostR3410_94_CryptoPro_B_ParamSet;
                 break;
-            case 'C':
+            case '\x43':
                 param_nid = NID_id_GostR3410_94_CryptoPro_C_ParamSet;
                 break;
-            case 'D':
+            case '\x44':
                 param_nid = NID_id_GostR3410_94_CryptoPro_D_ParamSet;
                 break;
             default:
@@ -150,15 +150,15 @@ static int pkey_gost_ctrl94_str(EVP_PKEY_CTX *ctx,
                 break;
             }
         } else if ((strlen(value) == 2)
-                   && (toupper((unsigned char)value[0]) == 'X')) {
+                   && (toupper((unsigned char)value[0]) == '\x58')) {
             switch (toupper((unsigned char)value[1])) {
-            case 'A':
+            case '\x41':
                 param_nid = NID_id_GostR3410_94_CryptoPro_XchA_ParamSet;
                 break;
-            case 'B':
+            case '\x42':
                 param_nid = NID_id_GostR3410_94_CryptoPro_XchB_ParamSet;
                 break;
-            case 'C':
+            case '\x43':
                 param_nid = NID_id_GostR3410_94_CryptoPro_XchC_ParamSet;
                 break;
             default:
@@ -197,16 +197,16 @@ static int pkey_gost_ctrl01_str(EVP_PKEY_CTX *ctx,
         }
         if (strlen(value) == 1) {
             switch (toupper((unsigned char)value[0])) {
-            case 'A':
+            case '\x41':
                 param_nid = NID_id_GostR3410_2001_CryptoPro_A_ParamSet;
                 break;
-            case 'B':
+            case '\x42':
                 param_nid = NID_id_GostR3410_2001_CryptoPro_B_ParamSet;
                 break;
-            case 'C':
+            case '\x43':
                 param_nid = NID_id_GostR3410_2001_CryptoPro_C_ParamSet;
                 break;
-            case '0':
+            case '\x30':
                 param_nid = NID_id_GostR3410_2001_TestParamSet;
                 break;
             default:
@@ -214,12 +214,12 @@ static int pkey_gost_ctrl01_str(EVP_PKEY_CTX *ctx,
                 break;
             }
         } else if ((strlen(value) == 2)
-                   && (toupper((unsigned char)value[0]) == 'X')) {
+                   && (toupper((unsigned char)value[0]) == '\x58')) {
             switch (toupper((unsigned char)value[1])) {
-            case 'A':
+            case '\x41':
                 param_nid = NID_id_GostR3410_2001_CryptoPro_XchA_ParamSet;
                 break;
-            case 'B':
+            case '\x42':
                 param_nid = NID_id_GostR3410_2001_CryptoPro_XchB_ParamSet;
                 break;
             default:
@@ -380,11 +380,11 @@ static int pkey_gost01_cp_verify(EVP_PKEY_CTX *ctx, const unsigned char *sig,
     if (!s)
         return 0;
 #ifdef DEBUG_SIGN
-    fprintf(stderr, "R=");
+    fprintf(stderr, "\x52\x3d");
     BN_print_fp(stderr, s->r);
-    fprintf(stderr, "\nS=");
+    fprintf(stderr, "\xa\x53\x3d");
     BN_print_fp(stderr, s->s);
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 #endif
     if (pub_key)
         ok = gost2001_do_verify(tbs, tbs_len, s, EVP_PKEY_get0(pub_key));

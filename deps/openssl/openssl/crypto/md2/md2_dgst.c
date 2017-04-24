@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -63,7 +63,7 @@
 #include <openssl/opensslv.h>
 #include <openssl/crypto.h>
 
-const char MD2_version[] = "MD2" OPENSSL_VERSION_PTEXT;
+const char MD2_version[] = "\x4d\x44\x32" OPENSSL_VERSION_PTEXT;
 
 /*
  * Implemented from RFC1319 The MD2 Message-Digest Algorithm
@@ -114,9 +114,9 @@ static const MD2_INT S[256] = {
 const char *MD2_options(void)
 {
     if (sizeof(MD2_INT) == 1)
-        return ("md2(char)");
+        return ("\x6d\x64\x32\x28\x63\x68\x61\x72\x29");
     else
-        return ("md2(int)");
+        return ("\x6d\x64\x32\x28\x69\x6e\x74\x29");
 }
 
 fips_md_init(MD2)

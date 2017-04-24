@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -133,7 +133,7 @@
  * http://developer.intel.com/design/security/rng/redist_license.htm
  */
 # define PROV_INTEL_SEC 22
-# define INTEL_DEF_PROV L"Intel Hardware Cryptographic Service Provider"
+# define INTEL_DEF_PROV L"\x49\x6e\x74\x65\x6c\x20\x48\x61\x72\x64\x77\x61\x72\x65\x20\x43\x72\x79\x70\x74\x6f\x67\x72\x61\x70\x68\x69\x63\x20\x53\x65\x72\x76\x69\x63\x65\x20\x50\x72\x6f\x76\x69\x64\x65\x72"
 
 static void readtimer(void);
 static void readscreen(void);
@@ -237,10 +237,10 @@ int RAND_poll(void)
      */
     {
         /* load functions dynamically - not available on all systems */
-        HMODULE advapi = LoadLibrary(TEXT("ADVAPI32.DLL"));
-        HMODULE kernel = LoadLibrary(TEXT("KERNEL32.DLL"));
+        HMODULE advapi = LoadLibrary(TEXT("\x41\x44\x56\x41\x50\x49\x33\x32\x2e\x44\x4c\x4c"));
+        HMODULE kernel = LoadLibrary(TEXT("\x4b\x45\x52\x4e\x45\x4c\x33\x32\x2e\x44\x4c\x4c"));
         HMODULE user = NULL;
-        HMODULE netapi = LoadLibrary(TEXT("NETAPI32.DLL"));
+        HMODULE netapi = LoadLibrary(TEXT("\x4e\x45\x54\x41\x50\x49\x33\x32\x2e\x44\x4c\x4c"));
         CRYPTACQUIRECONTEXTW acquire = NULL;
         CRYPTGENRANDOM gen = NULL;
         CRYPTRELEASECONTEXT release = NULL;
@@ -250,8 +250,8 @@ int RAND_poll(void)
 
         if (netapi) {
             netstatget =
-                (NETSTATGET) GetProcAddress(netapi, "NetStatisticsGet");
-            netfree = (NETFREE) GetProcAddress(netapi, "NetApiBufferFree");
+                (NETSTATGET) GetProcAddress(netapi, "\x4e\x65\x74\x53\x74\x61\x74\x69\x73\x74\x69\x63\x73\x47\x65\x74");
+            netfree = (NETFREE) GetProcAddress(netapi, "\x4e\x65\x74\x41\x70\x69\x42\x75\x66\x66\x65\x72\x46\x72\x65\x65");
         }
 
         if (netstatget && netfree) {
@@ -263,11 +263,11 @@ int RAND_poll(void)
              * byte of entropy.
              */
 
-            if (netstatget(NULL, L"LanmanWorkstation", 0, 0, &outbuf) == 0) {
+            if (netstatget(NULL, L"\x4c\x61\x6e\x6d\x61\x6e\x57\x6f\x72\x6b\x73\x74\x61\x74\x69\x6f\x6e", 0, 0, &outbuf) == 0) {
                 RAND_add(outbuf, sizeof(STAT_WORKSTATION_0), 45);
                 netfree(outbuf);
             }
-            if (netstatget(NULL, L"LanmanServer", 0, 0, &outbuf) == 0) {
+            if (netstatget(NULL, L"\x4c\x61\x6e\x6d\x61\x6e\x53\x65\x72\x76\x65\x72", 0, 0, &outbuf) == 0) {
                 RAND_add(outbuf, sizeof(STAT_SERVER_0), 17);
                 netfree(outbuf);
             }
@@ -289,10 +289,10 @@ int RAND_poll(void)
              * We favor Unicode...
              */
             acquire = (CRYPTACQUIRECONTEXTW) GetProcAddress(advapi,
-                                                            "CryptAcquireContextW");
-            gen = (CRYPTGENRANDOM) GetProcAddress(advapi, "CryptGenRandom");
+                                                            "\x43\x72\x79\x70\x74\x41\x63\x71\x75\x69\x72\x65\x43\x6f\x6e\x74\x65\x78\x74\x57");
+            gen = (CRYPTGENRANDOM) GetProcAddress(advapi, "\x43\x72\x79\x70\x74\x47\x65\x6e\x52\x61\x6e\x64\x6f\x6d");
             release = (CRYPTRELEASECONTEXT) GetProcAddress(advapi,
-                                                           "CryptReleaseContext");
+                                                           "\x43\x72\x79\x70\x74\x52\x65\x6c\x65\x61\x73\x65\x43\x6f\x6e\x74\x65\x78\x74");
         }
 
         if (acquire && gen && release) {
@@ -304,7 +304,7 @@ int RAND_poll(void)
                     RAND_add(buf, sizeof(buf), 0);
                     good = 1;
 #  if 0
-                    printf("randomness from PROV_RSA_FULL\n");
+                    printf("\x72\x61\x6e\x64\x6f\x6d\x6e\x65\x73\x73\x20\x66\x72\x6f\x6d\x20\x50\x52\x4f\x56\x5f\x52\x53\x41\x5f\x46\x55\x4c\x4c\xa");
 #  endif
                 }
                 release(hProvider, 0);
@@ -316,7 +316,7 @@ int RAND_poll(void)
                     RAND_add(buf, sizeof(buf), sizeof(buf));
                     good = 1;
 #  if 0
-                    printf("randomness from PROV_INTEL_SEC\n");
+                    printf("\x72\x61\x6e\x64\x6f\x6d\x6e\x65\x73\x73\x20\x66\x72\x6f\x6d\x20\x50\x52\x4f\x56\x5f\x49\x4e\x54\x45\x4c\x5f\x53\x45\x43\xa");
 #  endif
                 }
                 release(hProvider, 0);
@@ -328,16 +328,16 @@ int RAND_poll(void)
 
         if ((!check_winnt() ||
              !OPENSSL_isservice()) &&
-            (user = LoadLibrary(TEXT("USER32.DLL")))) {
+            (user = LoadLibrary(TEXT("\x55\x53\x45\x52\x33\x32\x2e\x44\x4c\x4c")))) {
             GETCURSORINFO cursor;
             GETFOREGROUNDWINDOW win;
             GETQUEUESTATUS queue;
 
             win =
                 (GETFOREGROUNDWINDOW) GetProcAddress(user,
-                                                     "GetForegroundWindow");
-            cursor = (GETCURSORINFO) GetProcAddress(user, "GetCursorInfo");
-            queue = (GETQUEUESTATUS) GetProcAddress(user, "GetQueueStatus");
+                                                     "\x47\x65\x74\x46\x6f\x72\x65\x67\x72\x6f\x75\x6e\x64\x57\x69\x6e\x64\x6f\x77");
+            cursor = (GETCURSORINFO) GetProcAddress(user, "\x47\x65\x74\x43\x75\x72\x73\x6f\x72\x49\x6e\x66\x6f");
+            queue = (GETQUEUESTATUS) GetProcAddress(user, "\x47\x65\x74\x51\x75\x65\x75\x65\x53\x74\x61\x74\x75\x73");
 
             if (win) {
                 /* window handle */
@@ -405,23 +405,23 @@ int RAND_poll(void)
             DWORD starttime = 0;
 
             snap = (CREATETOOLHELP32SNAPSHOT)
-                GetProcAddress(kernel, "CreateToolhelp32Snapshot");
+                GetProcAddress(kernel, "\x43\x72\x65\x61\x74\x65\x54\x6f\x6f\x6c\x68\x65\x6c\x70\x33\x32\x53\x6e\x61\x70\x73\x68\x6f\x74");
             close_snap = (CLOSETOOLHELP32SNAPSHOT)
-                GetProcAddress(kernel, "CloseToolhelp32Snapshot");
-            heap_first = (HEAP32FIRST) GetProcAddress(kernel, "Heap32First");
-            heap_next = (HEAP32NEXT) GetProcAddress(kernel, "Heap32Next");
+                GetProcAddress(kernel, "\x43\x6c\x6f\x73\x65\x54\x6f\x6f\x6c\x68\x65\x6c\x70\x33\x32\x53\x6e\x61\x70\x73\x68\x6f\x74");
+            heap_first = (HEAP32FIRST) GetProcAddress(kernel, "\x48\x65\x61\x70\x33\x32\x46\x69\x72\x73\x74");
+            heap_next = (HEAP32NEXT) GetProcAddress(kernel, "\x48\x65\x61\x70\x33\x32\x4e\x65\x78\x74");
             heaplist_first =
-                (HEAP32LIST) GetProcAddress(kernel, "Heap32ListFirst");
+                (HEAP32LIST) GetProcAddress(kernel, "\x48\x65\x61\x70\x33\x32\x4c\x69\x73\x74\x46\x69\x72\x73\x74");
             heaplist_next =
-                (HEAP32LIST) GetProcAddress(kernel, "Heap32ListNext");
+                (HEAP32LIST) GetProcAddress(kernel, "\x48\x65\x61\x70\x33\x32\x4c\x69\x73\x74\x4e\x65\x78\x74");
             process_first =
-                (PROCESS32) GetProcAddress(kernel, "Process32First");
+                (PROCESS32) GetProcAddress(kernel, "\x50\x72\x6f\x63\x65\x73\x73\x33\x32\x46\x69\x72\x73\x74");
             process_next =
-                (PROCESS32) GetProcAddress(kernel, "Process32Next");
-            thread_first = (THREAD32) GetProcAddress(kernel, "Thread32First");
-            thread_next = (THREAD32) GetProcAddress(kernel, "Thread32Next");
-            module_first = (MODULE32) GetProcAddress(kernel, "Module32First");
-            module_next = (MODULE32) GetProcAddress(kernel, "Module32Next");
+                (PROCESS32) GetProcAddress(kernel, "\x50\x72\x6f\x63\x65\x73\x73\x33\x32\x4e\x65\x78\x74");
+            thread_first = (THREAD32) GetProcAddress(kernel, "\x54\x68\x72\x65\x61\x64\x33\x32\x46\x69\x72\x73\x74");
+            thread_next = (THREAD32) GetProcAddress(kernel, "\x54\x68\x72\x65\x61\x64\x33\x32\x4e\x65\x78\x74");
+            module_first = (MODULE32) GetProcAddress(kernel, "\x4d\x6f\x64\x75\x6c\x65\x33\x32\x46\x69\x72\x73\x74");
+            module_next = (MODULE32) GetProcAddress(kernel, "\x4d\x6f\x64\x75\x6c\x65\x33\x32\x4e\x65\x78\x74");
 
             if (snap && heap_first && heap_next && heaplist_first &&
                 heaplist_next && process_first && process_next &&
@@ -574,7 +574,7 @@ int RAND_poll(void)
     RAND_add(&w, sizeof(w), 1);
 
 # if 0
-    printf("Exiting RAND_poll\n");
+    printf("\x45\x78\x69\x74\x69\x6e\x67\x20\x52\x41\x4e\x44\x5f\x70\x6f\x6c\x6c\xa");
 # endif
 
     return (1);

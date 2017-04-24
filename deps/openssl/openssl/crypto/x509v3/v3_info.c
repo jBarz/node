@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -131,7 +131,7 @@ static STACK_OF(CONF_VALUE) *i2v_AUTHORITY_INFO_ACCESS(X509V3_EXT_METHOD
             return NULL;
         }
         BUF_strlcpy(ntmp, objtmp, nlen);
-        BUF_strlcat(ntmp, " - ", nlen);
+        BUF_strlcat(ntmp, "\x20\x2d\x20", nlen);
         BUF_strlcat(ntmp, vtmp->name, nlen);
         OPENSSL_free(vtmp->name);
         vtmp->name = ntmp;
@@ -165,7 +165,7 @@ static AUTHORITY_INFO_ACCESS *v2i_AUTHORITY_INFO_ACCESS(X509V3_EXT_METHOD
                       ERR_R_MALLOC_FAILURE);
             goto err;
         }
-        ptmp = strchr(cnf->name, ';');
+        ptmp = strchr(cnf->name, '\x3b');
         if (!ptmp) {
             X509V3err(X509V3_F_V2I_AUTHORITY_INFO_ACCESS,
                       X509V3_R_INVALID_SYNTAX);
@@ -187,7 +187,7 @@ static AUTHORITY_INFO_ACCESS *v2i_AUTHORITY_INFO_ACCESS(X509V3_EXT_METHOD
         if (!acc->method) {
             X509V3err(X509V3_F_V2I_AUTHORITY_INFO_ACCESS,
                       X509V3_R_BAD_OBJECT);
-            ERR_add_error_data(2, "value=", objtmp);
+            ERR_add_error_data(2, "\x76\x61\x6c\x75\x65\x3d", objtmp);
             OPENSSL_free(objtmp);
             goto err;
         }

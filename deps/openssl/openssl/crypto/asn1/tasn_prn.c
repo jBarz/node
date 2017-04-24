@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -209,7 +209,7 @@ static int asn1_item_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
         if (pctx->flags & ASN1_PCTX_FLAGS_SHOW_ABSENT) {
             if (!nohdr && !asn1_print_fsname(out, indent, fname, sname, pctx))
                 return 0;
-            if (BIO_puts(out, "<ABSENT>\n") <= 0)
+            if (BIO_puts(out, "\x3c\x41\x42\x53\x45\x4e\x54\x3e\xa") <= 0)
                 return 0;
         }
         return 1;
@@ -238,11 +238,11 @@ static int asn1_item_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
             i = ef->asn1_ex_print(out, fld, indent, "", pctx);
             if (!i)
                 return 0;
-            if ((i == 2) && (BIO_puts(out, "\n") <= 0))
+            if ((i == 2) && (BIO_puts(out, "\xa") <= 0))
                 return 0;
             return 1;
         } else if (sname &&
-                   BIO_printf(out, ":EXTERNAL TYPE %s\n", sname) <= 0)
+                   BIO_printf(out, "\x3a\x45\x58\x54\x45\x52\x4e\x41\x4c\x20\x54\x59\x50\x45\x20\x25\x73\xa", sname) <= 0)
             return 0;
         break;
 
@@ -255,7 +255,7 @@ static int asn1_item_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
         i = asn1_get_choice_selector(fld, it);
         /* This should never happen... */
         if ((i < 0) || (i >= it->tcount)) {
-            if (BIO_printf(out, "ERROR: selector [%d] invalid\n", i) <= 0)
+            if (BIO_printf(out, "\x45\x52\x52\x4f\x52\x3a\x20\x73\x65\x6c\x65\x63\x74\x6f\x72\x20\x5b\x25\x64\x5d\x20\x69\x6e\x76\x61\x6c\x69\x64\xa", i) <= 0)
                 return 0;
             return 1;
         }
@@ -271,10 +271,10 @@ static int asn1_item_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
             return 0;
         if (fname || sname) {
             if (pctx->flags & ASN1_PCTX_FLAGS_SHOW_SEQUENCE) {
-                if (BIO_puts(out, " {\n") <= 0)
+                if (BIO_puts(out, "\x20\x7b\xa") <= 0)
                     return 0;
             } else {
-                if (BIO_puts(out, "\n") <= 0)
+                if (BIO_puts(out, "\xa") <= 0)
                     return 0;
             }
         }
@@ -299,7 +299,7 @@ static int asn1_item_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
                 return 0;
         }
         if (pctx->flags & ASN1_PCTX_FLAGS_SHOW_SEQUENCE) {
-            if (BIO_printf(out, "%*s}\n", indent, "") < 0)
+            if (BIO_printf(out, "\x25\x2a\x73\x7d\xa", indent, "") < 0)
                 return 0;
         }
 
@@ -311,7 +311,7 @@ static int asn1_item_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
         break;
 
     default:
-        BIO_printf(out, "Unprocessed type %d\n", it->itype);
+        BIO_printf(out, "\x55\x6e\x70\x72\x6f\x63\x65\x73\x73\x65\x64\x20\x74\x79\x70\x65\x20\x25\x64\xa", it->itype);
         return 0;
     }
 
@@ -341,18 +341,18 @@ int asn1_template_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
         if (fname) {
             if (pctx->flags & ASN1_PCTX_FLAGS_SHOW_SSOF) {
                 if (flags & ASN1_TFLG_SET_OF)
-                    tname = "SET";
+                    tname = "\x53\x45\x54";
                 else
-                    tname = "SEQUENCE";
-                if (BIO_printf(out, "%*s%s OF %s {\n",
+                    tname = "\x53\x45\x51\x55\x45\x4e\x43\x45";
+                if (BIO_printf(out, "\x25\x2a\x73\x25\x73\x20\x4f\x46\x20\x25\x73\x20\x7b\xa",
                                indent, "", tname, tt->field_name) <= 0)
                     return 0;
-            } else if (BIO_printf(out, "%*s%s:\n", indent, "", fname) <= 0)
+            } else if (BIO_printf(out, "\x25\x2a\x73\x25\x73\x3a\xa", indent, "", fname) <= 0)
                 return 0;
         }
         stack = (STACK_OF(ASN1_VALUE) *)*fld;
         for (i = 0; i < sk_ASN1_VALUE_num(stack); i++) {
-            if ((i > 0) && (BIO_puts(out, "\n") <= 0))
+            if ((i > 0) && (BIO_puts(out, "\xa") <= 0))
                 return 0;
 
             skitem = sk_ASN1_VALUE_value(stack, i);
@@ -361,10 +361,10 @@ int asn1_template_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
                                      pctx))
                 return 0;
         }
-        if (!i && BIO_printf(out, "%*s<EMPTY>\n", indent + 2, "") <= 0)
+        if (!i && BIO_printf(out, "\x25\x2a\x73\x3c\x45\x4d\x50\x54\x59\x3e\xa", indent + 2, "") <= 0)
             return 0;
         if (pctx->flags & ASN1_PCTX_FLAGS_SHOW_SEQUENCE) {
-            if (BIO_printf(out, "%*s}\n", indent, "") <= 0)
+            if (BIO_printf(out, "\x25\x2a\x73\x7d\xa", indent, "") <= 0)
                 return 0;
         }
         return 1;
@@ -377,7 +377,7 @@ static int asn1_print_fsname(BIO *out, int indent,
                              const char *fname, const char *sname,
                              const ASN1_PCTX *pctx)
 {
-    static char spaces[] = "                    ";
+    static char spaces[] = "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20";
     const int nspaces = sizeof(spaces) - 1;
 
 #if 0
@@ -404,14 +404,14 @@ static int asn1_print_fsname(BIO *out, int indent,
     }
     if (sname) {
         if (fname) {
-            if (BIO_printf(out, " (%s)", sname) <= 0)
+            if (BIO_printf(out, "\x20\x28\x25\x73\x29", sname) <= 0)
                 return 0;
         } else {
             if (BIO_puts(out, sname) <= 0)
                 return 0;
         }
     }
-    if (BIO_write(out, ": ", 2) != 2)
+    if (BIO_write(out, "\x3a\x20", 2) != 2)
         return 0;
     return 1;
 }
@@ -422,15 +422,15 @@ static int asn1_print_boolean_ctx(BIO *out, int boolval,
     const char *str;
     switch (boolval) {
     case -1:
-        str = "BOOL ABSENT";
+        str = "\x42\x4f\x4f\x4c\x20\x41\x42\x53\x45\x4e\x54";
         break;
 
     case 0:
-        str = "FALSE";
+        str = "\x46\x41\x4c\x53\x45";
         break;
 
     default:
-        str = "TRUE";
+        str = "\x54\x52\x55\x45";
         break;
 
     }
@@ -464,7 +464,7 @@ static int asn1_print_oid_ctx(BIO *out, const ASN1_OBJECT *oid,
     if (!ln)
         ln = "";
     OBJ_obj2txt(objbuf, sizeof objbuf, oid, 1);
-    if (BIO_printf(out, "%s (%s)", ln, objbuf) <= 0)
+    if (BIO_printf(out, "\x25\x73\x20\x28\x25\x73\x29", ln, objbuf) <= 0)
         return 0;
     return 1;
 }
@@ -473,9 +473,9 @@ static int asn1_print_obstring_ctx(BIO *out, ASN1_STRING *str, int indent,
                                    const ASN1_PCTX *pctx)
 {
     if (str->type == V_ASN1_BIT_STRING) {
-        if (BIO_printf(out, " (%ld unused bits)\n", str->flags & 0x7) <= 0)
+        if (BIO_printf(out, "\x20\x28\x25\x6c\x64\x20\x75\x6e\x75\x73\x65\x64\x20\x62\x69\x74\x73\x29\xa", str->flags & 0x7) <= 0)
             return 0;
-    } else if (BIO_puts(out, "\n") <= 0)
+    } else if (BIO_puts(out, "\xa") <= 0)
         return 0;
     if ((str->length > 0)
         && BIO_dump_indent(out, (char *)str->data, str->length,
@@ -526,7 +526,7 @@ static int asn1_primitive_print(BIO *out, ASN1_VALUE **fld,
     }
 
     if (utype == V_ASN1_NULL) {
-        if (BIO_puts(out, "NULL\n") <= 0)
+        if (BIO_puts(out, "\x4e\x55\x4c\x4c\xa") <= 0)
             return 0;
         return 1;
     }
@@ -534,7 +534,7 @@ static int asn1_primitive_print(BIO *out, ASN1_VALUE **fld,
     if (pname) {
         if (BIO_puts(out, pname) <= 0)
             return 0;
-        if (BIO_puts(out, ":") <= 0)
+        if (BIO_puts(out, "\x3a") <= 0)
             return 0;
     }
 
@@ -574,7 +574,7 @@ static int asn1_primitive_print(BIO *out, ASN1_VALUE **fld,
     case V_ASN1_SEQUENCE:
     case V_ASN1_SET:
     case V_ASN1_OTHER:
-        if (BIO_puts(out, "\n") <= 0)
+        if (BIO_puts(out, "\xa") <= 0)
             return 0;
         if (ASN1_parse_dump(out, str->data, str->length, indent, 0) <= 0)
             ret = 0;
@@ -587,7 +587,7 @@ static int asn1_primitive_print(BIO *out, ASN1_VALUE **fld,
     }
     if (!ret)
         return 0;
-    if (needlf && BIO_puts(out, "\n") <= 0)
+    if (needlf && BIO_puts(out, "\xa") <= 0)
         return 0;
     return 1;
 }

@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -291,61 +291,61 @@ void load_krb5_dll(void)
     HANDLE hKRB5_32;
 
     krb5_loaded++;
-    hKRB5_32 = LoadLibrary(TEXT("KRB5_32"));
+    hKRB5_32 = LoadLibrary(TEXT("\x4b\x52\x42\x35\x5f\x33\x32"));
     if (!hKRB5_32)
         return;
 
     (FARPROC) p_krb5_free_data_contents =
-        GetProcAddress(hKRB5_32, "krb5_free_data_contents");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x66\x72\x65\x65\x5f\x64\x61\x74\x61\x5f\x63\x6f\x6e\x74\x65\x6e\x74\x73");
     (FARPROC) p_krb5_free_context =
-        GetProcAddress(hKRB5_32, "krb5_free_context");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x66\x72\x65\x65\x5f\x63\x6f\x6e\x74\x65\x78\x74");
     (FARPROC) p_krb5_auth_con_free =
-        GetProcAddress(hKRB5_32, "krb5_auth_con_free");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x61\x75\x74\x68\x5f\x63\x6f\x6e\x5f\x66\x72\x65\x65");
     (FARPROC) p_krb5_free_principal =
-        GetProcAddress(hKRB5_32, "krb5_free_principal");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x66\x72\x65\x65\x5f\x70\x72\x69\x6e\x63\x69\x70\x61\x6c");
     (FARPROC) p_krb5_mk_req_extended =
-        GetProcAddress(hKRB5_32, "krb5_mk_req_extended");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x6d\x6b\x5f\x72\x65\x71\x5f\x65\x78\x74\x65\x6e\x64\x65\x64");
     (FARPROC) p_krb5_get_credentials =
-        GetProcAddress(hKRB5_32, "krb5_get_credentials");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x67\x65\x74\x5f\x63\x72\x65\x64\x65\x6e\x74\x69\x61\x6c\x73");
     (FARPROC) p_krb5_cc_get_principal =
-        GetProcAddress(hKRB5_32, "krb5_cc_get_principal");
-    (FARPROC) p_krb5_cc_default = GetProcAddress(hKRB5_32, "krb5_cc_default");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x63\x63\x5f\x67\x65\x74\x5f\x70\x72\x69\x6e\x63\x69\x70\x61\x6c");
+    (FARPROC) p_krb5_cc_default = GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x63\x63\x5f\x64\x65\x66\x61\x75\x6c\x74");
     (FARPROC) p_krb5_sname_to_principal =
-        GetProcAddress(hKRB5_32, "krb5_sname_to_principal");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x73\x6e\x61\x6d\x65\x5f\x74\x6f\x5f\x70\x72\x69\x6e\x63\x69\x70\x61\x6c");
     (FARPROC) p_krb5_init_context =
-        GetProcAddress(hKRB5_32, "krb5_init_context");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x69\x6e\x69\x74\x5f\x63\x6f\x6e\x74\x65\x78\x74");
     (FARPROC) p_krb5_free_ticket =
-        GetProcAddress(hKRB5_32, "krb5_free_ticket");
-    (FARPROC) p_krb5_rd_req = GetProcAddress(hKRB5_32, "krb5_rd_req");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x66\x72\x65\x65\x5f\x74\x69\x63\x6b\x65\x74");
+    (FARPROC) p_krb5_rd_req = GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x72\x64\x5f\x72\x65\x71");
     (FARPROC) p_krb5_principal_compare =
-        GetProcAddress(hKRB5_32, "krb5_principal_compare");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x70\x72\x69\x6e\x63\x69\x70\x61\x6c\x5f\x63\x6f\x6d\x70\x61\x72\x65");
     (FARPROC) p_krb5_decrypt_tkt_part =
-        GetProcAddress(hKRB5_32, "krb5_decrypt_tkt_part");
-    (FARPROC) p_krb5_timeofday = GetProcAddress(hKRB5_32, "krb5_timeofday");
-    (FARPROC) p_krb5_rc_default = GetProcAddress(hKRB5_32, "krb5_rc_default");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x64\x65\x63\x72\x79\x70\x74\x5f\x74\x6b\x74\x5f\x70\x61\x72\x74");
+    (FARPROC) p_krb5_timeofday = GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x74\x69\x6d\x65\x6f\x66\x64\x61\x79");
+    (FARPROC) p_krb5_rc_default = GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x72\x63\x5f\x64\x65\x66\x61\x75\x6c\x74");
     (FARPROC) p_krb5_rc_initialize =
-        GetProcAddress(hKRB5_32, "krb5_rc_initialize");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x72\x63\x5f\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65");
     (FARPROC) p_krb5_rc_get_lifespan =
-        GetProcAddress(hKRB5_32, "krb5_rc_get_lifespan");
-    (FARPROC) p_krb5_rc_destroy = GetProcAddress(hKRB5_32, "krb5_rc_destroy");
-    (FARPROC) p_krb5_kt_default = GetProcAddress(hKRB5_32, "krb5_kt_default");
-    (FARPROC) p_krb5_kt_resolve = GetProcAddress(hKRB5_32, "krb5_kt_resolve");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x72\x63\x5f\x67\x65\x74\x5f\x6c\x69\x66\x65\x73\x70\x61\x6e");
+    (FARPROC) p_krb5_rc_destroy = GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x72\x63\x5f\x64\x65\x73\x74\x72\x6f\x79");
+    (FARPROC) p_krb5_kt_default = GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x6b\x74\x5f\x64\x65\x66\x61\x75\x6c\x74");
+    (FARPROC) p_krb5_kt_resolve = GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x6b\x74\x5f\x72\x65\x73\x6f\x6c\x76\x65");
     (FARPROC) p_krb5_auth_con_init =
-        GetProcAddress(hKRB5_32, "krb5_auth_con_init");
-    (FARPROC) p_valid_cksumtype = GetProcAddress(hKRB5_32, "valid_cksumtype");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x61\x75\x74\x68\x5f\x63\x6f\x6e\x5f\x69\x6e\x69\x74");
+    (FARPROC) p_valid_cksumtype = GetProcAddress(hKRB5_32, "\x76\x61\x6c\x69\x64\x5f\x63\x6b\x73\x75\x6d\x74\x79\x70\x65");
     (FARPROC) p_krb5_checksum_size =
-        GetProcAddress(hKRB5_32, "krb5_checksum_size");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x63\x68\x65\x63\x6b\x73\x75\x6d\x5f\x73\x69\x7a\x65");
     (FARPROC) p_krb5_kt_free_entry =
-        GetProcAddress(hKRB5_32, "krb5_kt_free_entry");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x6b\x74\x5f\x66\x72\x65\x65\x5f\x65\x6e\x74\x72\x79");
     (FARPROC) p_krb5_auth_con_setrcache =
-        GetProcAddress(hKRB5_32, "krb5_auth_con_setrcache");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x61\x75\x74\x68\x5f\x63\x6f\x6e\x5f\x73\x65\x74\x72\x63\x61\x63\x68\x65");
     (FARPROC) p_krb5_get_server_rcache =
-        GetProcAddress(hKRB5_32, "krb5_get_server_rcache");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x67\x65\x74\x5f\x73\x65\x72\x76\x65\x72\x5f\x72\x63\x61\x63\x68\x65");
     (FARPROC) p_krb5_auth_con_getrcache =
-        GetProcAddress(hKRB5_32, "krb5_auth_con_getrcache");
-    (FARPROC) p_krb5_kt_close = GetProcAddress(hKRB5_32, "krb5_kt_close");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x61\x75\x74\x68\x5f\x63\x6f\x6e\x5f\x67\x65\x74\x72\x63\x61\x63\x68\x65");
+    (FARPROC) p_krb5_kt_close = GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x6b\x74\x5f\x63\x6c\x6f\x73\x65");
     (FARPROC) p_krb5_kt_get_entry =
-        GetProcAddress(hKRB5_32, "krb5_kt_get_entry");
+        GetProcAddress(hKRB5_32, "\x6b\x72\x62\x35\x5f\x6b\x74\x5f\x67\x65\x74\x5f\x65\x6e\x74\x72\x79");
 }
 
 /* Stubs for each function to be dynamicly loaded */
@@ -762,7 +762,7 @@ static void *kssl_calloc(size_t nmemb, size_t size)
 char
 *kstring(char *string)
 {
-    static char *null = "[NULL]";
+    static char *null = "\x5b\x4e\x55\x4c\x4c\x5d";
 
     return ((string == NULL) ? null : string);
 }
@@ -931,7 +931,7 @@ void kssl_err_set(KSSL_ERR *kssl_err, int reason, char *text)
         return;
 
     kssl_err->reason = reason;
-    BIO_snprintf(kssl_err->text, KSSL_ERR_MAX, "%s", text);
+    BIO_snprintf(kssl_err->text, KSSL_ERR_MAX, "\x25\x73", text);
     return;
 }
 
@@ -942,14 +942,14 @@ void print_krb5_data(char *label, krb5_data *kdata)
 {
     int i;
 
-    fprintf(stderr, "%s[%d] ", label, kdata->length);
+    fprintf(stderr, "\x25\x73\x5b\x25\x64\x5d\x20", label, kdata->length);
     for (i = 0; i < (int)kdata->length; i++) {
         if (0 && isprint((int)kdata->data[i]))
-            fprintf(stderr, "%c ", kdata->data[i]);
+            fprintf(stderr, "\x25\x63\x20", kdata->data[i]);
         else
-            fprintf(stderr, "%02x ", (unsigned char)kdata->data[i]);
+            fprintf(stderr, "\x25\x30\x32\x78\x20", (unsigned char)kdata->data[i]);
     }
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 }
 
 /*
@@ -958,19 +958,19 @@ void print_krb5_data(char *label, krb5_data *kdata)
 void print_krb5_authdata(char *label, krb5_authdata **adata)
 {
     if (adata == NULL) {
-        fprintf(stderr, "%s, authdata==0\n", label);
+        fprintf(stderr, "\x25\x73\x2c\x20\x61\x75\x74\x68\x64\x61\x74\x61\x3d\x3d\x30\xa", label);
         return;
     }
-    fprintf(stderr, "%s [%p]\n", label, (void *)adata);
+    fprintf(stderr, "\x25\x73\x20\x5b\x25\x70\x5d\xa", label, (void *)adata);
 # if 0
     {
         int i;
-        fprintf(stderr, "%s[at%d:%d] ", label, adata->ad_type, adata->length);
+        fprintf(stderr, "\x25\x73\x5b\x61\x74\x25\x64\x3a\x25\x64\x5d\x20", label, adata->ad_type, adata->length);
         for (i = 0; i < adata->length; i++) {
-            fprintf(stderr, (isprint(adata->contents[i])) ? "%c " : "%02x",
+            fprintf(stderr, (isprint(adata->contents[i])) ? "\x25\x63\x20" : "\x25\x30\x32\x78",
                     adata->contents[i]);
         }
-        fprintf(stderr, "\n");
+        fprintf(stderr, "\xa");
     }
 # endif
 }
@@ -983,24 +983,24 @@ void print_krb5_keyblock(char *label, krb5_keyblock *keyblk)
     int i;
 
     if (keyblk == NULL) {
-        fprintf(stderr, "%s, keyblk==0\n", label);
+        fprintf(stderr, "\x25\x73\x2c\x20\x6b\x65\x79\x62\x6c\x6b\x3d\x3d\x30\xa", label);
         return;
     }
 # ifdef KRB5_HEIMDAL
-    fprintf(stderr, "%s\n\t[et%d:%d]: ", label, keyblk->keytype,
+    fprintf(stderr, "\x25\x73\xa\x9\x5b\x65\x74\x25\x64\x3a\x25\x64\x5d\x3a\x20", label, keyblk->keytype,
             keyblk->keyvalue->length);
     for (i = 0; i < (int)keyblk->keyvalue->length; i++) {
-        fprintf(stderr, "%02x",
+        fprintf(stderr, "\x25\x30\x32\x78",
                 (unsigned char *)(keyblk->keyvalue->contents)[i]);
     }
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 # else
-    fprintf(stderr, "%s\n\t[et%d:%d]: ", label, keyblk->enctype,
+    fprintf(stderr, "\x25\x73\xa\x9\x5b\x65\x74\x25\x64\x3a\x25\x64\x5d\x3a\x20", label, keyblk->enctype,
             keyblk->length);
     for (i = 0; i < (int)keyblk->length; i++) {
-        fprintf(stderr, "%02x", keyblk->contents[i]);
+        fprintf(stderr, "\x25\x30\x32\x78", keyblk->contents[i]);
     }
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\xa");
 # endif
 }
 
@@ -1012,19 +1012,19 @@ static void print_krb5_princ(char *label, krb5_principal_data *princ)
 {
     int i, ui, uj;
 
-    fprintf(stderr, "%s principal Realm: ", label);
+    fprintf(stderr, "\x25\x73\x20\x70\x72\x69\x6e\x63\x69\x70\x61\x6c\x20\x52\x65\x61\x6c\x6d\x3a\x20", label);
     if (princ == NULL)
         return;
     for (ui = 0; ui < (int)princ->realm.length; ui++)
         putchar(princ->realm.data[ui]);
-    fprintf(stderr, " (nametype %d) has %d strings:\n", princ->type,
+    fprintf(stderr, "\x20\x28\x6e\x61\x6d\x65\x74\x79\x70\x65\x20\x25\x64\x29\x20\x68\x61\x73\x20\x25\x64\x20\x73\x74\x72\x69\x6e\x67\x73\x3a\xa", princ->type,
             princ->length);
     for (i = 0; i < (int)princ->length; i++) {
-        fprintf(stderr, "\t%d [%d]: ", i, princ->data[i].length);
+        fprintf(stderr, "\x9\x25\x64\x20\x5b\x25\x64\x5d\x3a\x20", i, princ->data[i].length);
         for (uj = 0; uj < (int)princ->data[i].length; uj++) {
             putchar(princ->data[i].data[uj]);
         }
-        fprintf(stderr, "\n");
+        fprintf(stderr, "\xa");
     }
     return;
 }
@@ -1061,17 +1061,17 @@ krb5_error_code kssl_cget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
     memset((char *)&krb5creds, 0, sizeof(krb5creds));
 
     if (!kssl_ctx) {
-        kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT, "No kssl_ctx defined.\n");
+        kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT, "\x4e\x6f\x20\x6b\x73\x73\x6c\x5f\x63\x74\x78\x20\x64\x65\x66\x69\x6e\x65\x64\x2e\xa");
         goto err;
     } else if (!kssl_ctx->service_host) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "kssl_ctx service_host undefined.\n");
+                     "\x6b\x73\x73\x6c\x5f\x63\x74\x78\x20\x73\x65\x72\x76\x69\x63\x65\x5f\x68\x6f\x73\x74\x20\x75\x6e\x64\x65\x66\x69\x6e\x65\x64\x2e\xa");
         goto err;
     }
 
     if ((krb5rc = krb5_init_context(&krb5context)) != 0) {
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "krb5_init_context() fails: %d\n", krb5rc);
+                     "\x6b\x72\x62\x35\x5f\x69\x6e\x69\x74\x5f\x63\x6f\x6e\x74\x65\x78\x74\x28\x29\x20\x66\x61\x69\x6c\x73\x3a\x20\x25\x64\xa", krb5rc);
         kssl_err->reason = SSL_R_KRB5_C_INIT;
         goto err;
     }
@@ -1083,7 +1083,7 @@ krb5_error_code kssl_cget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
                                           KRB5_NT_SRV_HST,
                                           &krb5creds.server)) != 0) {
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "krb5_sname_to_principal() fails for %s/%s\n",
+                     "\x6b\x72\x62\x35\x5f\x73\x6e\x61\x6d\x65\x5f\x74\x6f\x5f\x70\x72\x69\x6e\x63\x69\x70\x61\x6c\x28\x29\x20\x66\x61\x69\x6c\x73\x20\x66\x6f\x72\x20\x25\x73\x2f\x25\x73\xa",
                      kssl_ctx->service_host,
                      (kssl_ctx->
                       service_name) ? kssl_ctx->service_name : KRB5SVC);
@@ -1093,21 +1093,21 @@ krb5_error_code kssl_cget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
 
     if ((krb5rc = krb5_cc_default(krb5context, &krb5ccdef)) != 0) {
         kssl_err_set(kssl_err, SSL_R_KRB5_C_CC_PRINC,
-                     "krb5_cc_default fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x63\x63\x5f\x64\x65\x66\x61\x75\x6c\x74\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     }
 
     if ((krb5rc = krb5_cc_get_principal(krb5context, krb5ccdef,
                                         &krb5creds.client)) != 0) {
         kssl_err_set(kssl_err, SSL_R_KRB5_C_CC_PRINC,
-                     "krb5_cc_get_principal() fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x63\x63\x5f\x67\x65\x74\x5f\x70\x72\x69\x6e\x63\x69\x70\x61\x6c\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     }
 
     if ((krb5rc = krb5_get_credentials(krb5context, 0, krb5ccdef,
                                        &krb5creds, &krb5credsp)) != 0) {
         kssl_err_set(kssl_err, SSL_R_KRB5_C_GET_CRED,
-                     "krb5_get_credentials() fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x67\x65\x74\x5f\x63\x72\x65\x64\x65\x6e\x74\x69\x61\x6c\x73\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     }
 
@@ -1138,7 +1138,7 @@ krb5_error_code kssl_cget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
                                            &krb5auth_context, 0, &krb5in_data,
                                            krb5credsp, &krb5_app_req)) != 0) {
             kssl_err_set(kssl_err, SSL_R_KRB5_C_MK_REQ,
-                         "krb5_mk_req_extended() fails.\n");
+                         "\x6b\x72\x62\x35\x5f\x6d\x6b\x5f\x72\x65\x71\x5f\x65\x78\x74\x65\x6e\x64\x65\x64\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
             goto err;
         }
 
@@ -1162,12 +1162,12 @@ krb5_error_code kssl_cget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
 # ifdef KRB5_HEIMDAL
     if (kssl_ctx_setkey(kssl_ctx, &krb5credsp->session)) {
         kssl_err_set(kssl_err, SSL_R_KRB5_C_INIT,
-                     "kssl_ctx_setkey() fails.\n");
+                     "\x6b\x73\x73\x6c\x5f\x63\x74\x78\x5f\x73\x65\x74\x6b\x65\x79\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
     }
 # else
     if (kssl_ctx_setkey(kssl_ctx, &krb5credsp->keyblock)) {
         kssl_err_set(kssl_err, SSL_R_KRB5_C_INIT,
-                     "kssl_ctx_setkey() fails.\n");
+                     "\x6b\x73\x73\x6c\x5f\x63\x74\x78\x5f\x73\x65\x74\x6b\x65\x79\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
     }
 # endif
     else
@@ -1222,14 +1222,14 @@ static krb5_error_code kssl_TKT2tkt( /* IN */ krb5_context krb5context,
         asn1ticket->sname == NULL ||
         sk_ASN1_GENERALSTRING_num(asn1ticket->sname->namestring) < 2) {
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "Null field in asn1ticket.\n");
+                     "\x4e\x75\x6c\x6c\x20\x66\x69\x65\x6c\x64\x20\x69\x6e\x20\x61\x73\x6e\x31\x74\x69\x63\x6b\x65\x74\x2e\xa");
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         return KRB5KRB_ERR_GENERIC;
     }
 
     if ((new5ticket = (krb5_ticket *)calloc(1, sizeof(krb5_ticket))) == NULL) {
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "Unable to allocate new krb5_ticket.\n");
+                     "\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x61\x6c\x6c\x6f\x63\x61\x74\x65\x20\x6e\x65\x77\x20\x6b\x72\x62\x35\x5f\x74\x69\x63\x6b\x65\x74\x2e\xa");
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         return ENOMEM;          /* or KRB5KRB_ERR_GENERIC; */
     }
@@ -1247,7 +1247,7 @@ static krb5_error_code kssl_TKT2tkt( /* IN */ krb5_context krb5context,
                                          (char *)gstr_host->data)) != 0) {
         free(new5ticket);
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "Error building ticket server principal.\n");
+                     "\x45\x72\x72\x6f\x72\x20\x62\x75\x69\x6c\x64\x69\x6e\x67\x20\x74\x69\x63\x6b\x65\x74\x20\x73\x65\x72\x76\x65\x72\x20\x70\x72\x69\x6e\x63\x69\x70\x61\x6c\x2e\xa");
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         return krb5rc;          /* or KRB5KRB_ERR_GENERIC; */
     }
@@ -1262,7 +1262,7 @@ static krb5_error_code kssl_TKT2tkt( /* IN */ krb5_context krb5context,
          calloc(1, asn1ticket->encdata->cipher->length)) == NULL) {
         free(new5ticket);
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "Error allocating cipher in krb5ticket.\n");
+                     "\x45\x72\x72\x6f\x72\x20\x61\x6c\x6c\x6f\x63\x61\x74\x69\x6e\x67\x20\x63\x69\x70\x68\x65\x72\x20\x69\x6e\x20\x6b\x72\x62\x35\x74\x69\x63\x6b\x65\x74\x2e\xa");
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         return KRB5KRB_ERR_GENERIC;
     } else {
@@ -1308,37 +1308,37 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
     kssl_err_set(kssl_err, 0, "");
 
     if (!kssl_ctx) {
-        kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT, "No kssl_ctx defined.\n");
+        kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT, "\x4e\x6f\x20\x6b\x73\x73\x6c\x5f\x63\x74\x78\x20\x64\x65\x66\x69\x6e\x65\x64\x2e\xa");
         goto err;
     }
 # ifdef KSSL_DEBUG
-    fprintf(stderr, "in kssl_sget_tkt(%s)\n",
+    fprintf(stderr, "\x69\x6e\x20\x6b\x73\x73\x6c\x5f\x73\x67\x65\x74\x5f\x74\x6b\x74\x28\x25\x73\x29\xa",
             kstring(kssl_ctx->service_name));
 # endif                         /* KSSL_DEBUG */
 
     if (!krb5context && (krb5rc = krb5_init_context(&krb5context))) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "krb5_init_context() fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x69\x6e\x69\x74\x5f\x63\x6f\x6e\x74\x65\x78\x74\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     }
     if (krb5auth_context &&
         (krb5rc = krb5_auth_con_free(krb5context, krb5auth_context))) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "krb5_auth_con_free() fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x61\x75\x74\x68\x5f\x63\x6f\x6e\x5f\x66\x72\x65\x65\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     } else
         krb5auth_context = NULL;
     if (!krb5auth_context &&
         (krb5rc = krb5_auth_con_init(krb5context, &krb5auth_context))) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "krb5_auth_con_init() fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x61\x75\x74\x68\x5f\x63\x6f\x6e\x5f\x69\x6e\x69\x74\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     }
 
     if ((krb5rc = krb5_auth_con_getrcache(krb5context, krb5auth_context,
                                           &rcache))) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "krb5_auth_con_getrcache() fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x61\x75\x74\x68\x5f\x63\x6f\x6e\x5f\x67\x65\x74\x72\x63\x61\x63\x68\x65\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     }
 
@@ -1348,7 +1348,7 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
                                           KRB5_NT_SRV_HST,
                                           &krb5server)) != 0) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "krb5_sname_to_principal() fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x73\x6e\x61\x6d\x65\x5f\x74\x6f\x5f\x70\x72\x69\x6e\x63\x69\x70\x61\x6c\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     }
 
@@ -1359,7 +1359,7 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
                                                                   0),
                                              &rcache))) {
             kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                         "krb5_get_server_rcache() fails.\n");
+                         "\x6b\x72\x62\x35\x5f\x67\x65\x74\x5f\x73\x65\x72\x76\x65\x72\x5f\x72\x63\x61\x63\x68\x65\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
             goto err;
         }
     }
@@ -1367,7 +1367,7 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
     if ((krb5rc =
          krb5_auth_con_setrcache(krb5context, krb5auth_context, rcache))) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "krb5_auth_con_setrcache() fails.\n");
+                     "\x6b\x72\x62\x35\x5f\x61\x75\x74\x68\x5f\x63\x6f\x6e\x5f\x73\x65\x74\x72\x63\x61\x63\x68\x65\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
         goto err;
     }
 
@@ -1379,14 +1379,14 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
                                  &krb5keytab);
         if (krb5rc) {
             kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                         "krb5_kt_resolve() fails.\n");
+                         "\x6b\x72\x62\x35\x5f\x6b\x74\x5f\x72\x65\x73\x6f\x6c\x76\x65\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
             goto err;
         }
     } else {
         krb5rc = krb5_kt_default(krb5context, &krb5keytab);
         if (krb5rc) {
             kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                         "krb5_kt_default() fails.\n");
+                         "\x6b\x72\x62\x35\x5f\x6b\x74\x5f\x64\x65\x66\x61\x75\x6c\x74\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
             goto err;
         }
     }
@@ -1411,7 +1411,7 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
                                                       (long)indata->length))
         == NULL) {
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "d2i_KRB5_TICKET() ASN.1 decode failure.\n");
+                     "\x64\x32\x69\x5f\x4b\x52\x42\x35\x5f\x54\x49\x43\x4b\x45\x54\x28\x29\x20\x41\x53\x4e\x2e\x31\x20\x64\x65\x63\x6f\x64\x65\x20\x66\x61\x69\x6c\x75\x72\x65\x2e\xa");
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         goto err;
     }
@@ -1422,7 +1422,7 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
     if ((krb5rc = kssl_TKT2tkt(krb5context, asn1ticket, &krb5ticket,
                                kssl_err)) != 0) {
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "Error converting ASN.1 ticket to krb5_ticket.\n");
+                     "\x45\x72\x72\x6f\x72\x20\x63\x6f\x6e\x76\x65\x72\x74\x69\x6e\x67\x20\x41\x53\x4e\x2e\x31\x20\x74\x69\x63\x6b\x65\x74\x20\x74\x6f\x20\x6b\x72\x62\x35\x5f\x74\x69\x63\x6b\x65\x74\x2e\xa");
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         goto err;
     }
@@ -1430,7 +1430,7 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
     if (!krb5_principal_compare(krb5context, krb5server, krb5ticket->server)) {
         krb5rc = KRB5_PRINC_NOMATCH;
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "server principal != ticket principal\n");
+                     "\x73\x65\x72\x76\x65\x72\x20\x70\x72\x69\x6e\x63\x69\x70\x61\x6c\x20\x21\x3d\x20\x74\x69\x63\x6b\x65\x74\x20\x70\x72\x69\x6e\x63\x69\x70\x61\x6c\xa");
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         goto err;
     }
@@ -1440,14 +1440,14 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
                                     krb5ticket->enc_part.enctype,
                                     &kt_entry)) != 0) {
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "krb5_kt_get_entry() fails with %x.\n", krb5rc);
+                     "\x6b\x72\x62\x35\x5f\x6b\x74\x5f\x67\x65\x74\x5f\x65\x6e\x74\x72\x79\x28\x29\x20\x66\x61\x69\x6c\x73\x20\x77\x69\x74\x68\x20\x25\x78\x2e\xa", krb5rc);
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         goto err;
     }
     if ((krb5rc = krb5_decrypt_tkt_part(krb5context, &kt_entry.key,
                                         krb5ticket)) != 0) {
         BIO_snprintf(kssl_err->text, KSSL_ERR_MAX,
-                     "krb5_decrypt_tkt_part() failed.\n");
+                     "\x6b\x72\x62\x35\x5f\x64\x65\x63\x72\x79\x70\x74\x5f\x74\x6b\x74\x5f\x70\x61\x72\x74\x28\x29\x20\x66\x61\x69\x6c\x65\x64\x2e\xa");
         kssl_err->reason = SSL_R_KRB5_S_RD_REQ;
         goto err;
     } else {
@@ -1456,25 +1456,25 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
         {
             int i;
             krb5_address **paddr = krb5ticket->enc_part2->caddrs;
-            fprintf(stderr, "Decrypted ticket fields:\n");
-            fprintf(stderr, "\tflags: %X, transit-type: %X",
+            fprintf(stderr, "\x44\x65\x63\x72\x79\x70\x74\x65\x64\x20\x74\x69\x63\x6b\x65\x74\x20\x66\x69\x65\x6c\x64\x73\x3a\xa");
+            fprintf(stderr, "\x9f\x6c\x61\x67\x73\x3a\x20\x25\x58\x2c\x20\x74\x72\x61\x6e\x73\x69\x74\x2d\x74\x79\x70\x65\x3a\x20\x25\x58",
                     krb5ticket->enc_part2->flags,
                     krb5ticket->enc_part2->transited.tr_type);
-            print_krb5_data("\ttransit-data: ",
+            print_krb5_data("\x9\x74\x72\x61\x6e\x73\x69\x74\x2d\x64\x61\x74\x61\x3a\x20",
                             &(krb5ticket->enc_part2->transited.tr_contents));
-            fprintf(stderr, "\tcaddrs: %p, authdata: %p\n",
+            fprintf(stderr, "\x9c\x61\x64\x64\x72\x73\x3a\x20\x25\x70\x2c\x20\x61\x75\x74\x68\x64\x61\x74\x61\x3a\x20\x25\x70\xa",
                     krb5ticket->enc_part2->caddrs,
                     krb5ticket->enc_part2->authorization_data);
             if (paddr) {
-                fprintf(stderr, "\tcaddrs:\n");
+                fprintf(stderr, "\x9c\x61\x64\x64\x72\x73\x3a\xa");
                 for (i = 0; paddr[i] != NULL; i++) {
                     krb5_data d;
                     d.length = paddr[i]->length;
                     d.data = paddr[i]->contents;
-                    print_krb5_data("\t\tIP: ", &d);
+                    print_krb5_data("\x9\x9\x49\x50\x3a\x20", &d);
                 }
             }
-            fprintf(stderr, "\tstart/auth/end times: %d / %d / %d\n",
+            fprintf(stderr, "\x9\x73\x74\x61\x72\x74\x2f\x61\x75\x74\x68\x2f\x65\x6e\x64\x20\x74\x69\x6d\x65\x73\x3a\x20\x25\x64\x20\x2f\x20\x25\x64\x20\x2f\x20\x25\x64\xa",
                     krb5ticket->enc_part2->times.starttime,
                     krb5ticket->enc_part2->times.authtime,
                     krb5ticket->enc_part2->times.endtime);
@@ -1488,20 +1488,20 @@ krb5_error_code kssl_sget_tkt( /* UPDATE */ KSSL_CTX *kssl_ctx,
         !krb5ticket->enc_part2->client->data ||
         !krb5ticket->enc_part2->session) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_BAD_TICKET,
-                     "bad ticket from krb5_rd_req.\n");
+                     "\x62\x61\x64\x20\x74\x69\x63\x6b\x65\x74\x20\x66\x72\x6f\x6d\x20\x6b\x72\x62\x35\x5f\x72\x64\x5f\x72\x65\x71\x2e\xa");
     } else if (kssl_ctx_setprinc(kssl_ctx, KSSL_CLIENT,
                                  &krb5ticket->enc_part2->client->realm,
                                  krb5ticket->enc_part2->client->data,
                                  krb5ticket->enc_part2->client->length)) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_BAD_TICKET,
-                     "kssl_ctx_setprinc() fails.\n");
+                     "\x6b\x73\x73\x6c\x5f\x63\x74\x78\x5f\x73\x65\x74\x70\x72\x69\x6e\x63\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
     } else if (kssl_ctx_setkey(kssl_ctx, krb5ticket->enc_part2->session)) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_BAD_TICKET,
-                     "kssl_ctx_setkey() fails.\n");
+                     "\x6b\x73\x73\x6c\x5f\x63\x74\x78\x5f\x73\x65\x74\x6b\x65\x79\x28\x29\x20\x66\x61\x69\x6c\x73\x2e\xa");
     } else if (krb5ticket->enc_part2->flags & TKT_FLG_INVALID) {
         krb5rc = KRB5KRB_AP_ERR_TKT_INVALID;
         kssl_err_set(kssl_err, SSL_R_KRB5_S_BAD_TICKET,
-                     "invalid ticket from krb5_rd_req.\n");
+                     "\x69\x6e\x76\x61\x6c\x69\x64\x20\x74\x69\x63\x6b\x65\x74\x20\x66\x72\x6f\x6d\x20\x6b\x72\x62\x35\x5f\x72\x64\x5f\x72\x65\x71\x2e\xa");
     } else
         krb5rc = 0;
 
@@ -1605,11 +1605,11 @@ kssl_ctx_setprinc(KSSL_CTX *kssl_ctx, int which,
         for (i = 0; i < nentities; i++) {
             strncat(*princ, entity[i].data, entity[i].length);
             if (i < nentities - 1) {
-                strcat(*princ, "/");
+                strcat(*princ, "\x2f");
             }
         }
         if (realm) {
-            strcat(*princ, "@");
+            strcat(*princ, "\x40");
             (void)strncat(*princ, realm->data, realm->length);
         }
     }
@@ -1650,7 +1650,7 @@ krb5_error_code kssl_ctx_setstring(KSSL_CTX *kssl_ctx, int which, char *text)
         kssl_free(*string);
 
     if (!text) {
-        *string = '\0';
+        *string = '\x0';
         return KSSL_CTX_OK;
     }
 
@@ -1716,27 +1716,27 @@ void kssl_ctx_show(KSSL_CTX *kssl_ctx)
 {
     int i;
 
-    printf("kssl_ctx: ");
+    printf("\x6b\x73\x73\x6c\x5f\x63\x74\x78\x3a\x20");
     if (kssl_ctx == NULL) {
-        printf("NULL\n");
+        printf("\x4e\x55\x4c\x4c\xa");
         return;
     } else
-        printf("%p\n", (void *)kssl_ctx);
+        printf("\x25\x70\xa", (void *)kssl_ctx);
 
-    printf("\tservice:\t%s\n",
-           (kssl_ctx->service_name) ? kssl_ctx->service_name : "NULL");
-    printf("\tclient:\t%s\n",
-           (kssl_ctx->client_princ) ? kssl_ctx->client_princ : "NULL");
-    printf("\tserver:\t%s\n",
-           (kssl_ctx->service_host) ? kssl_ctx->service_host : "NULL");
-    printf("\tkeytab:\t%s\n",
-           (kssl_ctx->keytab_file) ? kssl_ctx->keytab_file : "NULL");
-    printf("\tkey [%d:%d]:\t", kssl_ctx->enctype, kssl_ctx->length);
+    printf("\x9\x73\x65\x72\x76\x69\x63\x65\x3a\x9\x25\x73\xa",
+           (kssl_ctx->service_name) ? kssl_ctx->service_name : "\x4e\x55\x4c\x4c");
+    printf("\x9c\x6c\x69\x65\x6e\x74\x3a\x9\x25\x73\xa",
+           (kssl_ctx->client_princ) ? kssl_ctx->client_princ : "\x4e\x55\x4c\x4c");
+    printf("\x9\x73\x65\x72\x76\x65\x72\x3a\x9\x25\x73\xa",
+           (kssl_ctx->service_host) ? kssl_ctx->service_host : "\x4e\x55\x4c\x4c");
+    printf("\x9\x6b\x65\x79\x74\x61\x62\x3a\x9\x25\x73\xa",
+           (kssl_ctx->keytab_file) ? kssl_ctx->keytab_file : "\x4e\x55\x4c\x4c");
+    printf("\x9\x6b\x65\x79\x20\x5b\x25\x64\x3a\x25\x64\x5d\x3a\x9", kssl_ctx->enctype, kssl_ctx->length);
 
     for (i = 0; i < kssl_ctx->length && kssl_ctx->key; i++) {
-        printf("%02x", kssl_ctx->key[i]);
+        printf("\x25\x30\x32\x78", kssl_ctx->key[i]);
     }
-    printf("\n");
+    printf("\xa");
     return;
 }
 
@@ -1893,32 +1893,32 @@ static struct tm *k_gmtime(ASN1_GENERALIZEDTIME *gtime, struct tm *k_tm)
     p = (char *)&gtime->data[14];
 
     c = *p;
-    *p = '\0';
+    *p = '\x0';
     p -= 2;
     k_tm->tm_sec = atoi(p);
     *(p + 2) = c;
     c = *p;
-    *p = '\0';
+    *p = '\x0';
     p -= 2;
     k_tm->tm_min = atoi(p);
     *(p + 2) = c;
     c = *p;
-    *p = '\0';
+    *p = '\x0';
     p -= 2;
     k_tm->tm_hour = atoi(p);
     *(p + 2) = c;
     c = *p;
-    *p = '\0';
+    *p = '\x0';
     p -= 2;
     k_tm->tm_mday = atoi(p);
     *(p + 2) = c;
     c = *p;
-    *p = '\0';
+    *p = '\x0';
     p -= 2;
     k_tm->tm_mon = atoi(p) - 1;
     *(p + 2) = c;
     c = *p;
-    *p = '\0';
+    *p = '\x0';
     p -= 4;
     k_tm->tm_year = atoi(p) - 1900;
     *(p + 4) = c;
@@ -1985,7 +1985,7 @@ krb5_error_code kssl_validate_times(krb5_timestamp atime,
         return SSL_R_KRB5_S_TKT_EXPIRED;
 
 # ifdef KSSL_DEBUG
-    fprintf(stderr, "kssl_validate_times: %d |<-  | %d - %d | < %d  ->| %d\n",
+    fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x76\x61\x6c\x69\x64\x61\x74\x65\x5f\x74\x69\x6d\x65\x73\x3a\x20\x25\x64\x20\x7c\x3c\x2d\x20\x20\x7c\x20\x25\x64\x20\x2d\x20\x25\x64\x20\x7c\x20\x3c\x20\x25\x64\x20\x20\x2d\x3e\x7c\x20\x25\x64\xa",
             start, atime, now, skew, ttimes->endtime);
 # endif                         /* KSSL_DEBUG */
 
@@ -2045,19 +2045,19 @@ krb5_error_code kssl_check_authent(
 # ifdef KSSL_DEBUG
     {
         unsigned int ui;
-        fprintf(stderr, "kssl_check_authent: authenticator[%d]:\n",
+        fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x63\x68\x65\x63\x6b\x5f\x61\x75\x74\x68\x65\x6e\x74\x3a\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x6f\x72\x5b\x25\x64\x5d\x3a\xa",
                 authentp->length);
         p = authentp->data;
         for (ui = 0; ui < authentp->length; ui++)
-            fprintf(stderr, "%02x ", p[ui]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x78\x20", p[ui]);
+        fprintf(stderr, "\xa");
     }
 # endif                         /* KSSL_DEBUG */
 
     unencbufsize = 2 * authentp->length;
     if ((unenc_authent = calloc(1, unencbufsize)) == NULL) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "Unable to allocate authenticator buffer.\n");
+                     "\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x61\x6c\x6c\x6f\x63\x61\x74\x65\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x6f\x72\x20\x62\x75\x66\x66\x65\x72\x2e\xa");
         krb5rc = KRB5KRB_ERR_GENERIC;
         goto err;
     }
@@ -2066,7 +2066,7 @@ krb5_error_code kssl_check_authent(
     if ((dec_authent = d2i_KRB5_ENCDATA(NULL, &p,
                                         (long)authentp->length)) == NULL) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "Error decoding authenticator.\n");
+                     "\x45\x72\x72\x6f\x72\x20\x64\x65\x63\x6f\x64\x69\x6e\x67\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x6f\x72\x2e\xa");
         krb5rc = KRB5KRB_AP_ERR_BAD_INTEGRITY;
         goto err;
     }
@@ -2095,7 +2095,7 @@ krb5_error_code kssl_check_authent(
 
     if (!EVP_CipherInit(&ciph_ctx, enc, kssl_ctx->key, iv, 0)) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "EVP_CipherInit error decrypting authenticator.\n");
+                     "\x45\x56\x50\x5f\x43\x69\x70\x68\x65\x72\x49\x6e\x69\x74\x20\x65\x72\x72\x6f\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6e\x67\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x6f\x72\x2e\xa");
         krb5rc = KRB5KRB_AP_ERR_BAD_INTEGRITY;
         goto err;
     }
@@ -2103,7 +2103,7 @@ krb5_error_code kssl_check_authent(
     if (!EVP_Cipher
         (&ciph_ctx, unenc_authent, dec_authent->cipher->data, outl)) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "EVP_Cipher error decrypting authenticator.\n");
+                     "\x45\x56\x50\x5f\x43\x69\x70\x68\x65\x72\x20\x65\x72\x72\x6f\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6e\x67\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x6f\x72\x2e\xa");
         krb5rc = KRB5KRB_AP_ERR_BAD_INTEGRITY;
         goto err;
     }
@@ -2112,17 +2112,17 @@ krb5_error_code kssl_check_authent(
 # ifdef KSSL_DEBUG
     {
         int padl;
-        fprintf(stderr, "kssl_check_authent: decrypted authenticator[%d] =\n",
+        fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x63\x68\x65\x63\x6b\x5f\x61\x75\x74\x68\x65\x6e\x74\x3a\x20\x64\x65\x63\x72\x79\x70\x74\x65\x64\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x6f\x72\x5b\x25\x64\x5d\x20\x3d\xa",
                 outl);
         for (padl = 0; padl < outl; padl++)
-            fprintf(stderr, "%02x ", unenc_authent[padl]);
-        fprintf(stderr, "\n");
+            fprintf(stderr, "\x25\x30\x32\x78\x20", unenc_authent[padl]);
+        fprintf(stderr, "\xa");
     }
 # endif                         /* KSSL_DEBUG */
 
     if ((p = kssl_skip_confound(enctype, unenc_authent)) == NULL) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "confounded by authenticator.\n");
+                     "\x63\x6f\x6e\x66\x6f\x75\x6e\x64\x65\x64\x20\x62\x79\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x6f\x72\x2e\xa");
         krb5rc = KRB5KRB_AP_ERR_BAD_INTEGRITY;
         goto err;
     }
@@ -2131,7 +2131,7 @@ krb5_error_code kssl_check_authent(
     if ((auth = (KRB5_AUTHENTBODY *)d2i_KRB5_AUTHENT(NULL, &p,
                                                      (long)outl)) == NULL) {
         kssl_err_set(kssl_err, SSL_R_KRB5_S_INIT,
-                     "Error decoding authenticator body.\n");
+                     "\x45\x72\x72\x6f\x72\x20\x64\x65\x63\x6f\x64\x69\x6e\x67\x20\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x6f\x72\x20\x62\x6f\x64\x79\x2e\xa");
         krb5rc = KRB5KRB_AP_ERR_BAD_INTEGRITY;
         goto err;
     }
@@ -2149,12 +2149,12 @@ krb5_error_code kssl_check_authent(
         *atimep = (krb5_timestamp)(tr - tz_offset);
     }
 # ifdef KSSL_DEBUG
-    fprintf(stderr, "kssl_check_authent: returns %d for client time ",
+    fprintf(stderr, "\x6b\x73\x73\x6c\x5f\x63\x68\x65\x63\x6b\x5f\x61\x75\x74\x68\x65\x6e\x74\x3a\x20\x72\x65\x74\x75\x72\x6e\x73\x20\x25\x64\x20\x66\x6f\x72\x20\x63\x6c\x69\x65\x6e\x74\x20\x74\x69\x6d\x65\x20",
             *atimep);
     if (auth && auth->ctime && auth->ctime->length && auth->ctime->data)
-        fprintf(stderr, "%.*s\n", auth->ctime->length, auth->ctime->data);
+        fprintf(stderr, "\x25\x2e\x2a\x73\xa", auth->ctime->length, auth->ctime->data);
     else
-        fprintf(stderr, "NULL\n");
+        fprintf(stderr, "\x4e\x55\x4c\x4c\xa");
 # endif                         /* KSSL_DEBUG */
 
  err:

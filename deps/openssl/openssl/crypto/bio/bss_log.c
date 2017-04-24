@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -132,7 +132,7 @@ static void xsyslog(BIO *bp, int priority, const char *string);
 static void xcloselog(BIO *bp);
 
 static BIO_METHOD methods_slg = {
-    BIO_TYPE_MEM, "syslog",
+    BIO_TYPE_MEM, "\x73\x79\x73\x6c\x6f\x67",
     slg_write,
     NULL,
     slg_puts,
@@ -153,7 +153,7 @@ static int MS_CALLBACK slg_new(BIO *bi)
     bi->init = 1;
     bi->num = 0;
     bi->ptr = NULL;
-    xopenlog(bi, "application", LOG_DAEMON);
+    xopenlog(bi, "\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e", LOG_DAEMON);
     return (1);
 }
 
@@ -177,61 +177,61 @@ static int MS_CALLBACK slg_write(BIO *b, const char *in, int inl)
         int log_level;
     } mapping[] = {
         {
-            6, "PANIC ", LOG_EMERG
+            6, "\x50\x41\x4e\x49\x43\x20", LOG_EMERG
         },
         {
-            6, "EMERG ", LOG_EMERG
+            6, "\x45\x4d\x45\x52\x47\x20", LOG_EMERG
         },
         {
-            4, "EMR ", LOG_EMERG
+            4, "\x45\x4d\x52\x20", LOG_EMERG
         },
         {
-            6, "ALERT ", LOG_ALERT
+            6, "\x41\x4c\x45\x52\x54\x20", LOG_ALERT
         },
         {
-            4, "ALR ", LOG_ALERT
+            4, "\x41\x4c\x52\x20", LOG_ALERT
         },
         {
-            5, "CRIT ", LOG_CRIT
+            5, "\x43\x52\x49\x54\x20", LOG_CRIT
         },
         {
-            4, "CRI ", LOG_CRIT
+            4, "\x43\x52\x49\x20", LOG_CRIT
         },
         {
-            6, "ERROR ", LOG_ERR
+            6, "\x45\x52\x52\x4f\x52\x20", LOG_ERR
         },
         {
-            4, "ERR ", LOG_ERR
+            4, "\x45\x52\x52\x20", LOG_ERR
         },
         {
-            8, "WARNING ", LOG_WARNING
+            8, "\x57\x41\x52\x4e\x49\x4e\x47\x20", LOG_WARNING
         },
         {
-            5, "WARN ", LOG_WARNING
+            5, "\x57\x41\x52\x4e\x20", LOG_WARNING
         },
         {
-            4, "WAR ", LOG_WARNING
+            4, "\x57\x41\x52\x20", LOG_WARNING
         },
         {
-            7, "NOTICE ", LOG_NOTICE
+            7, "\x4e\x4f\x54\x49\x43\x45\x20", LOG_NOTICE
         },
         {
-            5, "NOTE ", LOG_NOTICE
+            5, "\x4e\x4f\x54\x45\x20", LOG_NOTICE
         },
         {
-            4, "NOT ", LOG_NOTICE
+            4, "\x4e\x4f\x54\x20", LOG_NOTICE
         },
         {
-            5, "INFO ", LOG_INFO
+            5, "\x49\x4e\x46\x4f\x20", LOG_INFO
         },
         {
-            4, "INF ", LOG_INFO
+            4, "\x49\x4e\x46\x20", LOG_INFO
         },
         {
-            6, "DEBUG ", LOG_DEBUG
+            6, "\x44\x45\x42\x55\x47\x20", LOG_DEBUG
         },
         {
-            4, "DBG ", LOG_DEBUG
+            4, "\x44\x42\x47\x20", LOG_DEBUG
         },
         {
             0, "", LOG_ERR
@@ -243,7 +243,7 @@ static int MS_CALLBACK slg_write(BIO *b, const char *in, int inl)
         return (0);
     }
     strncpy(buf, in, inl);
-    buf[inl] = '\0';
+    buf[inl] = '\x0';
 
     i = 0;
     while (strncmp(buf, mapping[i].str, mapping[i].strl) != 0)
@@ -322,7 +322,7 @@ static void xsyslog(BIO *bp, int priority, const char *string)
         break;
     }
 
-    sprintf(pidbuf, "[%u] ", GetCurrentProcessId());
+    sprintf(pidbuf, "\x5b\x25\x75\x5d\x20", GetCurrentProcessId());
     lpszStrings[0] = pidbuf;
     lpszStrings[1] = string;
 
@@ -369,33 +369,33 @@ static void xsyslog(BIO *bp, int priority, const char *string)
     char buf[10240];
     unsigned int len;
     struct dsc$descriptor_s buf_dsc;
-    $DESCRIPTOR(fao_cmd, "!AZ: !AZ");
+    $DESCRIPTOR(fao_cmd, "\x21\x41\x5a\x3a\x20\x21\x41\x5a");
     char *priority_tag;
 
     switch (priority) {
     case LOG_EMERG:
-        priority_tag = "Emergency";
+        priority_tag = "\x45\x6d\x65\x72\x67\x65\x6e\x63\x79";
         break;
     case LOG_ALERT:
-        priority_tag = "Alert";
+        priority_tag = "\x41\x6c\x65\x72\x74";
         break;
     case LOG_CRIT:
-        priority_tag = "Critical";
+        priority_tag = "\x43\x72\x69\x74\x69\x63\x61\x6c";
         break;
     case LOG_ERR:
-        priority_tag = "Error";
+        priority_tag = "\x45\x72\x72\x6f\x72";
         break;
     case LOG_WARNING:
-        priority_tag = "Warning";
+        priority_tag = "\x57\x61\x72\x6e\x69\x6e\x67";
         break;
     case LOG_NOTICE:
-        priority_tag = "Notice";
+        priority_tag = "\x4e\x6f\x74\x69\x63\x65";
         break;
     case LOG_INFO:
-        priority_tag = "Info";
+        priority_tag = "\x49\x6e\x66\x6f";
         break;
     case LOG_DEBUG:
-        priority_tag = "DEBUG";
+        priority_tag = "\x44\x45\x42\x55\x47";
         break;
     }
 
@@ -440,7 +440,7 @@ static void xopenlog(BIO *bp, char *name, int level)
 
 static void xsyslog(BIO *bp, int priority, const char *string)
 {
-    syslog(priority, "%s", string);
+    syslog(priority, "\x25\x73", string);
 }
 
 static void xcloselog(BIO *bp)

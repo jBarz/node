@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -79,19 +79,19 @@ static void expected_print(BIO *err, X509_POLICY_LEVEL *lev,
 {
     if ((lev->flags & X509_V_FLAG_INHIBIT_MAP)
         || !(node->data->flags & POLICY_DATA_FLAG_MAP_MASK))
-        BIO_puts(err, "  Not Mapped\n");
+        BIO_puts(err, "\x20\x20\x4e\x6f\x74\x20\x4d\x61\x70\x70\x65\x64\xa");
     else {
         int i;
         STACK_OF(ASN1_OBJECT) *pset = node->data->expected_policy_set;
         ASN1_OBJECT *oid;
-        BIO_puts(err, "  Expected: ");
+        BIO_puts(err, "\x20\x20\x45\x78\x70\x65\x63\x74\x65\x64\x3a\x20");
         for (i = 0; i < sk_ASN1_OBJECT_num(pset); i++) {
             oid = sk_ASN1_OBJECT_value(pset, i);
             if (i)
-                BIO_puts(err, ", ");
+                BIO_puts(err, "\x2c\x20");
             i2a_ASN1_OBJECT(err, oid);
         }
-        BIO_puts(err, "\n");
+        BIO_puts(err, "\xa");
     }
 }
 
@@ -107,16 +107,16 @@ static void tree_print(char *str, X509_POLICY_TREE *tree,
         curr = tree->levels + tree->nlevel;
     else
         curr++;
-    BIO_printf(err, "Level print after %s\n", str);
-    BIO_printf(err, "Printing Up to Level %ld\n", curr - tree->levels);
+    BIO_printf(err, "\x4c\x65\x76\x65\x6c\x20\x70\x72\x69\x6e\x74\x20\x61\x66\x74\x65\x72\x20\x25\x73\xa", str);
+    BIO_printf(err, "\x50\x72\x69\x6e\x74\x69\x6e\x67\x20\x55\x70\x20\x74\x6f\x20\x4c\x65\x76\x65\x6c\x20\x25\x6c\x64\xa", curr - tree->levels);
     for (plev = tree->levels; plev != curr; plev++) {
-        BIO_printf(err, "Level %ld, flags = %x\n",
+        BIO_printf(err, "\x4c\x65\x76\x65\x6c\x20\x25\x6c\x64\x2c\x20\x66\x6c\x61\x67\x73\x20\x3d\x20\x25\x78\xa",
                    plev - tree->levels, plev->flags);
         for (i = 0; i < sk_X509_POLICY_NODE_num(plev->nodes); i++) {
             node = sk_X509_POLICY_NODE_value(plev->nodes, i);
             X509_POLICY_NODE_print(err, node, 2);
             expected_print(err, plev, node, 2);
-            BIO_printf(err, "  Flags: %x\n", node->data->flags);
+            BIO_printf(err, "\x20\x20\x46\x6c\x61\x67\x73\x3a\x20\x25\x78\xa", node->data->flags);
         }
         if (plev->anyPolicy)
             X509_POLICY_NODE_print(err, plev->anyPolicy, 2);
@@ -674,7 +674,7 @@ static int tree_evaluate(X509_POLICY_TREE *tree)
         if (!(curr->flags & X509_V_FLAG_INHIBIT_ANY)
             && !tree_link_any(curr, cache, tree))
             return 0;
-        tree_print("before tree_prune()", tree, curr);
+        tree_print("\x62\x65\x66\x6f\x72\x65\x20\x74\x72\x65\x65\x5f\x70\x72\x75\x6e\x65\x28\x29", tree, curr);
         ret = tree_prune(tree, curr);
         if (ret != 1)
             return ret;
@@ -784,7 +784,7 @@ int X509_policy_check(X509_POLICY_TREE **ptree, int *pexplicit_policy,
         goto error;
     ret = tree_evaluate(tree);
 
-    tree_print("tree_evaluate()", tree, NULL);
+    tree_print("\x74\x72\x65\x65\x5f\x65\x76\x61\x6c\x75\x61\x74\x65\x28\x29", tree, NULL);
 
     if (ret <= 0)
         goto error;

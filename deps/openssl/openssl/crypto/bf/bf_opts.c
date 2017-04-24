@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -185,9 +185,9 @@ double Time_F(int s)
 }
 
 #ifdef SIGALRM
-# define print_name(name) fprintf(stderr,"Doing %s's for 10 seconds\n",name); alarm(10);
+# define print_name(name) fprintf(stderr,"\x44\x6f\x69\x6e\x67\x20\x25\x73\x27\x73\x20\x66\x6f\x72\x20\x31\x30\x20\x73\x65\x63\x6f\x6e\x64\x73\xa",name); alarm(10);
 #else
-# define print_name(name) fprintf(stderr,"Doing %s %ld times\n",name,cb);
+# define print_name(name) fprintf(stderr,"\x44\x6f\x69\x6e\x67\x20\x25\x73\x20\x25\x6c\x64\x20\x74\x69\x6d\x65\x73\xa",name,cb);
 #endif
 
 #define time_it(func,name,index) \
@@ -202,11 +202,11 @@ double Time_F(int s)
                 func(d,&sch); \
                 } \
         tm[index]=Time_F(STOP); \
-        fprintf(stderr,"%ld %s's in %.2f second\n",count,name,tm[index]); \
+        fprintf(stderr,"\x25\x6c\x64\x20\x25\x73\x27\x73\x20\x69\x6e\x20\x25\x2e\x32\x66\x20\x73\x65\x63\x6f\x6e\x64\xa",count,name,tm[index]); \
         tm[index]=((double)COUNT(cb))/tm[index];
 
 #define print_it(name,index) \
-        fprintf(stderr,"%s bytes per sec = %12.2f (%5.1fuS)\n",name, \
+        fprintf(stderr,"\x25\x73\x20\x62\x79\x74\x65\x73\x20\x70\x65\x72\x20\x73\x65\x63\x20\x3d\x20\x25\x31\x32\x2e\x32\x66\x20\x28\x25\x35\x2e\x31\x66\x75\x53\x29\xa",name, \
                 tm[index]*8,1.0e6/tm[index]);
 
 int main(int argc, char **argv)
@@ -231,14 +231,14 @@ int main(int argc, char **argv)
     }
 
 #ifndef TIMES
-    fprintf(stderr, "To get the most accurate results, try to run this\n");
-    fprintf(stderr, "program when this computer is idle.\n");
+    fprintf(stderr, "\x54\x6f\x20\x67\x65\x74\x20\x74\x68\x65\x20\x6d\x6f\x73\x74\x20\x61\x63\x63\x75\x72\x61\x74\x65\x20\x72\x65\x73\x75\x6c\x74\x73\x2c\x20\x74\x72\x79\x20\x74\x6f\x20\x72\x75\x6e\x20\x74\x68\x69\x73\xa");
+    fprintf(stderr, "\x70\x72\x6f\x67\x72\x61\x6d\x20\x77\x68\x65\x6e\x20\x74\x68\x69\x73\x20\x63\x6f\x6d\x70\x75\x74\x65\x72\x20\x69\x73\x20\x69\x64\x6c\x65\x2e\xa");
 #endif
 
     BF_set_key(&sch, 16, key);
 
 #ifndef SIGALRM
-    fprintf(stderr, "First we calculate the approximate speed ...\n");
+    fprintf(stderr, "\x46\x69\x72\x73\x74\x20\x77\x65\x20\x63\x61\x6c\x63\x75\x6c\x61\x74\x65\x20\x74\x68\x65\x20\x61\x70\x70\x72\x6f\x78\x69\x6d\x61\x74\x65\x20\x73\x70\x65\x65\x64\x20\x2e\x2e\x2e\xa");
     count = 10;
     do {
         long i;
@@ -265,30 +265,30 @@ int main(int argc, char **argv)
     alarm(10);
 #endif
 
-    time_it(BF_encrypt_normal, "BF_encrypt_normal ", 0);
-    time_it(BF_encrypt_ptr, "BF_encrypt_ptr    ", 1);
-    time_it(BF_encrypt_ptr2, "BF_encrypt_ptr2   ", 2);
+    time_it(BF_encrypt_normal, "\x42\x46\x5f\x65\x6e\x63\x72\x79\x70\x74\x5f\x6e\x6f\x72\x6d\x61\x6c\x20", 0);
+    time_it(BF_encrypt_ptr, "\x42\x46\x5f\x65\x6e\x63\x72\x79\x70\x74\x5f\x70\x74\x72\x20\x20\x20\x20", 1);
+    time_it(BF_encrypt_ptr2, "\x42\x46\x5f\x65\x6e\x63\x72\x79\x70\x74\x5f\x70\x74\x72\x32\x20\x20\x20", 2);
     num += 3;
 
-    str[0] = "<nothing>";
-    print_it("BF_encrypt_normal ", 0);
+    str[0] = "\x3c\x6e\x6f\x74\x68\x69\x6e\x67\x3e";
+    print_it("\x42\x46\x5f\x65\x6e\x63\x72\x79\x70\x74\x5f\x6e\x6f\x72\x6d\x61\x6c\x20", 0);
     max = tm[0];
     max_idx = 0;
-    str[1] = "ptr      ";
-    print_it("BF_encrypt_ptr ", 1);
+    str[1] = "\x70\x74\x72\x20\x20\x20\x20\x20\x20";
+    print_it("\x42\x46\x5f\x65\x6e\x63\x72\x79\x70\x74\x5f\x70\x74\x72\x20", 1);
     if (max < tm[1]) {
         max = tm[1];
         max_idx = 1;
     }
-    str[2] = "ptr2     ";
-    print_it("BF_encrypt_ptr2 ", 2);
+    str[2] = "\x70\x74\x72\x32\x20\x20\x20\x20\x20";
+    print_it("\x42\x46\x5f\x65\x6e\x63\x72\x79\x70\x74\x5f\x70\x74\x72\x32\x20", 2);
     if (max < tm[2]) {
         max = tm[2];
         max_idx = 2;
     }
 
-    printf("options    BF ecb/s\n");
-    printf("%s %12.2f 100.0%%\n", str[max_idx], tm[max_idx]);
+    printf("\x6f\x70\x74\x69\x6f\x6e\x73\x20\x20\x20\x20\x42\x46\x20\x65\x63\x62\x2f\x73\xa");
+    printf("\x25\x73\x20\x25\x31\x32\x2e\x32\x66\x20\x31\x30\x30\x2e\x30\x25\x25\xa", str[max_idx], tm[max_idx]);
     d = tm[max_idx];
     tm[max_idx] = -2.0;
     max = -1.0;
@@ -301,20 +301,20 @@ int main(int argc, char **argv)
         }
         if (max < 0.0)
             break;
-        printf("%s %12.2f  %4.1f%%\n", str[j], tm[j], tm[j] / d * 100.0);
+        printf("\x25\x73\x20\x25\x31\x32\x2e\x32\x66\x20\x20\x25\x34\x2e\x31\x66\x25\x25\xa", str[j], tm[j], tm[j] / d * 100.0);
         tm[j] = -2.0;
         max = -1.0;
     }
 
     switch (max_idx) {
     case 0:
-        printf("-DBF_DEFAULT_OPTIONS\n");
+        printf("\x2d\x44\x42\x46\x5f\x44\x45\x46\x41\x55\x4c\x54\x5f\x4f\x50\x54\x49\x4f\x4e\x53\xa");
         break;
     case 1:
-        printf("-DBF_PTR\n");
+        printf("\x2d\x44\x42\x46\x5f\x50\x54\x52\xa");
         break;
     case 2:
-        printf("-DBF_PTR2\n");
+        printf("\x2d\x44\x42\x46\x5f\x50\x54\x52\x32\xa");
         break;
     }
     exit(0);

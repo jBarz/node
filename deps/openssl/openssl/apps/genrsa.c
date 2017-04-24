@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -118,7 +118,7 @@ int MAIN(int argc, char **argv)
     if (!load_config(bio_err, NULL))
         goto err;
     if ((out = BIO_new(BIO_s_file())) == NULL) {
-        BIO_printf(bio_err, "unable to create BIO for output\n");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x42\x49\x4f\x20\x66\x6f\x72\x20\x6f\x75\x74\x70\x75\x74\xa");
         goto err;
     }
 
@@ -127,57 +127,57 @@ int MAIN(int argc, char **argv)
     for (;;) {
         if (argc <= 0)
             break;
-        if (strcmp(*argv, "-out") == 0) {
+        if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-3") == 0)
+        } else if (strcmp(*argv, "\x2d\x33") == 0)
             f4 = 3;
-        else if (strcmp(*argv, "-F4") == 0 || strcmp(*argv, "-f4") == 0)
+        else if (strcmp(*argv, "\x2d\x46\x34") == 0 || strcmp(*argv, "\x2d\x66\x34") == 0)
             f4 = RSA_F4;
 # ifndef OPENSSL_NO_ENGINE
-        else if (strcmp(*argv, "-engine") == 0) {
+        else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             engine = *(++argv);
         }
 # endif
-        else if (strcmp(*argv, "-rand") == 0) {
+        else if (strcmp(*argv, "\x2d\x72\x61\x6e\x64") == 0) {
             if (--argc < 1)
                 goto bad;
             inrand = *(++argv);
         }
 # ifndef OPENSSL_NO_DES
-        else if (strcmp(*argv, "-des") == 0)
+        else if (strcmp(*argv, "\x2d\x64\x65\x73") == 0)
             enc = EVP_des_cbc();
-        else if (strcmp(*argv, "-des3") == 0)
+        else if (strcmp(*argv, "\x2d\x64\x65\x73\x33") == 0)
             enc = EVP_des_ede3_cbc();
 # endif
 # ifndef OPENSSL_NO_IDEA
-        else if (strcmp(*argv, "-idea") == 0)
+        else if (strcmp(*argv, "\x2d\x69\x64\x65\x61") == 0)
             enc = EVP_idea_cbc();
 # endif
 # ifndef OPENSSL_NO_SEED
-        else if (strcmp(*argv, "-seed") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x65\x65\x64") == 0)
             enc = EVP_seed_cbc();
 # endif
 # ifndef OPENSSL_NO_AES
-        else if (strcmp(*argv, "-aes128") == 0)
+        else if (strcmp(*argv, "\x2d\x61\x65\x73\x31\x32\x38") == 0)
             enc = EVP_aes_128_cbc();
-        else if (strcmp(*argv, "-aes192") == 0)
+        else if (strcmp(*argv, "\x2d\x61\x65\x73\x31\x39\x32") == 0)
             enc = EVP_aes_192_cbc();
-        else if (strcmp(*argv, "-aes256") == 0)
+        else if (strcmp(*argv, "\x2d\x61\x65\x73\x32\x35\x36") == 0)
             enc = EVP_aes_256_cbc();
 # endif
 # ifndef OPENSSL_NO_CAMELLIA
-        else if (strcmp(*argv, "-camellia128") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x31\x32\x38") == 0)
             enc = EVP_camellia_128_cbc();
-        else if (strcmp(*argv, "-camellia192") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x31\x39\x32") == 0)
             enc = EVP_camellia_192_cbc();
-        else if (strcmp(*argv, "-camellia256") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x32\x35\x36") == 0)
             enc = EVP_camellia_256_cbc();
 # endif
-        else if (strcmp(*argv, "-passout") == 0) {
+        else if (strcmp(*argv, "\x2d\x70\x61\x73\x73\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             passargout = *(++argv);
@@ -186,54 +186,54 @@ int MAIN(int argc, char **argv)
         argv++;
         argc--;
     }
-    if ((argc >= 1) && ((sscanf(*argv, "%d", &num) == 0) || (num < 0))) {
+    if ((argc >= 1) && ((sscanf(*argv, "\x25\x64", &num) == 0) || (num < 0))) {
  bad:
-        BIO_printf(bio_err, "usage: genrsa [args] [numbits]\n");
+        BIO_printf(bio_err, "\x75\x73\x61\x67\x65\x3a\x20\x67\x65\x6e\x72\x73\x61\x20\x5b\x61\x72\x67\x73\x5d\x20\x5b\x6e\x75\x6d\x62\x69\x74\x73\x5d\xa");
         BIO_printf(bio_err,
-                   " -des            encrypt the generated key with DES in cbc mode\n");
+                   "\x20\x2d\x64\x65\x73\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x64\x20\x6b\x65\x79\x20\x77\x69\x74\x68\x20\x44\x45\x53\x20\x69\x6e\x20\x63\x62\x63\x20\x6d\x6f\x64\x65\xa");
         BIO_printf(bio_err,
-                   " -des3           encrypt the generated key with DES in ede cbc mode (168 bit key)\n");
+                   "\x20\x2d\x64\x65\x73\x33\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x64\x20\x6b\x65\x79\x20\x77\x69\x74\x68\x20\x44\x45\x53\x20\x69\x6e\x20\x65\x64\x65\x20\x63\x62\x63\x20\x6d\x6f\x64\x65\x20\x28\x31\x36\x38\x20\x62\x69\x74\x20\x6b\x65\x79\x29\xa");
 # ifndef OPENSSL_NO_IDEA
         BIO_printf(bio_err,
-                   " -idea           encrypt the generated key with IDEA in cbc mode\n");
+                   "\x20\x2d\x69\x64\x65\x61\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x64\x20\x6b\x65\x79\x20\x77\x69\x74\x68\x20\x49\x44\x45\x41\x20\x69\x6e\x20\x63\x62\x63\x20\x6d\x6f\x64\x65\xa");
 # endif
 # ifndef OPENSSL_NO_SEED
-        BIO_printf(bio_err, " -seed\n");
+        BIO_printf(bio_err, "\x20\x2d\x73\x65\x65\x64\xa");
         BIO_printf(bio_err,
-                   "                 encrypt PEM output with cbc seed\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x50\x45\x4d\x20\x6f\x75\x74\x70\x75\x74\x20\x77\x69\x74\x68\x20\x63\x62\x63\x20\x73\x65\x65\x64\xa");
 # endif
 # ifndef OPENSSL_NO_AES
-        BIO_printf(bio_err, " -aes128, -aes192, -aes256\n");
+        BIO_printf(bio_err, "\x20\x2d\x61\x65\x73\x31\x32\x38\x2c\x20\x2d\x61\x65\x73\x31\x39\x32\x2c\x20\x2d\x61\x65\x73\x32\x35\x36\xa");
         BIO_printf(bio_err,
-                   "                 encrypt PEM output with cbc aes\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x50\x45\x4d\x20\x6f\x75\x74\x70\x75\x74\x20\x77\x69\x74\x68\x20\x63\x62\x63\x20\x61\x65\x73\xa");
 # endif
 # ifndef OPENSSL_NO_CAMELLIA
-        BIO_printf(bio_err, " -camellia128, -camellia192, -camellia256\n");
+        BIO_printf(bio_err, "\x20\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x31\x32\x38\x2c\x20\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x31\x39\x32\x2c\x20\x2d\x63\x61\x6d\x65\x6c\x6c\x69\x61\x32\x35\x36\xa");
         BIO_printf(bio_err,
-                   "                 encrypt PEM output with cbc camellia\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x50\x45\x4d\x20\x6f\x75\x74\x70\x75\x74\x20\x77\x69\x74\x68\x20\x63\x62\x63\x20\x63\x61\x6d\x65\x6c\x6c\x69\x61\xa");
 # endif
-        BIO_printf(bio_err, " -out file       output the key to 'file\n");
+        BIO_printf(bio_err, "\x20\x2d\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x74\x68\x65\x20\x6b\x65\x79\x20\x74\x6f\x20\x27\x66\x69\x6c\x65\xa");
         BIO_printf(bio_err,
-                   " -passout arg    output file pass phrase source\n");
+                   "\x20\x2d\x70\x61\x73\x73\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa");
         BIO_printf(bio_err,
-                   " -f4             use F4 (0x10001) for the E value\n");
-        BIO_printf(bio_err, " -3              use 3 for the E value\n");
+                   "\x20\x2d\x66\x34\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x46\x34\x20\x28\x30\x78\x31\x30\x30\x30\x31\x29\x20\x66\x6f\x72\x20\x74\x68\x65\x20\x45\x20\x76\x61\x6c\x75\x65\xa");
+        BIO_printf(bio_err, "\x20\x2d\x33\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x33\x20\x66\x6f\x72\x20\x74\x68\x65\x20\x45\x20\x76\x61\x6c\x75\x65\xa");
 # ifndef OPENSSL_NO_ENGINE
         BIO_printf(bio_err,
-                   " -engine e       use engine e, possibly a hardware device.\n");
+                   "\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x70\x6f\x73\x73\x69\x62\x6c\x79\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2e\xa");
 # endif
-        BIO_printf(bio_err, " -rand file%cfile%c...\n", LIST_SEPARATOR_CHAR,
+        BIO_printf(bio_err, "\x20\x2d\x72\x61\x6e\x64\x20\x66\x69\x6c\x65\x25\x63\x66\x69\x6c\x65\x25\x63\x2e\x2e\x2e\xa", LIST_SEPARATOR_CHAR,
                    LIST_SEPARATOR_CHAR);
         BIO_printf(bio_err,
-                   "                 load the file (or the files in the directory) into\n");
-        BIO_printf(bio_err, "                 the random number generator\n");
+                   "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6c\x6f\x61\x64\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x20\x28\x6f\x72\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x73\x20\x69\x6e\x20\x74\x68\x65\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x29\x20\x69\x6e\x74\x6f\xa");
+        BIO_printf(bio_err, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\xa");
         goto err;
     }
 
     ERR_load_crypto_strings();
 
     if (!app_passwd(bio_err, NULL, passargout, NULL, &passout)) {
-        BIO_printf(bio_err, "Error getting password\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa");
         goto err;
     }
     e = setup_engine(bio_err, engine, 0);
@@ -256,13 +256,13 @@ int MAIN(int argc, char **argv)
     if (!app_RAND_load_file(NULL, bio_err, 1) && inrand == NULL
         && !RAND_status()) {
         BIO_printf(bio_err,
-                   "warning, not much extra random data, consider using the -rand option\n");
+                   "\x77\x61\x72\x6e\x69\x6e\x67\x2c\x20\x6e\x6f\x74\x20\x6d\x75\x63\x68\x20\x65\x78\x74\x72\x61\x20\x72\x61\x6e\x64\x6f\x6d\x20\x64\x61\x74\x61\x2c\x20\x63\x6f\x6e\x73\x69\x64\x65\x72\x20\x75\x73\x69\x6e\x67\x20\x74\x68\x65\x20\x2d\x72\x61\x6e\x64\x20\x6f\x70\x74\x69\x6f\x6e\xa");
     }
     if (inrand != NULL)
-        BIO_printf(bio_err, "%ld semi-random bytes loaded\n",
+        BIO_printf(bio_err, "\x25\x6c\x64\x20\x73\x65\x6d\x69\x2d\x72\x61\x6e\x64\x6f\x6d\x20\x62\x79\x74\x65\x73\x20\x6c\x6f\x61\x64\x65\x64\xa",
                    app_RAND_load_files(inrand));
 
-    BIO_printf(bio_err, "Generating RSA private key, %d bit long modulus\n",
+    BIO_printf(bio_err, "\x47\x65\x6e\x65\x72\x61\x74\x69\x6e\x67\x20\x52\x53\x41\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x2c\x20\x25\x64\x20\x62\x69\x74\x20\x6c\x6f\x6e\x67\x20\x6d\x6f\x64\x75\x6c\x75\x73\xa",
                num);
 # ifdef OPENSSL_NO_ENGINE
     rsa = RSA_new();
@@ -289,7 +289,7 @@ int MAIN(int argc, char **argv)
 # endif
         l += rsa->e->d[i];
     }
-    BIO_printf(bio_err, "e is %ld (0x%lX)\n", l, l);
+    BIO_printf(bio_err, "\x65\x20\x69\x73\x20\x25\x6c\x64\x20\x28\x30\x78\x25\x6c\x58\x29\xa", l, l);
     {
         PW_CB_DATA cb_data;
         cb_data.password = passout;
@@ -319,16 +319,16 @@ int MAIN(int argc, char **argv)
 
 static int MS_CALLBACK genrsa_cb(int p, int n, BN_GENCB *cb)
 {
-    char c = '*';
+    char c = '\x2a';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     BIO_write(cb->arg, &c, 1);
     (void)BIO_flush(cb->arg);
 # ifdef LINT

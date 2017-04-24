@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -70,12 +70,12 @@
 #define PROG    ciphers_main
 
 static const char *ciphers_usage[] = {
-    "usage: ciphers args\n",
-    " -v          - verbose mode, a textual listing of the SSL/TLS ciphers in OpenSSL\n",
-    " -V          - even more verbose\n",
-    " -ssl2       - SSL2 mode\n",
-    " -ssl3       - SSL3 mode\n",
-    " -tls1       - TLS1 mode\n",
+    "\x75\x73\x61\x67\x65\x3a\x20\x63\x69\x70\x68\x65\x72\x73\x20\x61\x72\x67\x73\xa",
+    "\x20\x2d\x76\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x76\x65\x72\x62\x6f\x73\x65\x20\x6d\x6f\x64\x65\x2c\x20\x61\x20\x74\x65\x78\x74\x75\x61\x6c\x20\x6c\x69\x73\x74\x69\x6e\x67\x20\x6f\x66\x20\x74\x68\x65\x20\x53\x53\x4c\x2f\x54\x4c\x53\x20\x63\x69\x70\x68\x65\x72\x73\x20\x69\x6e\x20\x4f\x70\x65\x6e\x53\x53\x4c\xa",
+    "\x20\x2d\x56\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x65\x76\x65\x6e\x20\x6d\x6f\x72\x65\x20\x76\x65\x72\x62\x6f\x73\x65\xa",
+    "\x20\x2d\x73\x73\x6c\x32\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x53\x53\x4c\x32\x20\x6d\x6f\x64\x65\xa",
+    "\x20\x2d\x73\x73\x6c\x33\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x53\x53\x4c\x33\x20\x6d\x6f\x64\x65\xa",
+    "\x20\x2d\x74\x6c\x73\x31\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x54\x4c\x53\x31\x20\x6d\x6f\x64\x65\xa",
     NULL
 };
 
@@ -118,27 +118,27 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc >= 1) {
-        if (strcmp(*argv, "-v") == 0)
+        if (strcmp(*argv, "\x2d\x76") == 0)
             verbose = 1;
-        else if (strcmp(*argv, "-V") == 0)
+        else if (strcmp(*argv, "\x2d\x56") == 0)
             verbose = Verbose = 1;
 #ifndef OPENSSL_NO_SSL_TRACE
-        else if (strcmp(*argv, "-stdname") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x74\x64\x6e\x61\x6d\x65") == 0)
             stdname = verbose = 1;
 #endif
 #ifndef OPENSSL_NO_SSL2
-        else if (strcmp(*argv, "-ssl2") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x73\x6c\x32") == 0)
             meth = SSLv2_client_method();
 #endif
 #ifndef OPENSSL_NO_SSL3
-        else if (strcmp(*argv, "-ssl3") == 0)
+        else if (strcmp(*argv, "\x2d\x73\x73\x6c\x33") == 0)
             meth = SSLv3_client_method();
 #endif
 #ifndef OPENSSL_NO_TLS1
-        else if (strcmp(*argv, "-tls1") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x6c\x73\x31") == 0)
             meth = TLSv1_client_method();
 #endif
-        else if ((strncmp(*argv, "-h", 2) == 0) || (strcmp(*argv, "-?") == 0)) {
+        else if ((strncmp(*argv, "\x2d\x68", 2) == 0) || (strcmp(*argv, "\x2d\x3f") == 0)) {
             badops = 1;
             break;
         } else {
@@ -150,7 +150,7 @@ int MAIN(int argc, char **argv)
 
     if (badops) {
         for (pp = ciphers_usage; (*pp != NULL); pp++)
-            BIO_printf(bio_err, "%s", *pp);
+            BIO_printf(bio_err, "\x25\x73", *pp);
         goto end;
     }
 
@@ -161,7 +161,7 @@ int MAIN(int argc, char **argv)
         goto err;
     if (ciphers != NULL) {
         if (!SSL_CTX_set_cipher_list(ctx, ciphers)) {
-            BIO_printf(bio_err, "Error in cipher list\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x63\x69\x70\x68\x65\x72\x20\x6c\x69\x73\x74\xa");
             goto err;
         }
     }
@@ -175,10 +175,10 @@ int MAIN(int argc, char **argv)
             if (p == NULL)
                 break;
             if (i != 0)
-                BIO_printf(STDout, ":");
-            BIO_printf(STDout, "%s", p);
+                BIO_printf(STDout, "\x3a");
+            BIO_printf(STDout, "\x25\x73", p);
         }
-        BIO_printf(STDout, "\n");
+        BIO_printf(STDout, "\xa");
     } else {                    /* verbose */
 
         sk = SSL_get_ciphers(ssl);
@@ -197,15 +197,15 @@ int MAIN(int argc, char **argv)
 
                 if ((id & 0xff000000L) == 0x02000000L) {
                     /* SSL2 cipher */
-                    BIO_printf(STDout, "     0x%02X,0x%02X,0x%02X - ", id1,
+                    BIO_printf(STDout, "\x20\x20\x20\x20\x20\x30\x78\x25\x30\x32\x58\x2c\x30\x78\x25\x30\x32\x58\x2c\x30\x78\x25\x30\x32\x58\x20\x2d\x20", id1,
                                id2, id3);
                 } else if ((id & 0xff000000L) == 0x03000000L) {
                     /* SSL3 cipher */
-                    BIO_printf(STDout, "          0x%02X,0x%02X - ", id2,
+                    BIO_printf(STDout, "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x30\x78\x25\x30\x32\x58\x2c\x30\x78\x25\x30\x32\x58\x20\x2d\x20", id2,
                                id3);
                 } else {
                     /* whatever */
-                    BIO_printf(STDout, "0x%02X,0x%02X,0x%02X,0x%02X - ", id0,
+                    BIO_printf(STDout, "\x30\x78\x25\x30\x32\x58\x2c\x30\x78\x25\x30\x32\x58\x2c\x30\x78\x25\x30\x32\x58\x2c\x30\x78\x25\x30\x32\x58\x20\x2d\x20", id0,
                                id1, id2, id3);
                 }
             }
@@ -213,8 +213,8 @@ int MAIN(int argc, char **argv)
             if (stdname) {
                 const char *nm = SSL_CIPHER_standard_name(c);
                 if (nm == NULL)
-                    nm = "UNKNOWN";
-                BIO_printf(STDout, "%s - ", nm);
+                    nm = "\x55\x4e\x4b\x4e\x4f\x57\x4e";
+                BIO_printf(STDout, "\x25\x73\x20\x2d\x20", nm);
             }
 #endif
             BIO_puts(STDout, SSL_CIPHER_description(c, buf, sizeof buf));

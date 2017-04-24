@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -120,86 +120,86 @@ int MAIN(int argc, char **argv)
     OpenSSL_add_all_algorithms();
 
     while (argc >= 1) {
-        if (!strcmp(*argv, "-in")) {
+        if (!strcmp(*argv, "\x2d\x69\x6e")) {
             if (--argc < 1)
                 badarg = 1;
             else
                 infile = *(++argv);
-        } else if (!strcmp(*argv, "-out")) {
+        } else if (!strcmp(*argv, "\x2d\x6f\x75\x74")) {
             if (--argc < 1)
                 badarg = 1;
             else
                 outfile = *(++argv);
-        } else if (!strcmp(*argv, "-sigfile")) {
+        } else if (!strcmp(*argv, "\x2d\x73\x69\x67\x66\x69\x6c\x65")) {
             if (--argc < 1)
                 badarg = 1;
             else
                 sigfile = *(++argv);
-        } else if (!strcmp(*argv, "-inkey")) {
+        } else if (!strcmp(*argv, "\x2d\x69\x6e\x6b\x65\x79")) {
             if (--argc < 1)
                 badarg = 1;
             else
                 inkey = *++argv;
-        } else if (!strcmp(*argv, "-peerkey")) {
+        } else if (!strcmp(*argv, "\x2d\x70\x65\x65\x72\x6b\x65\x79")) {
             if (--argc < 1)
                 badarg = 1;
             else
                 peerkey = *++argv;
-        } else if (!strcmp(*argv, "-passin")) {
+        } else if (!strcmp(*argv, "\x2d\x70\x61\x73\x73\x69\x6e")) {
             if (--argc < 1)
                 badarg = 1;
             else
                 passargin = *(++argv);
-        } else if (strcmp(*argv, "-peerform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x70\x65\x65\x72\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 badarg = 1;
             else
                 peerform = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-keyform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 badarg = 1;
             else
                 keyform = str2fmt(*(++argv));
         }
 #ifndef OPENSSL_NO_ENGINE
-        else if (!strcmp(*argv, "-engine")) {
+        else if (!strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65")) {
             if (--argc < 1)
                 badarg = 1;
             else
                 e = setup_engine(bio_err, *(++argv), 0);
-        } else if (!strcmp(*argv, "-engine_impl")) {
+        } else if (!strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65\x5f\x69\x6d\x70\x6c")) {
                 engine_impl = 1;
         }
 #endif
-        else if (!strcmp(*argv, "-pubin"))
+        else if (!strcmp(*argv, "\x2d\x70\x75\x62\x69\x6e"))
             key_type = KEY_PUBKEY;
-        else if (!strcmp(*argv, "-certin"))
+        else if (!strcmp(*argv, "\x2d\x63\x65\x72\x74\x69\x6e"))
             key_type = KEY_CERT;
-        else if (!strcmp(*argv, "-asn1parse"))
+        else if (!strcmp(*argv, "\x2d\x61\x73\x6e\x31\x70\x61\x72\x73\x65"))
             asn1parse = 1;
-        else if (!strcmp(*argv, "-hexdump"))
+        else if (!strcmp(*argv, "\x2d\x68\x65\x78\x64\x75\x6d\x70"))
             hexdump = 1;
-        else if (!strcmp(*argv, "-sign"))
+        else if (!strcmp(*argv, "\x2d\x73\x69\x67\x6e"))
             pkey_op = EVP_PKEY_OP_SIGN;
-        else if (!strcmp(*argv, "-verify"))
+        else if (!strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79"))
             pkey_op = EVP_PKEY_OP_VERIFY;
-        else if (!strcmp(*argv, "-verifyrecover"))
+        else if (!strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79\x72\x65\x63\x6f\x76\x65\x72"))
             pkey_op = EVP_PKEY_OP_VERIFYRECOVER;
-        else if (!strcmp(*argv, "-encrypt"))
+        else if (!strcmp(*argv, "\x2d\x65\x6e\x63\x72\x79\x70\x74"))
             pkey_op = EVP_PKEY_OP_ENCRYPT;
-        else if (!strcmp(*argv, "-decrypt"))
+        else if (!strcmp(*argv, "\x2d\x64\x65\x63\x72\x79\x70\x74"))
             pkey_op = EVP_PKEY_OP_DECRYPT;
-        else if (!strcmp(*argv, "-derive"))
+        else if (!strcmp(*argv, "\x2d\x64\x65\x72\x69\x76\x65"))
             pkey_op = EVP_PKEY_OP_DERIVE;
-        else if (!strcmp(*argv, "-rev"))
+        else if (!strcmp(*argv, "\x2d\x72\x65\x76"))
             rev = 1;
-        else if (strcmp(*argv, "-pkeyopt") == 0) {
+        else if (strcmp(*argv, "\x2d\x70\x6b\x65\x79\x6f\x70\x74") == 0) {
             if (--argc < 1)
                 badarg = 1;
             else if ((pkeyopts == NULL &&
                      (pkeyopts = sk_OPENSSL_STRING_new_null()) == NULL) ||
                     sk_OPENSSL_STRING_push(pkeyopts, *++argv) == 0) {
-                BIO_puts(bio_err, "out of memory\n");
+                BIO_puts(bio_err, "\x6f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
                 goto end;
             }
         } else
@@ -220,12 +220,12 @@ int MAIN(int argc, char **argv)
     ctx = init_ctx(&keysize, inkey, keyform, key_type,
                    passargin, pkey_op, e, engine_impl);
     if (!ctx) {
-        BIO_puts(bio_err, "Error initializing context\n");
+        BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x69\x6e\x67\x20\x63\x6f\x6e\x74\x65\x78\x74\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
     if (peerkey != NULL && !setup_peer(bio_err, ctx, peerform, peerkey, e)) {
-        BIO_puts(bio_err, "Error setting up peer key\n");
+        BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x75\x70\x20\x70\x65\x65\x72\x20\x6b\x65\x79\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -237,7 +237,7 @@ int MAIN(int argc, char **argv)
             const char *opt = sk_OPENSSL_STRING_value(pkeyopts, i);
 
             if (pkey_ctrl_string(ctx, opt) <= 0) {
-                BIO_puts(bio_err, "parameter setting error\n");
+                BIO_puts(bio_err, "\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x65\x72\x72\x6f\x72\xa");
                 ERR_print_errors(bio_err);
                 goto end;
             }
@@ -245,12 +245,12 @@ int MAIN(int argc, char **argv)
     }
 
     if (sigfile && (pkey_op != EVP_PKEY_OP_VERIFY)) {
-        BIO_puts(bio_err, "Signature file specified for non verify\n");
+        BIO_puts(bio_err, "\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x66\x69\x6c\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6e\x6f\x6e\x20\x76\x65\x72\x69\x66\x79\xa");
         goto end;
     }
 
     if (!sigfile && (pkey_op == EVP_PKEY_OP_VERIFY)) {
-        BIO_puts(bio_err, "No signature file specified for verify\n");
+        BIO_puts(bio_err, "\x4e\x6f\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x66\x69\x6c\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x76\x65\x72\x69\x66\x79\xa");
         goto end;
     }
 
@@ -259,8 +259,8 @@ int MAIN(int argc, char **argv)
 
     if (pkey_op != EVP_PKEY_OP_DERIVE) {
         if (infile) {
-            if (!(in = BIO_new_file(infile, "rb"))) {
-                BIO_puts(bio_err, "Error Opening Input File\n");
+            if (!(in = BIO_new_file(infile, "\x72\x62"))) {
+                BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x4f\x70\x65\x6e\x69\x6e\x67\x20\x49\x6e\x70\x75\x74\x20\x46\x69\x6c\x65\xa");
                 ERR_print_errors(bio_err);
                 goto end;
             }
@@ -269,8 +269,8 @@ int MAIN(int argc, char **argv)
     }
 
     if (outfile) {
-        if (!(out = BIO_new_file(outfile, "wb"))) {
-            BIO_printf(bio_err, "Error Creating Output File\n");
+        if (!(out = BIO_new_file(outfile, "\x77\x62"))) {
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x43\x72\x65\x61\x74\x69\x6e\x67\x20\x4f\x75\x74\x70\x75\x74\x20\x46\x69\x6c\x65\xa");
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -285,15 +285,15 @@ int MAIN(int argc, char **argv)
     }
 
     if (sigfile) {
-        BIO *sigbio = BIO_new_file(sigfile, "rb");
+        BIO *sigbio = BIO_new_file(sigfile, "\x72\x62");
         if (!sigbio) {
-            BIO_printf(bio_err, "Can't open signature file %s\n", sigfile);
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x66\x69\x6c\x65\x20\x25\x73\xa", sigfile);
             goto end;
         }
         siglen = bio_to_mem(&sig, keysize * 10, sigbio);
         BIO_free(sigbio);
         if (siglen < 0) {
-            BIO_printf(bio_err, "Error reading signature data\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x64\x61\x74\x61\xa");
             goto end;
         }
     }
@@ -302,7 +302,7 @@ int MAIN(int argc, char **argv)
         /* Read the input data */
         buf_inlen = bio_to_mem(&buf_in, keysize * 10, in);
         if (buf_inlen < 0) {
-            BIO_printf(bio_err, "Error reading input Data\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x69\x6e\x70\x75\x74\x20\x44\x61\x74\x61\xa");
             exit(1);
         }
         if (rev) {
@@ -321,9 +321,9 @@ int MAIN(int argc, char **argv)
         rv = EVP_PKEY_verify(ctx, sig, (size_t)siglen,
                              buf_in, (size_t)buf_inlen);
         if (rv == 0)
-            BIO_puts(out, "Signature Verification Failure\n");
+            BIO_puts(out, "\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x56\x65\x72\x69\x66\x69\x63\x61\x74\x69\x6f\x6e\x20\x46\x61\x69\x6c\x75\x72\x65\xa");
         else if (rv == 1)
-            BIO_puts(out, "Signature Verified Successfully\n");
+            BIO_puts(out, "\x53\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x56\x65\x72\x69\x66\x69\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\xa");
         if (rv >= 0)
             goto end;
     } else {
@@ -341,7 +341,7 @@ int MAIN(int argc, char **argv)
     }
 
     if (rv <= 0) {
-        BIO_printf(bio_err, "Public Key operation error\n");
+        BIO_printf(bio_err, "\x50\x75\x62\x6c\x69\x63\x20\x4b\x65\x79\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72\xa");
         ERR_print_errors(bio_err);
         goto end;
     }
@@ -373,31 +373,31 @@ int MAIN(int argc, char **argv)
 
 static void usage()
 {
-    BIO_printf(bio_err, "Usage: pkeyutl [options]\n");
-    BIO_printf(bio_err, "-in file        input file\n");
-    BIO_printf(bio_err, "-out file       output file\n");
+    BIO_printf(bio_err, "\x55\x73\x61\x67\x65\x3a\x20\x70\x6b\x65\x79\x75\x74\x6c\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\xa");
+    BIO_printf(bio_err, "\x2d\x69\x6e\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
+    BIO_printf(bio_err, "\x2d\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
     BIO_printf(bio_err,
-               "-sigfile file signature file (verify operation only)\n");
-    BIO_printf(bio_err, "-inkey file     input key\n");
-    BIO_printf(bio_err, "-keyform arg    private key format - default PEM\n");
-    BIO_printf(bio_err, "-pubin          input is a public key\n");
+               "\x2d\x73\x69\x67\x66\x69\x6c\x65\x20\x66\x69\x6c\x65\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20\x66\x69\x6c\x65\x20\x28\x76\x65\x72\x69\x66\x79\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x20\x6f\x6e\x6c\x79\x29\xa");
+    BIO_printf(bio_err, "\x2d\x69\x6e\x6b\x65\x79\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x6b\x65\x79\xa");
+    BIO_printf(bio_err, "\x2d\x6b\x65\x79\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\xa");
+    BIO_printf(bio_err, "\x2d\x70\x75\x62\x69\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x69\x73\x20\x61\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
     BIO_printf(bio_err,
-               "-certin         input is a certificate carrying a public key\n");
-    BIO_printf(bio_err, "-pkeyopt X:Y    public key options\n");
-    BIO_printf(bio_err, "-sign           sign with private key\n");
-    BIO_printf(bio_err, "-verify         verify with public key\n");
+               "\x2d\x63\x65\x72\x74\x69\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x70\x75\x74\x20\x69\x73\x20\x61\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x63\x61\x72\x72\x79\x69\x6e\x67\x20\x61\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
+    BIO_printf(bio_err, "\x2d\x70\x6b\x65\x79\x6f\x70\x74\x20\x58\x3a\x59\x20\x20\x20\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x6f\x70\x74\x69\x6f\x6e\x73\xa");
+    BIO_printf(bio_err, "\x2d\x73\x69\x67\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x73\x69\x67\x6e\x20\x77\x69\x74\x68\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\xa");
+    BIO_printf(bio_err, "\x2d\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x20\x20\x20\x20\x20\x76\x65\x72\x69\x66\x79\x20\x77\x69\x74\x68\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
     BIO_printf(bio_err,
-               "-verifyrecover  verify with public key, recover original data\n");
-    BIO_printf(bio_err, "-encrypt        encrypt with public key\n");
-    BIO_printf(bio_err, "-decrypt        decrypt with private key\n");
-    BIO_printf(bio_err, "-derive         derive shared secret\n");
-    BIO_printf(bio_err, "-hexdump        hex dump output\n");
+               "\x2d\x76\x65\x72\x69\x66\x79\x72\x65\x63\x6f\x76\x65\x72\x20\x20\x76\x65\x72\x69\x66\x79\x20\x77\x69\x74\x68\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x2c\x20\x72\x65\x63\x6f\x76\x65\x72\x20\x6f\x72\x69\x67\x69\x6e\x61\x6c\x20\x64\x61\x74\x61\xa");
+    BIO_printf(bio_err, "\x2d\x65\x6e\x63\x72\x79\x70\x74\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x77\x69\x74\x68\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
+    BIO_printf(bio_err, "\x2d\x64\x65\x63\x72\x79\x70\x74\x20\x20\x20\x20\x20\x20\x20\x20\x64\x65\x63\x72\x79\x70\x74\x20\x77\x69\x74\x68\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\xa");
+    BIO_printf(bio_err, "\x2d\x64\x65\x72\x69\x76\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x64\x65\x72\x69\x76\x65\x20\x73\x68\x61\x72\x65\x64\x20\x73\x65\x63\x72\x65\x74\xa");
+    BIO_printf(bio_err, "\x2d\x68\x65\x78\x64\x75\x6d\x70\x20\x20\x20\x20\x20\x20\x20\x20\x68\x65\x78\x20\x64\x75\x6d\x70\x20\x6f\x75\x74\x70\x75\x74\xa");
 #ifndef OPENSSL_NO_ENGINE
     BIO_printf(bio_err,
-               "-engine e       use engine e, maybe a hardware device, for loading keys.\n");
-    BIO_printf(bio_err, "-engine_impl    also use engine given by -engine for crypto operations\n");
+               "\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x65\x2c\x20\x6d\x61\x79\x62\x65\x20\x61\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x64\x65\x76\x69\x63\x65\x2c\x20\x66\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x6b\x65\x79\x73\x2e\xa");
+    BIO_printf(bio_err, "\x2d\x65\x6e\x67\x69\x6e\x65\x5f\x69\x6d\x70\x6c\x20\x20\x20\x20\x61\x6c\x73\x6f\x20\x75\x73\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x67\x69\x76\x65\x6e\x20\x62\x79\x20\x2d\x65\x6e\x67\x69\x6e\x65\x20\x66\x6f\x72\x20\x63\x72\x79\x70\x74\x6f\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x73\xa");
 #endif
-    BIO_printf(bio_err, "-passin arg     pass phrase source\n");
+    BIO_printf(bio_err, "\x2d\x70\x61\x73\x73\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x70\x61\x73\x73\x20\x70\x68\x72\x61\x73\x65\x20\x73\x6f\x75\x72\x63\x65\xa");
 
 }
 
@@ -415,26 +415,26 @@ static EVP_PKEY_CTX *init_ctx(int *pkeysize,
     if (((pkey_op == EVP_PKEY_OP_SIGN) || (pkey_op == EVP_PKEY_OP_DECRYPT)
          || (pkey_op == EVP_PKEY_OP_DERIVE))
         && (key_type != KEY_PRIVKEY)) {
-        BIO_printf(bio_err, "A private key is needed for this operation\n");
+        BIO_printf(bio_err, "\x41\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x20\x69\x73\x20\x6e\x65\x65\x64\x65\x64\x20\x66\x6f\x72\x20\x74\x68\x69\x73\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\xa");
         goto end;
     }
     if (!app_passwd(bio_err, passargin, NULL, &passin, NULL)) {
-        BIO_printf(bio_err, "Error getting password\n");
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\xa");
         goto end;
     }
     switch (key_type) {
     case KEY_PRIVKEY:
         pkey = load_key(bio_err, keyfile, keyform, 0,
-                        passin, e, "Private Key");
+                        passin, e, "\x50\x72\x69\x76\x61\x74\x65\x20\x4b\x65\x79");
         break;
 
     case KEY_PUBKEY:
         pkey = load_pubkey(bio_err, keyfile, keyform, 0,
-                           NULL, e, "Public Key");
+                           NULL, e, "\x50\x75\x62\x6c\x69\x63\x20\x4b\x65\x79");
         break;
 
     case KEY_CERT:
-        x = load_cert(bio_err, keyfile, keyform, NULL, e, "Certificate");
+        x = load_cert(bio_err, keyfile, keyform, NULL, e, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65");
         if (x) {
             pkey = X509_get_pubkey(x);
             X509_free(x);
@@ -509,10 +509,10 @@ static int setup_peer(BIO *err, EVP_PKEY_CTX *ctx, int peerform,
 
     if (peerform == FORMAT_ENGINE)
         engine = e;
-    peer = load_pubkey(bio_err, file, peerform, 0, NULL, engine, "Peer Key");
+    peer = load_pubkey(bio_err, file, peerform, 0, NULL, engine, "\x50\x65\x65\x72\x20\x4b\x65\x79");
 
     if (!peer) {
-        BIO_printf(bio_err, "Error reading peer key %s\n", file);
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x70\x65\x65\x72\x20\x6b\x65\x79\x20\x25\x73\xa", file);
         ERR_print_errors(err);
         return 0;
     }

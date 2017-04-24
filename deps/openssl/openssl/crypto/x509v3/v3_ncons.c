@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -120,10 +120,10 @@ static void *v2i_NAME_CONSTRAINTS(const X509V3_EXT_METHOD *method,
         goto memerr;
     for (i = 0; i < sk_CONF_VALUE_num(nval); i++) {
         val = sk_CONF_VALUE_value(nval, i);
-        if (!strncmp(val->name, "permitted", 9) && val->name[9]) {
+        if (!strncmp(val->name, "\x70\x65\x72\x6d\x69\x74\x74\x65\x64", 9) && val->name[9]) {
             ptree = &ncons->permittedSubtrees;
             tval.name = val->name + 10;
-        } else if (!strncmp(val->name, "excluded", 8) && val->name[8]) {
+        } else if (!strncmp(val->name, "\x65\x78\x63\x6c\x75\x64\x65\x64", 8) && val->name[8]) {
             ptree = &ncons->excludedSubtrees;
             tval.name = val->name + 9;
         } else {
@@ -161,9 +161,9 @@ static int i2r_NAME_CONSTRAINTS(const X509V3_EXT_METHOD *method, void *a,
 {
     NAME_CONSTRAINTS *ncons = a;
     do_i2r_name_constraints(method, ncons->permittedSubtrees,
-                            bp, ind, "Permitted");
+                            bp, ind, "\x50\x65\x72\x6d\x69\x74\x74\x65\x64");
     do_i2r_name_constraints(method, ncons->excludedSubtrees,
-                            bp, ind, "Excluded");
+                            bp, ind, "\x45\x78\x63\x6c\x75\x64\x65\x64");
     return 1;
 }
 
@@ -174,15 +174,15 @@ static int do_i2r_name_constraints(const X509V3_EXT_METHOD *method,
     GENERAL_SUBTREE *tree;
     int i;
     if (sk_GENERAL_SUBTREE_num(trees) > 0)
-        BIO_printf(bp, "%*s%s:\n", ind, "", name);
+        BIO_printf(bp, "\x25\x2a\x73\x25\x73\x3a\xa", ind, "", name);
     for (i = 0; i < sk_GENERAL_SUBTREE_num(trees); i++) {
         tree = sk_GENERAL_SUBTREE_value(trees, i);
-        BIO_printf(bp, "%*s", ind + 2, "");
+        BIO_printf(bp, "\x25\x2a\x73", ind + 2, "");
         if (tree->base->type == GEN_IPADD)
             print_nc_ipadd(bp, tree->base->d.ip);
         else
             GENERAL_NAME_print(bp, tree->base);
-        BIO_puts(bp, "\n");
+        BIO_puts(bp, "\xa");
     }
     return 1;
 }
@@ -193,21 +193,21 @@ static int print_nc_ipadd(BIO *bp, ASN1_OCTET_STRING *ip)
     unsigned char *p;
     p = ip->data;
     len = ip->length;
-    BIO_puts(bp, "IP:");
+    BIO_puts(bp, "\x49\x50\x3a");
     if (len == 8) {
-        BIO_printf(bp, "%d.%d.%d.%d/%d.%d.%d.%d",
+        BIO_printf(bp, "\x25\x64\x2e\x25\x64\x2e\x25\x64\x2e\x25\x64\x2f\x25\x64\x2e\x25\x64\x2e\x25\x64\x2e\x25\x64",
                    p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);
     } else if (len == 32) {
         for (i = 0; i < 16; i++) {
-            BIO_printf(bp, "%X", p[0] << 8 | p[1]);
+            BIO_printf(bp, "\x25\x58", p[0] << 8 | p[1]);
             p += 2;
             if (i == 7)
-                BIO_puts(bp, "/");
+                BIO_puts(bp, "\x2f");
             else if (i != 15)
-                BIO_puts(bp, ":");
+                BIO_puts(bp, "\x3a");
         }
     } else
-        BIO_printf(bp, "IP Address:<invalid>");
+        BIO_printf(bp, "\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73\x3a\x3c\x69\x6e\x76\x61\x6c\x69\x64\x3e");
     return 1;
 }
 
@@ -380,7 +380,7 @@ static int nc_dns(ASN1_IA5STRING *dns, ASN1_IA5STRING *base)
      */
     if (dns->length > base->length) {
         dnsptr += dns->length - base->length;
-        if (*baseptr != '.' && dnsptr[-1] != '.')
+        if (*baseptr != '\x2e' && dnsptr[-1] != '\x2e')
             return X509_V_ERR_PERMITTED_VIOLATION;
     }
 
@@ -396,12 +396,12 @@ static int nc_email(ASN1_IA5STRING *eml, ASN1_IA5STRING *base)
     const char *baseptr = (char *)base->data;
     const char *emlptr = (char *)eml->data;
 
-    const char *baseat = strchr(baseptr, '@');
-    const char *emlat = strchr(emlptr, '@');
+    const char *baseat = strchr(baseptr, '\x40');
+    const char *emlat = strchr(emlptr, '\x40');
     if (!emlat)
         return X509_V_ERR_UNSUPPORTED_NAME_SYNTAX;
     /* Special case: inital '.' is RHS match */
-    if (!baseat && (*baseptr == '.')) {
+    if (!baseat && (*baseptr == '\x2e')) {
         if (eml->length > base->length) {
             emlptr += eml->length - base->length;
             if (!strcasecmp(baseptr, emlptr))
@@ -436,10 +436,10 @@ static int nc_uri(ASN1_IA5STRING *uri, ASN1_IA5STRING *base)
 {
     const char *baseptr = (char *)base->data;
     const char *hostptr = (char *)uri->data;
-    const char *p = strchr(hostptr, ':');
+    const char *p = strchr(hostptr, '\x3a');
     int hostlen;
     /* Check for foo:// and skip past it */
-    if (!p || (p[1] != '/') || (p[2] != '/'))
+    if (!p || (p[1] != '\x2f') || (p[2] != '\x2f'))
         return X509_V_ERR_UNSUPPORTED_NAME_SYNTAX;
     hostptr = p + 3;
 
@@ -447,10 +447,10 @@ static int nc_uri(ASN1_IA5STRING *uri, ASN1_IA5STRING *base)
 
     /* Look for a port indicator as end of hostname first */
 
-    p = strchr(hostptr, ':');
+    p = strchr(hostptr, '\x3a');
     /* Otherwise look for trailing slash */
     if (!p)
-        p = strchr(hostptr, '/');
+        p = strchr(hostptr, '\x2f');
 
     if (!p)
         hostlen = strlen(hostptr);
@@ -461,7 +461,7 @@ static int nc_uri(ASN1_IA5STRING *uri, ASN1_IA5STRING *base)
         return X509_V_ERR_UNSUPPORTED_NAME_SYNTAX;
 
     /* Special case: inital '.' is RHS match */
-    if (*baseptr == '.') {
+    if (*baseptr == '\x2e') {
         if (hostlen > base->length) {
             p = hostptr + hostlen - base->length;
             if (!strncasecmp(p, baseptr, base->length))

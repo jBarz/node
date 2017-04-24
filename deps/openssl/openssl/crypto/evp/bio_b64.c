@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -85,7 +85,7 @@ typedef struct b64_struct {
     int buf_len;
     int buf_off;
     int tmp_len;                /* used to find the start when decoding */
-    int tmp_nl;                 /* If true, scan until '\n' */
+    int tmp_nl;                 /* If true, scan until '\xa' */
     int encode;
     int start;                  /* have we started decoding yet? */
     int cont;                   /* <= 0 when finished */
@@ -95,7 +95,7 @@ typedef struct b64_struct {
 } BIO_B64_CTX;
 
 static BIO_METHOD methods_b64 = {
-    BIO_TYPE_BASE64, "base64 encoding",
+    BIO_TYPE_BASE64, "\x62\x61\x73\x65\x36\x34\x20\x65\x6e\x63\x6f\x64\x69\x6e\x67",
     b64_write,
     b64_read,
     b64_puts,
@@ -230,7 +230,7 @@ static int b64_read(BIO *b, char *out, int outl)
             q = p = (unsigned char *)ctx->tmp;
             num = 0;
             for (j = 0; j < i; j++) {
-                if (*(q++) != '\n')
+                if (*(q++) != '\xa')
                     continue;
 
                 /*
@@ -276,7 +276,7 @@ static int b64_read(BIO *b, char *out, int outl)
                         ctx->tmp_nl = 1;
                         ctx->tmp_len = 0;
                     }
-                } else if (p != q) { /* finished on a '\n' */
+                } else if (p != q) { /* finished on a '\xa' */
                     n = q - p;
                     for (ii = 0; ii < n; ii++)
                         ctx->tmp[ii] = p[ii];
@@ -306,9 +306,9 @@ static int b64_read(BIO *b, char *out, int outl)
             z = EVP_DecodeBlock((unsigned char *)ctx->buf,
                                 (unsigned char *)ctx->tmp, jj);
             if (jj > 2) {
-                if (ctx->tmp[jj - 1] == '=') {
+                if (ctx->tmp[jj - 1] == '\x3d') {
                     z--;
-                    if (ctx->tmp[jj - 2] == '=')
+                    if (ctx->tmp[jj - 2] == '\x3d')
                         z--;
                 }
             }

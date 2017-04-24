@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -276,7 +276,7 @@ static int cms_signerinfo_verify_cert(CMS_SignerInfo *si,
         CMSerr(CMS_F_CMS_SIGNERINFO_VERIFY_CERT, CMS_R_STORE_INIT_ERROR);
         goto err;
     }
-    X509_STORE_CTX_set_default(&ctx, "smime_sign");
+    X509_STORE_CTX_set_default(&ctx, "\x73\x6d\x69\x6d\x65\x5f\x73\x69\x67\x6e");
     if (crls)
         X509_STORE_CTX_set0_crls(&ctx, crls);
 
@@ -285,7 +285,7 @@ static int cms_signerinfo_verify_cert(CMS_SignerInfo *si,
         j = X509_STORE_CTX_get_error(&ctx);
         CMSerr(CMS_F_CMS_SIGNERINFO_VERIFY_CERT,
                CMS_R_CERTIFICATE_VERIFY_ERROR);
-        ERR_add_error_data(2, "Verify error:",
+        ERR_add_error_data(2, "\x56\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72\x3a",
                            X509_verify_cert_error_string(j));
         goto err;
     }

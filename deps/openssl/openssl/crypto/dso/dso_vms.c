@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -107,7 +107,7 @@ static char *vms_merger(DSO *dso, const char *filespec1,
                         const char *filespec2);
 
 static DSO_METHOD dso_meth_vms = {
-    "OpenSSL 'VMS' shared library method",
+    "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x27\x56\x4d\x53\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79\x20\x6d\x65\x74\x68\x6f\x64",
     vms_load,
     NULL,                       /* unload */
     vms_bind_var,
@@ -200,33 +200,33 @@ static int vms_load(DSO *dso)
      * Start with trying to find the end of a dir-spec, and save the position
      * of the byte after in sp1
      */
-    sp1 = strrchr(filename, ']');
-    sp2 = strrchr(filename, '>');
+    sp1 = strrchr(filename, '\x5d');
+    sp2 = strrchr(filename, '\x3e');
     if (sp1 == NULL)
         sp1 = sp2;
     if (sp2 != NULL && sp2 > sp1)
         sp1 = sp2;
     if (sp1 == NULL)
-        sp1 = strrchr(filename, ':');
+        sp1 = strrchr(filename, '\x3a');
     if (sp1 == NULL)
         sp1 = filename;
     else
         sp1++;                  /* The byte after the found character */
     /* Now, let's see if there's a type, and save the position in sp2 */
-    sp2 = strchr(sp1, '.');
+    sp2 = strchr(sp1, '\x2e');
     /*
      * If there is a period and the next character is a semi-colon,
      * we need to add an extension
      */
-    if (sp2 != NULL && sp2[1] == ';')
-        ext = ".EXE";
+    if (sp2 != NULL && sp2[1] == '\x3b')
+        ext = "\x2e\x45\x58\x45";
     /*
      * If we found it, that's where we'll cut.  Otherwise, look for a version
      * number and save the position in sp2
      */
     if (sp2 == NULL) {
-        sp2 = strchr(sp1, ';');
-        ext = ".EXE";
+        sp2 = strchr(sp1, '\x3b');
+        ext = "\x2e\x45\x58\x45";
     }
     /*
      * If there was still nothing to find, set sp2 to point at the end of the
@@ -249,13 +249,13 @@ static int vms_load(DSO *dso)
     }
 
     strncpy(p->filename, sp1, sp2 - sp1);
-    p->filename[sp2 - sp1] = '\0';
+    p->filename[sp2 - sp1] = '\x0';
 
     strncpy(p->imagename, filename, sp1 - filename);
-    p->imagename[sp1 - filename] = '\0';
+    p->imagename[sp1 - filename] = '\x0';
     if (ext) {
         strcat(p->imagename, ext);
-        if (*sp2 == '.')
+        if (*sp2 == '\x2e')
             sp2++;
     }
     strcat(p->imagename, sp2);
@@ -408,19 +408,19 @@ void vms_bind_sym(DSO *dso, const char *symname, void **sym)
         if (!$VMS_STATUS_SUCCESS(status))
             lib$signal(status); /* This is really bad.  Abort! */
         else {
-            errstring[length] = '\0';
+            errstring[length] = '\x0';
 
             DSOerr(DSO_F_VMS_BIND_SYM, DSO_R_SYM_FAILURE);
             if (ptr->imagename_dsc.dsc$w_length)
                 ERR_add_error_data(9,
-                                   "Symbol ", symname,
-                                   " in ", ptr->filename,
-                                   " (", ptr->imagename, ")",
-                                   ": ", errstring);
+                                   "\x53\x79\x6d\x62\x6f\x6c\x20", symname,
+                                   "\x20\x69\x6e\x20", ptr->filename,
+                                   "\x20\x28", ptr->imagename, "\x29",
+                                   "\x3a\x20", errstring);
             else
                 ERR_add_error_data(6,
-                                   "Symbol ", symname,
-                                   " in ", ptr->filename, ": ", errstring);
+                                   "\x53\x79\x6d\x62\x6f\x6c\x20", symname,
+                                   "\x20\x69\x6e\x20", ptr->filename, "\x3a\x20", errstring);
         }
         return;
     }
@@ -515,12 +515,12 @@ static char *vms_merger(DSO *dso, const char *filespec1,
         if (!$VMS_STATUS_SUCCESS(status))
             lib$signal(status); /* This is really bad.  Abort! */
         else {
-            errstring[length] = '\0';
+            errstring[length] = '\x0';
 
             DSOerr(DSO_F_VMS_MERGER, DSO_R_FAILURE);
             ERR_add_error_data(7,
-                               "filespec \"", filespec1, "\", ",
-                               "defaults \"", filespec2, "\": ", errstring);
+                               "\x66\x69\x6c\x65\x73\x70\x65\x63\x20\x22", filespec1, "\x22\x2c\x20",
+                               "\x64\x65\x66\x61\x75\x6c\x74\x73\x20\x22", filespec2, "\x22\x3a\x20", errstring);
         }
         return (NULL);
     }
@@ -529,7 +529,7 @@ static char *vms_merger(DSO *dso, const char *filespec1,
     if (!merged)
         goto malloc_err;
     strncpy(merged, nam.NAMX_ESA, nam.NAMX_ESL);
-    merged[nam.NAMX_ESL] = '\0';
+    merged[nam.NAMX_ESL] = '\x0';
     return (merged);
  malloc_err:
     DSOerr(DSO_F_VMS_MERGER, ERR_R_MALLOC_FAILURE);

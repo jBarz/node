@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -111,11 +111,11 @@ int MAIN(int argc, char **argv)
     argv++;
     for (;;) {
         if (argc >= 1) {
-            if (strcmp(*argv, "-CApath") == 0) {
+            if (strcmp(*argv, "\x2d\x43\x41\x70\x61\x74\x68") == 0) {
                 if (argc-- < 1)
                     goto usage;
                 CApath = *(++argv);
-            } else if (strcmp(*argv, "-CAfile") == 0) {
+            } else if (strcmp(*argv, "\x2d\x43\x41\x66\x69\x6c\x65") == 0) {
                 if (argc-- < 1)
                     goto usage;
                 CAfile = *(++argv);
@@ -123,32 +123,32 @@ int MAIN(int argc, char **argv)
                 if (badarg)
                     goto usage;
                 continue;
-            } else if (strcmp(*argv, "-untrusted") == 0) {
+            } else if (strcmp(*argv, "\x2d\x75\x6e\x74\x72\x75\x73\x74\x65\x64") == 0) {
                 if (argc-- < 1)
                     goto usage;
                 untfile = *(++argv);
-            } else if (strcmp(*argv, "-trusted") == 0) {
+            } else if (strcmp(*argv, "\x2d\x74\x72\x75\x73\x74\x65\x64") == 0) {
                 if (argc-- < 1)
                     goto usage;
                 trustfile = *(++argv);
-            } else if (strcmp(*argv, "-CRLfile") == 0) {
+            } else if (strcmp(*argv, "\x2d\x43\x52\x4c\x66\x69\x6c\x65") == 0) {
                 if (argc-- < 1)
                     goto usage;
                 crlfile = *(++argv);
-            } else if (strcmp(*argv, "-crl_download") == 0)
+            } else if (strcmp(*argv, "\x2d\x63\x72\x6c\x5f\x64\x6f\x77\x6e\x6c\x6f\x61\x64") == 0)
                 crl_download = 1;
 #ifndef OPENSSL_NO_ENGINE
-            else if (strcmp(*argv, "-engine") == 0) {
+            else if (strcmp(*argv, "\x2d\x65\x6e\x67\x69\x6e\x65") == 0) {
                 if (--argc < 1)
                     goto usage;
                 engine = *(++argv);
             }
 #endif
-            else if (strcmp(*argv, "-help") == 0)
+            else if (strcmp(*argv, "\x2d\x68\x65\x6c\x70") == 0)
                 goto usage;
-            else if (strcmp(*argv, "-verbose") == 0)
+            else if (strcmp(*argv, "\x2d\x76\x65\x72\x62\x6f\x73\x65") == 0)
                 v_verbose = 1;
-            else if (argv[0][0] == '-')
+            else if (argv[0][0] == '\x2d')
                 goto usage;
             else
                 break;
@@ -169,7 +169,7 @@ int MAIN(int argc, char **argv)
     if (CAfile) {
         i = X509_LOOKUP_load_file(lookup, CAfile, X509_FILETYPE_PEM);
         if (!i) {
-            BIO_printf(bio_err, "Error loading file %s\n", CAfile);
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x66\x69\x6c\x65\x20\x25\x73\xa", CAfile);
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -182,7 +182,7 @@ int MAIN(int argc, char **argv)
     if (CApath) {
         i = X509_LOOKUP_add_dir(lookup, CApath, X509_FILETYPE_PEM);
         if (!i) {
-            BIO_printf(bio_err, "Error loading directory %s\n", CApath);
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x6c\x6f\x61\x64\x69\x6e\x67\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79\x20\x25\x73\xa", CApath);
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -193,20 +193,20 @@ int MAIN(int argc, char **argv)
 
     if (untfile) {
         untrusted = load_certs(bio_err, untfile, FORMAT_PEM,
-                               NULL, e, "untrusted certificates");
+                               NULL, e, "\x75\x6e\x74\x72\x75\x73\x74\x65\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73");
         if (!untrusted)
             goto end;
     }
 
     if (trustfile) {
         trusted = load_certs(bio_err, trustfile, FORMAT_PEM,
-                             NULL, e, "trusted certificates");
+                             NULL, e, "\x74\x72\x75\x73\x74\x65\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73");
         if (!trusted)
             goto end;
     }
 
     if (crlfile) {
-        crls = load_crls(bio_err, crlfile, FORMAT_PEM, NULL, e, "other CRLs");
+        crls = load_crls(bio_err, crlfile, FORMAT_PEM, NULL, e, "\x6f\x74\x68\x65\x72\x20\x43\x52\x4c\x73");
         if (!crls)
             goto end;
     }
@@ -227,18 +227,18 @@ int MAIN(int argc, char **argv)
  usage:
     if (ret == 1) {
         BIO_printf(bio_err,
-                   "usage: verify [-verbose] [-CApath path] [-CAfile file] [-purpose purpose] [-crl_check]");
-        BIO_printf(bio_err, " [-no_alt_chains] [-attime timestamp]");
+                   "\x75\x73\x61\x67\x65\x3a\x20\x76\x65\x72\x69\x66\x79\x20\x5b\x2d\x76\x65\x72\x62\x6f\x73\x65\x5d\x20\x5b\x2d\x43\x41\x70\x61\x74\x68\x20\x70\x61\x74\x68\x5d\x20\x5b\x2d\x43\x41\x66\x69\x6c\x65\x20\x66\x69\x6c\x65\x5d\x20\x5b\x2d\x70\x75\x72\x70\x6f\x73\x65\x20\x70\x75\x72\x70\x6f\x73\x65\x5d\x20\x5b\x2d\x63\x72\x6c\x5f\x63\x68\x65\x63\x6b\x5d");
+        BIO_printf(bio_err, "\x20\x5b\x2d\x6e\x6f\x5f\x61\x6c\x74\x5f\x63\x68\x61\x69\x6e\x73\x5d\x20\x5b\x2d\x61\x74\x74\x69\x6d\x65\x20\x74\x69\x6d\x65\x73\x74\x61\x6d\x70\x5d");
 #ifndef OPENSSL_NO_ENGINE
-        BIO_printf(bio_err, " [-engine e]");
+        BIO_printf(bio_err, "\x20\x5b\x2d\x65\x6e\x67\x69\x6e\x65\x20\x65\x5d");
 #endif
-        BIO_printf(bio_err, " cert1 cert2 ...\n");
+        BIO_printf(bio_err, "\x20\x63\x65\x72\x74\x31\x20\x63\x65\x72\x74\x32\x20\x2e\x2e\x2e\xa");
 
-        BIO_printf(bio_err, "recognized usages:\n");
+        BIO_printf(bio_err, "\x72\x65\x63\x6f\x67\x6e\x69\x7a\x65\x64\x20\x75\x73\x61\x67\x65\x73\x3a\xa");
         for (i = 0; i < X509_PURPOSE_get_count(); i++) {
             X509_PURPOSE *ptmp;
             ptmp = X509_PURPOSE_get0(i);
-            BIO_printf(bio_err, "\t%-10s\t%s\n",
+            BIO_printf(bio_err, "\x9\x25\x2d\x31\x30\x73\x9\x25\x73\xa",
                        X509_PURPOSE_get0_sname(ptmp),
                        X509_PURPOSE_get0_name(ptmp));
         }
@@ -264,10 +264,10 @@ static int check(X509_STORE *ctx, char *file,
     int i = 0, ret = 0;
     X509_STORE_CTX *csc;
 
-    x = load_cert(bio_err, file, FORMAT_PEM, NULL, e, "certificate file");
+    x = load_cert(bio_err, file, FORMAT_PEM, NULL, e, "\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x66\x69\x6c\x65");
     if (x == NULL)
         goto end;
-    fprintf(stdout, "%s: ", (file == NULL) ? "stdin" : file);
+    fprintf(stdout, "\x25\x73\x3a\x20", (file == NULL) ? "\x73\x74\x64\x69\x6e" : file);
 
     csc = X509_STORE_CTX_new();
     if (csc == NULL) {
@@ -289,7 +289,7 @@ static int check(X509_STORE *ctx, char *file,
     ret = 0;
  end:
     if (i > 0) {
-        fprintf(stdout, "OK\n");
+        fprintf(stdout, "\x4f\x4b\xa");
         ret = 1;
     } else
         ERR_print_errors(bio_err);
@@ -309,10 +309,10 @@ static int MS_CALLBACK cb(int ok, X509_STORE_CTX *ctx)
             X509_NAME_print_ex_fp(stdout,
                                   X509_get_subject_name(current_cert),
                                   0, XN_FLAG_ONELINE);
-            printf("\n");
+            printf("\xa");
         }
-        printf("%serror %d at %d depth lookup:%s\n",
-               X509_STORE_CTX_get0_parent_ctx(ctx) ? "[CRL path]" : "",
+        printf("\x25\x73\x65\x72\x72\x6f\x72\x20\x25\x64\x20\x61\x74\x20\x25\x64\x20\x64\x65\x70\x74\x68\x20\x6c\x6f\x6f\x6b\x75\x70\x3a\x25\x73\xa",
+               X509_STORE_CTX_get0_parent_ctx(ctx) ? "\x5b\x43\x52\x4c\x20\x70\x61\x74\x68\x5d" : "",
                cert_error,
                X509_STORE_CTX_get_error_depth(ctx),
                X509_verify_cert_error_string(cert_error));

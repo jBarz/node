@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -81,16 +81,16 @@ int MAIN(int argc, char **argv)
         bio_err = BIO_new_fp(stderr, BIO_NOCLOSE);
     ERR_load_crypto_strings();
     args = argv + 1;
-    while (!badarg && *args && *args[0] == '-') {
-        if (!strcmp(*args, "-toseq"))
+    while (!badarg && *args && *args[0] == '\x2d') {
+        if (!strcmp(*args, "\x2d\x74\x6f\x73\x65\x71"))
             toseq = 1;
-        else if (!strcmp(*args, "-in")) {
+        else if (!strcmp(*args, "\x2d\x69\x6e")) {
             if (args[1]) {
                 args++;
                 infile = *args;
             } else
                 badarg = 1;
-        } else if (!strcmp(*args, "-out")) {
+        } else if (!strcmp(*args, "\x2d\x6f\x75\x74")) {
             if (args[1]) {
                 args++;
                 outfile = *args;
@@ -102,26 +102,26 @@ int MAIN(int argc, char **argv)
     }
 
     if (badarg) {
-        BIO_printf(bio_err, "Netscape certificate sequence utility\n");
-        BIO_printf(bio_err, "Usage nseq [options]\n");
-        BIO_printf(bio_err, "where options are\n");
-        BIO_printf(bio_err, "-in file  input file\n");
-        BIO_printf(bio_err, "-out file output file\n");
-        BIO_printf(bio_err, "-toseq    output NS Sequence file\n");
+        BIO_printf(bio_err, "\x4e\x65\x74\x73\x63\x61\x70\x65\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x73\x65\x71\x75\x65\x6e\x63\x65\x20\x75\x74\x69\x6c\x69\x74\x79\xa");
+        BIO_printf(bio_err, "\x55\x73\x61\x67\x65\x20\x6e\x73\x65\x71\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\xa");
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
+        BIO_printf(bio_err, "\x2d\x69\x6e\x20\x66\x69\x6c\x65\x20\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x2d\x6f\x75\x74\x20\x66\x69\x6c\x65\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x2d\x74\x6f\x73\x65\x71\x20\x20\x20\x20\x6f\x75\x74\x70\x75\x74\x20\x4e\x53\x20\x53\x65\x71\x75\x65\x6e\x63\x65\x20\x66\x69\x6c\x65\xa");
         OPENSSL_EXIT(1);
     }
 
     if (infile) {
-        if (!(in = BIO_new_file(infile, "r"))) {
-            BIO_printf(bio_err, "Can't open input file %s\n", infile);
+        if (!(in = BIO_new_file(infile, "\x72"))) {
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x25\x73\xa", infile);
             goto end;
         }
     } else
         in = BIO_new_fp(stdin, BIO_NOCLOSE);
 
     if (outfile) {
-        if (!(out = BIO_new_file(outfile, "w"))) {
-            BIO_printf(bio_err, "Can't open output file %s\n", outfile);
+        if (!(out = BIO_new_file(outfile, "\x77"))) {
+            BIO_printf(bio_err, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x25\x73\xa", outfile);
             goto end;
         }
     } else {
@@ -140,7 +140,7 @@ int MAIN(int argc, char **argv)
             sk_X509_push(seq->certs, x509);
 
         if (!sk_X509_num(seq->certs)) {
-            BIO_printf(bio_err, "Error reading certs file %s\n", infile);
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x63\x65\x72\x74\x73\x20\x66\x69\x6c\x65\x20\x25\x73\xa", infile);
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -150,7 +150,7 @@ int MAIN(int argc, char **argv)
     }
 
     if (!(seq = PEM_read_bio_NETSCAPE_CERT_SEQUENCE(in, NULL, NULL, NULL))) {
-        BIO_printf(bio_err, "Error reading sequence file %s\n", infile);
+        BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x73\x65\x71\x75\x65\x6e\x63\x65\x20\x66\x69\x6c\x65\x20\x25\x73\xa", infile);
         ERR_print_errors(bio_err);
         goto end;
     }

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -162,7 +162,7 @@ static int _dopr(char **sbuffer, char **buffer,
 #define DP_C_LLONG      4
 
 /* some handy macros */
-#define char_to_int(p) (p - '0')
+#define char_to_int(p) (p - '\x30')
 #define OSSL_MAX(p,q) ((p >= q) ? p : q)
 
 static int
@@ -188,12 +188,12 @@ _dopr(char **sbuffer,
     ch = *format++;
 
     while (state != DP_S_DONE) {
-        if (ch == '\0' || (buffer == NULL && currlen >= *maxlen))
+        if (ch == '\x0' || (buffer == NULL && currlen >= *maxlen))
             state = DP_S_DONE;
 
         switch (state) {
         case DP_S_DEFAULT:
-            if (ch == '%')
+            if (ch == '\x25')
                 state = DP_S_FLAGS;
             else
                 if(!doapr_outch(sbuffer, buffer, &currlen, maxlen, ch))
@@ -202,23 +202,23 @@ _dopr(char **sbuffer,
             break;
         case DP_S_FLAGS:
             switch (ch) {
-            case '-':
+            case '\x2d':
                 flags |= DP_F_MINUS;
                 ch = *format++;
                 break;
-            case '+':
+            case '\x2b':
                 flags |= DP_F_PLUS;
                 ch = *format++;
                 break;
-            case ' ':
+            case '\x20':
                 flags |= DP_F_SPACE;
                 ch = *format++;
                 break;
-            case '#':
+            case '\x23':
                 flags |= DP_F_NUM;
                 ch = *format++;
                 break;
-            case '0':
+            case '\x30':
                 flags |= DP_F_ZERO;
                 ch = *format++;
                 break;
@@ -231,7 +231,7 @@ _dopr(char **sbuffer,
             if (isdigit((unsigned char)ch)) {
                 min = 10 * min + char_to_int(ch);
                 ch = *format++;
-            } else if (ch == '*') {
+            } else if (ch == '\x2a') {
                 min = va_arg(args, int);
                 ch = *format++;
                 state = DP_S_DOT;
@@ -239,7 +239,7 @@ _dopr(char **sbuffer,
                 state = DP_S_DOT;
             break;
         case DP_S_DOT:
-            if (ch == '.') {
+            if (ch == '\x2e') {
                 state = DP_S_MAX;
                 ch = *format++;
             } else
@@ -251,7 +251,7 @@ _dopr(char **sbuffer,
                     max = 0;
                 max = 10 * max + char_to_int(ch);
                 ch = *format++;
-            } else if (ch == '*') {
+            } else if (ch == '\x2a') {
                 max = va_arg(args, int);
                 ch = *format++;
                 state = DP_S_MOD;
@@ -260,23 +260,23 @@ _dopr(char **sbuffer,
             break;
         case DP_S_MOD:
             switch (ch) {
-            case 'h':
+            case '\x68':
                 cflags = DP_C_SHORT;
                 ch = *format++;
                 break;
-            case 'l':
-                if (*format == 'l') {
+            case '\x6c':
+                if (*format == '\x6c') {
                     cflags = DP_C_LLONG;
                     format++;
                 } else
                     cflags = DP_C_LONG;
                 ch = *format++;
                 break;
-            case 'q':
+            case '\x71':
                 cflags = DP_C_LLONG;
                 ch = *format++;
                 break;
-            case 'L':
+            case '\x4c':
                 cflags = DP_C_LDOUBLE;
                 ch = *format++;
                 break;
@@ -287,8 +287,8 @@ _dopr(char **sbuffer,
             break;
         case DP_S_CONV:
             switch (ch) {
-            case 'd':
-            case 'i':
+            case '\x64':
+            case '\x69':
                 switch (cflags) {
                 case DP_C_SHORT:
                     value = (short int)va_arg(args, int);
@@ -307,12 +307,12 @@ _dopr(char **sbuffer,
                             max, flags))
                     return 0;
                 break;
-            case 'X':
+            case '\x58':
                 flags |= DP_F_UP;
                 /* FALLTHROUGH */
-            case 'x':
-            case 'o':
-            case 'u':
+            case '\x78':
+            case '\x6f':
+            case '\x75':
                 flags |= DP_F_UNSIGNED;
                 switch (cflags) {
                 case DP_C_SHORT:
@@ -329,11 +329,11 @@ _dopr(char **sbuffer,
                     break;
                 }
                 if (!fmtint(sbuffer, buffer, &currlen, maxlen, value,
-                            ch == 'o' ? 8 : (ch == 'u' ? 10 : 16),
+                            ch == '\x6f' ? 8 : (ch == '\x75' ? 10 : 16),
                             min, max, flags))
                     return 0;
                 break;
-            case 'f':
+            case '\x66':
                 if (cflags == DP_C_LDOUBLE)
                     fvalue = va_arg(args, LDOUBLE);
                 else
@@ -342,28 +342,28 @@ _dopr(char **sbuffer,
                            flags))
                     return 0;
                 break;
-            case 'E':
+            case '\x45':
                 flags |= DP_F_UP;
-            case 'e':
+            case '\x65':
                 if (cflags == DP_C_LDOUBLE)
                     fvalue = va_arg(args, LDOUBLE);
                 else
                     fvalue = va_arg(args, double);
                 break;
-            case 'G':
+            case '\x47':
                 flags |= DP_F_UP;
-            case 'g':
+            case '\x67':
                 if (cflags == DP_C_LDOUBLE)
                     fvalue = va_arg(args, LDOUBLE);
                 else
                     fvalue = va_arg(args, double);
                 break;
-            case 'c':
+            case '\x63':
                 if(!doapr_outch(sbuffer, buffer, &currlen, maxlen,
                             va_arg(args, int)))
                     return 0;
                 break;
-            case 's':
+            case '\x73':
                 strvalue = va_arg(args, char *);
                 if (max < 0) {
                     if (buffer)
@@ -375,13 +375,13 @@ _dopr(char **sbuffer,
                             flags, min, max))
                     return 0;
                 break;
-            case 'p':
+            case '\x70':
                 value = (long)va_arg(args, void *);
                 if (!fmtint(sbuffer, buffer, &currlen, maxlen,
                             value, 16, min, max, flags | DP_F_NUM))
                     return 0;
                 break;
-            case 'n':          /* XXX */
+            case '\x6e':          /* XXX */
                 if (cflags == DP_C_SHORT) {
                     short int *num;
                     num = va_arg(args, short int *);
@@ -400,11 +400,11 @@ _dopr(char **sbuffer,
                     *num = currlen;
                 }
                 break;
-            case '%':
+            case '\x25':
                 if(!doapr_outch(sbuffer, buffer, &currlen, maxlen, ch))
                     return 0;
                 break;
-            case 'w':
+            case '\x77':
                 /* not supported yet, treat as next char */
                 ch = *format++;
                 break;
@@ -432,7 +432,7 @@ _dopr(char **sbuffer,
         if (*truncated)
             currlen = *maxlen - 1;
     }
-    if(!doapr_outch(sbuffer, buffer, &currlen, maxlen, '\0'))
+    if(!doapr_outch(sbuffer, buffer, &currlen, maxlen, '\x0'))
         return 0;
     *retlen = currlen - 1;
     return 1;
@@ -449,7 +449,7 @@ fmtstr(char **sbuffer,
     int cnt = 0;
 
     if (value == 0)
-        value = "<NULL>";
+        value = "\x3c\x4e\x55\x4c\x4c\x3e";
 
     strln = strlen(value);
     if (strln > INT_MAX)
@@ -462,7 +462,7 @@ fmtstr(char **sbuffer,
         padlen = -padlen;
 
     while ((padlen > 0) && (cnt < max)) {
-        if(!doapr_outch(sbuffer, buffer, currlen, maxlen, ' '))
+        if(!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x20'))
             return 0;
         --padlen;
         ++cnt;
@@ -473,7 +473,7 @@ fmtstr(char **sbuffer,
         ++cnt;
     }
     while ((padlen < 0) && (cnt < max)) {
-        if(!doapr_outch(sbuffer, buffer, currlen, maxlen, ' '))
+        if(!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x20'))
             return 0;
         ++padlen;
         ++cnt;
@@ -501,23 +501,23 @@ fmtint(char **sbuffer,
     uvalue = value;
     if (!(flags & DP_F_UNSIGNED)) {
         if (value < 0) {
-            signvalue = '-';
+            signvalue = '\x2d';
             uvalue = -value;
         } else if (flags & DP_F_PLUS)
-            signvalue = '+';
+            signvalue = '\x2b';
         else if (flags & DP_F_SPACE)
-            signvalue = ' ';
+            signvalue = '\x20';
     }
     if (flags & DP_F_NUM) {
         if (base == 8)
-            prefix = "0";
+            prefix = "\x30";
         if (base == 16)
-            prefix = "0x";
+            prefix = "\x30\x78";
     }
     if (flags & DP_F_UP)
         caps = 1;
     do {
-        convert[place++] = (caps ? "0123456789ABCDEF" : "0123456789abcdef")
+        convert[place++] = (caps ? "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46" : "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x61\x62\x63\x64\x65\x66")
             [uvalue % (unsigned)base];
         uvalue = (uvalue / (unsigned)base);
     } while (uvalue && (place < (int)sizeof(convert)));
@@ -541,7 +541,7 @@ fmtint(char **sbuffer,
 
     /* spaces */
     while (spadlen > 0) {
-        if(!doapr_outch(sbuffer, buffer, currlen, maxlen, ' '))
+        if(!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x20'))
             return 0;
         --spadlen;
     }
@@ -561,7 +561,7 @@ fmtint(char **sbuffer,
     /* zeros */
     if (zpadlen > 0) {
         while (zpadlen > 0) {
-            if(!doapr_outch(sbuffer, buffer, currlen, maxlen, '0'))
+            if(!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x30'))
                 return 0;
             --zpadlen;
         }
@@ -574,7 +574,7 @@ fmtint(char **sbuffer,
 
     /* left justified spaces */
     while (spadlen < 0) {
-        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, ' '))
+        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x20'))
             return 0;
         ++spadlen;
     }
@@ -631,11 +631,11 @@ fmtfp(char **sbuffer,
         max = 6;
     ufvalue = abs_val(fvalue);
     if (fvalue < 0)
-        signvalue = '-';
+        signvalue = '\x2d';
     else if (flags & DP_F_PLUS)
-        signvalue = '+';
+        signvalue = '\x2b';
     else if (flags & DP_F_SPACE)
-        signvalue = ' ';
+        signvalue = '\x20';
 
     intpart = (long)ufvalue;
 
@@ -660,7 +660,7 @@ fmtfp(char **sbuffer,
 
     /* convert integer part */
     do {
-        iconvert[iplace++] = "0123456789"[intpart % 10];
+        iconvert[iplace++] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39"[intpart % 10];
         intpart = (intpart / 10);
     } while (intpart && (iplace < (int)sizeof(iconvert)));
     if (iplace == sizeof iconvert)
@@ -669,7 +669,7 @@ fmtfp(char **sbuffer,
 
     /* convert fractional part */
     do {
-        fconvert[fplace++] = "0123456789"[fracpart % 10];
+        fconvert[fplace++] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39"[fracpart % 10];
         fracpart = (fracpart / 10);
     } while (fplace < max);
     if (fplace == sizeof fconvert)
@@ -694,13 +694,13 @@ fmtfp(char **sbuffer,
             signvalue = 0;
         }
         while (padlen > 0) {
-            if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '0'))
+            if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x30'))
                 return 0;
             --padlen;
         }
     }
     while (padlen > 0) {
-        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, ' '))
+        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x20'))
             return 0;
         --padlen;
     }
@@ -717,7 +717,7 @@ fmtfp(char **sbuffer,
      * char to print out.
      */
     if (max > 0 || (flags & DP_F_NUM)) {
-        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '.'))
+        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x2e'))
             return 0;
 
         while (fplace > 0) {
@@ -727,13 +727,13 @@ fmtfp(char **sbuffer,
         }
     }
     while (zpadlen > 0) {
-        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '0'))
+        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x30'))
             return 0;
         --zpadlen;
     }
 
     while (padlen < 0) {
-        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, ' '))
+        if (!doapr_outch(sbuffer, buffer, currlen, maxlen, '\x20'))
             return 0;
         ++padlen;
     }
@@ -813,7 +813,7 @@ int BIO_vprintf(BIO *bio, const char *format, va_list args)
     int ignored;
 
     dynbuf = NULL;
-    CRYPTO_push_info("doapr()");
+    CRYPTO_push_info("\x64\x6f\x61\x70\x72\x28\x29");
     if (!_dopr(&hugebufp, &dynbuf, &hugebufsize, &retlen, &ignored, format,
                 args)) {
         OPENSSL_free(dynbuf);

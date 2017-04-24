@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -71,7 +71,7 @@ int BN_sqr(BIGNUM *r, const BIGNUM *a, BN_CTX *ctx)
     BIGNUM *tmp, *rr;
 
 #ifdef BN_COUNT
-    fprintf(stderr, "BN_sqr %d * %d\n", a->top, a->top);
+    fprintf(stderr, "\x42\x4e\x5f\x73\x71\x72\x20\x25\x64\x20\x2a\x20\x25\x64\xa", a->top, a->top);
 #endif
     bn_check_top(a);
 
@@ -209,7 +209,7 @@ void bn_sqr_recursive(BN_ULONG *r, const BN_ULONG *a, int n2, BN_ULONG *t)
     BN_ULONG ln, lo, *p;
 
 # ifdef BN_COUNT
-    fprintf(stderr, " bn_sqr_recursive %d * %d\n", n2, n2);
+    fprintf(stderr, "\x20\x62\x6e\x5f\x73\x71\x72\x5f\x72\x65\x63\x75\x72\x73\x69\x76\x65\x20\x25\x64\x20\x2a\x20\x25\x64\xa", n2, n2);
 # endif
     if (n2 == 4) {
 # ifndef BN_SQR_COMBA

@@ -12,7 +12,7 @@
 #ifdef OPENSSL_NO_RSA
 int main(int argc, char *argv[])
 {
-    printf("No RSA support\n");
+    printf("\x4e\x6f\x20\x52\x53\x41\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -206,7 +206,7 @@ static int pad_unknown(void)
 }
 
 static const char rnd_seed[] =
-    "string to make the random number generator think it has entropy";
+    "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 
 int main(int argc, char *argv[])
 {
@@ -249,28 +249,28 @@ int main(int argc, char *argv[])
         num = RSA_public_encrypt(plen, ptext_ex, ctext, key,
                                  RSA_PKCS1_PADDING);
         if (num != clen) {
-            printf("PKCS#1 v1.5 encryption failed!\n");
+            printf("\x50\x4b\x43\x53\x23\x31\x20\x76\x31\x2e\x35\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             err = 1;
             goto oaep;
         }
 
         num = RSA_private_decrypt(num, ctext, ptext, key, RSA_PKCS1_PADDING);
         if (num != plen || memcmp(ptext, ptext_ex, num) != 0) {
-            printf("PKCS#1 v1.5 decryption failed!\n");
+            printf("\x50\x4b\x43\x53\x23\x31\x20\x76\x31\x2e\x35\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             err = 1;
         } else
-            printf("PKCS #1 v1.5 encryption/decryption ok\n");
+            printf("\x50\x4b\x43\x53\x20\x23\x31\x20\x76\x31\x2e\x35\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x2f\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x6f\x6b\xa");
 
  oaep:
         ERR_clear_error();
         num = RSA_public_encrypt(plen, ptext_ex, ctext, key,
                                  RSA_PKCS1_OAEP_PADDING);
         if (num == -1 && pad_unknown()) {
-            printf("No OAEP support\n");
+            printf("\x4e\x6f\x20\x4f\x41\x45\x50\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
             goto next;
         }
         if (num != clen) {
-            printf("OAEP encryption failed!\n");
+            printf("\x4f\x41\x45\x50\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             err = 1;
             goto next;
         }
@@ -278,10 +278,10 @@ int main(int argc, char *argv[])
         num = RSA_private_decrypt(num, ctext, ptext, key,
                                   RSA_PKCS1_OAEP_PADDING);
         if (num != plen || memcmp(ptext, ptext_ex, num) != 0) {
-            printf("OAEP decryption (encrypted data) failed!\n");
+            printf("\x4f\x41\x45\x50\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x28\x65\x6e\x63\x72\x79\x70\x74\x65\x64\x20\x64\x61\x74\x61\x29\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             err = 1;
         } else if (memcmp(ctext, ctext_ex, num) == 0)
-            printf("OAEP test vector %d passed!\n", v);
+            printf("\x4f\x41\x45\x50\x20\x74\x65\x73\x74\x20\x76\x65\x63\x74\x6f\x72\x20\x25\x64\x20\x70\x61\x73\x73\x65\x64\x21\xa", v);
 
         /*
          * Different ciphertexts (rsa_oaep.c without -DPKCS_TESTVECT). Try
@@ -292,10 +292,10 @@ int main(int argc, char *argv[])
                                   RSA_PKCS1_OAEP_PADDING);
 
         if (num != plen || memcmp(ptext, ptext_ex, num) != 0) {
-            printf("OAEP decryption (test vector data) failed!\n");
+            printf("\x4f\x41\x45\x50\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x28\x74\x65\x73\x74\x20\x76\x65\x63\x74\x6f\x72\x20\x64\x61\x74\x61\x29\x20\x66\x61\x69\x6c\x65\x64\x21\xa");
             err = 1;
         } else
-            printf("OAEP encryption/decryption ok\n");
+            printf("\x4f\x41\x45\x50\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x2f\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x6f\x6b\xa");
 
         /* Try decrypting corrupted ciphertexts. */
         for (n = 0; n < clen; ++n) {
@@ -303,7 +303,7 @@ int main(int argc, char *argv[])
             num = RSA_private_decrypt(clen, ctext, ptext, key,
                                           RSA_PKCS1_OAEP_PADDING);
             if (num > 0) {
-                printf("Corrupt data decrypted!\n");
+                printf("\x43\x6f\x72\x72\x75\x70\x74\x20\x64\x61\x74\x61\x20\x64\x65\x63\x72\x79\x70\x74\x65\x64\x21\xa");
                 err = 1;
                 break;
             }
@@ -315,7 +315,7 @@ int main(int argc, char *argv[])
             num = RSA_private_decrypt(n, ctext, ptext, key,
                                       RSA_PKCS1_OAEP_PADDING);
             if (num > 0) {
-                printf("Truncated data decrypted!\n");
+                printf("\x54\x72\x75\x6e\x63\x61\x74\x65\x64\x20\x64\x61\x74\x61\x20\x64\x65\x63\x72\x79\x70\x74\x65\x64\x21\xa");
                 err = 1;
                 break;
             }
@@ -332,7 +332,7 @@ int main(int argc, char *argv[])
 
 # ifdef OPENSSL_SYS_NETWARE
     if (err)
-        printf("ERROR: %d\n", err);
+        printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", err);
 # endif
     return err;
 }

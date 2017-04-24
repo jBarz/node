@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -63,7 +63,7 @@
 #include <openssl/buffer.h>
 #include "bn_lcl.h"
 
-static const char Hex[] = "0123456789ABCDEF";
+static const char Hex[] = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
 
 /* Must 'OPENSSL_free' the returned data */
 char *BN_bn2hex(const BIGNUM *a)
@@ -73,7 +73,7 @@ char *BN_bn2hex(const BIGNUM *a)
     char *p;
 
     if (BN_is_zero(a))
-        return OPENSSL_strdup("0");
+        return OPENSSL_strdup("\x30");
     buf = OPENSSL_malloc(a->top * BN_BYTES * 2 + 2);
     if (buf == NULL) {
         BNerr(BN_F_BN_BN2HEX, ERR_R_MALLOC_FAILURE);
@@ -81,9 +81,9 @@ char *BN_bn2hex(const BIGNUM *a)
     }
     p = buf;
     if (a->neg)
-        *(p++) = '-';
+        *(p++) = '\x2d';
     if (BN_is_zero(a))
-        *(p++) = '0';
+        *(p++) = '\x30';
     for (i = a->top - 1; i >= 0; i--) {
         for (j = BN_BITS2 - 8; j >= 0; j -= 8) {
             /* strip leading zeros */
@@ -95,7 +95,7 @@ char *BN_bn2hex(const BIGNUM *a)
             }
         }
     }
-    *p = '\0';
+    *p = '\x0';
  err:
     return (buf);
 }
@@ -132,11 +132,11 @@ char *BN_bn2dec(const BIGNUM *a)
     p = buf;
     lp = bn_data;
     if (BN_is_zero(t)) {
-        *(p++) = '0';
-        *(p++) = '\0';
+        *(p++) = '\x30';
+        *(p++) = '\x0';
     } else {
         if (BN_is_negative(t))
-            *p++ = '-';
+            *p++ = '\x2d';
 
         while (!BN_is_zero(t)) {
             if (lp - bn_data >= bn_data_num)
@@ -183,10 +183,10 @@ int BN_hex2bn(BIGNUM **bn, const char *a)
     int neg = 0, h, m, i, j, k, c;
     int num;
 
-    if ((a == NULL) || (*a == '\0'))
+    if ((a == NULL) || (*a == '\x0'))
         return (0);
 
-    if (*a == '-') {
+    if (*a == '\x2d') {
         neg = 1;
         a++;
     }
@@ -222,12 +222,12 @@ int BN_hex2bn(BIGNUM **bn, const char *a)
         l = 0;
         for (;;) {
             c = a[j - m];
-            if ((c >= '0') && (c <= '9'))
-                k = c - '0';
-            else if ((c >= 'a') && (c <= 'f'))
-                k = c - 'a' + 10;
-            else if ((c >= 'A') && (c <= 'F'))
-                k = c - 'A' + 10;
+            if ((c >= '\x30') && (c <= '\x39'))
+                k = c - '\x30';
+            else if ((c >= '\x61') && (c <= '\x66'))
+                k = c - '\x61' + 10;
+            else if ((c >= '\x41') && (c <= '\x46'))
+                k = c - '\x41' + 10;
             else
                 k = 0;          /* paranoia */
             l = (l << 4) | k;
@@ -261,9 +261,9 @@ int BN_dec2bn(BIGNUM **bn, const char *a)
     int neg = 0, i, j;
     int num;
 
-    if ((a == NULL) || (*a == '\0'))
+    if ((a == NULL) || (*a == '\x0'))
         return (0);
-    if (*a == '-') {
+    if (*a == '\x2d') {
         neg = 1;
         a++;
     }
@@ -300,7 +300,7 @@ int BN_dec2bn(BIGNUM **bn, const char *a)
     l = 0;
     while (--i >= 0) {
         l *= 10;
-        l += *a - '0';
+        l += *a - '\x30';
         a++;
         if (++j == BN_DEC_NUM) {
             BN_mul_word(ret, BN_DEC_CONV);
@@ -327,10 +327,10 @@ int BN_asc2bn(BIGNUM **bn, const char *a)
 {
     const char *p = a;
 
-    if (*p == '-')
+    if (*p == '\x2d')
         p++;
 
-    if (p[0] == '0' && (p[1] == 'X' || p[1] == 'x')) {
+    if (p[0] == '\x30' && (p[1] == '\x58' || p[1] == '\x78')) {
         if (!BN_hex2bn(bn, p + 2))
             return 0;
     } else {
@@ -338,7 +338,7 @@ int BN_asc2bn(BIGNUM **bn, const char *a)
             return 0;
     }
     /* Don't set the negative flag if it's zero. */
-    if (*a == '-' && (*bn)->top != 0)
+    if (*a == '\x2d' && (*bn)->top != 0)
         (*bn)->neg = 1;
     return 1;
 }
@@ -364,9 +364,9 @@ int BN_print(BIO *bp, const BIGNUM *a)
     int i, j, v, z = 0;
     int ret = 0;
 
-    if ((a->neg) && (BIO_write(bp, "-", 1) != 1))
+    if ((a->neg) && (BIO_write(bp, "\x2d", 1) != 1))
         goto end;
-    if (BN_is_zero(a) && (BIO_write(bp, "0", 1) != 1))
+    if (BN_is_zero(a) && (BIO_write(bp, "\x30", 1) != 1))
         goto end;
     for (i = a->top - 1; i >= 0; i--) {
         for (j = BN_BITS2 - 4; j >= 0; j -= 4) {
@@ -393,10 +393,10 @@ char *BN_options(void)
     if (!init) {
         init++;
 #ifdef BN_LLONG
-        BIO_snprintf(data, sizeof data, "bn(%d,%d)",
+        BIO_snprintf(data, sizeof data, "\x62\x6e\x28\x25\x64\x2c\x25\x64\x29",
                      (int)sizeof(BN_ULLONG) * 8, (int)sizeof(BN_ULONG) * 8);
 #else
-        BIO_snprintf(data, sizeof data, "bn(%d,%d)",
+        BIO_snprintf(data, sizeof data, "\x62\x6e\x28\x25\x64\x2c\x25\x64\x29",
                      (int)sizeof(BN_ULONG) * 8, (int)sizeof(BN_ULONG) * 8);
 #endif
     }

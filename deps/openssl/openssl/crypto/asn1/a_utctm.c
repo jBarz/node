@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -126,21 +126,21 @@ int asn1_utctime_to_tm(struct tm *tm, const ASN1_UTCTIME *d)
     if (l < 11)
         goto err;
     for (i = 0; i < 6; i++) {
-        if ((i == 5) && ((a[o] == 'Z') || (a[o] == '+') || (a[o] == '-'))) {
+        if ((i == 5) && ((a[o] == '\x5a') || (a[o] == '\x2b') || (a[o] == '\x2d'))) {
             i++;
             if (tm)
                 tm->tm_sec = 0;
             break;
         }
-        if ((a[o] < '0') || (a[o] > '9'))
+        if ((a[o] < '\x30') || (a[o] > '\x39'))
             goto err;
-        n = a[o] - '0';
+        n = a[o] - '\x30';
         if (++o > l)
             goto err;
 
-        if ((a[o] < '0') || (a[o] > '9'))
+        if ((a[o] < '\x30') || (a[o] > '\x39'))
             goto err;
-        n = (n * 10) + a[o] - '0';
+        n = (n * 10) + a[o] - '\x30';
         if (++o > l)
             goto err;
 
@@ -169,21 +169,21 @@ int asn1_utctime_to_tm(struct tm *tm, const ASN1_UTCTIME *d)
             }
         }
     }
-    if (a[o] == 'Z')
+    if (a[o] == '\x5a')
         o++;
-    else if ((a[o] == '+') || (a[o] == '-')) {
-        int offsign = a[o] == '-' ? -1 : 1, offset = 0;
+    else if ((a[o] == '\x2b') || (a[o] == '\x2d')) {
+        int offsign = a[o] == '\x2d' ? -1 : 1, offset = 0;
         o++;
         if (o + 4 > l)
             goto err;
         for (i = 6; i < 8; i++) {
-            if ((a[o] < '0') || (a[o] > '9'))
+            if ((a[o] < '\x30') || (a[o] > '\x39'))
                 goto err;
-            n = a[o] - '0';
+            n = a[o] - '\x30';
             o++;
-            if ((a[o] < '0') || (a[o] > '9'))
+            if ((a[o] < '\x30') || (a[o] > '\x39'))
                 goto err;
-            n = (n * 10) + a[o] - '0';
+            n = (n * 10) + a[o] - '\x30';
             if ((n < min[i]) || (n > max[i]))
                 goto err;
             if (tm) {
@@ -271,7 +271,7 @@ ASN1_UTCTIME *ASN1_UTCTIME_adj(ASN1_UTCTIME *s, time_t t,
         s->data = (unsigned char *)p;
     }
 
-    BIO_snprintf(p, len, "%02d%02d%02d%02d%02d%02dZ", ts->tm_year % 100,
+    BIO_snprintf(p, len, "\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x5a", ts->tm_year % 100,
                  ts->tm_mon + 1, ts->tm_mday, ts->tm_hour, ts->tm_min,
                  ts->tm_sec);
     s->length = strlen(p);
@@ -317,9 +317,9 @@ time_t ASN1_UTCTIME_get(const ASN1_UTCTIME *s)
     struct tm tm;
     int offset;
 
-    memset(&tm, '\0', sizeof tm);
+    memset(&tm, '\x0', sizeof tm);
 
-# define g2(p) (((p)[0]-'0')*10+(p)[1]-'0')
+# define g2(p) (((p)[0]-'\x30')*10+(p)[1]-'\x30')
     tm.tm_year = g2(s->data);
     if (tm.tm_year < 50)
         tm.tm_year += 100;
@@ -328,11 +328,11 @@ time_t ASN1_UTCTIME_get(const ASN1_UTCTIME *s)
     tm.tm_hour = g2(s->data + 6);
     tm.tm_min = g2(s->data + 8);
     tm.tm_sec = g2(s->data + 10);
-    if (s->data[12] == 'Z')
+    if (s->data[12] == '\x5a')
         offset = 0;
     else {
         offset = g2(s->data + 13) * 60 + g2(s->data + 15);
-        if (s->data[12] == '-')
+        if (s->data[12] == '\x2d')
             offset = -offset;
     }
 # undef g2

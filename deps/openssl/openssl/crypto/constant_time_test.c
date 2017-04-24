@@ -24,7 +24,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -61,12 +61,12 @@ static int test_binary_op(unsigned int (*op) (unsigned int a, unsigned int b),
 {
     unsigned c = op(a, b);
     if (is_true && c != CONSTTIME_TRUE) {
-        fprintf(stderr, "Test failed for %s(%du, %du): expected %du "
-                "(TRUE), got %du\n", op_name, a, b, CONSTTIME_TRUE, c);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x25\x73\x28\x25\x64\x75\x2c\x20\x25\x64\x75\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x75\x20"
+                "\x28\x54\x52\x55\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\x75\xa", op_name, a, b, CONSTTIME_TRUE, c);
         return 1;
     } else if (!is_true && c != CONSTTIME_FALSE) {
-        fprintf(stderr, "Test failed for  %s(%du, %du): expected %du "
-                "(FALSE), got %du\n", op_name, a, b, CONSTTIME_FALSE, c);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x20\x25\x73\x28\x25\x64\x75\x2c\x20\x25\x64\x75\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x75\x20"
+                "\x28\x46\x41\x4c\x53\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\x75\xa", op_name, a, b, CONSTTIME_FALSE, c);
         return 1;
     }
     return 0;
@@ -79,12 +79,12 @@ static int test_binary_op_8(unsigned
 {
     unsigned char c = op(a, b);
     if (is_true && c != CONSTTIME_TRUE_8) {
-        fprintf(stderr, "Test failed for %s(%du, %du): expected %u "
-                "(TRUE), got %u\n", op_name, a, b, CONSTTIME_TRUE_8, c);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x25\x73\x28\x25\x64\x75\x2c\x20\x25\x64\x75\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x75\x20"
+                "\x28\x54\x52\x55\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x75\xa", op_name, a, b, CONSTTIME_TRUE_8, c);
         return 1;
     } else if (!is_true && c != CONSTTIME_FALSE_8) {
-        fprintf(stderr, "Test failed for  %s(%du, %du): expected %u "
-                "(FALSE), got %u\n", op_name, a, b, CONSTTIME_FALSE_8, c);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x20\x25\x73\x28\x25\x64\x75\x2c\x20\x25\x64\x75\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x75\x20"
+                "\x28\x46\x41\x4c\x53\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x75\xa", op_name, a, b, CONSTTIME_FALSE_8, c);
         return 1;
     }
     return 0;
@@ -94,12 +94,12 @@ static int test_is_zero(unsigned int a)
 {
     unsigned int c = constant_time_is_zero(a);
     if (a == 0 && c != CONSTTIME_TRUE) {
-        fprintf(stderr, "Test failed for constant_time_is_zero(%du): "
-                "expected %du (TRUE), got %du\n", a, CONSTTIME_TRUE, c);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x69\x73\x5f\x7a\x65\x72\x6f\x28\x25\x64\x75\x29\x3a\x20"
+                "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x75\x20\x28\x54\x52\x55\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\x75\xa", a, CONSTTIME_TRUE, c);
         return 1;
     } else if (a != 0 && c != CONSTTIME_FALSE) {
-        fprintf(stderr, "Test failed for constant_time_is_zero(%du): "
-                "expected %du (FALSE), got %du\n", a, CONSTTIME_FALSE, c);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x69\x73\x5f\x7a\x65\x72\x6f\x28\x25\x64\x75\x29\x3a\x20"
+                "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x75\x20\x28\x46\x41\x4c\x53\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\x75\xa", a, CONSTTIME_FALSE, c);
         return 1;
     }
     return 0;
@@ -109,12 +109,12 @@ static int test_is_zero_8(unsigned int a)
 {
     unsigned char c = constant_time_is_zero_8(a);
     if (a == 0 && c != CONSTTIME_TRUE_8) {
-        fprintf(stderr, "Test failed for constant_time_is_zero(%du): "
-                "expected %u (TRUE), got %u\n", a, CONSTTIME_TRUE_8, c);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x69\x73\x5f\x7a\x65\x72\x6f\x28\x25\x64\x75\x29\x3a\x20"
+                "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x75\x20\x28\x54\x52\x55\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x75\xa", a, CONSTTIME_TRUE_8, c);
         return 1;
     } else if (a != 0 && c != CONSTTIME_FALSE) {
-        fprintf(stderr, "Test failed for constant_time_is_zero(%du): "
-                "expected %u (FALSE), got %u\n", a, CONSTTIME_FALSE_8, c);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x69\x73\x5f\x7a\x65\x72\x6f\x28\x25\x64\x75\x29\x3a\x20"
+                "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x75\x20\x28\x46\x41\x4c\x53\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x75\xa", a, CONSTTIME_FALSE_8, c);
         return 1;
     }
     return 0;
@@ -124,15 +124,15 @@ static int test_select(unsigned int a, unsigned int b)
 {
     unsigned int selected = constant_time_select(CONSTTIME_TRUE, a, b);
     if (selected != a) {
-        fprintf(stderr, "Test failed for constant_time_select(%du, %du,"
-                "%du): expected %du(first value), got %du\n",
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x73\x65\x6c\x65\x63\x74\x28\x25\x64\x75\x2c\x20\x25\x64\x75\x2c"
+                "\x25\x64\x75\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x75\x28\x66\x69\x72\x73\x74\x20\x76\x61\x6c\x75\x65\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\x75\xa",
                 CONSTTIME_TRUE, a, b, a, selected);
         return 1;
     }
     selected = constant_time_select(CONSTTIME_FALSE, a, b);
     if (selected != b) {
-        fprintf(stderr, "Test failed for constant_time_select(%du, %du,"
-                "%du): expected %du(second value), got %du\n",
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x73\x65\x6c\x65\x63\x74\x28\x25\x64\x75\x2c\x20\x25\x64\x75\x2c"
+                "\x25\x64\x75\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x75\x28\x73\x65\x63\x6f\x6e\x64\x20\x76\x61\x6c\x75\x65\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\x75\xa",
                 CONSTTIME_FALSE, a, b, b, selected);
         return 1;
     }
@@ -143,15 +143,15 @@ static int test_select_8(unsigned char a, unsigned char b)
 {
     unsigned char selected = constant_time_select_8(CONSTTIME_TRUE_8, a, b);
     if (selected != a) {
-        fprintf(stderr, "Test failed for constant_time_select(%u, %u,"
-                "%u): expected %u(first value), got %u\n",
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x73\x65\x6c\x65\x63\x74\x28\x25\x75\x2c\x20\x25\x75\x2c"
+                "\x25\x75\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x75\x28\x66\x69\x72\x73\x74\x20\x76\x61\x6c\x75\x65\x29\x2c\x20\x67\x6f\x74\x20\x25\x75\xa",
                 CONSTTIME_TRUE, a, b, a, selected);
         return 1;
     }
     selected = constant_time_select_8(CONSTTIME_FALSE_8, a, b);
     if (selected != b) {
-        fprintf(stderr, "Test failed for constant_time_select(%u, %u,"
-                "%u): expected %u(second value), got %u\n",
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x73\x65\x6c\x65\x63\x74\x28\x25\x75\x2c\x20\x25\x75\x2c"
+                "\x25\x75\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x75\x28\x73\x65\x63\x6f\x6e\x64\x20\x76\x61\x6c\x75\x65\x29\x2c\x20\x67\x6f\x74\x20\x25\x75\xa",
                 CONSTTIME_FALSE, a, b, b, selected);
         return 1;
     }
@@ -162,15 +162,15 @@ static int test_select_int(int a, int b)
 {
     int selected = constant_time_select_int(CONSTTIME_TRUE, a, b);
     if (selected != a) {
-        fprintf(stderr, "Test failed for constant_time_select(%du, %d,"
-                "%d): expected %d(first value), got %d\n",
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x73\x65\x6c\x65\x63\x74\x28\x25\x64\x75\x2c\x20\x25\x64\x2c"
+                "\x25\x64\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x28\x66\x69\x72\x73\x74\x20\x76\x61\x6c\x75\x65\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\xa",
                 CONSTTIME_TRUE, a, b, a, selected);
         return 1;
     }
     selected = constant_time_select_int(CONSTTIME_FALSE, a, b);
     if (selected != b) {
-        fprintf(stderr, "Test failed for constant_time_select(%du, %d,"
-                "%d): expected %d(second value), got %d\n",
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x73\x65\x6c\x65\x63\x74\x28\x25\x64\x75\x2c\x20\x25\x64\x2c"
+                "\x25\x64\x29\x3a\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x28\x73\x65\x63\x6f\x6e\x64\x20\x76\x61\x6c\x75\x65\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\xa",
                 CONSTTIME_FALSE, a, b, b, selected);
         return 1;
     }
@@ -181,12 +181,12 @@ static int test_eq_int(int a, int b)
 {
     unsigned int equal = constant_time_eq_int(a, b);
     if (a == b && equal != CONSTTIME_TRUE) {
-        fprintf(stderr, "Test failed for constant_time_eq_int(%d, %d): "
-                "expected %du(TRUE), got %du\n", a, b, CONSTTIME_TRUE, equal);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x65\x71\x5f\x69\x6e\x74\x28\x25\x64\x2c\x20\x25\x64\x29\x3a\x20"
+                "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x75\x28\x54\x52\x55\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\x75\xa", a, b, CONSTTIME_TRUE, equal);
         return 1;
     } else if (a != b && equal != CONSTTIME_FALSE) {
-        fprintf(stderr, "Test failed for constant_time_eq_int(%d, %d): "
-                "expected %du(FALSE), got %du\n",
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x65\x71\x5f\x69\x6e\x74\x28\x25\x64\x2c\x20\x25\x64\x29\x3a\x20"
+                "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x64\x75\x28\x46\x41\x4c\x53\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x64\x75\xa",
                 a, b, CONSTTIME_FALSE, equal);
         return 1;
     }
@@ -197,12 +197,12 @@ static int test_eq_int_8(int a, int b)
 {
     unsigned char equal = constant_time_eq_int_8(a, b);
     if (a == b && equal != CONSTTIME_TRUE_8) {
-        fprintf(stderr, "Test failed for constant_time_eq_int_8(%d, %d): "
-                "expected %u(TRUE), got %u\n", a, b, CONSTTIME_TRUE_8, equal);
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x65\x71\x5f\x69\x6e\x74\x5f\x38\x28\x25\x64\x2c\x20\x25\x64\x29\x3a\x20"
+                "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x75\x28\x54\x52\x55\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x75\xa", a, b, CONSTTIME_TRUE_8, equal);
         return 1;
     } else if (a != b && equal != CONSTTIME_FALSE_8) {
-        fprintf(stderr, "Test failed for constant_time_eq_int_8(%d, %d): "
-                "expected %u(FALSE), got %u\n",
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x66\x6f\x72\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x65\x71\x5f\x69\x6e\x74\x5f\x38\x28\x25\x64\x2c\x20\x25\x64\x29\x3a\x20"
+                "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x25\x75\x28\x46\x41\x4c\x53\x45\x29\x2c\x20\x67\x6f\x74\x20\x25\x75\xa",
                 a, b, CONSTTIME_FALSE_8, equal);
         return 1;
     }
@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
     int c, d;
     unsigned char e, f;
     int num_failed = 0, num_all = 0;
-    fprintf(stdout, "Testing constant time operations...\n");
+    fprintf(stdout, "\x54\x65\x73\x74\x69\x6e\x67\x20\x63\x6f\x6e\x73\x74\x61\x6e\x74\x20\x74\x69\x6d\x65\x20\x6f\x70\x65\x72\x61\x74\x69\x6f\x6e\x73\x2e\x2e\x2e\xa");
 
     for (i = 0; i < sizeof(test_values) / sizeof(int); ++i) {
         a = test_values[i];
@@ -239,35 +239,35 @@ int main(int argc, char *argv[])
         for (j = 0; j < sizeof(test_values) / sizeof(int); ++j) {
             b = test_values[j];
             num_failed += test_binary_op(&constant_time_lt,
-                                         "constant_time_lt", a, b, a < b);
+                                         "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x6c\x74", a, b, a < b);
             num_failed += test_binary_op_8(&constant_time_lt_8,
-                                           "constant_time_lt_8", a, b, a < b);
+                                           "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x6c\x74\x5f\x38", a, b, a < b);
             num_failed += test_binary_op(&constant_time_lt,
-                                         "constant_time_lt_8", b, a, b < a);
+                                         "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x6c\x74\x5f\x38", b, a, b < a);
             num_failed += test_binary_op_8(&constant_time_lt_8,
-                                           "constant_time_lt_8", b, a, b < a);
+                                           "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x6c\x74\x5f\x38", b, a, b < a);
             num_failed += test_binary_op(&constant_time_ge,
-                                         "constant_time_ge", a, b, a >= b);
+                                         "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x67\x65", a, b, a >= b);
             num_failed += test_binary_op_8(&constant_time_ge_8,
-                                           "constant_time_ge_8", a, b,
+                                           "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x67\x65\x5f\x38", a, b,
                                            a >= b);
             num_failed +=
-                test_binary_op(&constant_time_ge, "constant_time_ge", b, a,
+                test_binary_op(&constant_time_ge, "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x67\x65", b, a,
                                b >= a);
             num_failed +=
-                test_binary_op_8(&constant_time_ge_8, "constant_time_ge_8", b,
+                test_binary_op_8(&constant_time_ge_8, "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x67\x65\x5f\x38", b,
                                  a, b >= a);
             num_failed +=
-                test_binary_op(&constant_time_eq, "constant_time_eq", a, b,
+                test_binary_op(&constant_time_eq, "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x65\x71", a, b,
                                a == b);
             num_failed +=
-                test_binary_op_8(&constant_time_eq_8, "constant_time_eq_8", a,
+                test_binary_op_8(&constant_time_eq_8, "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x65\x71\x5f\x38", a,
                                  b, a == b);
             num_failed +=
-                test_binary_op(&constant_time_eq, "constant_time_eq", b, a,
+                test_binary_op(&constant_time_eq, "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x65\x71", b, a,
                                b == a);
             num_failed +=
-                test_binary_op_8(&constant_time_eq_8, "constant_time_eq_8", b,
+                test_binary_op_8(&constant_time_eq_8, "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x5f\x74\x69\x6d\x65\x5f\x65\x71\x5f\x38", b,
                                  a, b == a);
             num_failed += test_select(a, b);
             num_all += 13;
@@ -295,10 +295,10 @@ int main(int argc, char *argv[])
     }
 
     if (!num_failed) {
-        fprintf(stdout, "ok (ran %d tests)\n", num_all);
+        fprintf(stdout, "\x6f\x6b\x20\x28\x72\x61\x6e\x20\x25\x64\x20\x74\x65\x73\x74\x73\x29\xa", num_all);
         return EXIT_SUCCESS;
     } else {
-        fprintf(stdout, "%d of %d tests failed!\n", num_failed, num_all);
+        fprintf(stdout, "\x25\x64\x20\x6f\x66\x20\x25\x64\x20\x74\x65\x73\x74\x73\x20\x66\x61\x69\x6c\x65\x64\x21\xa", num_failed, num_all);
         return EXIT_FAILURE;
     }
 }

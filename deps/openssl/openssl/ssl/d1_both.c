@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -93,7 +93,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -147,9 +147,9 @@
 #if 0
 # define RSMBLY_BITMASK_PRINT(bitmask, msg_len) { \
                         long ii; \
-                        printf("bitmask: "); for (ii = 0; ii < (msg_len); ii++) \
-                        printf("%d ", (bitmask[ii >> 3] & (1 << (ii & 7))) >> (ii & 7)); \
-                        printf("\n"); }
+                        printf("\x62\x69\x74\x6d\x61\x73\x6b\x3a\x20"); for (ii = 0; ii < (msg_len); ii++) \
+                        printf("\x25\x64\x20", (bitmask[ii >> 3] & (1 << (ii & 7))) >> (ii & 7)); \
+                        printf("\xa"); }
 #endif
 
 static unsigned char bitmask_start_values[] =
@@ -1068,7 +1068,7 @@ int dtls1_send_change_cipher_spec(SSL *s, int a, int b)
 int dtls1_read_failed(SSL *s, int code)
 {
     if (code > 0) {
-        fprintf(stderr, "invalid state reached %s:%d", __FILE__, __LINE__);
+        fprintf(stderr, "\x69\x6e\x76\x61\x6c\x69\x64\x20\x73\x74\x61\x74\x65\x20\x72\x65\x61\x63\x68\x65\x64\x20\x25\x73\x3a\x25\x64", __FILE__, __LINE__);
         return 1;
     }
 
@@ -1140,7 +1140,7 @@ int dtls1_retransmit_buffered_messages(SSL *s)
                                      (frag->msg_header.seq,
                                       frag->msg_header.is_ccs), 0,
                                      &found) <= 0 && found) {
-            fprintf(stderr, "dtls1_retransmit_message() failed\n");
+            fprintf(stderr, "\x64\x74\x6c\x73\x31\x5f\x72\x65\x74\x72\x61\x6e\x73\x6d\x69\x74\x5f\x6d\x65\x73\x73\x61\x67\x65\x28\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
             return -1;
         }
     }
@@ -1206,9 +1206,9 @@ int dtls1_buffer_message(SSL *s, int is_ccs)
         return 0;
     }
 #if 0
-    fprintf(stderr, "buffered messge: \ttype = %xx\n", msg_buf->type);
-    fprintf(stderr, "\t\t\t\t\tlen = %d\n", msg_buf->len);
-    fprintf(stderr, "\t\t\t\t\tseq_num = %d\n", msg_buf->seq_num);
+    fprintf(stderr, "\x62\x75\x66\x66\x65\x72\x65\x64\x20\x6d\x65\x73\x73\x67\x65\x3a\x20\x9\x74\x79\x70\x65\x20\x3d\x20\x25\x78\x78\xa", msg_buf->type);
+    fprintf(stderr, "\x9\x9\x9\x9\x9\x6c\x65\x6e\x20\x3d\x20\x25\x64\xa", msg_buf->len);
+    fprintf(stderr, "\x9\x9\x9\x9\x9\x73\x65\x71\x5f\x6e\x75\x6d\x20\x3d\x20\x25\x64\xa", msg_buf->seq_num);
 #endif
 
     pqueue_insert(s->d1->sent_messages, item);
@@ -1240,7 +1240,7 @@ dtls1_retransmit_message(SSL *s, unsigned short seq, unsigned long frag_off,
 
     item = pqueue_find(s->d1->sent_messages, seq64be);
     if (item == NULL) {
-        fprintf(stderr, "retransmit:  message %d non-existant\n", seq);
+        fprintf(stderr, "\x72\x65\x74\x72\x61\x6e\x73\x6d\x69\x74\x3a\x20\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x25\x64\x20\x6e\x6f\x6e\x2d\x65\x78\x69\x73\x74\x61\x6e\x74\xa", seq);
         *found = 0;
         return 0;
     }

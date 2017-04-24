@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -118,7 +118,7 @@
  */
 static FILE *(*const vms_fopen)(const char *, const char *, ...) =
     (FILE *(*)(const char *, const char *, ...))fopen;
-# define VMS_OPEN_ATTRS "shr=get,put,upd,del","ctx=bin,stm","rfm=stm","rat=none","mrs=0"
+# define VMS_OPEN_ATTRS "\x73\x68\x72\x3d\x67\x65\x74\x2c\x70\x75\x74\x2c\x75\x70\x64\x2c\x64\x65\x6c","\x63\x74\x78\x3d\x62\x69\x6e\x2c\x73\x74\x6d","\x72\x66\x6d\x3d\x73\x74\x6d","\x72\x61\x74\x3d\x6e\x6f\x6e\x65","\x6d\x72\x73\x3d\x30"
 #endif
 
 /* #define RFILE ".rnd" - defined in ../../e_os.h */
@@ -180,9 +180,9 @@ int RAND_load_file(const char *file, long bytes)
         return (ret);
 
 #ifdef OPENSSL_SYS_VMS
-    in = vms_fopen(file, "rb", VMS_OPEN_ATTRS);
+    in = vms_fopen(file, "\x72\x62", VMS_OPEN_ATTRS);
 #else
-    in = fopen(file, "rb");
+    in = fopen(file, "\x72\x62");
 #endif
     if (in == NULL)
         goto err;
@@ -262,7 +262,7 @@ int RAND_write_file(const char *file)
          */
         int fd = open(file, O_WRONLY | O_CREAT | O_BINARY, 0600);
         if (fd != -1)
-            out = fdopen(fd, "wb");
+            out = fdopen(fd, "\x77\x62");
     }
 #endif
 
@@ -285,12 +285,12 @@ int RAND_write_file(const char *file)
      * rand file in a concurrent use situation.
      */
 
-    out = vms_fopen(file, "rb+", VMS_OPEN_ATTRS);
+    out = vms_fopen(file, "\x72\x62\x2b", VMS_OPEN_ATTRS);
     if (out == NULL)
-        out = vms_fopen(file, "wb", VMS_OPEN_ATTRS);
+        out = vms_fopen(file, "\x77\x62", VMS_OPEN_ATTRS);
 #else
     if (out == NULL)
-        out = fopen(file, "wb");
+        out = fopen(file, "\x77\x62");
 #endif
     if (out == NULL)
         goto err;
@@ -328,13 +328,13 @@ const char *RAND_file_name(char *buf, size_t size)
 #endif
 
     if (OPENSSL_issetugid() == 0)
-        s = getenv("RANDFILE");
+        s = getenv("\x52\x41\x4e\x44\x46\x49\x4c\x45");
     if (s != NULL && *s && strlen(s) + 1 < size) {
         if (BUF_strlcpy(buf, s, size) >= size)
             return NULL;
     } else {
         if (OPENSSL_issetugid() == 0)
-            s = getenv("HOME");
+            s = getenv("\x48\x4f\x4d\x45");
 #ifdef DEFAULT_HOME
         if (s == NULL) {
             s = DEFAULT_HOME;
@@ -343,11 +343,11 @@ const char *RAND_file_name(char *buf, size_t size)
         if (s && *s && strlen(s) + strlen(RFILE) + 2 < size) {
             BUF_strlcpy(buf, s, size);
 #ifndef OPENSSL_SYS_VMS
-            BUF_strlcat(buf, "/", size);
+            BUF_strlcat(buf, "\x2f", size);
 #endif
             BUF_strlcat(buf, RFILE, size);
         } else
-            buf[0] = '\0';      /* no file name */
+            buf[0] = '\x0';      /* no file name */
     }
 
 #ifdef __OpenBSD__
@@ -360,11 +360,11 @@ const char *RAND_file_name(char *buf, size_t size)
      */
 
     if (!buf[0])
-        if (BUF_strlcpy(buf, "/dev/arandom", size) >= size) {
+        if (BUF_strlcpy(buf, "\x2f\x64\x65\x76\x2f\x61\x72\x61\x6e\x64\x6f\x6d", size) >= size) {
             return (NULL);
         }
     if (stat(buf, &sb) == -1)
-        if (BUF_strlcpy(buf, "/dev/arandom", size) >= size) {
+        if (BUF_strlcpy(buf, "\x2f\x64\x65\x76\x2f\x61\x72\x61\x6e\x64\x6f\x6d", size) >= size) {
             return (NULL);
         }
 #endif

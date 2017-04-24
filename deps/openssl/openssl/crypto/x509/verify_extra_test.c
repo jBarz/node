@@ -21,13 +21,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -68,7 +68,7 @@ static STACK_OF(X509) *load_certs_from_file(const char *filename)
     BIO *bio;
     X509 *x;
 
-    bio = BIO_new_file(filename, "r");
+    bio = BIO_new_file(filename, "\x72");
 
     if (bio == NULL) {
         return NULL;
@@ -148,12 +148,12 @@ static int test_alt_chains_cert_forgery(void)
     lookup = X509_STORE_add_lookup(store, X509_LOOKUP_file());
     if (lookup == NULL)
         goto err;
-    if(!X509_LOOKUP_load_file(lookup, "certs/roots.pem", X509_FILETYPE_PEM))
+    if(!X509_LOOKUP_load_file(lookup, "\x63\x65\x72\x74\x73\x2f\x72\x6f\x6f\x74\x73\x2e\x70\x65\x6d", X509_FILETYPE_PEM))
         goto err;
 
-    untrusted = load_certs_from_file("certs/untrusted.pem");
+    untrusted = load_certs_from_file("\x63\x65\x72\x74\x73\x2f\x75\x6e\x74\x72\x75\x73\x74\x65\x64\x2e\x70\x65\x6d");
 
-    if ((bio = BIO_new_file("certs/bad.pem", "r")) == NULL)
+    if ((bio = BIO_new_file("\x63\x65\x72\x74\x73\x2f\x62\x61\x64\x2e\x70\x65\x6d", "\x72")) == NULL)
         goto err;
 
     if((x = PEM_read_bio_X509(bio, NULL, 0, NULL)) == NULL)
@@ -193,7 +193,7 @@ int main(void)
     OpenSSL_add_all_digests();
 
     if (!test_alt_chains_cert_forgery()) {
-        fprintf(stderr, "Test alt chains cert forgery failed\n");
+        fprintf(stderr, "\x54\x65\x73\x74\x20\x61\x6c\x74\x20\x63\x68\x61\x69\x6e\x73\x20\x63\x65\x72\x74\x20\x66\x6f\x72\x67\x65\x72\x79\x20\x66\x61\x69\x6c\x65\x64\xa");
         return 1;
     }
 
@@ -203,6 +203,6 @@ int main(void)
     ERR_free_strings();
     CRYPTO_mem_leaks_fp(stderr);
 
-    printf("PASS\n");
+    printf("\x50\x41\x53\x53\xa");
     return 0;
 }

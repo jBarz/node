@@ -257,7 +257,7 @@ size_t aesni_gcm_decrypt(const unsigned char *in,
                          size_t len,
                          const void *key, unsigned char ivec[16], u64 *Xi);
 #   define AES_gcm_decrypt aesni_gcm_decrypt
-void gcm_ghash_avx(u64 Xi[2], const u128 Htable[16], const u8 *in,
+void gcm_ghash_avx(u64 Xi[2], const u128 Htable[16], const  *in,
                    size_t len);
 #   define AES_GCM_ASM(gctx)       (gctx->ctr==aesni_ctr32_encrypt_blocks && \
                                  gctx->gcm.ghash==gcm_ghash_avx)

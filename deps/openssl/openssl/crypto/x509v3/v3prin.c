@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -72,27 +72,27 @@ int main(int argc, char **argv)
     X509V3_add_standard_extensions();
     ERR_load_crypto_strings();
     if (!argv[1]) {
-        fprintf(stderr, "Usage v3prin cert.pem\n");
+        fprintf(stderr, "\x55\x73\x61\x67\x65\x20\x76\x33\x70\x72\x69\x6e\x20\x63\x65\x72\x74\x2e\x70\x65\x6d\xa");
         exit(1);
     }
-    if (!(inf = fopen(argv[1], "r"))) {
-        fprintf(stderr, "Can't open %s\n", argv[1]);
+    if (!(inf = fopen(argv[1], "\x72"))) {
+        fprintf(stderr, "\x43\x61\x6e\x27\x74\x20\x6f\x70\x65\x6e\x20\x25\x73\xa", argv[1]);
         exit(1);
     }
     if (!(cert = PEM_read_X509(inf, NULL, NULL))) {
-        fprintf(stderr, "Can't read certificate %s\n", argv[1]);
+        fprintf(stderr, "\x43\x61\x6e\x27\x74\x20\x72\x65\x61\x64\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x25\x73\xa", argv[1]);
         ERR_print_errors_fp(stderr);
         exit(1);
     }
     fclose(inf);
     count = X509_get_ext_count(cert);
-    printf("%d extensions\n", count);
+    printf("\x25\x64\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\xa", count);
     for (i = 0; i < count; i++) {
         ext = X509_get_ext(cert, i);
-        printf("%s\n", OBJ_nid2ln(OBJ_obj2nid(ext->object)));
+        printf("\x25\x73\xa", OBJ_nid2ln(OBJ_obj2nid(ext->object)));
         if (!X509V3_EXT_print_fp(stdout, ext, 0, 0))
             ERR_print_errors_fp(stderr);
-        printf("\n");
+        printf("\xa");
 
     }
     return 0;

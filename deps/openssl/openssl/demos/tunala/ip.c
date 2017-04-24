@@ -84,7 +84,7 @@ int ip_parse_address(const char *address, const char **parsed_ip,
     char buf[256];
     struct hostent *lookup;
     unsigned long port;
-    const char *ptr = strstr(address, ":");
+    const char *ptr = strstr(address, "\x3a");
     const char *ip = all_local_ip;
 
     if (!ptr) {
@@ -107,7 +107,7 @@ int ip_parse_address(const char *address, const char **parsed_ip,
          * Spit a message to differentiate between lookup failures and bad
          * strings.
          */
-        fprintf(stderr, "hostname lookup for '%s' failed\n", buf);
+        fprintf(stderr, "\x68\x6f\x73\x74\x6e\x61\x6d\x65\x20\x6c\x6f\x6f\x6b\x75\x70\x20\x66\x6f\x72\x20\x27\x25\x73\x27\x20\x66\x61\x69\x6c\x65\x64\xa", buf);
         return 0;
     }
     ip = lookup->h_addr_list[0];

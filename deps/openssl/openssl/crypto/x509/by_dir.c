@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -99,7 +99,7 @@ static int add_cert_dir(BY_DIR *ctx, const char *dir, int type);
 static int get_cert_by_subject(X509_LOOKUP *xl, int type, X509_NAME *name,
                                X509_OBJECT *ret);
 X509_LOOKUP_METHOD x509_dir_lookup = {
-    "Load certs from files in a directory",
+    "\x4c\x6f\x61\x64\x20\x63\x65\x72\x74\x73\x20\x66\x72\x6f\x6d\x20\x66\x69\x6c\x65\x73\x20\x69\x6e\x20\x61\x20\x64\x69\x72\x65\x63\x74\x6f\x72\x79",
     new_dir,                    /* new */
     free_dir,                   /* free */
     NULL,                       /* init */
@@ -208,7 +208,7 @@ static int add_cert_dir(BY_DIR *ctx, const char *dir, int type)
     s = dir;
     p = s;
     do {
-        if ((*p == LIST_SEPARATOR_CHAR) || (*p == '\0')) {
+        if ((*p == LIST_SEPARATOR_CHAR) || (*p == '\x0')) {
             BY_DIR_ENTRY *ent;
             ss = s;
             s = p + 1;
@@ -241,13 +241,13 @@ static int add_cert_dir(BY_DIR *ctx, const char *dir, int type)
                 return 0;
             }
             strncpy(ent->dir, ss, (unsigned int)len);
-            ent->dir[len] = '\0';
+            ent->dir[len] = '\x0';
             if (!sk_BY_DIR_ENTRY_push(ctx->dirs, ent)) {
                 by_dir_entry_free(ent);
                 return 0;
             }
         }
-    } while (*p++ != '\0');
+    } while (*p++ != '\x0');
     return 1;
 }
 
@@ -285,7 +285,7 @@ static int get_cert_by_subject(X509_LOOKUP *xl, int type, X509_NAME *name,
         data.crl.st_crl.crl = &data.crl.st_crl_info;
         data.crl.st_crl_info.issuer = name;
         stmp.data.crl = &data.crl.st_crl;
-        postfix = "r";
+        postfix = "\x72";
     } else {
         X509err(X509_F_GET_CERT_BY_SUBJECT, X509_R_WRONG_LOOKUP_TYPE);
         goto finish;
@@ -326,31 +326,31 @@ static int get_cert_by_subject(X509_LOOKUP *xl, int type, X509_NAME *name,
             hent = NULL;
         }
         for (;;) {
-            char c = '/';
+            char c = '\x2f';
 #ifdef OPENSSL_SYS_VMS
             c = ent->dir[strlen(ent->dir) - 1];
-            if (c != ':' && c != '>' && c != ']') {
+            if (c != '\x3a' && c != '\x3e' && c != '\x5d') {
                 /*
                  * If no separator is present, we assume the directory
                  * specifier is a logical name, and add a colon.  We really
                  * should use better VMS routines for merging things like
                  * this, but this will do for now... -- Richard Levitte
                  */
-                c = ':';
+                c = '\x3a';
             } else {
-                c = '\0';
+                c = '\x0';
             }
 #endif
-            if (c == '\0') {
+            if (c == '\x0') {
                 /*
                  * This is special.  When c == '\0', no directory separator
                  * should be added.
                  */
                 BIO_snprintf(b->data, b->max,
-                             "%s%08lx.%s%d", ent->dir, h, postfix, k);
+                             "\x25\x73\x25\x30\x38\x6c\x78\x2e\x25\x73\x25\x64", ent->dir, h, postfix, k);
             } else {
                 BIO_snprintf(b->data, b->max,
-                             "%s%c%08lx.%s%d", ent->dir, c, h, postfix, k);
+                             "\x25\x73\x25\x63\x25\x30\x38\x6c\x78\x2e\x25\x73\x25\x64", ent->dir, c, h, postfix, k);
             }
 #ifndef OPENSSL_NO_POSIX_IO
 # ifdef _WIN32

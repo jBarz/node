@@ -77,7 +77,7 @@ main()
     for (i = 0; i < 256; i++) {
         for (j = 0; j < 256; j++)
             if (ebits_to_num[j] == i) {
-                printf("0x%02x,", j);
+                printf("\x30\x78\x25\x30\x32\x78\x2c", j);
                 break;
             }
     }

@@ -157,7 +157,7 @@ static int rc4_hmac_md5_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
 # endif
         MD5_Update(&key->md, in + md5_off, plen - md5_off);
 
-        if (plen != len) {      /* "TLS" mode of operation */
+        if (plen != len) {      /* "\x54\x4c\x53" mode of operation */
             if (in != out)
                 memcpy(out + rc4_off, in + rc4_off, plen - rc4_off);
 
@@ -202,7 +202,7 @@ static int rc4_hmac_md5_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
 # endif
         /* decrypt HMAC at once */
         RC4(&key->ks, len - rc4_off, in + rc4_off, out + rc4_off);
-        if (plen != NO_PAYLOAD_LENGTH) { /* "TLS" mode of operation */
+        if (plen != NO_PAYLOAD_LENGTH) { /* "\x54\x4c\x53" mode of operation */
             MD5_Update(&key->md, out + md5_off, plen - md5_off);
 
             /* calculate HMAC and verify it */

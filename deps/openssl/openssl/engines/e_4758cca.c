@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -179,15 +179,15 @@ static DSO *dso = NULL;
 #  define CCA4758_CMD_SO_PATH             ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN cca4758_cmd_defns[] = {
     {CCA4758_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the '4758cca' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x34\x37\x35\x38\x63\x63\x61\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
 
 #  ifndef OPENSSL_NO_RSA
 static RSA_METHOD ibm_4758_cca_rsa = {
-    "IBM 4758 CCA RSA method",
+    "\x49\x42\x4d\x20\x34\x37\x35\x38\x20\x43\x43\x41\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     cca_rsa_pub_enc,
     NULL,
     NULL,
@@ -214,12 +214,12 @@ static RAND_METHOD ibm_4758_cca_rand = {
     cca_random_status,          /* status */
 };
 
-static const char *engine_4758_cca_id = "4758cca";
+static const char *engine_4758_cca_id = "\x34\x37\x35\x38\x63\x63\x61";
 static const char *engine_4758_cca_name =
-    "IBM 4758 CCA hardware engine support";
+    "\x49\x42\x4d\x20\x34\x37\x35\x38\x20\x43\x43\x41\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 #  ifndef OPENSSL_NO_DYNAMIC_ENGINE
 /* Compatibility hack, the dynamic library uses this form in the path */
-static const char *engine_4758_cca_id_alt = "4758_cca";
+static const char *engine_4758_cca_id_alt = "\x34\x37\x35\x38\x5f\x63\x63\x61";
 #  endif
 
 /* engine implementation */
@@ -318,7 +318,7 @@ static int ibm_4758_cca_init(ENGINE *e)
 #  endif
 
 #  ifndef OPENSSL_NO_RSA
-    hndidx = RSA_get_ex_new_index(0, "IBM 4758 CCA RSA key handle",
+    hndidx = RSA_get_ex_new_index(0, "\x49\x42\x4d\x20\x34\x37\x35\x38\x20\x43\x43\x41\x20\x52\x53\x41\x20\x6b\x65\x79\x20\x68\x61\x6e\x64\x6c\x65",
                                   NULL, NULL, cca_ex_free);
 #  endif
 
@@ -423,7 +423,7 @@ static EVP_PKEY *ibm_4758_load_privkey(ENGINE *e, const char *key_id,
         return NULL;
     }
 
-    memset(keyLabel, ' ', sizeof(keyLabel));
+    memset(keyLabel, '\x20', sizeof(keyLabel));
     memcpy(keyLabel, key_id, keyLabelLength);
 
     keyToken = OPENSSL_malloc(MAX_CCA_PKA_TOKEN_SIZE + sizeof(long));
@@ -511,7 +511,7 @@ static EVP_PKEY *ibm_4758_load_pubkey(ENGINE *e, const char *key_id,
         return NULL;
     }
 
-    memset(keyLabel, ' ', sizeof(keyLabel));
+    memset(keyLabel, '\x20', sizeof(keyLabel));
     memcpy(keyLabel, key_id, keyLabelLength);
 
     keyToken = OPENSSL_malloc(MAX_CCA_PKA_TOKEN_SIZE + sizeof(long));
@@ -566,7 +566,7 @@ static int cca_rsa_pub_enc(int flen, const unsigned char *from,
     long exitDataLength = 0;
     unsigned char exitData[8];
     long ruleArrayLength = 1;
-    unsigned char ruleArray[8] = "PKCS-1.2";
+    unsigned char ruleArray[8] = "\x50\x4b\x43\x53\x2d\x31\x2e\x32";
     long dataStructureLength = 0;
     unsigned char dataStructure[8];
     long outputLength = RSA_size(rsa);
@@ -595,7 +595,7 @@ static int cca_rsa_priv_dec(int flen, const unsigned char *from,
     long exitDataLength = 0;
     unsigned char exitData[8];
     long ruleArrayLength = 1;
-    unsigned char ruleArray[8] = "PKCS-1.2";
+    unsigned char ruleArray[8] = "\x50\x4b\x43\x53\x2d\x31\x2e\x32";
     long dataStructureLength = 0;
     unsigned char dataStructure[8];
     long outputLength = RSA_size(rsa);
@@ -625,7 +625,7 @@ static int cca_rsa_verify(int type, const unsigned char *m,
     long exitDataLength = 0;
     unsigned char exitData[8];
     long ruleArrayLength = 1;
-    unsigned char ruleArray[8] = "PKCS-1.1";
+    unsigned char ruleArray[8] = "\x50\x4b\x43\x53\x2d\x31\x2e\x31";
     long keyTokenLength;
     unsigned char *keyToken = (unsigned char *)RSA_get_ex_data(rsa, hndidx);
     long length = SSL_SIG_LEN;
@@ -736,7 +736,7 @@ static int cca_rsa_sign(int type, const unsigned char *m, unsigned int m_len,
     long exitDataLength = 0;
     unsigned char exitData[8];
     long ruleArrayLength = 1;
-    unsigned char ruleArray[8] = "PKCS-1.1";
+    unsigned char ruleArray[8] = "\x50\x4b\x43\x53\x2d\x31\x2e\x31";
     long outputLength = 256;
     long outputBitLength;
     long keyTokenLength;
@@ -908,7 +908,7 @@ static int cca_get_random_bytes(unsigned char *buf, int num)
     long reason_code;
     long exit_data_length;
     unsigned char exit_data[4];
-    unsigned char form[] = "RANDOM  ";
+    unsigned char form[] = "\x52\x41\x4e\x44\x4f\x4d\x20\x20";
     unsigned char rand_buf[8];
 
     while (num >= (int)sizeof(rand_buf)) {

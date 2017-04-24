@@ -95,39 +95,39 @@ int MAIN(int argc, char **argv)
     badopt = 0, opt_done = 0;
     i = 0;
     while (!badopt && !opt_done && argv[++i] != NULL) {
-        if (strcmp(argv[i], "-crypt") == 0)
+        if (strcmp(argv[i], "\x2d\x63\x72\x79\x70\x74") == 0)
             usecrypt = 1;
-        else if (strcmp(argv[i], "-1") == 0)
+        else if (strcmp(argv[i], "\x2d\x31") == 0)
             use1 = 1;
-        else if (strcmp(argv[i], "-apr1") == 0)
+        else if (strcmp(argv[i], "\x2d\x61\x70\x72\x31") == 0)
             useapr1 = 1;
-        else if (strcmp(argv[i], "-salt") == 0) {
+        else if (strcmp(argv[i], "\x2d\x73\x61\x6c\x74") == 0) {
             if ((argv[i + 1] != NULL) && (salt == NULL)) {
                 passed_salt = 1;
                 salt = argv[++i];
             } else
                 badopt = 1;
-        } else if (strcmp(argv[i], "-in") == 0) {
+        } else if (strcmp(argv[i], "\x2d\x69\x6e") == 0) {
             if ((argv[i + 1] != NULL) && !pw_source_defined) {
                 pw_source_defined = 1;
                 infile = argv[++i];
             } else
                 badopt = 1;
-        } else if (strcmp(argv[i], "-stdin") == 0) {
+        } else if (strcmp(argv[i], "\x2d\x73\x74\x64\x69\x6e") == 0) {
             if (!pw_source_defined) {
                 pw_source_defined = 1;
                 in_stdin = 1;
             } else
                 badopt = 1;
-        } else if (strcmp(argv[i], "-noverify") == 0)
+        } else if (strcmp(argv[i], "\x2d\x6e\x6f\x76\x65\x72\x69\x66\x79") == 0)
             in_noverify = 1;
-        else if (strcmp(argv[i], "-quiet") == 0)
+        else if (strcmp(argv[i], "\x2d\x71\x75\x69\x65\x74") == 0)
             quiet = 1;
-        else if (strcmp(argv[i], "-table") == 0)
+        else if (strcmp(argv[i], "\x2d\x74\x61\x62\x6c\x65") == 0)
             table = 1;
-        else if (strcmp(argv[i], "-reverse") == 0)
+        else if (strcmp(argv[i], "\x2d\x72\x65\x76\x65\x72\x73\x65") == 0)
             reverse = 1;
-        else if (argv[i][0] == '-')
+        else if (argv[i][0] == '\x2d')
             badopt = 1;
         else if (!pw_source_defined)
             /* non-option arguments, use as passwords */
@@ -155,26 +155,26 @@ int MAIN(int argc, char **argv)
 # endif
 
     if (badopt) {
-        BIO_printf(bio_err, "Usage: passwd [options] [passwords]\n");
-        BIO_printf(bio_err, "where options are\n");
+        BIO_printf(bio_err, "\x55\x73\x61\x67\x65\x3a\x20\x70\x61\x73\x73\x77\x64\x20\x5b\x6f\x70\x74\x69\x6f\x6e\x73\x5d\x20\x5b\x70\x61\x73\x73\x77\x6f\x72\x64\x73\x5d\xa");
+        BIO_printf(bio_err, "\x77\x68\x65\x72\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\x20\x61\x72\x65\xa");
 # ifndef OPENSSL_NO_DES
         BIO_printf(bio_err,
-                   "-crypt             standard Unix password algorithm (default)\n");
+                   "\x2d\x63\x72\x79\x70\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x73\x74\x61\x6e\x64\x61\x72\x64\x20\x55\x6e\x69\x78\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29\xa");
 # endif
 # ifndef NO_MD5CRYPT_1
         BIO_printf(bio_err,
-                   "-1                 MD5-based password algorithm\n");
+                   "\x2d\x31\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x4d\x44\x35\x2d\x62\x61\x73\x65\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\xa");
         BIO_printf(bio_err,
-                   "-apr1              MD5-based password algorithm, Apache variant\n");
+                   "\x2d\x61\x70\x72\x31\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x4d\x44\x35\x2d\x62\x61\x73\x65\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x2c\x20\x41\x70\x61\x63\x68\x65\x20\x76\x61\x72\x69\x61\x6e\x74\xa");
 # endif
-        BIO_printf(bio_err, "-salt string       use provided salt\n");
-        BIO_printf(bio_err, "-in file           read passwords from file\n");
-        BIO_printf(bio_err, "-stdin             read passwords from stdin\n");
+        BIO_printf(bio_err, "\x2d\x73\x61\x6c\x74\x20\x73\x74\x72\x69\x6e\x67\x20\x20\x20\x20\x20\x20\x20\x75\x73\x65\x20\x70\x72\x6f\x76\x69\x64\x65\x64\x20\x73\x61\x6c\x74\xa");
+        BIO_printf(bio_err, "\x2d\x69\x6e\x20\x66\x69\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x72\x65\x61\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x73\x20\x66\x72\x6f\x6d\x20\x66\x69\x6c\x65\xa");
+        BIO_printf(bio_err, "\x2d\x73\x74\x64\x69\x6e\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x72\x65\x61\x64\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x73\x20\x66\x72\x6f\x6d\x20\x73\x74\x64\x69\x6e\xa");
         BIO_printf(bio_err,
-                   "-noverify          never verify when reading password from terminal\n");
-        BIO_printf(bio_err, "-quiet             no warnings\n");
-        BIO_printf(bio_err, "-table             format output as table\n");
-        BIO_printf(bio_err, "-reverse           switch table columns\n");
+                   "\x2d\x6e\x6f\x76\x65\x72\x69\x66\x79\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6e\x65\x76\x65\x72\x20\x76\x65\x72\x69\x66\x79\x20\x77\x68\x65\x6e\x20\x72\x65\x61\x64\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x66\x72\x6f\x6d\x20\x74\x65\x72\x6d\x69\x6e\x61\x6c\xa");
+        BIO_printf(bio_err, "\x2d\x71\x75\x69\x65\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6e\x6f\x20\x77\x61\x72\x6e\x69\x6e\x67\x73\xa");
+        BIO_printf(bio_err, "\x2d\x74\x61\x62\x6c\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x66\x6f\x72\x6d\x61\x74\x20\x6f\x75\x74\x70\x75\x74\x20\x61\x73\x20\x74\x61\x62\x6c\x65\xa");
+        BIO_printf(bio_err, "\x2d\x72\x65\x76\x65\x72\x73\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x73\x77\x69\x74\x63\x68\x20\x74\x61\x62\x6c\x65\x20\x63\x6f\x6c\x75\x6d\x6e\x73\xa");
 
         goto err;
     }
@@ -218,7 +218,7 @@ int MAIN(int argc, char **argv)
         passwds = passwds_static;
         if (in == NULL)
             if (EVP_read_pw_string
-                (passwd_malloc, passwd_malloc_size, "Password: ",
+                (passwd_malloc, passwd_malloc_size, "\x50\x61\x73\x73\x77\x6f\x72\x64\x3a\x20",
                  !(passed_salt || in_noverify)) != 0)
                 goto err;
         passwds[0] = passwd_malloc;
@@ -245,7 +245,7 @@ int MAIN(int argc, char **argv)
         do {
             int r = BIO_gets(in, passwd, pw_maxlen + 1);
             if (r > 0) {
-                char *c = (strchr(passwd, '\n'));
+                char *c = (strchr(passwd, '\xa'));
                 if (c != NULL)
                     *c = 0;     /* truncate at newline */
                 else {
@@ -253,7 +253,7 @@ int MAIN(int argc, char **argv)
                     char trash[BUFSIZ];
                     do
                         r = BIO_gets(in, trash, sizeof trash);
-                    while ((r > 0) && (!strchr(trash, '\n')));
+                    while ((r > 0) && (!strchr(trash, '\xa')));
                 }
 
                 if (!do_passwd(passed_salt, &salt, &salt_malloc, passwd, out,
@@ -303,13 +303,13 @@ static char *md5crypt(const char *passwd, const char *magic, const char *salt)
     size_t passwd_len, salt_len;
 
     passwd_len = strlen(passwd);
-    out_buf[0] = '$';
+    out_buf[0] = '\x24';
     out_buf[1] = 0;
-    assert(strlen(magic) <= 4); /* "1" or "apr1" */
+    assert(strlen(magic) <= 4); /* "\x31" or "\x61\x70\x72\x31" */
     strncat(out_buf, magic, 4);
-    strncat(out_buf, "$", 1);
+    strncat(out_buf, "\x24", 1);
     strncat(out_buf, salt, 8);
-    assert(strlen(out_buf) <= 6 + 8); /* "$apr1$..salt.." */
+    assert(strlen(out_buf) <= 6 + 8); /* "\x24\x61\x70\x72\x31\x24\x2e\x2e\x73\x61\x6c\x74\x2e\x2e" */
     salt_out = out_buf + 2 + strlen(magic);
     salt_len = strlen(salt_out);
     assert(salt_len <= 8);
@@ -317,9 +317,9 @@ static char *md5crypt(const char *passwd, const char *magic, const char *salt)
     EVP_MD_CTX_init(&md);
     EVP_DigestInit_ex(&md, EVP_md5(), NULL);
     EVP_DigestUpdate(&md, passwd, passwd_len);
-    EVP_DigestUpdate(&md, "$", 1);
+    EVP_DigestUpdate(&md, "\x24", 1);
     EVP_DigestUpdate(&md, magic, strlen(magic));
-    EVP_DigestUpdate(&md, "$", 1);
+    EVP_DigestUpdate(&md, "\x24", 1);
     EVP_DigestUpdate(&md, salt_out, salt_len);
 
     EVP_MD_CTX_init(&md2);
@@ -335,7 +335,7 @@ static char *md5crypt(const char *passwd, const char *magic, const char *salt)
 
     n = passwd_len;
     while (n) {
-        EVP_DigestUpdate(&md, (n & 1) ? "\0" : passwd, 1);
+        EVP_DigestUpdate(&md, (n & 1) ? "\x0" : passwd, 1);
         n >>= 1;
     }
     EVP_DigestFinal_ex(&md, buf, NULL);
@@ -375,7 +375,7 @@ static char *md5crypt(const char *passwd, const char *magic, const char *salt)
         output = salt_out + salt_len;
         assert(output == out_buf + strlen(out_buf));
 
-        *output++ = '$';
+        *output++ = '\x24';
 
         for (i = 0; i < 15; i += 3) {
             *output++ = cov_2char[buf_perm[i + 2] & 0x3f];
@@ -456,7 +456,7 @@ static int do_passwd(int passed_salt, char **salt_p, char **salt_malloc_p,
              * XXX: really we should know how to print a size_t, not cast it
              */
             BIO_printf(bio_err,
-                       "Warning: truncating password to %u characters\n",
+                       "\x57\x61\x72\x6e\x69\x6e\x67\x3a\x20\x74\x72\x75\x6e\x63\x61\x74\x69\x6e\x67\x20\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x74\x6f\x20\x25\x75\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x73\xa",
                        (unsigned)pw_maxlen);
         passwd[pw_maxlen] = 0;
     }
@@ -469,16 +469,16 @@ static int do_passwd(int passed_salt, char **salt_p, char **salt_malloc_p,
 # endif
 # ifndef NO_MD5CRYPT_1
     if (use1 || useapr1)
-        hash = md5crypt(passwd, (use1 ? "1" : "apr1"), *salt_p);
+        hash = md5crypt(passwd, (use1 ? "\x31" : "\x61\x70\x72\x31"), *salt_p);
 # endif
     assert(hash != NULL);
 
     if (table && !reverse)
-        BIO_printf(out, "%s\t%s\n", passwd, hash);
+        BIO_printf(out, "\x25\x73\x9\x25\x73\xa", passwd, hash);
     else if (table && reverse)
-        BIO_printf(out, "%s\t%s\n", hash, passwd);
+        BIO_printf(out, "\x25\x73\x9\x25\x73\xa", hash, passwd);
     else
-        BIO_printf(out, "%s\n", hash);
+        BIO_printf(out, "\x25\x73\xa", hash);
     return 1;
 
  err:
@@ -488,7 +488,7 @@ static int do_passwd(int passed_salt, char **salt_p, char **salt_malloc_p,
 
 int MAIN(int argc, char **argv)
 {
-    fputs("Program not available.\n", stderr)
+    fputs("\x50\x72\x6f\x67\x72\x61\x6d\x20\x6e\x6f\x74\x20\x61\x76\x61\x69\x6c\x61\x62\x6c\x65\x2e\xa", stderr)
         OPENSSL_EXIT(1);
 }
 #endif

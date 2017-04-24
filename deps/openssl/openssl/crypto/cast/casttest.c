@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -66,7 +66,7 @@
 #ifdef OPENSSL_NO_CAST
 int main(int argc, char *argv[])
 {
-    printf("No CAST support\n");
+    printf("\x4e\x6f\x20\x43\x41\x53\x54\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -113,7 +113,7 @@ static unsigned char c_b[16] = {
 };
 
 # if 0
-char *text = "Hello to all people out there";
+char *text = "\x48\x65\x6c\x6c\x6f\x20\x74\x6f\x20\x61\x6c\x6c\x20\x70\x65\x6f\x70\x6c\x65\x20\x6f\x75\x74\x20\x74\x68\x65\x72\x65";
 
 static unsigned char cfb_key[16] = {
     0xe1, 0xf0, 0xc3, 0xd2, 0xa5, 0xb4, 0x87, 0x96,
@@ -154,43 +154,43 @@ int main(int argc, char *argv[])
 
         CAST_ecb_encrypt(in, out, &key, CAST_ENCRYPT);
         if (memcmp(out, &(c[z][0]), 8) != 0) {
-            printf("ecb cast error encrypting for keysize %d\n",
+            printf("\x65\x63\x62\x20\x63\x61\x73\x74\x20\x65\x72\x72\x6f\x72\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6e\x67\x20\x66\x6f\x72\x20\x6b\x65\x79\x73\x69\x7a\x65\x20\x25\x64\xa",
                    k_len[z] * 8);
-            printf("got     :");
+            printf("\x67\x6f\x74\x20\x20\x20\x20\x20\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", out[i]);
-            printf("\n");
-            printf("expected:");
+                printf("\x25\x30\x32\x58\x20", out[i]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x65\x64\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", c[z][i]);
+                printf("\x25\x30\x32\x58\x20", c[z][i]);
             err = 20;
-            printf("\n");
+            printf("\xa");
         }
 
         CAST_ecb_encrypt(out, out, &key, CAST_DECRYPT);
         if (memcmp(out, in, 8) != 0) {
-            printf("ecb cast error decrypting for keysize %d\n",
+            printf("\x65\x63\x62\x20\x63\x61\x73\x74\x20\x65\x72\x72\x6f\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6e\x67\x20\x66\x6f\x72\x20\x6b\x65\x79\x73\x69\x7a\x65\x20\x25\x64\xa",
                    k_len[z] * 8);
-            printf("got     :");
+            printf("\x67\x6f\x74\x20\x20\x20\x20\x20\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", out[i]);
-            printf("\n");
-            printf("expected:");
+                printf("\x25\x30\x32\x58\x20", out[i]);
+            printf("\xa");
+            printf("\x65\x78\x70\x65\x63\x74\x65\x64\x3a");
             for (i = 0; i < 8; i++)
-                printf("%02X ", in[i]);
-            printf("\n");
+                printf("\x25\x30\x32\x58\x20", in[i]);
+            printf("\xa");
             err = 3;
         }
     }
     if (err == 0)
-        printf("ecb cast5 ok\n");
+        printf("\x65\x63\x62\x20\x63\x61\x73\x74\x35\x20\x6f\x6b\xa");
 
 # ifdef FULL_TEST
     {
         unsigned char out_a[16], out_b[16];
-        static char *hex = "0123456789ABCDEF";
+        static char *hex = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
 
-        printf("This test will take some time....");
+        printf("\x54\x68\x69\x73\x20\x74\x65\x73\x74\x20\x77\x69\x6c\x6c\x20\x74\x61\x6b\x65\x20\x73\x6f\x6d\x65\x20\x74\x69\x6d\x65\x2e\x2e\x2e\x2e");
         fflush(stdout);
         memcpy(out_a, in_a, sizeof(in_a));
         memcpy(out_b, in_b, sizeof(in_b));
@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
             CAST_ecb_encrypt(&(out_b[0]), &(out_b[0]), &key, CAST_ENCRYPT);
             CAST_ecb_encrypt(&(out_b[8]), &(out_b[8]), &key, CAST_ENCRYPT);
             if ((l & 0xffff) == 0xffff) {
-                printf("%c", hex[i & 0x0f]);
+                printf("\x25\x63", hex[i & 0x0f]);
                 fflush(stdout);
                 i++;
             }
@@ -212,26 +212,26 @@ int main(int argc, char *argv[])
 
         if ((memcmp(out_a, c_a, sizeof(c_a)) != 0) ||
             (memcmp(out_b, c_b, sizeof(c_b)) != 0)) {
-            printf("\n");
-            printf("Error\n");
+            printf("\xa");
+            printf("\x45\x72\x72\x6f\x72\xa");
 
-            printf("A out =");
+            printf("\x41\x20\x6f\x75\x74\x20\x3d");
             for (i = 0; i < 16; i++)
-                printf("%02X ", out_a[i]);
-            printf("\nactual=");
+                printf("\x25\x30\x32\x58\x20", out_a[i]);
+            printf("\xaa\x63\x74\x75\x61\x6c\x3d");
             for (i = 0; i < 16; i++)
-                printf("%02X ", c_a[i]);
-            printf("\n");
+                printf("\x25\x30\x32\x58\x20", c_a[i]);
+            printf("\xa");
 
-            printf("B out =");
+            printf("\x42\x20\x6f\x75\x74\x20\x3d");
             for (i = 0; i < 16; i++)
-                printf("%02X ", out_b[i]);
-            printf("\nactual=");
+                printf("\x25\x30\x32\x58\x20", out_b[i]);
+            printf("\xaa\x63\x74\x75\x61\x6c\x3d");
             for (i = 0; i < 16; i++)
-                printf("%02X ", c_b[i]);
-            printf("\n");
+                printf("\x25\x30\x32\x58\x20", c_b[i]);
+            printf("\xa");
         } else
-            printf(" ok\n");
+            printf("\x20\x6f\x6b\xa");
     }
 # endif
 

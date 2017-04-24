@@ -36,7 +36,7 @@ main()
 #endif
 
     while (p < 3) {
-        fprintf(stderr, "%08X\n", p);
+        fprintf(stderr, "\x25\x30\x38\x58\xa", p);
         inc(&p);
 #ifdef FIXBUG
         dummy += p;

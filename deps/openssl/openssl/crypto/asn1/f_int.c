@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -64,26 +64,26 @@
 int i2a_ASN1_INTEGER(BIO *bp, ASN1_INTEGER *a)
 {
     int i, n = 0;
-    static const char *h = "0123456789ABCDEF";
+    static const char *h = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
     char buf[2];
 
     if (a == NULL)
         return (0);
 
     if (a->type & V_ASN1_NEG) {
-        if (BIO_write(bp, "-", 1) != 1)
+        if (BIO_write(bp, "\x2d", 1) != 1)
             goto err;
         n = 1;
     }
 
     if (a->length == 0) {
-        if (BIO_write(bp, "00", 2) != 2)
+        if (BIO_write(bp, "\x30\x30", 2) != 2)
             goto err;
         n += 2;
     } else {
         for (i = 0; i < a->length; i++) {
             if ((i != 0) && (i % 35 == 0)) {
-                if (BIO_write(bp, "\\\n", 2) != 2)
+                if (BIO_write(bp, "\x5c\xa", 2) != 2)
                     goto err;
                 n += 2;
             }
@@ -114,21 +114,21 @@ int a2i_ASN1_INTEGER(BIO *bp, ASN1_INTEGER *bs, char *buf, int size)
         if (bufsize < 1)
             goto err_sl;
         i = bufsize;
-        if (buf[i - 1] == '\n')
-            buf[--i] = '\0';
+        if (buf[i - 1] == '\xa')
+            buf[--i] = '\x0';
         if (i == 0)
             goto err_sl;
-        if (buf[i - 1] == '\r')
-            buf[--i] = '\0';
+        if (buf[i - 1] == '\xd')
+            buf[--i] = '\x0';
         if (i == 0)
             goto err_sl;
-        again = (buf[i - 1] == '\\');
+        again = (buf[i - 1] == '\x5c');
 
         for (j = 0; j < i; j++) {
 #ifndef CHARSET_EBCDIC
-            if (!(((buf[j] >= '0') && (buf[j] <= '9')) ||
-                  ((buf[j] >= 'a') && (buf[j] <= 'f')) ||
-                  ((buf[j] >= 'A') && (buf[j] <= 'F'))))
+            if (!(((buf[j] >= '\x30') && (buf[j] <= '\x39')) ||
+                  ((buf[j] >= '\x61') && (buf[j] <= '\x66')) ||
+                  ((buf[j] >= '\x41') && (buf[j] <= '\x46'))))
 #else
             /*
              * This #ifdef is not strictly necessary, since the characters
@@ -142,7 +142,7 @@ int a2i_ASN1_INTEGER(BIO *bp, ASN1_INTEGER *bs, char *buf, int size)
                 break;
             }
         }
-        buf[i] = '\0';
+        buf[i] = '\x0';
         /*
          * We have now cleared all the crap off the end of the line
          */
@@ -152,7 +152,7 @@ int a2i_ASN1_INTEGER(BIO *bp, ASN1_INTEGER *bs, char *buf, int size)
         bufp = (unsigned char *)buf;
         if (first) {
             first = 0;
-            if ((bufp[0] == '0') && (buf[1] == '0')) {
+            if ((bufp[0] == '\x30') && (buf[1] == '\x30')) {
                 bufp += 2;
                 i -= 2;
             }
@@ -180,12 +180,12 @@ int a2i_ASN1_INTEGER(BIO *bp, ASN1_INTEGER *bs, char *buf, int size)
         for (j = 0; j < i; j++, k += 2) {
             for (n = 0; n < 2; n++) {
                 m = bufp[k + n];
-                if ((m >= '0') && (m <= '9'))
-                    m -= '0';
-                else if ((m >= 'a') && (m <= 'f'))
-                    m = m - 'a' + 10;
-                else if ((m >= 'A') && (m <= 'F'))
-                    m = m - 'A' + 10;
+                if ((m >= '\x30') && (m <= '\x39'))
+                    m -= '\x30';
+                else if ((m >= '\x61') && (m <= '\x66'))
+                    m = m - '\x61' + 10;
+                else if ((m >= '\x41') && (m <= '\x46'))
+                    m = m - '\x41' + 10;
                 else {
                     ASN1err(ASN1_F_A2I_ASN1_INTEGER,
                             ASN1_R_NON_HEX_CHARACTERS);

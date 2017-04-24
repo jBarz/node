@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,17 +70,17 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_ECDH,0,reason)
 
 static ERR_STRING_DATA ECDH_str_functs[] = {
-    {ERR_FUNC(ECDH_F_ECDH_CHECK), "ECDH_CHECK"},
-    {ERR_FUNC(ECDH_F_ECDH_COMPUTE_KEY), "ECDH_compute_key"},
-    {ERR_FUNC(ECDH_F_ECDH_DATA_NEW_METHOD), "ECDH_DATA_new_method"},
+    {ERR_FUNC(ECDH_F_ECDH_CHECK), "\x45\x43\x44\x48\x5f\x43\x48\x45\x43\x4b"},
+    {ERR_FUNC(ECDH_F_ECDH_COMPUTE_KEY), "\x45\x43\x44\x48\x5f\x63\x6f\x6d\x70\x75\x74\x65\x5f\x6b\x65\x79"},
+    {ERR_FUNC(ECDH_F_ECDH_DATA_NEW_METHOD), "\x45\x43\x44\x48\x5f\x44\x41\x54\x41\x5f\x6e\x65\x77\x5f\x6d\x65\x74\x68\x6f\x64"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA ECDH_str_reasons[] = {
-    {ERR_REASON(ECDH_R_KDF_FAILED), "KDF failed"},
-    {ERR_REASON(ECDH_R_NON_FIPS_METHOD), "non fips method"},
-    {ERR_REASON(ECDH_R_NO_PRIVATE_VALUE), "no private value"},
-    {ERR_REASON(ECDH_R_POINT_ARITHMETIC_FAILURE), "point arithmetic failure"},
+    {ERR_REASON(ECDH_R_KDF_FAILED), "\x4b\x44\x46\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(ECDH_R_NON_FIPS_METHOD), "\x6e\x6f\x6e\x20\x66\x69\x70\x73\x20\x6d\x65\x74\x68\x6f\x64"},
+    {ERR_REASON(ECDH_R_NO_PRIVATE_VALUE), "\x6e\x6f\x20\x70\x72\x69\x76\x61\x74\x65\x20\x76\x61\x6c\x75\x65"},
+    {ERR_REASON(ECDH_R_POINT_ARITHMETIC_FAILURE), "\x70\x6f\x69\x6e\x74\x20\x61\x72\x69\x74\x68\x6d\x65\x74\x69\x63\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {0, NULL}
 };
 

@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -74,7 +74,7 @@
 #   include "vendor_defns/cluster_labs.h"
 #  endif
 
-#  define CL_LIB_NAME "cluster_labs engine"
+#  define CL_LIB_NAME "\x63\x6c\x75\x73\x74\x65\x72\x5f\x6c\x61\x62\x73\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "hw_cluster_labs_err.c"
 
 static int cluster_labs_destroy(ENGINE *e);
@@ -134,8 +134,8 @@ static int cluster_labs_rand_bytes(unsigned char *buf, int num);
 #  define CLUSTER_LABS_CMD_SO_PATH                ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN cluster_labs_cmd_defns[] = {
     {CLUSTER_LABS_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'cluster labs' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x63\x6c\x75\x73\x74\x65\x72\x20\x6c\x61\x62\x73\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
@@ -143,7 +143,7 @@ static const ENGINE_CMD_DEFN cluster_labs_cmd_defns[] = {
 /* Our internal RSA_METHOD that we provide pointers to */
 #  ifndef OPENSSL_NO_RSA
 static RSA_METHOD cluster_labs_rsa = {
-    "Cluster Labs RSA method",
+    "\x43\x6c\x75\x73\x74\x65\x72\x20\x4c\x61\x62\x73\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     cluster_labs_rsa_pub_enc,   /* rsa_pub_enc */
     cluster_labs_rsa_pub_dec,   /* rsa_pub_dec */
     cluster_labs_rsa_priv_enc,  /* rsa_priv_enc */
@@ -162,7 +162,7 @@ static RSA_METHOD cluster_labs_rsa = {
 /* Our internal DSA_METHOD that we provide pointers to */
 #  ifndef OPENSSL_NO_DSA
 static DSA_METHOD cluster_labs_dsa = {
-    "Cluster Labs DSA method",
+    "\x43\x6c\x75\x73\x74\x65\x72\x20\x4c\x61\x62\x73\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     cluster_labs_dsa_sign,      /* dsa_do_sign */
     NULL,                       /* dsa_sign_setup */
     cluster_labs_dsa_verify,    /* dsa_do_verify */
@@ -178,7 +178,7 @@ static DSA_METHOD cluster_labs_dsa = {
 /* Our internal DH_METHOD that we provide pointers to */
 #  ifndef OPENSSL_NO_DH
 static DH_METHOD cluster_labs_dh = {
-    "Cluster Labs DH method",
+    "\x43\x6c\x75\x73\x74\x65\x72\x20\x4c\x61\x62\x73\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,                       /* generate key */
     NULL,                       /* compute key */
     cluster_labs_mod_exp_dh,    /* bn_mod_exp */
@@ -199,9 +199,9 @@ static RAND_METHOD cluster_labs_rand = {
     NULL,                       /* status */
 };
 
-static const char *engine_cluster_labs_id = "cluster_labs";
+static const char *engine_cluster_labs_id = "\x63\x6c\x75\x73\x74\x65\x72\x5f\x6c\x61\x62\x73";
 static const char *engine_cluster_labs_name =
-    "Cluster Labs hardware engine support";
+    "\x43\x6c\x75\x73\x74\x65\x72\x20\x4c\x61\x62\x73\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /* engine implementation */
 /* ---------------------*/
@@ -672,16 +672,16 @@ static int cluster_labs_rand_bytes(unsigned char *buf, int num)
 #  ifdef ENGINE_DYNAMIC_SUPPORT
 static int bind_fn(ENGINE *e, const char *id)
 {
-    fprintf(stderr, "bind_fn CLUSTER_LABS\n");
+    fprintf(stderr, "\x62\x69\x6e\x64\x5f\x66\x6e\x20\x43\x4c\x55\x53\x54\x45\x52\x5f\x4c\x41\x42\x53\xa");
     if (id && (strcmp(id, engine_cluster_labs_id) != 0)) {
-        fprintf(stderr, "bind_fn return(0) first\n");
+        fprintf(stderr, "\x62\x69\x6e\x64\x5f\x66\x6e\x20\x72\x65\x74\x75\x72\x6e\x28\x30\x29\x20\x66\x69\x72\x73\x74\xa");
         return 0;
     }
     if (!bind_helper(e)) {
-        fprintf(stderr, "bind_fn return(1) first\n");
+        fprintf(stderr, "\x62\x69\x6e\x64\x5f\x66\x6e\x20\x72\x65\x74\x75\x72\x6e\x28\x31\x29\x20\x66\x69\x72\x73\x74\xa");
         return 0;
     }
-    fprintf(stderr, "bind_fn return(1)\n");
+    fprintf(stderr, "\x62\x69\x6e\x64\x5f\x66\x6e\x20\x72\x65\x74\x75\x72\x6e\x28\x31\x29\xa");
     return 1;
 }
 

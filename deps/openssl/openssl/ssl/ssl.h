@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -116,12 +116,12 @@
 /* ====================================================================
  * Copyright 2005 Nokia. All rights reserved.
  *
- * The portions of the attached software ("Contribution") is developed by
+ * The portions of the attached software ("\x43\x6f\x6e\x74\x72\x69\x62\x75\x74\x69\x6f\x6e") is developed by
  * Nokia Corporation and is licensed pursuant to the OpenSSL open source
  * license.
  *
  * The Contribution, originally written by Mika Kousa and Pasi Eronen of
- * Nokia Corporation, consists of the "PSK" (Pre-Shared Key) ciphersuites
+ * Nokia Corporation, consists of the "\x50\x53\x4b" (Pre-Shared Key) ciphersuites
  * support (see RFC 4279) to OpenSSL.
  *
  * No patent licenses or other rights except those expressly stated in
@@ -133,7 +133,7 @@
  * party or that the license provides you with all the necessary rights
  * to make use of the Contribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN
+ * THE SOFTWARE IS PROVIDED "\x41\x53\x20\x49\x53" WITHOUT WARRANTY OF ANY KIND. IN
  * ADDITION TO THE DISCLAIMERS INCLUDED IN THE LICENSE, NOKIA
  * SPECIFICALLY DISCLAIMS ANY LIABILITY FOR CLAIMS BROUGHT BY YOU OR ANY
  * OTHER ENTITY BASED ON INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS OR
@@ -225,97 +225,97 @@ extern "C" {
 
 /* These are used to specify which ciphers to use and not to use */
 
-# define SSL_TXT_EXP40           "EXPORT40"
-# define SSL_TXT_EXP56           "EXPORT56"
-# define SSL_TXT_LOW             "LOW"
-# define SSL_TXT_MEDIUM          "MEDIUM"
-# define SSL_TXT_HIGH            "HIGH"
-# define SSL_TXT_FIPS            "FIPS"
+# define SSL_TXT_EXP40           "\x45\x58\x50\x4f\x52\x54\x34\x30"
+# define SSL_TXT_EXP56           "\x45\x58\x50\x4f\x52\x54\x35\x36"
+# define SSL_TXT_LOW             "\x4c\x4f\x57"
+# define SSL_TXT_MEDIUM          "\x4d\x45\x44\x49\x55\x4d"
+# define SSL_TXT_HIGH            "\x48\x49\x47\x48"
+# define SSL_TXT_FIPS            "\x46\x49\x50\x53"
 
-# define SSL_TXT_kFZA            "kFZA"/* unused! */
-# define SSL_TXT_aFZA            "aFZA"/* unused! */
-# define SSL_TXT_eFZA            "eFZA"/* unused! */
-# define SSL_TXT_FZA             "FZA"/* unused! */
+# define SSL_TXT_kFZA            "\x6b\x46\x5a\x41"/* unused! */
+# define SSL_TXT_aFZA            "\x61\x46\x5a\x41"/* unused! */
+# define SSL_TXT_eFZA            "\x65\x46\x5a\x41"/* unused! */
+# define SSL_TXT_FZA             "\x46\x5a\x41"/* unused! */
 
-# define SSL_TXT_aNULL           "aNULL"
-# define SSL_TXT_eNULL           "eNULL"
-# define SSL_TXT_NULL            "NULL"
+# define SSL_TXT_aNULL           "\x61\x4e\x55\x4c\x4c"
+# define SSL_TXT_eNULL           "\x65\x4e\x55\x4c\x4c"
+# define SSL_TXT_NULL            "\x4e\x55\x4c\x4c"
 
-# define SSL_TXT_kRSA            "kRSA"
-# define SSL_TXT_kDHr            "kDHr"
-# define SSL_TXT_kDHd            "kDHd"
-# define SSL_TXT_kDH             "kDH"
-# define SSL_TXT_kEDH            "kEDH"
-# define SSL_TXT_kDHE            "kDHE"/* alias for kEDH */
-# define SSL_TXT_kKRB5           "kKRB5"
-# define SSL_TXT_kECDHr          "kECDHr"
-# define SSL_TXT_kECDHe          "kECDHe"
-# define SSL_TXT_kECDH           "kECDH"
-# define SSL_TXT_kEECDH          "kEECDH"
-# define SSL_TXT_kECDHE          "kECDHE"/* alias for kEECDH */
-# define SSL_TXT_kPSK            "kPSK"
-# define SSL_TXT_kGOST           "kGOST"
-# define SSL_TXT_kSRP            "kSRP"
+# define SSL_TXT_kRSA            "\x6b\x52\x53\x41"
+# define SSL_TXT_kDHr            "\x6b\x44\x48\x72"
+# define SSL_TXT_kDHd            "\x6b\x44\x48\x64"
+# define SSL_TXT_kDH             "\x6b\x44\x48"
+# define SSL_TXT_kEDH            "\x6b\x45\x44\x48"
+# define SSL_TXT_kDHE            "\x6b\x44\x48\x45"/* alias for kEDH */
+# define SSL_TXT_kKRB5           "\x6b\x4b\x52\x42\x35"
+# define SSL_TXT_kECDHr          "\x6b\x45\x43\x44\x48\x72"
+# define SSL_TXT_kECDHe          "\x6b\x45\x43\x44\x48\x65"
+# define SSL_TXT_kECDH           "\x6b\x45\x43\x44\x48"
+# define SSL_TXT_kEECDH          "\x6b\x45\x45\x43\x44\x48"
+# define SSL_TXT_kECDHE          "\x6b\x45\x43\x44\x48\x45"/* alias for kEECDH */
+# define SSL_TXT_kPSK            "\x6b\x50\x53\x4b"
+# define SSL_TXT_kGOST           "\x6b\x47\x4f\x53\x54"
+# define SSL_TXT_kSRP            "\x6b\x53\x52\x50"
 
-# define SSL_TXT_aRSA            "aRSA"
-# define SSL_TXT_aDSS            "aDSS"
-# define SSL_TXT_aDH             "aDH"
-# define SSL_TXT_aECDH           "aECDH"
-# define SSL_TXT_aKRB5           "aKRB5"
-# define SSL_TXT_aECDSA          "aECDSA"
-# define SSL_TXT_aPSK            "aPSK"
-# define SSL_TXT_aGOST94 "aGOST94"
-# define SSL_TXT_aGOST01 "aGOST01"
-# define SSL_TXT_aGOST  "aGOST"
-# define SSL_TXT_aSRP            "aSRP"
+# define SSL_TXT_aRSA            "\x61\x52\x53\x41"
+# define SSL_TXT_aDSS            "\x61\x44\x53\x53"
+# define SSL_TXT_aDH             "\x61\x44\x48"
+# define SSL_TXT_aECDH           "\x61\x45\x43\x44\x48"
+# define SSL_TXT_aKRB5           "\x61\x4b\x52\x42\x35"
+# define SSL_TXT_aECDSA          "\x61\x45\x43\x44\x53\x41"
+# define SSL_TXT_aPSK            "\x61\x50\x53\x4b"
+# define SSL_TXT_aGOST94 "\x61\x47\x4f\x53\x54\x39\x34"
+# define SSL_TXT_aGOST01 "\x61\x47\x4f\x53\x54\x30\x31"
+# define SSL_TXT_aGOST  "\x61\x47\x4f\x53\x54"
+# define SSL_TXT_aSRP            "\x61\x53\x52\x50"
 
-# define SSL_TXT_DSS             "DSS"
-# define SSL_TXT_DH              "DH"
-# define SSL_TXT_EDH             "EDH"/* same as "kEDH:-ADH" */
-# define SSL_TXT_DHE             "DHE"/* alias for EDH */
-# define SSL_TXT_ADH             "ADH"
-# define SSL_TXT_RSA             "RSA"
-# define SSL_TXT_ECDH            "ECDH"
-# define SSL_TXT_EECDH           "EECDH"/* same as "kEECDH:-AECDH" */
-# define SSL_TXT_ECDHE           "ECDHE"/* alias for ECDHE" */
-# define SSL_TXT_AECDH           "AECDH"
-# define SSL_TXT_ECDSA           "ECDSA"
-# define SSL_TXT_KRB5            "KRB5"
-# define SSL_TXT_PSK             "PSK"
-# define SSL_TXT_SRP             "SRP"
+# define SSL_TXT_DSS             "\x44\x53\x53"
+# define SSL_TXT_DH              "\x44\x48"
+# define SSL_TXT_EDH             "\x45\x44\x48"/* same as "\x6b\x45\x44\x48\x3a\x2d\x41\x44\x48" */
+# define SSL_TXT_DHE             "\x44\x48\x45"/* alias for EDH */
+# define SSL_TXT_ADH             "\x41\x44\x48"
+# define SSL_TXT_RSA             "\x52\x53\x41"
+# define SSL_TXT_ECDH            "\x45\x43\x44\x48"
+# define SSL_TXT_EECDH           "\x45\x45\x43\x44\x48"/* same as "\x6b\x45\x45\x43\x44\x48\x3a\x2d\x41\x45\x43\x44\x48" */
+# define SSL_TXT_ECDHE           "\x45\x43\x44\x48\x45"/* alias for ECDHE" */
+# define SSL_TXT_AECDH           "\x41\x45\x43\x44\x48"
+# define SSL_TXT_ECDSA           "\x45\x43\x44\x53\x41"
+# define SSL_TXT_KRB5            "\x4b\x52\x42\x35"
+# define SSL_TXT_PSK             "\x50\x53\x4b"
+# define SSL_TXT_SRP             "\x53\x52\x50"
 
-# define SSL_TXT_DES             "DES"
-# define SSL_TXT_3DES            "3DES"
-# define SSL_TXT_RC4             "RC4"
-# define SSL_TXT_RC2             "RC2"
-# define SSL_TXT_IDEA            "IDEA"
-# define SSL_TXT_SEED            "SEED"
-# define SSL_TXT_AES128          "AES128"
-# define SSL_TXT_AES256          "AES256"
-# define SSL_TXT_AES             "AES"
-# define SSL_TXT_AES_GCM         "AESGCM"
-# define SSL_TXT_CAMELLIA128     "CAMELLIA128"
-# define SSL_TXT_CAMELLIA256     "CAMELLIA256"
-# define SSL_TXT_CAMELLIA        "CAMELLIA"
+# define SSL_TXT_DES             "\x44\x45\x53"
+# define SSL_TXT_3DES            "\x33\x44\x45\x53"
+# define SSL_TXT_RC4             "\x52\x43\x34"
+# define SSL_TXT_RC2             "\x52\x43\x32"
+# define SSL_TXT_IDEA            "\x49\x44\x45\x41"
+# define SSL_TXT_SEED            "\x53\x45\x45\x44"
+# define SSL_TXT_AES128          "\x41\x45\x53\x31\x32\x38"
+# define SSL_TXT_AES256          "\x41\x45\x53\x32\x35\x36"
+# define SSL_TXT_AES             "\x41\x45\x53"
+# define SSL_TXT_AES_GCM         "\x41\x45\x53\x47\x43\x4d"
+# define SSL_TXT_CAMELLIA128     "\x43\x41\x4d\x45\x4c\x4c\x49\x41\x31\x32\x38"
+# define SSL_TXT_CAMELLIA256     "\x43\x41\x4d\x45\x4c\x4c\x49\x41\x32\x35\x36"
+# define SSL_TXT_CAMELLIA        "\x43\x41\x4d\x45\x4c\x4c\x49\x41"
 
-# define SSL_TXT_MD5             "MD5"
-# define SSL_TXT_SHA1            "SHA1"
-# define SSL_TXT_SHA             "SHA"/* same as "SHA1" */
-# define SSL_TXT_GOST94          "GOST94"
-# define SSL_TXT_GOST89MAC               "GOST89MAC"
-# define SSL_TXT_SHA256          "SHA256"
-# define SSL_TXT_SHA384          "SHA384"
+# define SSL_TXT_MD5             "\x4d\x44\x35"
+# define SSL_TXT_SHA1            "\x53\x48\x41\x31"
+# define SSL_TXT_SHA             "\x53\x48\x41"/* same as "\x53\x48\x41\x31" */
+# define SSL_TXT_GOST94          "\x47\x4f\x53\x54\x39\x34"
+# define SSL_TXT_GOST89MAC               "\x47\x4f\x53\x54\x38\x39\x4d\x41\x43"
+# define SSL_TXT_SHA256          "\x53\x48\x41\x32\x35\x36"
+# define SSL_TXT_SHA384          "\x53\x48\x41\x33\x38\x34"
 
-# define SSL_TXT_SSLV2           "SSLv2"
-# define SSL_TXT_SSLV3           "SSLv3"
-# define SSL_TXT_TLSV1           "TLSv1"
-# define SSL_TXT_TLSV1_1         "TLSv1.1"
-# define SSL_TXT_TLSV1_2         "TLSv1.2"
+# define SSL_TXT_SSLV2           "\x53\x53\x4c\x76\x32"
+# define SSL_TXT_SSLV3           "\x53\x53\x4c\x76\x33"
+# define SSL_TXT_TLSV1           "\x54\x4c\x53\x76\x31"
+# define SSL_TXT_TLSV1_1         "\x54\x4c\x53\x76\x31\x2e\x31"
+# define SSL_TXT_TLSV1_2         "\x54\x4c\x53\x76\x31\x2e\x32"
 
-# define SSL_TXT_EXP             "EXP"
-# define SSL_TXT_EXPORT          "EXPORT"
+# define SSL_TXT_EXP             "\x45\x58\x50"
+# define SSL_TXT_EXPORT          "\x45\x58\x50\x4f\x52\x54"
 
-# define SSL_TXT_ALL             "ALL"
+# define SSL_TXT_ALL             "\x41\x4c\x4c"
 
 /*-
  * COMPLEMENTOF* definitions. These identifiers are used to (de-select)
@@ -331,14 +331,14 @@ extern "C" {
  * DEFAULT gets, as only selection is being done and no sorting as needed
  * for DEFAULT.
  */
-# define SSL_TXT_CMPALL          "COMPLEMENTOFALL"
-# define SSL_TXT_CMPDEF          "COMPLEMENTOFDEFAULT"
+# define SSL_TXT_CMPALL          "\x43\x4f\x4d\x50\x4c\x45\x4d\x45\x4e\x54\x4f\x46\x41\x4c\x4c"
+# define SSL_TXT_CMPDEF          "\x43\x4f\x4d\x50\x4c\x45\x4d\x45\x4e\x54\x4f\x46\x44\x45\x46\x41\x55\x4c\x54"
 
 /*
  * The following cipher list is used by default. It also is substituted when
  * an application-defined cipher list string starts with 'DEFAULT'.
  */
-# define SSL_DEFAULT_CIPHER_LIST "ALL:!EXPORT:!LOW:!aNULL:!eNULL:!SSLv2"
+# define SSL_DEFAULT_CIPHER_LIST "\x41\x4c\x4c\x3a\x21\x45\x58\x50\x4f\x52\x54\x3a\x21\x4c\x4f\x57\x3a\x21\x61\x4e\x55\x4c\x4c\x3a\x21\x65\x4e\x55\x4c\x4c\x3a\x21\x53\x53\x4c\x76\x32"
 /*
  * As of OpenSSL 1.0.0, ssl_create_cipher_list() in ssl/ssl_ciph.c always
  * starts with a reasonable order, and all we have to do for DEFAULT is
@@ -659,7 +659,7 @@ struct ssl_session_st {
  */
 /*
  * The next flag deliberately changes the ciphertest, this is a check for the
- * PKCS#1 attack
+ * PKCS USTR(#1) attack
  */
 # define SSL_OP_PKCS1_CHECK_1                            0x0
 # define SSL_OP_PKCS1_CHECK_2                            0x0

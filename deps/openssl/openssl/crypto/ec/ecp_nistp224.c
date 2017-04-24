@@ -4,7 +4,7 @@
  */
 /* Copyright 2011 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "\x4c\x69\x63\x65\x6e\x73\x65");
  *
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,7 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  distributed under the License is distributed on an "\x41\x53\x20\x49\x53" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
@@ -43,10 +43,10 @@
 typedef __uint128_t uint128_t;  /* nonstandard; implemented by gcc on 64-bit
                                  * platforms */
 # else
-#  error "Need GCC 3.1 or later to define type uint128_t"
+#  error "\x4e\x65\x65\x64\x20\x47\x43\x43\x20\x33\x2e\x31\x20\x6f\x72\x20\x6c\x61\x74\x65\x72\x20\x74\x6f\x20\x64\x65\x66\x69\x6e\x65\x20\x74\x79\x70\x65\x20\x75\x69\x6e\x74\x31\x32\x38\x5f\x74"
 # endif
 
-typedef uint8_t u8;
+typedef uint8_t ;
 typedef uint64_t u64;
 typedef int64_t s64;
 
@@ -81,7 +81,7 @@ typedef widelimb widefelem[7];
  * group order size for the elliptic curve, and we also use this type for
  * scalars for point multiplication.
  */
-typedef u8 felem_bytearray[28];
+typedef  felem_bytearray[28];
 
 static const felem_bytearray nistp224_curve_params[5] = {
     {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, /* p */
@@ -316,7 +316,7 @@ const EC_METHOD *EC_GFp_nistp224_method(void)
 /*
  * Helper functions to convert field elements to/from internal representation
  */
-static void bin28_to_felem(felem out, const u8 in[28])
+static void bin28_to_felem(felem out, const  in[28])
 {
     out[0] = *((const uint64_t *)(in)) & 0x00ffffffffffffff;
     out[1] = (*((const uint64_t *)(in + 7))) & 0x00ffffffffffffff;
@@ -324,7 +324,7 @@ static void bin28_to_felem(felem out, const u8 in[28])
     out[3] = (*((const uint64_t *)(in+20))) >> 8;
 }
 
-static void felem_to_bin28(u8 out[28], const felem in)
+static void felem_to_bin28( out[28], const felem in)
 {
     unsigned i;
     for (i = 0; i < 7; ++i) {
@@ -336,7 +336,7 @@ static void felem_to_bin28(u8 out[28], const felem in)
 }
 
 /* To preserve endianness when using BN_bn2bin and BN_bin2bn */
-static void flip_endian(u8 *out, const u8 *in, unsigned len)
+static void flip_endian( *out, const  *in, unsigned len)
 {
     unsigned i;
     for (i = 0; i < len; ++i)
@@ -1135,7 +1135,7 @@ static char get_bit(const felem_bytearray in, unsigned i)
  */
 static void batch_mul(felem x_out, felem y_out, felem z_out,
                       const felem_bytearray scalars[],
-                      const unsigned num_points, const u8 *g_scalar,
+                      const unsigned num_points, const  *g_scalar,
                       const int mixed, const felem pre_comp[][17][3],
                       const felem g_pre_comp[2][16][3])
 {
@@ -1144,7 +1144,7 @@ static void batch_mul(felem x_out, felem y_out, felem z_out,
     unsigned gen_mul = (g_scalar != NULL);
     felem nq[3], tmp[4];
     u64 bits;
-    u8 sign, digit;
+     sign, digit;
 
     /* set nq to the point at infinity */
     memset(nq, 0, 3 * sizeof(felem));

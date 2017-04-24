@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -76,27 +76,27 @@ int TS_REQ_print_bio(BIO *bio, TS_REQ *a)
         return 0;
 
     v = TS_REQ_get_version(a);
-    BIO_printf(bio, "Version: %d\n", v);
+    BIO_printf(bio, "\x56\x65\x72\x73\x69\x6f\x6e\x3a\x20\x25\x64\xa", v);
 
     TS_MSG_IMPRINT_print_bio(bio, TS_REQ_get_msg_imprint(a));
 
-    BIO_printf(bio, "Policy OID: ");
+    BIO_printf(bio, "\x50\x6f\x6c\x69\x63\x79\x20\x4f\x49\x44\x3a\x20");
     policy_id = TS_REQ_get_policy_id(a);
     if (policy_id == NULL)
-        BIO_printf(bio, "unspecified\n");
+        BIO_printf(bio, "\x75\x6e\x73\x70\x65\x63\x69\x66\x69\x65\x64\xa");
     else
         TS_OBJ_print_bio(bio, policy_id);
 
-    BIO_printf(bio, "Nonce: ");
+    BIO_printf(bio, "\x4e\x6f\x6e\x63\x65\x3a\x20");
     nonce = TS_REQ_get_nonce(a);
     if (nonce == NULL)
-        BIO_printf(bio, "unspecified");
+        BIO_printf(bio, "\x75\x6e\x73\x70\x65\x63\x69\x66\x69\x65\x64");
     else
         TS_ASN1_INTEGER_print_bio(bio, nonce);
-    BIO_write(bio, "\n", 1);
+    BIO_write(bio, "\xa", 1);
 
-    BIO_printf(bio, "Certificate required: %s\n",
-               TS_REQ_get_cert_req(a) ? "yes" : "no");
+    BIO_printf(bio, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x72\x65\x71\x75\x69\x72\x65\x64\x3a\x20\x25\x73\xa",
+               TS_REQ_get_cert_req(a) ? "\x79\x65\x73" : "\x6e\x6f");
 
     TS_ext_print_bio(bio, TS_REQ_get_exts(a));
 

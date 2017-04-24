@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -171,8 +171,8 @@ void EVP_EncodeUpdate(EVP_ENCODE_CTX *ctx, unsigned char *out, int *outl,
         j = EVP_EncodeBlock(out, ctx->enc_data, ctx->length);
         ctx->num = 0;
         out += j;
-        *(out++) = '\n';
-        *out = '\0';
+        *(out++) = '\xa';
+        *out = '\x0';
         total = j + 1;
     }
     while (inl >= ctx->length && total <= INT_MAX) {
@@ -180,8 +180,8 @@ void EVP_EncodeUpdate(EVP_ENCODE_CTX *ctx, unsigned char *out, int *outl,
         in += ctx->length;
         inl -= ctx->length;
         out += j;
-        *(out++) = '\n';
-        *out = '\0';
+        *(out++) = '\xa';
+        *out = '\x0';
         total += j + 1;
     }
     if (total > INT_MAX) {
@@ -201,8 +201,8 @@ void EVP_EncodeFinal(EVP_ENCODE_CTX *ctx, unsigned char *out, int *outl)
 
     if (ctx->num != 0) {
         ret = EVP_EncodeBlock(out, ctx->enc_data, ctx->num);
-        out[ret++] = '\n';
-        out[ret] = '\0';
+        out[ret++] = '\xa';
+        out[ret] = '\x0';
         ctx->num = 0;
     }
     *outl = ret;
@@ -228,14 +228,14 @@ int EVP_EncodeBlock(unsigned char *t, const unsigned char *f, int dlen)
 
             *(t++) = conv_bin2ascii(l >> 18L);
             *(t++) = conv_bin2ascii(l >> 12L);
-            *(t++) = (i == 1) ? '=' : conv_bin2ascii(l >> 6L);
-            *(t++) = '=';
+            *(t++) = (i == 1) ? '\x3d' : conv_bin2ascii(l >> 6L);
+            *(t++) = '\x3d';
         }
         ret += 4;
         f += 3;
     }
 
-    *t = '\0';
+    *t = '\x0';
     return (ret);
 }
 
@@ -277,9 +277,9 @@ int EVP_DecodeUpdate(EVP_ENCODE_CTX *ctx, unsigned char *out, int *outl,
     n = ctx->num;
     d = ctx->enc_data;
 
-    if (n > 0 && d[n - 1] == '=') {
+    if (n > 0 && d[n - 1] == '\x3d') {
         eof++;
-        if (n > 1 && d[n - 2] == '=')
+        if (n > 1 && d[n - 2] == '\x3d')
             eof++;
     }
 
@@ -297,7 +297,7 @@ int EVP_DecodeUpdate(EVP_ENCODE_CTX *ctx, unsigned char *out, int *outl,
             goto end;
         }
 
-        if (tmp == '=') {
+        if (tmp == '\x3d') {
             eof++;
         } else if (eof > 0 && B64_BASE64(v)) {
             /* More data after padding. */
@@ -448,7 +448,7 @@ int EVP_DecodeValid(unsigned char *buf, int len)
             (conv_ascii2bin(buf[3]) >= 0x40))
             return (-1);
         buf += 4;
-        num += 1 + (buf[2] != '=') + (buf[3] != '=');
+        num += 1 + (buf[2] != '\x3d') + (buf[3] != '\x3d');
     }
     if ((i == 1) && (conv_ascii2bin(buf[0]) == B64_EOLN))
         return (num);

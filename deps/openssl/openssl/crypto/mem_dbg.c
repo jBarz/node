@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -75,13 +75,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -369,7 +369,7 @@ static APP_INFO *pop_info(void)
 #ifdef LEVITTE_DEBUG_MEM
             if (CRYPTO_THREADID_cmp(&ret->threadid, &tmp.threadid)) {
                 fprintf(stderr,
-                        "pop_info(): deleted info has other thread ID (%lu) than the current thread (%lu)!!!!\n",
+                        "\x70\x6f\x70\x5f\x69\x6e\x66\x6f\x28\x29\x3a\x20\x64\x65\x6c\x65\x74\x65\x64\x20\x69\x6e\x66\x6f\x20\x68\x61\x73\x20\x6f\x74\x68\x65\x72\x20\x74\x68\x72\x65\x61\x64\x20\x49\x44\x20\x28\x25\x6c\x75\x29\x20\x74\x68\x61\x6e\x20\x74\x68\x65\x20\x63\x75\x72\x72\x65\x6e\x74\x20\x74\x68\x72\x65\x61\x64\x20\x28\x25\x6c\x75\x29\x21\x21\x21\x21\xa",
                         CRYPTO_THREADID_hash(&ret->threadid),
                         CRYPTO_THREADID_hash(&tmp.threadid));
                 abort();
@@ -417,7 +417,7 @@ int CRYPTO_push_info_(const char *info, const char *file, int line)
 #ifdef LEVITTE_DEBUG_MEM
             if (CRYPTO_THREADID_cmp(&ami->threadid, &amim->threadid)) {
                 fprintf(stderr,
-                        "CRYPTO_push_info(): previous info has other thread ID (%lu) than the current thread (%lu)!!!!\n",
+                        "\x43\x52\x59\x50\x54\x4f\x5f\x70\x75\x73\x68\x5f\x69\x6e\x66\x6f\x28\x29\x3a\x20\x70\x72\x65\x76\x69\x6f\x75\x73\x20\x69\x6e\x66\x6f\x20\x68\x61\x73\x20\x6f\x74\x68\x65\x72\x20\x74\x68\x72\x65\x61\x64\x20\x49\x44\x20\x28\x25\x6c\x75\x29\x20\x74\x68\x61\x6e\x20\x74\x68\x65\x20\x63\x75\x72\x72\x65\x6e\x74\x20\x74\x68\x72\x65\x61\x64\x20\x28\x25\x6c\x75\x29\x21\x21\x21\x21\xa",
                         CRYPTO_THREADID_hash(&amim->threadid),
                         CRYPTO_THREADID_hash(&ami->threadid));
                 abort();
@@ -508,8 +508,8 @@ void CRYPTO_dbg_malloc(void *addr, int num, const char *file, int line,
             }
             m->order = order++;
 #ifdef LEVITTE_DEBUG_MEM
-            fprintf(stderr, "LEVITTE_DEBUG_MEM: [%5ld] %c 0x%p (%d)\n",
-                    m->order, (before_p & 128) ? '*' : '+', m->addr, m->num);
+            fprintf(stderr, "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x5b\x25\x35\x6c\x64\x5d\x20\x25\x63\x20\x30\x78\x25\x70\x20\x28\x25\x64\x29\xa",
+                    m->order, (before_p & 128) ? '\x2a' : '\x2b', m->addr, m->num);
 #endif
             if (options & V_CRYPTO_MDEBUG_TIME)
                 m->time = time(NULL);
@@ -556,7 +556,7 @@ void CRYPTO_dbg_free(void *addr, int before_p)
             mp = lh_MEM_delete(mh, &m);
             if (mp != NULL) {
 #ifdef LEVITTE_DEBUG_MEM
-                fprintf(stderr, "LEVITTE_DEBUG_MEM: [%5ld] - 0x%p (%d)\n",
+                fprintf(stderr, "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x5b\x25\x35\x6c\x64\x5d\x20\x2d\x20\x30\x78\x25\x70\x20\x28\x25\x64\x29\xa",
                         mp->order, mp->addr, mp->num);
 #endif
                 if (mp->app_info != NULL)
@@ -580,7 +580,7 @@ void CRYPTO_dbg_realloc(void *addr1, void *addr2, int num,
 
 #ifdef LEVITTE_DEBUG_MEM
     fprintf(stderr,
-            "LEVITTE_DEBUG_MEM: --> CRYPTO_dbg_malloc(addr1 = %p, addr2 = %p, num = %d, file = \"%s\", line = %d, before_p = %d)\n",
+            "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x2d\x2d\x3e\x20\x43\x52\x59\x50\x54\x4f\x5f\x64\x62\x67\x5f\x6d\x61\x6c\x6c\x6f\x63\x28\x61\x64\x64\x72\x31\x20\x3d\x20\x25\x70\x2c\x20\x61\x64\x64\x72\x32\x20\x3d\x20\x25\x70\x2c\x20\x6e\x75\x6d\x20\x3d\x20\x25\x64\x2c\x20\x66\x69\x6c\x65\x20\x3d\x20\x22\x25\x73\x22\x2c\x20\x6c\x69\x6e\x65\x20\x3d\x20\x25\x64\x2c\x20\x62\x65\x66\x6f\x72\x65\x5f\x70\x20\x3d\x20\x25\x64\x29\xa",
             addr1, addr2, num, file, line, before_p);
 #endif
 
@@ -604,7 +604,7 @@ void CRYPTO_dbg_realloc(void *addr1, void *addr2, int num,
             if (mp != NULL) {
 #ifdef LEVITTE_DEBUG_MEM
                 fprintf(stderr,
-                        "LEVITTE_DEBUG_MEM: [%5ld] * 0x%p (%d) -> 0x%p (%d)\n",
+                        "\x4c\x45\x56\x49\x54\x54\x45\x5f\x44\x45\x42\x55\x47\x5f\x4d\x45\x4d\x3a\x20\x5b\x25\x35\x6c\x64\x5d\x20\x2a\x20\x30\x78\x25\x70\x20\x28\x25\x64\x29\x20\x2d\x3e\x20\x30\x78\x25\x70\x20\x28\x25\x64\x29\xa",
                         mp->order, mp->addr, mp->num, addr2, num);
 #endif
                 mp->addr = addr2;
@@ -643,22 +643,22 @@ static void print_leak_doall_arg(const MEM *m, MEM_LEAK *l)
     if (options & V_CRYPTO_MDEBUG_TIME) {
         lcl = localtime(&m->time);
 
-        BIO_snprintf(bufp, BUF_REMAIN, "[%02d:%02d:%02d] ",
+        BIO_snprintf(bufp, BUF_REMAIN, "\x5b\x25\x30\x32\x64\x3a\x25\x30\x32\x64\x3a\x25\x30\x32\x64\x5d\x20",
                      lcl->tm_hour, lcl->tm_min, lcl->tm_sec);
         bufp += strlen(bufp);
     }
 
-    BIO_snprintf(bufp, BUF_REMAIN, "%5lu file=%s, line=%d, ",
+    BIO_snprintf(bufp, BUF_REMAIN, "\x25\x35\x6c\x75\x20\x66\x69\x6c\x65\x3d\x25\x73\x2c\x20\x6c\x69\x6e\x65\x3d\x25\x64\x2c\x20",
                  m->order, m->file, m->line);
     bufp += strlen(bufp);
 
     if (options & V_CRYPTO_MDEBUG_THREAD) {
-        BIO_snprintf(bufp, BUF_REMAIN, "thread=%lu, ",
+        BIO_snprintf(bufp, BUF_REMAIN, "\x74\x68\x72\x65\x61\x64\x3d\x25\x6c\x75\x2c\x20",
                      CRYPTO_THREADID_hash(&m->threadid));
         bufp += strlen(bufp);
     }
 
-    BIO_snprintf(bufp, BUF_REMAIN, "number=%d, address=%08lX\n",
+    BIO_snprintf(bufp, BUF_REMAIN, "\x6e\x75\x6d\x62\x65\x72\x3d\x25\x64\x2c\x20\x61\x64\x64\x72\x65\x73\x73\x3d\x25\x30\x38\x6c\x58\xa",
                  m->num, (unsigned long)m->addr);
     bufp += strlen(bufp);
 
@@ -678,9 +678,9 @@ static void print_leak_doall_arg(const MEM *m, MEM_LEAK *l)
         int info_len;
 
         ami_cnt++;
-        memset(buf, '>', ami_cnt);
+        memset(buf, '\x3e', ami_cnt);
         BIO_snprintf(buf + ami_cnt, sizeof buf - ami_cnt,
-                     " thread=%lu, file=%s, line=%d, info=\"",
+                     "\x20\x74\x68\x72\x65\x61\x64\x3d\x25\x6c\x75\x2c\x20\x66\x69\x6c\x65\x3d\x25\x73\x2c\x20\x6c\x69\x6e\x65\x3d\x25\x64\x2c\x20\x69\x6e\x66\x6f\x3d\x22",
                      CRYPTO_THREADID_hash(&amip->threadid), amip->file,
                      amip->line);
         buf_len = strlen(buf);
@@ -692,7 +692,7 @@ static void print_leak_doall_arg(const MEM *m, MEM_LEAK *l)
             BUF_strlcpy(buf + buf_len, amip->info, sizeof buf - buf_len);
             buf_len = strlen(buf);
         }
-        BIO_snprintf(buf + buf_len, sizeof buf - buf_len, "\"\n");
+        BIO_snprintf(buf + buf_len, sizeof buf - buf_len, "\x22\xa");
 
         BIO_puts(l->bio, buf);
 
@@ -702,7 +702,7 @@ static void print_leak_doall_arg(const MEM *m, MEM_LEAK *l)
 
 #ifdef LEVITTE_DEBUG_MEM
     if (amip) {
-        fprintf(stderr, "Thread switch detected in backtrace!!!!\n");
+        fprintf(stderr, "\x54\x68\x72\x65\x61\x64\x20\x73\x77\x69\x74\x63\x68\x20\x64\x65\x74\x65\x63\x74\x65\x64\x20\x69\x6e\x20\x62\x61\x63\x6b\x74\x72\x61\x63\x65\x21\x21\x21\x21\xa");
         abort();
     }
 #endif
@@ -725,7 +725,7 @@ void CRYPTO_mem_leaks(BIO *b)
     if (mh != NULL)
         lh_MEM_doall_arg(mh, LHASH_DOALL_ARG_FN(print_leak), MEM_LEAK, &ml);
     if (ml.chunks != 0) {
-        BIO_printf(b, "%ld bytes leaked in %d chunks\n", ml.bytes, ml.chunks);
+        BIO_printf(b, "\x25\x6c\x64\x20\x62\x79\x74\x65\x73\x20\x6c\x65\x61\x6b\x65\x64\x20\x69\x6e\x20\x25\x64\x20\x63\x68\x75\x6e\x6b\x73\xa", ml.bytes, ml.chunks);
 #ifdef CRYPTO_MDEBUG_ABORT
         abort();
 #endif

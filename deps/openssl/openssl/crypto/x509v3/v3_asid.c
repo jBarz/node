@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -111,10 +111,10 @@ static int i2r_ASIdentifierChoice(BIO *out,
     char *s;
     if (choice == NULL)
         return 1;
-    BIO_printf(out, "%*s%s:\n", indent, "", msg);
+    BIO_printf(out, "\x25\x2a\x73\x25\x73\x3a\xa", indent, "", msg);
     switch (choice->type) {
     case ASIdentifierChoice_inherit:
-        BIO_printf(out, "%*sinherit\n", indent + 2, "");
+        BIO_printf(out, "\x25\x2a\x73\x69\x6e\x68\x65\x72\x69\x74\xa", indent + 2, "");
         break;
     case ASIdentifierChoice_asIdsOrRanges:
         for (i = 0; i < sk_ASIdOrRange_num(choice->u.asIdsOrRanges); i++) {
@@ -124,17 +124,17 @@ static int i2r_ASIdentifierChoice(BIO *out,
             case ASIdOrRange_id:
                 if ((s = i2s_ASN1_INTEGER(NULL, aor->u.id)) == NULL)
                     return 0;
-                BIO_printf(out, "%*s%s\n", indent + 2, "", s);
+                BIO_printf(out, "\x25\x2a\x73\x25\x73\xa", indent + 2, "", s);
                 OPENSSL_free(s);
                 break;
             case ASIdOrRange_range:
                 if ((s = i2s_ASN1_INTEGER(NULL, aor->u.range->min)) == NULL)
                     return 0;
-                BIO_printf(out, "%*s%s-", indent + 2, "", s);
+                BIO_printf(out, "\x25\x2a\x73\x25\x73\x2d", indent + 2, "", s);
                 OPENSSL_free(s);
                 if ((s = i2s_ASN1_INTEGER(NULL, aor->u.range->max)) == NULL)
                     return 0;
-                BIO_printf(out, "%s\n", s);
+                BIO_printf(out, "\x25\x73\xa", s);
                 OPENSSL_free(s);
                 break;
             default:
@@ -156,9 +156,9 @@ static int i2r_ASIdentifiers(const X509V3_EXT_METHOD *method,
 {
     ASIdentifiers *asid = ext;
     return (i2r_ASIdentifierChoice(out, asid->asnum, indent,
-                                   "Autonomous System Numbers") &&
+                                   "\x41\x75\x74\x6f\x6e\x6f\x6d\x6f\x75\x73\x20\x53\x79\x73\x74\x65\x6d\x20\x4e\x75\x6d\x62\x65\x72\x73") &&
             i2r_ASIdentifierChoice(out, asid->rdi, indent,
-                                   "Routing Domain Identifiers"));
+                                   "\x52\x6f\x75\x74\x69\x6e\x67\x20\x44\x6f\x6d\x61\x69\x6e\x20\x49\x64\x65\x6e\x74\x69\x66\x69\x65\x72\x73"));
 }
 
 /*
@@ -557,9 +557,9 @@ static void *v2i_ASIdentifiers(const struct v3_ext_method *method,
         /*
          * Figure out whether this is an AS or an RDI.
          */
-        if (!name_cmp(val->name, "AS")) {
+        if (!name_cmp(val->name, "\x41\x53")) {
             which = V3_ASID_ASNUM;
-        } else if (!name_cmp(val->name, "RDI")) {
+        } else if (!name_cmp(val->name, "\x52\x44\x49")) {
             which = V3_ASID_RDI;
         } else {
             X509V3err(X509V3_F_V2I_ASIDENTIFIERS,
@@ -571,7 +571,7 @@ static void *v2i_ASIdentifiers(const struct v3_ext_method *method,
         /*
          * Handle inheritance.
          */
-        if (!strcmp(val->value, "inherit")) {
+        if (!strcmp(val->value, "\x69\x6e\x68\x65\x72\x69\x74")) {
             if (v3_asid_add_inherit(asid, which))
                 continue;
             X509V3err(X509V3_F_V2I_ASIDENTIFIERS,
@@ -583,22 +583,22 @@ static void *v2i_ASIdentifiers(const struct v3_ext_method *method,
         /*
          * Number, range, or mistake, pick it apart and figure out which.
          */
-        i1 = strspn(val->value, "0123456789");
-        if (val->value[i1] == '\0') {
+        i1 = strspn(val->value, "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39");
+        if (val->value[i1] == '\x0') {
             is_range = 0;
         } else {
             is_range = 1;
-            i2 = i1 + strspn(val->value + i1, " \t");
-            if (val->value[i2] != '-') {
+            i2 = i1 + strspn(val->value + i1, "\x20\x9");
+            if (val->value[i2] != '\x2d') {
                 X509V3err(X509V3_F_V2I_ASIDENTIFIERS,
                           X509V3_R_INVALID_ASNUMBER);
                 X509V3_conf_err(val);
                 goto err;
             }
             i2++;
-            i2 = i2 + strspn(val->value + i2, " \t");
-            i3 = i2 + strspn(val->value + i2, "0123456789");
-            if (val->value[i3] != '\0') {
+            i2 = i2 + strspn(val->value + i2, "\x20\x9");
+            i3 = i2 + strspn(val->value + i2, "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39");
+            if (val->value[i3] != '\x0') {
                 X509V3err(X509V3_F_V2I_ASIDENTIFIERS,
                           X509V3_R_INVALID_ASRANGE);
                 X509V3_conf_err(val);
@@ -620,7 +620,7 @@ static void *v2i_ASIdentifiers(const struct v3_ext_method *method,
                 X509V3err(X509V3_F_V2I_ASIDENTIFIERS, ERR_R_MALLOC_FAILURE);
                 goto err;
             }
-            s[i1] = '\0';
+            s[i1] = '\x0';
             min = s2i_ASN1_INTEGER(NULL, s);
             max = s2i_ASN1_INTEGER(NULL, s + i2);
             OPENSSL_free(s);

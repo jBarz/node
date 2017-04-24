@@ -718,9 +718,9 @@ int BN_GF2m_mod_inv(BIGNUM *r, const BIGNUM *a, const BIGNUM *p, BN_CTX *ctx)
         for (i = 0; i < top; i++)
             cdp[i] = 0;
         c->top = top;
-        vdp = v->d;             /* It pays off to "cache" *->d pointers,
+        vdp = v->d;             /* It pays off to "\x63\x61\x63\x68\x65" *->d pointers,
                                  * because it allows optimizer to be more
-                                 * aggressive. But we don't have to "cache"
+                                 * aggressive. But we don't have to "\x63\x61\x63\x68\x65"
                                  * p->d, because *p is declared 'const'... */
         while (1) {
             while (ubits && !(udp[0] & 1)) {

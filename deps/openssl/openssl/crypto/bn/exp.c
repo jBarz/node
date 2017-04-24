@@ -49,7 +49,7 @@ char *argv[];
         }
         ms_time_get(end);
         d = ms_time_diff(start, end) /* *50/33 */ ;
-        printf("%5d bit:%6.2f %6d %6.4f %4d m_set(%5.4f)\n", size,
+        printf("\x25\x35\x64\x20\x62\x69\x74\x3a\x25\x36\x2e\x32\x66\x20\x25\x36\x64\x20\x25\x36\x2e\x34\x66\x20\x25\x34\x64\x20\x6d\x5f\x73\x65\x74\x28\x25\x35\x2e\x34\x66\x29\xa", size,
                d, num, d / num, (int)((d / num) * mod), md / 10.0);
         num /= 8;
         mod /= 8;

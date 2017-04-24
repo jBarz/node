@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -104,7 +104,7 @@ static int MS_CALLBACK file_new(BIO *h);
 static int MS_CALLBACK file_free(BIO *data);
 static BIO_METHOD methods_filep = {
     BIO_TYPE_FILE,
-    "FILE pointer",
+    "\x46\x49\x4c\x45\x20\x70\x6f\x69\x6e\x74\x65\x72",
     file_write,
     file_read,
     file_puts,
@@ -173,7 +173,7 @@ BIO *BIO_new_file(const char *filename, const char *mode)
 
     if (file == NULL) {
         SYSerr(SYS_F_FOPEN, get_last_sys_error());
-        ERR_add_error_data(5, "fopen('", filename, "','", mode, "')");
+        ERR_add_error_data(5, "\x66\x6f\x70\x65\x6e\x28\x27", filename, "\x27\x2c\x27", mode, "\x27\x29");
         if (errno == ENOENT
 # ifdef ENXIO
             || errno == ENXIO
@@ -327,7 +327,7 @@ static long MS_CALLBACK file_ctrl(BIO *b, int cmd, long num, void *ptr)
 #  endif
 #  ifdef UP_fsetmod
         if (b->flags & BIO_FLAGS_UPLINK)
-            UP_fsetmod(b->ptr, (char)((num & BIO_FP_TEXT) ? 't' : 'b'));
+            UP_fsetmod(b->ptr, (char)((num & BIO_FP_TEXT) ? '\x74' : '\x62'));
         else
 #  endif
         {
@@ -371,15 +371,15 @@ static long MS_CALLBACK file_ctrl(BIO *b, int cmd, long num, void *ptr)
         b->shutdown = (int)num & BIO_CLOSE;
         if (num & BIO_FP_APPEND) {
             if (num & BIO_FP_READ)
-                BUF_strlcpy(p, "a+", sizeof p);
+                BUF_strlcpy(p, "\x61\x2b", sizeof p);
             else
-                BUF_strlcpy(p, "a", sizeof p);
+                BUF_strlcpy(p, "\x61", sizeof p);
         } else if ((num & BIO_FP_READ) && (num & BIO_FP_WRITE))
-            BUF_strlcpy(p, "r+", sizeof p);
+            BUF_strlcpy(p, "\x72\x2b", sizeof p);
         else if (num & BIO_FP_WRITE)
-            BUF_strlcpy(p, "w", sizeof p);
+            BUF_strlcpy(p, "\x77", sizeof p);
         else if (num & BIO_FP_READ)
-            BUF_strlcpy(p, "r", sizeof p);
+            BUF_strlcpy(p, "\x72", sizeof p);
         else {
             BIOerr(BIO_F_FILE_CTRL, BIO_R_BAD_FOPEN_MODE);
             ret = 0;
@@ -387,20 +387,20 @@ static long MS_CALLBACK file_ctrl(BIO *b, int cmd, long num, void *ptr)
         }
 #  if defined(OPENSSL_SYS_MSDOS) || defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_OS2) || defined(OPENSSL_SYS_WIN32_CYGWIN)
         if (!(num & BIO_FP_TEXT))
-            strcat(p, "b");
+            strcat(p, "\x62");
         else
-            strcat(p, "t");
+            strcat(p, "\x74");
 #  endif
 #  if defined(OPENSSL_SYS_NETWARE)
         if (!(num & BIO_FP_TEXT))
-            strcat(p, "b");
+            strcat(p, "\x62");
         else
-            strcat(p, "t");
+            strcat(p, "\x74");
 #  endif
         fp = file_fopen(ptr, p);
         if (fp == NULL) {
             SYSerr(SYS_F_FOPEN, get_last_sys_error());
-            ERR_add_error_data(5, "fopen('", ptr, "','", p, "')");
+            ERR_add_error_data(5, "\x66\x6f\x70\x65\x6e\x28\x27", ptr, "\x27\x2c\x27", p, "\x27\x29");
             BIOerr(BIO_F_FILE_CTRL, ERR_R_SYS_LIB);
             ret = 0;
             break;
@@ -448,7 +448,7 @@ static int MS_CALLBACK file_gets(BIO *bp, char *buf, int size)
 {
     int ret = 0;
 
-    buf[0] = '\0';
+    buf[0] = '\x0';
     if (bp->flags & BIO_FLAGS_UPLINK) {
         if (!UP_fgets(buf, size, bp->ptr))
             goto err;
@@ -456,7 +456,7 @@ static int MS_CALLBACK file_gets(BIO *bp, char *buf, int size)
         if (!fgets(buf, size, (FILE *)bp->ptr))
             goto err;
     }
-    if (buf[0] != '\0')
+    if (buf[0] != '\x0')
         ret = strlen(buf);
  err:
     return (ret);

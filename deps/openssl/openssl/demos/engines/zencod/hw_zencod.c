@@ -1,6 +1,6 @@
 /* crypto/engine/hw_zencod.c */
  /*
-  * Written by Fred Donnat (frederic.donnat@zencod.com) for "zencod" * engine
+  * Written by Fred Donnat (frederic.donnat@zencod.com) for "\x7a\x65\x6e\x63\x6f\x64" * engine
   * integration in order to redirect crypto computing on a crypto * hardware
   * accelerator zenssl32 ;-) * * Date : 25 jun 2002 * Revision : 17 Ju7 2002
   * * Version : zencod_engine-0.9.7
@@ -75,16 +75,16 @@
 #   include "vendor_defns/hw_zencod.h"
 #  endif
 
-#  define ZENCOD_LIB_NAME "zencod engine"
+#  define ZENCOD_LIB_NAME "\x7a\x65\x6e\x63\x6f\x64\x20\x65\x6e\x67\x69\x6e\x65"
 #  include "hw_zencod_err.c"
 
 #  define FAIL_TO_SOFTWARE                -15
 
-#  define ZEN_LIBRARY     "zenbridge"
+#  define ZEN_LIBRARY     "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65"
 
 #  if 0
 #   define PERROR(s)     perror(s)
-#   define CHEESE()      fputs("## [ZenEngine] ## " __FUNCTION__ "\n", stderr)
+#   define CHEESE()      fputs("\x23\x23\x20\x5b\x5a\x65\x6e\x45\x6e\x67\x69\x6e\x65\x5d\x20\x23\x23\x20" __FUNCTION__ "\xa", stderr)
 #  else
 #   define PERROR(s)
 #   define CHEESE()
@@ -186,8 +186,8 @@ static int engine_ciphers(ENGINE *e, const EVP_CIPHER **cipher,
 #  define ZENCOD_CMD_SO_PATH                      ENGINE_CMD_BASE
 static const ENGINE_CMD_DEFN zencod_cmd_defns[] = {
     {ZENCOD_CMD_SO_PATH,
-     "SO_PATH",
-     "Specifies the path to the 'zenbridge' shared library",
+     "\x53\x4f\x5f\x50\x41\x54\x48",
+     "\x53\x70\x65\x63\x69\x66\x69\x65\x73\x20\x74\x68\x65\x20\x70\x61\x74\x68\x20\x74\x6f\x20\x74\x68\x65\x20\x27\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79",
      ENGINE_CMD_FLAG_STRING},
     {0, NULL, NULL, 0}
 };
@@ -198,7 +198,7 @@ static const ENGINE_CMD_DEFN zencod_cmd_defns[] = {
  * our function
  */
 static RSA_METHOD zencod_rsa = {
-    "ZENCOD RSA method",
+    "\x5a\x45\x4e\x43\x4f\x44\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     NULL,
     NULL,
     NULL,
@@ -220,7 +220,7 @@ static RSA_METHOD zencod_rsa = {
  * our function
  */
 static DSA_METHOD zencod_dsa = {
-    "ZENCOD DSA method",
+    "\x5a\x45\x4e\x43\x4f\x44\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
     DSA_zencod_do_sign,
     NULL,
     DSA_zencod_do_verify,
@@ -239,7 +239,7 @@ static DSA_METHOD zencod_dsa = {
  * function
  */
 static DH_METHOD zencod_dh = {
-    "ZENCOD DH method",
+    "\x5a\x45\x4e\x43\x4f\x44\x20\x44\x48\x20\x6d\x65\x74\x68\x6f\x64",
     DH_zencod_generate_key,
     DH_zencod_compute_key,
     DH_zencod_bn_mod_exp,
@@ -264,8 +264,8 @@ static RAND_METHOD zencod_rand = {
 };
 
 /* Constants used when creating the ENGINE */
-static const char *engine_zencod_id = "zencod";
-static const char *engine_zencod_name = "ZENCOD hardware engine support";
+static const char *engine_zencod_id = "\x7a\x65\x6e\x63\x6f\x64";
+static const char *engine_zencod_name = "\x5a\x45\x4e\x43\x4f\x44\x20\x68\x61\x72\x64\x77\x61\x72\x65\x20\x65\x6e\x67\x69\x6e\x65\x20\x73\x75\x70\x70\x6f\x72\x74";
 
 /*
  * This internal function is used by ENGINE_zencod () and possibly by the
@@ -451,30 +451,30 @@ static t_zencod_rc4_cipher *ptr_zencod_rc4_cipher = NULL;
  */
 static const char *ZENCOD_LIBNAME = ZEN_LIBRARY;
 
-static const char *ZENCOD_Fct_0 = "test_device";
-static const char *ZENCOD_Fct_1 = "zenbridge_bytes2bits";
-static const char *ZENCOD_Fct_2 = "zenbridge_bits2bytes";
-static const char *ZENCOD_Fct_3 = "zenbridge_new_number";
-static const char *ZENCOD_Fct_4 = "zenbridge_init_number";
+static const char *ZENCOD_Fct_0 = "\x74\x65\x73\x74\x5f\x64\x65\x76\x69\x63\x65";
+static const char *ZENCOD_Fct_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x62\x79\x74\x65\x73\x32\x62\x69\x74\x73";
+static const char *ZENCOD_Fct_2 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x62\x69\x74\x73\x32\x62\x79\x74\x65\x73";
+static const char *ZENCOD_Fct_3 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x6e\x65\x77\x5f\x6e\x75\x6d\x62\x65\x72";
+static const char *ZENCOD_Fct_4 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x69\x6e\x69\x74\x5f\x6e\x75\x6d\x62\x65\x72";
 
-static const char *ZENCOD_Fct_exp_1 = "zenbridge_rsa_mod_exp";
-static const char *ZENCOD_Fct_exp_2 = "zenbridge_rsa_mod_exp_crt";
-static const char *ZENCOD_Fct_dsa_1 = "zenbridge_dsa_do_sign";
-static const char *ZENCOD_Fct_dsa_2 = "zenbridge_dsa_do_verify";
-static const char *ZENCOD_Fct_dh_1 = "zenbridge_dh_generate_key";
-static const char *ZENCOD_Fct_dh_2 = "zenbridge_dh_compute_key";
-static const char *ZENCOD_Fct_rand_1 = "zenbridge_rand_bytes";
-static const char *ZENCOD_Fct_math_1 = "zenbridge_math_mod_exp";
+static const char *ZENCOD_Fct_exp_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x72\x73\x61\x5f\x6d\x6f\x64\x5f\x65\x78\x70";
+static const char *ZENCOD_Fct_exp_2 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x72\x73\x61\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x63\x72\x74";
+static const char *ZENCOD_Fct_dsa_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x64\x73\x61\x5f\x64\x6f\x5f\x73\x69\x67\x6e";
+static const char *ZENCOD_Fct_dsa_2 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x64\x73\x61\x5f\x64\x6f\x5f\x76\x65\x72\x69\x66\x79";
+static const char *ZENCOD_Fct_dh_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x64\x68\x5f\x67\x65\x6e\x65\x72\x61\x74\x65\x5f\x6b\x65\x79";
+static const char *ZENCOD_Fct_dh_2 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x64\x68\x5f\x63\x6f\x6d\x70\x75\x74\x65\x5f\x6b\x65\x79";
+static const char *ZENCOD_Fct_rand_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x72\x61\x6e\x64\x5f\x62\x79\x74\x65\x73";
+static const char *ZENCOD_Fct_math_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x6d\x61\x74\x68\x5f\x6d\x6f\x64\x5f\x65\x78\x70";
 
-static const char *ZENCOD_Fct_md5_1 = "zenbridge_md5_init";
-static const char *ZENCOD_Fct_md5_2 = "zenbridge_md5_update";
-static const char *ZENCOD_Fct_md5_3 = "zenbridge_md5_do_final";
-static const char *ZENCOD_Fct_sha1_1 = "zenbridge_sha1_init";
-static const char *ZENCOD_Fct_sha1_2 = "zenbridge_sha1_update";
-static const char *ZENCOD_Fct_sha1_3 = "zenbridge_sha1_do_final";
+static const char *ZENCOD_Fct_md5_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x6d\x64\x35\x5f\x69\x6e\x69\x74";
+static const char *ZENCOD_Fct_md5_2 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x6d\x64\x35\x5f\x75\x70\x64\x61\x74\x65";
+static const char *ZENCOD_Fct_md5_3 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x6d\x64\x35\x5f\x64\x6f\x5f\x66\x69\x6e\x61\x6c";
+static const char *ZENCOD_Fct_sha1_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x73\x68\x61\x31\x5f\x69\x6e\x69\x74";
+static const char *ZENCOD_Fct_sha1_2 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x73\x68\x61\x31\x5f\x75\x70\x64\x61\x74\x65";
+static const char *ZENCOD_Fct_sha1_3 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x73\x68\x61\x31\x5f\x64\x6f\x5f\x66\x69\x6e\x61\x6c";
 
-static const char *ZENCOD_Fct_xdes_1 = "zenbridge_xdes_cipher";
-static const char *ZENCOD_Fct_rc4_1 = "zenbridge_rc4_cipher";
+static const char *ZENCOD_Fct_xdes_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x78\x64\x65\x73\x5f\x63\x69\x70\x68\x65\x72";
+static const char *ZENCOD_Fct_rc4_1 = "\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x72\x63\x34\x5f\x63\x69\x70\x68\x65\x72";
 
 /*
  * Destructor (complements the "ENGINE_zencod ()" constructor)
@@ -762,7 +762,7 @@ static int zencod_bn_mod_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
     ret = ptr_zencod_math_mod_exp(&y, &e, &x, &n);
 
     if (ret) {
-        PERROR("zenbridge_math_mod_exp");
+        PERROR("\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x6d\x61\x74\x68\x5f\x6d\x6f\x64\x5f\x65\x78\x70");
         ENGINEerr(ZENCOD_F_ZENCOD_BN_MOD_EXP, ZENCOD_R_REQUEST_FAILED);
         return 0;
     }
@@ -818,7 +818,7 @@ static int RSA_zencod_rsa_mod_exp(BIGNUM *r0, const BIGNUM *i, RSA *rsa)
 
         if (ptr_zencod_rsa_mod_exp_crt(&y, &x, &p, &q, &dmp1, &dmq1, &iqmp) <
             0) {
-            PERROR("zenbridge_rsa_mod_exp_crt");
+            PERROR("\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x72\x73\x61\x5f\x6d\x6f\x64\x5f\x65\x78\x70\x5f\x63\x72\x74");
             ENGINEerr(ZENCOD_F_ZENCOD_RSA_MOD_EXP_CRT,
                       ZENCOD_R_REQUEST_FAILED);
             return 0;
@@ -864,7 +864,7 @@ static int RSA_zencod_bn_mod_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
         BIGNUM2ZEN(&n, m);
 
         if (ptr_zencod_rsa_mod_exp(&y, &x, &n, &e) < 0) {
-            PERROR("zenbridge_rsa_mod_exp");
+            PERROR("\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x72\x73\x61\x5f\x6d\x6f\x64\x5f\x65\x78\x70");
             ENGINEerr(ZENCOD_F_ZENCOD_RSA_MOD_EXP, ZENCOD_R_REQUEST_FAILED);
             return 0;
         }
@@ -932,7 +932,7 @@ static DSA_SIG *DSA_zencod_do_sign(const unsigned char *dgst, int dlen,
     ptr_zencod_init_number(&data, 160, msg);
 
     if (ptr_zencod_dsa_do_sign(0, &data, &y, &p, &q, &g, &x, &r, &s) < 0) {
-        PERROR("zenbridge_dsa_do_sign");
+        PERROR("\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x64\x73\x61\x5f\x64\x6f\x5f\x73\x69\x67\x6e");
         ENGINEerr(ZENCOD_F_ZENCOD_DSA_DO_SIGN, ZENCOD_R_REQUEST_FAILED);
         goto FAILED;
     }
@@ -995,7 +995,7 @@ static int DSA_zencod_do_verify(const unsigned char *dgst, int dlen,
     if ((ret =
          ptr_zencod_dsa_do_verify(0, &data, &p, &q, &g, &y, &r, &s,
                                   &v)) < 0) {
-        PERROR("zenbridge_dsa_do_verify");
+        PERROR("\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x64\x73\x61\x5f\x64\x6f\x5f\x76\x65\x72\x69\x66\x79");
         ENGINEerr(ZENCOD_F_ZENCOD_DSA_DO_VERIFY, ZENCOD_R_REQUEST_FAILED);
         return 0;
     }
@@ -1072,7 +1072,7 @@ static int DH_zencod_generate_key(DH *dh)
 
     /* Send the request to the driver */
     if (ptr_zencod_dh_generate_key(&y, &x, &g, &p, generate_x) < 0) {
-        perror("zenbridge_dh_generate_key");
+        perror("\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x64\x68\x5f\x67\x65\x6e\x65\x72\x61\x74\x65\x5f\x6b\x65\x79");
         ENGINEerr(ZENCOD_F_ZENCOD_DH_GENERATE, ZENCOD_R_REQUEST_FAILED);
         goto FAILED;
     }
@@ -1167,7 +1167,7 @@ static int RAND_zencod_rand_bytes(unsigned char *buf, int num)
     ptr_zencod_init_number(&r, num * 8, buf);
 
     if (ptr_zencod_rand_bytes(&r, ZENBRIDGE_RNG_DIRECT) < 0) {
-        PERROR("zenbridge_rand_bytes");
+        PERROR("\x7a\x65\x6e\x62\x72\x69\x64\x67\x65\x5f\x72\x61\x6e\x64\x5f\x62\x79\x74\x65\x73");
         ENGINEerr(ZENCOD_F_ZENCOD_RAND, ZENCOD_R_REQUEST_FAILED);
         return 0;
     }
@@ -1204,7 +1204,7 @@ IMPLEMENT_DYNAMIC_CHECK_FN()
     IMPLEMENT_DYNAMIC_BIND_FN(bind_fn)
 #  endif                        /* ENGINE_DYNAMIC_SUPPORT */
     /*
-     * Adding "Digest" and "Cipher" tools ...
+     * Adding "\x44\x69\x67\x65\x73\x74" and "\x43\x69\x70\x68\x65\x72" tools ...
      * This is in development ... ;-)
      * In orfer to code this, i refer to hw_openbsd_dev_crypto and openssl engine made by Geoff Thorpe (if i'm rigth),
      * and evp, sha md5 definitions etc ...
@@ -1417,7 +1417,7 @@ static int engine_digests(ENGINE *e, const EVP_MD **digest, const int **nids,
 {
 
 #  ifdef DEBUG_ZENCOD_MD
-    fprintf(stderr, "\t=>Function : static int engine_digests () called !\n");
+    fprintf(stderr, "\x9\x3d\x3e\x46\x75\x6e\x63\x74\x69\x6f\x6e\x20\x3a\x20\x73\x74\x61\x74\x69\x63\x20\x69\x6e\x74\x20\x65\x6e\x67\x69\x6e\x65\x5f\x64\x69\x67\x65\x73\x74\x73\x20\x28\x29\x20\x63\x61\x6c\x6c\x65\x64\x20\x21\xa");
 #  endif
 
     if (!digest) {

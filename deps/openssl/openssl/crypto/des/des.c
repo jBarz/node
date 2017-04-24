@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -141,66 +141,66 @@ int main(int argc, char **argv)
 
     for (i = 1; i < argc; i++) {
         p = argv[i];
-        if ((p[0] == '-') && (p[1] != '\0')) {
+        if ((p[0] == '\x2d') && (p[1] != '\x0')) {
             p++;
             while (*p) {
                 switch (*(p++)) {
-                case '3':
+                case '\x33':
                     flag3 = 1;
                     longk = 1;
                     break;
-                case 'c':
+                case '\x63':
                     cflag = 1;
                     strncpy(cksumname, p, 200);
-                    cksumname[sizeof(cksumname) - 1] = '\0';
+                    cksumname[sizeof(cksumname) - 1] = '\x0';
                     p += strlen(cksumname);
                     break;
-                case 'C':
+                case '\x43':
                     cflag = 1;
                     longk = 1;
                     strncpy(cksumname, p, 200);
-                    cksumname[sizeof(cksumname) - 1] = '\0';
+                    cksumname[sizeof(cksumname) - 1] = '\x0';
                     p += strlen(cksumname);
                     break;
-                case 'e':
+                case '\x65':
                     eflag = 1;
                     break;
-                case 'v':
+                case '\x76':
                     vflag = 1;
                     break;
-                case 'E':
+                case '\x45':
                     eflag = 1;
                     longk = 1;
                     break;
-                case 'd':
+                case '\x64':
                     dflag = 1;
                     break;
-                case 'D':
+                case '\x44':
                     dflag = 1;
                     longk = 1;
                     break;
-                case 'b':
+                case '\x62':
                     bflag = 1;
                     break;
-                case 'f':
+                case '\x66':
                     fflag = 1;
                     break;
-                case 's':
+                case '\x73':
                     sflag = 1;
                     break;
-                case 'u':
+                case '\x75':
                     uflag = 1;
                     strncpy(uuname, p, 200);
-                    uuname[sizeof(uuname) - 1] = '\0';
+                    uuname[sizeof(uuname) - 1] = '\x0';
                     p += strlen(uuname);
                     break;
-                case 'h':
+                case '\x68':
                     hflag = 1;
                     break;
-                case 'k':
+                case '\x6b':
                     kflag = 1;
                     if ((i + 1) == argc) {
-                        fputs("must have a key with the -k option\n", stderr);
+                        fputs("\x6d\x75\x73\x74\x20\x68\x61\x76\x65\x20\x61\x20\x6b\x65\x79\x20\x77\x69\x74\x68\x20\x74\x68\x65\x20\x2d\x6b\x20\x6f\x70\x74\x69\x6f\x6e\xa", stderr);
                         error = 1;
                     } else {
                         int j;
@@ -208,11 +208,11 @@ int main(int argc, char **argv)
                         i++;
                         strncpy(key, argv[i], KEYSIZB);
                         for (j = strlen(argv[i]) - 1; j >= 0; j--)
-                            argv[i][j] = '\0';
+                            argv[i][j] = '\x0';
                     }
                     break;
                 default:
-                    fprintf(stderr, "'%c' unknown flag\n", p[-1]);
+                    fprintf(stderr, "\x27\x25\x63\x27\x20\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x66\x6c\x61\x67\xa", p[-1]);
                     error = 1;
                     break;
                 }
@@ -244,7 +244,7 @@ int main(int argc, char **argv)
     } else {
         if (vflag) {
 #ifndef _Windows
-            fprintf(stderr, "des(1) built with %s\n", libdes_version);
+            fprintf(stderr, "\x64\x65\x73\x28\x31\x29\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x20\x25\x73\xa", libdes_version);
 #endif
             EXIT(1);
         } else
@@ -253,7 +253,7 @@ int main(int argc, char **argv)
 
 #ifndef _Windows
     if (vflag)
-        fprintf(stderr, "des(1) built with %s\n", libdes_version);
+        fprintf(stderr, "\x64\x65\x73\x28\x31\x29\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x20\x25\x73\xa", libdes_version);
 #endif
     if ((in != NULL) && (out != NULL) &&
 #ifndef OPENSSL_SYS_MSDOS
@@ -264,21 +264,21 @@ int main(int argc, char **argv)
         (strcmp(in, out) == 0))
 #endif
     {
-        fputs("input and output file are the same\n", stderr);
+        fputs("\x69\x6e\x70\x75\x74\x20\x61\x6e\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x61\x72\x65\x20\x74\x68\x65\x20\x73\x61\x6d\x65\xa", stderr);
         EXIT(3);
     }
 
     if (!kflag)
         if (des_read_pw_string
-            (key, KEYSIZB + 1, "Enter key:", eflag ? VERIFY : 0)) {
-            fputs("password error\n", stderr);
+            (key, KEYSIZB + 1, "\x45\x6e\x74\x65\x72\x20\x6b\x65\x79\x3a", eflag ? VERIFY : 0)) {
+            fputs("\x70\x61\x73\x73\x77\x6f\x72\x64\x20\x65\x72\x72\x6f\x72\xa", stderr);
             EXIT(2);
         }
 
     if (in == NULL)
         DES_IN = stdin;
-    else if ((DES_IN = fopen(in, "r")) == NULL) {
-        perror("opening input file");
+    else if ((DES_IN = fopen(in, "\x72")) == NULL) {
+        perror("\x6f\x70\x65\x6e\x69\x6e\x67\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65");
         EXIT(4);
     }
 
@@ -286,8 +286,8 @@ int main(int argc, char **argv)
     if (out == NULL) {
         DES_OUT = stdout;
         CKSUM_OUT = stderr;
-    } else if ((DES_OUT = fopen(out, "w")) == NULL) {
-        perror("opening output file");
+    } else if ((DES_OUT = fopen(out, "\x77")) == NULL) {
+        perror("\x6f\x70\x65\x6e\x69\x6e\x67\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65");
         EXIT(5);
     }
 #ifdef OPENSSL_SYS_MSDOS
@@ -311,34 +311,34 @@ void usage(void)
 {
     char **u;
     static const char *Usage[] = {
-        "des <options> [input-file [output-file]]",
-        "options:",
-        "-v         : des(1) version number",
-        "-e         : encrypt using SunOS compatible user key to DES key conversion.",
-        "-E         : encrypt ",
-        "-d         : decrypt using SunOS compatible user key to DES key conversion.",
-        "-D         : decrypt ",
-        "-c[ckname] : generate a cbc_cksum using SunOS compatible user key to",
-        "             DES key conversion and output to ckname (stdout default,",
-        "             stderr if data being output on stdout).  The checksum is",
-        "             generated before encryption and after decryption if used",
-        "             in conjunction with -[eEdD].",
-        "-C[ckname] : generate a cbc_cksum as for -c but compatible with -[ED].",
-        "-k key     : use key 'key'",
-        "-h         : the key that is entered will be a hexadecimal number",
-        "             that is used directly as the des key",
-        "-u[uuname] : input file is uudecoded if -[dD] or output uuencoded data if -[eE]",
-        "             (uuname is the filename to put in the uuencode header).",
-        "-b         : encrypt using DES in ecb encryption mode, the default is cbc mode.",
-        "-3         : encrypt using triple DES encryption.  This uses 2 keys",
-        "             generated from the input key.  If the input key is less",
-        "             than 8 characters long, this is equivalent to normal",
-        "             encryption.  Default is triple cbc, -b makes it triple ecb.",
+        "\x64\x65\x73\x20\x3c\x6f\x70\x74\x69\x6f\x6e\x73\x3e\x20\x5b\x69\x6e\x70\x75\x74\x2d\x66\x69\x6c\x65\x20\x5b\x6f\x75\x74\x70\x75\x74\x2d\x66\x69\x6c\x65\x5d\x5d",
+        "\x6f\x70\x74\x69\x6f\x6e\x73\x3a",
+        "\x2d\x76\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20\x64\x65\x73\x28\x31\x29\x20\x76\x65\x72\x73\x69\x6f\x6e\x20\x6e\x75\x6d\x62\x65\x72",
+        "\x2d\x65\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x75\x73\x69\x6e\x67\x20\x53\x75\x6e\x4f\x53\x20\x63\x6f\x6d\x70\x61\x74\x69\x62\x6c\x65\x20\x75\x73\x65\x72\x20\x6b\x65\x79\x20\x74\x6f\x20\x44\x45\x53\x20\x6b\x65\x79\x20\x63\x6f\x6e\x76\x65\x72\x73\x69\x6f\x6e\x2e",
+        "\x2d\x45\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20\x65\x6e\x63\x72\x79\x70\x74\x20",
+        "\x2d\x64\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20\x64\x65\x63\x72\x79\x70\x74\x20\x75\x73\x69\x6e\x67\x20\x53\x75\x6e\x4f\x53\x20\x63\x6f\x6d\x70\x61\x74\x69\x62\x6c\x65\x20\x75\x73\x65\x72\x20\x6b\x65\x79\x20\x74\x6f\x20\x44\x45\x53\x20\x6b\x65\x79\x20\x63\x6f\x6e\x76\x65\x72\x73\x69\x6f\x6e\x2e",
+        "\x2d\x44\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20\x64\x65\x63\x72\x79\x70\x74\x20",
+        "\x2d\x63\x5b\x63\x6b\x6e\x61\x6d\x65\x5d\x20\x3a\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x61\x20\x63\x62\x63\x5f\x63\x6b\x73\x75\x6d\x20\x75\x73\x69\x6e\x67\x20\x53\x75\x6e\x4f\x53\x20\x63\x6f\x6d\x70\x61\x74\x69\x62\x6c\x65\x20\x75\x73\x65\x72\x20\x6b\x65\x79\x20\x74\x6f",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x44\x45\x53\x20\x6b\x65\x79\x20\x63\x6f\x6e\x76\x65\x72\x73\x69\x6f\x6e\x20\x61\x6e\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x74\x6f\x20\x63\x6b\x6e\x61\x6d\x65\x20\x28\x73\x74\x64\x6f\x75\x74\x20\x64\x65\x66\x61\x75\x6c\x74\x2c",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x73\x74\x64\x65\x72\x72\x20\x69\x66\x20\x64\x61\x74\x61\x20\x62\x65\x69\x6e\x67\x20\x6f\x75\x74\x70\x75\x74\x20\x6f\x6e\x20\x73\x74\x64\x6f\x75\x74\x29\x2e\x20\x20\x54\x68\x65\x20\x63\x68\x65\x63\x6b\x73\x75\x6d\x20\x69\x73",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x64\x20\x62\x65\x66\x6f\x72\x65\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x61\x6e\x64\x20\x61\x66\x74\x65\x72\x20\x64\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x69\x66\x20\x75\x73\x65\x64",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x6e\x20\x63\x6f\x6e\x6a\x75\x6e\x63\x74\x69\x6f\x6e\x20\x77\x69\x74\x68\x20\x2d\x5b\x65\x45\x64\x44\x5d\x2e",
+        "\x2d\x43\x5b\x63\x6b\x6e\x61\x6d\x65\x5d\x20\x3a\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x61\x20\x63\x62\x63\x5f\x63\x6b\x73\x75\x6d\x20\x61\x73\x20\x66\x6f\x72\x20\x2d\x63\x20\x62\x75\x74\x20\x63\x6f\x6d\x70\x61\x74\x69\x62\x6c\x65\x20\x77\x69\x74\x68\x20\x2d\x5b\x45\x44\x5d\x2e",
+        "\x2d\x6b\x20\x6b\x65\x79\x20\x20\x20\x20\x20\x3a\x20\x75\x73\x65\x20\x6b\x65\x79\x20\x27\x6b\x65\x79\x27",
+        "\x2d\x68\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20\x74\x68\x65\x20\x6b\x65\x79\x20\x74\x68\x61\x74\x20\x69\x73\x20\x65\x6e\x74\x65\x72\x65\x64\x20\x77\x69\x6c\x6c\x20\x62\x65\x20\x61\x20\x68\x65\x78\x61\x64\x65\x63\x69\x6d\x61\x6c\x20\x6e\x75\x6d\x62\x65\x72",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x68\x61\x74\x20\x69\x73\x20\x75\x73\x65\x64\x20\x64\x69\x72\x65\x63\x74\x6c\x79\x20\x61\x73\x20\x74\x68\x65\x20\x64\x65\x73\x20\x6b\x65\x79",
+        "\x2d\x75\x5b\x75\x75\x6e\x61\x6d\x65\x5d\x20\x3a\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x69\x73\x20\x75\x75\x64\x65\x63\x6f\x64\x65\x64\x20\x69\x66\x20\x2d\x5b\x64\x44\x5d\x20\x6f\x72\x20\x6f\x75\x74\x70\x75\x74\x20\x75\x75\x65\x6e\x63\x6f\x64\x65\x64\x20\x64\x61\x74\x61\x20\x69\x66\x20\x2d\x5b\x65\x45\x5d",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x28\x75\x75\x6e\x61\x6d\x65\x20\x69\x73\x20\x74\x68\x65\x20\x66\x69\x6c\x65\x6e\x61\x6d\x65\x20\x74\x6f\x20\x70\x75\x74\x20\x69\x6e\x20\x74\x68\x65\x20\x75\x75\x65\x6e\x63\x6f\x64\x65\x20\x68\x65\x61\x64\x65\x72\x29\x2e",
+        "\x2d\x62\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x75\x73\x69\x6e\x67\x20\x44\x45\x53\x20\x69\x6e\x20\x65\x63\x62\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x6d\x6f\x64\x65\x2c\x20\x74\x68\x65\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x69\x73\x20\x63\x62\x63\x20\x6d\x6f\x64\x65\x2e",
+        "\x2d\x33\x20\x20\x20\x20\x20\x20\x20\x20\x20\x3a\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x75\x73\x69\x6e\x67\x20\x74\x72\x69\x70\x6c\x65\x20\x44\x45\x53\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x2e\x20\x20\x54\x68\x69\x73\x20\x75\x73\x65\x73\x20\x32\x20\x6b\x65\x79\x73",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x64\x20\x66\x72\x6f\x6d\x20\x74\x68\x65\x20\x69\x6e\x70\x75\x74\x20\x6b\x65\x79\x2e\x20\x20\x49\x66\x20\x74\x68\x65\x20\x69\x6e\x70\x75\x74\x20\x6b\x65\x79\x20\x69\x73\x20\x6c\x65\x73\x73",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x74\x68\x61\x6e\x20\x38\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x73\x20\x6c\x6f\x6e\x67\x2c\x20\x74\x68\x69\x73\x20\x69\x73\x20\x65\x71\x75\x69\x76\x61\x6c\x65\x6e\x74\x20\x74\x6f\x20\x6e\x6f\x72\x6d\x61\x6c",
+        "\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x65\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x2e\x20\x20\x44\x65\x66\x61\x75\x6c\x74\x20\x69\x73\x20\x74\x72\x69\x70\x6c\x65\x20\x63\x62\x63\x2c\x20\x2d\x62\x20\x6d\x61\x6b\x65\x73\x20\x69\x74\x20\x74\x72\x69\x70\x6c\x65\x20\x65\x63\x62\x2e",
         NULL
     };
     for (u = (char **)Usage; *u; u++) {
         fputs(*u, stderr);
-        fputc('\n', stderr);
+        fputc('\xa', stderr);
     }
 
     EXIT(1);
@@ -366,7 +366,7 @@ void doencryption(void)
     if (buf == NULL) {
         if (((buf = OPENSSL_malloc(BUFSIZE + 8)) == NULL) ||
             ((obuf = OPENSSL_malloc(BUFSIZE + 8)) == NULL)) {
-            fputs("Not enough memory\n", stderr);
+            fputs("\x4e\x6f\x74\x20\x65\x6e\x6f\x75\x67\x68\x20\x6d\x65\x6d\x6f\x72\x79\xa", stderr);
             Exit = 10;
             goto problems;
         }
@@ -378,26 +378,26 @@ void doencryption(void)
         p = key;
         for (i = 0; i < j; i++) {
             k = 0;
-            if ((*p <= '9') && (*p >= '0'))
-                k = (*p - '0') << 4;
-            else if ((*p <= 'f') && (*p >= 'a'))
-                k = (*p - 'a' + 10) << 4;
-            else if ((*p <= 'F') && (*p >= 'A'))
-                k = (*p - 'A' + 10) << 4;
+            if ((*p <= '\x39') && (*p >= '\x30'))
+                k = (*p - '\x30') << 4;
+            else if ((*p <= '\x66') && (*p >= '\x61'))
+                k = (*p - '\x61' + 10) << 4;
+            else if ((*p <= '\x46') && (*p >= '\x41'))
+                k = (*p - '\x41' + 10) << 4;
             else {
-                fputs("Bad hex key\n", stderr);
+                fputs("\x42\x61\x64\x20\x68\x65\x78\x20\x6b\x65\x79\xa", stderr);
                 Exit = 9;
                 goto problems;
             }
             p++;
-            if ((*p <= '9') && (*p >= '0'))
-                k |= (*p - '0');
-            else if ((*p <= 'f') && (*p >= 'a'))
-                k |= (*p - 'a' + 10);
-            else if ((*p <= 'F') && (*p >= 'A'))
-                k |= (*p - 'A' + 10);
+            if ((*p <= '\x39') && (*p >= '\x30'))
+                k |= (*p - '\x30');
+            else if ((*p <= '\x66') && (*p >= '\x61'))
+                k |= (*p - '\x61' + 10);
+            else if ((*p <= '\x46') && (*p >= '\x41'))
+                k |= (*p - '\x41' + 10);
             else {
-                fputs("Bad hex key\n", stderr);
+                fputs("\x42\x61\x64\x20\x68\x65\x78\x20\x6b\x65\x79\xa", stderr);
                 Exit = 9;
                 goto problems;
             }
@@ -447,7 +447,7 @@ void doencryption(void)
             l += rem;
             num += rem;
             if (l < 0) {
-                perror("read error");
+                perror("\x72\x65\x61\x64\x20\x65\x72\x72\x6f\x72");
                 Exit = 6;
                 goto problems;
             }
@@ -509,7 +509,7 @@ void doencryption(void)
                 else
                     j = fwrite(obuf, 1, (unsigned int)l - i, DES_OUT);
                 if (j == -1) {
-                    perror("Write error");
+                    perror("\x57\x72\x69\x74\x65\x20\x65\x72\x72\x6f\x72");
                     Exit = 7;
                     goto problems;
                 }
@@ -535,7 +535,7 @@ void doencryption(void)
                 l -= rem;
             }
             if (l < 0) {
-                perror("read error");
+                perror("\x72\x65\x61\x64\x20\x65\x72\x72\x6f\x72");
                 Exit = 6;
                 goto problems;
             }
@@ -570,7 +570,7 @@ void doencryption(void)
                 last = obuf[l - 1];
 
                 if ((last > 7) || (last < 0)) {
-                    fputs("The file was not decrypted correctly.\n", stderr);
+                    fputs("\x54\x68\x65\x20\x66\x69\x6c\x65\x20\x77\x61\x73\x20\x6e\x6f\x74\x20\x64\x65\x63\x72\x79\x70\x74\x65\x64\x20\x63\x6f\x72\x72\x65\x63\x74\x6c\x79\x2e\xa", stderr);
                     Exit = 8;
                     last = 0;
                 }
@@ -584,7 +584,7 @@ void doencryption(void)
             while (i != l) {
                 j = fwrite(obuf, 1, (unsigned int)l - i, DES_OUT);
                 if (j == -1) {
-                    perror("Write error");
+                    perror("\x57\x72\x69\x74\x65\x20\x65\x72\x72\x6f\x72");
                     Exit = 7;
                     goto problems;
                 }
@@ -597,15 +597,15 @@ void doencryption(void)
     }
     if (cflag) {
         l = 0;
-        if (cksumname[0] != '\0') {
-            if ((O = fopen(cksumname, "w")) != NULL) {
+        if (cksumname[0] != '\x0') {
+            if ((O = fopen(cksumname, "\x77")) != NULL) {
                 CKSUM_OUT = O;
                 l = 1;
             }
         }
         for (i = 0; i < 8; i++)
-            fprintf(CKSUM_OUT, "%02X", cksum[i]);
-        fprintf(CKSUM_OUT, "\n");
+            fprintf(CKSUM_OUT, "\x25\x30\x32\x58", cksum[i]);
+        fprintf(CKSUM_OUT, "\xa");
         if (l)
             fclose(CKSUM_OUT);
     }
@@ -633,8 +633,8 @@ int uufwrite(unsigned char *data, int size, unsigned int num, FILE *fp)
     static int start = 1;
 
     if (start) {
-        fprintf(fp, "begin 600 %s\n",
-                (uuname[0] == '\0') ? "text.d" : uuname);
+        fprintf(fp, "\x62\x65\x67\x69\x6e\x20\x36\x30\x30\x20\x25\x73\xa",
+                (uuname[0] == '\x0') ? "\x74\x65\x78\x74\x2e\x64" : uuname);
         start = 0;
     }
 
@@ -675,12 +675,12 @@ int uufwrite(unsigned char *data, int size, unsigned int num, FILE *fp)
 void uufwriteEnd(FILE *fp)
 {
     int j;
-    static const char *end = " \nend\n";
+    static const char *end = "\x20\xae\x6e\x64\xa";
 
     if (uubufnum != 0) {
-        uubuf[uubufnum] = '\0';
-        uubuf[uubufnum + 1] = '\0';
-        uubuf[uubufnum + 2] = '\0';
+        uubuf[uubufnum] = '\x0';
+        uubuf[uubufnum + 1] = '\x0';
+        uubuf[uubufnum + 2] = '\x0';
         j = uuencode(uubuf, uubufnum, b);
         fwrite(b, 1, (unsigned int)j, fp);
     }
@@ -699,13 +699,13 @@ int uufread(unsigned char *out, int size, unsigned int num, FILE *fp)
 
     if (start) {
         for (;;) {
-            b[0] = '\0';
+            b[0] = '\x0';
             fgets((char *)b, 300, fp);
-            if (b[0] == '\0') {
-                fprintf(stderr, "no 'begin' found in uuencoded input\n");
+            if (b[0] == '\x0') {
+                fprintf(stderr, "\x6e\x6f\x20\x27\x62\x65\x67\x69\x6e\x27\x20\x66\x6f\x75\x6e\x64\x20\x69\x6e\x20\x75\x75\x65\x6e\x63\x6f\x64\x65\x64\x20\x69\x6e\x70\x75\x74\xa");
                 return (-1);
             }
-            if (strncmp((char *)b, "begin ", 6) == 0)
+            if (strncmp((char *)b, "\x62\x65\x67\x69\x6e\x20", 6) == 0)
                 break;
         }
         start = 0;
@@ -719,12 +719,12 @@ int uufread(unsigned char *out, int size, unsigned int num, FILE *fp)
         valid = 0;
     }
     for (;;) {
-        b[0] = '\0';
+        b[0] = '\x0';
         fgets((char *)b, 300, fp);
-        if (b[0] == '\0')
+        if (b[0] == '\x0')
             break;
         i = strlen((char *)b);
-        if ((b[0] == 'e') && (b[1] == 'n') && (b[2] == 'd')) {
+        if ((b[0] == '\x65') && (b[1] == '\x6e') && (b[2] == '\x64')) {
             done = 1;
             while (!feof(fp)) {
                 fgets((char *)b, 300, fp);
@@ -769,19 +769,19 @@ int uuencode(unsigned char *in, int num, unsigned char *out)
             i = (num - j);
         else
             i = 45;
-        *(p++) = i + ' ';
+        *(p++) = i + '\x20';
         for (n = 0; n < i; n += 3) {
             ccc2l(in, l);
-            *(p++) = ((l >> 18) & 0x3f) + ' ';
-            *(p++) = ((l >> 12) & 0x3f) + ' ';
-            *(p++) = ((l >> 6) & 0x3f) + ' ';
-            *(p++) = ((l) & 0x3f) + ' ';
+            *(p++) = ((l >> 18) & 0x3f) + '\x20';
+            *(p++) = ((l >> 12) & 0x3f) + '\x20';
+            *(p++) = ((l >> 6) & 0x3f) + '\x20';
+            *(p++) = ((l) & 0x3f) + '\x20';
             tot += 4;
         }
-        *(p++) = '\n';
+        *(p++) = '\xa';
         tot += 2;
     }
-    *p = '\0';
+    *p = '\x0';
     l = 0;
     return (tot);
 }
@@ -792,16 +792,16 @@ int uudecode(unsigned char *in, int num, unsigned char *out)
     unsigned int n = 0, space = 0;
     DES_LONG l;
     DES_LONG w, x, y, z;
-    unsigned int blank = (unsigned int)'\n' - ' ';
+    unsigned int blank = (unsigned int)'\xa' - '\x20';
 
     for (j = 0; j < num;) {
-        n = *(in++) - ' ';
+        n = *(in++) - '\x20';
         if (n == blank) {
             n = 0;
             in--;
         }
         if (n > 60) {
-            fprintf(stderr, "uuencoded line length too long\n");
+            fprintf(stderr, "\x75\x75\x65\x6e\x63\x6f\x64\x65\x64\x20\x6c\x69\x6e\x65\x20\x6c\x65\x6e\x67\x74\x68\x20\x74\x6f\x6f\x20\x6c\x6f\x6e\x67\xa");
             return (-1);
         }
         j++;
@@ -814,10 +814,10 @@ int uudecode(unsigned char *in, int num, unsigned char *out)
             if (space) {
                 w = x = y = z = 0;
             } else {
-                w = *(in++) - ' ';
-                x = *(in++) - ' ';
-                y = *(in++) - ' ';
-                z = *(in++) - ' ';
+                w = *(in++) - '\x20';
+                x = *(in++) - '\x20';
+                y = *(in++) - '\x20';
+                z = *(in++) - '\x20';
             }
             if ((w > 63) || (x > 63) || (y > 63) || (z > 63)) {
                 k = 0;
@@ -846,7 +846,7 @@ int uudecode(unsigned char *in, int num, unsigned char *out)
                     break;
                 case 0:
                     space = 0;
-                    fprintf(stderr, "bad uuencoded data values\n");
+                    fprintf(stderr, "\x62\x61\x64\x20\x75\x75\x65\x6e\x63\x6f\x64\x65\x64\x20\x64\x61\x74\x61\x20\x76\x61\x6c\x75\x65\x73\xa");
                     w = x = y = z = 0;
                     return (-1);
                     break;
@@ -855,14 +855,14 @@ int uudecode(unsigned char *in, int num, unsigned char *out)
             l = (w << 18) | (x << 12) | (y << 6) | (z);
             l2ccc(l, out);
         }
-        if (*(in++) != '\n') {
-            fprintf(stderr, "missing nl in uuencoded line\n");
+        if (*(in++) != '\xa') {
+            fprintf(stderr, "\x6d\x69\x73\x73\x69\x6e\x67\x20\x6e\x6c\x20\x69\x6e\x20\x75\x75\x65\x6e\x63\x6f\x64\x65\x64\x20\x6c\x69\x6e\x65\xa");
             w = x = y = z = 0;
             return (-1);
         }
         j++;
     }
-    *out = '\0';
+    *out = '\x0';
     w = x = y = z = 0;
     return (n);
 }

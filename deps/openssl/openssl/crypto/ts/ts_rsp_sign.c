@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -105,7 +105,7 @@ static ASN1_INTEGER *def_serial_cb(struct TS_resp_ctx *ctx, void *data)
  err:
     TSerr(TS_F_DEF_SERIAL_CB, ERR_R_MALLOC_FAILURE);
     TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                "Error during serial number generation.");
+                                "\x45\x72\x72\x6f\x72\x20\x64\x75\x72\x69\x6e\x67\x20\x73\x65\x72\x69\x61\x6c\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x2e");
     return NULL;
 }
 
@@ -119,7 +119,7 @@ static int def_time_cb(struct TS_resp_ctx *ctx, void *data,
     if (gettimeofday(&tv, NULL) != 0) {
         TSerr(TS_F_DEF_TIME_CB, TS_R_TIME_SYSCALL_ERROR);
         TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                    "Time is not available.");
+                                    "\x54\x69\x6d\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x76\x61\x69\x6c\x61\x62\x6c\x65\x2e");
         TS_RESP_CTX_add_failure_info(ctx, TS_INFO_TIME_NOT_AVAILABLE);
         return 0;
     }
@@ -140,7 +140,7 @@ static int def_time_cb(struct TS_resp_ctx *ctx, void *data,
     if (time(&t) == (time_t)-1) {
         TSerr(TS_F_DEF_TIME_CB, TS_R_TIME_SYSCALL_ERROR);
         TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                    "Time is not available.");
+                                    "\x54\x69\x6d\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x76\x61\x69\x6c\x61\x62\x6c\x65\x2e");
         TS_RESP_CTX_add_failure_info(ctx, TS_INFO_TIME_NOT_AVAILABLE);
         return 0;
     }
@@ -158,7 +158,7 @@ static int def_extension_cb(struct TS_resp_ctx *ctx, X509_EXTENSION *ext,
 {
     /* No extensions are processed here. */
     TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                "Unsupported extension.");
+                                "\x55\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x20\x65\x78\x74\x65\x6e\x73\x69\x6f\x6e\x2e");
     TS_RESP_CTX_add_failure_info(ctx, TS_INFO_UNACCEPTED_EXTENSION);
     return 0;
 }
@@ -436,7 +436,7 @@ TS_RESP *TS_RESP_create_response(TS_RESP_CTX *ctx, BIO *req_bio)
     /* Parsing DER request. */
     if (!(ctx->request = d2i_TS_REQ_bio(req_bio, NULL))) {
         TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                    "Bad request format or " "system error.");
+                                    "\x42\x61\x64\x20\x72\x65\x71\x75\x65\x73\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x6f\x72\x20" "\x73\x79\x73\x74\x65\x6d\x20\x65\x72\x72\x6f\x72\x2e");
         TS_RESP_CTX_add_failure_info(ctx, TS_INFO_BAD_DATA_FORMAT);
         goto end;
     }
@@ -473,8 +473,8 @@ TS_RESP *TS_RESP_create_response(TS_RESP_CTX *ctx, BIO *req_bio)
         if (ctx->response != NULL) {
             if (TS_RESP_CTX_set_status_info_cond(ctx,
                                                  TS_STATUS_REJECTION,
-                                                 "Error during response "
-                                                 "generation.") == 0) {
+                                                 "\x45\x72\x72\x6f\x72\x20\x64\x75\x72\x69\x6e\x67\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20"
+                                                 "\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x2e") == 0) {
                 TS_RESP_free(ctx->response);
                 ctx->response = NULL;
             }
@@ -519,7 +519,7 @@ static int TS_RESP_check_request(TS_RESP_CTX *ctx)
     /* Checking request version. */
     if (TS_REQ_get_version(request) != 1) {
         TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                    "Bad request version.");
+                                    "\x42\x61\x64\x20\x72\x65\x71\x75\x65\x73\x74\x20\x76\x65\x72\x73\x69\x6f\x6e\x2e");
         TS_RESP_CTX_add_failure_info(ctx, TS_INFO_BAD_REQUEST);
         return 0;
     }
@@ -535,8 +535,8 @@ static int TS_RESP_check_request(TS_RESP_CTX *ctx)
     }
     if (!md) {
         TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                    "Message digest algorithm is "
-                                    "not supported.");
+                                    "\x4d\x65\x73\x73\x61\x67\x65\x20\x64\x69\x67\x65\x73\x74\x20\x61\x6c\x67\x6f\x72\x69\x74\x68\x6d\x20\x69\x73\x20"
+                                    "\x6e\x6f\x74\x20\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x2e");
         TS_RESP_CTX_add_failure_info(ctx, TS_INFO_BAD_ALG);
         return 0;
     }
@@ -544,8 +544,8 @@ static int TS_RESP_check_request(TS_RESP_CTX *ctx)
     /* No message digest takes parameter. */
     if (md_alg->parameter && ASN1_TYPE_get(md_alg->parameter) != V_ASN1_NULL) {
         TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                    "Superfluous message digest "
-                                    "parameter.");
+                                    "\x53\x75\x70\x65\x72\x66\x6c\x75\x6f\x75\x73\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x64\x69\x67\x65\x73\x74\x20"
+                                    "\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x2e");
         TS_RESP_CTX_add_failure_info(ctx, TS_INFO_BAD_ALG);
         return 0;
     }
@@ -553,7 +553,7 @@ static int TS_RESP_check_request(TS_RESP_CTX *ctx)
     digest = TS_MSG_IMPRINT_get_msg(msg_imprint);
     if (digest->length != EVP_MD_size(md)) {
         TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                    "Bad message digest.");
+                                    "\x42\x61\x64\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x64\x69\x67\x65\x73\x74\x2e");
         TS_RESP_CTX_add_failure_info(ctx, TS_INFO_BAD_DATA_FORMAT);
         return 0;
     }
@@ -588,7 +588,7 @@ static ASN1_OBJECT *TS_RESP_get_policy(TS_RESP_CTX *ctx)
     if (!policy) {
         TSerr(TS_F_TS_RESP_GET_POLICY, TS_R_UNACCEPTABLE_POLICY);
         TS_RESP_CTX_set_status_info(ctx, TS_STATUS_REJECTION,
-                                    "Requested policy is not " "supported.");
+                                    "\x52\x65\x71\x75\x65\x73\x74\x65\x64\x20\x70\x6f\x6c\x69\x63\x79\x20\x69\x73\x20\x6e\x6f\x74\x20" "\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x2e");
         TS_RESP_CTX_add_failure_info(ctx, TS_INFO_UNACCEPTED_POLICY);
     }
     return policy;
@@ -669,8 +669,8 @@ static TS_TST_INFO *TS_RESP_create_tst_info(TS_RESP_CTX *ctx,
         tst_info = NULL;
         TSerr(TS_F_TS_RESP_CREATE_TST_INFO, TS_R_TST_INFO_SETUP_ERROR);
         TS_RESP_CTX_set_status_info_cond(ctx, TS_STATUS_REJECTION,
-                                         "Error during TSTInfo "
-                                         "generation.");
+                                         "\x45\x72\x72\x6f\x72\x20\x64\x75\x72\x69\x6e\x67\x20\x54\x53\x54\x49\x6e\x66\x6f\x20"
+                                         "\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x2e");
     }
     GENERAL_NAME_free(tsa_name);
     TS_ACCURACY_free(accuracy);
@@ -802,8 +802,8 @@ static int TS_RESP_sign(TS_RESP_CTX *ctx)
  err:
     if (!ret)
         TS_RESP_CTX_set_status_info_cond(ctx, TS_STATUS_REJECTION,
-                                         "Error during signature "
-                                         "generation.");
+                                         "\x45\x72\x72\x6f\x72\x20\x64\x75\x72\x69\x6e\x67\x20\x73\x69\x67\x6e\x61\x74\x75\x72\x65\x20"
+                                         "\x67\x65\x6e\x65\x72\x61\x74\x69\x6f\x6e\x2e");
     BIO_free_all(p7bio);
     ESS_SIGNING_CERT_free(sc);
     PKCS7_free(p7);
@@ -966,12 +966,12 @@ static ASN1_GENERALIZEDTIME
      * fraction-of-second details".
      */
     p += BIO_snprintf(p, p_end - p,
-                      "%04d%02d%02d%02d%02d%02d",
+                      "\x25\x30\x34\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64",
                       tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
                       tm->tm_hour, tm->tm_min, tm->tm_sec);
     if (precision > 0) {
         /* Add fraction of seconds (leave space for dot and null). */
-        BIO_snprintf(p, 2 + precision, ".%06ld", usec);
+        BIO_snprintf(p, 2 + precision, "\x2e\x25\x30\x36\x6c\x64", usec);
         /*
          * We cannot use the snprintf return value, because it might have
          * been truncated.
@@ -993,17 +993,17 @@ static ASN1_GENERALIZEDTIME
          * Remove trailing zeros. The dot guarantees the exit condition of
          * this loop even if all the digits are zero.
          */
-        while (*--p == '0')
+        while (*--p == '\x30')
             /*
              * empty
              */ ;
         /* p points to either the dot or the last non-zero digit. */
-        if (*p != '.')
+        if (*p != '\x2e')
             ++p;
     }
     /* Add the trailing Z and the terminating null. */
-    *p++ = 'Z';
-    *p++ = '\0';
+    *p++ = '\x5a';
+    *p++ = '\x0';
 
     /* Now call OpenSSL to check and set our genTime value */
     if (!asn1_time && !(asn1_time = M_ASN1_GENERALIZEDTIME_new()))

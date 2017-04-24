@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -79,7 +79,7 @@
 #ifdef OPENSSL_NO_DH
 int main(int argc, char *argv[])
 {
-    printf("No DH support\n");
+    printf("\x4e\x6f\x20\x44\x48\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 static int MS_CALLBACK cb(int p, int n, BN_GENCB *arg);
 
 static const char rnd_seed[] =
-    "string to make the random number generator think it has entropy";
+    "\x73\x74\x72\x69\x6e\x67\x20\x74\x6f\x20\x6d\x61\x6b\x65\x20\x74\x68\x65\x20\x72\x61\x6e\x64\x6f\x6d\x20\x6e\x75\x6d\x62\x65\x72\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x74\x68\x69\x6e\x6b\x20\x69\x74\x20\x68\x61\x73\x20\x65\x6e\x74\x72\x6f\x70\x79";
 
 static int run_rfc5114_tests(void);
 
@@ -132,19 +132,19 @@ int main(int argc, char *argv[])
     if (!DH_check(a, &i))
         goto err;
     if (i & DH_CHECK_P_NOT_PRIME)
-        BIO_puts(out, "p value is not prime\n");
+        BIO_puts(out, "\x70\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x70\x72\x69\x6d\x65\xa");
     if (i & DH_CHECK_P_NOT_SAFE_PRIME)
-        BIO_puts(out, "p value is not a safe prime\n");
+        BIO_puts(out, "\x70\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x20\x73\x61\x66\x65\x20\x70\x72\x69\x6d\x65\xa");
     if (i & DH_UNABLE_TO_CHECK_GENERATOR)
-        BIO_puts(out, "unable to check the generator value\n");
+        BIO_puts(out, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x63\x68\x65\x63\x6b\x20\x74\x68\x65\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x76\x61\x6c\x75\x65\xa");
     if (i & DH_NOT_SUITABLE_GENERATOR)
-        BIO_puts(out, "the g value is not a generator\n");
+        BIO_puts(out, "\x74\x68\x65\x20\x67\x20\x76\x61\x6c\x75\x65\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x20\x67\x65\x6e\x65\x72\x61\x74\x6f\x72\xa");
 
-    BIO_puts(out, "\np    =");
+    BIO_puts(out, "\xa\x70\x20\x20\x20\x20\x3d");
     BN_print(out, a->p);
-    BIO_puts(out, "\ng    =");
+    BIO_puts(out, "\xa\x67\x20\x20\x20\x20\x3d");
     BN_print(out, a->g);
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 
     b = DH_new();
     if (b == NULL)
@@ -161,43 +161,43 @@ int main(int argc, char *argv[])
 
     if (!DH_generate_key(a))
         goto err;
-    BIO_puts(out, "pri 1=");
+    BIO_puts(out, "\x70\x72\x69\x20\x31\x3d");
     BN_print(out, a->priv_key);
-    BIO_puts(out, "\npub 1=");
+    BIO_puts(out, "\xa\x70\x75\x62\x20\x31\x3d");
     BN_print(out, a->pub_key);
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 
     if (!DH_generate_key(b))
         goto err;
-    BIO_puts(out, "pri 2=");
+    BIO_puts(out, "\x70\x72\x69\x20\x32\x3d");
     BN_print(out, b->priv_key);
-    BIO_puts(out, "\npub 2=");
+    BIO_puts(out, "\xa\x70\x75\x62\x20\x32\x3d");
     BN_print(out, b->pub_key);
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 
     alen = DH_size(a);
     abuf = (unsigned char *)OPENSSL_malloc(alen);
     aout = DH_compute_key(abuf, b->pub_key, a);
 
-    BIO_puts(out, "key1 =");
+    BIO_puts(out, "\x6b\x65\x79\x31\x20\x3d");
     for (i = 0; i < aout; i++) {
-        sprintf(buf, "%02X", abuf[i]);
+        sprintf(buf, "\x25\x30\x32\x58", abuf[i]);
         BIO_puts(out, buf);
     }
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
 
     blen = DH_size(b);
     bbuf = (unsigned char *)OPENSSL_malloc(blen);
     bout = DH_compute_key(bbuf, a->pub_key, b);
 
-    BIO_puts(out, "key2 =");
+    BIO_puts(out, "\x6b\x65\x79\x32\x20\x3d");
     for (i = 0; i < bout; i++) {
-        sprintf(buf, "%02X", bbuf[i]);
+        sprintf(buf, "\x25\x30\x32\x58", bbuf[i]);
         BIO_puts(out, buf);
     }
-    BIO_puts(out, "\n");
+    BIO_puts(out, "\xa");
     if ((aout < 4) || (bout != aout) || (memcmp(abuf, bbuf, aout) != 0)) {
-        fprintf(stderr, "Error in DH routines\n");
+        fprintf(stderr, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x20\x44\x48\x20\x72\x6f\x75\x74\x69\x6e\x65\x73\xa");
         ret = 1;
     } else
         ret = 0;
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
     BIO_free(out);
 # ifdef OPENSSL_SYS_NETWARE
     if (ret)
-        printf("ERROR: %d\n", ret);
+        printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", ret);
 # endif
     EXIT(ret);
     return (ret);
@@ -225,16 +225,16 @@ int main(int argc, char *argv[])
 
 static int MS_CALLBACK cb(int p, int n, BN_GENCB *arg)
 {
-    char c = '*';
+    char c = '\x2a';
 
     if (p == 0)
-        c = '.';
+        c = '\x2e';
     if (p == 1)
-        c = '+';
+        c = '\x2b';
     if (p == 2)
-        c = '*';
+        c = '\x2a';
     if (p == 3)
-        c = '\n';
+        c = '\xa';
     BIO_write(arg->arg, &c, 1);
     (void)BIO_flush(arg->arg);
 # ifdef LINT
@@ -573,7 +573,7 @@ static int run_rfc5114_tests(void)
         if (memcmp(Z2, td->Z, td->Z_len))
             goto err;
 
-        printf("RFC5114 parameter test %d OK\n", i + 1);
+        printf("\x52\x46\x43\x35\x31\x31\x34\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x74\x65\x73\x74\x20\x25\x64\x20\x4f\x4b\xa", i + 1);
 
         DH_free(dhA);
         DH_free(dhB);
@@ -612,7 +612,7 @@ static int run_rfc5114_tests(void)
     /* We'll have a stale error on the queue from the above test so clear it */
     ERR_clear_error();
 
-    printf("RFC5114 parameter test %d OK\n", i + 1);
+    printf("\x52\x46\x43\x35\x31\x31\x34\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x74\x65\x73\x74\x20\x25\x64\x20\x4f\x4b\xa", i + 1);
 
     BN_free(bady);
     DH_free(dhA);
@@ -626,7 +626,7 @@ static int run_rfc5114_tests(void)
     OPENSSL_free(Z1);
     OPENSSL_free(Z2);
 
-    fprintf(stderr, "Initalisation error RFC5114 set %d\n", i + 1);
+    fprintf(stderr, "\x49\x6e\x69\x74\x61\x6c\x69\x73\x61\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72\x20\x52\x46\x43\x35\x31\x31\x34\x20\x73\x65\x74\x20\x25\x64\xa", i + 1);
     ERR_print_errors_fp(stderr);
     return 0;
  err:
@@ -636,7 +636,7 @@ static int run_rfc5114_tests(void)
     OPENSSL_free(Z1);
     OPENSSL_free(Z2);
 
-    fprintf(stderr, "Test failed RFC5114 set %d\n", i + 1);
+    fprintf(stderr, "\x54\x65\x73\x74\x20\x66\x61\x69\x6c\x65\x64\x20\x52\x46\x43\x35\x31\x31\x34\x20\x73\x65\x74\x20\x25\x64\xa", i + 1);
     return 0;
 }
 

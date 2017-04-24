@@ -485,7 +485,7 @@ static int validate_client_hello(BIO *wbio)
                                            len - MAC_OFFSET) ||
                          !EVP_DigestUpdate(&handshake_sha1, data + MAC_OFFSET,
                                            len - MAC_OFFSET)))
-        printf("EVP_DigestUpdate() failed\n");
+        printf("\x45\x56\x50\x5f\x44\x69\x67\x65\x73\x74\x55\x70\x64\x61\x74\x65\x28\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
 
     (void)BIO_reset(wbio);
 
@@ -564,7 +564,7 @@ static int send_server_hello(BIO *rbio)
                           sizeof(server_hello) - MAC_OFFSET) ||
         !EVP_DigestUpdate(&handshake_sha1, server_hello + MAC_OFFSET,
                           sizeof(server_hello) - MAC_OFFSET))
-        printf("EVP_DigestUpdate() failed\n");
+        printf("\x45\x56\x50\x5f\x44\x69\x67\x65\x73\x74\x55\x70\x64\x61\x74\x65\x28\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
 
     BIO_write(rbio, server_hello, sizeof(server_hello));
     BIO_write(rbio, change_cipher_spec, sizeof(change_cipher_spec));
@@ -670,7 +670,7 @@ static int send_finished(SSL *s, BIO *rbio)
     /* Generate Finished MAC */
     if (!EVP_DigestFinal_ex(&handshake_md5, handshake_hash, NULL) ||
         !EVP_DigestFinal_ex(&handshake_sha1, handshake_hash + EVP_MD_CTX_size(&handshake_md5), NULL))
-        printf("EVP_DigestFinal_ex() failed\n");
+        printf("\x45\x56\x50\x5f\x44\x69\x67\x65\x73\x74\x46\x69\x6e\x61\x6c\x5f\x65\x78\x28\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
 
     do_PRF(TLS_MD_SERVER_FINISH_CONST, TLS_MD_SERVER_FINISH_CONST_SIZE,
            handshake_hash, EVP_MD_CTX_size(&handshake_md5) + EVP_MD_CTX_size(&handshake_sha1),
@@ -780,31 +780,31 @@ int main(int argc, char *argv[])
 
     sess = client_session();
     if (sess == NULL) {
-        printf("Failed to generate SSL_SESSION\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x6e\x65\x72\x61\x74\x65\x20\x53\x53\x4c\x5f\x53\x45\x53\x53\x49\x4f\x4e\xa");
         goto end;
     }
 
     if (!EVP_DigestInit_ex(&handshake_md5, EVP_md5(), NULL) ||
         !EVP_DigestInit_ex(&handshake_sha1, EVP_sha1(), NULL)) {
-        printf("Failed to initialise handshake_md\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x65\x20\x68\x61\x6e\x64\x73\x68\x61\x6b\x65\x5f\x6d\x64\xa");
         goto end;
     }
 
     ctx = SSL_CTX_new(DTLSv1_client_method());
     if (ctx == NULL) {
-        printf("Failed to allocate SSL_CTX\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x61\x6c\x6c\x6f\x63\x61\x74\x65\x20\x53\x53\x4c\x5f\x43\x54\x58\xa");
         goto end_md;
     }
     SSL_CTX_set_options(ctx, SSL_OP_CISCO_ANYCONNECT);
 
-    if (!SSL_CTX_set_cipher_list(ctx, "AES128-SHA")) {
-        printf("SSL_CTX_set_cipher_list() failed\n");
+    if (!SSL_CTX_set_cipher_list(ctx, "\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41")) {
+        printf("\x53\x53\x4c\x5f\x43\x54\x58\x5f\x73\x65\x74\x5f\x63\x69\x70\x68\x65\x72\x5f\x6c\x69\x73\x74\x28\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end_ctx;
     }
 
     con = SSL_new(ctx);
     if (!SSL_set_session(con, sess)) {
-        printf("SSL_set_session() failed\n");
+        printf("\x53\x53\x4c\x5f\x73\x65\x74\x5f\x73\x65\x73\x73\x69\x6f\x6e\x28\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
         goto end_con;
     }
     SSL_SESSION_free(sess);
@@ -821,47 +821,47 @@ int main(int argc, char *argv[])
     /* Send initial ClientHello */
     ret = SSL_do_handshake(con);
     if (ret > 0 || SSL_get_error(con, ret) != SSL_ERROR_WANT_READ) {
-        printf("Unexpected handshake result at initial call!\n");
+        printf("\x55\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x68\x61\x6e\x64\x73\x68\x61\x6b\x65\x20\x72\x65\x73\x75\x6c\x74\x20\x61\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x20\x63\x61\x6c\x6c\x21\xa");
         goto end_con;
     }
 
     if (validate_client_hello(wbio) != 1) {
-        printf("Initial ClientHello failed validation\n");
+        printf("\x49\x6e\x69\x74\x69\x61\x6c\x20\x43\x6c\x69\x65\x6e\x74\x48\x65\x6c\x6c\x6f\x20\x66\x61\x69\x6c\x65\x64\x20\x76\x61\x6c\x69\x64\x61\x74\x69\x6f\x6e\xa");
         goto end_con;
     }
     if (send_hello_verify(rbio) != 1) {
-        printf("Failed to send HelloVerify\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x6e\x64\x20\x48\x65\x6c\x6c\x6f\x56\x65\x72\x69\x66\x79\xa");
         goto end_con;
     }
     ret = SSL_do_handshake(con);
     if (ret > 0 || SSL_get_error(con, ret) != SSL_ERROR_WANT_READ) {
-        printf("Unexpected handshake result after HelloVerify!\n");
+        printf("\x55\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x68\x61\x6e\x64\x73\x68\x61\x6b\x65\x20\x72\x65\x73\x75\x6c\x74\x20\x61\x66\x74\x65\x72\x20\x48\x65\x6c\x6c\x6f\x56\x65\x72\x69\x66\x79\x21\xa");
         goto end_con;
     }
     if (validate_client_hello(wbio) != 2) {
-        printf("Second ClientHello failed validation\n");
+        printf("\x53\x65\x63\x6f\x6e\x64\x20\x43\x6c\x69\x65\x6e\x74\x48\x65\x6c\x6c\x6f\x20\x66\x61\x69\x6c\x65\x64\x20\x76\x61\x6c\x69\x64\x61\x74\x69\x6f\x6e\xa");
         goto end_con;
     }
     if (send_server_hello(rbio) != 1) {
-        printf("Failed to send ServerHello\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x6e\x64\x20\x53\x65\x72\x76\x65\x72\x48\x65\x6c\x6c\x6f\xa");
         goto end_con;
     }
     ret = SSL_do_handshake(con);
     if (ret > 0 || SSL_get_error(con, ret) != SSL_ERROR_WANT_READ) {
-        printf("Unexpected handshake result after ServerHello!\n");
+        printf("\x55\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x68\x61\x6e\x64\x73\x68\x61\x6b\x65\x20\x72\x65\x73\x75\x6c\x74\x20\x61\x66\x74\x65\x72\x20\x53\x65\x72\x76\x65\x72\x48\x65\x6c\x6c\x6f\x21\xa");
         goto end_con;
     }
     if (send_finished(con, rbio) != 1) {
-        printf("Failed to send Finished\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x6e\x64\x20\x46\x69\x6e\x69\x73\x68\x65\x64\xa");
         goto end_con;
     }
     ret = SSL_do_handshake(con);
     if (ret < 1) {
-        printf("Handshake not successful after Finished!\n");
+        printf("\x48\x61\x6e\x64\x73\x68\x61\x6b\x65\x20\x6e\x6f\x74\x20\x73\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x20\x61\x66\x74\x65\x72\x20\x46\x69\x6e\x69\x73\x68\x65\x64\x21\xa");
         goto end_con;
     }
     if (validate_ccs(wbio) != 1) {
-        printf("Failed to validate client CCS/Finished\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x76\x61\x6c\x69\x64\x61\x74\x65\x20\x63\x6c\x69\x65\x6e\x74\x20\x43\x43\x53\x2f\x46\x69\x6e\x69\x73\x68\x65\x64\xa");
         goto end_con;
     }
 
@@ -875,7 +875,7 @@ int main(int argc, char *argv[])
 
         if (send_record(rbio, SSL3_RT_APPLICATION_DATA, tests[i].seq,
                         &tests[i].seq, sizeof(unsigned long)) != 1) {
-            printf("Failed to send data seq #0x%lx (%d)\n",
+            printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x73\x65\x6e\x64\x20\x64\x61\x74\x61\x20\x73\x65\x71\x20\x23\x30\x78\x25\x6c\x78\x20\x28\x25\x64\x29\xa",
                    tests[i].seq, i);
             goto end_con;
         }
@@ -885,18 +885,18 @@ int main(int argc, char *argv[])
 
         ret = SSL_read(con, recv_buf, 2 * sizeof(unsigned long));
         if (ret != sizeof(unsigned long)) {
-            printf("SSL_read failed or wrong size on seq#0x%lx (%d)\n",
+            printf("\x53\x53\x4c\x5f\x72\x65\x61\x64\x20\x66\x61\x69\x6c\x65\x64\x20\x6f\x72\x20\x77\x72\x6f\x6e\x67\x20\x73\x69\x7a\x65\x20\x6f\x6e\x20\x73\x65\x71\x23\x30\x78\x25\x6c\x78\x20\x28\x25\x64\x29\xa",
                    tests[i].seq, i);
             goto end_con;
         }
         if (recv_buf[0] != tests[i].seq) {
-            printf("Wrong data packet received (0x%lx not 0x%lx) at packet %d\n",
+            printf("\x57\x72\x6f\x6e\x67\x20\x64\x61\x74\x61\x20\x70\x61\x63\x6b\x65\x74\x20\x72\x65\x63\x65\x69\x76\x65\x64\x20\x28\x30\x78\x25\x6c\x78\x20\x6e\x6f\x74\x20\x30\x78\x25\x6c\x78\x29\x20\x61\x74\x20\x70\x61\x63\x6b\x65\x74\x20\x25\x64\xa",
                    recv_buf[0], tests[i].seq, i);
             goto end_con;
         }
     }
     if (tests[i-1].drop) {
-        printf("Error: last test cannot be DROP()\n");
+        printf("\x45\x72\x72\x6f\x72\x3a\x20\x6c\x61\x73\x74\x20\x74\x65\x73\x74\x20\x63\x61\x6e\x6e\x6f\x74\x20\x62\x65\x20\x44\x52\x4f\x50\x28\x29\xa");
         goto end_con;
     }
     testresult=1;
@@ -912,7 +912,7 @@ int main(int argc, char *argv[])
     ERR_print_errors_fp(stderr);
 
     if (!testresult) {
-        printf("Cisco BadDTLS test: FAILED\n");
+        printf("\x43\x69\x73\x63\x6f\x20\x42\x61\x64\x44\x54\x4c\x53\x20\x74\x65\x73\x74\x3a\x20\x46\x41\x49\x4c\x45\x44\xa");
     }
 
     ERR_free_strings();

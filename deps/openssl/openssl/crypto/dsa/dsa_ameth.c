@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -431,11 +431,11 @@ static int do_dsa_print(BIO *bp, const DSA *x, int off, int ptype)
         pub_key = NULL;
 
     if (ptype == 2)
-        ktype = "Private-Key";
+        ktype = "\x50\x72\x69\x76\x61\x74\x65\x2d\x4b\x65\x79";
     else if (ptype == 1)
-        ktype = "Public-Key";
+        ktype = "\x50\x75\x62\x6c\x69\x63\x2d\x4b\x65\x79";
     else
-        ktype = "DSA-Parameters";
+        ktype = "\x44\x53\x41\x2d\x50\x61\x72\x61\x6d\x65\x74\x65\x72\x73";
 
     update_buflen(x->p, &buf_len);
     update_buflen(x->q, &buf_len);
@@ -452,20 +452,20 @@ static int do_dsa_print(BIO *bp, const DSA *x, int off, int ptype)
     if (priv_key) {
         if (!BIO_indent(bp, off, 128))
             goto err;
-        if (BIO_printf(bp, "%s: (%d bit)\n", ktype, BN_num_bits(x->p))
+        if (BIO_printf(bp, "\x25\x73\x3a\x20\x28\x25\x64\x20\x62\x69\x74\x29\xa", ktype, BN_num_bits(x->p))
             <= 0)
             goto err;
     }
 
-    if (!ASN1_bn_print(bp, "priv:", priv_key, m, off))
+    if (!ASN1_bn_print(bp, "\x70\x72\x69\x76\x3a", priv_key, m, off))
         goto err;
-    if (!ASN1_bn_print(bp, "pub: ", pub_key, m, off))
+    if (!ASN1_bn_print(bp, "\x70\x75\x62\x3a\x20", pub_key, m, off))
         goto err;
-    if (!ASN1_bn_print(bp, "P:   ", x->p, m, off))
+    if (!ASN1_bn_print(bp, "\x50\x3a\x20\x20\x20", x->p, m, off))
         goto err;
-    if (!ASN1_bn_print(bp, "Q:   ", x->q, m, off))
+    if (!ASN1_bn_print(bp, "\x51\x3a\x20\x20\x20", x->q, m, off))
         goto err;
-    if (!ASN1_bn_print(bp, "G:   ", x->g, m, off))
+    if (!ASN1_bn_print(bp, "\x47\x3a\x20\x20\x20", x->g, m, off))
         goto err;
     ret = 1;
  err:
@@ -532,7 +532,7 @@ static int dsa_sig_print(BIO *bp, const X509_ALGOR *sigalg,
     DSA_SIG *dsa_sig;
     const unsigned char *p;
     if (!sig) {
-        if (BIO_puts(bp, "\n") <= 0)
+        if (BIO_puts(bp, "\xa") <= 0)
             return 0;
         else
             return 1;
@@ -551,12 +551,12 @@ static int dsa_sig_print(BIO *bp, const X509_ALGOR *sigalg,
             goto err;
         }
 
-        if (BIO_write(bp, "\n", 1) != 1)
+        if (BIO_write(bp, "\xa", 1) != 1)
             goto err;
 
-        if (!ASN1_bn_print(bp, "r:   ", dsa_sig->r, m, indent))
+        if (!ASN1_bn_print(bp, "\x72\x3a\x20\x20\x20", dsa_sig->r, m, indent))
             goto err;
-        if (!ASN1_bn_print(bp, "s:   ", dsa_sig->s, m, indent))
+        if (!ASN1_bn_print(bp, "\x73\x3a\x20\x20\x20", dsa_sig->s, m, indent))
             goto err;
         rv = 1;
  err:
@@ -648,8 +648,8 @@ const EVP_PKEY_ASN1_METHOD dsa_asn1_meths[] = {
      EVP_PKEY_DSA,
      0,
 
-     "DSA",
-     "OpenSSL DSA method",
+     "\x44\x53\x41",
+     "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x44\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
 
      dsa_pub_decode,
      dsa_pub_encode,

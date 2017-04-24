@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,30 +70,30 @@
 # define ERR_REASON(reason) ERR_PACK(ERR_LIB_UI,0,reason)
 
 static ERR_STRING_DATA UI_str_functs[] = {
-    {ERR_FUNC(UI_F_GENERAL_ALLOCATE_BOOLEAN), "GENERAL_ALLOCATE_BOOLEAN"},
-    {ERR_FUNC(UI_F_GENERAL_ALLOCATE_PROMPT), "GENERAL_ALLOCATE_PROMPT"},
-    {ERR_FUNC(UI_F_GENERAL_ALLOCATE_STRING), "GENERAL_ALLOCATE_STRING"},
-    {ERR_FUNC(UI_F_UI_CTRL), "UI_ctrl"},
-    {ERR_FUNC(UI_F_UI_DUP_ERROR_STRING), "UI_dup_error_string"},
-    {ERR_FUNC(UI_F_UI_DUP_INFO_STRING), "UI_dup_info_string"},
-    {ERR_FUNC(UI_F_UI_DUP_INPUT_BOOLEAN), "UI_dup_input_boolean"},
-    {ERR_FUNC(UI_F_UI_DUP_INPUT_STRING), "UI_dup_input_string"},
-    {ERR_FUNC(UI_F_UI_DUP_VERIFY_STRING), "UI_dup_verify_string"},
-    {ERR_FUNC(UI_F_UI_GET0_RESULT), "UI_get0_result"},
-    {ERR_FUNC(UI_F_UI_NEW_METHOD), "UI_new_method"},
-    {ERR_FUNC(UI_F_UI_SET_RESULT), "UI_set_result"},
+    {ERR_FUNC(UI_F_GENERAL_ALLOCATE_BOOLEAN), "\x47\x45\x4e\x45\x52\x41\x4c\x5f\x41\x4c\x4c\x4f\x43\x41\x54\x45\x5f\x42\x4f\x4f\x4c\x45\x41\x4e"},
+    {ERR_FUNC(UI_F_GENERAL_ALLOCATE_PROMPT), "\x47\x45\x4e\x45\x52\x41\x4c\x5f\x41\x4c\x4c\x4f\x43\x41\x54\x45\x5f\x50\x52\x4f\x4d\x50\x54"},
+    {ERR_FUNC(UI_F_GENERAL_ALLOCATE_STRING), "\x47\x45\x4e\x45\x52\x41\x4c\x5f\x41\x4c\x4c\x4f\x43\x41\x54\x45\x5f\x53\x54\x52\x49\x4e\x47"},
+    {ERR_FUNC(UI_F_UI_CTRL), "\x55\x49\x5f\x63\x74\x72\x6c"},
+    {ERR_FUNC(UI_F_UI_DUP_ERROR_STRING), "\x55\x49\x5f\x64\x75\x70\x5f\x65\x72\x72\x6f\x72\x5f\x73\x74\x72\x69\x6e\x67"},
+    {ERR_FUNC(UI_F_UI_DUP_INFO_STRING), "\x55\x49\x5f\x64\x75\x70\x5f\x69\x6e\x66\x6f\x5f\x73\x74\x72\x69\x6e\x67"},
+    {ERR_FUNC(UI_F_UI_DUP_INPUT_BOOLEAN), "\x55\x49\x5f\x64\x75\x70\x5f\x69\x6e\x70\x75\x74\x5f\x62\x6f\x6f\x6c\x65\x61\x6e"},
+    {ERR_FUNC(UI_F_UI_DUP_INPUT_STRING), "\x55\x49\x5f\x64\x75\x70\x5f\x69\x6e\x70\x75\x74\x5f\x73\x74\x72\x69\x6e\x67"},
+    {ERR_FUNC(UI_F_UI_DUP_VERIFY_STRING), "\x55\x49\x5f\x64\x75\x70\x5f\x76\x65\x72\x69\x66\x79\x5f\x73\x74\x72\x69\x6e\x67"},
+    {ERR_FUNC(UI_F_UI_GET0_RESULT), "\x55\x49\x5f\x67\x65\x74\x30\x5f\x72\x65\x73\x75\x6c\x74"},
+    {ERR_FUNC(UI_F_UI_NEW_METHOD), "\x55\x49\x5f\x6e\x65\x77\x5f\x6d\x65\x74\x68\x6f\x64"},
+    {ERR_FUNC(UI_F_UI_SET_RESULT), "\x55\x49\x5f\x73\x65\x74\x5f\x72\x65\x73\x75\x6c\x74"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA UI_str_reasons[] = {
     {ERR_REASON(UI_R_COMMON_OK_AND_CANCEL_CHARACTERS),
-     "common ok and cancel characters"},
-    {ERR_REASON(UI_R_INDEX_TOO_LARGE), "index too large"},
-    {ERR_REASON(UI_R_INDEX_TOO_SMALL), "index too small"},
-    {ERR_REASON(UI_R_NO_RESULT_BUFFER), "no result buffer"},
-    {ERR_REASON(UI_R_RESULT_TOO_LARGE), "result too large"},
-    {ERR_REASON(UI_R_RESULT_TOO_SMALL), "result too small"},
-    {ERR_REASON(UI_R_UNKNOWN_CONTROL_COMMAND), "unknown control command"},
+     "\x63\x6f\x6d\x6d\x6f\x6e\x20\x6f\x6b\x20\x61\x6e\x64\x20\x63\x61\x6e\x63\x65\x6c\x20\x63\x68\x61\x72\x61\x63\x74\x65\x72\x73"},
+    {ERR_REASON(UI_R_INDEX_TOO_LARGE), "\x69\x6e\x64\x65\x78\x20\x74\x6f\x6f\x20\x6c\x61\x72\x67\x65"},
+    {ERR_REASON(UI_R_INDEX_TOO_SMALL), "\x69\x6e\x64\x65\x78\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c"},
+    {ERR_REASON(UI_R_NO_RESULT_BUFFER), "\x6e\x6f\x20\x72\x65\x73\x75\x6c\x74\x20\x62\x75\x66\x66\x65\x72"},
+    {ERR_REASON(UI_R_RESULT_TOO_LARGE), "\x72\x65\x73\x75\x6c\x74\x20\x74\x6f\x6f\x20\x6c\x61\x72\x67\x65"},
+    {ERR_REASON(UI_R_RESULT_TOO_SMALL), "\x72\x65\x73\x75\x6c\x74\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c"},
+    {ERR_REASON(UI_R_UNKNOWN_CONTROL_COMMAND), "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x63\x6f\x6e\x74\x72\x6f\x6c\x20\x63\x6f\x6d\x6d\x61\x6e\x64"},
     {0, NULL}
 };
 

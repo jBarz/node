@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -216,34 +216,34 @@ static int do_rsa_print(BIO *bp, const RSA *x, int off, int priv)
         goto err;
 
     if (priv && x->d) {
-        if (BIO_printf(bp, "Private-Key: (%d bit)\n", mod_len)
+        if (BIO_printf(bp, "\x50\x72\x69\x76\x61\x74\x65\x2d\x4b\x65\x79\x3a\x20\x28\x25\x64\x20\x62\x69\x74\x29\xa", mod_len)
             <= 0)
             goto err;
-        str = "modulus:";
-        s = "publicExponent:";
+        str = "\x6d\x6f\x64\x75\x6c\x75\x73\x3a";
+        s = "\x70\x75\x62\x6c\x69\x63\x45\x78\x70\x6f\x6e\x65\x6e\x74\x3a";
     } else {
-        if (BIO_printf(bp, "Public-Key: (%d bit)\n", mod_len)
+        if (BIO_printf(bp, "\x50\x75\x62\x6c\x69\x63\x2d\x4b\x65\x79\x3a\x20\x28\x25\x64\x20\x62\x69\x74\x29\xa", mod_len)
             <= 0)
             goto err;
-        str = "Modulus:";
-        s = "Exponent:";
+        str = "\x4d\x6f\x64\x75\x6c\x75\x73\x3a";
+        s = "\x45\x78\x70\x6f\x6e\x65\x6e\x74\x3a";
     }
     if (!ASN1_bn_print(bp, str, x->n, m, off))
         goto err;
     if (!ASN1_bn_print(bp, s, x->e, m, off))
         goto err;
     if (priv) {
-        if (!ASN1_bn_print(bp, "privateExponent:", x->d, m, off))
+        if (!ASN1_bn_print(bp, "\x70\x72\x69\x76\x61\x74\x65\x45\x78\x70\x6f\x6e\x65\x6e\x74\x3a", x->d, m, off))
             goto err;
-        if (!ASN1_bn_print(bp, "prime1:", x->p, m, off))
+        if (!ASN1_bn_print(bp, "\x70\x72\x69\x6d\x65\x31\x3a", x->p, m, off))
             goto err;
-        if (!ASN1_bn_print(bp, "prime2:", x->q, m, off))
+        if (!ASN1_bn_print(bp, "\x70\x72\x69\x6d\x65\x32\x3a", x->q, m, off))
             goto err;
-        if (!ASN1_bn_print(bp, "exponent1:", x->dmp1, m, off))
+        if (!ASN1_bn_print(bp, "\x65\x78\x70\x6f\x6e\x65\x6e\x74\x31\x3a", x->dmp1, m, off))
             goto err;
-        if (!ASN1_bn_print(bp, "exponent2:", x->dmq1, m, off))
+        if (!ASN1_bn_print(bp, "\x65\x78\x70\x6f\x6e\x65\x6e\x74\x32\x3a", x->dmq1, m, off))
             goto err;
-        if (!ASN1_bn_print(bp, "coefficient:", x->iqmp, m, off))
+        if (!ASN1_bn_print(bp, "\x63\x6f\x65\x66\x66\x69\x63\x69\x65\x6e\x74\x3a", x->iqmp, m, off))
             goto err;
     }
     ret = 1;
@@ -310,66 +310,66 @@ static int rsa_pss_param_print(BIO *bp, RSA_PSS_PARAMS *pss,
 {
     int rv = 0;
     if (!pss) {
-        if (BIO_puts(bp, " (INVALID PSS PARAMETERS)\n") <= 0)
+        if (BIO_puts(bp, "\x20\x28\x49\x4e\x56\x41\x4c\x49\x44\x20\x50\x53\x53\x20\x50\x41\x52\x41\x4d\x45\x54\x45\x52\x53\x29\xa") <= 0)
             return 0;
         return 1;
     }
-    if (BIO_puts(bp, "\n") <= 0)
+    if (BIO_puts(bp, "\xa") <= 0)
         goto err;
     if (!BIO_indent(bp, indent, 128))
         goto err;
-    if (BIO_puts(bp, "Hash Algorithm: ") <= 0)
+    if (BIO_puts(bp, "\x48\x61\x73\x68\x20\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\x3a\x20") <= 0)
         goto err;
 
     if (pss->hashAlgorithm) {
         if (i2a_ASN1_OBJECT(bp, pss->hashAlgorithm->algorithm) <= 0)
             goto err;
-    } else if (BIO_puts(bp, "sha1 (default)") <= 0)
+    } else if (BIO_puts(bp, "\x73\x68\x61\x31\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29") <= 0)
         goto err;
 
-    if (BIO_puts(bp, "\n") <= 0)
+    if (BIO_puts(bp, "\xa") <= 0)
         goto err;
 
     if (!BIO_indent(bp, indent, 128))
         goto err;
 
-    if (BIO_puts(bp, "Mask Algorithm: ") <= 0)
+    if (BIO_puts(bp, "\x4d\x61\x73\x6b\x20\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\x3a\x20") <= 0)
         goto err;
     if (pss->maskGenAlgorithm) {
         if (i2a_ASN1_OBJECT(bp, pss->maskGenAlgorithm->algorithm) <= 0)
             goto err;
-        if (BIO_puts(bp, " with ") <= 0)
+        if (BIO_puts(bp, "\x20\x77\x69\x74\x68\x20") <= 0)
             goto err;
         if (maskHash) {
             if (i2a_ASN1_OBJECT(bp, maskHash->algorithm) <= 0)
                 goto err;
-        } else if (BIO_puts(bp, "INVALID") <= 0)
+        } else if (BIO_puts(bp, "\x49\x4e\x56\x41\x4c\x49\x44") <= 0)
             goto err;
-    } else if (BIO_puts(bp, "mgf1 with sha1 (default)") <= 0)
+    } else if (BIO_puts(bp, "\x6d\x67\x66\x31\x20\x77\x69\x74\x68\x20\x73\x68\x61\x31\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29") <= 0)
         goto err;
-    BIO_puts(bp, "\n");
+    BIO_puts(bp, "\xa");
 
     if (!BIO_indent(bp, indent, 128))
         goto err;
-    if (BIO_puts(bp, "Salt Length: 0x") <= 0)
+    if (BIO_puts(bp, "\x53\x61\x6c\x74\x20\x4c\x65\x6e\x67\x74\x68\x3a\x20\x30\x78") <= 0)
         goto err;
     if (pss->saltLength) {
         if (i2a_ASN1_INTEGER(bp, pss->saltLength) <= 0)
             goto err;
-    } else if (BIO_puts(bp, "14 (default)") <= 0)
+    } else if (BIO_puts(bp, "\x31\x34\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29") <= 0)
         goto err;
-    BIO_puts(bp, "\n");
+    BIO_puts(bp, "\xa");
 
     if (!BIO_indent(bp, indent, 128))
         goto err;
-    if (BIO_puts(bp, "Trailer Field: 0x") <= 0)
+    if (BIO_puts(bp, "\x54\x72\x61\x69\x6c\x65\x72\x20\x46\x69\x65\x6c\x64\x3a\x20\x30\x78") <= 0)
         goto err;
     if (pss->trailerField) {
         if (i2a_ASN1_INTEGER(bp, pss->trailerField) <= 0)
             goto err;
-    } else if (BIO_puts(bp, "BC (default)") <= 0)
+    } else if (BIO_puts(bp, "\x42\x43\x20\x28\x64\x65\x66\x61\x75\x6c\x74\x29") <= 0)
         goto err;
-    BIO_puts(bp, "\n");
+    BIO_puts(bp, "\xa");
 
     rv = 1;
 
@@ -393,7 +393,7 @@ static int rsa_sig_print(BIO *bp, const X509_ALGOR *sigalg,
             X509_ALGOR_free(maskHash);
         if (!rv)
             return 0;
-    } else if (!sig && BIO_puts(bp, "\n") <= 0)
+    } else if (!sig && BIO_puts(bp, "\xa") <= 0)
         return 0;
     if (sig)
         return X509_signature_dump(bp, sig, indent);
@@ -935,8 +935,8 @@ const EVP_PKEY_ASN1_METHOD rsa_asn1_meths[] = {
      EVP_PKEY_RSA,
      ASN1_PKEY_SIGPARAM_NULL,
 
-     "RSA",
-     "OpenSSL RSA method",
+     "\x52\x53\x41",
+     "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x52\x53\x41\x20\x6d\x65\x74\x68\x6f\x64",
 
      rsa_pub_decode,
      rsa_pub_encode,

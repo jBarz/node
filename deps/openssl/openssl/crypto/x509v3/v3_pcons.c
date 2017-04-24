@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -94,9 +94,9 @@ static STACK_OF(CONF_VALUE) *i2v_POLICY_CONSTRAINTS(const X509V3_EXT_METHOD
                                                     *extlist)
 {
     POLICY_CONSTRAINTS *pcons = a;
-    X509V3_add_value_int("Require Explicit Policy",
+    X509V3_add_value_int("\x52\x65\x71\x75\x69\x72\x65\x20\x45\x78\x70\x6c\x69\x63\x69\x74\x20\x50\x6f\x6c\x69\x63\x79",
                          pcons->requireExplicitPolicy, &extlist);
-    X509V3_add_value_int("Inhibit Policy Mapping",
+    X509V3_add_value_int("\x49\x6e\x68\x69\x62\x69\x74\x20\x50\x6f\x6c\x69\x63\x79\x20\x4d\x61\x70\x70\x69\x6e\x67",
                          pcons->inhibitPolicyMapping, &extlist);
     return extlist;
 }
@@ -114,10 +114,10 @@ static void *v2i_POLICY_CONSTRAINTS(const X509V3_EXT_METHOD *method,
     }
     for (i = 0; i < sk_CONF_VALUE_num(values); i++) {
         val = sk_CONF_VALUE_value(values, i);
-        if (!strcmp(val->name, "requireExplicitPolicy")) {
+        if (!strcmp(val->name, "\x72\x65\x71\x75\x69\x72\x65\x45\x78\x70\x6c\x69\x63\x69\x74\x50\x6f\x6c\x69\x63\x79")) {
             if (!X509V3_get_value_int(val, &pcons->requireExplicitPolicy))
                 goto err;
-        } else if (!strcmp(val->name, "inhibitPolicyMapping")) {
+        } else if (!strcmp(val->name, "\x69\x6e\x68\x69\x62\x69\x74\x50\x6f\x6c\x69\x63\x79\x4d\x61\x70\x70\x69\x6e\x67")) {
             if (!X509V3_get_value_int(val, &pcons->inhibitPolicyMapping))
                 goto err;
         } else {

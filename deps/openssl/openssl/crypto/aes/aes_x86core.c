@@ -97,10 +97,10 @@ typedef unsigned long long u64;
 # if defined(__i386) || defined(__i386__) || defined(__x86_64) || defined(__x86_64__)
 #   define ROTATE(a,n)  ({ register unsigned int ret;   \
                 asm (           \
-                "roll %1,%0"        \
-                : "=r"(ret)     \
-                : "I"(n), "0"(a)    \
-                : "cc");        \
+                "\x72\x6f\x6c\x6c\x20\x25\x31\x2c\x25\x30"        \
+                : "\x3d\x72"(ret)     \
+                : "\x49"(n), "\x30"(a)    \
+                : "\x63\x63");        \
                ret;             \
             })
 # endif
@@ -112,10 +112,10 @@ Te1[x] = S [x].[03, 02, 01, 01];
 Te2[x] = S [x].[01, 03, 02, 01];
 Te3[x] = S [x].[01, 01, 03, 02];
 */
-#define Te0 (u32)((u64*)((u8*)Te+0))
-#define Te1 (u32)((u64*)((u8*)Te+3))
-#define Te2 (u32)((u64*)((u8*)Te+2))
-#define Te3 (u32)((u64*)((u8*)Te+1))
+#define Te0 (u32)((u64*)((*)Te+0))
+#define Te1 (u32)((u64*)((*)Te+3))
+#define Te2 (u32)((u64*)((*)Te+2))
+#define Te3 (u32)((u64*)((*)Te+1))
 /*-
 Td [x] = Si[x].[0e, 09, 0d, 0b, 0e, 09, 0d, 0b];
 Td0[x] = Si[x].[0e, 09, 0d, 0b];
@@ -124,10 +124,10 @@ Td2[x] = Si[x].[0d, 0b, 0e, 09];
 Td3[x] = Si[x].[09, 0d, 0b, 0e];
 Td4[x] = Si[x].[01];
 */
-#define Td0 (u32)((u64*)((u8*)Td+0))
-#define Td1 (u32)((u64*)((u8*)Td+3))
-#define Td2 (u32)((u64*)((u8*)Td+2))
-#define Td3 (u32)((u64*)((u8*)Td+1))
+#define Td0 (u32)((u64*)((*)Td+0))
+#define Td1 (u32)((u64*)((*)Td+3))
+#define Td2 (u32)((u64*)((*)Td+2))
+#define Td3 (u32)((u64*)((*)Td+1))
 
 static const u64 Te[256] = {
     U64(0xa56363c6a56363c6), U64(0x847c7cf8847c7cf8),
@@ -260,7 +260,7 @@ static const u64 Te[256] = {
     U64(0xd6bbbb6dd6bbbb6d), U64(0x3a16162c3a16162c)
 };
 
-static const u8 Te4[256] = {
+static const  Te4[256] = {
     0x63U, 0x7cU, 0x77U, 0x7bU, 0xf2U, 0x6bU, 0x6fU, 0xc5U,
     0x30U, 0x01U, 0x67U, 0x2bU, 0xfeU, 0xd7U, 0xabU, 0x76U,
     0xcaU, 0x82U, 0xc9U, 0x7dU, 0xfaU, 0x59U, 0x47U, 0xf0U,
@@ -425,7 +425,7 @@ static const u64 Td[256] = {
     U64(0x6184cb7b6184cb7b), U64(0x70b632d570b632d5),
     U64(0x745c6c48745c6c48), U64(0x4257b8d04257b8d0)
 };
-static const u8 Td4[256] = {
+static const  Td4[256] = {
     0x52U, 0x09U, 0x6aU, 0xd5U, 0x30U, 0x36U, 0xa5U, 0x38U,
     0xbfU, 0x40U, 0xa3U, 0x9eU, 0x81U, 0xf3U, 0xd7U, 0xfbU,
     0x7cU, 0xe3U, 0x39U, 0x82U, 0x9bU, 0x2fU, 0xffU, 0x87U,

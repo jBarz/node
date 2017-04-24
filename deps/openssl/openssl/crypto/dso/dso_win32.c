@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -135,7 +135,7 @@ static void *win32_globallookup(const char *name);
 static const char *openssl_strnchr(const char *string, int c, size_t len);
 
 static DSO_METHOD dso_meth_win32 = {
-    "OpenSSL 'win32' shared library method",
+    "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x27\x77\x69\x6e\x33\x32\x27\x20\x73\x68\x61\x72\x65\x64\x20\x6c\x69\x62\x72\x61\x72\x79\x20\x6d\x65\x74\x68\x6f\x64",
     win32_load,
     win32_unload,
     win32_bind_var,
@@ -177,7 +177,7 @@ static int win32_load(DSO *dso)
     h = LoadLibraryA(filename);
     if (h == NULL) {
         DSOerr(DSO_F_WIN32_LOAD, DSO_R_LOAD_FAILED);
-        ERR_add_error_data(3, "filename(", filename, ")");
+        ERR_add_error_data(3, "\x66\x69\x6c\x65\x6e\x61\x6d\x65\x28", filename, "\x29");
         goto err;
     }
     p = (HINSTANCE *) OPENSSL_malloc(sizeof(HINSTANCE));
@@ -256,7 +256,7 @@ static void *win32_bind_var(DSO *dso, const char *symname)
     sym = GetProcAddress(*ptr, symname);
     if (sym == NULL) {
         DSOerr(DSO_F_WIN32_BIND_VAR, DSO_R_SYM_FAILURE);
-        ERR_add_error_data(3, "symname(", symname, ")");
+        ERR_add_error_data(3, "\x73\x79\x6d\x6e\x61\x6d\x65\x28", symname, "\x29");
         return (NULL);
     }
     return (sym);
@@ -283,7 +283,7 @@ static DSO_FUNC_TYPE win32_bind_func(DSO *dso, const char *symname)
     sym = GetProcAddress(*ptr, symname);
     if (sym == NULL) {
         DSOerr(DSO_F_WIN32_BIND_FUNC, DSO_R_SYM_FAILURE);
-        ERR_add_error_data(3, "symname(", symname, ")");
+        ERR_add_error_data(3, "\x73\x79\x6d\x6e\x61\x6d\x65\x28", symname, "\x29");
         return (NULL);
     }
     return ((DSO_FUNC_TYPE)sym);
@@ -327,8 +327,8 @@ static struct file_st *win32_splitter(DSO *dso, const char *filename,
     memset(result, 0, sizeof(struct file_st));
     position = IN_DEVICE;
 
-    if ((filename[0] == '\\' && filename[1] == '\\')
-        || (filename[0] == '/' && filename[1] == '/')) {
+    if ((filename[0] == '\x5c' && filename[1] == '\x5c')
+        || (filename[0] == '\x2f' && filename[1] == '\x2f')) {
         position = IN_NODE;
         filename += 2;
         start = filename;
@@ -338,7 +338,7 @@ static struct file_st *win32_splitter(DSO *dso, const char *filename,
     do {
         last = filename[0];
         switch (last) {
-        case ':':
+        case '\x3a':
             if (position != IN_DEVICE) {
                 DSOerr(DSO_F_WIN32_SPLITTER, DSO_R_INCORRECT_FILE_SYNTAX);
                 /*
@@ -353,8 +353,8 @@ static struct file_st *win32_splitter(DSO *dso, const char *filename,
             start = ++filename;
             result->dir = start;
             break;
-        case '\\':
-        case '/':
+        case '\x5c':
+        case '\x2f':
             if (position == IN_NODE) {
                 result->nodelen = (int)(filename - start);
                 position = IN_FILE;
@@ -372,7 +372,7 @@ static struct file_st *win32_splitter(DSO *dso, const char *filename,
                 start = filename;
             }
             break;
-        case '\0':
+        case '\x0':
             if (position == IN_NODE) {
                 result->nodelen = (int)(filename - start);
             } else {
@@ -453,18 +453,18 @@ static char *win32_joiner(DSO *dso, const struct file_st *file_split)
         strncpy(&result[offset], file_split->node, file_split->nodelen);
         offset += file_split->nodelen;
         if (file_split->predir || file_split->dir || file_split->file) {
-            result[offset] = '\\';
+            result[offset] = '\x5c';
             offset++;
         }
     } else if (file_split->device) {
         strncpy(&result[offset], file_split->device, file_split->devicelen);
         offset += file_split->devicelen;
-        result[offset] = ':';
+        result[offset] = '\x3a';
         offset++;
     }
     start = file_split->predir;
     while (file_split->predirlen > (start - file_split->predir)) {
-        const char *end = openssl_strnchr(start, '/',
+        const char *end = openssl_strnchr(start, '\x2f',
                                           file_split->predirlen - (start -
                                                                    file_split->predir));
         if (!end)
@@ -472,40 +472,40 @@ static char *win32_joiner(DSO *dso, const struct file_st *file_split)
                 + file_split->predirlen - (start - file_split->predir);
         strncpy(&result[offset], start, end - start);
         offset += (int)(end - start);
-        result[offset] = '\\';
+        result[offset] = '\x5c';
         offset++;
         start = end + 1;
     }
 # if 0                          /* Not needed, since the directory converter
                                  * above already appeneded a backslash */
     if (file_split->predir && (file_split->dir || file_split->file)) {
-        result[offset] = '\\';
+        result[offset] = '\x5c';
         offset++;
     }
 # endif
     start = file_split->dir;
     while (file_split->dirlen > (start - file_split->dir)) {
-        const char *end = openssl_strnchr(start, '/',
+        const char *end = openssl_strnchr(start, '\x2f',
                                           file_split->dirlen - (start -
                                                                 file_split->dir));
         if (!end)
             end = start + file_split->dirlen - (start - file_split->dir);
         strncpy(&result[offset], start, end - start);
         offset += (int)(end - start);
-        result[offset] = '\\';
+        result[offset] = '\x5c';
         offset++;
         start = end + 1;
     }
 # if 0                          /* Not needed, since the directory converter
                                  * above already appeneded a backslash */
     if (file_split->dir && file_split->file) {
-        result[offset] = '\\';
+        result[offset] = '\x5c';
         offset++;
     }
 # endif
     strncpy(&result[offset], file_split->file, file_split->filelen);
     offset += file_split->filelen;
-    result[offset] = '\0';
+    result[offset] = '\x0';
     return (result);
 }
 
@@ -557,8 +557,8 @@ static char *win32_merger(DSO *dso, const char *filespec1,
         if (!filespec1_split->dir) {
             filespec1_split->dir = filespec2_split->dir;
             filespec1_split->dirlen = filespec2_split->dirlen;
-        } else if (filespec1_split->dir[0] != '\\'
-                   && filespec1_split->dir[0] != '/') {
+        } else if (filespec1_split->dir[0] != '\x5c'
+                   && filespec1_split->dir[0] != '\x2f') {
             filespec1_split->predir = filespec2_split->dir;
             filespec1_split->predirlen = filespec2_split->dirlen;
         }
@@ -580,9 +580,9 @@ static char *win32_name_converter(DSO *dso, const char *filename)
     int len, transform;
 
     len = strlen(filename);
-    transform = ((strstr(filename, "/") == NULL) &&
+    transform = ((strstr(filename, "\x2f") == NULL) &&
                  (strstr(filename, "\\") == NULL) &&
-                 (strstr(filename, ":") == NULL));
+                 (strstr(filename, "\x3a") == NULL));
     if (transform)
         /* We will convert this to "%s.dll" */
         translated = OPENSSL_malloc(len + 5);
@@ -594,9 +594,9 @@ static char *win32_name_converter(DSO *dso, const char *filename)
         return (NULL);
     }
     if (transform)
-        sprintf(translated, "%s.dll", filename);
+        sprintf(translated, "\x25\x73\x2e\x64\x6c\x6c", filename);
     else
-        sprintf(translated, "%s", filename);
+        sprintf(translated, "\x25\x73", filename);
     return (translated);
 }
 
@@ -613,12 +613,12 @@ static const char *openssl_strnchr(const char *string, int c, size_t len)
 
 # include <tlhelp32.h>
 # ifdef _WIN32_WCE
-#  define DLLNAME "TOOLHELP.DLL"
+#  define DLLNAME "\x54\x4f\x4f\x4c\x48\x45\x4c\x50\x2e\x44\x4c\x4c"
 # else
 #  ifdef MODULEENTRY32
 #   undef MODULEENTRY32         /* unmask the ASCII version! */
 #  endif
-#  define DLLNAME "KERNEL32.DLL"
+#  define DLLNAME "\x4b\x45\x52\x4e\x45\x4c\x33\x32\x2e\x44\x4c\x4c"
 # endif
 
 typedef HANDLE(WINAPI *CREATETOOLHELP32SNAPSHOT) (DWORD, DWORD);
@@ -651,7 +651,7 @@ static int win32_pathbyaddr(void *addr, char *path, int sz)
     }
 
     create_snap = (CREATETOOLHELP32SNAPSHOT)
-        GetProcAddress(dll, "CreateToolhelp32Snapshot");
+        GetProcAddress(dll, "\x43\x72\x65\x61\x74\x65\x54\x6f\x6f\x6c\x68\x65\x6c\x70\x33\x32\x53\x6e\x61\x70\x73\x68\x6f\x74");
     if (create_snap == NULL) {
         FreeLibrary(dll);
         DSOerr(DSO_F_WIN32_PATHBYADDR, DSO_R_UNSUPPORTED);
@@ -660,12 +660,12 @@ static int win32_pathbyaddr(void *addr, char *path, int sz)
     /* We take the rest for granted... */
 # ifdef _WIN32_WCE
     close_snap = (CLOSETOOLHELP32SNAPSHOT)
-        GetProcAddress(dll, "CloseToolhelp32Snapshot");
+        GetProcAddress(dll, "\x43\x6c\x6f\x73\x65\x54\x6f\x6f\x6c\x68\x65\x6c\x70\x33\x32\x53\x6e\x61\x70\x73\x68\x6f\x74");
 # else
     close_snap = (CLOSETOOLHELP32SNAPSHOT) CloseHandle;
 # endif
-    module_first = (MODULE32) GetProcAddress(dll, "Module32First");
-    module_next = (MODULE32) GetProcAddress(dll, "Module32Next");
+    module_first = (MODULE32) GetProcAddress(dll, "\x4d\x6f\x64\x75\x6c\x65\x33\x32\x46\x69\x72\x73\x74");
+    module_next = (MODULE32) GetProcAddress(dll, "\x4d\x6f\x64\x75\x6c\x65\x33\x32\x4e\x65\x78\x74");
 
     hModuleSnap = (*create_snap) (TH32CS_SNAPMODULE, 0);
     if (hModuleSnap == INVALID_HANDLE_VALUE) {
@@ -742,7 +742,7 @@ static void *win32_globallookup(const char *name)
     }
 
     create_snap = (CREATETOOLHELP32SNAPSHOT)
-        GetProcAddress(dll, "CreateToolhelp32Snapshot");
+        GetProcAddress(dll, "\x43\x72\x65\x61\x74\x65\x54\x6f\x6f\x6c\x68\x65\x6c\x70\x33\x32\x53\x6e\x61\x70\x73\x68\x6f\x74");
     if (create_snap == NULL) {
         FreeLibrary(dll);
         DSOerr(DSO_F_WIN32_GLOBALLOOKUP, DSO_R_UNSUPPORTED);
@@ -751,12 +751,12 @@ static void *win32_globallookup(const char *name)
     /* We take the rest for granted... */
 # ifdef _WIN32_WCE
     close_snap = (CLOSETOOLHELP32SNAPSHOT)
-        GetProcAddress(dll, "CloseToolhelp32Snapshot");
+        GetProcAddress(dll, "\x43\x6c\x6f\x73\x65\x54\x6f\x6f\x6c\x68\x65\x6c\x70\x33\x32\x53\x6e\x61\x70\x73\x68\x6f\x74");
 # else
     close_snap = (CLOSETOOLHELP32SNAPSHOT) CloseHandle;
 # endif
-    module_first = (MODULE32) GetProcAddress(dll, "Module32First");
-    module_next = (MODULE32) GetProcAddress(dll, "Module32Next");
+    module_first = (MODULE32) GetProcAddress(dll, "\x4d\x6f\x64\x75\x6c\x65\x33\x32\x46\x69\x72\x73\x74");
+    module_next = (MODULE32) GetProcAddress(dll, "\x4d\x6f\x64\x75\x6c\x65\x33\x32\x4e\x65\x78\x74");
 
     hModuleSnap = (*create_snap) (TH32CS_SNAPMODULE, 0);
     if (hModuleSnap == INVALID_HANDLE_VALUE) {

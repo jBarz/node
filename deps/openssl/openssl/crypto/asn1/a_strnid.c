@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -100,19 +100,19 @@ int ASN1_STRING_set_default_mask_asc(const char *p)
 {
     unsigned long mask;
     char *end;
-    if (!strncmp(p, "MASK:", 5)) {
+    if (!strncmp(p, "\x4d\x41\x53\x4b\x3a", 5)) {
         if (!p[5])
             return 0;
         mask = strtoul(p + 5, &end, 0);
         if (*end)
             return 0;
-    } else if (!strcmp(p, "nombstr"))
+    } else if (!strcmp(p, "\x6e\x6f\x6d\x62\x73\x74\x72"))
         mask = ~((unsigned long)(B_ASN1_BMPSTRING | B_ASN1_UTF8STRING));
-    else if (!strcmp(p, "pkix"))
+    else if (!strcmp(p, "\x70\x6b\x69\x78"))
         mask = ~((unsigned long)B_ASN1_T61STRING);
-    else if (!strcmp(p, "utf8only"))
+    else if (!strcmp(p, "\x75\x74\x66\x38\x6f\x6e\x6c\x79"))
         mask = B_ASN1_UTF8STRING;
-    else if (!strcmp(p, "default"))
+    else if (!strcmp(p, "\x64\x65\x66\x61\x75\x6c\x74"))
         mask = 0xFFFFFFFFL;
     else
         return 0;
@@ -300,13 +300,13 @@ main()
     }
 
     if (last_nid != 0) {
-        printf("Table order OK\n");
+        printf("\x54\x61\x62\x6c\x65\x20\x6f\x72\x64\x65\x72\x20\x4f\x4b\xa");
         exit(0);
     }
 
     for (tmp = tbl_standard, i = 0;
          i < sizeof(tbl_standard) / sizeof(ASN1_STRING_TABLE); i++, tmp++)
-        printf("Index %d, NID %d, Name=%s\n", i, tmp->nid,
+        printf("\x49\x6e\x64\x65\x78\x20\x25\x64\x2c\x20\x4e\x49\x44\x20\x25\x64\x2c\x20\x4e\x61\x6d\x65\x3d\x25\x73\xa", i, tmp->nid,
                OBJ_nid2ln(tmp->nid));
 
 }

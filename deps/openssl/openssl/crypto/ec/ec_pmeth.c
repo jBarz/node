@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -411,7 +411,7 @@ static int pkey_ec_ctrl(EVP_PKEY_CTX *ctx, int type, int p1, void *p2)
 static int pkey_ec_ctrl_str(EVP_PKEY_CTX *ctx,
                             const char *type, const char *value)
 {
-    if (!strcmp(type, "ec_paramgen_curve")) {
+    if (!strcmp(type, "\x65\x63\x5f\x70\x61\x72\x61\x6d\x67\x65\x6e\x5f\x63\x75\x72\x76\x65")) {
         int nid;
         nid = EC_curve_nist2nid(value);
         if (nid == NID_undef)
@@ -423,23 +423,23 @@ static int pkey_ec_ctrl_str(EVP_PKEY_CTX *ctx,
             return 0;
         }
         return EVP_PKEY_CTX_set_ec_paramgen_curve_nid(ctx, nid);
-    } else if (!strcmp(type, "ec_param_enc")) {
+    } else if (!strcmp(type, "\x65\x63\x5f\x70\x61\x72\x61\x6d\x5f\x65\x6e\x63")) {
         int param_enc;
-        if (!strcmp(value, "explicit"))
+        if (!strcmp(value, "\x65\x78\x70\x6c\x69\x63\x69\x74"))
             param_enc = 0;
-        else if (!strcmp(value, "named_curve"))
+        else if (!strcmp(value, "\x6e\x61\x6d\x65\x64\x5f\x63\x75\x72\x76\x65"))
             param_enc = OPENSSL_EC_NAMED_CURVE;
         else
             return -2;
         return EVP_PKEY_CTX_set_ec_param_enc(ctx, param_enc);
-    } else if (!strcmp(type, "ecdh_kdf_md")) {
+    } else if (!strcmp(type, "\x65\x63\x64\x68\x5f\x6b\x64\x66\x5f\x6d\x64")) {
         const EVP_MD *md;
         if (!(md = EVP_get_digestbyname(value))) {
             ECerr(EC_F_PKEY_EC_CTRL_STR, EC_R_INVALID_DIGEST);
             return 0;
         }
         return EVP_PKEY_CTX_set_ecdh_kdf_md(ctx, md);
-    } else if (!strcmp(type, "ecdh_cofactor_mode")) {
+    } else if (!strcmp(type, "\x65\x63\x64\x68\x5f\x63\x6f\x66\x61\x63\x74\x6f\x72\x5f\x6d\x6f\x64\x65")) {
         int co_mode;
         co_mode = atoi(value);
         return EVP_PKEY_CTX_set_ecdh_cofactor_mode(ctx, co_mode);

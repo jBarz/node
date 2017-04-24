@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -89,15 +89,15 @@ static int i2r_PKEY_USAGE_PERIOD(X509V3_EXT_METHOD *method,
                                  PKEY_USAGE_PERIOD *usage, BIO *out,
                                  int indent)
 {
-    BIO_printf(out, "%*s", indent, "");
+    BIO_printf(out, "\x25\x2a\x73", indent, "");
     if (usage->notBefore) {
-        BIO_write(out, "Not Before: ", 12);
+        BIO_write(out, "\x4e\x6f\x74\x20\x42\x65\x66\x6f\x72\x65\x3a\x20", 12);
         ASN1_GENERALIZEDTIME_print(out, usage->notBefore);
         if (usage->notAfter)
-            BIO_write(out, ", ", 2);
+            BIO_write(out, "\x2c\x20", 2);
     }
     if (usage->notAfter) {
-        BIO_write(out, "Not After: ", 11);
+        BIO_write(out, "\x4e\x6f\x74\x20\x41\x66\x74\x65\x72\x3a\x20", 11);
         ASN1_GENERALIZEDTIME_print(out, usage->notAfter);
     }
     return 1;

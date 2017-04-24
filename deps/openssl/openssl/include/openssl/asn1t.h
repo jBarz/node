@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -69,7 +69,7 @@
 # endif
 
 /* ASN1 template defines, structures and functions */
-
+#define USTR(x) u8##x
 #ifdef  __cplusplus
 extern "C" {
 #endif
@@ -120,7 +120,7 @@ extern "C" {
                 0,\
                 NULL,\
                 0,\
-                #tname \
+                 USTR(#tname) \
         ASN1_ITEM_end(tname)
 
 /* This is a ASN1 type which just embeds a template */
@@ -160,7 +160,7 @@ extern "C" {
                 sizeof(tname##_seq_tt) / sizeof(ASN1_TEMPLATE),\
                 NULL,\
                 sizeof(stname),\
-                #stname \
+                 USTR(#stname) \
         ASN1_ITEM_end(tname)
 
 # define ASN1_NDEF_SEQUENCE(tname) \
@@ -194,7 +194,7 @@ extern "C" {
                 sizeof(tname##_seq_tt) / sizeof(ASN1_TEMPLATE),\
                 NULL,\
                 sizeof(tname),\
-                #tname \
+                 USTR(#tname) \
         ASN1_ITEM_end(tname)
 
 # define ASN1_BROKEN_SEQUENCE_END(stname) ASN1_SEQUENCE_END_ref(stname, stname)
@@ -212,7 +212,7 @@ extern "C" {
                 sizeof(tname##_seq_tt) / sizeof(ASN1_TEMPLATE),\
                 &tname##_aux,\
                 sizeof(stname),\
-                #stname \
+                 USTR(#stname) \
         ASN1_ITEM_end(tname)
 
 # define ASN1_NDEF_SEQUENCE_END_cb(stname, tname) \
@@ -224,7 +224,7 @@ extern "C" {
                 sizeof(tname##_seq_tt) / sizeof(ASN1_TEMPLATE),\
                 &tname##_aux,\
                 sizeof(stname),\
-                #stname \
+                 USTR(#stname) \
         ASN1_ITEM_end(tname)
 
 /*-
@@ -270,7 +270,7 @@ extern "C" {
                 sizeof(tname##_ch_tt) / sizeof(ASN1_TEMPLATE),\
                 NULL,\
                 sizeof(stname),\
-                #stname \
+                 USTR(#stname) \
         ASN1_ITEM_end(tname)
 
 # define ASN1_CHOICE_END_cb(stname, tname, selname) \
@@ -282,14 +282,14 @@ extern "C" {
                 sizeof(tname##_ch_tt) / sizeof(ASN1_TEMPLATE),\
                 &tname##_aux,\
                 sizeof(stname),\
-                #stname \
+                 USTR(#stname) \
         ASN1_ITEM_end(tname)
 
 /* This helps with the template wrapper form of ASN1_ITEM */
 
 # define ASN1_EX_TEMPLATE_TYPE(flags, tag, name, type) { \
         (flags), (tag), 0,\
-        #name, ASN1_ITEM_ref(type) }
+         USTR(#name), ASN1_ITEM_ref(type) }
 
 /* These help with SEQUENCE or CHOICE components */
 
@@ -297,7 +297,7 @@ extern "C" {
 
 # define ASN1_EX_TYPE(flags, tag, stname, field, type) { \
         (flags), (tag), offsetof(stname, field),\
-        #field, ASN1_ITEM_ref(type) }
+         USTR(#field), ASN1_ITEM_ref(type) }
 
 /* used when the structure is combined with the parent */
 
@@ -315,11 +315,11 @@ extern "C" {
 /* Any defined by macros: the field used is in the table itself */
 
 # ifndef OPENSSL_EXPORT_VAR_AS_FUNCTION
-#  define ASN1_ADB_OBJECT(tblname) { ASN1_TFLG_ADB_OID, -1, 0, #tblname, (const ASN1_ITEM *)&(tblname##_adb) }
-#  define ASN1_ADB_INTEGER(tblname) { ASN1_TFLG_ADB_INT, -1, 0, #tblname, (const ASN1_ITEM *)&(tblname##_adb) }
+#  define ASN1_ADB_OBJECT(tblname) { ASN1_TFLG_ADB_OID, -1, 0,  USTR(#tblname), (const ASN1_ITEM *)&(tblname##_adb) }
+#  define ASN1_ADB_INTEGER(tblname) { ASN1_TFLG_ADB_INT, -1, 0,  USTR(#tblname), (const ASN1_ITEM *)&(tblname##_adb) }
 # else
-#  define ASN1_ADB_OBJECT(tblname) { ASN1_TFLG_ADB_OID, -1, 0, #tblname, tblname##_adb }
-#  define ASN1_ADB_INTEGER(tblname) { ASN1_TFLG_ADB_INT, -1, 0, #tblname, tblname##_adb }
+#  define ASN1_ADB_OBJECT(tblname) { ASN1_TFLG_ADB_OID, -1, 0,  USTR(#tblname), tblname##_adb }
+#  define ASN1_ADB_INTEGER(tblname) { ASN1_TFLG_ADB_INT, -1, 0,  USTR(#tblname), tblname##_adb }
 # endif
 /* Plain simple type */
 # define ASN1_SIMPLE(stname, field, type) ASN1_EX_TYPE(0,0, stname, field, type)
@@ -777,13 +777,13 @@ typedef struct ASN1_STREAM_ARG_st {
 # define IMPLEMENT_ASN1_TYPE(stname) IMPLEMENT_ASN1_TYPE_ex(stname, stname, 0)
 # define IMPLEMENT_ASN1_TYPE_ex(itname, vname, ex) \
                                 ASN1_ITEM_start(itname) \
-                                        ASN1_ITYPE_PRIMITIVE, V_##vname, NULL, 0, NULL, ex, #itname \
+                                        ASN1_ITYPE_PRIMITIVE, V_##vname, NULL, 0, NULL, ex,  USTR(#itname) \
                                 ASN1_ITEM_end(itname)
 
 /* Macro to implement a multi string type */
 # define IMPLEMENT_ASN1_MSTRING(itname, mask) \
                                 ASN1_ITEM_start(itname) \
-                                        ASN1_ITYPE_MSTRING, mask, NULL, 0, NULL, sizeof(ASN1_STRING), #itname \
+                                        ASN1_ITYPE_MSTRING, mask, NULL, 0, NULL, sizeof(ASN1_STRING),  USTR(#itname) \
                                 ASN1_ITEM_end(itname)
 
 /* Macro to implement an ASN1_ITEM in terms of old style funcs */
@@ -804,7 +804,7 @@ typedef struct ASN1_STREAM_ARG_st {
                 0, \
                 &sname##_ff, \
                 0, \
-                #sname \
+                 USTR(#sname) \
         ASN1_ITEM_end(sname)
 
 # define IMPLEMENT_EXTERN_ASN1(sname, tag, fptrs) \
@@ -815,7 +815,7 @@ typedef struct ASN1_STREAM_ARG_st {
                 0, \
                 &fptrs, \
                 0, \
-                #sname \
+                 USTR(#sname) \
         ASN1_ITEM_end(sname)
 
 /* Macro to implement standard functions in terms of ASN1_ITEM structures */

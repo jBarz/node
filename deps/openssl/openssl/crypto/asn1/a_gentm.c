@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -138,21 +138,21 @@ int asn1_generalizedtime_to_tm(struct tm *tm, const ASN1_GENERALIZEDTIME *d)
     if (l < 13)
         goto err;
     for (i = 0; i < 7; i++) {
-        if ((i == 6) && ((a[o] == 'Z') || (a[o] == '+') || (a[o] == '-'))) {
+        if ((i == 6) && ((a[o] == '\x5a') || (a[o] == '\x2b') || (a[o] == '\x2d'))) {
             i++;
             if (tm)
                 tm->tm_sec = 0;
             break;
         }
-        if ((a[o] < '0') || (a[o] > '9'))
+        if ((a[o] < '\x30') || (a[o] > '\x39'))
             goto err;
-        n = a[o] - '0';
+        n = a[o] - '\x30';
         if (++o > l)
             goto err;
 
-        if ((a[o] < '0') || (a[o] > '9'))
+        if ((a[o] < '\x30') || (a[o] > '\x39'))
             goto err;
-        n = (n * 10) + a[o] - '0';
+        n = (n * 10) + a[o] - '\x30';
         if (++o > l)
             goto err;
 
@@ -188,32 +188,32 @@ int asn1_generalizedtime_to_tm(struct tm *tm, const ASN1_GENERALIZEDTIME *d)
      * Optional fractional seconds: decimal point followed by one or more
      * digits.
      */
-    if (a[o] == '.') {
+    if (a[o] == '\x2e') {
         if (++o > l)
             goto err;
         i = o;
-        while ((a[o] >= '0') && (a[o] <= '9') && (o <= l))
+        while ((a[o] >= '\x30') && (a[o] <= '\x39') && (o <= l))
             o++;
         /* Must have at least one digit after decimal point */
         if (i == o)
             goto err;
     }
 
-    if (a[o] == 'Z')
+    if (a[o] == '\x5a')
         o++;
-    else if ((a[o] == '+') || (a[o] == '-')) {
-        int offsign = a[o] == '-' ? -1 : 1, offset = 0;
+    else if ((a[o] == '\x2b') || (a[o] == '\x2d')) {
+        int offsign = a[o] == '\x2d' ? -1 : 1, offset = 0;
         o++;
         if (o + 4 > l)
             goto err;
         for (i = 7; i < 9; i++) {
-            if ((a[o] < '0') || (a[o] > '9'))
+            if ((a[o] < '\x30') || (a[o] > '\x39'))
                 goto err;
-            n = a[o] - '0';
+            n = a[o] - '\x30';
             o++;
-            if ((a[o] < '0') || (a[o] > '9'))
+            if ((a[o] < '\x30') || (a[o] > '\x39'))
                 goto err;
-            n = (n * 10) + a[o] - '0';
+            n = (n * 10) + a[o] - '\x30';
             if ((n < min[i]) || (n > max[i]))
                 goto err;
             if (tm) {
@@ -300,7 +300,7 @@ ASN1_GENERALIZEDTIME *ASN1_GENERALIZEDTIME_adj(ASN1_GENERALIZEDTIME *s,
         s->data = (unsigned char *)p;
     }
 
-    BIO_snprintf(p, len, "%04d%02d%02d%02d%02d%02dZ", ts->tm_year + 1900,
+    BIO_snprintf(p, len, "\x25\x30\x34\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x25\x30\x32\x64\x5a", ts->tm_year + 1900,
                  ts->tm_mon + 1, ts->tm_mday, ts->tm_hour, ts->tm_min,
                  ts->tm_sec);
     s->length = strlen(p);

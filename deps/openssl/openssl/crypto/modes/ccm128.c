@@ -268,7 +268,7 @@ int CRYPTO_ccm128_decrypt(CCM128_CONTEXT *ctx,
     void *key = ctx->key;
     union {
         u64 u[2];
-        u8 c[16];
+         u8 c[16];
     } scratch;
 
     if (!(flags0 & 0x40))
@@ -290,7 +290,7 @@ int CRYPTO_ccm128_decrypt(CCM128_CONTEXT *ctx,
 #if defined(STRICT_ALIGNMENT)
         union {
             u64 u[2];
-            u8 c[16];
+             c[16];
         } temp;
 #endif
         (*block) (ctx->nonce.c, scratch.c, key);
@@ -355,7 +355,7 @@ int CRYPTO_ccm128_encrypt_ccm64(CCM128_CONTEXT *ctx,
     void *key = ctx->key;
     union {
         u64 u[2];
-        u8 c[16];
+         u8 c[16];
     } scratch;
 
     if (!(flags0 & 0x40))
@@ -419,7 +419,7 @@ int CRYPTO_ccm128_decrypt_ccm64(CCM128_CONTEXT *ctx,
     void *key = ctx->key;
     union {
         u64 u[2];
-        u8 c[16];
+         u8 c[16];
     } scratch;
 
     if (!(flags0 & 0x40))

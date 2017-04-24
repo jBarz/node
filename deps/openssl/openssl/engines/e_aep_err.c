@@ -19,13 +19,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -70,38 +70,38 @@
 # define ERR_REASON(reason) ERR_PACK(0,0,reason)
 
 static ERR_STRING_DATA AEPHK_str_functs[] = {
-    {ERR_FUNC(AEPHK_F_AEP_CTRL), "AEP_CTRL"},
-    {ERR_FUNC(AEPHK_F_AEP_FINISH), "AEP_FINISH"},
-    {ERR_FUNC(AEPHK_F_AEP_GET_CONNECTION), "AEP_GET_CONNECTION"},
-    {ERR_FUNC(AEPHK_F_AEP_INIT), "AEP_INIT"},
-    {ERR_FUNC(AEPHK_F_AEP_MOD_EXP), "AEP_MOD_EXP"},
-    {ERR_FUNC(AEPHK_F_AEP_MOD_EXP_CRT), "AEP_MOD_EXP_CRT"},
-    {ERR_FUNC(AEPHK_F_AEP_RAND), "AEP_RAND"},
-    {ERR_FUNC(AEPHK_F_AEP_RSA_MOD_EXP), "AEP_RSA_MOD_EXP"},
+    {ERR_FUNC(AEPHK_F_AEP_CTRL), "\x41\x45\x50\x5f\x43\x54\x52\x4c"},
+    {ERR_FUNC(AEPHK_F_AEP_FINISH), "\x41\x45\x50\x5f\x46\x49\x4e\x49\x53\x48"},
+    {ERR_FUNC(AEPHK_F_AEP_GET_CONNECTION), "\x41\x45\x50\x5f\x47\x45\x54\x5f\x43\x4f\x4e\x4e\x45\x43\x54\x49\x4f\x4e"},
+    {ERR_FUNC(AEPHK_F_AEP_INIT), "\x41\x45\x50\x5f\x49\x4e\x49\x54"},
+    {ERR_FUNC(AEPHK_F_AEP_MOD_EXP), "\x41\x45\x50\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
+    {ERR_FUNC(AEPHK_F_AEP_MOD_EXP_CRT), "\x41\x45\x50\x5f\x4d\x4f\x44\x5f\x45\x58\x50\x5f\x43\x52\x54"},
+    {ERR_FUNC(AEPHK_F_AEP_RAND), "\x41\x45\x50\x5f\x52\x41\x4e\x44"},
+    {ERR_FUNC(AEPHK_F_AEP_RSA_MOD_EXP), "\x41\x45\x50\x5f\x52\x53\x41\x5f\x4d\x4f\x44\x5f\x45\x58\x50"},
     {0, NULL}
 };
 
 static ERR_STRING_DATA AEPHK_str_reasons[] = {
-    {ERR_REASON(AEPHK_R_ALREADY_LOADED), "already loaded"},
-    {ERR_REASON(AEPHK_R_CLOSE_HANDLES_FAILED), "close handles failed"},
-    {ERR_REASON(AEPHK_R_CONNECTIONS_IN_USE), "connections in use"},
+    {ERR_REASON(AEPHK_R_ALREADY_LOADED), "\x61\x6c\x72\x65\x61\x64\x79\x20\x6c\x6f\x61\x64\x65\x64"},
+    {ERR_REASON(AEPHK_R_CLOSE_HANDLES_FAILED), "\x63\x6c\x6f\x73\x65\x20\x68\x61\x6e\x64\x6c\x65\x73\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(AEPHK_R_CONNECTIONS_IN_USE), "\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x73\x20\x69\x6e\x20\x75\x73\x65"},
     {ERR_REASON(AEPHK_R_CTRL_COMMAND_NOT_IMPLEMENTED),
-     "ctrl command not implemented"},
-    {ERR_REASON(AEPHK_R_FINALIZE_FAILED), "finalize failed"},
-    {ERR_REASON(AEPHK_R_GET_HANDLE_FAILED), "get handle failed"},
-    {ERR_REASON(AEPHK_R_GET_RANDOM_FAILED), "get random failed"},
-    {ERR_REASON(AEPHK_R_INIT_FAILURE), "init failure"},
-    {ERR_REASON(AEPHK_R_MISSING_KEY_COMPONENTS), "missing key components"},
-    {ERR_REASON(AEPHK_R_MOD_EXP_CRT_FAILED), "mod exp crt failed"},
-    {ERR_REASON(AEPHK_R_MOD_EXP_FAILED), "mod exp failed"},
-    {ERR_REASON(AEPHK_R_NOT_LOADED), "not loaded"},
-    {ERR_REASON(AEPHK_R_OK), "ok"},
+     "\x63\x74\x72\x6c\x20\x63\x6f\x6d\x6d\x61\x6e\x64\x20\x6e\x6f\x74\x20\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x64"},
+    {ERR_REASON(AEPHK_R_FINALIZE_FAILED), "\x66\x69\x6e\x61\x6c\x69\x7a\x65\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(AEPHK_R_GET_HANDLE_FAILED), "\x67\x65\x74\x20\x68\x61\x6e\x64\x6c\x65\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(AEPHK_R_GET_RANDOM_FAILED), "\x67\x65\x74\x20\x72\x61\x6e\x64\x6f\x6d\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(AEPHK_R_INIT_FAILURE), "\x69\x6e\x69\x74\x20\x66\x61\x69\x6c\x75\x72\x65"},
+    {ERR_REASON(AEPHK_R_MISSING_KEY_COMPONENTS), "\x6d\x69\x73\x73\x69\x6e\x67\x20\x6b\x65\x79\x20\x63\x6f\x6d\x70\x6f\x6e\x65\x6e\x74\x73"},
+    {ERR_REASON(AEPHK_R_MOD_EXP_CRT_FAILED), "\x6d\x6f\x64\x20\x65\x78\x70\x20\x63\x72\x74\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(AEPHK_R_MOD_EXP_FAILED), "\x6d\x6f\x64\x20\x65\x78\x70\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(AEPHK_R_NOT_LOADED), "\x6e\x6f\x74\x20\x6c\x6f\x61\x64\x65\x64"},
+    {ERR_REASON(AEPHK_R_OK), "\x6f\x6b"},
     {ERR_REASON(AEPHK_R_RETURN_CONNECTION_FAILED),
-     "return connection failed"},
-    {ERR_REASON(AEPHK_R_SETBNCALLBACK_FAILURE), "setbncallback failure"},
+     "\x72\x65\x74\x75\x72\x6e\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x66\x61\x69\x6c\x65\x64"},
+    {ERR_REASON(AEPHK_R_SETBNCALLBACK_FAILURE), "\x73\x65\x74\x62\x6e\x63\x61\x6c\x6c\x62\x61\x63\x6b\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {ERR_REASON(AEPHK_R_SIZE_TOO_LARGE_OR_TOO_SMALL),
-     "size too large or too small"},
-    {ERR_REASON(AEPHK_R_UNIT_FAILURE), "unit failure"},
+     "\x73\x69\x7a\x65\x20\x74\x6f\x6f\x20\x6c\x61\x72\x67\x65\x20\x6f\x72\x20\x74\x6f\x6f\x20\x73\x6d\x61\x6c\x6c"},
+    {ERR_REASON(AEPHK_R_UNIT_FAILURE), "\x75\x6e\x69\x74\x20\x66\x61\x69\x6c\x75\x72\x65"},
     {0, NULL}
 };
 

@@ -10,7 +10,7 @@
 #include "sparc_arch.h"
 
 #if defined(__GNUC__) && defined(__linux)
-__attribute__ ((visibility("hidden")))
+__attribute__ ((visibility("\x68\x69\x64\x64\x65\x6e")))
 #endif
 unsigned int OPENSSL_sparcv9cap_P[2] = { SPARCV9_TICK_PRIVILEGED, 0 };
 
@@ -125,26 +125,26 @@ typedef char *(*di_node_name_t) (di_node_t);
 typedef int (*di_walk_node_t) (di_node_t, uint_t, di_node_name_t,
                                int (*)(di_node_t, di_node_name_t));
 
-# define DLLINK(h,name) (name=(name##_t)dlsym((h),#name))
+# define DLLINK(h,name) (name=(name##_t)dlsym((h), USTR(#name)))
 
 static int walk_nodename(di_node_t node, di_node_name_t di_node_name)
 {
     char *name = (*di_node_name) (node);
 
     /* This is expected to catch all UltraSPARC flavors prior T1 */
-    if (!strcmp(name, "SUNW,UltraSPARC") ||
+    if (!strcmp(name, "\x53\x55\x4e\x57\x2c\x55\x6c\x74\x72\x61\x53\x50\x41\x52\x43") ||
         /* covers II,III,IV */
-        !strncmp(name, "SUNW,UltraSPARC-I", 17)) {
+        !strncmp(name, "\x53\x55\x4e\x57\x2c\x55\x6c\x74\x72\x61\x53\x50\x41\x52\x43\x2d\x49", 17)) {
         OPENSSL_sparcv9cap_P[0] |= SPARCV9_PREFER_FPU | SPARCV9_VIS1;
 
         /* %tick is privileged only on UltraSPARC-I/II, but not IIe */
-        if (name[14] != '\0' && name[17] != '\0' && name[18] != '\0')
+        if (name[14] != '\x0' && name[17] != '\x0' && name[18] != '\x0')
             OPENSSL_sparcv9cap_P[0] &= ~SPARCV9_TICK_PRIVILEGED;
 
         return DI_WALK_TERMINATE;
     }
     /* This is expected to catch remaining UltraSPARCs, such as T1 */
-    else if (!strncmp(name, "SUNW,UltraSPARC", 15)) {
+    else if (!strncmp(name, "\x53\x55\x4e\x57\x2c\x55\x6c\x74\x72\x61\x53\x50\x41\x52\x43", 15)) {
         OPENSSL_sparcv9cap_P[0] &= ~SPARCV9_TICK_PRIVILEGED;
 
         return DI_WALK_TERMINATE;
@@ -163,21 +163,21 @@ void OPENSSL_cpuid_setup(void)
         return;
     trigger = 1;
 
-    if ((e = getenv("OPENSSL_sparcv9cap"))) {
+    if ((e = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x73\x70\x61\x72\x63\x76\x39\x63\x61\x70"))) {
         OPENSSL_sparcv9cap_P[0] = strtoul(e, NULL, 0);
         return;
     }
 
     if (sysinfo(SI_MACHINE, si, sizeof(si)) > 0) {
-        if (strcmp(si, "sun4v"))
+        if (strcmp(si, "\x73\x75\x6e\x34\x76"))
             /* FPU is preferred for all CPUs, but US-T1/2 */
             OPENSSL_sparcv9cap_P[0] |= SPARCV9_PREFER_FPU;
     }
 
     if (sysinfo(SI_ISALIST, si, sizeof(si)) > 0) {
-        if (strstr(si, "+vis"))
+        if (strstr(si, "\x2b\x76\x69\x73"))
             OPENSSL_sparcv9cap_P[0] |= SPARCV9_VIS1 | SPARCV9_BLK;
-        if (strstr(si, "+vis2")) {
+        if (strstr(si, "\x2b\x76\x69\x73\x32")) {
             OPENSSL_sparcv9cap_P[0] |= SPARCV9_VIS2;
             OPENSSL_sparcv9cap_P[0] &= ~SPARCV9_TICK_PRIVILEGED;
             return;
@@ -196,12 +196,12 @@ void OPENSSL_cpuid_setup(void)
             void *p;
             int (*f) (int, int);
         } sym;
-        if ((sym.p = dlsym(h, "mallopt")))
+        if ((sym.p = dlsym(h, "\x6d\x61\x6c\x6c\x6f\x70\x74")))
             (*sym.f) (M_KEEP, 0);
         dlclose(h);
     }
 # endif
-    if ((h = dlopen("libdevinfo.so.1", RTLD_LAZY)))
+    if ((h = dlopen("\x6c\x69\x62\x64\x65\x76\x69\x6e\x66\x6f\x2e\x73\x6f\x2e\x31", RTLD_LAZY)))
         do {
             di_init_t di_init;
             di_fini_t di_fini;
@@ -218,7 +218,7 @@ void OPENSSL_cpuid_setup(void)
             if (!DLLINK(h, di_node_name))
                 break;
 
-            if ((root_node = (*di_init) ("/", DINFOSUBTREE)) != DI_NODE_NIL) {
+            if ((root_node = (*di_init) ("\x2f", DINFOSUBTREE)) != DI_NODE_NIL) {
                 (*di_walk_node) (root_node, DI_WALK_SIBFIRST,
                                  di_node_name, walk_nodename);
                 (*di_fini) (root_node);
@@ -259,9 +259,9 @@ void OPENSSL_cpuid_setup(void)
         return;
     trigger = 1;
 
-    if ((e = getenv("OPENSSL_sparcv9cap"))) {
+    if ((e = getenv("\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x73\x70\x61\x72\x63\x76\x39\x63\x61\x70"))) {
         OPENSSL_sparcv9cap_P[0] = strtoul(e, NULL, 0);
-        if ((e = strchr(e, ':')))
+        if ((e = strchr(e, '\x3a')))
             OPENSSL_sparcv9cap_P[1] = strtoul(e + 1, NULL, 0);
         return;
     }

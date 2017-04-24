@@ -38,7 +38,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -77,13 +77,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -149,7 +149,7 @@ int SSL_get_ex_data_X509_STORE_CTX_idx(void)
             if ((ret = ssl_x509_store_ctx_idx) < 0) {
                 ret = ssl_x509_store_ctx_idx =
                     X509_STORE_CTX_get_ex_new_index(0,
-                                                    "SSL for verify callback",
+                                                    "\x53\x53\x4c\x20\x66\x6f\x72\x20\x76\x65\x72\x69\x66\x79\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b",
                                                     NULL, NULL, NULL);
             }
             CRYPTO_w_unlock(CRYPTO_LOCK_SSL_CTX);
@@ -168,7 +168,7 @@ int SSL_get_ex_data_X509_STORE_CTX_idx(void)
             if (ssl_x509_store_ctx_idx < 0) {
                 ssl_x509_store_ctx_idx =
                     X509_STORE_CTX_get_ex_new_index(0,
-                                                    "SSL for verify callback",
+                                                    "\x53\x53\x4c\x20\x66\x6f\x72\x20\x76\x65\x72\x69\x66\x79\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b",
                                                     NULL, NULL, NULL);
             }
         }
@@ -458,13 +458,13 @@ void ssl_cert_free(CERT *c)
 
     i = CRYPTO_add(&c->references, -1, CRYPTO_LOCK_SSL_CERT);
 #ifdef REF_PRINT
-    REF_PRINT("CERT", c);
+    REF_PRINT("\x43\x45\x52\x54", c);
 #endif
     if (i > 0)
         return;
 #ifdef REF_CHECK
     if (i < 0) {
-        fprintf(stderr, "ssl_cert_free, bad reference count\n");
+        fprintf(stderr, "\x73\x73\x6c\x5f\x63\x65\x72\x74\x5f\x66\x72\x65\x65\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
         abort();                /* ok */
     }
 #endif
@@ -657,13 +657,13 @@ void ssl_sess_cert_free(SESS_CERT *sc)
 
     i = CRYPTO_add(&sc->references, -1, CRYPTO_LOCK_SSL_SESS_CERT);
 #ifdef REF_PRINT
-    REF_PRINT("SESS_CERT", sc);
+    REF_PRINT("\x53\x45\x53\x53\x5f\x43\x45\x52\x54", sc);
 #endif
     if (i > 0)
         return;
 #ifdef REF_CHECK
     if (i < 0) {
-        fprintf(stderr, "ssl_sess_cert_free, bad reference count\n");
+        fprintf(stderr, "\x73\x73\x6c\x5f\x73\x65\x73\x73\x5f\x63\x65\x72\x74\x5f\x66\x72\x65\x65\x2c\x20\x62\x61\x64\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x63\x6f\x75\x6e\x74\xa");
         abort();                /* ok */
     }
 #endif
@@ -739,7 +739,7 @@ int ssl_verify_cert_chain(SSL *s, STACK_OF(X509) *sk)
      * vice versa.
      */
 
-    X509_STORE_CTX_set_default(&ctx, s->server ? "ssl_client" : "ssl_server");
+    X509_STORE_CTX_set_default(&ctx, s->server ? "\x73\x73\x6c\x5f\x63\x6c\x69\x65\x6e\x74" : "\x73\x73\x6c\x5f\x73\x65\x72\x76\x65\x72");
     /*
      * Anything non-default in "param" should overwrite anything in the ctx.
      */
@@ -1023,9 +1023,9 @@ int SSL_add_dir_cert_subjects_to_stack(STACK_OF(X509_NAME) *stack,
             goto err;
         }
 #ifdef OPENSSL_SYS_VMS
-        r = BIO_snprintf(buf, sizeof buf, "%s%s", dir, filename);
+        r = BIO_snprintf(buf, sizeof buf, "\x25\x73\x25\x73", dir, filename);
 #else
-        r = BIO_snprintf(buf, sizeof buf, "%s/%s", dir, filename);
+        r = BIO_snprintf(buf, sizeof buf, "\x25\x73\x2f\x25\x73", dir, filename);
 #endif
         if (r <= 0 || r >= (int)sizeof(buf))
             goto err;
@@ -1035,7 +1035,7 @@ int SSL_add_dir_cert_subjects_to_stack(STACK_OF(X509_NAME) *stack,
 
     if (errno) {
         SYSerr(SYS_F_OPENDIR, get_last_sys_error());
-        ERR_add_error_data(3, "OPENSSL_DIR_read(&ctx, '", dir, "')");
+        ERR_add_error_data(3, "\x4f\x50\x45\x4e\x53\x53\x4c\x5f\x44\x49\x52\x5f\x72\x65\x61\x64\x28\x26\x63\x74\x78\x2c\x20\x27", dir, "\x27\x29");
         SSLerr(SSL_F_SSL_ADD_DIR_CERT_SUBJECTS_TO_STACK, ERR_R_SYS_LIB);
         goto err;
     }
@@ -1213,7 +1213,7 @@ int ssl_build_cert_chain(CERT *c, X509_STORE *chain_store, int flags)
     if (i <= 0) {
         SSLerr(SSL_F_SSL_BUILD_CERT_CHAIN, SSL_R_CERTIFICATE_VERIFY_FAILED);
         i = X509_STORE_CTX_get_error(&xs_ctx);
-        ERR_add_error_data(2, "Verify error:",
+        ERR_add_error_data(2, "\x56\x65\x72\x69\x66\x79\x20\x65\x72\x72\x6f\x72\x3a",
                            X509_verify_cert_error_string(i));
 
         X509_STORE_CTX_cleanup(&xs_ctx);

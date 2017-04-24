@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -70,29 +70,29 @@
 #define PROG    crl_main
 
 #undef POSTFIX
-#define POSTFIX ".rvk"
+#define POSTFIX "\x2e\x72\x76\x6b"
 
 static const char *crl_usage[] = {
-    "usage: crl args\n",
-    "\n",
-    " -inform arg     - input format - default PEM (DER or PEM)\n",
-    " -outform arg    - output format - default PEM\n",
-    " -text           - print out a text format version\n",
-    " -in arg         - input file - default stdin\n",
-    " -out arg        - output file - default stdout\n",
-    " -hash           - print hash value\n",
+    "\x75\x73\x61\x67\x65\x3a\x20\x63\x72\x6c\x20\x61\x72\x67\x73\xa",
+    "\xa",
+    "\x20\x2d\x69\x6e\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x20\x2d\x20\x69\x6e\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\x20\x28\x44\x45\x52\x20\x6f\x72\x20\x50\x45\x4d\x29\xa",
+    "\x20\x2d\x6f\x75\x74\x66\x6f\x72\x6d\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x50\x45\x4d\xa",
+    "\x20\x2d\x74\x65\x78\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x6f\x75\x74\x20\x61\x20\x74\x65\x78\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x76\x65\x72\x73\x69\x6f\x6e\xa",
+    "\x20\x2d\x69\x6e\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x69\x6e\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x74\x64\x69\x6e\xa",
+    "\x20\x2d\x6f\x75\x74\x20\x61\x72\x67\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x69\x6c\x65\x20\x2d\x20\x64\x65\x66\x61\x75\x6c\x74\x20\x73\x74\x64\x6f\x75\x74\xa",
+    "\x20\x2d\x68\x61\x73\x68\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65\xa",
 #ifndef OPENSSL_NO_MD5
-    " -hash_old       - print old-style (MD5) hash value\n",
+    "\x20\x2d\x68\x61\x73\x68\x5f\x6f\x6c\x64\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x6f\x6c\x64\x2d\x73\x74\x79\x6c\x65\x20\x28\x4d\x44\x35\x29\x20\x68\x61\x73\x68\x20\x76\x61\x6c\x75\x65\xa",
 #endif
-    " -fingerprint    - print the crl fingerprint\n",
-    " -issuer         - print issuer DN\n",
-    " -lastupdate     - lastUpdate field\n",
-    " -nextupdate     - nextUpdate field\n",
-    " -crlnumber      - print CRL number\n",
-    " -noout          - no CRL output\n",
-    " -CAfile  name   - verify CRL using certificates in file \"name\"\n",
-    " -CApath  dir    - verify CRL using certificates in \"dir\"\n",
-    " -nameopt arg    - various certificate name options\n",
+    "\x20\x2d\x66\x69\x6e\x67\x65\x72\x70\x72\x69\x6e\x74\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x74\x68\x65\x20\x63\x72\x6c\x20\x66\x69\x6e\x67\x65\x72\x70\x72\x69\x6e\x74\xa",
+    "\x20\x2d\x69\x73\x73\x75\x65\x72\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x69\x73\x73\x75\x65\x72\x20\x44\x4e\xa",
+    "\x20\x2d\x6c\x61\x73\x74\x75\x70\x64\x61\x74\x65\x20\x20\x20\x20\x20\x2d\x20\x6c\x61\x73\x74\x55\x70\x64\x61\x74\x65\x20\x66\x69\x65\x6c\x64\xa",
+    "\x20\x2d\x6e\x65\x78\x74\x75\x70\x64\x61\x74\x65\x20\x20\x20\x20\x20\x2d\x20\x6e\x65\x78\x74\x55\x70\x64\x61\x74\x65\x20\x66\x69\x65\x6c\x64\xa",
+    "\x20\x2d\x63\x72\x6c\x6e\x75\x6d\x62\x65\x72\x20\x20\x20\x20\x20\x20\x2d\x20\x70\x72\x69\x6e\x74\x20\x43\x52\x4c\x20\x6e\x75\x6d\x62\x65\x72\xa",
+    "\x20\x2d\x6e\x6f\x6f\x75\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2d\x20\x6e\x6f\x20\x43\x52\x4c\x20\x6f\x75\x74\x70\x75\x74\xa",
+    "\x20\x2d\x43\x41\x66\x69\x6c\x65\x20\x20\x6e\x61\x6d\x65\x20\x20\x20\x2d\x20\x76\x65\x72\x69\x66\x79\x20\x43\x52\x4c\x20\x75\x73\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x69\x6e\x20\x66\x69\x6c\x65\x20\x22\x6e\x61\x6d\x65\x22\xa",
+    "\x20\x2d\x43\x41\x70\x61\x74\x68\x20\x20\x64\x69\x72\x20\x20\x20\x20\x2d\x20\x76\x65\x72\x69\x66\x79\x20\x43\x52\x4c\x20\x75\x73\x69\x6e\x67\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x73\x20\x69\x6e\x20\x22\x64\x69\x72\x22\xa",
+    "\x20\x2d\x6e\x61\x6d\x65\x6f\x70\x74\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x76\x61\x72\x69\x6f\x75\x73\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x6e\x61\x6d\x65\x20\x6f\x70\x74\x69\x6f\x6e\x73\xa",
     NULL
 };
 
@@ -153,7 +153,7 @@ int MAIN(int argc, char **argv)
     num = 0;
     while (argc >= 1) {
 #ifdef undef
-        if (strcmp(*argv, "-p") == 0) {
+        if (strcmp(*argv, "\x2d\x70") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!args_from_file(++argv, Nargc, Nargv)) {
@@ -161,78 +161,78 @@ int MAIN(int argc, char **argv)
             }
         */}
 #endif
-        if (strcmp(*argv, "-inform") == 0) {
+        if (strcmp(*argv, "\x2d\x69\x6e\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             informat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-outform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             outformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-in") == 0) {
+        } else if (strcmp(*argv, "\x2d\x69\x6e") == 0) {
             if (--argc < 1)
                 goto bad;
             infile = *(++argv);
-        } else if (strcmp(*argv, "-gendelta") == 0) {
+        } else if (strcmp(*argv, "\x2d\x67\x65\x6e\x64\x65\x6c\x74\x61") == 0) {
             if (--argc < 1)
                 goto bad;
             crldiff = *(++argv);
-        } else if (strcmp(*argv, "-key") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79") == 0) {
             if (--argc < 1)
                 goto bad;
             keyfile = *(++argv);
-        } else if (strcmp(*argv, "-keyform") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6b\x65\x79\x66\x6f\x72\x6d") == 0) {
             if (--argc < 1)
                 goto bad;
             keyformat = str2fmt(*(++argv));
-        } else if (strcmp(*argv, "-out") == 0) {
+        } else if (strcmp(*argv, "\x2d\x6f\x75\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             outfile = *(++argv);
-        } else if (strcmp(*argv, "-CApath") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x70\x61\x74\x68") == 0) {
             if (--argc < 1)
                 goto bad;
             CApath = *(++argv);
             do_ver = 1;
-        } else if (strcmp(*argv, "-CAfile") == 0) {
+        } else if (strcmp(*argv, "\x2d\x43\x41\x66\x69\x6c\x65") == 0) {
             if (--argc < 1)
                 goto bad;
             CAfile = *(++argv);
             do_ver = 1;
-        } else if (strcmp(*argv, "-verify") == 0)
+        } else if (strcmp(*argv, "\x2d\x76\x65\x72\x69\x66\x79") == 0)
             do_ver = 1;
-        else if (strcmp(*argv, "-text") == 0)
+        else if (strcmp(*argv, "\x2d\x74\x65\x78\x74") == 0)
             text = 1;
-        else if (strcmp(*argv, "-hash") == 0)
+        else if (strcmp(*argv, "\x2d\x68\x61\x73\x68") == 0)
             hash = ++num;
 #ifndef OPENSSL_NO_MD5
-        else if (strcmp(*argv, "-hash_old") == 0)
+        else if (strcmp(*argv, "\x2d\x68\x61\x73\x68\x5f\x6f\x6c\x64") == 0)
             hash_old = ++num;
 #endif
-        else if (strcmp(*argv, "-nameopt") == 0) {
+        else if (strcmp(*argv, "\x2d\x6e\x61\x6d\x65\x6f\x70\x74") == 0) {
             if (--argc < 1)
                 goto bad;
             if (!set_name_ex(&nmflag, *(++argv)))
                 goto bad;
-        } else if (strcmp(*argv, "-issuer") == 0)
+        } else if (strcmp(*argv, "\x2d\x69\x73\x73\x75\x65\x72") == 0)
             issuer = ++num;
-        else if (strcmp(*argv, "-lastupdate") == 0)
+        else if (strcmp(*argv, "\x2d\x6c\x61\x73\x74\x75\x70\x64\x61\x74\x65") == 0)
             lastupdate = ++num;
-        else if (strcmp(*argv, "-nextupdate") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x65\x78\x74\x75\x70\x64\x61\x74\x65") == 0)
             nextupdate = ++num;
-        else if (strcmp(*argv, "-noout") == 0)
+        else if (strcmp(*argv, "\x2d\x6e\x6f\x6f\x75\x74") == 0)
             noout = ++num;
-        else if (strcmp(*argv, "-fingerprint") == 0)
+        else if (strcmp(*argv, "\x2d\x66\x69\x6e\x67\x65\x72\x70\x72\x69\x6e\x74") == 0)
             fingerprint = ++num;
-        else if (strcmp(*argv, "-crlnumber") == 0)
+        else if (strcmp(*argv, "\x2d\x63\x72\x6c\x6e\x75\x6d\x62\x65\x72") == 0)
             crlnumber = ++num;
-        else if (strcmp(*argv, "-badsig") == 0)
+        else if (strcmp(*argv, "\x2d\x62\x61\x64\x73\x69\x67") == 0)
             badsig = 1;
         else if ((md_alg = EVP_get_digestbyname(*argv + 1))) {
             /* ok */
             digest = md_alg;
         } else {
-            BIO_printf(bio_err, "unknown option %s\n", *argv);
+            BIO_printf(bio_err, "\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x6f\x70\x74\x69\x6f\x6e\x20\x25\x73\xa", *argv);
             badops = 1;
             break;
         }
@@ -243,7 +243,7 @@ int MAIN(int argc, char **argv)
     if (badops) {
  bad:
         for (pp = crl_usage; (*pp != NULL); pp++)
-            BIO_printf(bio_err, "%s", *pp);
+            BIO_printf(bio_err, "\x25\x73", *pp);
         goto end;
     }
 
@@ -269,20 +269,20 @@ int MAIN(int argc, char **argv)
         ERR_clear_error();
 
         if (!X509_STORE_CTX_init(&ctx, store, NULL, NULL)) {
-            BIO_printf(bio_err, "Error initialising X509 store\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x73\x69\x6e\x67\x20\x58\x35\x30\x39\x20\x73\x74\x6f\x72\x65\xa");
             goto end;
         }
 
         i = X509_STORE_get_by_subject(&ctx, X509_LU_X509,
                                       X509_CRL_get_issuer(x), &xobj);
         if (i <= 0) {
-            BIO_printf(bio_err, "Error getting CRL issuer certificate\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x43\x52\x4c\x20\x69\x73\x73\x75\x65\x72\x20\x63\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\xa");
             goto end;
         }
         pkey = X509_get_pubkey(xobj.data.x509);
         X509_OBJECT_free_contents(&xobj);
         if (!pkey) {
-            BIO_printf(bio_err, "Error getting CRL issuer public key\n");
+            BIO_printf(bio_err, "\x45\x72\x72\x6f\x72\x20\x67\x65\x74\x74\x69\x6e\x67\x20\x43\x52\x4c\x20\x69\x73\x73\x75\x65\x72\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\xa");
             goto end;
         }
         i = X509_CRL_verify(x, pkey);
@@ -290,22 +290,22 @@ int MAIN(int argc, char **argv)
         if (i < 0)
             goto end;
         if (i == 0)
-            BIO_printf(bio_err, "verify failure\n");
+            BIO_printf(bio_err, "\x76\x65\x72\x69\x66\x79\x20\x66\x61\x69\x6c\x75\x72\x65\xa");
         else
-            BIO_printf(bio_err, "verify OK\n");
+            BIO_printf(bio_err, "\x76\x65\x72\x69\x66\x79\x20\x4f\x4b\xa");
     }
 
     if (crldiff) {
         X509_CRL *newcrl, *delta;
         if (!keyfile) {
-            BIO_puts(bio_err, "Missing CRL signing key\n");
+            BIO_puts(bio_err, "\x4d\x69\x73\x73\x69\x6e\x67\x20\x43\x52\x4c\x20\x73\x69\x67\x6e\x69\x6e\x67\x20\x6b\x65\x79\xa");
             goto end;
         }
         newcrl = load_crl(crldiff, informat);
         if (!newcrl)
             goto end;
         pkey = load_key(bio_err, keyfile, keyformat, 0, NULL, NULL,
-                        "CRL signing key");
+                        "\x43\x52\x4c\x20\x73\x69\x67\x6e\x69\x6e\x67\x20\x6b\x65\x79");
         if (!pkey) {
             X509_CRL_free(newcrl);
             goto end;
@@ -317,7 +317,7 @@ int MAIN(int argc, char **argv)
             X509_CRL_free(x);
             x = delta;
         } else {
-            BIO_puts(bio_err, "Error creating delta CRL\n");
+            BIO_puts(bio_err, "\x45\x72\x72\x6f\x72\x20\x63\x72\x65\x61\x74\x69\x6e\x67\x20\x64\x65\x6c\x74\x61\x20\x43\x52\x4c\xa");
             goto end;
         }
     }
@@ -325,42 +325,42 @@ int MAIN(int argc, char **argv)
     if (num) {
         for (i = 1; i <= num; i++) {
             if (issuer == i) {
-                print_name(bio_out, "issuer=", X509_CRL_get_issuer(x),
+                print_name(bio_out, "\x69\x73\x73\x75\x65\x72\x3d", X509_CRL_get_issuer(x),
                            nmflag);
             }
             if (crlnumber == i) {
                 ASN1_INTEGER *crlnum;
                 crlnum = X509_CRL_get_ext_d2i(x, NID_crl_number, NULL, NULL);
-                BIO_printf(bio_out, "crlNumber=");
+                BIO_printf(bio_out, "\x63\x72\x6c\x4e\x75\x6d\x62\x65\x72\x3d");
                 if (crlnum) {
                     i2a_ASN1_INTEGER(bio_out, crlnum);
                     ASN1_INTEGER_free(crlnum);
                 } else
-                    BIO_puts(bio_out, "<NONE>");
-                BIO_printf(bio_out, "\n");
+                    BIO_puts(bio_out, "\x3c\x4e\x4f\x4e\x45\x3e");
+                BIO_printf(bio_out, "\xa");
             }
             if (hash == i) {
-                BIO_printf(bio_out, "%08lx\n",
+                BIO_printf(bio_out, "\x25\x30\x38\x6c\x78\xa",
                            X509_NAME_hash(X509_CRL_get_issuer(x)));
             }
 #ifndef OPENSSL_NO_MD5
             if (hash_old == i) {
-                BIO_printf(bio_out, "%08lx\n",
+                BIO_printf(bio_out, "\x25\x30\x38\x6c\x78\xa",
                            X509_NAME_hash_old(X509_CRL_get_issuer(x)));
             }
 #endif
             if (lastupdate == i) {
-                BIO_printf(bio_out, "lastUpdate=");
+                BIO_printf(bio_out, "\x6c\x61\x73\x74\x55\x70\x64\x61\x74\x65\x3d");
                 ASN1_TIME_print(bio_out, X509_CRL_get_lastUpdate(x));
-                BIO_printf(bio_out, "\n");
+                BIO_printf(bio_out, "\xa");
             }
             if (nextupdate == i) {
-                BIO_printf(bio_out, "nextUpdate=");
+                BIO_printf(bio_out, "\x6e\x65\x78\x74\x55\x70\x64\x61\x74\x65\x3d");
                 if (X509_CRL_get_nextUpdate(x))
                     ASN1_TIME_print(bio_out, X509_CRL_get_nextUpdate(x));
                 else
-                    BIO_printf(bio_out, "NONE");
-                BIO_printf(bio_out, "\n");
+                    BIO_printf(bio_out, "\x4e\x4f\x4e\x45");
+                BIO_printf(bio_out, "\xa");
             }
             if (fingerprint == i) {
                 int j;
@@ -368,14 +368,14 @@ int MAIN(int argc, char **argv)
                 unsigned char md[EVP_MAX_MD_SIZE];
 
                 if (!X509_CRL_digest(x, digest, md, &n)) {
-                    BIO_printf(bio_err, "out of memory\n");
+                    BIO_printf(bio_err, "\x6f\x75\x74\x20\x6f\x66\x20\x6d\x65\x6d\x6f\x72\x79\xa");
                     goto end;
                 }
-                BIO_printf(bio_out, "%s Fingerprint=",
+                BIO_printf(bio_out, "\x25\x73\x20\x46\x69\x6e\x67\x65\x72\x70\x72\x69\x6e\x74\x3d",
                            OBJ_nid2sn(EVP_MD_type(digest)));
                 for (j = 0; j < (int)n; j++) {
-                    BIO_printf(bio_out, "%02X%c", md[j], (j + 1 == (int)n)
-                               ? '\n' : ':');
+                    BIO_printf(bio_out, "\x25\x30\x32\x58\x25\x63", md[j], (j + 1 == (int)n)
+                               ? '\xa' : '\x3a');
                 }
             }
         }
@@ -418,11 +418,11 @@ int MAIN(int argc, char **argv)
     else if (outformat == FORMAT_PEM)
         i = PEM_write_bio_X509_CRL(out, x);
     else {
-        BIO_printf(bio_err, "bad output format specified for outfile\n");
+        BIO_printf(bio_err, "\x62\x61\x64\x20\x6f\x75\x74\x70\x75\x74\x20\x66\x6f\x72\x6d\x61\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x66\x6f\x72\x20\x6f\x75\x74\x66\x69\x6c\x65\xa");
         goto end;
     }
     if (!i) {
-        BIO_printf(bio_err, "unable to write CRL\n");
+        BIO_printf(bio_err, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x77\x72\x69\x74\x65\x20\x43\x52\x4c\xa");
         goto end;
     }
     ret = 0;

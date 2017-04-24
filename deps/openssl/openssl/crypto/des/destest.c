@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -78,7 +78,7 @@
 #ifdef OPENSSL_NO_DES
 int main(int argc, char *argv[])
 {
-    printf("No DES support\n");
+    printf("\x4e\x6f\x20\x44\x45\x53\x20\x73\x75\x70\x70\x6f\x72\x74\xa");
     return (0);
 }
 #else
@@ -248,7 +248,7 @@ static unsigned char cbc_iv[8] =
  * Changed the following text constant to binary so it will work on ebcdic
  * machines :-)
  */
-/* static char cbc_data[40]="7654321 Now is the time for \0001"; */
+/* static char cbc_data[40]="\x37\x36\x35\x34\x33\x32\x31\x20\x4e\x6f\x77\x20\x69\x73\x20\x74\x68\x65\x20\x74\x69\x6d\x65\x20\x66\x6f\x72\x20\x00\x30\x31"; */
 static unsigned char cbc_data[40] = {
     0x37, 0x36, 0x35, 0x34, 0x33, 0x32, 0x31, 0x20,
     0x4E, 0x6F, 0x77, 0x20, 0x69, 0x73, 0x20, 0x74,
@@ -265,8 +265,8 @@ static unsigned char cbc_ok[32] = {
 };
 
 # ifdef SCREW_THE_PARITY
-#  error "SCREW_THE_PARITY is not ment to be defined."
-#  error "Original vectors are preserved for reference only."
+#  error "\x53\x43\x52\x45\x57\x5f\x54\x48\x45\x5f\x50\x41\x52\x49\x54\x59\x20\x69\x73\x20\x6e\x6f\x74\x20\x6d\x65\x6e\x74\x20\x74\x6f\x20\x62\x65\x20\x64\x65\x66\x69\x6e\x65\x64\x2e"
+#  error "\x4f\x72\x69\x67\x69\x6e\x61\x6c\x20\x76\x65\x63\x74\x6f\x72\x73\x20\x61\x72\x65\x20\x70\x72\x65\x73\x65\x72\x76\x65\x64\x20\x66\x6f\x72\x20\x72\x65\x66\x65\x72\x65\x6e\x63\x65\x20\x6f\x6e\x6c\x79\x2e"
 static unsigned char cbc2_key[8] =
     { 0xf0, 0xe1, 0xd2, 0xc3, 0xb4, 0xa5, 0x96, 0x87 };
 static unsigned char xcbc_ok[32] = {
@@ -380,17 +380,17 @@ int main(int argc, char *argv[])
     char *str;
 
 # ifndef OPENSSL_NO_DESCBCM
-    printf("Doing cbcm\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x63\x62\x63\x6d\xa");
     if ((j = DES_set_key_checked(&cbc_key, &ks)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     if ((j = DES_set_key_checked(&cbc2_key, &ks2)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     if ((j = DES_set_key_checked(&cbc3_key, &ks3)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     memset(cbc_out, 0, 40);
@@ -398,7 +398,7 @@ int main(int argc, char *argv[])
     i = strlen((char *)cbc_data) + 1;
     /* i=((i+7)/8)*8; */
     memcpy(iv3, cbc_iv, sizeof(cbc_iv));
-    memset(iv2, '\0', sizeof iv2);
+    memset(iv2, '\x0', sizeof iv2);
 
     DES_ede3_cbcm_encrypt(cbc_data, cbc_out, 16L, &ks, &ks2, &ks3, &iv3, &iv2,
                           DES_ENCRYPT);
@@ -412,24 +412,24 @@ int main(int argc, char *argv[])
         }
 */
     memcpy(iv3, cbc_iv, sizeof(cbc_iv));
-    memset(iv2, '\0', sizeof iv2);
+    memset(iv2, '\x0', sizeof iv2);
     DES_ede3_cbcm_encrypt(cbc_out, cbc_in, i, &ks, &ks2, &ks3, &iv3, &iv2,
                           DES_DECRYPT);
     if (memcmp(cbc_in, cbc_data, strlen((char *)cbc_data) + 1) != 0) {
         unsigned int n;
 
-        printf("des_ede3_cbcm_encrypt decrypt error\n");
+        printf("\x64\x65\x73\x5f\x65\x64\x65\x33\x5f\x63\x62\x63\x6d\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (n = 0; n < i; ++n)
-            printf(" %02x", cbc_data[n]);
-        printf("\n");
+            printf("\x20\x25\x30\x32\x78", cbc_data[n]);
+        printf("\xa");
         for (n = 0; n < i; ++n)
-            printf(" %02x", cbc_in[n]);
-        printf("\n");
+            printf("\x20\x25\x30\x32\x78", cbc_in[n]);
+        printf("\xa");
         err = 1;
     }
 # endif
 
-    printf("Doing ecb\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x65\x63\x62\xa");
     for (i = 0; i < NUM_TESTS; i++) {
         DES_set_key_unchecked(&key_data[i], &ks);
         memcpy(in, plain_data[i], 8);
@@ -439,20 +439,20 @@ int main(int argc, char *argv[])
         des_ecb_encrypt(&out, &outin, ks, DES_DECRYPT);
 
         if (memcmp(out, cipher_data[i], 8) != 0) {
-            printf("Encryption error %2d\nk=%s p=%s o=%s act=%s\n",
+            printf("\x45\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72\x20\x25\x32\x64\xa\x6b\x3d\x25\x73\x20\x70\x3d\x25\x73\x20\x6f\x3d\x25\x73\x20\x61\x63\x74\x3d\x25\x73\xa",
                    i + 1, pt(key_data[i]), pt(in), pt(cipher_data[i]),
                    pt(out));
             err = 1;
         }
         if (memcmp(in, outin, 8) != 0) {
-            printf("Decryption error %2d\nk=%s p=%s o=%s act=%s\n",
+            printf("\x44\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72\x20\x25\x32\x64\xa\x6b\x3d\x25\x73\x20\x70\x3d\x25\x73\x20\x6f\x3d\x25\x73\x20\x61\x63\x74\x3d\x25\x73\xa",
                    i + 1, pt(key_data[i]), pt(out), pt(in), pt(outin));
             err = 1;
         }
     }
 
 # ifndef LIBDES_LIT
-    printf("Doing ede ecb\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x65\x64\x65\x20\x65\x63\x62\xa");
     for (i = 0; i < (NUM_TESTS - 2); i++) {
         DES_set_key_unchecked(&key_data[i], &ks);
         DES_set_key_unchecked(&key_data[i + 1], &ks2);
@@ -464,22 +464,22 @@ int main(int argc, char *argv[])
         des_ecb2_encrypt(&out, &outin, ks, ks2, DES_DECRYPT);
 
         if (memcmp(out, cipher_ecb2[i], 8) != 0) {
-            printf("Encryption error %2d\nk=%s p=%s o=%s act=%s\n",
+            printf("\x45\x6e\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72\x20\x25\x32\x64\xa\x6b\x3d\x25\x73\x20\x70\x3d\x25\x73\x20\x6f\x3d\x25\x73\x20\x61\x63\x74\x3d\x25\x73\xa",
                    i + 1, pt(key_data[i]), pt(in), pt(cipher_ecb2[i]),
                    pt(out));
             err = 1;
         }
         if (memcmp(in, outin, 8) != 0) {
-            printf("Decryption error %2d\nk=%s p=%s o=%s act=%s\n",
+            printf("\x44\x65\x63\x72\x79\x70\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72\x20\x25\x32\x64\xa\x6b\x3d\x25\x73\x20\x70\x3d\x25\x73\x20\x6f\x3d\x25\x73\x20\x61\x63\x74\x3d\x25\x73\xa",
                    i + 1, pt(key_data[i]), pt(out), pt(in), pt(outin));
             err = 1;
         }
     }
 # endif
 
-    printf("Doing cbc\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x63\x62\x63\xa");
     if ((j = DES_set_key_checked(&cbc_key, &ks)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     memset(cbc_out, 0, 40);
@@ -488,7 +488,7 @@ int main(int argc, char *argv[])
     des_ncbc_encrypt(cbc_data, cbc_out, strlen((char *)cbc_data) + 1, ks,
                      &iv3, DES_ENCRYPT);
     if (memcmp(cbc_out, cbc_ok, 32) != 0) {
-        printf("cbc_encrypt encrypt error\n");
+        printf("\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 
@@ -496,13 +496,13 @@ int main(int argc, char *argv[])
     des_ncbc_encrypt(cbc_out, cbc_in, strlen((char *)cbc_data) + 1, ks,
                      &iv3, DES_DECRYPT);
     if (memcmp(cbc_in, cbc_data, strlen((char *)cbc_data)) != 0) {
-        printf("cbc_encrypt decrypt error\n");
+        printf("\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 # ifndef LIBDES_LIT
-    printf("Doing desx cbc\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x64\x65\x73\x78\x20\x63\x62\x63\xa");
     if ((j = DES_set_key_checked(&cbc_key, &ks)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     memset(cbc_out, 0, 40);
@@ -511,29 +511,29 @@ int main(int argc, char *argv[])
     des_xcbc_encrypt(cbc_data, cbc_out, strlen((char *)cbc_data) + 1, ks,
                      &iv3, &cbc2_key, &cbc3_key, DES_ENCRYPT);
     if (memcmp(cbc_out, xcbc_ok, 32) != 0) {
-        printf("des_xcbc_encrypt encrypt error\n");
+        printf("\x64\x65\x73\x5f\x78\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
     memcpy(iv3, cbc_iv, sizeof(cbc_iv));
     des_xcbc_encrypt(cbc_out, cbc_in, strlen((char *)cbc_data) + 1, ks,
                      &iv3, &cbc2_key, &cbc3_key, DES_DECRYPT);
     if (memcmp(cbc_in, cbc_data, strlen((char *)cbc_data) + 1) != 0) {
-        printf("des_xcbc_encrypt decrypt error\n");
+        printf("\x64\x65\x73\x5f\x78\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 # endif
 
-    printf("Doing ede cbc\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x65\x64\x65\x20\x63\x62\x63\xa");
     if ((j = DES_set_key_checked(&cbc_key, &ks)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     if ((j = DES_set_key_checked(&cbc2_key, &ks2)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     if ((j = DES_set_key_checked(&cbc3_key, &ks3)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     memset(cbc_out, 0, 40);
@@ -551,13 +551,13 @@ int main(int argc, char *argv[])
          (unsigned int)(strlen((char *)cbc_data) + 1 + 7) / 8 * 8) != 0) {
         unsigned int n;
 
-        printf("des_ede3_cbc_encrypt encrypt error\n");
+        printf("\x64\x65\x73\x5f\x65\x64\x65\x33\x5f\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (n = 0; n < i; ++n)
-            printf(" %02x", cbc_out[n]);
-        printf("\n");
+            printf("\x20\x25\x30\x32\x78", cbc_out[n]);
+        printf("\xa");
         for (n = 0; n < i; ++n)
-            printf(" %02x", cbc3_ok[n]);
-        printf("\n");
+            printf("\x20\x25\x30\x32\x78", cbc3_ok[n]);
+        printf("\xa");
         err = 1;
     }
 
@@ -566,19 +566,19 @@ int main(int argc, char *argv[])
     if (memcmp(cbc_in, cbc_data, strlen((char *)cbc_data) + 1) != 0) {
         unsigned int n;
 
-        printf("des_ede3_cbc_encrypt decrypt error\n");
+        printf("\x64\x65\x73\x5f\x65\x64\x65\x33\x5f\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (n = 0; n < i; ++n)
-            printf(" %02x", cbc_data[n]);
-        printf("\n");
+            printf("\x20\x25\x30\x32\x78", cbc_data[n]);
+        printf("\xa");
         for (n = 0; n < i; ++n)
-            printf(" %02x", cbc_in[n]);
-        printf("\n");
+            printf("\x20\x25\x30\x32\x78", cbc_in[n]);
+        printf("\xa");
         err = 1;
     }
 # ifndef LIBDES_LIT
-    printf("Doing pcbc\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x70\x63\x62\x63\xa");
     if ((j = DES_set_key_checked(&cbc_key, &ks)) != 0) {
-        printf("Key error %d\n", j);
+        printf("\x4b\x65\x79\x20\x65\x72\x72\x6f\x72\x20\x25\x64\xa", j);
         err = 1;
     }
     memset(cbc_out, 0, 40);
@@ -586,29 +586,29 @@ int main(int argc, char *argv[])
     des_pcbc_encrypt(cbc_data, cbc_out, strlen((char *)cbc_data) + 1, ks,
                      &cbc_iv, DES_ENCRYPT);
     if (memcmp(cbc_out, pcbc_ok, 32) != 0) {
-        printf("pcbc_encrypt encrypt error\n");
+        printf("\x70\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
     des_pcbc_encrypt(cbc_out, cbc_in, strlen((char *)cbc_data) + 1, ks,
                      &cbc_iv, DES_DECRYPT);
     if (memcmp(cbc_in, cbc_data, strlen((char *)cbc_data) + 1) != 0) {
-        printf("pcbc_encrypt decrypt error\n");
+        printf("\x70\x63\x62\x63\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 
-    printf("Doing ");
-    printf("cfb8 ");
+    printf("\x44\x6f\x69\x6e\x67\x20");
+    printf("\x63\x66\x62\x38\x20");
     err += cfb_test(8, cfb_cipher8);
-    printf("cfb16 ");
+    printf("\x63\x66\x62\x31\x36\x20");
     err += cfb_test(16, cfb_cipher16);
-    printf("cfb32 ");
+    printf("\x63\x66\x62\x33\x32\x20");
     err += cfb_test(32, cfb_cipher32);
-    printf("cfb48 ");
+    printf("\x63\x66\x62\x34\x38\x20");
     err += cfb_test(48, cfb_cipher48);
-    printf("cfb64 ");
+    printf("\x63\x66\x62\x36\x34\x20");
     err += cfb_test(64, cfb_cipher64);
 
-    printf("cfb64() ");
+    printf("\x63\x66\x62\x36\x34\x28\x29\x20");
     err += cfb64_test(cfb_cipher64);
 
     memcpy(cfb_tmp, cfb_iv, sizeof(cfb_iv));
@@ -616,7 +616,7 @@ int main(int argc, char *argv[])
         des_cfb_encrypt(&(plain[i]), &(cfb_buf1[i]),
                         8, 1, ks, &cfb_tmp, DES_ENCRYPT);
     if (memcmp(cfb_cipher8, cfb_buf1, sizeof(plain)) != 0) {
-        printf("cfb_encrypt small encrypt error\n");
+        printf("\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x73\x6d\x61\x6c\x6c\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 
@@ -625,26 +625,26 @@ int main(int argc, char *argv[])
         des_cfb_encrypt(&(cfb_buf1[i]), &(cfb_buf2[i]),
                         8, 1, ks, &cfb_tmp, DES_DECRYPT);
     if (memcmp(plain, cfb_buf2, sizeof(plain)) != 0) {
-        printf("cfb_encrypt small decrypt error\n");
+        printf("\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x73\x6d\x61\x6c\x6c\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 
-    printf("ede_cfb64() ");
+    printf("\x65\x64\x65\x5f\x63\x66\x62\x36\x34\x28\x29\x20");
     err += ede_cfb64_test(cfb_cipher64);
 
-    printf("done\n");
+    printf("\x64\x6f\x6e\x65\xa");
 
-    printf("Doing ofb\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x6f\x66\x62\xa");
     DES_set_key_checked(&ofb_key, &ks);
     memcpy(ofb_tmp, ofb_iv, sizeof(ofb_iv));
     des_ofb_encrypt(plain, ofb_buf1, 64, sizeof(plain) / 8, ks, &ofb_tmp);
     if (memcmp(ofb_cipher, ofb_buf1, sizeof(ofb_buf1)) != 0) {
-        printf("ofb_encrypt encrypt error\n");
-        printf("%02X %02X %02X %02X %02X %02X %02X %02X\n",
+        printf("\x6f\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
+        printf("\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\xa",
                ofb_buf1[8 + 0], ofb_buf1[8 + 1], ofb_buf1[8 + 2],
                ofb_buf1[8 + 3], ofb_buf1[8 + 4], ofb_buf1[8 + 5],
                ofb_buf1[8 + 6], ofb_buf1[8 + 7]);
-        printf("%02X %02X %02X %02X %02X %02X %02X %02X\n", ofb_buf1[8 + 0],
+        printf("\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\xa", ofb_buf1[8 + 0],
                ofb_cipher[8 + 1], ofb_cipher[8 + 2], ofb_cipher[8 + 3],
                ofb_buf1[8 + 4], ofb_cipher[8 + 5], ofb_cipher[8 + 6],
                ofb_cipher[8 + 7]);
@@ -654,18 +654,18 @@ int main(int argc, char *argv[])
     des_ofb_encrypt(ofb_buf1, ofb_buf2, 64, sizeof(ofb_buf1) / 8, ks,
                     &ofb_tmp);
     if (memcmp(plain, ofb_buf2, sizeof(ofb_buf2)) != 0) {
-        printf("ofb_encrypt decrypt error\n");
-        printf("%02X %02X %02X %02X %02X %02X %02X %02X\n",
+        printf("\x6f\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
+        printf("\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\xa",
                ofb_buf2[8 + 0], ofb_buf2[8 + 1], ofb_buf2[8 + 2],
                ofb_buf2[8 + 3], ofb_buf2[8 + 4], ofb_buf2[8 + 5],
                ofb_buf2[8 + 6], ofb_buf2[8 + 7]);
-        printf("%02X %02X %02X %02X %02X %02X %02X %02X\n", plain[8 + 0],
+        printf("\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\x20\x25\x30\x32\x58\xa", plain[8 + 0],
                plain[8 + 1], plain[8 + 2], plain[8 + 3], plain[8 + 4],
                plain[8 + 5], plain[8 + 6], plain[8 + 7]);
         err = 1;
     }
 
-    printf("Doing ofb64\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x6f\x66\x62\x36\x34\xa");
     DES_set_key_checked(&ofb_key, &ks);
     memcpy(ofb_tmp, ofb_iv, sizeof(ofb_iv));
     memset(ofb_buf1, 0, sizeof(ofb_buf1));
@@ -675,7 +675,7 @@ int main(int argc, char *argv[])
         des_ofb64_encrypt(&(plain[i]), &(ofb_buf1[i]), 1, ks, &ofb_tmp, &num);
     }
     if (memcmp(ofb_cipher, ofb_buf1, sizeof(ofb_buf1)) != 0) {
-        printf("ofb64_encrypt encrypt error\n");
+        printf("\x6f\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
     memcpy(ofb_tmp, ofb_iv, sizeof(ofb_iv));
@@ -683,11 +683,11 @@ int main(int argc, char *argv[])
     des_ofb64_encrypt(ofb_buf1, ofb_buf2, sizeof(ofb_buf1), ks, &ofb_tmp,
                       &num);
     if (memcmp(plain, ofb_buf2, sizeof(ofb_buf2)) != 0) {
-        printf("ofb64_encrypt decrypt error\n");
+        printf("\x6f\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 
-    printf("Doing ede_ofb64\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x65\x64\x65\x5f\x6f\x66\x62\x36\x34\xa");
     DES_set_key_checked(&ofb_key, &ks);
     memcpy(ofb_tmp, ofb_iv, sizeof(ofb_iv));
     memset(ofb_buf1, 0, sizeof(ofb_buf1));
@@ -698,7 +698,7 @@ int main(int argc, char *argv[])
                                ks, &ofb_tmp, &num);
     }
     if (memcmp(ofb_cipher, ofb_buf1, sizeof(ofb_buf1)) != 0) {
-        printf("ede_ofb64_encrypt encrypt error\n");
+        printf("\x65\x64\x65\x5f\x6f\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
     memcpy(ofb_tmp, ofb_iv, sizeof(ofb_iv));
@@ -706,109 +706,109 @@ int main(int argc, char *argv[])
     des_ede3_ofb64_encrypt(ofb_buf1, ofb_buf2, sizeof(ofb_buf1), ks, ks, ks,
                            &ofb_tmp, &num);
     if (memcmp(plain, ofb_buf2, sizeof(ofb_buf2)) != 0) {
-        printf("ede_ofb64_encrypt decrypt error\n");
+        printf("\x65\x64\x65\x5f\x6f\x66\x62\x36\x34\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         err = 1;
     }
 
-    printf("Doing cbc_cksum\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x63\x62\x63\x5f\x63\x6b\x73\x75\x6d\xa");
     DES_set_key_checked(&cbc_key, &ks);
     cs = des_cbc_cksum(cbc_data, &cret, strlen((char *)cbc_data), ks,
                        &cbc_iv);
     if (cs != cbc_cksum_ret) {
-        printf("bad return value (%08lX), should be %08lX\n",
+        printf("\x62\x61\x64\x20\x72\x65\x74\x75\x72\x6e\x20\x76\x61\x6c\x75\x65\x20\x28\x25\x30\x38\x6c\x58\x29\x2c\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x25\x30\x38\x6c\x58\xa",
                (unsigned long)cs, (unsigned long)cbc_cksum_ret);
         err = 1;
     }
     if (memcmp(cret, cbc_cksum_data, 8) != 0) {
-        printf("bad cbc_cksum block returned\n");
+        printf("\x62\x61\x64\x20\x63\x62\x63\x5f\x63\x6b\x73\x75\x6d\x20\x62\x6c\x6f\x63\x6b\x20\x72\x65\x74\x75\x72\x6e\x65\x64\xa");
         err = 1;
     }
 
-    printf("Doing quad_cksum\n");
+    printf("\x44\x6f\x69\x6e\x67\x20\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\xa");
     cs = des_quad_cksum(cbc_data, (des_cblock *)lqret,
                         (long)strlen((char *)cbc_data), 2,
                         (des_cblock *)cbc_iv);
     if (cs != 0x70d7a63aL) {
-        printf("quad_cksum error, ret %08lx should be 70d7a63a\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x72\x65\x74\x20\x25\x30\x38\x6c\x78\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x37\x30\x64\x37\x61\x36\x33\x61\xa",
                (unsigned long)cs);
         err = 1;
     }
 #  ifdef _CRAY
     if (lqret[0].a != 0x327eba8dL) {
-        printf("quad_cksum error, out[0] %08lx is not %08lx\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x6f\x75\x74\x5b\x30\x5d\x20\x25\x30\x38\x6c\x78\x20\x69\x73\x20\x6e\x6f\x74\x20\x25\x30\x38\x6c\x78\xa",
                (unsigned long)lqret[0].a, 0x327eba8dUL);
         err = 1;
     }
     if (lqret[0].b != 0x201a49ccL) {
-        printf("quad_cksum error, out[1] %08lx is not %08lx\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x6f\x75\x74\x5b\x31\x5d\x20\x25\x30\x38\x6c\x78\x20\x69\x73\x20\x6e\x6f\x74\x20\x25\x30\x38\x6c\x78\xa",
                (unsigned long)lqret[0].b, 0x201a49ccUL);
         err = 1;
     }
     if (lqret[1].a != 0x70d7a63aL) {
-        printf("quad_cksum error, out[2] %08lx is not %08lx\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x6f\x75\x74\x5b\x32\x5d\x20\x25\x30\x38\x6c\x78\x20\x69\x73\x20\x6e\x6f\x74\x20\x25\x30\x38\x6c\x78\xa",
                (unsigned long)lqret[1].a, 0x70d7a63aUL);
         err = 1;
     }
     if (lqret[1].b != 0x501c2c26L) {
-        printf("quad_cksum error, out[3] %08lx is not %08lx\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x6f\x75\x74\x5b\x33\x5d\x20\x25\x30\x38\x6c\x78\x20\x69\x73\x20\x6e\x6f\x74\x20\x25\x30\x38\x6c\x78\xa",
                (unsigned long)lqret[1].b, 0x501c2c26UL);
         err = 1;
     }
 #  else
     if (lqret[0] != 0x327eba8dL) {
-        printf("quad_cksum error, out[0] %08lx is not %08lx\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x6f\x75\x74\x5b\x30\x5d\x20\x25\x30\x38\x6c\x78\x20\x69\x73\x20\x6e\x6f\x74\x20\x25\x30\x38\x6c\x78\xa",
                (unsigned long)lqret[0], 0x327eba8dUL);
         err = 1;
     }
     if (lqret[1] != 0x201a49ccL) {
-        printf("quad_cksum error, out[1] %08lx is not %08lx\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x6f\x75\x74\x5b\x31\x5d\x20\x25\x30\x38\x6c\x78\x20\x69\x73\x20\x6e\x6f\x74\x20\x25\x30\x38\x6c\x78\xa",
                (unsigned long)lqret[1], 0x201a49ccUL);
         err = 1;
     }
     if (lqret[2] != 0x70d7a63aL) {
-        printf("quad_cksum error, out[2] %08lx is not %08lx\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x6f\x75\x74\x5b\x32\x5d\x20\x25\x30\x38\x6c\x78\x20\x69\x73\x20\x6e\x6f\x74\x20\x25\x30\x38\x6c\x78\xa",
                (unsigned long)lqret[2], 0x70d7a63aUL);
         err = 1;
     }
     if (lqret[3] != 0x501c2c26L) {
-        printf("quad_cksum error, out[3] %08lx is not %08lx\n",
+        printf("\x71\x75\x61\x64\x5f\x63\x6b\x73\x75\x6d\x20\x65\x72\x72\x6f\x72\x2c\x20\x6f\x75\x74\x5b\x33\x5d\x20\x25\x30\x38\x6c\x78\x20\x69\x73\x20\x6e\x6f\x74\x20\x25\x30\x38\x6c\x78\xa",
                (unsigned long)lqret[3], 0x501c2c26UL);
         err = 1;
     }
 #  endif
 # endif
 
-    printf("input word alignment test");
+    printf("\x69\x6e\x70\x75\x74\x20\x77\x6f\x72\x64\x20\x61\x6c\x69\x67\x6e\x6d\x65\x6e\x74\x20\x74\x65\x73\x74");
     for (i = 0; i < 4; i++) {
-        printf(" %d", i);
+        printf("\x20\x25\x64", i);
         des_ncbc_encrypt(&(cbc_out[i]), cbc_in,
                          strlen((char *)cbc_data) + 1, ks,
                          &cbc_iv, DES_ENCRYPT);
     }
-    printf("\noutput word alignment test");
+    printf("\xa\x6f\x75\x74\x70\x75\x74\x20\x77\x6f\x72\x64\x20\x61\x6c\x69\x67\x6e\x6d\x65\x6e\x74\x20\x74\x65\x73\x74");
     for (i = 0; i < 4; i++) {
-        printf(" %d", i);
+        printf("\x20\x25\x64", i);
         des_ncbc_encrypt(cbc_out, &(cbc_in[i]),
                          strlen((char *)cbc_data) + 1, ks,
                          &cbc_iv, DES_ENCRYPT);
     }
-    printf("\n");
-    printf("fast crypt test ");
-    str = crypt("testing", "ef");
-    if (strcmp("efGnQx2725bI2", str) != 0) {
-        printf("fast crypt error, %s should be efGnQx2725bI2\n", str);
+    printf("\xa");
+    printf("\x66\x61\x73\x74\x20\x63\x72\x79\x70\x74\x20\x74\x65\x73\x74\x20");
+    str = crypt("\x74\x65\x73\x74\x69\x6e\x67", "\x65\x66");
+    if (strcmp("\x65\x66\x47\x6e\x51\x78\x32\x37\x32\x35\x62\x49\x32", str) != 0) {
+        printf("\x66\x61\x73\x74\x20\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\x2c\x20\x25\x73\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x65\x66\x47\x6e\x51\x78\x32\x37\x32\x35\x62\x49\x32\xa", str);
         err = 1;
     }
-    str = crypt("bca76;23", "yA");
-    if (strcmp("yA1Rp/1hZXIJk", str) != 0) {
-        printf("fast crypt error, %s should be yA1Rp/1hZXIJk\n", str);
+    str = crypt("\x62\x63\x61\x37\x36\x3b\x32\x33", "\x79\x41");
+    if (strcmp("\x79\x41\x31\x52\x70\x2f\x31\x68\x5a\x58\x49\x4a\x6b", str) != 0) {
+        printf("\x66\x61\x73\x74\x20\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\x2c\x20\x25\x73\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x79\x41\x31\x52\x70\x2f\x31\x68\x5a\x58\x49\x4a\x6b\xa", str);
         err = 1;
     }
 # ifdef OPENSSL_SYS_NETWARE
     if (err)
-        printf("ERROR: %d\n", err);
+        printf("\x45\x52\x52\x4f\x52\x3a\x20\x25\x64\xa", err);
 # endif
-    printf("\n");
+    printf("\xa");
     return (err);
 }
 
@@ -818,7 +818,7 @@ static char *pt(unsigned char *p)
     static int bnum = 0;
     char *ret;
     int i;
-    static char *f = "0123456789ABCDEF";
+    static char *f = "\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x41\x42\x43\x44\x45\x46";
 
     ret = &(bufs[bnum++][0]);
     bnum %= 10;
@@ -826,7 +826,7 @@ static char *pt(unsigned char *p)
         ret[i * 2] = f[(p[i] >> 4) & 0xf];
         ret[i * 2 + 1] = f[p[i] & 0xf];
     }
-    ret[16] = '\0';
+    ret[16] = '\x0';
     return (ret);
 }
 
@@ -843,18 +843,18 @@ static int cfb_test(int bits, unsigned char *cfb_cipher)
                     DES_ENCRYPT);
     if (memcmp(cfb_cipher, cfb_buf1, sizeof(plain)) != 0) {
         err = 1;
-        printf("cfb_encrypt encrypt error\n");
+        printf("\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < 24; i += 8)
-            printf("%s\n", pt(&(cfb_buf1[i])));
+            printf("\x25\x73\xa", pt(&(cfb_buf1[i])));
     }
     memcpy(cfb_tmp, cfb_iv, sizeof(cfb_iv));
     des_cfb_encrypt(cfb_buf1, cfb_buf2, bits, sizeof(plain), ks, &cfb_tmp,
                     DES_DECRYPT);
     if (memcmp(plain, cfb_buf2, sizeof(plain)) != 0) {
         err = 1;
-        printf("cfb_encrypt decrypt error\n");
+        printf("\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < 24; i += 8)
-            printf("%s\n", pt(&(cfb_buf1[i])));
+            printf("\x25\x73\xa", pt(&(cfb_buf1[i])));
     }
     return (err);
 }
@@ -872,9 +872,9 @@ static int cfb64_test(unsigned char *cfb_cipher)
                       &cfb_tmp, &n, DES_ENCRYPT);
     if (memcmp(cfb_cipher, cfb_buf1, sizeof(plain)) != 0) {
         err = 1;
-        printf("cfb_encrypt encrypt error\n");
+        printf("\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < 24; i += 8)
-            printf("%s\n", pt(&(cfb_buf1[i])));
+            printf("\x25\x73\xa", pt(&(cfb_buf1[i])));
     }
     memcpy(cfb_tmp, cfb_iv, sizeof(cfb_iv));
     n = 0;
@@ -883,9 +883,9 @@ static int cfb64_test(unsigned char *cfb_cipher)
                       sizeof(plain) - 17, ks, &cfb_tmp, &n, DES_DECRYPT);
     if (memcmp(plain, cfb_buf2, sizeof(plain)) != 0) {
         err = 1;
-        printf("cfb_encrypt decrypt error\n");
+        printf("\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < 24; i += 8)
-            printf("%s\n", pt(&(cfb_buf2[i])));
+            printf("\x25\x73\xa", pt(&(cfb_buf2[i])));
     }
     return (err);
 }
@@ -905,9 +905,9 @@ static int ede_cfb64_test(unsigned char *cfb_cipher)
                            &cfb_tmp, &n, DES_ENCRYPT);
     if (memcmp(cfb_cipher, cfb_buf1, sizeof(plain)) != 0) {
         err = 1;
-        printf("ede_cfb_encrypt encrypt error\n");
+        printf("\x65\x64\x65\x5f\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x6e\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < 24; i += 8)
-            printf("%s\n", pt(&(cfb_buf1[i])));
+            printf("\x25\x73\xa", pt(&(cfb_buf1[i])));
     }
     memcpy(cfb_tmp, cfb_iv, sizeof(cfb_iv));
     n = 0;
@@ -918,9 +918,9 @@ static int ede_cfb64_test(unsigned char *cfb_cipher)
                            &cfb_tmp, &n, DES_DECRYPT);
     if (memcmp(plain, cfb_buf2, sizeof(plain)) != 0) {
         err = 1;
-        printf("ede_cfb_encrypt decrypt error\n");
+        printf("\x65\x64\x65\x5f\x63\x66\x62\x5f\x65\x6e\x63\x72\x79\x70\x74\x20\x64\x65\x63\x72\x79\x70\x74\x20\x65\x72\x72\x6f\x72\xa");
         for (i = 0; i < 24; i += 8)
-            printf("%s\n", pt(&(cfb_buf2[i])));
+            printf("\x25\x73\xa", pt(&(cfb_buf2[i])));
     }
     return (err);
 }

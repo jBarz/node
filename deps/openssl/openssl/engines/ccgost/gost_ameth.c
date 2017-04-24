@@ -371,27 +371,27 @@ static int print_gost_94(BIO *out, const EVP_PKEY *pkey, int indent,
 
         if (!BIO_indent(out, indent, 128))
             return 0;
-        BIO_printf(out, "Private key: ");
+        BIO_printf(out, "\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x3a\x20");
         key = gost_get0_priv_key(pkey);
         if (!key)
-            BIO_printf(out, "<undefined>");
+            BIO_printf(out, "\x3c\x75\x6e\x64\x65\x66\x69\x6e\x65\x64\x3e");
         else
             BN_print(out, key);
-        BIO_printf(out, "\n");
+        BIO_printf(out, "\xa");
     }
     if (type >= 1) {
         BIGNUM *pubkey;
 
         pubkey = ((DSA *)EVP_PKEY_get0((EVP_PKEY *)pkey))->pub_key;
         BIO_indent(out, indent, 128);
-        BIO_printf(out, "Public key: ");
+        BIO_printf(out, "\x50\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x3a\x20");
         BN_print(out, pubkey);
-        BIO_printf(out, "\n");
+        BIO_printf(out, "\xa");
     }
 
     param_nid = gost94_nid_by_params(EVP_PKEY_get0((EVP_PKEY *)pkey));
     BIO_indent(out, indent, 128);
-    BIO_printf(out, "Parameter set: %s\n", OBJ_nid2ln(param_nid));
+    BIO_printf(out, "\x50\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x73\x65\x74\x3a\x20\x25\x73\xa", OBJ_nid2ln(param_nid));
     return 1;
 }
 
@@ -422,13 +422,13 @@ static int print_gost_01(BIO *out, const EVP_PKEY *pkey, int indent,
 
         if (!BIO_indent(out, indent, 128))
             return 0;
-        BIO_printf(out, "Private key: ");
+        BIO_printf(out, "\x50\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\x3a\x20");
         key = gost_get0_priv_key(pkey);
         if (!key)
-            BIO_printf(out, "<undefined)");
+            BIO_printf(out, "\x3c\x75\x6e\x64\x65\x66\x69\x6e\x65\x64\x29");
         else
             BN_print(out, key);
-        BIO_printf(out, "\n");
+        BIO_printf(out, "\xa");
     }
     if (type >= 1) {
         BN_CTX *ctx = BN_CTX_new();
@@ -453,16 +453,16 @@ static int print_gost_01(BIO *out, const EVP_PKEY *pkey, int indent,
         }
         if (!BIO_indent(out, indent, 128))
             return 0;
-        BIO_printf(out, "Public key:\n");
+        BIO_printf(out, "\x50\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x3a\xa");
         if (!BIO_indent(out, indent + 3, 128))
             return 0;
-        BIO_printf(out, "X:");
+        BIO_printf(out, "\x58\x3a");
         BN_print(out, X);
-        BIO_printf(out, "\n");
+        BIO_printf(out, "\xa");
         BIO_indent(out, indent + 3, 128);
-        BIO_printf(out, "Y:");
+        BIO_printf(out, "\x59\x3a");
         BN_print(out, Y);
-        BIO_printf(out, "\n");
+        BIO_printf(out, "\xa");
         BN_CTX_end(ctx);
         BN_CTX_free(ctx);
     }
@@ -472,7 +472,7 @@ static int print_gost_01(BIO *out, const EVP_PKEY *pkey, int indent,
                                 (EVP_PKEY_get0((EVP_PKEY *)pkey)));
     if (!BIO_indent(out, indent, 128))
         return 0;
-    BIO_printf(out, "Parameter set: %s\n", OBJ_nid2ln(param_nid));
+    BIO_printf(out, "\x50\x61\x72\x61\x6d\x65\x74\x65\x72\x20\x73\x65\x74\x3a\x20\x25\x73\xa", OBJ_nid2ln(param_nid));
     return 1;
 }
 

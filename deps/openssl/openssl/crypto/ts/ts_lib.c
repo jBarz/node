@@ -23,13 +23,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    licensing@OpenSSL.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -77,7 +77,7 @@ int TS_ASN1_INTEGER_print_bio(BIO *bio, const ASN1_INTEGER *num)
     BN_init(&num_bn);
     ASN1_INTEGER_to_BN(num, &num_bn);
     if ((hex = BN_bn2hex(&num_bn))) {
-        result = BIO_write(bio, "0x", 2) > 0;
+        result = BIO_write(bio, "\x30\x78", 2) > 0;
         result = result && BIO_write(bio, hex, strlen(hex)) > 0;
         OPENSSL_free(hex);
     }
@@ -91,7 +91,7 @@ int TS_OBJ_print_bio(BIO *bio, const ASN1_OBJECT *obj)
     char obj_txt[128];
 
     OBJ_obj2txt(obj_txt, sizeof(obj_txt), obj, 0);
-    BIO_printf(bio, "%s\n", obj_txt);
+    BIO_printf(bio, "\x25\x73\xa", obj_txt);
 
     return 1;
 }
@@ -102,19 +102,19 @@ int TS_ext_print_bio(BIO *bio, const STACK_OF(X509_EXTENSION) *extensions)
     X509_EXTENSION *ex;
     ASN1_OBJECT *obj;
 
-    BIO_printf(bio, "Extensions:\n");
+    BIO_printf(bio, "\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x3a\xa");
     n = X509v3_get_ext_count(extensions);
     for (i = 0; i < n; i++) {
         ex = X509v3_get_ext(extensions, i);
         obj = X509_EXTENSION_get_object(ex);
         i2a_ASN1_OBJECT(bio, obj);
         critical = X509_EXTENSION_get_critical(ex);
-        BIO_printf(bio, ": %s\n", critical ? "critical" : "");
+        BIO_printf(bio, "\x3a\x20\x25\x73\xa", critical ? "\x63\x72\x69\x74\x69\x63\x61\x6c" : "");
         if (!X509V3_EXT_print(bio, ex, 0, 4)) {
-            BIO_printf(bio, "%4s", "");
+            BIO_printf(bio, "\x25\x34\x73", "");
             M_ASN1_OCTET_STRING_print(bio, ex->value);
         }
-        BIO_write(bio, "\n", 1);
+        BIO_write(bio, "\xa", 1);
     }
 
     return 1;
@@ -123,8 +123,8 @@ int TS_ext_print_bio(BIO *bio, const STACK_OF(X509_EXTENSION) *extensions)
 int TS_X509_ALGOR_print_bio(BIO *bio, const X509_ALGOR *alg)
 {
     int i = OBJ_obj2nid(alg->algorithm);
-    return BIO_printf(bio, "Hash Algorithm: %s\n",
-                      (i == NID_undef) ? "UNKNOWN" : OBJ_nid2ln(i));
+    return BIO_printf(bio, "\x48\x61\x73\x68\x20\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\x3a\x20\x25\x73\xa",
+                      (i == NID_undef) ? "\x55\x4e\x4b\x4e\x4f\x57\x4e" : OBJ_nid2ln(i));
 }
 
 int TS_MSG_IMPRINT_print_bio(BIO *bio, TS_MSG_IMPRINT *a)
@@ -133,7 +133,7 @@ int TS_MSG_IMPRINT_print_bio(BIO *bio, TS_MSG_IMPRINT *a)
 
     TS_X509_ALGOR_print_bio(bio, TS_MSG_IMPRINT_get_algo(a));
 
-    BIO_printf(bio, "Message data:\n");
+    BIO_printf(bio, "\x4d\x65\x73\x73\x61\x67\x65\x20\x64\x61\x74\x61\x3a\xa");
     msg = TS_MSG_IMPRINT_get_msg(a);
     BIO_dump_indent(bio, (const char *)M_ASN1_STRING_data(msg),
                     M_ASN1_STRING_length(msg), 4);

@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -97,11 +97,11 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
     EVP_PKEY *pkey;
     STACK_OF(X509_ATTRIBUTE) *sk;
     STACK_OF(X509_EXTENSION) *exts;
-    char mlch = ' ';
+    char mlch = '\x20';
     int nmindent = 0;
 
     if ((nmflags & XN_FLAG_SEP_MASK) == XN_FLAG_SEP_MULTILINE) {
-        mlch = '\n';
+        mlch = '\xa';
         nmindent = 12;
     }
 
@@ -110,43 +110,43 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
 
     ri = x->req_info;
     if (!(cflag & X509_FLAG_NO_HEADER)) {
-        if (BIO_write(bp, "Certificate Request:\n", 21) <= 0)
+        if (BIO_write(bp, "\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65\x20\x52\x65\x71\x75\x65\x73\x74\x3a\xa", 21) <= 0)
             goto err;
-        if (BIO_write(bp, "    Data:\n", 10) <= 0)
+        if (BIO_write(bp, "\x20\x20\x20\x20\x44\x61\x74\x61\x3a\xa", 10) <= 0)
             goto err;
     }
     if (!(cflag & X509_FLAG_NO_VERSION)) {
-        neg = (ri->version->type == V_ASN1_NEG_INTEGER) ? "-" : "";
+        neg = (ri->version->type == V_ASN1_NEG_INTEGER) ? "\x2d" : "";
         l = 0;
         for (i = 0; i < ri->version->length; i++) {
             l <<= 8;
             l += ri->version->data[i];
         }
-        if (BIO_printf(bp, "%8sVersion: %s%lu (%s0x%lx)\n", "", neg, l, neg,
+        if (BIO_printf(bp, "\x25\x38\x73\x56\x65\x72\x73\x69\x6f\x6e\x3a\x20\x25\x73\x25\x6c\x75\x20\x28\x25\x73\x30\x78\x25\x6c\x78\x29\xa", "", neg, l, neg,
                        l) <= 0)
             goto err;
     }
     if (!(cflag & X509_FLAG_NO_SUBJECT)) {
-        if (BIO_printf(bp, "        Subject:%c", mlch) <= 0)
+        if (BIO_printf(bp, "\x20\x20\x20\x20\x20\x20\x20\x20\x53\x75\x62\x6a\x65\x63\x74\x3a\x25\x63", mlch) <= 0)
             goto err;
         if (X509_NAME_print_ex(bp, ri->subject, nmindent, nmflags) < 0)
             goto err;
-        if (BIO_write(bp, "\n", 1) <= 0)
+        if (BIO_write(bp, "\xa", 1) <= 0)
             goto err;
     }
     if (!(cflag & X509_FLAG_NO_PUBKEY)) {
-        if (BIO_write(bp, "        Subject Public Key Info:\n", 33) <= 0)
+        if (BIO_write(bp, "\x20\x20\x20\x20\x20\x20\x20\x20\x53\x75\x62\x6a\x65\x63\x74\x20\x50\x75\x62\x6c\x69\x63\x20\x4b\x65\x79\x20\x49\x6e\x66\x6f\x3a\xa", 33) <= 0)
             goto err;
-        if (BIO_printf(bp, "%12sPublic Key Algorithm: ", "") <= 0)
+        if (BIO_printf(bp, "\x25\x31\x32\x73\x50\x75\x62\x6c\x69\x63\x20\x4b\x65\x79\x20\x41\x6c\x67\x6f\x72\x69\x74\x68\x6d\x3a\x20", "") <= 0)
             goto err;
         if (i2a_ASN1_OBJECT(bp, ri->pubkey->algor->algorithm) <= 0)
             goto err;
-        if (BIO_puts(bp, "\n") <= 0)
+        if (BIO_puts(bp, "\xa") <= 0)
             goto err;
 
         pkey = X509_REQ_get_pubkey(x);
         if (pkey == NULL) {
-            BIO_printf(bp, "%12sUnable to load Public Key\n", "");
+            BIO_printf(bp, "\x25\x31\x32\x73\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x6c\x6f\x61\x64\x20\x50\x75\x62\x6c\x69\x63\x20\x4b\x65\x79\xa", "");
             ERR_print_errors(bp);
         } else {
             EVP_PKEY_print_public(bp, pkey, 16, NULL);
@@ -156,12 +156,12 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
 
     if (!(cflag & X509_FLAG_NO_ATTRIBUTES)) {
         /* may not be */
-        if (BIO_printf(bp, "%8sAttributes:\n", "") <= 0)
+        if (BIO_printf(bp, "\x25\x38\x73\x41\x74\x74\x72\x69\x62\x75\x74\x65\x73\x3a\xa", "") <= 0)
             goto err;
 
         sk = x->req_info->attributes;
         if (sk_X509_ATTRIBUTE_num(sk) == 0) {
-            if (BIO_printf(bp, "%12sa0:00\n", "") <= 0)
+            if (BIO_printf(bp, "\x25\x31\x32\x73\x61\x30\x3a\x30\x30\xa", "") <= 0)
                 goto err;
         } else {
             for (i = 0; i < sk_X509_ATTRIBUTE_num(sk); i++) {
@@ -174,7 +174,7 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
                 a = sk_X509_ATTRIBUTE_value(sk, i);
                 if (X509_REQ_extension_nid(OBJ_obj2nid(a->object)))
                     continue;
-                if (BIO_printf(bp, "%12s", "") <= 0)
+                if (BIO_printf(bp, "\x25\x31\x32\x73", "") <= 0)
                     goto err;
                 if ((j = i2a_ASN1_OBJECT(bp, a->object)) > 0) {
                     if (a->single) {
@@ -191,9 +191,9 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
                     }
                 }
                 for (j = 25 - j; j > 0; j--)
-                    if (BIO_write(bp, " ", 1) != 1)
+                    if (BIO_write(bp, "\x20", 1) != 1)
                         goto err;
-                if (BIO_puts(bp, ":") <= 0)
+                if (BIO_puts(bp, "\x3a") <= 0)
                     goto err;
                 if ((type == V_ASN1_PRINTABLESTRING) ||
                     (type == V_ASN1_UTF8STRING) ||
@@ -202,9 +202,9 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
                     if (BIO_write(bp, (char *)bs->data, bs->length)
                         != bs->length)
                         goto err;
-                    BIO_puts(bp, "\n");
+                    BIO_puts(bp, "\xa");
                 } else {
-                    BIO_puts(bp, "unable to print attribute\n");
+                    BIO_puts(bp, "\x75\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x70\x72\x69\x6e\x74\x20\x61\x74\x74\x72\x69\x62\x75\x74\x65\xa");
                 }
                 if (++ii < count)
                     goto get_next;
@@ -214,24 +214,24 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflags,
     if (!(cflag & X509_FLAG_NO_EXTENSIONS)) {
         exts = X509_REQ_get_extensions(x);
         if (exts) {
-            BIO_printf(bp, "%8sRequested Extensions:\n", "");
+            BIO_printf(bp, "\x25\x38\x73\x52\x65\x71\x75\x65\x73\x74\x65\x64\x20\x45\x78\x74\x65\x6e\x73\x69\x6f\x6e\x73\x3a\xa", "");
             for (i = 0; i < sk_X509_EXTENSION_num(exts); i++) {
                 ASN1_OBJECT *obj;
                 X509_EXTENSION *ex;
                 int j;
                 ex = sk_X509_EXTENSION_value(exts, i);
-                if (BIO_printf(bp, "%12s", "") <= 0)
+                if (BIO_printf(bp, "\x25\x31\x32\x73", "") <= 0)
                     goto err;
                 obj = X509_EXTENSION_get_object(ex);
                 i2a_ASN1_OBJECT(bp, obj);
                 j = X509_EXTENSION_get_critical(ex);
-                if (BIO_printf(bp, ": %s\n", j ? "critical" : "") <= 0)
+                if (BIO_printf(bp, "\x3a\x20\x25\x73\xa", j ? "\x63\x72\x69\x74\x69\x63\x61\x6c" : "") <= 0)
                     goto err;
                 if (!X509V3_EXT_print(bp, ex, cflag, 16)) {
-                    BIO_printf(bp, "%16s", "");
+                    BIO_printf(bp, "\x25\x31\x36\x73", "");
                     M_ASN1_OCTET_STRING_print(bp, ex->value);
                 }
-                if (BIO_write(bp, "\n", 1) <= 0)
+                if (BIO_write(bp, "\xa", 1) <= 0)
                     goto err;
             }
             sk_X509_EXTENSION_pop_free(exts, X509_EXTENSION_free);

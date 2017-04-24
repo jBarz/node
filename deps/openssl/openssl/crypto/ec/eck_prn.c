@@ -22,13 +22,13 @@
  *    "This product includes software developed by the OpenSSL Project
  *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
  *
- * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ * 4. The names "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x54\x6f\x6f\x6c\x6b\x69\x74" and "\x4f\x70\x65\x6e\x53\x53\x4c\x20\x50\x72\x6f\x6a\x65\x63\x74" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
  *    openssl-core@openssl.org.
  *
- * 5. Products derived from this software may not be called "OpenSSL"
- *    nor may "OpenSSL" appear in their names without prior written
+ * 5. Products derived from this software may not be called "\x4f\x70\x65\x6e\x53\x53\x4c"
+ *    nor may "\x4f\x70\x65\x6e\x53\x53\x4c" appear in their names without prior written
  *    permission of the OpenSSL Project.
  *
  * 6. Redistributions of any form whatsoever must retain the following
@@ -153,9 +153,9 @@ int ECPKParameters_print(BIO *bp, const EC_GROUP *x, int off)
     const unsigned char *seed;
     size_t seed_len = 0;
 
-    static const char *gen_compressed = "Generator (compressed):";
-    static const char *gen_uncompressed = "Generator (uncompressed):";
-    static const char *gen_hybrid = "Generator (hybrid):";
+    static const char *gen_compressed = "\x47\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x28\x63\x6f\x6d\x70\x72\x65\x73\x73\x65\x64\x29\x3a";
+    static const char *gen_uncompressed = "\x47\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x28\x75\x6e\x63\x6f\x6d\x70\x72\x65\x73\x73\x65\x64\x29\x3a";
+    static const char *gen_hybrid = "\x47\x65\x6e\x65\x72\x61\x74\x6f\x72\x20\x28\x68\x79\x62\x72\x69\x64\x29\x3a";
 
     if (!x) {
         reason = ERR_R_PASSED_NULL_PARAMETER;
@@ -180,15 +180,15 @@ int ECPKParameters_print(BIO *bp, const EC_GROUP *x, int off)
         if (nid == 0)
             goto err;
 
-        if (BIO_printf(bp, "ASN1 OID: %s", OBJ_nid2sn(nid)) <= 0)
+        if (BIO_printf(bp, "\x41\x53\x4e\x31\x20\x4f\x49\x44\x3a\x20\x25\x73", OBJ_nid2sn(nid)) <= 0)
             goto err;
-        if (BIO_printf(bp, "\n") <= 0)
+        if (BIO_printf(bp, "\xa") <= 0)
             goto err;
         nname = EC_curve_nid2nist(nid);
         if (nname) {
             if (!BIO_indent(bp, off, 128))
                 goto err;
-            if (BIO_printf(bp, "NIST CURVE: %s\n", nname) <= 0)
+            if (BIO_printf(bp, "\x4e\x49\x53\x54\x20\x43\x55\x52\x56\x45\x3a\x20\x25\x73\xa", nname) <= 0)
                 goto err;
         }
     } else {
@@ -263,7 +263,7 @@ int ECPKParameters_print(BIO *bp, const EC_GROUP *x, int off)
             goto err;
 
         /* print the 'short name' of the field type */
-        if (BIO_printf(bp, "Field Type: %s\n", OBJ_nid2sn(tmp_nid))
+        if (BIO_printf(bp, "\x46\x69\x65\x6c\x64\x20\x54\x79\x70\x65\x3a\x20\x25\x73\xa", OBJ_nid2sn(tmp_nid))
             <= 0)
             goto err;
 
@@ -276,21 +276,21 @@ int ECPKParameters_print(BIO *bp, const EC_GROUP *x, int off)
             if (!BIO_indent(bp, off, 128))
                 goto err;
 
-            if (BIO_printf(bp, "Basis Type: %s\n",
+            if (BIO_printf(bp, "\x42\x61\x73\x69\x73\x20\x54\x79\x70\x65\x3a\x20\x25\x73\xa",
                            OBJ_nid2sn(basis_type)) <= 0)
                 goto err;
 
             /* print the polynomial */
-            if ((p != NULL) && !ASN1_bn_print(bp, "Polynomial:", p, buffer,
+            if ((p != NULL) && !ASN1_bn_print(bp, "\x50\x6f\x6c\x79\x6e\x6f\x6d\x69\x61\x6c\x3a", p, buffer,
                                               off))
                 goto err;
         } else {
-            if ((p != NULL) && !ASN1_bn_print(bp, "Prime:", p, buffer, off))
+            if ((p != NULL) && !ASN1_bn_print(bp, "\x50\x72\x69\x6d\x65\x3a", p, buffer, off))
                 goto err;
         }
-        if ((a != NULL) && !ASN1_bn_print(bp, "A:   ", a, buffer, off))
+        if ((a != NULL) && !ASN1_bn_print(bp, "\x41\x3a\x20\x20\x20", a, buffer, off))
             goto err;
-        if ((b != NULL) && !ASN1_bn_print(bp, "B:   ", b, buffer, off))
+        if ((b != NULL) && !ASN1_bn_print(bp, "\x42\x3a\x20\x20\x20", b, buffer, off))
             goto err;
         if (form == POINT_CONVERSION_COMPRESSED) {
             if ((gen != NULL) && !ASN1_bn_print(bp, gen_compressed, gen,
@@ -306,13 +306,13 @@ int ECPKParameters_print(BIO *bp, const EC_GROUP *x, int off)
                                                 buffer, off))
                 goto err;
         }
-        if ((order != NULL) && !ASN1_bn_print(bp, "Order: ", order,
+        if ((order != NULL) && !ASN1_bn_print(bp, "\x4f\x72\x64\x65\x72\x3a\x20", order,
                                               buffer, off))
             goto err;
-        if ((cofactor != NULL) && !ASN1_bn_print(bp, "Cofactor: ", cofactor,
+        if ((cofactor != NULL) && !ASN1_bn_print(bp, "\x43\x6f\x66\x61\x63\x74\x6f\x72\x3a\x20", cofactor,
                                                  buffer, off))
             goto err;
-        if (seed && !print_bin(bp, "Seed:", seed, seed_len, off))
+        if (seed && !print_bin(bp, "\x53\x65\x65\x64\x3a", seed, seed_len, off))
             goto err;
     }
     ret = 1;
@@ -349,28 +349,28 @@ static int print_bin(BIO *fp, const char *name, const unsigned char *buf,
     if (off > 0) {
         if (off > 128)
             off = 128;
-        memset(str, ' ', off);
+        memset(str, '\x20', off);
         if (BIO_write(fp, str, off) <= 0)
             return 0;
     } else {
         off = 0;
     }
 
-    if (BIO_printf(fp, "%s", name) <= 0)
+    if (BIO_printf(fp, "\x25\x73", name) <= 0)
         return 0;
 
     for (i = 0; i < len; i++) {
         if ((i % 15) == 0) {
-            str[0] = '\n';
-            memset(&(str[1]), ' ', off + 4);
+            str[0] = '\xa';
+            memset(&(str[1]), '\x20', off + 4);
             if (BIO_write(fp, str, off + 1 + 4) <= 0)
                 return 0;
         }
-        if (BIO_printf(fp, "%02x%s", buf[i], ((i + 1) == len) ? "" : ":") <=
+        if (BIO_printf(fp, "\x25\x30\x32\x78\x25\x73", buf[i], ((i + 1) == len) ? "" : "\x3a") <=
             0)
             return 0;
     }
-    if (BIO_write(fp, "\n", 1) <= 0)
+    if (BIO_write(fp, "\xa", 1) <= 0)
         return 0;
 
     return 1;

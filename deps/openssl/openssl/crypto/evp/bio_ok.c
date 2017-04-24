@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -140,7 +140,7 @@ static int block_in(BIO *b);
 #define OK_BLOCK_SIZE   (1024*4)
 #define OK_BLOCK_BLOCK  4
 #define IOBS            (OK_BLOCK_SIZE+ OK_BLOCK_BLOCK+ 3*EVP_MAX_MD_SIZE)
-#define WELLKNOWN "The quick brown fox jumped over the lazy dog's back."
+#define WELLKNOWN "\x54\x68\x65\x20\x71\x75\x69\x63\x6b\x20\x62\x72\x6f\x77\x6e\x20\x66\x6f\x78\x20\x6a\x75\x6d\x70\x65\x64\x20\x6f\x76\x65\x72\x20\x74\x68\x65\x20\x6c\x61\x7a\x79\x20\x64\x6f\x67\x27\x73\x20\x62\x61\x63\x6b\x2e"
 
 typedef struct ok_struct {
     size_t buf_len;
@@ -156,7 +156,7 @@ typedef struct ok_struct {
 } BIO_OK_CTX;
 
 static BIO_METHOD methods_ok = {
-    BIO_TYPE_CIPHER, "reliable",
+    BIO_TYPE_CIPHER, "\x72\x65\x6c\x69\x61\x62\x6c\x65",
     ok_write,
     ok_read,
     NULL,                       /* ok_puts, */

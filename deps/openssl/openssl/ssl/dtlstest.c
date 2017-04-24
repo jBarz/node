@@ -47,32 +47,32 @@ static int test_dtls_unprocessed(int testidx)
     BIO *c_to_s_fbio, *c_to_s_mempacket;
     int testresult = 0;
 
-    printf("Starting Test %d\n", testidx);
+    printf("\x53\x74\x61\x72\x74\x69\x6e\x67\x20\x54\x65\x73\x74\x20\x25\x64\xa", testidx);
 
     if (!create_ssl_ctx_pair(DTLS_server_method(), DTLS_client_method(), &sctx,
                              &cctx, cert, privkey)) {
-        printf("Unable to create SSL_CTX pair\n");
+        printf("\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x53\x53\x4c\x5f\x43\x54\x58\x20\x70\x61\x69\x72\xa");
         return 0;
     }
 
     if (!SSL_CTX_set_ecdh_auto(sctx, 1)) {
-        printf("Failed configuring auto ECDH\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x63\x6f\x6e\x66\x69\x67\x75\x72\x69\x6e\x67\x20\x61\x75\x74\x6f\x20\x45\x43\x44\x48\xa");
     }
 
-    if (!SSL_CTX_set_cipher_list(cctx, "AES128-SHA")) {
-        printf("Failed setting cipher list\n");
+    if (!SSL_CTX_set_cipher_list(cctx, "\x41\x45\x53\x31\x32\x38\x2d\x53\x48\x41")) {
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x73\x65\x74\x74\x69\x6e\x67\x20\x63\x69\x70\x68\x65\x72\x20\x6c\x69\x73\x74\xa");
     }
 
     c_to_s_fbio = BIO_new(bio_f_tls_dump_filter());
     if (c_to_s_fbio == NULL) {
-        printf("Failed to create filter BIO\n");
+        printf("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x66\x69\x6c\x74\x65\x72\x20\x42\x49\x4f\xa");
         goto end;
     }
 
     /* BIO is freed by create_ssl_connection on error */
     if (!create_ssl_objects(sctx, cctx, &serverssl1, &clientssl1, NULL,
                                c_to_s_fbio)) {
-        printf("Unable to create SSL objects\n");
+        printf("\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x53\x53\x4c\x20\x6f\x62\x6a\x65\x63\x74\x73\xa");
         ERR_print_errors_fp(stdout);
         goto end;
     }
@@ -93,7 +93,7 @@ static int test_dtls_unprocessed(int testidx)
                           sizeof(certstatus), 1, INJECT_PACKET_IGNORE_REC_SEQ);
 
     if (!create_ssl_connection(serverssl1, clientssl1)) {
-        printf("Unable to create SSL connection\n");
+        printf("\x55\x6e\x61\x62\x6c\x65\x20\x74\x6f\x20\x63\x72\x65\x61\x74\x65\x20\x53\x53\x4c\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\xa");
         ERR_print_errors_fp(stdout);
         goto end;
     }
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
     int testresult = 0;
 
     if (argc != 3) {
-        printf("Invalid argument count\n");
+        printf("\x49\x6e\x76\x61\x6c\x69\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x63\x6f\x75\x6e\x74\xa");
         return 1;
     }
 
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
     BIO_free(err);
 
     if (!testresult)
-        printf("PASS\n");
+        printf("\x50\x41\x53\x53\xa");
 
     return testresult;
 }

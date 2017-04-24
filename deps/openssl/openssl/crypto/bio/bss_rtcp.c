@@ -36,7 +36,7 @@
  *    being used are not cryptographic related :-).
  * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
- *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *    "\x54\x68\x69\x73\x20\x70\x72\x6f\x64\x75\x63\x74\x20\x69\x6e\x63\x6c\x75\x64\x65\x73\x20\x73\x6f\x66\x74\x77\x61\x72\x65\x20\x77\x72\x69\x74\x74\x65\x6e\x20\x62\x79\x20\x54\x69\x6d\x20\x48\x75\x64\x73\x6f\x6e\x20\x28\x74\x6a\x68\x40\x63\x72\x79\x70\x74\x73\x6f\x66\x74\x2e\x63\x6f\x6d\x29"
  *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -107,7 +107,7 @@ static int rtcp_free(BIO *data);
 
 static BIO_METHOD rtcp_method = {
     BIO_TYPE_FD,
-    "RTCP",
+    "\x52\x54\x43\x50",
     rtcp_write,
     rtcp_read,
     rtcp_puts,
@@ -207,8 +207,8 @@ static int rtcp_read(BIO *b, char *out, int outl)
     /*
      * Requst more data from R channel.
      */
-    ctx->msg.channel = 'R';
-    ctx->msg.function = 'G';
+    ctx->msg.channel = '\x52';
+    ctx->msg.function = '\x47';
     ctx->msg.length = sizeof(ctx->msg.data);
     status = put(b->num, (char *)&ctx->msg, RPC_HDR_SIZE);
     if ((status & 1) == 0) {
@@ -221,7 +221,7 @@ static int rtcp_read(BIO *b, char *out, int outl)
     status = get(b->num, (char *)&ctx->msg, sizeof(ctx->msg), &length);
     if ((status & 1) == 0)
         length = -1;
-    if (ctx->msg.channel != 'R' || ctx->msg.function != 'C') {
+    if (ctx->msg.channel != '\x52' || ctx->msg.function != '\x43') {
         length = -1;
     }
     ctx->filled = length - RPC_HDR_SIZE;
@@ -250,8 +250,8 @@ static int rtcp_write(BIO *b, const char *in, int inl)
         segment = inl - i;
         if (segment > sizeof(ctx->msg.data))
             segment = sizeof(ctx->msg.data);
-        ctx->msg.channel = 'R';
-        ctx->msg.function = 'P';
+        ctx->msg.channel = '\x52';
+        ctx->msg.function = '\x50';
         ctx->msg.length = segment;
         memmove(ctx->msg.data, &in[i], segment);
         status = put(b->num, (char *)&ctx->msg, segment + RPC_HDR_SIZE);
@@ -265,8 +265,8 @@ static int rtcp_write(BIO *b, const char *in, int inl)
             i = -1;
             break;
         }
-        if ((ctx->msg.channel != 'R') || (ctx->msg.function != 'C')) {
-            printf("unexpected response when confirming put %c %c\n",
+        if ((ctx->msg.channel != '\x52') || (ctx->msg.function != '\x43')) {
+            printf("\x75\x6e\x65\x78\x70\x65\x63\x74\x65\x64\x20\x72\x65\x73\x70\x6f\x6e\x73\x65\x20\x77\x68\x65\x6e\x20\x63\x6f\x6e\x66\x69\x72\x6d\x69\x6e\x67\x20\x70\x75\x74\x20\x25\x63\x20\x25\x63\xa",
                    ctx->msg.channel, ctx->msg.function);
 
         }
