@@ -72,7 +72,7 @@ $(NODE_G_EXE): config.gypi out/Makefile
 	$(MAKE) -C out BUILDTYPE=Debug V=$(V)
 	ln -fs out/Debug/$(NODE_EXE) $@
 
-out/Makefile: common.gypi deps/uv/uv.gyp deps/http_parser/http_parser.gyp deps/zlib/zlib.gyp deps/v8/build/toolchain.gypi deps/v8/build/features.gypi deps/v8/tools/gyp/v8.gyp node.gyp config.gypi
+out/Makefile: common.gypi deps/uv/uv.gyp deps/http_parser/http_parser.gyp deps/zlib/zlib.gyp deps/v8z/build/toolchain.gypi deps/v8z/build/features.gypi deps/v8z/tools/gyp/v8.gyp node.gyp config.gypi
 	$(PYTHON) tools/gyp_node.py -f make
 
 config.gypi: configure
@@ -101,8 +101,8 @@ distclean:
 	-rm -rf deps/icu
 	-rm -rf deps/icu4c*.tgz deps/icu4c*.zip deps/icu-tmp
 	-rm -f $(BINARYTAR).* $(TARBALL).*
-	-rm -rf deps/v8/testing/gmock
-	-rm -rf deps/v8/testing/gtest
+	-rm -rf deps/v8z/testing/gmock
+	-rm -rf deps/v8z/testing/gtest
 
 check: test
 
@@ -158,7 +158,7 @@ ADDONS_BINDING_SOURCES := \
 test/addons/.buildstamp: config.gypi \
 	deps/npm/node_modules/node-gyp/package.json \
 	$(ADDONS_BINDING_GYPS) $(ADDONS_BINDING_SOURCES) \
-	deps/uv/include/*.h deps/v8/include/*.h \
+	deps/uv/include/*.h deps/v8z/include/*.h \
 	src/node.h src/node_buffer.h src/node_object_wrap.h src/node_version.h \
 	test/addons/.docbuildstamp
 #	Cannot use $(wildcard test/addons/*/) here, it's evaluated before
@@ -262,26 +262,26 @@ test-timers-clean:
 	$(MAKE) --directory=tools clean
 
 
-ifneq ("","$(wildcard deps/v8/tools/run-tests.py)")
+ifneq ("","$(wildcard deps/v8z/tools/run-tests.py)")
 test-v8: v8
 #	note: performs full test unless QUICKCHECK is specified
-	deps/v8/tools/run-tests.py --arch=$(V8_ARCH) \
+	deps/v8z/tools/run-tests.py --arch=$(V8_ARCH) \
         --mode=$(BUILDTYPE_LOWER) $(V8_TEST_OPTIONS) $(QUICKCHECK_ARG) \
         --no-presubmit \
-        --shell-dir=$(PWD)/deps/v8/out/$(V8_ARCH).$(BUILDTYPE_LOWER) \
+        --shell-dir=$(PWD)/deps/v8z/out/$(V8_ARCH).$(BUILDTYPE_LOWER) \
 	 $(TAP_V8)
 
 test-v8-intl: v8
 #	note: performs full test unless QUICKCHECK is specified
-	deps/v8/tools/run-tests.py --arch=$(V8_ARCH) \
+	deps/v8z/tools/run-tests.py --arch=$(V8_ARCH) \
         --mode=$(BUILDTYPE_LOWER) --no-presubmit $(QUICKCHECK_ARG) \
-        --shell-dir=deps/v8/out/$(V8_ARCH).$(BUILDTYPE_LOWER) intl \
+        --shell-dir=deps/v8z/out/$(V8_ARCH).$(BUILDTYPE_LOWER) intl \
         $(TAP_V8_INTL)
 
 test-v8-benchmarks: v8
-	deps/v8/tools/run-tests.py --arch=$(V8_ARCH) --mode=$(BUILDTYPE_LOWER) \
+	deps/v8z/tools/run-tests.py --arch=$(V8_ARCH) --mode=$(BUILDTYPE_LOWER) \
         --download-data $(QUICKCHECK_ARG) --no-presubmit \
-        --shell-dir=deps/v8/out/$(V8_ARCH).$(BUILDTYPE_LOWER) benchmarks \
+        --shell-dir=deps/v8z/out/$(V8_ARCH).$(BUILDTYPE_LOWER) benchmarks \
 	 $(TAP_V8_BENCHMARKS)
 
 test-v8-all: test-v8 test-v8-intl test-v8-benchmarks
@@ -548,7 +548,7 @@ $(TARBALL): release-only $(NODE_EXE) doc
 	mkdir -p $(TARNAME)/doc/api
 	cp doc/node.1 $(TARNAME)/doc/node.1
 	cp -r out/doc/api/* $(TARNAME)/doc/api/
-	rm -rf $(TARNAME)/deps/v8/{test,samples,tools/profviz,tools/run-tests.py}
+	rm -rf $(TARNAME)/deps/v8z/{test,samples,tools/profviz,tools/run-tests.py}
 	rm -rf $(TARNAME)/doc/images # too big
 	rm -rf $(TARNAME)/deps/uv/{docs,samples,test}
 	rm -rf $(TARNAME)/deps/openssl/openssl/{doc,demos,test}

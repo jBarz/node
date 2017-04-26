@@ -132,7 +132,7 @@ def files(action):
   # behave similarly for systemtap
   action(['src/node.stp'], 'share/systemtap/tapset/')
 
-  action(['deps/v8/tools/gdbinit'], 'share/doc/node/')
+  action(['deps/v8z/tools/gdbinit'], 'share/doc/node/')
 
   if 'freebsd' in sys.platform or 'openbsd' in sys.platform:
     action(['doc/node.1'], 'man/man1/')
@@ -157,7 +157,7 @@ def headers(action):
   if sys.platform.startswith('aix'):
     action(['out/Release/node.exp'], 'include/node/')
 
-  subdir_files('deps/v8/include', 'include/node/', action)
+  subdir_files('deps/v8z/include', 'include/node/', action)
 
   if 'false' == variables.get('node_shared_cares'):
     subdir_files('deps/cares/include', 'include/node/', action)
