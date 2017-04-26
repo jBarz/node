@@ -567,9 +567,6 @@ static void InternalModuleReadFile(const FunctionCallbackInfo<Value>& args) {
     uv_fs_t read_req;
     const ssize_t numchars =
         uv_fs_read(loop, &read_req, fd, &buf, 1, offset, nullptr);
-#ifdef __MVS__
-    __e2a_l(buf.base, numchars);
-#endif
     uv_fs_req_cleanup(&read_req);
 
     CHECK_GE(numchars, 0);
