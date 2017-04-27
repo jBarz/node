@@ -3985,7 +3985,7 @@ static void ParseArgs(int* argc,
     if (ParseDebugOpt(arg)) {
       // Done, consumed by ParseDebugOpt().
     } else if (strcmp(arg, u8"--version") == 0 || strcmp(arg, "-v") == 0) {
-      printf("%s\n", NODE_VERSION);
+      PrintOutString(u8"%s\n", NODE_VERSION);
       exit(0);
     } else if (strcmp(arg, "\x2d\x2d\x68\x65\x6c\x70") == 0 || strcmp(arg, "\x2d\x68") == 0) {
       PrintHelp();
