@@ -65,5 +65,8 @@ int scandir(const char* maindir, struct dirent*** namelist,
             int (*compar)(const struct dirent **,
             const struct dirent **));
 char *mkdtemp(char* path);
+int uv__os390_write(uv_stream_t* stream, void *iov, ssize_t iovcnt);
+int uv__os390_writev(uv_stream_t* stream, struct iovec *iov,
+                     int iovcnt);
 
 #endif /* UV_OS390_SYSCALL_H_ */

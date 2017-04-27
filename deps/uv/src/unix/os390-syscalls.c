@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <search.h>
+#include <limits.h>
 
 #define CW_CONDVAR 32
 
@@ -331,4 +332,90 @@ char* mkdtemp(char* path) {
   }
 
   return path;
+}
+
+
+static int uv__getiovmaxlen(uv_stream_t* stream) {
+  int bufsize;
+  socklen_t optlen;
+
+  if (stream->flags & UV_STREAM_BLOCKING)
+    return INT_MAX;
+
+  switch (stream->type) {
+    case UV_TCP:
+      optlen = sizeof (bufsize);
+      if (getsockopt(uv__stream_fd(stream), SOL_SOCKET,
+                     SO_SNDBUF, &bufsize, &optlen))
+        return -1;
+      return bufsize - 1;
+
+    case UV_NAMED_PIPE:
+      return _POSIX_PIPE_BUF - 1;
+
+    default:
+      return INT_MAX;
+  }
+
+  UNREACHABLE();
+}
+
+
+int uv__os390_write(uv_stream_t* stream, void *iov, ssize_t iovcnt) {
+  int iovmaxlen;
+
+  iovmaxlen = uv__getiovmaxlen(stream);
+  if (iovmaxlen == -1)
+    return -1;
+  return write(uv__stream_fd(stream), iov,
+               iovcnt > iovmaxlen ? iovmaxlen : iovcnt);
+}
+
+
+int uv__os390_writev(uv_stream_t* stream, struct iovec *iov,
+                     int iovcnt) {
+  /* This is merely a wrapper around writev to limit the
+   * buffer size to the socket buffer size. Otherwise,
+   * poll won't trigger a POLLOUT for the next write on
+   * this socket.
+   */
+  struct iovec original_iovec;
+  int original_iovcnt;
+  int avail_buffer;
+  int index;
+  int n;
+
+  /* TODO: instead of calculating iovmaxlen for every write,
+   * store it in the uv_stream_t structure.
+   */
+  avail_buffer = uv__getiovmaxlen(stream);
+  if (avail_buffer == -1)
+    return -1;
+
+  /* Find out if the write buffer size exceeds the socket
+   * send buffer size
+   */
+  original_iovcnt = iovcnt;
+  for (index = 0; index < iovcnt; ++index) {
+    if (avail_buffer < iov[index].iov_len)
+      break;
+    avail_buffer -= iov[index].iov_len;
+  }
+
+  /* If yes, then copy the origin iovec to temporary storage
+   * and modify the iovec to limit the buffer size
+   */
+  if (index < original_iovcnt) {
+    original_iovec = iov[index];
+    iov[index].iov_len = avail_buffer;
+    iovcnt = index + 1;
+  }
+
+  n = writev(uv__stream_fd(stream), iov, iovcnt);
+  if (index < original_iovcnt) {
+    iov[index] = original_iovec;
+    iovcnt = original_iovcnt;
+  }
+
+  return n;
 }
