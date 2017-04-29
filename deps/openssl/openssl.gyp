@@ -167,6 +167,7 @@
               '-qexportall',
             ],
             'defines': [
+              '_ZOS',
               '_XOPEN_SOURCE_EXTENDED',
               '_UNIX03_SOURCE',
               'OPENSSL_NO_HW',
