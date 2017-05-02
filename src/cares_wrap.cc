@@ -1100,7 +1100,7 @@ static void IsIP(const FunctionCallbackInfo<Value>& args) {
 }
 
 static void IsIPv4(const FunctionCallbackInfo<Value>& args) {
-  node::Utf8Value ip(args.GetIsolate(), args[0]);
+  node::NativeEncodingValue ip(args.GetIsolate(), args[0]);
   char address_buffer[sizeof(struct in_addr)];
 
   if (uv_inet_pton(AF_INET, *ip, &address_buffer) == 0) {
@@ -1111,7 +1111,7 @@ static void IsIPv4(const FunctionCallbackInfo<Value>& args) {
 }
 
 static void IsIPv6(const FunctionCallbackInfo<Value>& args) {
-  node::Utf8Value ip(args.GetIsolate(), args[0]);
+  node::NativeEncodingValue ip(args.GetIsolate(), args[0]);
   char address_buffer[sizeof(struct in6_addr)];
 
   if (uv_inet_pton(AF_INET6, *ip, &address_buffer) == 0) {
