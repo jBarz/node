@@ -5,6 +5,11 @@ var child_process = require('child_process');
 var spawn = child_process.spawn;
 var fork = child_process.fork;
 
+if (common.isZos)
+  var execArgv = ['--stack-size=2048'];
+else
+  var execArgv = ['--stack-size=256'];
+
 if (process.argv[2] === 'fork') {
   process.stdout.write(JSON.stringify(process.execArgv), function() {
     process.exit();
@@ -12,7 +17,6 @@ if (process.argv[2] === 'fork') {
 } else if (process.argv[2] === 'child') {
   fork(__filename, ['fork']);
 } else {
-  var execArgv = ['--stack-size=256'];
   var args = [__filename, 'child', 'arg0'];
 
   var child = spawn(process.execPath, execArgv.concat(args));
