@@ -827,17 +827,9 @@ start:
   } else {
     do {
       if (iovcnt == 1) {
-#ifdef __MVS__
-        n = uv__os390_write(stream, iov[0].iov_base, iov[0].iov_len);
-#else
         n = write(uv__stream_fd(stream), iov[0].iov_base, iov[0].iov_len);
-#endif
       } else {
-#ifdef __MVS__
-        n = uv__os390_writev(stream, iov, iovcnt);
-#else
         n = writev(uv__stream_fd(stream), iov, iovcnt);
-#endif
       }
     }
 #if defined(__APPLE__)
