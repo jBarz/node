@@ -9,6 +9,10 @@ var bodyLength = 12345;
 
 var body = 'c'.repeat(bodyLength);
 
+var localhost = '127.0.0.1';
+if (common.isZos)
+  localhost = 'localhost'
+
 var server = http.createServer(function(req, res) {
   res.writeHead(200, {
     'Content-Length': bodyLength,
@@ -18,7 +22,7 @@ var server = http.createServer(function(req, res) {
 });
 
 function runAb(opts, callback) {
-  var command = `ab ${opts} http://127.0.0.1:${server.address().port}/`;
+  var command = `ab ${opts} http://${localhost}:${server.address().port}/`;
   exec(command, function(err, stdout, stderr) {
     if (err) {
       if (/ab|apr/mi.test(stderr)) {
