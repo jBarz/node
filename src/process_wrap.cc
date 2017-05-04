@@ -162,9 +162,10 @@ class ProcessWrap : public HandleWrap {
       // Heap allocate to detect errors. +1 is for nullptr.
       options.args = new char*[argc + 1];
       for (int i = 0; i < argc; i++) {
-        node::BufferValue arg(env->isolate(), js_argv->Get(i));
+        node::Utf8Value arg(env->isolate(), js_argv->Get(i));
         options.args[i] = strdup(*arg);
         CHECK_NE(options.args[i], nullptr);
+        __a2e_s(options.args[i]);
       }
       options.args[argc] = nullptr;
     }
