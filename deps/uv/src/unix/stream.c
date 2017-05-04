@@ -1196,7 +1196,9 @@ static void uv__read(uv_stream_t* stream) {
       }
 
 #if defined(__MVS__)
-      if (is_ipc && msg.msg_controllen > 0) {
+      if (!is_ipc && stream->type == UV_NAMED_PIPE)
+        __e2a_l(buf.base, nread);
+      else if (is_ipc && msg.msg_controllen > 0) {
         uv_buf_t blankbuf;
         int nread;
         struct iovec *old;

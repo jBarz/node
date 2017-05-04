@@ -218,7 +218,7 @@ void StreamWrap::OnReadImpl(ssize_t nread,
   }
 
 #ifdef __MVS__
-  if (wrap->IsPipe() || wrap->IsTTY())
+  if (wrap->IsTTY())
     __e2a_l(buf->base, nread);
 #endif
   char* base = static_cast<char*>(node::Realloc(buf->base, nread));

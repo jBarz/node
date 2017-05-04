@@ -283,7 +283,7 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
     buf = uv_buf_init(stack_storage, data_size);
 
 #ifdef __MVS__
-    if (enc == UTF8 && (IsTTY() || IsPipe()))
+    if (IsTTY() || IsPipe())
       __a2e_l(buf.base, buf.len);
 #endif
 
@@ -325,7 +325,7 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
   buf = uv_buf_init(data, data_size);
 
 #ifdef __MVS__
-  if (enc == UTF8 && (IsTTY() || IsPipe()))
+  if (IsTTY() || IsPipe())
     __a2e_l(buf.base, buf.len);
 #endif
 
