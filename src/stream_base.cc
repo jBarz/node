@@ -202,11 +202,6 @@ int StreamBase::WriteBuffer(const FunctionCallbackInfo<Value>& args) {
   buf.base = const_cast<char*>(data);
   buf.len = length;
 
-#ifdef __MVS__
-  if (IsPipe())
-    __a2e_l(buf.base, buf.len);
-#endif
-
   // Try writing immediately without allocation
   uv_buf_t* bufs = &buf;
   size_t count = 1;
@@ -283,7 +278,7 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
     buf = uv_buf_init(stack_storage, data_size);
 
 #ifdef __MVS__
-    if (IsTTY() || IsPipe())
+    if (IsTTY())
       __a2e_l(buf.base, buf.len);
 #endif
 
@@ -325,7 +320,7 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
   buf = uv_buf_init(data, data_size);
 
 #ifdef __MVS__
-  if (IsTTY() || IsPipe())
+  if (IsTTY())
     __a2e_l(buf.base, buf.len);
 #endif
 

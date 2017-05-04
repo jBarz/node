@@ -826,11 +826,21 @@ start:
 #endif
   } else {
     do {
+#if defined(__MVS__)
+      if (stream->type == UV_NAMED_PIPE)
+        for (int j = 0; j < iovcnt; ++j)
+          __a2e_l(iov[j].iov_base, iov[j].iov_len);
+#endif
       if (iovcnt == 1) {
         n = write(uv__stream_fd(stream), iov[0].iov_base, iov[0].iov_len);
       } else {
         n = writev(uv__stream_fd(stream), iov, iovcnt);
       }
+#if defined(__MVS__)
+      if (stream->type == UV_NAMED_PIPE)
+        for (int j = 0; j < iovcnt; ++j)
+          __e2a_l(iov[j].iov_base, iov[j].iov_len);
+#endif
     }
 #if defined(__APPLE__)
     /*
