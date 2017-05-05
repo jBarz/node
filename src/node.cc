@@ -3346,7 +3346,7 @@ void SetupProcessObject(Environment* env,
     // Did the user attempt (via env var or parameter) to set an ICU path?
     READONLY_PROPERTY(process,
                       "\x69\x63\x75\x5f\x64\x61\x74\x61\x5f\x64\x69\x72",
-                      OneByteString(env->isolate(), icu_data_dir));
+                      OneByteString(env->isolate(), *E2A(icu_data_dir)));
   }
 #endif
 
@@ -4582,7 +4582,12 @@ void Init(int* argc,
 #if defined(NODE_HAVE_I18N_SUPPORT)
   if (icu_data_dir == nullptr) {
     // if the parameter isn't given, use the env variable.
-    icu_data_dir = secure_getenv("\x4e\x4f\x44\x45\x5f\x49\x43\x55\x5f\x44\x41\x54\x41");
+#ifdef __MVS__
+    icu_data_dir = strdup(secure_getenv("NODE_ICU_DATA"));
+    __e2a_s(icu_data_dir);
+#else
+    icu_data_dir = secure_getenv("NODE_ICU_DATA");
+#endif
   }
   // Initialize ICU.
   // If icu_data_dir is nullptr here, it will load the 'minimal' data.
@@ -4964,8 +4969,8 @@ int Start(int argc, char** argv) {
   Init(&argc, const_cast<const char**>(argv), &exec_argc, &exec_argv);
 
 #if HAVE_OPENSSL
-  if (const char* extra = secure_getenv("\x4e\x4f\x44\x45\x5f\x45\x58\x54\x52\x41\x5f\x43\x41\x5f\x43\x45\x52\x54\x53"))
-    crypto::UseExtraCaCerts(extra);
+  if (const char* extra = secure_getenv("NODE_EXTRA_CA_CERTS"))
+    crypto::UseExtraCaCerts(*E2A(extra));
 #ifdef NODE_FIPS_MODE
   // In the case of FIPS builds we should make sure
   // the random source is properly initialized first.

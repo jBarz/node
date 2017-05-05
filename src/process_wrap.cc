@@ -185,9 +185,10 @@ class ProcessWrap : public HandleWrap {
       int envc = env_opt->Length();
       options.env = new char*[envc + 1];  // Heap allocated to detect errors.
       for (int i = 0; i < envc; i++) {
-        node::BufferValue pair(env->isolate(), env_opt->Get(i));
+        node::Utf8Value pair(env->isolate(), env_opt->Get(i));
         options.env[i] = strdup(*pair);
         CHECK_NE(options.env[i], nullptr);
+        __a2e_s(options.env[i]);
       }
       options.env[envc] = nullptr;
     }
