@@ -2770,7 +2770,7 @@ void ProcessEmitWarning(Environment* env, const char* fmt, ...) {
   va_list ap;
 
   va_start(ap, fmt);
-  vsnprintf(warning, sizeof(warning), fmt, ap);
+  __vsnprintf_a(warning, sizeof(warning), fmt, ap);
   va_end(ap);
 
   HandleScope handle_scope(env->isolate());

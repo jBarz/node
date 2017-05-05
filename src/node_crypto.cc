@@ -845,7 +845,7 @@ void SecureContext::AddRootCerts(const FunctionCallbackInfo<Value>& args) {
                                            extra_root_certs_file.c_str());
       if (err) {
         ProcessEmitWarning(sc->env(),
-                           "\x49\x67\x6e\x6f\x72\x69\x6e\x67\x20\x65\x78\x74\x72\x61\x20\x63\x65\x72\x74\x73\x20\x66\x72\x6f\x6d\x20\x60\x6c\xa2\x60\x2c\x20\x6c\x6f\x61\x64\x20\x66\x61\x69\x6c\x65\x64\x3a\x20\x6c\xa2\xa",
+                           u8"Ignoring extra certs from `%s`, load failed: %s\n",
                            extra_root_certs_file.c_str(),
                            ERR_error_string(err, nullptr));
       }
