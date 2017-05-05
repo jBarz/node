@@ -22,7 +22,7 @@ keyList.splice(0, 1);
 // fs-watch currently needs special configuration on AIX and we
 // want to improve under https://github.com/nodejs/node/issues/5085.
 // strip out fs watch related parts for now
-if (common.isAix) {
+if (common.isAix || common.isZos) {
   for (var i = 0; i < keyList.length; i++) {
     if ((keyList[i] === 'FSEVENTWRAP') || (keyList[i] === 'STATWATCHER')) {
       keyList.splice(i, 1);
@@ -45,7 +45,7 @@ setTimeout(function() { }, 1);
 
 fs.stat(__filename, noop);
 
-if (!common.isAix) {
+if (!common.isAix && !common.isZos) {
   // fs-watch currently needs special configuration on AIX and we
   // want to improve under https://github.com/nodejs/node/issues/5085.
   // strip out fs watch related parts for now
