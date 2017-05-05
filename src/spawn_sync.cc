@@ -846,9 +846,6 @@ int SyncProcessRunner::ParseStdioOption(int child_fd,
       if (Buffer::HasInstance(input)) {
         buf = uv_buf_init(Buffer::Data(input),
                           static_cast<unsigned int>(Buffer::Length(input)));
-#ifdef __MVS__
-        __a2e_l(buf.base, buf.len);
-#endif
       } else if (!input->IsUndefined() && !input->IsNull()) {
         // Strings, numbers etc. are currently unsupported. It's not possible
         // to create a buffer for them here because there is no way to free

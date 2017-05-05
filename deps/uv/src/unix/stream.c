@@ -781,6 +781,12 @@ start:
    * inside the iov each time we write. So there is no need to offset it.
    */
 
+#if defined(__MVS__)
+  if (stream->type == UV_NAMED_PIPE)
+    for (int j = 0; j < iovcnt; ++j)
+      __a2e_l(iov[j].iov_base, iov[j].iov_len);
+#endif
+
   if (req->send_handle) {
     struct msghdr msg;
     struct cmsghdr *cmsg;
@@ -826,21 +832,11 @@ start:
 #endif
   } else {
     do {
-#if defined(__MVS__)
-      if (stream->type == UV_NAMED_PIPE)
-        for (int j = 0; j < iovcnt; ++j)
-          __a2e_l(iov[j].iov_base, iov[j].iov_len);
-#endif
       if (iovcnt == 1) {
         n = write(uv__stream_fd(stream), iov[0].iov_base, iov[0].iov_len);
       } else {
         n = writev(uv__stream_fd(stream), iov, iovcnt);
       }
-#if defined(__MVS__)
-      if (stream->type == UV_NAMED_PIPE)
-        for (int j = 0; j < iovcnt; ++j)
-          __e2a_l(iov[j].iov_base, iov[j].iov_len);
-#endif
     }
 #if defined(__APPLE__)
     /*
@@ -854,6 +850,12 @@ start:
     while (n == -1 && errno == EINTR);
 #endif
   }
+
+#if defined(__MVS__)
+  if (stream->type == UV_NAMED_PIPE)
+    for (int j = 0; j < iovcnt; ++j)
+      __e2a_l(iov[j].iov_base, iov[j].iov_len);
+#endif
 
   if (n < 0) {
     if (errno != EAGAIN && errno != EWOULDBLOCK) {
@@ -1206,9 +1208,10 @@ static void uv__read(uv_stream_t* stream) {
       }
 
 #if defined(__MVS__)
-      if (!is_ipc && stream->type == UV_NAMED_PIPE)
+      if (stream->type == UV_NAMED_PIPE)
         __e2a_l(buf.base, nread);
-      else if (is_ipc && msg.msg_controllen > 0) {
+
+      if (is_ipc && msg.msg_controllen > 0) {
         uv_buf_t blankbuf;
         int nread;
         struct iovec *old;
