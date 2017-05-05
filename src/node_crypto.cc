@@ -1546,9 +1546,9 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
       uint32_t lo = static_cast<uint32_t>(exponent_word);
       uint32_t hi = static_cast<uint32_t>(exponent_word >> 32);
       if (hi == 0) {
-          BIO_printf(bio, "0x%x", lo);
+          BIO_printf(bio, "\x30\x78\x25\x78", lo);
       } else {
-          BIO_printf(bio, "0x%x%08x", hi, lo);
+          BIO_printf(bio, "\x30\x78\x25\x78\x25\x30\x38\x78", hi, lo);
       }
       BIO_get_mem_ptr(bio, &mem);
       info->Set(env->exponent_string(),
