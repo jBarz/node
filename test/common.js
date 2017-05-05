@@ -160,6 +160,8 @@ Object.defineProperty(exports, 'opensslCli', {get: function() {
   if (process.config.variables.node_shared_openssl) {
     // use external command
     opensslCli = 'openssl';
+  } else if (exports.isZos) {
+    opensslCli = 'openssl';
   } else {
     // use command built from sources included in Node.js repository
     opensslCli = path.join(path.dirname(process.execPath), 'openssl-cli');
