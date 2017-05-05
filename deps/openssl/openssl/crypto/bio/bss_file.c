@@ -169,7 +169,19 @@ static FILE *file_fopen(const char *filename, const char *mode)
 BIO *BIO_new_file(const char *filename, const char *mode)
 {
     BIO  *ret;
+#ifdef __MVS__
+    int flen = strlen(filename) + 1;
+    int mlen = strlen(mode) + 1;
+    char fname[flen];
+    char emode[mlen];
+    memcpy(fname, filename, flen); 
+    memcpy(emode, mode, mlen); 
+    __a2e_s(fname);
+    __a2e_s(emode);
+    FILE *file = file_fopen(fname, emode);
+#else
     FILE *file = file_fopen(filename, mode);
+#endif
 
     if (file == NULL) {
         SYSerr(SYS_F_FOPEN, get_last_sys_error());
