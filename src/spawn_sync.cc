@@ -309,9 +309,6 @@ void SyncProcessStdioPipe::ReadCallback(uv_stream_t* stream,
                                         const uv_buf_t* buf) {
   SyncProcessStdioPipe* self =
         reinterpret_cast<SyncProcessStdioPipe*>(stream->data);
-#ifdef __MVS__
-  __e2a_l(buf->base, nread);
-#endif
   self->OnRead(buf, nread);
 }
 
@@ -319,9 +316,6 @@ void SyncProcessStdioPipe::ReadCallback(uv_stream_t* stream,
 void SyncProcessStdioPipe::WriteCallback(uv_write_t* req, int result) {
   SyncProcessStdioPipe* self =
       reinterpret_cast<SyncProcessStdioPipe*>(req->handle->data);
-#ifdef __MVS__
-        __e2a_l(self->input_buffer_.base, self->input_buffer_.len);
-#endif
   self->OnWriteDone(result);
 }
 
