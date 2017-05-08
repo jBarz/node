@@ -559,7 +559,11 @@ static int int_err_get_next_lib(void)
 }
 
 #ifndef OPENSSL_NO_ERR
-# define NUM_SYS_STR_REASONS 127
+# ifdef __MVS__
+#  define NUM_SYS_STR_REASONS 146
+# else
+#  define NUM_SYS_STR_REASONS 127
+# endif
 # define LEN_SYS_STR_REASON 32
 
 static ERR_STRING_DATA SYS_str_reasons[NUM_SYS_STR_REASONS + 1];
@@ -603,6 +607,9 @@ static void build_SYS_str_reasons(void)
             if (src != NULL) {
                 strncpy(*dest, src, sizeof *dest);
                 (*dest)[sizeof *dest - 1] = '\x0';
+#ifdef __MVS__
+                __e2a_s(*dest);
+#endif
                 str->string = *dest;
             }
         }
