@@ -3300,7 +3300,7 @@ void SetupProcessObject(Environment* env,
   // process.version
   READONLY_PROPERTY(process,
                     "\x76\x65\x72\x73\x69\x6f\x6e",
-                    FIXED_ONE_BYTE_STRING(env->isolate(), *E2A(NODE_VERSION)));
+                    FIXED_ONE_BYTE_STRING(env->isolate(), NODE_VERSION));
 
   // process.moduleLoadList
   READONLY_PROPERTY(process,
