@@ -561,10 +561,11 @@ static int int_err_get_next_lib(void)
 #ifndef OPENSSL_NO_ERR
 # ifdef __MVS__
 #  define NUM_SYS_STR_REASONS 146
+#  define LEN_SYS_STR_REASON 48
 # else
 #  define NUM_SYS_STR_REASONS 127
+#  define LEN_SYS_STR_REASON 32
 # endif
-# define LEN_SYS_STR_REASON 32
 
 static ERR_STRING_DATA SYS_str_reasons[NUM_SYS_STR_REASONS + 1];
 /*
