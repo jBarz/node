@@ -268,6 +268,11 @@ static int MS_CALLBACK file_read(BIO *b, char *out, int outl)
             BIOerr(BIO_F_FILE_READ, ERR_R_SYS_LIB);
             ret = -1;
         }
+#ifdef __MVS__
+        // TODO: use APPLINK instead
+        if (ret > 0)
+          __e2a_l(outl, ret);
+#endif
     }
     return (ret);
 }
@@ -277,12 +282,18 @@ static int MS_CALLBACK file_write(BIO *b, const char *in, int inl)
     int ret = 0;
 
     if (b->init && (in != NULL)) {
+#ifdef __MVS__
+        __a2e_l(in, inl);
+#endif
         if (b->flags & BIO_FLAGS_UPLINK)
             ret = UP_fwrite(in, (int)inl, 1, b->ptr);
         else
             ret = fwrite(in, (int)inl, 1, (FILE *)b->ptr);
         if (ret)
             ret = inl;
+#ifdef __MVS__
+        __e2a_l(in, inl);
+#endif
         /* ret=fwrite(in,1,(int)inl,(FILE *)b->ptr); */
         /*
          * according to Tim Hudson <tjh@cryptsoft.com>, the commented out
@@ -470,6 +481,10 @@ static int MS_CALLBACK file_gets(BIO *bp, char *buf, int size)
     }
     if (buf[0] != '\x0')
         ret = strlen(buf);
+#ifdef __MVS__
+    if (ret > 0)
+      __e2a_l(buf, ret);
+#endif
  err:
     return (ret);
 }
