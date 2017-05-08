@@ -286,6 +286,12 @@ static void uv__process_child_init(const uv_process_options_t* options,
   if (options->flags & UV_PROCESS_DETACHED)
     setsid();
 
+#ifdef __MVS__
+  sigset_t set;
+  sigfillset(&set);
+  sigprocmask(SIG_UNBLOCK, &set, NULL);
+#endif
+
   /* First duplicate low numbered fds, since it's not safe to duplicate them,
    * they could get replaced. Example: swapping stdout and stderr; without
    * this fd 2 (stderr) would be duplicated into fd 1, thus making both
