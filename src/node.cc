@@ -3850,7 +3850,11 @@ static bool ParseDebugOpt(const char* arg) {
   char* endptr;
   errno = 0;
   const char* const digits = colon != nullptr ? colon + 1 : port;
+#ifdef __MVS__
+  const long result = __strtol_a(digits, &endptr, 10);  // NOLINT(runtime/int)
+#else
   const long result = strtol(digits, &endptr, 10);  // NOLINT(runtime/int)
+#endif
   if (errno != 0 || *endptr != '\x0' || result < 1024 || result > 65535) {
     PrintErrorString(u8"Debug port must be in range 1024 to 65535.\n");
     PrintHelp();
