@@ -3936,12 +3936,13 @@ static void PrintHelp() {
          u8"                        prefixed to the module search path\n"
          u8"NODE_REPL_HISTORY       path to the persistent REPL history file\n"
          u8"\n"
-         u8"Documentation can be found at https://nodejs.org/\n");
+         u8"Documentation can be found at https://nodejs.org/\n"
 #ifdef NODE_TAG
          NODE_VERSION \
          NODE_TAG     \
          u8"\n"
 #endif
+         );
 }
 
 
