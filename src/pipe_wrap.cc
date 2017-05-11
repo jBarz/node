@@ -54,7 +54,11 @@ void PipeWrap::Initialize(Local<Object> target,
   env->SetProtoMethod(t, "\x72\x65\x66", HandleWrap::Ref);
   env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
 
+#ifdef _WIN32
   StreamWrap::AddMethods(env, t);
+#else
+  StreamWrap::AddMethods(env, t, StreamBase::kFlagHasWritev);
+#endif
 
   env->SetProtoMethod(t, "\x62\x69\x6e\x64", Bind);
   env->SetProtoMethod(t, "\x6c\x69\x73\x74\x65\x6e", Listen);

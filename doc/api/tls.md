@@ -483,12 +483,8 @@ added: v0.11.4
     will be emitted on the socket before establishing a secure communication
   * `secureContext`: Optional TLS context object created with
     [`tls.createSecureContext()`][]. If a `secureContext` is _not_ provided, one
-    will be created by passing the entire `options` object to
-    `tls.createSecureContext()`. *Note*: In effect, all
-    [`tls.createSecureContext()`][] options can be provided, but they will be
-    _completely ignored_ unless the `secureContext` option is missing.
-  * ...: Optional [`tls.createSecureContext()`][] options can be provided, see
-    the `secureContext` option for more information.
+    will be created by calling [`tls.createSecureContext()`][] with no options.
+
 Construct a new `tls.TLSSocket` object from an existing TCP socket.
 
 ### Event: 'OCSPResponse'
@@ -587,12 +583,15 @@ For Example: `{ type: 'ECDH', name: 'prime256v1', size: 256 }`
 added: v0.11.4
 -->
 
-* `detailed` {boolean} Specify `true` to request that the full certificate
-  chain with the `issuer` property be returned; `false` to return only the
-  top certificate without the `issuer` property.
+* `detailed` {boolean} Include the full certificate chain if `true`, otherwise
+  include just the peer's certificate.
 
 Returns an object representing the peer's certificate. The returned object has
 some properties corresponding to the fields of the certificate.
+
+If the full certificate chain was requested, each certificate will include a
+`issuerCertificate` property containing an object representing its issuer's
+certificate.
 
 For example:
 
@@ -604,15 +603,15 @@ For example:
      O: 'node.js',
      OU: 'Test TLS Certificate',
      CN: 'localhost' },
-  issuerInfo:
+  issuer:
    { C: 'UK',
      ST: 'Acknack Ltd',
      L: 'Rhys Jones',
      O: 'node.js',
      OU: 'Test TLS Certificate',
      CN: 'localhost' },
-  issuer:
-   { ... another certificate ... },
+  issuerCertificate:
+   { ... another certificate, possibly with a .issuerCertificate ... },
   raw: < RAW DER buffer >,
   valid_from: 'Nov 11 09:52:22 2009 GMT',
   valid_to: 'Nov  6 09:52:22 2029 GMT',
@@ -620,8 +619,7 @@ For example:
   serialNumber: 'B9B0D332A1AA5635' }
 ```
 
-If the peer does not provide a certificate, `null` or an empty object will be
-returned.
+If the peer does not provide a certificate, an empty object will be returned.
 
 ### tlsSocket.getProtocol()
 <!-- YAML
@@ -910,10 +908,21 @@ added: v0.11.13
     the same order as their private keys in `key`. If the intermediate
     certificates are not provided, the peer will not be able to validate the
     certificate, and the handshake will fail.
-  * `ca`{string|string[]|Buffer|Buffer[]} Optional CA certificates to trust.
-    Default is the well-known CAs from Mozilla. When connecting to peers that
-    use certificates issued privately, or self-signed, the private root CA or
-    self-signed certificate must be provided to verify the peer.
+  * `ca` {string|string[]|Buffer|Buffer[]} Optionally override the trusted CA
+    certificates. Default is to trust the well-known CAs curated by Mozilla.
+    Mozilla's CAs are completely replaced when CAs are explicitly specified
+    using this option. The value can be a string or Buffer, or an Array of
+    strings and/or Buffers. Any string or Buffer can contain multiple PEM CAs
+    concatenated together. The peer's certificate must be chainable to a CA
+    trusted by the server for the connection to be authenticated.  When using
+    certificates that are not chainable to a well-known CA, the certificate's CA
+    must be explicitly specified as a trusted or the connection will fail to
+    authenticate.
+    If the peer uses a certificate that doesn't match or chain to one of the
+    default CAs, use the `ca` option to provide a CA certificate that the peer's
+    certificate can match or chain to.
+    For self-signed certificates, the certificate is its own CA, and must be
+    provided.
   * `crl` {string|string[]|Buffer|Buffer[]} Optional PEM formatted
     CRLs (Certificate Revocation Lists).
   * `ciphers` {string} Optional cipher suite specification, replacing the
@@ -925,10 +934,10 @@ added: v0.11.13
     *Note*: [`tls.createServer()`][] sets the default value to `true`, other
     APIs that create secure contexts leave it unset.
   * `ecdhCurve` {string} A string describing a named curve to use for ECDH key
-    agreement or `false` to disable ECDH. Defaults to `prime256v1` (NIST P-256).
-    Use [`crypto.getCurves()`][] to obtain a list of available curve names. On
-    recent releases, `openssl ecparam -list_curves` will also display the name
-    and description of each available elliptic curve.
+    agreement or `false` to disable ECDH. Defaults to
+    [`tls.DEFAULT_ECDH_CURVE`].  Use [`crypto.getCurves()`][] to obtain a list
+    of available curve names. On recent releases, `openssl ecparam -list_curves`
+    will also display the name and description of each available elliptic curve.
   * `dhparam` {string|Buffer} Diffie Hellman parameters, required for
     [Perfect Forward Secrecy][]. Use `openssl dhparam` to create the parameters.
     The key length must be greater than or equal to 1024 bits, otherwise an
@@ -1076,6 +1085,16 @@ For example:
 console.log(tls.getCiphers()); // ['AES128-SHA', 'AES256-SHA', ...]
 ```
 
+## tls.DEFAULT_ECDH_CURVE
+<!-- YAML
+added: v0.11.13
+-->
+
+The default curve name to use for ECDH key agreement in a tls server. The
+default value is `'prime256v1'` (NIST P-256). Consult [RFC 4492] and
+[FIPS.186-4] for more details.
+
+
 ## Deprecated APIs
 
 ### Class: CryptoStream
@@ -1183,32 +1202,35 @@ secure_socket = tls.TLSSocket(socket, options);
 
 where `secure_socket` has the same API as `pair.cleartext`.
 
-[OpenSSL cipher list format documentation]: https://www.openssl.org/docs/man1.0.2/apps/ciphers.html#CIPHER-LIST-FORMAT
 [Chrome's 'modern cryptography' setting]: https://www.chromium.org/Home/chromium-security/education/tls#TOC-Cipher-Suites
-[OpenSSL Options]: crypto.html#crypto_openssl_options
-[modifying the default cipher suite]: #tls_modifying_the_default_tls_cipher_suite
-[specific attacks affecting larger AES key sizes]: https://www.schneier.com/blog/archives/2009/07/another_new_aes.html
-[`crypto.getCurves()`]: crypto.html#crypto_crypto_getcurves
-[`tls.createServer()`]: #tls_tls_createserver_options_secureconnectionlistener
-[`tls.createSecurePair()`]: #tls_tls_createsecurepair_context_isserver_requestcert_rejectunauthorized_options
-[`tls.TLSSocket`]: #tls_class_tls_tlssocket
-[`net.Server`]: net.html#net_class_net_server
-[`net.Socket`]: net.html#net_class_net_socket
-[`net.Server.address()`]: net.html#net_server_address
-[`'secureConnect'`]: #tls_event_secureconnect
-[`'secureConnection'`]: #tls_event_secureconnection
-[Perfect Forward Secrecy]: #tls_perfect_forward_secrecy
-[Stream]: stream.html#stream_stream
-[SSL_METHODS]: https://www.openssl.org/docs/man1.0.2/ssl/ssl.html#DEALING-WITH-PROTOCOL-METHODS
-[tls.Server]: #tls_class_tls_server
-[SSL_CTX_set_timeout]: https://www.openssl.org/docs/man1.0.2/ssl/SSL_CTX_set_timeout.html
-[Forward secrecy]: https://en.wikipedia.org/wiki/Perfect_forward_secrecy
 [DHE]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
 [ECDHE]: https://en.wikipedia.org/wiki/Elliptic_curve_Diffie%E2%80%93Hellman
-[asn1.js]: https://npmjs.org/package/asn1.js
+[FIPS.186-4]: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf
+[Forward secrecy]: https://en.wikipedia.org/wiki/Perfect_forward_secrecy
 [OCSP request]: https://en.wikipedia.org/wiki/OCSP_stapling
-[TLS recommendations]: https://wiki.mozilla.org/Security/Server_Side_TLS
+[OpenSSL Options]: crypto.html#crypto_openssl_options
+[OpenSSL cipher list format documentation]: https://www.openssl.org/docs/man1.0.2/apps/ciphers.html#CIPHER-LIST-FORMAT
+[Perfect Forward Secrecy]: #tls_perfect_forward_secrecy
+[RFC 4492]: https://www.rfc-editor.org/rfc/rfc4492.txt
+[SSL_CTX_set_timeout]: https://www.openssl.org/docs/man1.0.2/ssl/SSL_CTX_set_timeout.html
+[SSL_METHODS]: https://www.openssl.org/docs/man1.0.2/ssl/ssl.html#DEALING-WITH-PROTOCOL-METHODS
+[Stream]: stream.html#stream_stream
 [TLS Session Tickets]: https://www.ietf.org/rfc/rfc5077.txt
+[TLS recommendations]: https://wiki.mozilla.org/Security/Server_Side_TLS
+[`'secureConnect'`]: #tls_event_secureconnect
+[`'secureConnection'`]: #tls_event_secureconnection
+[`crypto.getCurves()`]: crypto.html#crypto_crypto_getcurves
+[`net.Server.address()`]: net.html#net_server_address
+[`net.Server`]: net.html#net_class_net_server
+[`net.Socket`]: net.html#net_class_net_socket
+[`tls.DEFAULT_ECDH_CURVE`]: #tls_tls_default_ecdh_curve
 [`tls.TLSSocket.getPeerCertificate()`]: #tls_tlssocket_getpeercertificate_detailed
-[`tls.createSecureContext()`]: #tls_tls_createsecurecontext_options
+[`tls.TLSSocket`]: #tls_class_tls_tlssocket
 [`tls.connect()`]: #tls_tls_connect_options_callback
+[`tls.createSecureContext()`]: #tls_tls_createsecurecontext_options
+[`tls.createSecurePair()`]: #tls_tls_createsecurepair_context_isserver_requestcert_rejectunauthorized_options
+[`tls.createServer()`]: #tls_tls_createserver_options_secureconnectionlistener
+[asn1.js]: https://npmjs.org/package/asn1.js
+[modifying the default cipher suite]: #tls_modifying_the_default_tls_cipher_suite
+[specific attacks affecting larger AES key sizes]: https://www.schneier.com/blog/archives/2009/07/another_new_aes.html
+[tls.Server]: #tls_class_tls_server

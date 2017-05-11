@@ -1,12 +1,12 @@
 'use strict';
 const common = require('../common');
-var assert = require('assert');
-var debug = require('_debugger');
+const assert = require('assert');
+const debug = require('_debugger');
 
 process.env.NODE_DEBUGGER_TIMEOUT = 2000;
-var debugPort = common.PORT;
+const debugPort = common.PORT;
 debug.port = debugPort;
-var spawn = require('child_process').spawn;
+const spawn = require('child_process').spawn;
 
 setTimeout(function() {
   if (nodeProcess) nodeProcess.kill('SIGTERM');
@@ -14,9 +14,9 @@ setTimeout(function() {
 }, 10000).unref();
 
 
-var resCount = 0;
-var p = new debug.Protocol();
-p.onResponse = function(res) {
+let resCount = 0;
+const p = new debug.Protocol();
+p.onResponse = function() {
   resCount++;
 };
 
@@ -29,12 +29,12 @@ assert.strictEqual(resCount, 1);
 
 // Make sure split messages go in.
 
-var parts = [];
+const parts = [];
 parts.push('Content-Length: 336\r\n');
 assert.strictEqual(parts[0].length, 21);
 parts.push('\r\n');
 assert.strictEqual(parts[1].length, 2);
-var bodyLength = 0;
+let bodyLength = 0;
 
 parts.push('{"seq":12,"type":"event","event":"break","body":' +
            '{"invocationText":"#<a Server>');
@@ -55,7 +55,7 @@ bodyLength += parts[4].length;
 
 assert.strictEqual(bodyLength, 336);
 
-for (var i = 0; i < parts.length; i++) {
+for (let i = 0; i < parts.length; i++) {
   p.execute(parts[i]);
 }
 assert.strictEqual(resCount, 2);
@@ -63,24 +63,24 @@ assert.strictEqual(resCount, 2);
 
 // Make sure that if we get backed up, we still manage to get all the
 // messages
-var d = 'Content-Length: 466\r\n\r\n' +
-        '{"seq":10,"type":"event","event":"afterCompile","success":true,' +
-        '"body":{"script":{"handle":1,"type":"script","name":"dns.js",' +
-        '"id":34,"lineOffset":0,"columnOffset":0,"lineCount":241,' +
-        '"sourceStart":"(function(module, exports, require) {' +
-        'var dns = process.binding(\'cares\')' +
-        ';\\nvar ne","sourceLength":6137,"scriptType":2,"compilationType":0,' +
-        '"context":{"ref":0},"text":"dns.js (lines: 241)"}},"refs":' +
-        '[{"handle":0' +
-        ',"type":"context","text":"#<a ContextMirror>"}],"running":true}' +
-        '\r\n\r\nContent-Length: 119\r\n\r\n' +
-        '{"seq":11,"type":"event","event":"scriptCollected","success":true,' +
-        '"body":{"script":{"id":26}},"refs":[],"running":true}';
+const d = 'Content-Length: 466\r\n\r\n' +
+          '{"seq":10,"type":"event","event":"afterCompile","success":true,' +
+          '"body":{"script":{"handle":1,"type":"script","name":"dns.js",' +
+          '"id":34,"lineOffset":0,"columnOffset":0,"lineCount":241,' +
+          '"sourceStart":"(function(module, exports, require) {' +
+          'let dns = process.binding(\'cares\')' +
+          ';\\nlet ne","sourceLength":6137,"scriptType":2,"compilationType":0' +
+          ',"context":{"ref":0},"text":"dns.js (lines: 241)"}},"refs":' +
+          '[{"handle":0' +
+          ',"type":"context","text":"#<a ContextMirror>"}],"running":true}' +
+          '\r\n\r\nContent-Length: 119\r\n\r\n' +
+          '{"seq":11,"type":"event","event":"scriptCollected","success":true,' +
+          '"body":{"script":{"id":26}},"refs":[],"running":true}';
 p.execute(d);
 assert.strictEqual(resCount, 4);
 
-var expectedConnections = 0;
-var tests = [];
+let expectedConnections = 0;
+const tests = [];
 function addTest(cb) {
   expectedConnections++;
   tests.push(cb);
@@ -89,7 +89,7 @@ function addTest(cb) {
 addTest(function(client, done) {
   console.error('requesting version');
   client.reqVersion(function(err, v) {
-    assert.ok(!err);
+    assert.ifError(err);
     console.log('version: %s', v);
     assert.strictEqual(process.versions.v8, v);
     done();
@@ -99,13 +99,13 @@ addTest(function(client, done) {
 addTest(function(client, done) {
   console.error('requesting scripts');
   client.reqScripts(function(err) {
-    assert.ok(!err);
+    assert.ifError(err);
     console.error('got %d scripts', Object.keys(client.scripts).length);
 
-    var foundMainScript = false;
-    for (var k in client.scripts) {
-      var script = client.scripts[k];
-      if (script && script.name === 'node.js') {
+    let foundMainScript = false;
+    for (const k in client.scripts) {
+      const script = client.scripts[k];
+      if (script && script.name === 'bootstrap_node.js') {
         foundMainScript = true;
         break;
       }
@@ -119,7 +119,7 @@ addTest(function(client, done) {
   console.error('eval 2+2');
   client.reqEval('2+2', function(err, res) {
     console.error(res);
-    assert.ok(!err);
+    assert.ifError(err);
     assert.strictEqual(res.text, '4');
     assert.strictEqual(res.value, 4);
     done();
@@ -127,19 +127,19 @@ addTest(function(client, done) {
 });
 
 
-var connectCount = 0;
-var script = 'setTimeout(function() { console.log("blah"); });' +
-             'setInterval(function() {}, 1000000);';
+let connectCount = 0;
+const script = 'setTimeout(function() { console.log("blah"); });' +
+               'setInterval(function() {}, 1000000);';
 
-var nodeProcess;
+let nodeProcess;
 
 function doTest(cb, done) {
-  var args = ['--debug=' + debugPort, '-e', script];
+  const args = ['--debug=' + debugPort, '-e', script];
   nodeProcess = spawn(process.execPath, args);
 
-  nodeProcess.stdout.once('data', function(c) {
+  nodeProcess.stdout.once('data', function() {
     console.log('>>> new node process: %d', nodeProcess.pid);
-    var failed = true;
+    let failed = true;
     try {
       process._debugProcess(nodeProcess.pid);
       failed = false;
@@ -151,14 +151,14 @@ function doTest(cb, done) {
     console.log('>>> starting debugger session');
   });
 
-  var didTryConnect = false;
+  let didTryConnect = false;
   nodeProcess.stderr.setEncoding('utf8');
-  var b = '';
+  let b = '';
   nodeProcess.stderr.on('data', function(data) {
     console.error('got stderr data %j', data);
     nodeProcess.stderr.resume();
     b += data;
-    if (didTryConnect === false && b.match(/Debugger listening on port/)) {
+    if (didTryConnect === false && b.match(/Debugger listening on /)) {
       didTryConnect = true;
 
       // The timeout is here to expose a race in the bootstrap process.
@@ -168,10 +168,10 @@ function doTest(cb, done) {
 
       function tryConnect() {
         // Wait for some data before trying to connect
-        var c = new debug.Client();
+        const c = new debug.Client();
         console.error('>>> connecting...');
         c.connect(debug.port);
-        c.on('break', function(brk) {
+        c.on('break', function() {
           c.reqContinue(function() {});
         });
         c.on('ready', function() {
@@ -199,7 +199,7 @@ function doTest(cb, done) {
 
 
 function run() {
-  var t = tests[0];
+  const t = tests[0];
   if (!t) return;
 
   doTest(t, function() {

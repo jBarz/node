@@ -10,7 +10,7 @@ const util = require('util');
 const Timer = process.binding('timer_wrap').Timer;
 
 const testRoot = process.env.NODE_TEST_DIR ?
-                   path.resolve(process.env.NODE_TEST_DIR) : __dirname;
+                   fs.realpathSync(process.env.NODE_TEST_DIR) : __dirname;
 
 exports.fixturesDir = path.join(__dirname, 'fixtures');
 exports.tmpDirName = 'tmp';
@@ -205,6 +205,28 @@ exports.hasIPv6 = Object.keys(ifaces).some(function(name) {
   });
 });
 
+/*
+ * Check that when running a test with
+ * `$node --abort-on-uncaught-exception $file child`
+ * the process aborts.
+ */
+exports.childShouldThrowAndAbort = function() {
+  let testCmd = '';
+  if (!exports.isWindows) {
+    // Do not create core files, as it can take a lot of disk space on
+    // continuous testing and developers' machines
+    testCmd += 'ulimit -c 0 && ';
+  }
+  testCmd += `${process.argv[0]} --abort-on-uncaught-exception `;
+  testCmd += `${process.argv[1]} child`;
+  const child = child_process.exec(testCmd);
+  child.on('exit', function onExit(exitCode, signal) {
+    const errMsg = 'Test should have aborted ' +
+                   `but instead exited with exit code ${exitCode}` +
+                   ` and signal ${signal}`;
+    assert(exports.nodeProcessAborted(exitCode, signal), errMsg);
+  });
+};
 
 exports.ddCommand = function(filename, kilobytes) {
   if (exports.isWindows) {
@@ -376,8 +398,7 @@ process.on('exit', function() {
   if (!exports.globalCheck) return;
   const leaked = leakedGlobals();
   if (leaked.length > 0) {
-    console.error('Unknown globals: %s', leaked);
-    fail('Unknown global found');
+    fail(`Unexpected global(s) found: ${leaked.join(', ')}`);
   }
 });
 
@@ -405,7 +426,10 @@ function runCallChecks(exitCode) {
 
 
 exports.mustCall = function(fn, expected) {
-  if (typeof expected !== 'number') expected = 1;
+  if (expected === undefined)
+    expected = 1;
+  else if (typeof expected !== 'number')
+    throw new TypeError(`Invalid expected value: ${expected}`);
 
   const context = {
     expected: expected,

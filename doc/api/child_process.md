@@ -193,7 +193,7 @@ the process is spawned. The default options are:
 }
 ```
 
-If `timeout` is greater than `0`, the parent will send the the signal
+If `timeout` is greater than `0`, the parent will send the signal
 identified by the `killSignal` property (the default is `'SIGTERM'`) if the
 child runs longer than `timeout` milliseconds.
 
@@ -554,9 +554,9 @@ spawn('prg', [], { stdio: ['pipe', null, null, null, 'pipe'] });
 *It is worth noting that when an IPC channel is established between the
 parent and child processes, and the child is a Node.js process, the child
 is launched with the IPC channel unreferenced (using `unref()`) until the
-child registers an event handler for the [`process.on('disconnect')`][] event.
-This allows the child to exit normally without the process being held open
-by the open IPC channel.*
+child registers an event handler for the [`process.on('disconnect')`][] event
+or the [`process.on('message')`][] event.This allows the child to exit normally
+without the process being held open by the open IPC channel.*
 
 See also: [`child_process.exec()`][] and [`child_process.fork()`][]
 
@@ -1067,7 +1067,7 @@ added: v0.1.90
 A `Readable Stream` that represents the child process's `stderr`.
 
 If the child was spawned with `stdio[2]` set to anything other than `'pipe'`,
-then this will be `undefined`.
+then this will be `null`.
 
 `child.stderr` is an alias for `child.stdio[2]`. Both properties will refer to
 the same value.
@@ -1085,7 +1085,7 @@ A `Writable Stream` that represents the child process's `stdin`.
 continue until this stream has been closed via `end()`.*
 
 If the child was spawned with `stdio[0]` set to anything other than `'pipe'`,
-then this will be `undefined`.
+then this will be `null`.
 
 `child.stdin` is an alias for `child.stdio[0]`. Both properties will refer to
 the same value.
@@ -1140,23 +1140,18 @@ added: v0.1.90
 A `Readable Stream` that represents the child process's `stdout`.
 
 If the child was spawned with `stdio[1]` set to anything other than `'pipe'`,
-then this will be `undefined`.
+then this will be `null`.
 
 `child.stdout` is an alias for `child.stdio[1]`. Both properties will refer
 to the same value.
 
 ## `maxBuffer` and Unicode
 
-It is important to keep in mind that the `maxBuffer` option specifies the
-largest number of *octets* allowed on `stdout` or `stderr`. If this value is
-exceeded, then the child process is terminated. This particularly impacts
-output that includes multibyte character encodings such as UTF-8 or UTF-16.
-For instance, the following will output 13 UTF-8 encoded octets to `stdout`
-although there are only 4 characters:
-
-```js
-console.log('中文测试');
-```
+The `maxBuffer` option specifies the largest number of bytes allowed on `stdout`
+or `stderr`. If this value is exceeded, then the child process is terminated.
+This impacts output that includes multibyte character encodings such as UTF-8 or
+UTF-16. For instance, `console.log('中文测试')` will send 13 UTF-8 encoded bytes
+to `stdout` although there are only 4 characters.
 
 [`'error'`]: #child_process_event_error
 [`'exit'`]: #child_process_event_exit

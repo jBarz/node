@@ -1,14 +1,14 @@
 'use strict';
 require('../common');
-var assert = require('assert');
-var child_process = require('child_process');
-var spawn = child_process.spawn;
-var fork = child_process.fork;
+const assert = require('assert');
+const child_process = require('child_process');
+const spawn = child_process.spawn;
+const fork = child_process.fork;
 
 if (common.isZos)
-  var execArgv = ['--stack-size=2048'];
+  const execArgv = ['--stack-size=2048'];
 else
-  var execArgv = ['--stack-size=256'];
+  const execArgv = ['--stack-size=256'];
 
 if (process.argv[2] === 'fork') {
   process.stdout.write(JSON.stringify(process.execArgv), function() {
@@ -17,10 +17,10 @@ if (process.argv[2] === 'fork') {
 } else if (process.argv[2] === 'child') {
   fork(__filename, ['fork']);
 } else {
-  var args = [__filename, 'child', 'arg0'];
+  const args = [__filename, 'child', 'arg0'];
 
-  var child = spawn(process.execPath, execArgv.concat(args));
-  var out = '';
+  const child = spawn(process.execPath, execArgv.concat(args));
+  let out = '';
 
   child.stdout.on('data', function(chunk) {
     out += chunk;
