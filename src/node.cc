@@ -4485,7 +4485,7 @@ inline void PlatformInit() {
     // have to special-case EINTR, fstat() is not interruptible.
     if (errno != EBADF)
       ABORT();
-    if (fd != open("\x2f\x64\x65\x76\x2f\x6e\x75\x6c\x6c", O_RDWR))
+    if (fd != open("/dev/null", O_RDWR))
       ABORT();
   }
 
