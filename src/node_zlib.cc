@@ -396,7 +396,7 @@ class ZCtx : public AsyncWrap {
 
     HandleScope scope(env->isolate());
     Local<Value> args[2] = {
-      OneByteString(env->isolate(), *E2A(message)),
+      OneByteString(env->isolate(), message),
       Number::New(env->isolate(), ctx->err_)
     };
     ctx->MakeCallback(env->onerror_string(), arraysize(args), args);
