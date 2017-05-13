@@ -30,8 +30,8 @@ void Environment::PrintSyncTrace() const {
 
   for (int i = 0; i < stack->GetFrameCount() - 1; i++) {
     Local<StackFrame> stack_frame = stack->GetFrame(i);
-    node::Utf8Value fn_name_s(isolate(), stack_frame->GetFunctionName());
-    node::Utf8Value script_name(isolate(), stack_frame->GetScriptName());
+    node::BufferValue fn_name_s(isolate(), stack_frame->GetFunctionName());
+    node::BufferValue script_name(isolate(), stack_frame->GetScriptName());
     const int line_number = stack_frame->GetLineNumber();
     const int column = stack_frame->GetColumn();
 
@@ -40,7 +40,7 @@ void Environment::PrintSyncTrace() const {
         fprintf(stderr, "    at [eval]:%i:%i\n", line_number, column);
       } else {
         fprintf(stderr,
-                "\x20\x20\x20\x20\x61\x74\x20\x5b\x65\x76\x61\x6c\x5d\x20\x28\x6c\xa2\x3a\x6c\x89\x3a\x6c\x89\x29\xa",
+                "    at [eval] (%s:%i:%i)\n",
                 *script_name,
                 line_number,
                 column);
@@ -52,7 +52,7 @@ void Environment::PrintSyncTrace() const {
       fprintf(stderr, "    at %s:%i:%i\n", *script_name, line_number, column);
     } else {
       fprintf(stderr,
-              "\x20\x20\x20\x20\x61\x74\x20\x6c\xa2\x20\x28\x6c\xa2\x3a\x6c\x89\x3a\x6c\x89\x29\xa",
+              "    at %s (%s:%i:%i)\n",
               *fn_name_s,
               *script_name,
               line_number,
