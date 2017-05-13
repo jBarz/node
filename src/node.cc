@@ -1833,7 +1833,7 @@ static void ReportException(Environment* env,
       String::Utf8Value message(er);
 
       PrintErrorString(u8"%s\n", *message ? *message :
-                                          "<toString() threw exception>");
+                                          u8"<toString() threw exception>");
     } else {
       node::Utf8Value name_string(env->isolate(), name);
       node::Utf8Value message_string(env->isolate(), message);
