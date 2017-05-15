@@ -672,6 +672,12 @@ $(BINARYTAR): release-only
 	cp README.md $(BINARYNAME)
 	cp LICENSE $(BINARYNAME)
 	cp CHANGELOG.md $(BINARYNAME)
+ifeq ($(OSTYPE),os390)
+ifndef COMPILER_ARCHIVE
+	$(error COMPILER_ARCHIVE is not defined)
+endif
+	pax -rf $(COMPILER_ARCHIVE) -s#^#$(BINARYNAME)/#
+endif
 	$(TAR) $(TAROPTS) $(BINARYNAME).$(TAR) $(BINARYNAME)
 	$(RM) -r $(BINARYNAME)
 	$(GZIP) $(GZIPOPTS) $(BINARYNAME).$(TAR) > $(BINARYNAME).$(TAR).$(GZIPEXT)
