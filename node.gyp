@@ -272,7 +272,7 @@
           ],
         }],
         [ 'node_tag!=""', {
-          'defines': [ 'NODE_TAG="<(node_tag)"' ],
+          'defines': [ 'NODE_TAG=<(node_tag)' ],
         }],
         [ 'node_v8_options!=""', {
           'defines': [ 'NODE_V8_OPTIONS="<(node_v8_options)"'],

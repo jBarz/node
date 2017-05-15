@@ -3938,9 +3938,7 @@ static void PrintHelp() {
          u8"\n"
          u8"Documentation can be found at https://nodejs.org/\n"
 #ifdef NODE_TAG
-         NODE_VERSION       \
-         u8"-"       \
-         NODE_STRINGIFY(NODE_TAG)     \
+         NODE_EXE_VERSION      \
          u8"\n"
          );
 #else
