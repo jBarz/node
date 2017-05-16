@@ -29,25 +29,34 @@
 
 
 static int maybe_new_socket(uv_tcp_t* handle, int domain, int flags) {
+  struct sockaddr_storage saddr;
+  socklen_t slen;
   int sockfd;
   int err;
 
+  slen = sizeof(saddr);
   if (domain == AF_UNSPEC || uv__stream_fd(handle) != -1) {
-    struct sockaddr_storage saddr;
-    socklen_t slen  = sizeof(saddr);
-    memset(&saddr, 0, sizeof(saddr));
 
     handle->flags |= flags;
 
+    if (!(flags & UV_HANDLE_BOUND))
+      return 0;
+
+    /* Ensure that tcp socket is bound */
+    memset(&saddr, 0, sizeof(saddr));
     if (getsockname(uv__stream_fd(handle), (struct sockaddr*) &saddr, &slen))
       return -errno;
 
-    if (saddr.ss_family == AF_INET6 &&
-       ((struct sockaddr_in6*) &saddr)->sin6_port != 0)
-      handle->flags |= UV_HANDLE_BOUND;
-    else if (saddr.ss_family == AF_INET &&
-            ((struct sockaddr_in*) &saddr)->sin_port != 0)
-      handle->flags |= UV_HANDLE_BOUND;
+    if ((saddr.ss_family == AF_INET6 &&
+       ((struct sockaddr_in6*) &saddr)->sin6_port != 0) ||
+       (saddr.ss_family == AF_INET &&
+       ((struct sockaddr_in*) &saddr)->sin_port != 0))
+      /* Handle is bound to port */
+      return 0;
+
+    /* Bind to arbitrary port */
+    if (bind(uv__stream_fd(handle), (struct sockaddr*) &saddr, slen))
+      return err;
 
     return 0;
   }
@@ -61,6 +70,22 @@ static int maybe_new_socket(uv_tcp_t* handle, int domain, int flags) {
   if (err) {
     uv__close(sockfd);
     return err;
+  }
+
+  if (flags & UV_HANDLE_BOUND) {
+    /* Bind this new socket to an arbitrary port */
+    memset(&saddr, 0, sizeof(saddr));
+    err = getsockname(uv__stream_fd(handle), (struct sockaddr*) &saddr, &slen);
+    if (err) {
+      uv__close(sockfd);
+      return err;
+    }
+
+    err = bind(uv__stream_fd(handle), (struct sockaddr*) &saddr, slen);
+    if (err) {
+      uv__close(sockfd);
+      return err;
+    }
   }
 
   return 0;
@@ -288,30 +313,17 @@ int uv_tcp_listen(uv_tcp_t* tcp, int backlog, uv_connection_cb cb) {
   if (single_accept)
     tcp->flags |= UV_TCP_SINGLE_ACCEPT;
 
-  err = maybe_new_socket(tcp, AF_INET, UV_STREAM_READABLE);
-  if (err)
-    return err;
-
-#ifdef __MVS__
+  unsigned flags = UV_STREAM_READABLE;
+#if defined(__MVS__)
   /* on zOS the listen call does not bind automatically
      if the socket is unbound. Hence the manual binding to
      an arbitrary port is required to be done manually
   */
-
-  if (!(tcp->flags & UV_HANDLE_BOUND)) {
-    struct sockaddr_storage saddr;
-    socklen_t slen  = sizeof(saddr);
-    memset(&saddr, 0, sizeof(saddr));
-
-    if (getsockname(tcp->io_watcher.fd, (struct sockaddr*) &saddr, &slen))
-      return -errno;
-
-    if (bind(tcp->io_watcher.fd, (struct sockaddr*) &saddr, slen))
-      return -errno;
-
-    tcp->flags |= UV_HANDLE_BOUND;
-  }
-#endif
+  flags |= UV_HANDLE_BOUND;
+#endif  
+  err = maybe_new_socket(tcp, AF_INET, flags);
+  if (err)
+    return err;
 
   if (listen(tcp->io_watcher.fd, backlog))
     return -errno;
