@@ -7,6 +7,8 @@
 # else
 #   define NODE_EXTERN __declspec(dllimport)
 # endif
+#elif defined(__MVS__)
+# define NODE_EXTERN _Export
 #else
 # define NODE_EXTERN /* nothing */
 #endif

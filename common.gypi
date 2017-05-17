@@ -229,7 +229,7 @@
     },
     'msvs_disabled_warnings': [4351, 4355, 4800],
     'conditions': [
-      ['asan == 1 and OS != "mac"', {
+      ['asan == 1 and OS != "mac" and OS != "os390"', {
         'cflags+': [
           '-fno-omit-frame-pointer',
           '-fsanitize=address',
