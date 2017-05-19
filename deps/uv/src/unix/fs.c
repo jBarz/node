@@ -358,8 +358,10 @@ static ssize_t uv__fs_read(uv_fs_t* req) {
 
 done:
 #if defined(__MVS__)
-  for (int idx = 0; idx < req->nbufs; idx++)
+  if (!(buf.st_tag.ft_ccsid == 819 && getenv("_BPXK_AUTOCVT") == NULL)) {
+    for (int idx = 0; idx < req->nbufs; idx++)
       __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
+  }
 #endif
   return result;
 }
