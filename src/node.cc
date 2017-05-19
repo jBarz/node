@@ -4879,6 +4879,7 @@ static void StartNodeInstance(void* arg) {
   {
     signal(SIGABRT, &on_sigabrt);
     signal(SIGABND, &on_sigabrt);
+    signal(SIGHUP, &on_sigabrt);
 #else
   {
 #endif
