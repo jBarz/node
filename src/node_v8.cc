@@ -4,6 +4,7 @@
 #include "util.h"
 #include "util-inl.h"
 #include "v8.h"
+#include <unistd.h>
 
 namespace node {
 
@@ -133,7 +134,7 @@ void InitializeV8Bindings(Local<Object> target,
   for (size_t i = 0; i < number_of_heap_spaces; i++) {
     env->isolate()->GetHeapSpaceStatistics(&s, i);
     Local<String> heap_space_name = String::NewFromUtf8(env->isolate(),
-                                                        s.space_name(),
+                                                        *E2A(s.space_name()),
                                                         NewStringType::kNormal)
                                         .ToLocalChecked();
     heap_spaces->Set(i, heap_space_name);
