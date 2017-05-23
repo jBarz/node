@@ -358,7 +358,11 @@ static ssize_t uv__fs_read(uv_fs_t* req) {
 
 done:
 #if defined(__MVS__)
-  if (!(buf.st_tag.ft_ccsid == 819 && getenv("_BPXK_AUTOCVT") == NULL))
+  if ( !( 
+          (getenv("_BPXK_AUTOCVT") == NULL && buf.st_tag.ft_txtflag && buf.st_tag.ft_ccsid == 819) ||
+          buf.st_tag.ft_ccsid == FT_BINARY
+        )
+     )
     for (int idx = 0; idx < req->nbufs; idx++)
       __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
 #endif
@@ -702,7 +706,11 @@ static ssize_t uv__fs_write(uv_fs_t* req) {
     return -1;
 
   doconvert = 0;
-  if (!(statbuf.st_tag.ft_ccsid == 819 && getenv("_BPXK_AUTOCVT") == NULL))
+  if ( !( 
+          (getenv("_BPXK_AUTOCVT") == NULL && statbuf.st_tag.ft_txtflag && statbuf.st_tag.ft_ccsid == 819) ||
+          statbuf.st_tag.ft_ccsid == FT_BINARY
+        )
+     )
     doconvert = 1;
 
   if (doconvert)
