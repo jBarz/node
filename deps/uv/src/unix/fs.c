@@ -358,10 +358,9 @@ static ssize_t uv__fs_read(uv_fs_t* req) {
 
 done:
 #if defined(__MVS__)
-  if (!(buf.st_tag.ft_ccsid == 819 && getenv("_BPXK_AUTOCVT") == NULL)) {
+  if (!(buf.st_tag.ft_ccsid == 819 && getenv("_BPXK_AUTOCVT") == NULL))
     for (int idx = 0; idx < req->nbufs; idx++)
       __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
-  }
 #endif
   return result;
 }
@@ -696,7 +695,18 @@ static ssize_t uv__fs_utime(uv_fs_t* req) {
 
 static ssize_t uv__fs_write(uv_fs_t* req) {
 #if defined(__MVS__)
-  for (int idx = 0; idx < req->nbufs; idx++)
+  int doconvert;
+  struct stat statbuf;
+
+  if(fstat(req->file, &statbuf))
+    return -1;
+
+  doconvert = 0;
+  if (!(statbuf.st_tag.ft_ccsid == 819 && getenv("_BPXK_AUTOCVT") == NULL))
+    doconvert = 1;
+
+  if (doconvert)
+    for (int idx = 0; idx < req->nbufs; idx++)
       __a2e_l(req->bufs[idx].base, req->bufs[idx].len);
 #endif
 
@@ -774,7 +784,8 @@ done:
     abort();
 #endif
 #if defined(__MVS__)
-  for (int idx = 0; idx < req->nbufs; idx++)
+  if (doconvert)
+    for (int idx = 0; idx < req->nbufs; idx++)
       __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
 #endif
 
