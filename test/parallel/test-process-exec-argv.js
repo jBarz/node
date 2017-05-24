@@ -1,12 +1,12 @@
 'use strict';
-require('../common');
+const common = require('../common');
 const assert = require('assert');
 const spawn = require('child_process').spawn;
 
 if (common.isZos)
-  const execArgv = ['--stack-size=2048'];
+  var execArgv = ['--stack-size=2048'];
 else
-  const execArgv = ['--stack-size=256'];
+  var execArgv = ['--stack-size=256'];
 
 if (process.argv[2] === 'child') {
   process.stdout.write(JSON.stringify(process.execArgv));
