@@ -248,7 +248,9 @@ static struct {
 
 #ifdef __POSIX__
 static uv_sem_t debug_semaphore;
-static bool debug_semaphore_initialized;
+static uv_sem_t debug_shutdown;
+static bool debug_semaphore_initialized = false;
+static void StopDebugSignalHandler(bool);
 static const unsigned kMaxSignal = 32;
 #endif
 
@@ -2662,8 +2664,7 @@ static void OnFatalError(const char* location, const char* message) {
   fflush(stderr);
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
-  if (debug_semaphore_initialized == true)
-    uv_sem_destroy(&debug_semaphore);
+  StopDebugSignalHandler(true);
   ABORT();
 }
 
@@ -3661,8 +3662,7 @@ static void AtProcessExit() {
   uv_tty_reset_mode();
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
-  if (debug_semaphore_initialized == true)
-    uv_sem_destroy(&debug_semaphore);
+  StopDebugSignalHandler(false);
 }
 
 
@@ -3677,8 +3677,7 @@ void SignalExit(int signo) {
 #endif
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
-  if (debug_semaphore_initialized == true)
-    uv_sem_destroy(&debug_semaphore);
+  StopDebugSignalHandler(true);
   raise(signo);
 }
 
@@ -4253,9 +4252,27 @@ void DebugProcess(const FunctionCallbackInfo<Value>& args) {
 inline void* DebugSignalThreadMain(void* unused) {
   for (;;) {
     uv_sem_wait(&debug_semaphore);
+    if (debug_semaphore_initialized == false)
+      break;
     TryStartDebugger();
   }
+
+  uv_sem_post(&debug_shutdown);
   return nullptr;
+}
+
+
+static void StopDebugSignalHandler(bool waitForThread) {
+  if (debug_semaphore_initialized == true) {
+    debug_semaphore_initialized = false;
+    if (waitForThread) {
+      CHECK_EQ(0, uv_sem_init(&debug_shutdown, 0));
+      uv_sem_post(&debug_semaphore);
+      uv_sem_wait(&debug_shutdown);
+      uv_sem_destroy(&debug_shutdown);
+    }
+    uv_sem_destroy(&debug_semaphore);
+  }
 }
 
 
@@ -4955,8 +4972,7 @@ static void StartNodeInstance(void* arg) {
   } else {
     V8::ReleaseSystemResources();
     debugger::Agent::ReleaseSystemResources();
-    if (debug_semaphore_initialized == true)
-      uv_sem_destroy(&debug_semaphore);
+    StopDebugSignalHandler(true);
     abort();
 #endif
   }
