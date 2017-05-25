@@ -4,6 +4,11 @@ const assert = require('assert');
 const cluster = require('cluster');
 const net = require('net');
 
+if (common.isZos) {
+  common.skip('Skipping test, no privileged port on zOS.');
+  return;
+}
+
 if (common.isWindows) {
   common.skip('not reliable on Windows');
   return;
