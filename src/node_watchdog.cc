@@ -184,6 +184,12 @@ bool SigintWatchdogHelper::InformWatchdogsAboutSignal() {
 }
 
 
+void SigintWatchdogHelper::ReleaseSystemResources() {
+  if (!has_running_thread_)
+    uv_sem_destroy(&sem_);
+}
+
+
 int SigintWatchdogHelper::Start() {
   Mutex::ScopedLock lock(mutex_);
 

@@ -10,6 +10,7 @@
 #include "node_version.h"
 #include "node_internals.h"
 #include "node_revert.h"
+#include "node_watchdog.h"
 
 #if defined HAVE_PERFCTR
 #include "node_counters.h"
@@ -3678,6 +3679,7 @@ void SignalExit(int signo) {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
+  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
   raise(signo);
 }
 
