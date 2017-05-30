@@ -5,11 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
-if (process.platform === 'os390') {
-  common.skip('platform not supported.');
-  return;
-}
-
 // Basic usage tests.
 assert.throws(function() {
   fs.watchFile('./some-file');
