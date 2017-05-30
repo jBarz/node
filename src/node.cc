@@ -249,7 +249,7 @@ static struct {
 #ifdef __POSIX__
 static uv_sem_t debug_semaphore;
 static uv_sem_t debug_shutdown;
-static bool debug_semaphore_initialized = false;
+static bool debug_semaphore_active = false;
 static void StopDebugSignalHandler(bool);
 static const unsigned kMaxSignal = 32;
 #endif
@@ -4252,7 +4252,7 @@ void DebugProcess(const FunctionCallbackInfo<Value>& args) {
 inline void* DebugSignalThreadMain(void* unused) {
   for (;;) {
     uv_sem_wait(&debug_semaphore);
-    if (debug_semaphore_initialized == false)
+    if (debug_semaphore_active == false)
       break;
     TryStartDebugger();
   }
@@ -4263,8 +4263,8 @@ inline void* DebugSignalThreadMain(void* unused) {
 
 
 static void StopDebugSignalHandler(bool waitForThread) {
-  if (debug_semaphore_initialized == true) {
-    debug_semaphore_initialized = false;
+  if (debug_semaphore_active == true) {
+    debug_semaphore_active = false;
     if (waitForThread) {
       CHECK_EQ(0, uv_sem_init(&debug_shutdown, 0));
       uv_sem_post(&debug_semaphore);
@@ -4281,7 +4281,7 @@ static int RegisterDebugSignalHandler() {
   // it's not safe to call directly from the signal handler, it can
   // deadlock with the thread it interrupts.
   CHECK_EQ(0, uv_sem_init(&debug_semaphore, 0));
-  debug_semaphore_initialized = true;
+  debug_semaphore_active = true;
   pthread_attr_t attr;
   CHECK_EQ(0, pthread_attr_init(&attr));
   // Don't shrink the thread's stack on FreeBSD.  Said platform decided to
