@@ -9,7 +9,6 @@ let called;
 assert.ok(process.kill(cat.pid, 0));
 
 cat.on('exit', function() {
-  console.log("on exit");
   assert.throws(function() {
     process.kill(cat.pid, 0);
   }, Error);
@@ -24,6 +23,5 @@ cat.stdout.on('data', function() {
 cat.stdin.write('test');
 
 process.on('exit', function() {
-  console.log("on process exit");
-  //assert.ok(called);
+  assert.ok(called);
 });
