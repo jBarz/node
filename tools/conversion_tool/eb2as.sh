@@ -76,4 +76,4 @@ else
 fi
 
 # get rid of all files created
-#./cleanup.sh .
+./cleanup.sh .
