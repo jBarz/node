@@ -22,6 +22,7 @@ def open_files(file_list, unicode_encode=False, skip_print_strings=False, includ
 def make_delimiters(tokens_of_interest, skip_print_strings):
     delimiters = []
     delete = False
+    continued_string = False
     open_paren = 0
     start_index = 0
     stop_index  = 0
@@ -52,7 +53,6 @@ def determine_new_line(tokens_of_interest, delimiters, skip_print_strings, unico
     start_index = -1;
     stop_index  = -1;
     ostream_string = False
-
     while index < (len(tokens_of_interest)):
         token = tokens_of_interest[index];
 
@@ -61,7 +61,7 @@ def determine_new_line(tokens_of_interest, delimiters, skip_print_strings, unico
                 (start_index, stop_index) = delimiters.pop();
             token = token
             newline = newline + token
-            index = index +1
+            index = index + 1
             continue
 
         if index >= start_index and index <= stop_index:
@@ -83,18 +83,18 @@ def determine_new_line(tokens_of_interest, delimiters, skip_print_strings, unico
         if STRING_RE.match(token):
             if not ostream_string:
                 literal = token
-            if unicode_encode:
-                if not HEX_ENCODED_STRING_RE.match(literal):
-                    unicode_literal = "u8" + literal
-                    token = unicode_literal
-            else:
-                encoded_literal = literal[1:len(literal)-1]
-                encoded_literal = re.sub(ESCAPE_RE, EncodeEscapeSeq,encoded_literal)
-                encoded_literal = re.sub(PRINTF_RE, EncodePrintF, encoded_literal)
-                token_list = re.split(HEX_RE, encoded_literal)
-                encoded_literal = reduce(lambda x,y: x+y, map(ConvertTokens, token_list))
-                encoded_literal = "\"" + encoded_literal + "\""
-                token = encoded_literal
+                if unicode_encode:
+                    if not HEX_ENCODED_STRING_RE.match(literal):
+                        unicode_literal = "u8" + literal
+                        token = unicode_literal
+                else:
+                    encoded_literal = literal[1:len(literal)-1]
+                    encoded_literal = re.sub(ESCAPE_RE, EncodeEscapeSeq,encoded_literal)
+                    encoded_literal = re.sub(PRINTF_RE, EncodePrintF, encoded_literal)
+                    token_list = re.split(HEX_RE, encoded_literal)
+                    encoded_literal = reduce(lambda x,y: x+y, map(ConvertTokens, token_list))
+                    encoded_literal = "\"" + encoded_literal + "\""
+                    token = encoded_literal
 
         if CHAR_RE.match(token):
             if not ostream_string:
@@ -110,6 +110,7 @@ def determine_new_line(tokens_of_interest, delimiters, skip_print_strings, unico
             token =  encoded_char
 
         if STRINGIFY_RE.match(token):
+            print token
             converted_token = ConvertMacroArgs(token)
             token = converted_token
 
@@ -168,6 +169,7 @@ def find_target_header(line, filenames, include_paths, include_paths_names):
 def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_paths, include_paths_names):
     Source          = open(filenames[0], "rt")
     Target          = open(filenames[1], "at+")
+    Target.write('#define USTR(x) U8##x\n')
 
     # flags to determine exactly what the line of code in the source contains
     ebcdic_encoding = False
@@ -180,9 +182,24 @@ def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_path
 
     skip_line = False
     include_line = False
+    combine_lines = False
+    prev_line = None
 
     # main loop which identifies and encodes literals with hex escape sequences
     for line in Source:
+
+        if prev_line is not None:
+            line = prev_line.strip() + line.strip()
+            prev_line = None
+
+        backslash = BACKSLASH_RE.match(line)
+        if backslash:
+            backslash = backslash.group(1)
+            right = STRING_RIGHT_RE.match(backslash)
+            left = STRING_LEFT_RE.match(backslash)
+            if right is None and left is not None:
+                prev_line = backslash
+                continue
 
         # check if the line is a comment
         comment_start = MULTILINE_COMMENT_START.match(line)
@@ -228,6 +245,7 @@ def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_path
             line = line
             Target.write(line)
 
+    Target.write('#undef USTR')
     Source.close()
     Target.close()
 

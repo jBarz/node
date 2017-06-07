@@ -21,7 +21,7 @@ HEX_ENCODED_STRING  = r'(?:\\x[0-9A-Fa-f]{1,2})+'
 CONCAT              = "(##)"
 STRINGIFY           = "(#{1}\w+)"
 WHITESPACE          = "(\s*)"
-SPLIT_TOKEN_LIST    = [ PRINT_FUNCTIONS, USTR_MACRO, COMMA, NEWLINE, UNICODE_PRE, OPEN_PAREN, CLOSE_PAREN, OUTSTREAM_OP, STRING, CHAR, HEX_CHAR,  CONCAT, STRINGIFY]
+SPLIT_TOKEN_LIST    = [ PRINT_FUNCTIONS, USTR_MACRO, COMMA, NEWLINE, UNICODE_PRE, OPEN_PAREN, CLOSE_PAREN, OUTSTREAM_OP, STRING, CHAR, HEX_CHAR,  CONCAT, STRINGIFY ]
 
 EBCDIC_PRAGMA_START  = re.compile(r'\s*#pragma\s+convert\s*\(\s*\"IBM-1047\"\s*\)|\s*#pragma\s+convert\s*\(\s*\"ibm-1047\"\s*\)')
 EBCDIC_PRAGMA_END    = re.compile(r"\s*#pragma\s+convert\s*\(\s*pop\s*\)")
@@ -40,6 +40,11 @@ ABSOLUTE_RE = re.compile('\s*(/.*)')
 COLON_RE = re.compile('\s*.*:\s*([a-z0-9\._/]*)')
 STRIPPED_LINE = re.compile('\s*([a-z0-9\._/]*)')
 DOT = re.compile('(.*)\.(.*)')
+
+#line continuations with strings
+BACKSLASH_RE = re.compile('(.+)\\\\ \\n')
+STRING_RIGHT_RE = re.compile('(.+)"\s+')
+STRING_LEFT_RE = re.compile('\s*"(.*)')
 
 #C-string literals in the source
 DEFINE_RE             = re.compile(r'#pragma|#import|#error|#define|#undef|#endif|#if|#ifdef|#else|#elseif|#elif')
@@ -109,7 +114,7 @@ def EncodeInASCII(literal):
    return convert
 
 def ConvertMacroArgs(token):
-   if DEFINE_RE.match(token):
+   if DEFINE_RE.match(token) or INCLUDE_RE.match(token):
       return token
    if STRINGIFY_RE.match(token):
       token = token.strip()
