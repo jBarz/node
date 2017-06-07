@@ -463,7 +463,7 @@
         'conditions': [
           [ 'OS=="win"', {
             'link_settings': {
-              'libraries': [ '-lAdvAPI32.Lib', '-lUser32.lib' ],
+              'libraries': [ '-lAdvAPI32.lib', '-lUser32.lib' ],
             },
           }],
           [ 'OS!="os390"', {
@@ -520,7 +520,7 @@
         'conditions': [
           [ 'OS=="win"', {
             'link_settings': {
-              'libraries': [ '-lAdvAPI32.Lib', '-lUser32.lib' ],
+              'libraries': [ '-lAdvAPI32.lib', '-lUser32.lib' ],
             },
           }],
         ],
