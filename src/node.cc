@@ -292,8 +292,9 @@ static void PrintString(FILE* out, const char* format, va_list ap) {
   CHECK_GT(n, 0);
   WriteConsoleW(stderr_handle, wbuf.data(), n - 1, nullptr, nullptr);
 #elif defined(__MVS__)
-  char buf[2048];
-  __vsnprintf_a(buf, sizeof(buf), format, ap);
+  int size = __vsnprintf_a(NULL, 0, format, ap);
+  char buf[size+1];
+  __vsnprintf_a(buf, size + 1, format, ap);
   __a2e_s(buf);
   fprintf(out, "%s", buf);
 #else
@@ -3970,7 +3971,7 @@ static void PrintHelp() {
          u8"\n"
          u8"Documentation can be found at https://nodejs.org/\n"
 #ifdef NODE_TAG
-         NODE_EXE_VERSION      \
+         NODE_EXE_VERSION      
          u8"\n"
          );
 #else
