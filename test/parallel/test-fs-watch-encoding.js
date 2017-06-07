@@ -14,8 +14,12 @@ const common = require('../common');
 const fs = require('fs');
 const path = require('path');
 
-if (process.platform === 'os390') {
-  common.skip('platform not supported.');
+// fs-watch on folders have limited capability in AIX.
+// The testcase makes use of folder watching, and causes
+// hang. This behavior is documented. Skip this for AIX.
+
+if (common.isAix) {
+  common.skip('folder watch capability is limited in AIX.');
   return;
 }
 
@@ -23,6 +27,10 @@ common.refreshTmpDir();
 
 const fn = '新建文夹件.txt';
 const a = path.join(common.tmpDir, fn);
+
+// Create file
+const fd = fs.openSync(a, 'w+');
+fs.closeSync(fd);
 
 const watchers = new Set();
 
@@ -39,7 +47,7 @@ function unregisterWatcher(watcher) {
 }
 
 const watcher1 = fs.watch(
-  common.tmpDir,
+  a,
   {encoding: 'hex'},
   (event, filename) => {
     if (['e696b0e5bbbae69687e5a4b9e4bbb62e747874', null].includes(filename))
@@ -49,7 +57,7 @@ const watcher1 = fs.watch(
 registerWatcher(watcher1);
 
 const watcher2 = fs.watch(
-  common.tmpDir,
+  a,
   (event, filename) => {
     if ([fn, null].includes(filename))
       done(watcher2);
@@ -58,7 +66,7 @@ const watcher2 = fs.watch(
 registerWatcher(watcher2);
 
 const watcher3 = fs.watch(
-  common.tmpDir,
+  a,
   {encoding: 'buffer'},
   (event, filename) => {
     if (filename instanceof Buffer && filename.toString('utf8') === fn)
@@ -74,7 +82,8 @@ const done = common.mustCall(unregisterWatcher, watchers.size);
 // OS X and perhaps other systems can have surprising race conditions with
 // file events. So repeat the operation in case it is missed the first time.
 const interval = setInterval(() => {
-  const fd = fs.openSync(a, 'w+');
+  const fd = fs.openSync(a, 'a+');
+  fs.writeSync(fd, "test");
   fs.closeSync(fd);
   fs.unlinkSync(a);
 }, common.platformTimeout(100));

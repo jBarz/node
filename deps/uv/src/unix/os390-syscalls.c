@@ -103,9 +103,19 @@ static void maybe_resize(uv__os390_epoll* lst, unsigned int len) {
   unsigned int newsize;
   unsigned int i;
   struct pollfd* newlst;
+  struct epoll_event e;
 
   if (len <= lst->size)
     return;
+
+  /* Capture the message queue at the end. */
+  if (lst->size == 0) {
+    e.fd = -1;
+  } else {
+    e.fd = lst->items[lst->size - 1].fd;
+    e.events = lst->items[lst->size - 1].events;
+    lst->items[lst->size - 1].fd = -1;
+  }
 
   newsize = next_power_of_two(len);
   newlst = uv__realloc(lst->items, newsize * sizeof(lst->items[0]));
@@ -114,13 +124,16 @@ static void maybe_resize(uv__os390_epoll* lst, unsigned int len) {
     abort();
   for (i = lst->size; i < newsize; ++i)
     newlst[i].fd = -1;
+  /* Restore the message queue at the end */
+  newlst[newsize - 1].fd = e.fd;
+  newlst[newsize - 1].events = e.events;
 
   lst->items = newlst;
   lst->size = newsize;
 }
 
 
-static void epoll_init() {
+static void epoll_init(void) {
   QUEUE_INIT(&global_epoll_queue);
   if (uv_mutex_init(&global_epoll_lock))
     abort();
@@ -140,7 +153,9 @@ uv__os390_epoll* epoll_create1(int flags) {
 
   /* initialize list */
   lst->size = 0;
+  lst->num_fs_events = 0;
   lst->items = NULL;
+  lst->fs_event_msg_queue = -1;
   return lst;
 }
 
@@ -149,26 +164,44 @@ int epoll_ctl(uv__os390_epoll* lst,
               int op,
               int fd,
               struct epoll_event *event) {
-  if(op == EPOLL_CTL_DEL) {
+  if (op == EPOLL_CTL_DEL) {
     if (fd >= lst->size || lst->items[fd].fd == -1) {
       errno = ENOENT;
       return -1;
     }
     lst->items[fd].fd = -1;
-  } else if(op == EPOLL_CTL_ADD) {
-    maybe_resize(lst, fd + 1);
+  } else if (op == EPOLL_CTL_ADD) {
+
+    /* Resizing to 'fd + 1' would expand the list to contain at least
+     * 'fd'. But we need to guarantee that the last index on the list 
+     * is reserved for the message queue. So specify 'fd + 2' instead.
+     */
+    maybe_resize(lst, fd + 2);
     if (lst->items[fd].fd != -1) {
       errno = EEXIST;
       return -1;
     }
     lst->items[fd].fd = fd;
     lst->items[fd].events = event->events;
-  } else if(op == EPOLL_CTL_MOD) {
+  } else if (op == EPOLL_CTL_MOD) {
     if (fd >= lst->size || lst->items[fd].fd == -1) {
       errno = ENOENT;
       return -1;
     }
     lst->items[fd].events = event->events;
+  } else if (op == EPOLL_CTL_MSGQA) {
+    lst->num_fs_events++;
+    if (lst->size == 0)
+      maybe_resize(lst, 1);
+    lst->items[lst->size - 1].fd = fd;
+    lst->items[lst->size - 1].events = event->events;
+  } else if (op == EPOLL_CTL_MSGQD) {
+    assert (lst->num_fs_events > 0);
+    assert(lst->items[lst->size - 1].fd == fd);
+    lst->num_fs_events--;
+    if (lst->num_fs_events == 0) {
+      lst->items[lst->size - 1].fd = -1;
+    }
   } else
     abort();
 
@@ -178,21 +211,26 @@ int epoll_ctl(uv__os390_epoll* lst,
 
 int epoll_wait(uv__os390_epoll* lst, struct epoll_event* events,
                int maxevents, int timeout) {
-  size_t size;
+  nmsgsfds_t size;
   struct pollfd* pfds;
   int pollret;
   int reventcount;
 
   uv_mutex_lock(&global_epoll_lock);
   uv_mutex_unlock(&global_epoll_lock);
-  size = lst->size;
+  size = _SET_FDS_MSGS(size,
+                       lst->items[lst->size - 1].fd == -1 ? 0 : 1,
+                       lst->size - 1);
   pfds = lst->items;
   pollret = poll(pfds, size, timeout);
   if(pollret == -1)
     return pollret;
 
+  /* Only return the number of file descriptors. */
+  pollret = _NFDS(pollret);
+
   reventcount = 0;
-  for (int i = 0; i < lst->size && i < maxevents; ++i) {
+  for (int i = 0; i < lst->size - 1 && i < maxevents; ++i) {
     struct epoll_event ev;
 
     ev.events = 0;

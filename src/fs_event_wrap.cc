@@ -165,7 +165,7 @@ void FSEventWrap::OnEvent(uv_fs_event_t* handle, const char* filename,
 
   if (filename != nullptr) {
     Local<Value> fn = StringBytes::Encode(env->isolate(),
-                                          filename,
+                                          *E2A(filename),
                                           wrap->encoding_);
     if (fn.IsEmpty()) {
       argv[0] = Integer::New(env->isolate(), UV_EINVAL);

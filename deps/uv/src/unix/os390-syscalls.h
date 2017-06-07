@@ -32,6 +32,8 @@
 #define EPOLL_CTL_ADD             1
 #define EPOLL_CTL_DEL             2
 #define EPOLL_CTL_MOD             3
+#define EPOLL_CTL_MSGQA           4
+#define EPOLL_CTL_MSGQD           5
 #define MAX_EPOLL_INSTANCES       256
 #define MAX_ITEMS_PER_EPOLL       1024
 
@@ -40,6 +42,8 @@
 #define UV__EPOLL_CTL_ADD         EPOLL_CTL_ADD
 #define UV__EPOLL_CTL_DEL         EPOLL_CTL_DEL
 #define UV__EPOLL_CTL_MOD         EPOLL_CTL_MOD
+#define UV__EPOLL_CTL_MSGQA       EPOLL_CTL_MSGQA
+#define UV__EPOLL_CTL_MSGQD       EPOLL_CTL_MSGQD
 
 struct epoll_event {
   int events;
@@ -50,6 +54,8 @@ typedef struct {
   QUEUE member;
   struct pollfd* items;
   unsigned long size;
+  unsigned long num_fs_events;
+  int fs_event_msg_queue;
 } uv__os390_epoll;
 
 /* epoll api */
