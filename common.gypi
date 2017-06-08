@@ -406,6 +406,17 @@
         'ldflags': [
           '-Wl,--export-dynamic',
         ],
+      }],
+      ['OS=="os390"', {
+        'cflags': [
+          '-qxplink',
+          '-q64',
+          '-qarch=9',
+        ],
+        'ldflags': [
+          '-qxplink',
+          '-q64',
+        ],
       }]
     ],
   }

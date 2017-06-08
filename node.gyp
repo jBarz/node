@@ -581,13 +581,9 @@
 	  ],
 	  'cflags': [
 	    '-qlonglong',
-	    '-qxplink',
-	    '-q64',
 	  ],
 	  'ldflags': [
 	    '-Wl,DLL',
-	    '-qxplink',
-	    '-q64'
 	  ],
 	}],
       ],
