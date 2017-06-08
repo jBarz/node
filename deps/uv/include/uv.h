@@ -41,6 +41,8 @@ extern "C" {
 # endif
 #elif __GNUC__ >= 4
 # define UV_EXTERN __attribute__((visibility("default")))
+# elif defined(__MVS__)
+# define UV_EXTERN _Export
 #else
 # define UV_EXTERN /* nothing */
 #endif
