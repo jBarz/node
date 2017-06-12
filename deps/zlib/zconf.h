@@ -373,6 +373,10 @@
 #  endif
 #endif
 
+#if defined (__MVS__)
+#  define ZEXTERN _Export
+#endif
+
 #ifndef ZEXTERN
 #  define ZEXTERN extern
 #endif
