@@ -169,7 +169,9 @@ def find_target_header(line, filenames, include_paths, include_paths_names):
 def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_paths, include_paths_names):
     Source          = open(filenames[0], "rt")
     Target          = open(filenames[1], "at+")
-    Target.write('#define USTR(x) U8##x\n')
+    if (filenames[0][-3:] == ".cc" or filenames[0][-4:] == ".cpp" or filenames[0][-2:] == ".c"):
+        print filenames[0]
+        Target.write('#define USTR(x) U8##x\n')
 
     # flags to determine exactly what the line of code in the source contains
     ebcdic_encoding = False
@@ -189,17 +191,14 @@ def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_path
     for line in Source:
 
         if prev_line is not None:
-            line = prev_line.strip() + line.strip()
+            line = prev_line + line
             prev_line = None
 
         backslash = BACKSLASH_RE.match(line)
         if backslash:
             backslash = backslash.group(1)
-            right = STRING_RIGHT_RE.match(backslash)
-            left = STRING_LEFT_RE.match(backslash)
-            if right is None and left is not None:
-                prev_line = backslash
-                continue
+            prev_line = backslash
+            continue
 
         # check if the line is a comment
         comment_start = MULTILINE_COMMENT_START.match(line)
