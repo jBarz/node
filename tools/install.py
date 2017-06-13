@@ -136,7 +136,12 @@ def files(action):
   action(['deps/v8z/tools/lldbinit'], 'share/doc/node/')
   action(['deps/v8z/tools/lldb_commands.py'], 'share/doc/node/')
 
-  action(['tools/conversion_tool/eb2as.sh', 'tools/conversion_tool/cleanup.sh', 'tools/conversion_tool/ebcdic2ascii.py', 'tools/conversion_tool/ebcdic2ascii_encoder.py', 'tools/conversion_tool/read_files.py'], 'bin/')
+  # conversion_tool files
+  action(['tools/conversion_tool/eb2as.sh',
+        'tools/conversion_tool/cleanup.sh',
+        'tools/conversion_tool/ebcdic2ascii.py',
+        'tools/conversion_tool/ebcdic2ascii_encoder.py',
+        'tools/conversion_tool/read_files.py'], 'bin/')
 
   if 'freebsd' in sys.platform or 'openbsd' in sys.platform:
     action(['doc/node.1'], 'man/man1/')
