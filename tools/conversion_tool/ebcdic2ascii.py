@@ -110,7 +110,6 @@ def determine_new_line(tokens_of_interest, delimiters, skip_print_strings, unico
             token =  encoded_char
 
         if STRINGIFY_RE.match(token):
-            print token
             converted_token = ConvertMacroArgs(token)
             token = converted_token
 
@@ -136,7 +135,8 @@ def find_target_header(line, filenames, include_paths, include_paths_names):
     # check if its an absolute path, as those take priority
     a = ABSOLUTE_RE.match(include_file)
     if a is not None:
-        target_header = read_files.recursive_headers(a.group(1), '', include_file, include_paths, include_paths_names)
+        target_header = read_files.recursive_headers(a.group(1), '', \
+          include_file, include_paths, include_paths_names)
     else:
         # get only the end of the file - the filename
         include_end = FILE_END_RE.search(include_file)
@@ -149,27 +149,33 @@ def find_target_header(line, filenames, include_paths, include_paths_names):
         # search for the path provided in the include_paths array
         if include_end in include_paths_names:
             full_path = include_paths[include_paths_names.index(include_end)]
-            target_header = read_files.recursive_headers(full_path.strip(), include_file, include_paths, include_paths_names)
+            target_header = read_files.recursive_headers(full_path.strip(), \
+              include_file, include_paths, include_paths_names)
         else:
             # otherwise, search using the name itself
             file_beginning = FILE_END_RE.match(filenames[0])
             if file_beginning is not None:
-                target_header = read_files.recursive_headers(file_beginning.group(1) + "/" + include_file, include_file, include_paths, include_paths_names)
+                target_header = read_files.recursive_headers(file_beginning.group(1) \
+                  + "/" + include_file, include_file, include_paths, include_paths_names)
             else:
-                target_header = read_files.recursive_headers(include_file, include_file, include_paths, include_paths_names)
+                target_header = read_files.recursive_headers(include_file, \
+                  include_file, include_paths, include_paths_names)
 
-    # if all else fails, it is a standard library include, rewrite it as the original
+    # if all else fails, it is a standard library include,
+    # rewrite it as the original
     if target_header == 1 or target_header == 0:
         target_header = include_file
 
     return target_header, quotes
 
 # main function to convert from ebcdic to ascii
-def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_paths, include_paths_names):
+def convert_to_ascii(filenames, unicode_encode, skip_print_strings, \
+  include_paths, include_paths_names):
     Source          = open(filenames[0], "rt")
     Target          = open(filenames[1], "at+")
+
+    # define USTR written at the top of the temp c/c++ file
     if (filenames[0][-3:] == ".cc" or filenames[0][-4:] == ".cpp" or filenames[0][-2:] == ".c"):
-        print filenames[0]
         Target.write('#define USTR(x) U8##x\n')
 
     # flags to determine exactly what the line of code in the source contains
@@ -189,10 +195,10 @@ def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_path
     # main loop which identifies and encodes literals with hex escape sequences
     for line in Source:
 
+        # logic for line continuations; appends the lines
         if prev_line is not None:
             line = prev_line + line
             prev_line = None
-
         backslash = BACKSLASH_RE.match(line)
         if backslash:
             backslash = backslash.group(1)
@@ -219,17 +225,20 @@ def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_path
             tokens_of_interest = re.split(SPLIT_RE, line)
             tokens_of_interest = filter(None, tokens_of_interest)
 
-            # mark strings inside functions and between outstream_op which we do not want to be modified
+            # mark strings inside functions and between outstream_op
+            # which we do not want to be modified
             delimiters = make_delimiters(tokens_of_interest, skip_print_strings)
 
             #check what the current line is, determine what to make the new line
-            line = determine_new_line(tokens_of_interest, delimiters, skip_print_strings, unicode_encode);
+            line = determine_new_line(tokens_of_interest, delimiters, \
+              skip_print_strings, unicode_encode);
 
         # if the line is an #include statement
         if include_line:
 
             # find the name of the new temp header file
-            (target_header, quotes) = find_target_header(line, filenames, include_paths, include_paths_names)
+            (target_header, quotes) = find_target_header(line, filenames, \
+              include_paths, include_paths_names)
 
             # write the name of the target header where the source header once was
             if quotes:
@@ -272,7 +281,6 @@ def parse_arguments():
 
     # go through the header file provided and determine the file path and file
     # name for every header path provided
-
     includes = []
     files = []
     if os.path.isfile(options.headers):

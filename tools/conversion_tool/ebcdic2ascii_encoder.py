@@ -41,9 +41,8 @@ COLON_RE = re.compile('\s*.*:\s*([a-z0-9\._/]*)')
 STRIPPED_LINE = re.compile('\s*([a-z0-9\._/]*)')
 DOT = re.compile('(.*)\.(.*)')
 
-#line continuations with strings
+#line continuations
 BACKSLASH_RE = re.compile('(.+)\\\\\s*\\n')
-STRING_LEFT_RE = re.compile('"')
 
 #C-string literals in the source
 DEFINE_RE             = re.compile(r'#pragma|#import|#error|#define|#undef|#endif|#if|#ifdef|#else|#elseif|#elif')
