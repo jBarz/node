@@ -1,5 +1,4 @@
-#!/bin/bash
-echo $@
+#!/sh
 
 curr=0
 file=0
@@ -56,7 +55,7 @@ do
         fi
         HEADER=$(echo $var | sed -E 's/.*\/([a-z0-9_]+)\.[a-z]+/\1.u/')
         TEMP=$(echo $var | sed -E 's/(.+)\.([a-z]+)/\1_temp.\2/')
-        python ${NODE}/tools/conversion_tool/ebcdic2ascii.py -H $HEADER $var $TEMP
+        python $(dirname ${CXX})/ebcdic2ascii.py -H $HEADER $var $TEMP
         COMPILE[count]=$TEMP
         count=$((count+1))
     else
@@ -64,8 +63,6 @@ do
         count=$((count+1))
     fi
 done
-
-echo ${COMPILE[*]} ${deleted[*]}
 
 # compile using the temp file that has been converted into ascii
 if [ $CFLAG = 1 ]
@@ -76,4 +73,4 @@ else
 fi
 
 # get rid of all files created
-#./cleanup.sh .
+$(dirname ${CXX})/cleanup.sh ../

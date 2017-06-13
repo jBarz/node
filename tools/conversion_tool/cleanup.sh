@@ -19,8 +19,3 @@ if [ -f $1/garbage.c ]
 then
     rm $1/garbage.c
 fi
-
-if [ -f $1/a.out ]
-then
-    rm $1/a.out
-fi

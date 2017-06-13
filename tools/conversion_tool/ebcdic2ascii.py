@@ -147,7 +147,6 @@ def find_target_header(line, filenames, include_paths, include_paths_names):
 
         # if the filename is in the include_paths_names providied by the .h file
         # search for the path provided in the include_paths array
-        print(include_end, "include_end")
         if include_end in include_paths_names:
             full_path = include_paths[include_paths_names.index(include_end)]
             target_header = read_files.recursive_headers(full_path.strip(), include_file, include_paths, include_paths_names)
@@ -244,7 +243,6 @@ def convert_to_ascii(filenames, unicode_encode, skip_print_strings, include_path
             line = line
             Target.write(line)
 
-    Target.write('#undef USTR')
     Source.close()
     Target.close()
 
@@ -280,27 +278,20 @@ def parse_arguments():
     if os.path.isfile(options.headers):
         header_file = open(options.headers, 'rt')
         for line in header_file:
-            print(line)
             MULTIPLE_HEADERS = re.compile('\s*([a-z0-9_/\.:]+)\s*([a-z0-9_/\s\.]*)')
             multiline = MULTIPLE_HEADERS.match(line)
             while (multiline is not None):
                 curr = multiline.group(1)
-                print(curr, "270")
-                print(multiline.group(2), "after")
                 absolute_match = ABSOLUTE_RE.match(curr)
                 if absolute_match is None:
                     includes.append(curr)
                     fsearch = FILE_END_RE.match(curr)
                     if fsearch is not None:
-                        print(curr, "276")
                         files.append(fsearch.group(2))
                     else:
-                        print(curr, "278")
                         files.append(curr.strip())
                 multiline = MULTIPLE_HEADERS.match(multiline.group(2))
 
-    print(includes, "includes")
-    print(files, "files")
     convert_to_ascii(args, unicode_encode, skip_print_strings, includes, files)
 
     # resets the global blacklist contained in read_files.py for header files
