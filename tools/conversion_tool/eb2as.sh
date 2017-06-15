@@ -49,10 +49,10 @@ do
             then
                 compiled=1
                 CFLAG=1
-                njsc -E ${new[*]} > garbage.c
+                xlclang -E ${new[*]} > garbage.c
             else
                 compiled=1
-                njsc++ -E ${new[*]} > garbage.c
+                xlclang++ -E ${new[*]} > garbage.c
             fi
         fi
         HEADER=$(echo $var | sed -E 's/.*\/([a-z0-9_]+)\.[a-z]+/\1.u/')
@@ -69,10 +69,10 @@ done
 # compile using the temp file that has been converted into ascii
 if [ $CFLAG = 1 ]
 then
-    njsc ${COMPILE[*]} ${deleted[*]}
+    xlclang ${COMPILE[*]} ${deleted[*]}
 else
-    njsc++ ${COMPILE[*]} ${deleted[*]}
+    xlclang++ ${COMPILE[*]} ${deleted[*]}
 fi
 
 # get rid of all files created
-$(dirname ${CXX})/cleanup.sh ../
+#$(dirname ${CXX})/cleanup.sh ../
