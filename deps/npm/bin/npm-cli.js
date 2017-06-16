@@ -60,6 +60,12 @@
 
   process.on('uncaughtException', errorHandler)
 
+  if (process.platform === 'os390') {
+    var installdir = path.dirname(process.execPath);
+    process.env['CC'] = path.join(installdir, "eb2as.sh");
+    process.env['CXX'] = path.join(installdir, "eb2as.sh");
+  }
+
   if (conf.usage && npm.command !== 'help') {
     npm.argv.unshift(npm.command)
     npm.command = 'help'
