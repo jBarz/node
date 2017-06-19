@@ -4,8 +4,8 @@ curr=0
 file=0
 count=0
 
-loop to find and remove any potential propositional arguments that could
-prevent the pre-processing step from producing a .u header file
+#loop to find and remove any potential propositional arguments that could
+#prevent the pre-processing step from producing a .u header file
 for var in $@
 do
     match=$(echo $var | grep "\-c")
