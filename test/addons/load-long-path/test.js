@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
-if (common.isWOW64) {
-  common.skip('doesn\'t work on WOW64');
+if (common.isWOW64 || common.isZos) {
+  common.skip('doesn\'t work on this platform');
   return;
 }
 
