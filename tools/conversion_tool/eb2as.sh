@@ -56,10 +56,10 @@ do
             then
                 compiled=1
                 CFLAG=1
-                njsc -E ${new[*]} > garbage.c
+                njsc -E ${new[*]} > /dev/null
             else
                 compiled=1
-                njsc++ -E ${new[*]} > garbage.c
+                njsc++ -E ${new[*]} > /dev/null
             fi
         fi
         HEADER=$(echo $var | sed -E 's/.*\/([A-Za-z0-9_\-\.]+)\.[a-zA-Z0-9]+/\1.u/')
