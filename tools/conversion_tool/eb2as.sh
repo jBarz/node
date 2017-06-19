@@ -4,6 +4,8 @@ curr=0
 file=0
 count=0
 
+$(dirname $0)/cleanup.sh ../
+
 #loop to find and remove any potential propositional arguments that could
 #prevent the pre-processing step from producing a .u header file
 for var in $@
@@ -80,4 +82,4 @@ else
 fi
 
 # get rid of all files created
-#$(dirname $0)/cleanup.sh ../
+$(dirname $0)/cleanup.sh ../
