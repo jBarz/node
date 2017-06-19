@@ -135,7 +135,7 @@ def find_target_header(line, filenames, include_paths):
     # check if its an absolute path, as those take priority
     a = ABSOLUTE_RE.match(include_file)
     if a is not None:
-        target_header = read_files.recursive_headers(a.group(1), \
+        target_header = read_files.recursive_headers(include_file,
           include_file, include_paths)
     else:
         # get only the end of the file - the filename
@@ -145,24 +145,24 @@ def find_target_header(line, filenames, include_paths):
         else:
             include_end = include_file
 
+        print "include_end", include_end
+
         # if the filename is in the include_paths_names providied by the .h file
         # search for the path provided in the include_paths array
         for path in include_paths:
-            print path
             if include_end == path.split('/')[-1]:
-                print "here"
-                full_path = include_paths[include_paths_names.index(include_end)]
-                target_header = read_files.recursive_headers(full_path.strip(), \
-                  include_paths)
+                full_path = path
+                end_path = include_file
+                target_header = read_files.recursive_headers(full_path, end_path, include_paths)
         if target_header == 0:
             # otherwise, search using the name itself
             file_beginning = FILE_END_RE.match(filenames[0])
             if file_beginning is not None:
                 target_header = read_files.recursive_headers(file_beginning.group(1) \
-                  + "/" + include_file, include_paths, include_paths_names)
+                  + "/" + include_file, include_file, include_paths)
             else:
                 target_header = read_files.recursive_headers(include_file, \
-                  include_paths)
+                  include_file, include_paths)
 
     # if all else fails, it is a standard library include,
     # rewrite it as the original
@@ -285,13 +285,10 @@ def parse_arguments():
     # go through the header file provided and determine the file path and file
     # name for every header path provided
     includes = []
-    files = []
-
-    # method 1: original
-    if options.headers is not None and os.path.isfile(options.headers):
+    if os.path.isfile(options.headers):
         header_file = open(options.headers, 'rt')
         for line in header_file:
-            MULTIPLE_HEADERS = re.compile('\s*([a-z0-9_/\.:]+)\s*([a-z0-9_/\s\.]*)')
+            MULTIPLE_HEADERS = re.compile('\s*(\S+)\s*(\S*)')
             multiline = MULTIPLE_HEADERS.match(line)
             while (multiline is not None):
                 curr = multiline.group(1)

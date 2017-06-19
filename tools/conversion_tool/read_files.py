@@ -11,20 +11,17 @@ def header_exists(header):
 def reset_blacklist():
 	blacklist = []
 
-def recursive_headers(filepath, include_paths):
+def recursive_headers(filepath, filename, include_paths):
 
 	# need to separate the path before and after the extension in order to
 	# include the _temp portion
-	filenames = filepath.split('/')
-	filename = filenames[-1]
-
-	dot_search = DOT.search(filename)
+	dot_search = DOT.search(filepath)
+	dot_search2 = DOT.search(filename)
 
 	# in case there isn't an extension
-	if dot_search is not None:
-		target_to_return = dot_search.group(1) + "_temp." + dot_search.group(2)
-		filenames[-1] = target_to_return
-		target = '/'.join(filenames)
+	if dot_search2 is not None:
+		target_to_return = dot_search2.group(1) + "_temp." + dot_search2.group(2)
+		target = dot_search.group(1) + "_temp." + dot_search.group(2)
 	else:
 		target = filepath + "_temp"
 		target_to_return = filename + "_temp"
