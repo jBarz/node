@@ -3350,7 +3350,7 @@ void SetupProcessObject(Environment* env,
                     OneByteString(env->isolate(), *E2A(uv_version_string())));
   READONLY_PROPERTY(versions,
                     "\x7a\x6c\x69\x62",
-                    FIXED_ONE_BYTE_STRING(env->isolate(), NODE_STRINGIFY(ZLIB_VERSION)));
+                    FIXED_ONE_BYTE_STRING(env->isolate(), ZLIB_VERSION));
   READONLY_PROPERTY(versions,
                     "\x61\x72\x65\x73",
                     FIXED_ONE_BYTE_STRING(env->isolate(), NODE_STRINGIFY(ARES_VERSION_STR)));
