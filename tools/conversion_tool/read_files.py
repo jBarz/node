@@ -25,8 +25,6 @@ def recursive_headers(filepath, filename, include_paths):
 	else:
 		target = filepath + "_temp"
 		target_to_return = filename + "_temp"
-	print target
-	print target_to_return
 
 	# add the source header path to the blacklist to ensure the same
 	# headers aren't being translated again

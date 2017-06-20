@@ -145,8 +145,6 @@ def find_target_header(line, filenames, include_paths):
         else:
             include_end = include_file
 
-        print "include_end", include_end
-
         # if the filename is in the include_paths_names providied by the .h file
         # search for the path provided in the include_paths array
         for path in include_paths:
