@@ -282,16 +282,21 @@ def parse_arguments():
 
     # go through the header file provided and determine the file path and file
     # name for every header path provided
+    path = os.environ.get('NODE')
     includes = []
     if options.headers is not None and os.path.isfile(options.headers):
         header_file = open(options.headers, 'rt')
         for line in header_file:
             multiline = MULTIPLE_HEADERS.match(line)
             while (multiline is not None):
-                curr = multiline.group(1)
-                absolute_match = ABSOLUTE_RE.match(curr)
-                if absolute_match is None:
-                    includes.append(curr)
+                curr = multiline.group(1).strip()
+                if path is not None:
+                    if path[:-4] not in curr and ".node-gyp" not in curr and curr != "\\" and curr[-1] != ":":
+                        includes.append(curr)
+                else:
+                    absolute_match = ABSOLUTE_RE.match(curr)
+                    if absolute_match is None:
+                        includes.append(curr)
                 multiline = MULTIPLE_HEADERS.match(multiline.group(2))
 
     convert_to_ascii(args, unicode_encode, skip_print_strings, includes)
