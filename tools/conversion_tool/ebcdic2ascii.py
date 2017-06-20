@@ -235,7 +235,7 @@ def convert_to_ascii(filenames, unicode_encode, skip_print_strings, \
               skip_print_strings, unicode_encode);
 
         # if the line is an #include statement
-        if include_line:
+        if include_line and not skip_line:
 
             # find the name of the new temp header file
             (target_header, quotes) = find_target_header(line, filenames, \
@@ -283,10 +283,9 @@ def parse_arguments():
     # go through the header file provided and determine the file path and file
     # name for every header path provided
     includes = []
-    if os.path.isfile(options.headers):
+    if options.headers is not None and os.path.isfile(options.headers):
         header_file = open(options.headers, 'rt')
         for line in header_file:
-            MULTIPLE_HEADERS = re.compile('\s*(\S+)\s*(\S*)')
             multiline = MULTIPLE_HEADERS.match(line)
             while (multiline is not None):
                 curr = multiline.group(1)
@@ -294,36 +293,6 @@ def parse_arguments():
                 if absolute_match is None:
                     includes.append(curr)
                 multiline = MULTIPLE_HEADERS.match(multiline.group(2))
-
-    # method 2: make one string than split
-    # if options.headers is not None and os.path.isfile(options.headers):
-    #     header_file = open(options.headers, 'rt')
-    #     full_line = ""
-    #     for line in header_file:
-    #         full_line = full_line + " " + line.strip()
-    #     all_paths = re.split(': | ', full_line)
-    #     print all_paths
-    #     for path in all_paths:
-    #         absolute_match = ABSOLUTE_RE.match(path)
-    #         if absolute_match is None:
-    #             includes.append(path)
-
-    # method 3: go line by line and individually split each line
-    # includes = []
-    # files = []
-    # if os.path.isfile(options.headers):
-    #     header_file = open(options.headers, 'rt')
-    #     for line in header_file:
-    #         split_files = re.split(': | ', line)
-    #         for f in split_files:
-    #             absolute_match = ABSOLUTE_RE.match(f)
-    #             if absolute_match is None:
-    #                 includes.append(f.strip())
-    #                 fsearch = FILE_END_RE.match(f)
-    #                 if fsearch is not None:
-    #                     files.append(fsearch.group(2).strip())
-    #                 else:
-    #                     files.append(f.strip())
 
     convert_to_ascii(args, unicode_encode, skip_print_strings, includes)
 
