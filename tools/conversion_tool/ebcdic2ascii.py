@@ -269,6 +269,7 @@ def parse_arguments():
     parser.add_option("-u", action="store_true", dest="unicode_support", default = False, help="convert strings using u8 prefix")
     parser.add_option("--skip_print", action="store_true", dest="skip_print_strings", default = False, help="skip strings going to snprtinf,printf,output stream")
     parser.add_option("-H", action="store", dest="headers", default=[], help="provide a file that contains all the dependencies")
+    parser.add_option("-I", action="store", dest="ignore", default="")
 
     (options, args) = parser.parse_args()
 
@@ -292,7 +293,18 @@ def parse_arguments():
                 curr = multiline.group(1).strip()
                 if path is not None:
                     if path[:-4] not in curr and ".node-gyp" not in curr and curr != "\\" and curr[-1] != ":":
-                        includes.append(curr)
+                        if options.ignore is not None:
+                            BEGINNING_RE = re.compile("(.+)//private.*")
+                            beg = BEGINNING_RE.match(options.ignore)
+                            if beg is not None:
+                                if beg.group(1) not in curr:
+                                    print beg.group(1)
+                                    includes.append(curr)
+                            else:
+                                if options.ignore not in curr:
+                                    includes.append(curr)
+                        else:
+                            includes.append(curr)
                 else:
                     absolute_match = ABSOLUTE_RE.match(curr)
                     if absolute_match is None:
