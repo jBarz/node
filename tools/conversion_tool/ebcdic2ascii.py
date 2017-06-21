@@ -281,6 +281,13 @@ def parse_arguments():
     unicode_encode             = options.unicode_support;
     skip_print_strings         = options.skip_print_strings;
 
+    p = None
+    if options.ignore != "":
+        PRIVATE_MATCH = re.compile("(.+)/node")
+        p = PRIVATE_MATCH.match(options.ignore)
+        if p is not None:
+            p = p.group(1)
+
     # go through the header file provided and determine the file path and file
     # name for every header path provided
     path = os.environ.get('NODE')
@@ -291,20 +298,9 @@ def parse_arguments():
             multiline = MULTIPLE_HEADERS.match(line)
             while (multiline is not None):
                 curr = multiline.group(1).strip()
-                if path is not None:
-                    if path[:-4] not in curr and ".node-gyp" not in curr and curr != "\\" and curr[-1] != ":":
-                        if options.ignore is not None:
-                            BEGINNING_RE = re.compile("(.+)//private.*")
-                            beg = BEGINNING_RE.match(options.ignore)
-                            if beg is not None:
-                                if beg.group(1) not in curr:
-                                    print beg.group(1)
-                                    includes.append(curr)
-                            else:
-                                if options.ignore not in curr:
-                                    includes.append(curr)
-                        else:
-                            includes.append(curr)
+                if p is not None:
+                    if p not in curr and curr != "\\" and ".node-gyp" not in curr:
+                        includes.append(curr)
                 else:
                     absolute_match = ABSOLUTE_RE.match(curr)
                     if absolute_match is None:

@@ -4,7 +4,22 @@ curr=0
 file=0
 count=0
 
-$(dirname $0)/cleanup.sh ../
+CLEAN=0
+TEST=0
+
+if [ "$1" != "--dev" ]
+then
+    $(dirname $0)/cleanup.sh ../
+    CLEAN=1
+else
+    shift
+fi
+
+if [ "$1" = "--test" ]
+then
+    TEST=1
+    shift
+fi
 
 #find and remove any potential propositional arguments that could
 #prevent the pre-processing step from producing a .u header file
@@ -42,8 +57,13 @@ do
         fi
         HEADER=$(echo $var | sed -E 's/.*\/([A-Za-z0-9_\-\.]+)\.[a-zA-Z0-9]+/\1.u/')
         TEMP=$(echo $var | sed -E 's/(.+)\.([A-Z0-9a-z]+)/\1_temp.\2/')
-        INCLUDE=$(njsc $var -E -v 2>&1 1>/dev/null | grep isystem | sed -e 's/^.*isystem//' -e 's/,.*//')
-        python $(dirname $0)/ebcdic2ascii.py -H $HEADER $var $TEMP -I $INCLUDE
+        INCLUDE=$(node -p process.execPath)
+        if [ $TEST -eq 1 ]
+        then
+            python $(dirname $0)/ebcdic2ascii.py -H $HEADER $var $TEMP
+        else
+            python $(dirname $0)/ebcdic2ascii.py -H $HEADER $var $TEMP -I $INCLUDE
+        fi
         COMPILE[count]=$TEMP
         count=$((count+1))
     else
@@ -61,4 +81,7 @@ else
 fi
 
 # get rid of all files created
-# $(dirname $0)/cleanup.sh ../
+if [ $CLEAN -eq 1 ]
+then
+    $(dirname $0)/cleanup.sh ../
+fi
