@@ -42,7 +42,7 @@ do
         fi
         HEADER=$(echo $var | sed -E 's/.*\/([A-Za-z0-9_\-\.]+)\.[a-zA-Z0-9]+/\1.u/')
         TEMP=$(echo $var | sed -E 's/(.+)\.([A-Z0-9a-z]+)/\1_temp.\2/')
-        INCLUDE=$(xlclang $var -E -v 2>&1 1>/dev/null | grep isystem | sed -e 's/^.*isystem//' -e 's/,.*//')
+        INCLUDE=$(njsc $var -E -v 2>&1 1>/dev/null | grep isystem | sed -e 's/^.*isystem//' -e 's/,.*//')
         python $(dirname $0)/ebcdic2ascii.py -H $HEADER $var $TEMP -I $INCLUDE
         COMPILE[count]=$TEMP
         count=$((count+1))
