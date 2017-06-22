@@ -177,7 +177,7 @@ def convert_to_ascii(filenames, unicode_encode, skip_print_strings, \
 
     # define USTR written at the top of the temp c/c++ file
     if (filenames[0][-3:] == ".cc" or filenames[0][-4:] == ".cpp" or filenames[0][-2:] == ".c"):
-        Target.write('#define USTR(x) U8##x\n')
+        Target.write('#define USTR(x) u8##x\n')
 
     # flags to determine exactly what the line of code in the source contains
     ebcdic_encoding = False
@@ -268,7 +268,7 @@ def parse_arguments():
     output.cc: Converted File.""")
     parser.add_option("-u", action="store_true", dest="unicode_support", default = False, help="convert strings using u8 prefix")
     parser.add_option("--skip_print", action="store_true", dest="skip_print_strings", default = False, help="skip strings going to snprtinf,printf,output stream")
-    parser.add_option("-H", action="store", dest="headers", default=[], help="provide a file that contains all the dependencies")
+    parser.add_option("-H", action="store", dest="headers", default="", help="provide a file that contains all the dependencies")
     parser.add_option("-I", action="store", dest="ignore", default="")
 
     (options, args) = parser.parse_args()

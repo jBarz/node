@@ -21,6 +21,14 @@ then
     shift
 fi
 
+if [ "$1" = "--xlc" ]
+then
+    COMPILER="xlclang"
+    shift
+else
+    COMPILER="njsc"
+fi
+
 #find and remove any potential propositional arguments that could
 #prevent the pre-processing step from producing a .u header file
 find=$(echo $@ | sed -E 's/.+ (-c) .+/\1/')
@@ -49,10 +57,10 @@ do
             then
                 compiled=1
                 CFLAG=1
-                njsc -E $new > /dev/null
+                $COMPILER -E $new > /dev/null
             else
                 compiled=1
-                njsc++ -E $new > /dev/null
+                $COMPILER++ -E $new > /dev/null
             fi
         fi
         HEADER=$(echo $var | sed -E 's/.*\/([A-Za-z0-9_\-\.]+)\.[a-zA-Z0-9]+/\1.u/')
@@ -75,9 +83,9 @@ done
 # compile using the temp file that has been converted into ascii
 if [ $CFLAG = 1 ]
 then
-    njsc ${COMPILE[*]} ${deleted[*]}
+    $COMPILER ${COMPILE[*]} ${deleted[*]}
 else
-    njsc++ ${COMPILE[*]} ${deleted[*]}
+    $COMPILER++ ${COMPILE[*]} ${deleted[*]}
 fi
 
 # get rid of all files created
