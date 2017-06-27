@@ -120,9 +120,10 @@ void uv__platform_loop_delete(uv_loop_t* loop) {
 
 
 uint64_t uv__hrtime(uv_clocktype_t type) {
-  struct timeval time;
-  gettimeofday(&time, NULL);
-  return (uint64_t) time.tv_sec * 1e9 + time.tv_usec * 1e3;
+  uint64_t timestamp;
+  __stckf((unsigned long long*)(&timestamp));
+  /* Convert to nanoseconds */
+  return timestamp / 10;
 }
 
 
