@@ -1,4 +1,4 @@
-#!/sh
+#!/bin/sh
 
 curr=0
 file=0
