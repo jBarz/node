@@ -3,7 +3,7 @@
     {
       'target_name': 'binding',
       'sources': ['binding.cc'],
-      'include_dirs': ['../../../deps/openssl/openssl/include'],
+      'include_dirs': ['<(nodedir)/deps/openssl/openssl/include'],
     },
   ]
 }

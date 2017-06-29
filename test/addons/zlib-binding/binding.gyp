@@ -3,7 +3,7 @@
     {
       'target_name': 'binding',
       'sources': ['binding.cc'],
-      'include_dirs': ['../../../deps/zlib'],
+      'include_dirs': ['<(nodedir)/deps/zlib'],
     },
   ]
 }
