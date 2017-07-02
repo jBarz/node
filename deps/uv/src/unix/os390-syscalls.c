@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <search.h>
+#include <termios.h>
+#include <sys/msg.h>
 
 #define CW_CONDVAR 32
 
@@ -108,10 +110,10 @@ static void maybe_resize(uv__os390_epoll* lst, unsigned int len) {
   if (len <= lst->size)
     return;
 
-  /* Capture the message queue at the end. */
-  if (lst->size == 0) {
+  if (lst->size == 0)
     e.fd = -1;
-  } else {
+  else {
+    /* Extract the message queue at the end. */
     e.fd = lst->items[lst->size - 1].fd;
     e.events = lst->items[lst->size - 1].events;
     lst->items[lst->size - 1].fd = -1;
@@ -124,6 +126,7 @@ static void maybe_resize(uv__os390_epoll* lst, unsigned int len) {
     abort();
   for (i = lst->size; i < newsize; ++i)
     newlst[i].fd = -1;
+
   /* Restore the message queue at the end */
   newlst[newsize - 1].fd = e.fd;
   newlst[newsize - 1].events = e.events;
@@ -153,9 +156,30 @@ uv__os390_epoll* epoll_create1(int flags) {
 
   /* initialize list */
   lst->size = 0;
-  lst->num_fs_events = 0;
   lst->items = NULL;
-  lst->fs_event_msg_queue = -1;
+
+  /* initialize message queue */
+  lst->msg_queue = msgget(IPC_PRIVATE, 0622 | IPC_CREAT);
+  if (lst->msg_queue == -1)
+    abort();
+
+  /* 
+     On z/OS, the message queue will be affiliated with the process only
+     when a send is performed on it. Once this is done, the system
+     can be queried for all message queues belonging to our process id.
+  */
+  msg.header = 1;
+  if (msgsnd(lst->msg_queue, &msg, sizeof(msg.body), 0) != 0)
+    abort();
+
+  /* Clean up the dummy message sent above */
+  if (msgrcv(lst->msg_queue, &msg, sizeof(msg.body), 0, 0) != sizeof(msg.body))
+    abort();
+
+  maybe_resize(lst, 1);
+  lst->items[lst->size - 1].fd = lst->msg_queue;
+  lst->items[lst->size - 1].events = POLLIN;
+
   return lst;
 }
 
@@ -189,19 +213,6 @@ int epoll_ctl(uv__os390_epoll* lst,
       return -1;
     }
     lst->items[fd].events = event->events;
-  } else if (op == EPOLL_CTL_MSGQA) {
-    lst->num_fs_events++;
-    if (lst->size == 0)
-      maybe_resize(lst, 1);
-    lst->items[lst->size - 1].fd = fd;
-    lst->items[lst->size - 1].events = event->events;
-  } else if (op == EPOLL_CTL_MSGQD) {
-    assert (lst->num_fs_events > 0);
-    assert(lst->items[lst->size - 1].fd == fd);
-    lst->num_fs_events--;
-    if (lst->num_fs_events == 0) {
-      lst->items[lst->size - 1].fd = -1;
-    }
   } else
     abort();
 
@@ -216,20 +227,15 @@ int epoll_wait(uv__os390_epoll* lst, struct epoll_event* events,
   int pollret;
   int reventcount;
 
-  size = _SET_FDS_MSGS(size,
-                       lst->items[lst->size - 1].fd == -1 ? 0 : 1,
-                       lst->size - 1);
+  size = _SET_FDS_MSGS(size, 1, lst->size - 1);
   pfds = lst->items;
   pollret = poll(pfds, size, timeout);
-  if (pollret <= 0)
+  if (pollret == -1 || pollret == 0)
     return pollret;
 
-  /* Only return the number of file descriptors. */
-  pollret = _NFDS(pollret);
-
+  pollret = _NFDS(pollret) + _NMSGS(pollret);
   reventcount = 0;
-  for (int i = 0; 
-       i < lst->size && i <  maxevents && reventcount < pollret; ++i) {
+  for (int i = 0; i < lst->size && i < maxevents; ++i) {
     struct epoll_event ev;
 
     if (pfds[i].fd == -1 || !pfds[i].revents)
@@ -262,9 +268,15 @@ int epoll_file_close(int fd) {
 }
 
 void epoll_queue_close(uv__os390_epoll* lst) {
+  
+  /* Remove epoll instance from global queue */
   uv_mutex_lock(&global_epoll_lock);
   QUEUE_REMOVE(&lst->member);
   uv_mutex_unlock(&global_epoll_lock);
+
+  /* Free resources */
+  msgctl(lst->msg_queue, IPC_RMID, NULL);
+  lst->msg_queue = -1;
   uv__free(lst->items);
   lst->items = NULL;
 }

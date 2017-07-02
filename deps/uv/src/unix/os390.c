@@ -671,37 +671,11 @@ int uv__io_check_fd(uv_loop_t* loop, int fd) {
 
 
 void uv__fs_event_close(uv_fs_event_t* handle) {
-  uv__os390_epoll* ep;
-  
-  ep = handle->loop->ep;
-  if (epoll_ctl(ep, UV__EPOLL_CTL_MSGQD, ep->fs_event_msg_queue, NULL))
-    abort();
-
-  /* Close the queue because no message events are left. */
-  if (ep->num_fs_events == 0) {
-    msgctl(ep->fs_event_msg_queue, IPC_RMID, NULL);
-    ep->fs_event_msg_queue = -1;
-  }
+  uv_fs_event_stop(handle);
 }
 
 
 int uv_fs_event_init(uv_loop_t* loop, uv_fs_event_t* handle) {
-  /* Create message queue. */
-  struct epoll_event e;
-  uv__os390_epoll* ep;
-
-  ep = loop->ep;
-  if (ep->fs_event_msg_queue == -1)
-    ep->fs_event_msg_queue = msgget(IPC_PRIVATE, 0622 | IPC_CREAT);
-
-  if (ep->fs_event_msg_queue == -1)
-    abort();
-
-  e.fd = ep->fs_event_msg_queue;
-  e.events = POLLIN;
-  if (epoll_ctl(loop->ep, UV__EPOLL_CTL_MSGQA,
-      ep->fs_event_msg_queue, &e))
-    abort();
   // Register handle
   uv__handle_init(loop, (uv_handle_t*)handle, UV_FS_EVENT);
   return 0;
@@ -716,10 +690,10 @@ int uv_fs_event_start(uv_fs_event_t* handle, uv_fs_event_cb cb,
   int rc;
 
   ep = handle->loop->ep;
-  assert(ep->fs_event_msg_queue != -1);
+  assert(ep->msg_queue != -1);
 
   reg_struct.__rfis_cmd  = _RFIS_REG;    
-  reg_struct.__rfis_qid  = ep->fs_event_msg_queue;     
+  reg_struct.__rfis_qid  = ep->msg_queue;     
   reg_struct.__rfis_type = 1;            
   memcpy(reg_struct.__rfis_utok, &handle, sizeof(handle));
 
@@ -735,7 +709,7 @@ int uv_fs_event_start(uv_fs_event_t* handle, uv_fs_event_cb cb,
   if (handle->path == NULL) {
     saved_errno = errno;
     reg_struct.__rfis_cmd  = _RFIS_UNREG;    
-    reg_struct.__rfis_qid  = ep->fs_event_msg_queue;     
+    reg_struct.__rfis_qid  = ep->msg_queue;     
     reg_struct.__rfis_type = 1;            
     __w_pioctl(NULL, _IOCC_REGFILEINT, sizeof(reg_struct),
                &reg_struct);
@@ -753,10 +727,10 @@ int uv_fs_event_stop(uv_fs_event_t* handle) {
   int rc;
 
   ep = handle->loop->ep;
-  assert(ep->fs_event_msg_queue != -1);
+  assert(ep->msg_queue != -1);
 
   reg_struct.__rfis_cmd  = _RFIS_UNREG;    
-  reg_struct.__rfis_qid  = ep->fs_event_msg_queue;     
+  reg_struct.__rfis_qid  = ep->msg_queue;     
   reg_struct.__rfis_type = 1;            
   memcpy(reg_struct.__rfis_rftok, handle->rfis_rftok, sizeof(handle->rfis_rftok));
 
@@ -770,18 +744,16 @@ int uv_fs_event_stop(uv_fs_event_t* handle) {
 }
 
 
-static int os390_message_queue_handler(uv_loop_t* loop) {
+static int os390_message_queue_handler(uv__os390_epoll* ep) {
   uv_fs_event_t* handle;
-  uv__os390_epoll* ep;
   int msglen;
   int events;
   _RFIM msg;
 
-  ep = loop->ep;
-  if (ep->fs_event_msg_queue == -1)
+  if (ep->msg_queue == -1)
     return 0;
 
-  msglen = msgrcv(ep->fs_event_msg_queue, &msg,
+  msglen = msgrcv(ep->msg_queue, &msg,
                   sizeof(msg), 0, IPC_NOWAIT);
 
   if (msglen == -1 && errno == ENOMSG)
@@ -810,13 +782,13 @@ void uv__io_poll(uv_loop_t* loop, int timeout) {
   struct epoll_event events[1024];
   struct epoll_event* pe;
   struct epoll_event e;
+  uv__os390_epoll* ep;
   int real_timeout;
   QUEUE* q;
   uv__io_t* w;
   uint64_t base;
   int count;
   int nfds;
-  int nmsgs;
   int fd;
   int op;
   int i;
@@ -873,18 +845,12 @@ void uv__io_poll(uv_loop_t* loop, int timeout) {
   int nevents = 0;
 
   nfds = 0;
-  nmsgs = 0;
   for (;;) {
     if (sizeof(int32_t) == sizeof(long) && timeout >= max_safe_timeout)
       timeout = max_safe_timeout;
 
     nfds = epoll_wait(loop->ep, events,
                       ARRAY_SIZE(events), timeout);
-
-    nmsgs = os390_message_queue_handler(loop);
-
-    if (nmsgs > 0 && nfds == 0)
-      continue;
 
     /* Update loop->time unconditionally. It's tempting to skip the update when
      * timeout == 0 (i.e. non-blocking poll) but there is no guarantee that the
@@ -929,6 +895,12 @@ void uv__io_poll(uv_loop_t* loop, int timeout) {
       /* Skip invalidated events, see uv__platform_invalidate_fd */
       if (fd == -1)
         continue;
+
+      ep = loop->ep;
+      if (fd == ep->msg_queue) {
+        os390_message_queue_handler(ep);
+        continue;
+      }
 
       assert(fd >= 0);
       assert((unsigned) fd < loop->nwatchers);
