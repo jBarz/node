@@ -105,7 +105,7 @@ static void maybe_resize(uv__os390_epoll* lst, unsigned int len) {
   unsigned int newsize;
   unsigned int i;
   struct pollfd* newlst;
-  struct epoll_event e;
+  struct pollfd e;
 
   if (len <= lst->size)
     return;
@@ -114,8 +114,7 @@ static void maybe_resize(uv__os390_epoll* lst, unsigned int len) {
     e.fd = -1;
   else {
     /* Extract the message queue at the end. */
-    e.fd = lst->items[lst->size - 1].fd;
-    e.events = lst->items[lst->size - 1].events;
+    e = lst->items[lst->size - 1];
     lst->items[lst->size - 1].fd = -1;
   }
 
@@ -128,8 +127,7 @@ static void maybe_resize(uv__os390_epoll* lst, unsigned int len) {
     newlst[i].fd = -1;
 
   /* Restore the message queue at the end */
-  newlst[newsize - 1].fd = e.fd;
-  newlst[newsize - 1].events = e.events;
+  newlst[newsize - 1] = e;
 
   lst->items = newlst;
   lst->size = newsize;
@@ -272,7 +270,6 @@ int epoll_file_close(int fd) {
 }
 
 void epoll_queue_close(uv__os390_epoll* lst) {
-  
   /* Remove epoll instance from global queue */
   uv_mutex_lock(&global_epoll_lock);
   QUEUE_REMOVE(&lst->member);

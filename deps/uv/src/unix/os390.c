@@ -686,7 +686,7 @@ int uv_fs_event_start(uv_fs_event_t* handle, uv_fs_event_cb cb,
                       const char* filename, unsigned int flags) {
   uv__os390_epoll* ep;
   _RFIS reg_struct;
-  int saved_errno;
+  char *path;
   int rc;
 
   ep = handle->loop->ep;
@@ -697,25 +697,19 @@ int uv_fs_event_start(uv_fs_event_t* handle, uv_fs_event_cb cb,
   reg_struct.__rfis_type = 1;            
   memcpy(reg_struct.__rfis_utok, &handle, sizeof(handle));
 
-  rc = __w_pioctl(filename, _IOCC_REGFILEINT, sizeof(reg_struct),
-                  &reg_struct);
+  path = uv__strdup(filename);
+  if (path == NULL)
+    return -errno;
+
+  rc = __w_pioctl(path, _IOCC_REGFILEINT, sizeof(reg_struct), &reg_struct);
   if (rc != 0)
     return -errno;
 
-  /* Start handle. */
   uv__handle_start(handle);
-  memcpy(handle->rfis_rftok, reg_struct.__rfis_rftok, sizeof(handle->rfis_rftok));
-  handle->path = uv__strdup(filename);
-  if (handle->path == NULL) {
-    saved_errno = errno;
-    reg_struct.__rfis_cmd  = _RFIS_UNREG;    
-    reg_struct.__rfis_qid  = ep->msg_queue;     
-    reg_struct.__rfis_type = 1;            
-    __w_pioctl(NULL, _IOCC_REGFILEINT, sizeof(reg_struct),
-               &reg_struct);
-    return -saved_errno;
-  }
+  handle->path = path;
   handle->cb = cb;
+  memcpy(handle->rfis_rftok, reg_struct.__rfis_rftok,
+         sizeof(handle->rfis_rftok));
 
   return 0;
 }
@@ -753,8 +747,7 @@ static int os390_message_queue_handler(uv__os390_epoll* ep) {
   if (ep->msg_queue == -1)
     return 0;
 
-  msglen = msgrcv(ep->msg_queue, &msg,
-                  sizeof(msg), 0, IPC_NOWAIT);
+  msglen = msgrcv(ep->msg_queue, &msg, sizeof(msg), 0, IPC_NOWAIT);
 
   if (msglen == -1 && errno == ENOMSG)
     return 0;
