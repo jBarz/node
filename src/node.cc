@@ -104,6 +104,8 @@ extern char **environ;
 #include <strings.h>
 #include <unistd.h> // e2a
 #include <setjmp.h> // e2a
+#include <sys/__getipc.h>
+#include <sys/msg.h>
 #endif
 
 
@@ -2676,6 +2678,28 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
 }
 
 
+static void ReleaseSystemResources() {
+  /* TODO: This might make all other ReleaseSystem... functions redundant */
+  IPCQPROC bufptr;
+  int token;
+  int foreignid;
+
+  token = 0;
+  foreignid = 0;
+  while (token != -1) {
+    token = __getipc(token, &bufptr, sizeof(bufptr), IPCQMSG);
+    if (bufptr.msg.ipcqpcp.uid != getuid() || bufptr.msg.ipcqlspid != getpid()) {
+      if (foreignid == 0)
+        foreignid = bufptr.msg.ipcqmid;
+      else if (foreignid == bufptr.msg.ipcqmid) /* have we rotated to the top */
+        break;
+      continue;
+    }
+    msgctl(bufptr.msg.ipcqmid, IPC_RMID, NULL);
+  }
+}
+
+
 static void OnFatalError(const char* location, const char* message) {
   if (location) {
     PrintErrorString(u8"FATAL ERROR: %s %s\n", location, message);
@@ -2686,6 +2710,7 @@ static void OnFatalError(const char* location, const char* message) {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
+  ReleaseSystemResources();
   ABORT();
 }
 
@@ -3684,6 +3709,7 @@ static void AtProcessExit() {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(false);
+  ReleaseSystemResources();
 }
 
 
@@ -3700,6 +3726,7 @@ void SignalExit(int signo) {
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
   SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
+  ReleaseSystemResources();
   raise(signo);
 }
 
@@ -5004,6 +5031,7 @@ static void StartNodeInstance(void* arg) {
     V8::ReleaseSystemResources();
     debugger::Agent::ReleaseSystemResources();
     StopDebugSignalHandler(true);
+    ReleaseSystemResources();
     abort();
 #endif
   }

@@ -145,6 +145,10 @@ static void epoll_init(void) {
 
 uv__os390_epoll* epoll_create1(int flags) {
   uv__os390_epoll* lst;
+  struct {
+    long int header;
+    char body;
+  } msg;
 
   uv_once(&once, epoll_init);
   uv_mutex_lock(&global_epoll_lock);
