@@ -1710,8 +1710,17 @@ def CleanupResources():
   if (platform.system() == 'OS/390'):
     rc = os.system("ipcs | grep \"^q.*$(whoami)\" ")
     if (rc == 0):
-      sys.stderr.write("Resource leak")
-      sys.exit("Resource leak")
+      sys.stderr.write("RESOURCE LEAK!! MUST FIX\n")
+    os.system("for u in `ipcs | grep \"^q.*$(whoami)\" | tr -s ' ' | cut -d' ' -f2`;"
+                 "do ipcrm -q $u;"
+              "done")
+    os.system("for u in `ipcs | grep \"^s.*$(whoami)\" | tr -s ' ' | cut -d' ' -f2`;"
+                "do ipcrm -s $u;"
+              "done")
+    os.system("for u in `ps -ecf -o ppid,jobname,pid | grep \" 1 $(whoami)\" | tr -s ' ' | cut -f4 -d' '`;"
+                "do kill -9 $u > /dev/null 2>&1;"
+              "done")
+
    
 
 
