@@ -611,7 +611,7 @@ def get_gas_version(cc):
 # check involves checking the build number against a whitelist.  I'm not
 # quite prepared to go that far yet.
 def check_compiler(o):
-  if sys.platform == 'win32':
+  if sys.platform == 'win32' or sys.platform == 'os390':
     return
 
   ok, is_clang, clang_version, gcc_version = try_check_compiler(CXX, 'c++')
@@ -634,6 +634,7 @@ def check_compiler(o):
     return
 
   if is_clang:
+    print('is clang')
     o['variables']['llvm_version'] = get_llvm_version(CC)
     if sys.platform == 'darwin':
       o['variables']['xcode_version'] = get_xcode_version(CC)
