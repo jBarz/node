@@ -27,6 +27,7 @@
 #include <search.h>
 #include <termios.h>
 #include <sys/msg.h>
+#include <unistd.h>
 
 #define CW_CONDVAR 32
 
@@ -371,4 +372,42 @@ char* mkdtemp(char* path) {
   }
 
   return path;
+}
+
+
+ssize_t os390_readlink(const char* path, char* buf, size_t len) {
+  ssize_t rlen;
+  char* buf2e;
+  char* realpathstr;
+
+  rlen = readlink(path, buf, len);
+
+  /* Straightforward readlink */
+  if (rlen < 2 || strncmp("/$", buf, 2) != 0)
+    return rlen;
+
+  /*
+   * There is a parmlib variable at the beginning */
+   * which needs interpretation
+   */
+  buf2e = strchr(buf + 1, '/'); 
+
+  realpathstr = uv__malloc(rlen + 1);
+  if (realpathstr == NULL) {
+    errno = ENOMEM;
+    return -1;
+  }
+
+  *buf2e = '\0';
+  if (realpath(buf, realpathstr) == NULL) {
+    *buf2e = '/';
+    uv__free(realpathstr);
+    return -1;
+  }
+
+  *buf2e = '/';
+  rlen = snprintf(buf, len, "%s%s", realpathstr, buf2e);
+  uv__free(realpathstr);
+
+  return rlen;
 }
