@@ -387,7 +387,7 @@ ssize_t os390_readlink(const char* path, char* buf, size_t len) {
     return rlen;
 
   /*
-   * There is a parmlib variable at the beginning */
+   * There is a parmlib variable at the beginning
    * which needs interpretation
    */
   buf2e = strchr(buf + 1, '/'); 
