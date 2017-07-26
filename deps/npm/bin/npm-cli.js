@@ -64,6 +64,7 @@
     var installdir = path.dirname(process.execPath);
     process.env['CC'] = path.join(installdir, "eb2as.sh");
     process.env['CXX'] = path.join(installdir, "eb2as.sh");
+    process.env['LINK'] = path.join(installdir, "eb2as.sh");
   }
 
   if (conf.usage && npm.command !== 'help') {
