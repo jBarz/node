@@ -83,9 +83,9 @@ done
 # compile using the temp file that has been converted into ascii
 if [ $CFLAG = 1 ]
 then
-    $COMPILER ${COMPILE[*]} ${deleted[*]}
+    $COMPILER ${COMPILE[*]} ${deleted[*]} 2>&1 | cat
 else
-    $COMPILER++ ${COMPILE[*]} ${deleted[*]}
+    $COMPILER++ ${COMPILE[*]} ${deleted[*]} 2>&1 | cat
 fi
 
 # get rid of all files created
