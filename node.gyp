@@ -581,6 +581,7 @@
 	  ],
 	  'cflags': [
 	    '-qlonglong',
+	    '-qenum=int',
 	  ],
 	  'ldflags': [
 	    '-Wl,DLL',
