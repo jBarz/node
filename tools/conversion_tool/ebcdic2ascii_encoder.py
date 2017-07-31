@@ -33,7 +33,7 @@ IGNORE_RE = re.compile(IGNORE_STRING)
 
 #regex for include header statements
 INCLUDE_RE = re.compile(INCLUDE_STRING)
-MULTIPLE_HEADERS = re.compile('\s*(\S+)\s*(\S*)')
+MULTIPLE_HEADERS = re.compile('\s*(\S+)(.*)')
 FILE_QUOTES_RE = re.compile('\s*#\s*include\s+"(.*)"')
 FILE_BRACKETS_RE = re.compile('\s*#\s*include\s+<(.*)>')
 FILE_END_RE = re.compile('(.*)/([a-z0-9_\.\-]*)\s*')
