@@ -172,6 +172,7 @@ static ERR_STRING_DATA ERR_str_functs[] = {
 # endif
     {ERR_PACK(0, SYS_F_OPENDIR, 0), "\x6f\x70\x65\x6e\x64\x69\x72"},
     {ERR_PACK(0, SYS_F_FREAD, 0), "\x66\x72\x65\x61\x64"},
+    {ERR_PACK(0, SYS_F_FFLUSH, 0), "\x66\x66\x6C\x75\x73\x68"},
     {0, NULL},
 };
 

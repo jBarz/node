@@ -34,6 +34,9 @@
     'conditions': [
       ['OS == "win"', {
         'os_posix': 0,
+        'v8_postmortem_support%': 'false',
+        'OBJ_DIR': '<(PRODUCT_DIR)/obj',
+        'V8_BASE': '<(PRODUCT_DIR)/lib/v8_libbase.lib',
       }, {
         'os_posix': 1,
       }],
@@ -42,12 +45,19 @@
       }, {
         'v8_postmortem_support': 'false'
       }],
-      ['GENERATOR == "ninja" or OS== "mac"', {
-        'OBJ_DIR': '<(PRODUCT_DIR)/obj',
+      ['OS== "mac"', {
+        'OBJ_DIR': '<(PRODUCT_DIR)/obj.target',
         'V8_BASE': '<(PRODUCT_DIR)/libv8_base.a',
       }, {
-        'OBJ_DIR': '<(PRODUCT_DIR)/obj.target',
-        'V8_BASE': '<(PRODUCT_DIR)/obj.target/deps/v8z/tools/gyp/libv8_base.a',
+        'conditions': [
+          ['GENERATOR=="ninja"', {
+            'OBJ_DIR': '<(PRODUCT_DIR)/obj',
+            'V8_BASE': '<(PRODUCT_DIR)/obj/deps/v8z/tools/gyp/libv8_base.a',
+          }, {
+            'OBJ_DIR%': '<(PRODUCT_DIR)/obj.target',
+            'V8_BASE%': '<(PRODUCT_DIR)/obj.target/deps/v8z/tools/gyp/libv8_base.a',
+          }],
+        ],
       }],
       ['openssl_fips != ""', {
         'OPENSSL_PRODUCT': 'libcrypto.a',

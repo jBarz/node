@@ -331,7 +331,6 @@ int MAIN(int argc, char **argv)
         else if (strcmp(*argv, "\x2d\x74\x65\x78\x74") == 0)
             text = 1;
         else if (strcmp(*argv, "\x2d\x78\x35\x30\x39") == 0) {
-            newreq = 1;
             x509 = 1;
         } else if (strcmp(*argv, "\x2d\x61\x73\x6e\x31\x2d\x6b\x6c\x75\x64\x67\x65") == 0)
             kludge = 1;
@@ -446,6 +445,9 @@ int MAIN(int argc, char **argv)
                    "\x20\x2d\x72\x65\x71\x6f\x70\x74\x20\x61\x72\x67\x20\x20\x20\x20\x2d\x20\x76\x61\x72\x69\x6f\x75\x73\x20\x72\x65\x71\x75\x65\x73\x74\x20\x74\x65\x78\x74\x20\x6f\x70\x74\x69\x6f\x6e\x73\xa\xa");
         goto end;
     }
+
+    if (x509 && infile == NULL)
+        newreq = 1;
 
     ERR_load_crypto_strings();
     if (!app_passwd(bio_err, passargin, passargout, &passin, &passout)) {
@@ -753,7 +755,7 @@ int MAIN(int argc, char **argv)
         }
     }
 
-    if (newreq) {
+    if (newreq || x509) {
         if (pkey == NULL) {
             BIO_printf(bio_err, "\x79\x6f\x75\x20\x6e\x65\x65\x64\x20\x74\x6f\x20\x73\x70\x65\x63\x69\x66\x79\x20\x61\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79\xa");
             goto end;

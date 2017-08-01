@@ -810,14 +810,15 @@ static int cryptodev_digest_update(EVP_MD_CTX *ctx, const void *data,
 
     if (!(ctx->flags & EVP_MD_CTX_FLAG_ONESHOT)) {
         /* if application doesn't support one buffer */
-        state->mac_data =
+        char *mac_data =
             OPENSSL_realloc(state->mac_data, state->mac_len + count);
 
-        if (!state->mac_data) {
+        if (mac_data == NULL) {
             printf("\x63\x72\x79\x70\x74\x6f\x64\x65\x76\x5f\x64\x69\x67\x65\x73\x74\x5f\x75\x70\x64\x61\x74\x65\x3a\x20\x72\x65\x61\x6c\x6c\x6f\x63\x20\x66\x61\x69\x6c\x65\x64\xa");
             return (0);
         }
 
+        state->mac_data = mac_data;
         memcpy(state->mac_data + state->mac_len, data, count);
         state->mac_len += count;
 

@@ -517,6 +517,17 @@ long dtls1_get_message(SSL *s, int st1, int stn, int mt, long max, int *ok)
         return i;
     }
 
+    /*
+     * Don't change the *message* read sequence number while listening. For
+     * the *record* write sequence we reflect the ClientHello sequence number
+     * when listening.
+     */
+    if (s->d1->listen)
+        memcpy(s->s3->write_sequence, s->s3->read_sequence,
+               sizeof(s->s3->write_sequence));
+    else
+        s->d1->handshake_read_seq++;
+
     if (mt >= 0 && s->s3->tmp.message_type != mt) {
         al = SSL_AD_UNEXPECTED_MESSAGE;
         SSLerr(SSL_F_DTLS1_GET_MESSAGE, SSL_R_UNEXPECTED_MESSAGE);
@@ -543,10 +554,6 @@ long dtls1_get_message(SSL *s, int st1, int stn, int mt, long max, int *ok)
                         p, msg_len, s, s->msg_callback_arg);
 
     memset(msg_hdr, 0x00, sizeof(struct hm_header_st));
-
-    /* Don't change sequence numbers while listening */
-    if (!s->d1->listen)
-        s->d1->handshake_read_seq++;
 
     s->init_msg = s->init_buf->data + DTLS1_HM_HEADER_LENGTH;
     return s->init_num;
@@ -1068,7 +1075,9 @@ int dtls1_send_change_cipher_spec(SSL *s, int a, int b)
 int dtls1_read_failed(SSL *s, int code)
 {
     if (code > 0) {
+#ifdef TLS_DEBUG
         fprintf(stderr, "\x69\x6e\x76\x61\x6c\x69\x64\x20\x73\x74\x61\x74\x65\x20\x72\x65\x61\x63\x68\x65\x64\x20\x25\x73\x3a\x25\x64", __FILE__, __LINE__);
+#endif
         return 1;
     }
 
@@ -1140,7 +1149,9 @@ int dtls1_retransmit_buffered_messages(SSL *s)
                                      (frag->msg_header.seq,
                                       frag->msg_header.is_ccs), 0,
                                      &found) <= 0 && found) {
+#ifdef TLS_DEBUG
             fprintf(stderr, "\x64\x74\x6c\x73\x31\x5f\x72\x65\x74\x72\x61\x6e\x73\x6d\x69\x74\x5f\x6d\x65\x73\x73\x61\x67\x65\x28\x29\x20\x66\x61\x69\x6c\x65\x64\xa");
+#endif
             return -1;
         }
     }
@@ -1240,7 +1251,9 @@ dtls1_retransmit_message(SSL *s, unsigned short seq, unsigned long frag_off,
 
     item = pqueue_find(s->d1->sent_messages, seq64be);
     if (item == NULL) {
+#ifdef TLS_DEBUG
         fprintf(stderr, "\x72\x65\x74\x72\x61\x6e\x73\x6d\x69\x74\x3a\x20\x20\x6d\x65\x73\x73\x61\x67\x65\x20\x25\x64\x20\x6e\x6f\x6e\x2d\x65\x78\x69\x73\x74\x61\x6e\x74\xa", seq);
+#endif
         *found = 0;
         return 0;
     }

@@ -15,7 +15,7 @@ const util = require('util');
 added: v0.11.3
 -->
 
-* `section` {String} A string identifying the portion of the application for
+* `section` {string} A string identifying the portion of the application for
   which the `debuglog` function is being created.
 * Returns: {Function} The logging function
 
@@ -59,7 +59,7 @@ it is marked as deprecated.
 const util = require('util');
 
 exports.puts = util.deprecate(function() {
-  for (var i = 0, len = arguments.length; i < len; ++i) {
+  for (let i = 0, len = arguments.length; i < len; ++i) {
     process.stdout.write(arguments[i] + '\n');
   }
 }, 'util.puts: Use console.log instead');
@@ -93,7 +93,7 @@ property take precedence over `--trace-deprecation` and
 added: v0.5.3
 -->
 
-* `format` {String} A `printf`-like format string.
+* `format` {string} A `printf`-like format string.
 
 The `util.format()` method returns a formatted string using the first argument
 as a `printf`-like format.
@@ -308,7 +308,8 @@ class Box {
 
     // Five space padding because that's the size of "Box< ".
     const padding = ' '.repeat(5);
-    const inner = util.inspect(this.value, newOptions).replace(/\n/g, '\n' + padding);
+    const inner = util.inspect(this.value, newOptions)
+                      .replace(/\n/g, '\n' + padding);
     return options.stylize('Box', 'special') + '< ' + inner + ' >';
   }
 }
@@ -391,7 +392,7 @@ deprecated: v0.11.3
 
 > Stability: 0 - Deprecated: Use [`console.error()`][] instead.
 
-* `string` {String} The message to print to `stderr`
+* `string` {string} The message to print to `stderr`
 
 Deprecated predecessor of `console.error`.
 
@@ -403,7 +404,7 @@ deprecated: v0.11.3
 
 > Stability: 0 - Deprecated: Use [`console.error()`][] instead.
 
-* `...strings` {String} The message to print to `stderr`
+* `...strings` {string} The message to print to `stderr`
 
 Deprecated predecessor of `console.error`.
 
@@ -426,7 +427,7 @@ const util = require('util');
 
 util.isArray([]);
 // Returns: true
-util.isArray(new Array);
+util.isArray(new Array());
 // Returns: true
 util.isArray({});
 // Returns: false
@@ -557,7 +558,7 @@ Returns `true` if the given `object` is a `Function`. Otherwise, returns
 const util = require('util');
 
 function Foo() {}
-const Bar = function() {};
+const Bar = () => {};
 
 util.isFunction({});
 // Returns: false
@@ -662,7 +663,7 @@ util.isObject(null);
 // Returns: false
 util.isObject({});
 // Returns: true
-util.isObject(function(){});
+util.isObject(function() {});
 // Returns: false
 ```
 
@@ -805,7 +806,7 @@ deprecated: v6.0.0
 
 > Stability: 0 - Deprecated: Use a third party module instead.
 
-* `string` {String}
+* `string` {string}
 
 The `util.log()` method prints the given `string` to `stdout` with an included
 timestamp.

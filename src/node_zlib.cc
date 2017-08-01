@@ -530,16 +530,19 @@ class ZCtx : public AsyncWrap {
         CHECK(0 && "\x77\x74\x66\x3f");
     }
 
-    if (ctx->err_ != Z_OK) {
-      ZCtx::Error(ctx, "\x49\x6e\x69\x74\x20\x65\x72\x72\x6f\x72");
-    }
-
-
     ctx->dictionary_ = reinterpret_cast<Bytef *>(dictionary);
     ctx->dictionary_len_ = dictionary_len;
 
     ctx->write_in_progress_ = false;
     ctx->init_done_ = true;
+
+    if (ctx->err_ != Z_OK) {
+      if (dictionary != nullptr) {
+        delete[] dictionary;
+        ctx->dictionary_ = nullptr;
+      }
+      ctx->env()->ThrowError("\x49\x6e\x69\x74\x20\x65\x72\x72\x6f\x72");
+    }
   }
 
   static void SetDictionary(ZCtx* ctx) {

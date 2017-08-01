@@ -525,7 +525,7 @@ fmtint(char **sbuffer,
     if (!(flags & DP_F_UNSIGNED)) {
         if (value < 0) {
             signvalue = '\x2d';
-            uvalue = -value;
+            uvalue = -(unsigned LLONG)value;
         } else if (flags & DP_F_PLUS)
             signvalue = '\x2b';
         else if (flags & DP_F_SPACE)

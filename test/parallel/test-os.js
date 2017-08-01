@@ -22,7 +22,7 @@ if (common.isWindows) {
   process.env.TEMP = '';
   assert.strictEqual(os.tmpdir(), '/tmp');
   process.env.TMP = '';
-  const expected = (process.env.SystemRoot || process.env.windir) + '\\temp';
+  const expected = `${process.env.SystemRoot || process.env.windir}\\temp`;
   assert.strictEqual(os.tmpdir(), expected);
   process.env.TEMP = '\\temp\\';
   assert.strictEqual(os.tmpdir(), '\\temp');
@@ -104,7 +104,7 @@ console.error(interfaces);
 switch (platform) {
   case 'linux':
     {
-      const filter = function(e) { return e.address === '127.0.0.1'; };
+      const filter = (e) => e.address === '127.0.0.1';
       const actual = interfaces.lo.filter(filter);
       const expected = [{ address: '127.0.0.1', netmask: '255.0.0.0',
                           mac: '00:00:00:00:00:00', family: 'IPv4',
@@ -114,7 +114,7 @@ switch (platform) {
     }
   case 'win32':
     {
-      const filter = function(e) { return e.address === '127.0.0.1'; };
+      const filter = (e) => e.address === '127.0.0.1';
       const actual = interfaces['Loopback Pseudo-Interface 1'].filter(filter);
       const expected = [{ address: '127.0.0.1', netmask: '255.0.0.0',
                           mac: '00:00:00:00:00:00', family: 'IPv4',

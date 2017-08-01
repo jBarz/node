@@ -152,7 +152,7 @@ int a2i_ASN1_INTEGER(BIO *bp, ASN1_INTEGER *bs, char *buf, int size)
         bufp = (unsigned char *)buf;
         if (first) {
             first = 0;
-            if ((bufp[0] == '\x30') && (buf[1] == '\x30')) {
+            if ((bufp[0] == '\x30') && (bufp[1] == '\x30')) {
                 bufp += 2;
                 i -= 2;
             }

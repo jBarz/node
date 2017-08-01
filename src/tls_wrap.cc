@@ -923,6 +923,7 @@ void TLSWrap::Initialize(Local<Object> target,
   env->SetMethod(target, "\x77\x72\x61\x70", TLSWrap::Wrap);
 
   auto constructor = [](const FunctionCallbackInfo<Value>& args) {
+    CHECK(args.IsConstructCall());
     args.This()->SetAlignedPointerInInternalField(0, nullptr);
   };
   auto t = env->NewFunctionTemplate(constructor);

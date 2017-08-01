@@ -119,32 +119,39 @@ STACK_OF(CONF_VALUE) *i2v_GENERAL_NAME(X509V3_EXT_METHOD *method,
     int i;
     switch (gen->type) {
     case GEN_OTHERNAME:
-        X509V3_add_value("\x6f\x74\x68\x65\x72\x6e\x61\x6d\x65", "\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e", &ret);
+        if (!X509V3_add_value("\x6F\x74\x68\x65\x72\x6E\x61\x6D\x65", "\x3C\x75\x6E\x73\x75\x70\x70\x6F\x72\x74\x65\x64\x3E", &ret))
+            return NULL;
         break;
 
     case GEN_X400:
-        X509V3_add_value("\x58\x34\x30\x30\x4e\x61\x6d\x65", "\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e", &ret);
+        if (!X509V3_add_value("\x58\x34\x30\x30\x4E\x61\x6D\x65", "\x3C\x75\x6E\x73\x75\x70\x70\x6F\x72\x74\x65\x64\x3E", &ret))
+            return NULL;
         break;
 
     case GEN_EDIPARTY:
-        X509V3_add_value("\x45\x64\x69\x50\x61\x72\x74\x79\x4e\x61\x6d\x65", "\x3c\x75\x6e\x73\x75\x70\x70\x6f\x72\x74\x65\x64\x3e", &ret);
+        if (!X509V3_add_value("\x45\x64\x69\x50\x61\x72\x74\x79\x4E\x61\x6D\x65", "\x3C\x75\x6E\x73\x75\x70\x70\x6F\x72\x74\x65\x64\x3E", &ret))
+            return NULL;
         break;
 
     case GEN_EMAIL:
-        X509V3_add_value_uchar("\x65\x6d\x61\x69\x6c", gen->d.ia5->data, &ret);
+        if (!X509V3_add_value_uchar("\x65\x6D\x61\x69\x6C", gen->d.ia5->data, &ret))
+            return NULL;
         break;
 
     case GEN_DNS:
-        X509V3_add_value_uchar("\x44\x4e\x53", gen->d.ia5->data, &ret);
+        if (!X509V3_add_value_uchar("\x44\x4E\x53", gen->d.ia5->data, &ret))
+            return NULL;
         break;
 
     case GEN_URI:
-        X509V3_add_value_uchar("\x55\x52\x49", gen->d.ia5->data, &ret);
+        if (!X509V3_add_value_uchar("\x55\x52\x49", gen->d.ia5->data, &ret))
+            return NULL;
         break;
 
     case GEN_DIRNAME:
-        X509_NAME_oneline(gen->d.dirn, oline, 256);
-        X509V3_add_value("\x44\x69\x72\x4e\x61\x6d\x65", oline, &ret);
+        if (X509_NAME_oneline(gen->d.dirn, oline, 256) == NULL
+                || !X509V3_add_value("\x44\x69\x72\x4E\x61\x6D\x65", oline, &ret))
+            return NULL;
         break;
 
     case GEN_IPADD:
@@ -162,15 +169,18 @@ STACK_OF(CONF_VALUE) *i2v_GENERAL_NAME(X509V3_EXT_METHOD *method,
                     strcat(oline, "\x3a");
             }
         } else {
-            X509V3_add_value("\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73", "\x3c\x69\x6e\x76\x61\x6c\x69\x64\x3e", &ret);
+            if (!X509V3_add_value("\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73", "\x3c\x69\x6e\x76\x61\x6c\x69\x64\x3e", &ret))
+                return NULL;
             break;
         }
-        X509V3_add_value("\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73", oline, &ret);
+        if (!X509V3_add_value("\x49\x50\x20\x41\x64\x64\x72\x65\x73\x73", oline, &ret))
+            return NULL;
         break;
 
     case GEN_RID:
         i2t_ASN1_OBJECT(oline, 256, gen->d.rid);
-        X509V3_add_value("\x52\x65\x67\x69\x73\x74\x65\x72\x65\x64\x20\x49\x44", oline, &ret);
+        if (!X509V3_add_value("\x52\x65\x67\x69\x73\x74\x65\x72\x65\x64\x20\x49\x44", oline, &ret))
+            return NULL;
         break;
     }
     return ret;

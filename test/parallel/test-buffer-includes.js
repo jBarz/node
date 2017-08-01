@@ -199,7 +199,7 @@ const longBufferString = Buffer.from(longString);
 let pattern = 'ABACABADABACABA';
 for (let i = 0; i < longBufferString.length - pattern.length; i += 7) {
   const includes = longBufferString.includes(pattern, i);
-  assert(includes, 'Long ABACABA...-string at index ' + i);
+  assert(includes, `Long ABACABA...-string at index ${i}`);
 }
 assert(longBufferString.includes('AJABACA'), 'Long AJABACA, First J');
 assert(longBufferString.includes('AJABACA', 511), 'Long AJABACA, Second J');
@@ -273,15 +273,17 @@ for (let lengthIndex = 0; lengthIndex < lengths.length; lengthIndex++) {
   }
 }
 
-assert.throws(function() {
-  b.includes(function() { });
-});
-assert.throws(function() {
+const expectedError =
+  /^TypeError: "val" argument must be string, number or Buffer$/;
+assert.throws(() => {
+  b.includes(() => {});
+}, expectedError);
+assert.throws(() => {
   b.includes({});
-});
-assert.throws(function() {
+}, expectedError);
+assert.throws(() => {
   b.includes([]);
-});
+}, expectedError);
 
 // test truncation of Number arguments to uint8
 {

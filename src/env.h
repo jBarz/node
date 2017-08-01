@@ -94,7 +94,6 @@ namespace node {
   V(encoding_string, "\x65\x6e\x63\x6f\x64\x69\x6e\x67")                                              \
   V(enter_string, "\x65\x6e\x74\x65\x72")                                                    \
   V(env_pairs_string, "\x65\x6e\x76\x50\x61\x69\x72\x73")                                             \
-  V(env_string, "\x65\x6e\x76")                                                        \
   V(errno_string, "\x65\x72\x72\x6e\x6f")                                                    \
   V(error_string, "\x65\x72\x72\x6f\x72")                                                    \
   V(events_string, "\x5f\x65\x76\x65\x6e\x74\x73")                                                 \

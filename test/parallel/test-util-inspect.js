@@ -252,9 +252,11 @@ Object.defineProperty(
 assert.strictEqual(util.inspect(value), '[ 1, 2, 3, growingLength: [Getter] ]');
 
 // Function with properties
-value = function() {};
-value.aprop = 42;
-assert.strictEqual(util.inspect(value), '{ [Function: value] aprop: 42 }');
+{
+  const value = () => {};
+  value.aprop = 42;
+  assert.strictEqual(util.inspect(value), '{ [Function: value] aprop: 42 }');
+}
 
 // Anonymous function with properties
 value = (() => function() {})();
@@ -441,8 +443,7 @@ function test_color_style(style, input, implicit) {
 
   const without_color = util.inspect(input, false, 0, false);
   const with_color = util.inspect(input, false, 0, true);
-  const expect = '\u001b[' + color[0] + 'm' + without_color +
-                 '\u001b[' + color[1] + 'm';
+  const expect = `\u001b[${color[0]}m${without_color}\u001b[${color[1]}m`;
   assert.strictEqual(
     with_color,
     expect,
@@ -595,9 +596,7 @@ assert.doesNotThrow(function() {
 
 // util.inspect with "colors" option should produce as many lines as without it
 function test_lines(input) {
-  const count_lines = function(str) {
-    return (str.match(/\n/g) || []).length;
-  };
+  const count_lines = (str) => (str.match(/\n/g) || []).length;
 
   const without_color = util.inspect(input);
   const with_color = util.inspect(input, {colors: true});
@@ -747,9 +746,10 @@ assert.strictEqual(util.inspect(keys), 'SetIterator { 1, 3 }');
 
 function checkAlignment(container) {
   const lines = util.inspect(container).split('\n');
+  const numRE = /\d/;
   let pos;
   lines.forEach(function(line) {
-    const npos = line.search(/\d/);
+    const npos = line.search(numRE);
     if (npos !== -1) {
       if (pos !== undefined)
         assert.strictEqual(pos, npos, 'container items not aligned');

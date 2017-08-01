@@ -280,7 +280,8 @@ decipher.on('end', () => {
   // Prints: some clear text data
 });
 
-const encrypted = 'ca981be48e90867604588e75d04feabb63cc007a8f8ad89b10616ed84d815504';
+const encrypted =
+  'ca981be48e90867604588e75d04feabb63cc007a8f8ad89b10616ed84d815504';
 decipher.write(encrypted, 'hex');
 decipher.end();
 ```
@@ -304,7 +305,8 @@ Example: Using the [`decipher.update()`][] and [`decipher.final()`][] methods:
 const crypto = require('crypto');
 const decipher = crypto.createDecipher('aes192', 'a password');
 
-const encrypted = 'ca981be48e90867604588e75d04feabb63cc007a8f8ad89b10616ed84d815504';
+const encrypted =
+  'ca981be48e90867604588e75d04feabb63cc007a8f8ad89b10616ed84d815504';
 let decrypted = decipher.update(encrypted, 'hex', 'utf8');
 decrypted += decipher.final('utf8');
 console.log(decrypted);
@@ -901,8 +903,8 @@ The `private_key` argument can be an object or a string. If `private_key` is a
 string, it is treated as a raw key with no passphrase. If `private_key` is an
 object, it is interpreted as a hash containing two properties:
 
-* `key` : {String} - PEM encoded private key
-* `passphrase` : {String} - passphrase for the private key
+* `key`: {string} - PEM encoded private key
+* `passphrase`: {string} - passphrase for the private key
 
 The `output_format` can specify one of `'latin1'`, `'hex'` or `'base64'`. If
 `output_format` is provided a string is returned; otherwise a [`Buffer`][] is
@@ -1410,8 +1412,8 @@ treated as the key with no passphrase and will use `RSA_PKCS1_OAEP_PADDING`.
 If `private_key` is an object, it is interpreted as a hash object with the
 keys:
 
-* `key` : {String} - PEM encoded private key
-* `passphrase` : {String} - Optional passphrase for the private key
+* `key`: {string} - PEM encoded private key
+* `passphrase`: {string} - Optional passphrase for the private key
 * `padding` : An optional padding value, one of the following:
   * `crypto.constants.RSA_NO_PADDING`
   * `crypto.constants.RSA_PKCS1_PADDING`
@@ -1447,8 +1449,8 @@ treated as the key with no passphrase and will use `RSA_PKCS1_PADDING`.
 If `private_key` is an object, it is interpreted as a hash object with the
 keys:
 
-* `key` : {String} - PEM encoded private key
-* `passphrase` : {String} - Optional passphrase for the private key
+* `key`: {string} - PEM encoded private key
+* `passphrase`: {string} - Optional passphrase for the private key
 * `padding` : An optional padding value, one of the following:
   * `crypto.constants.RSA_NO_PADDING`
   * `crypto.constants.RSA_PKCS1_PADDING`
@@ -1467,8 +1469,8 @@ treated as the key with no passphrase and will use `RSA_PKCS1_PADDING`.
 If `public_key` is an object, it is interpreted as a hash object with the
 keys:
 
-* `key` : {String} - PEM encoded public key
-* `passphrase` : {String} - Optional passphrase for the private key
+* `key`: {string} - PEM encoded public key
+* `passphrase`: {string} - Optional passphrase for the private key
 * `padding` : An optional padding value, one of the following:
   * `crypto.constants.RSA_NO_PADDING`
   * `crypto.constants.RSA_PKCS1_PADDING`
@@ -1491,8 +1493,8 @@ treated as the key with no passphrase and will use `RSA_PKCS1_OAEP_PADDING`.
 If `public_key` is an object, it is interpreted as a hash object with the
 keys:
 
-* `key` : {String} - PEM encoded public key
-* `passphrase` : {String} - Optional passphrase for the private key
+* `key`: {string} - PEM encoded public key
+* `passphrase`: {string} - Optional passphrase for the private key
 * `padding` : An optional padding value, one of the following:
   * `crypto.constants.RSA_NO_PADDING`
   * `crypto.constants.RSA_PKCS1_PADDING`
@@ -1645,7 +1647,7 @@ the `crypto`, `tls`, and `https` modules and are generally specific to OpenSSL.
   <tr>
     <td><code>SSL_OP_CIPHER_SERVER_PREFERENCE</code></td>
     <td>Attempts to use the server's preferences instead of the client's when
-    selecting a cipher. Behaviour depends on protocol version. See
+    selecting a cipher. Behavior depends on protocol version. See
     https://www.openssl.org/docs/man1.0.2/ssl/SSL_CTX_set_options.html.</td>
   </tr>
   <tr>

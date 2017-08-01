@@ -255,7 +255,7 @@ let pattern = 'ABACABADABACABA';
 for (let i = 0; i < longBufferString.length - pattern.length; i += 7) {
   const index = longBufferString.indexOf(pattern, i);
   assert.strictEqual((i + 15) & ~0xf, index,
-                     'Long ABACABA...-string at index ' + i);
+                     `Long ABACABA...-string at index ${i}`);
 }
 assert.strictEqual(510, longBufferString.indexOf('AJABACA'),
                    'Long AJABACA, First J');
@@ -346,15 +346,20 @@ assert.strictEqual(Buffer.from('aaaaa').indexOf('b', 'ucs2'), -1);
   }
 }
 
-assert.throws(function() {
-  b.indexOf(function() { });
-});
-assert.throws(function() {
+const argumentExpected =
+    /^TypeError: "val" argument must be string, number or Buffer$/;
+
+assert.throws(() => {
+  b.indexOf(() => { });
+}, argumentExpected);
+
+assert.throws(() => {
   b.indexOf({});
-});
-assert.throws(function() {
+}, argumentExpected);
+
+assert.throws(() => {
   b.indexOf([]);
-});
+}, argumentExpected);
 
 // Test weird offset arguments.
 // The following offsets coerce to NaN or 0, searching the whole Buffer

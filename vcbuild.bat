@@ -39,6 +39,7 @@ set enable_vtune_arg=
 set configure_flags=
 set build_addons=
 set dll=
+set enable_static=
 
 :next-arg
 if "%1"=="" goto args-done
@@ -56,8 +57,8 @@ if /i "%1"=="nosnapshot"    set nosnapshot=1&goto arg-ok
 if /i "%1"=="noetw"         set noetw=1&goto arg-ok
 if /i "%1"=="noperfctr"     set noperfctr=1&goto arg-ok
 if /i "%1"=="licensertf"    set licensertf=1&goto arg-ok
-if /i "%1"=="test"          set test_args=%test_args% addons doctool known_issues message parallel sequential -J&set jslint=1&set build_addons=1&goto arg-ok
-if /i "%1"=="test-ci"       set test_args=%test_args% %test_ci_args% -p tap --logfile test.tap addons doctool inspector known_issues message sequential parallel&set cctest_args=%cctest_args% --gtest_output=tap:cctest.tap&set build_addons=1&goto arg-ok
+if /i "%1"=="test"          set test_args=%test_args% doctool known_issues message parallel sequential addons -J&set jslint=1&set build_addons=1&goto arg-ok
+if /i "%1"=="test-ci"       set test_args=%test_args% %test_ci_args% -p tap --logfile test.tap doctool inspector known_issues message sequential parallel addons&set cctest_args=%cctest_args% --gtest_output=tap:cctest.tap&set build_addons=1&goto arg-ok
 if /i "%1"=="test-addons"   set test_args=%test_args% addons&set build_addons=1&goto arg-ok
 if /i "%1"=="test-simple"   set test_args=%test_args% sequential parallel -J&goto arg-ok
 if /i "%1"=="test-message"  set test_args=%test_args% message&goto arg-ok
@@ -82,6 +83,7 @@ if /i "%1"=="download-all"  set download_arg="--download=all"&goto arg-ok
 if /i "%1"=="ignore-flaky"  set test_args=%test_args% --flaky-tests=dontcare&goto arg-ok
 if /i "%1"=="enable-vtune"  set enable_vtune_arg=1&goto arg-ok
 if /i "%1"=="dll"           set dll=1&goto arg-ok
+if /i "%1"=="static"           set enable_static=1&goto arg-ok
 
 echo Error: invalid command line option `%1`.
 exit /b 1
@@ -113,6 +115,7 @@ if defined release_urlbase set configure_flags=%configure_flags% --release-urlba
 if defined download_arg set configure_flags=%configure_flags% %download_arg%
 if defined enable_vtune_arg set configure_flags=%configure_flags% --enable-vtune-profiling
 if defined dll set configure_flags=%configure_flags% --shared
+if defined enable_static set configure_flags=%configure_flags% --enable-static
 
 if "%i18n_arg%"=="full-icu" set configure_flags=%configure_flags% --with-intl=full-icu
 if "%i18n_arg%"=="small-icu" set configure_flags=%configure_flags% --with-intl=small-icu
@@ -344,20 +347,20 @@ goto jslint
 :jslint
 if defined jslint_ci goto jslint-ci
 if not defined jslint goto exit
-if not exist tools\eslint\lib\eslint.js goto no-lint
+if not exist tools\eslint\bin\eslint.js goto no-lint
 echo running jslint
-%config%\node tools\eslint\bin\eslint.js --cache --rule "linebreak-style: 0" --rulesdir=tools\eslint-rules benchmark lib test tools
+%config%\node tools\eslint\bin\eslint.js --cache --rule "linebreak-style: 0" --rulesdir=tools\eslint-rules --ext=.js,.md benchmark doc lib test tools
 goto exit
 
 :jslint-ci
 echo running jslint-ci
-%config%\node tools\jslint.js -J -f tap -o test-eslint.tap benchmark lib test tools
+%config%\node tools\jslint.js -J -f tap -o test-eslint.tap benchmark doc lib test tools
 goto exit
 
 :no-lint
 echo Linting is not available through the source tarball.
 echo Use the git repo instead: $ git clone https://github.com/nodejs/node.git
-goto exit
+exit /b 1
 
 :create-msvs-files-failed
 echo Failed to create vc project files.

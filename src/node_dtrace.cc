@@ -57,7 +57,7 @@ using v8::Value;
       "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20\x75\x38" USTR(#obj) "\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x69\x6e\x74\x65\x67\x65\x72\x20\x6d\x65\x6d\x62\x65\x72\x20" USTR(#member)); \
   } \
   *valp = obj->Get(OneByteString(env->isolate(), USTR(#member))) \
-      ->ToInteger(env->isolate())->Value();
+      ->Int32Value();
 
 #define SLURP_OBJECT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
