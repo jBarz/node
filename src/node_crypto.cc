@@ -3814,7 +3814,7 @@ void Hmac::HmacDigest(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (encoding == UCS2) {
-    return env->ThrowError("hmac.digest() does not support UTF-16");
+    return env->ThrowError(u8"hmac.digest() does not support UTF-16");
   }
 
   unsigned char* md_value = nullptr;
@@ -3941,7 +3941,7 @@ void Hash::HashDigest(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (encoding == UCS2) {
-    return env->ThrowError("hash.digest() does not support UTF-16");
+    return env->ThrowError(u8"hash.digest() does not support UTF-16");
   }
 
   unsigned char md_value[EVP_MAX_MD_SIZE];

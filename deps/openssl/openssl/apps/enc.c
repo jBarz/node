@@ -101,7 +101,7 @@ static void show_ciphers(const OBJ_NAME *name, void *arg)
             EVP_CIPHER_mode(cipher) == EVP_CIPH_XTS_MODE)
         return;
 
-    BIO_printf(bio, "\x2d\x25\x2d\x32\x35\x73", name->name);
+    BIO_printf(dec->bio, "\x2d\x25\x2d\x32\x35\x73", name->name);
     if (++dec->n == 3) {
         BIO_printf(dec->bio, "\xa");
         dec->n = 0;

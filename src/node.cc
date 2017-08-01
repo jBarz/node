@@ -3517,7 +3517,7 @@ void SetupProcessObject(Environment* env,
 
   Local<Object> process_env =
       process_env_template->NewInstance(env->context()).ToLocalChecked();
-  process->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "env"), process_env);
+  process->Set(FIXED_ONE_BYTE_STRING(env->isolate(), u8"env"), process_env);
 
   READONLY_PROPERTY(process, "\x70\x69\x64", Integer::New(env->isolate(), getpid()));
   READONLY_PROPERTY(process, "\x66\x65\x61\x74\x75\x72\x65\x73", GetFeatures(env));
@@ -3728,7 +3728,6 @@ void SignalExit(int signo) {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
-  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
   ReleaseSystemResources();
   raise(signo);
 }

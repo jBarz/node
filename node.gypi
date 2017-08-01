@@ -18,12 +18,12 @@
       ],
     }],
     [ 'node_enable_d8=="true"', {
-      'dependencies': [ 'deps/v8/src/d8.gyp:d8' ],
+      'dependencies': [ 'deps/v8z/src/d8.gyp:d8' ],
     }],
     [ 'node_use_bundled_v8=="true"', {
       'dependencies': [
-        'deps/v8/tools/gyp/v8.gyp:v8',
-        'deps/v8/tools/gyp/v8.gyp:v8_libplatform'
+        'deps/v8z/tools/gyp/v8.gyp:v8',
+        'deps/v8z/tools/gyp/v8.gyp:v8_libplatform'
       ],
     }],
     [ 'node_use_v8_platform=="true"', {
@@ -68,7 +68,7 @@
        target_arch=="ia32" or target_arch=="x32")', {
       'defines': [ 'NODE_ENABLE_VTUNE_PROFILING' ],
       'dependencies': [
-        'deps/v8/src/third_party/vtune/v8vtune.gyp:v8_vtune'
+        'deps/v8z/src/third_party/vtune/v8vtune.gyp:v8_vtune'
       ],
     }],
     ['v8_inspector=="true"', {
@@ -225,7 +225,7 @@
       'defines': [ 'NODE_NO_BROWSER_GLOBALS' ],
     } ],
     [ 'node_use_bundled_v8=="true" and v8_postmortem_support=="true"', {
-      'dependencies': [ 'deps/v8/tools/gyp/v8.gyp:postmortem-metadata' ],
+      'dependencies': [ 'deps/v8z/tools/gyp/v8.gyp:postmortem-metadata' ],
       'conditions': [
         # -force_load is not applicable for the static library
         [ 'node_target_type!="static_library"', {
@@ -328,6 +328,27 @@
     }],
     [ 'OS=="sunos"', {
       'ldflags': [ '-Wl,-M,/usr/lib/ld/map.noexstk' ],
+    }],
+    [ 'OS=="os390"', {
+      'defines': [
+        '_XOPEN_SOURCE_EXTENDED',
+        '_UNIX03_THREADS',
+        '_UNIX03_SOURCE',
+        '_XOPEN_SOURCE=600',
+        '_OPEN_SYS_SOCK_IPV6',
+        '_POSIX_SOURCE',
+        '_OPEN_SYS',
+        '__IBMCPP_TR1__',
+        'NODE_PLATFORM="os390"',
+        'PATH_MAX=_POSIX_PATH_MAX',
+      ],
+      'cflags': [
+        '-qlonglong',
+        '-qenum=int',
+      ],
+      'ldflags': [
+        '-Wl,DLL',
+      ],
     }],
   ],
 }

@@ -647,6 +647,13 @@
         ['OS=="solaris"', {
           'ldflags': [ '-I<(SHARED_INTERMEDIATE_DIR)' ]
         }],
+        ['OS=="os390"', {
+          'libraries': [ 
+            '<(OBJ_DIR)/deps/uv/libuv.a',
+            '<(OBJ_DIR)/deps/v8z/tools/gyp/libv8_libplatform.a',
+            '<(OBJ_DIR)/deps/v8z/tools/gyp/libv8_libbase.a'
+          ]
+        }],
       ]
     }
   ], # end targets
