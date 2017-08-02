@@ -283,7 +283,7 @@ def parse_arguments():
 
     p = None
     if options.ignore != "":
-        PRIVATE_MATCH = re.compile("(.+)/node$")
+        PRIVATE_MATCH = re.compile("(.+)/\S+$")
         p = PRIVATE_MATCH.match(options.ignore)
         if p is not None:
             p = p.group(1)
