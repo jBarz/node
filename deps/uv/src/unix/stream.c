@@ -782,7 +782,7 @@ start:
    */
 
 #if defined(__MVS__)
-  if (stream->type == UV_NAMED_PIPE || stream->type == UV_TTY)
+  if (stream->type == UV_NAMED_PIPE)
     for (int j = 0; j < iovcnt; ++j)
       __a2e_l(iov[j].iov_base, iov[j].iov_len);
 #endif
