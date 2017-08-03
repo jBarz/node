@@ -65,6 +65,9 @@
     process.env['CC'] = path.join(installdir, "eb2as.sh");
     process.env['CXX'] = path.join(installdir, "eb2as.sh");
     process.env['LINK'] = path.join(installdir, "eb2as.sh");
+    process.env['_C89_CCMODE'] = "1";
+    process.env['_CC_CCMODE'] = "1";
+    process.env['_CXX_CCMODE'] = "1";
   }
 
   if (conf.usage && npm.command !== 'help') {
