@@ -691,8 +691,10 @@ ifeq ($(OSTYPE),os390)
 ifdef COMPILER_ARCHIVE
 	pax -rf $(COMPILER_ARCHIVE) -s#^#$(BINARYNAME)/#
 endif
+	$(RM) -f node-latest-$(PLATFORM)-$(ARCH)
+	ln -s $(BINARYNAME) node-latest-$(PLATFORM)-$(ARCH)
 endif
-	$(TAR) $(TAROPTS) $(BINARYNAME).$(TAR) $(BINARYNAME)
+	$(TAR) $(TAROPTS) $(BINARYNAME).$(TAR) $(BINARYNAME) node-latest-$(PLATFORM)-$(ARCH)
 	$(RM) -r $(BINARYNAME)
 	$(GZIP) $(GZIPOPTS) $(BINARYNAME).$(TAR) > $(BINARYNAME).$(TAR).$(GZIPEXT)
 ifeq ($(XZ), 0)
