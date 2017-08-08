@@ -688,9 +688,7 @@ $(BINARYTAR): release-only
 	cp LICENSE $(BINARYNAME)
 	cp CHANGELOG.md $(BINARYNAME)
 ifeq ($(OSTYPE),os390)
-ifndef COMPILER_ARCHIVE
-	$(error COMPILER_ARCHIVE is not defined)
-endif
+ifdef COMPILER_ARCHIVE
 	pax -rf $(COMPILER_ARCHIVE) -s#^#$(BINARYNAME)/#
 endif
 	$(TAR) $(TAROPTS) $(BINARYNAME).$(TAR) $(BINARYNAME)
