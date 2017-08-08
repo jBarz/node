@@ -1102,8 +1102,10 @@ static void Open(const FunctionCallbackInfo<Value>& args) {
 static void WriteBuffer(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
+printf("JBAR in writeBuffer\n");
   if (!args[0]->IsInt32())
     return env->ThrowTypeError("\x46\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x66\x69\x6c\x65\x20\x64\x65\x73\x63\x72\x69\x70\x74\x6f\x72");
+printf("JBAR in writeBuffer, here\n");
 
   CHECK(Buffer::HasInstance(args[1]));
 
