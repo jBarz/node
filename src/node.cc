@@ -4131,9 +4131,9 @@ static void ParseArgs(int* argc,
 #if HAVE_OPENSSL
     } else if (strncmp(arg, "\x2d\x2d\x74\x6c\x73\x2d\x63\x69\x70\x68\x65\x72\x2d\x6c\x69\x73\x74\x3d", 18) == 0) {
       default_cipher_list = arg + 18;
-    } else if (strncmp(arg, "--use-openssl-ca", 16) == 0) {
+    } else if (strncmp(arg, u8"--use-openssl-ca", 16) == 0) {
       ssl_openssl_cert_store = true;
-    } else if (strncmp(arg, "--use-bundled-ca", 16) == 0) {
+    } else if (strncmp(arg, u8"--use-bundled-ca", 16) == 0) {
       ssl_openssl_cert_store = false;
 #if NODE_FIPS_MODE
     } else if (strcmp(arg, "\x2d\x2d\x65\x6e\x61\x62\x6c\x65\x2d\x66\x69\x70\x73") == 0) {
@@ -4151,7 +4151,7 @@ static void ParseArgs(int* argc,
     } else if (strcmp(arg, "\x2d\x2d\x65\x78\x70\x6f\x73\x65\x2d\x69\x6e\x74\x65\x72\x6e\x61\x6c\x73") == 0 ||
                strcmp(arg, "\x2d\x2d\x65\x78\x70\x6f\x73\x65\x5f\x69\x6e\x74\x65\x72\x6e\x61\x6c\x73") == 0) {
       // consumed in js
-    } else if (strcmp(arg, "--") == 0) {
+    } else if (strcmp(arg, u8"--") == 0) {
       index += 1;
       break;
     } else {
