@@ -69,7 +69,7 @@ do
         then
             python $(dirname $0)/ebcdic2ascii.py -H $HEADER $var $TEMP
         else
-            INCLUDE=$(node -p process.execPath)
+            INCLUDE=$(node -e "console.log(path.dirname(path.dirname(path.dirname(path.dirname(process.execPath)))))")
             python $(dirname $0)/ebcdic2ascii.py -H $HEADER $var $TEMP -I $INCLUDE
         fi
         COMPILE[count]=$TEMP

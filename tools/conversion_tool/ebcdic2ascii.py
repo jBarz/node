@@ -281,12 +281,7 @@ def parse_arguments():
     unicode_encode             = options.unicode_support;
     skip_print_strings         = options.skip_print_strings;
 
-    p = None
-    if options.ignore != "":
-        PRIVATE_MATCH = re.compile("(.+)/\S+$")
-        p = PRIVATE_MATCH.match(options.ignore)
-        if p is not None:
-            p = p.group(1)
+    p = options.ignore 
 
     # go through the header file provided and determine the file path and file
     # name for every header path provided
