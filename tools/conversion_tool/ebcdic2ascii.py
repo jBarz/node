@@ -292,12 +292,13 @@ def parse_arguments():
             multiline = MULTIPLE_HEADERS.match(line)
             while (multiline is not None):
                 curr = multiline.group(1).strip()
+                is_writable = os.access(curr, os.W_OK)
                 if p is not None:
-                    if p not in curr and curr != "\\" and ".node-gyp" not in curr:
+                    if p not in curr and curr != "\\" and ".node-gyp" not in curr and is_writable:
                         includes.append(curr)
                 else:
                     absolute_match = ABSOLUTE_RE.match(curr)
-                    if absolute_match is None:
+                    if absolute_match is None and is_writable:
                         includes.append(curr)
                 multiline = MULTIPLE_HEADERS.match(multiline.group(2))
 
