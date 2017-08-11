@@ -301,6 +301,8 @@ int uv_sem_init(uv_sem_t* sem, unsigned int value) {
       abort();
     return -err;
   }
+  uv_sem_post(&semid);
+  uv_sem_wait(&semid);
 
   *sem = semid;
   return 0;

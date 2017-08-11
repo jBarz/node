@@ -278,7 +278,9 @@ SigintWatchdogHelper::~SigintWatchdogHelper() {
 
 #ifdef __POSIX__
   CHECK_EQ(has_running_thread_, false);
+#ifndef __MVS__  /* z/OS will clean up resources on it's own */
   uv_sem_destroy(&sem_);
+#endif
 #endif
 }
 

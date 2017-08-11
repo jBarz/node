@@ -106,6 +106,7 @@ extern char **environ;
 #include <setjmp.h> // e2a
 #include <sys/__getipc.h>
 #include <sys/msg.h>
+#include <sys/sem.h>
 #endif
 
 
@@ -2681,7 +2682,7 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
 }
 
 
-static void ReleaseSystemResources() {
+static void ReleaseResourcesOnExit() {
   /* TODO: This might make all other ReleaseSystem... functions redundant */
   IPCQPROC bufptr;
   int token;
@@ -2690,15 +2691,27 @@ static void ReleaseSystemResources() {
   token = 0;
   foreignid = 0;
   while (token != -1) {
-    token = __getipc(token, &bufptr, sizeof(bufptr), IPCQMSG);
-    if (bufptr.msg.ipcqpcp.uid != getuid() || bufptr.msg.ipcqlspid != getpid()) {
-      if (foreignid == 0)
-        foreignid = bufptr.msg.ipcqmid;
-      else if (foreignid == bufptr.msg.ipcqmid) /* have we rotated to the top */
-        break;
-      continue;
+    token = __getipc(token, &bufptr, sizeof(bufptr), IPCQALL);
+    if (memcmp(bufptr.common.ipcqtype, "IMSG", 4) == 0) {
+      if (bufptr.msg.ipcqpcp.uid != getuid() || bufptr.msg.ipcqlspid != getpid()) {
+        if (foreignid == 0)
+          foreignid = bufptr.msg.ipcqmid;
+        else if (foreignid == bufptr.msg.ipcqmid) /* have we rotated to the top */
+          break;
+        continue;
+      }
+      msgctl(bufptr.msg.ipcqmid, IPC_RMID, NULL);
     }
-    msgctl(bufptr.msg.ipcqmid, IPC_RMID, NULL);
+    else if (memcmp(bufptr.common.ipcqtype, "ISEM", 4) == 0) {
+      if (bufptr.sem.ipcqpcp.uid != getuid() || bufptr.sem.ipcqlopid != getpid()) {
+        if (foreignid == 0)
+          foreignid = bufptr.sem.ipcqmid;
+        else if (foreignid == bufptr.sem.ipcqmid) /* have we rotated to the top */
+          break;
+        continue;
+      }
+      semctl(bufptr.sem.ipcqmid, 1, IPC_RMID);
+    }
   }
 }
 
@@ -2713,7 +2726,7 @@ static void OnFatalError(const char* location, const char* message) {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
-  ReleaseSystemResources();
+  ReleaseResourcesOnExit();
   ABORT();
 }
 
@@ -3712,7 +3725,6 @@ static void AtProcessExit() {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(false);
-  ReleaseSystemResources();
 }
 
 
@@ -3728,7 +3740,7 @@ void SignalExit(int signo) {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
-  ReleaseSystemResources();
+  ReleaseResourcesOnExit();
   raise(signo);
 }
 
@@ -4629,6 +4641,9 @@ inline void PlatformInit() {
     }
   }
 #endif  // _WIN32
+#ifdef __MVS__
+  atexit(ReleaseResourcesOnExit);
+#endif
 }
 
 
@@ -5033,7 +5048,7 @@ static void StartNodeInstance(void* arg) {
     V8::ReleaseSystemResources();
     debugger::Agent::ReleaseSystemResources();
     StopDebugSignalHandler(true);
-    ReleaseSystemResources();
+    ReleaseResourcesOnExit();
     abort();
 #endif
   }
