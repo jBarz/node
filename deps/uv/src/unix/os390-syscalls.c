@@ -377,37 +377,44 @@ char* mkdtemp(char* path) {
 
 ssize_t os390_readlink(const char* path, char* buf, size_t len) {
   ssize_t rlen;
-  char* buf2e;
-  char* realpathstr;
+  char* delimiter;
+  char old_delim;
+  char tmpbuf[len + 1];
+  char realpathstr[PATH_MAX];
 
-  rlen = readlink(path, buf, len);
-
-  /* Straightforward readlink */
-  if (rlen < 2 || strncmp("/$", buf, 2) != 0)
+  rlen = readlink(path, tmpbuf, len);
+  if (rlen < 0)
     return rlen;
+
+  if (rlen < 3 || strncmp("/$", tmpbuf, 2) != 0) {
+    /* Straightforward readlink */
+    memcpy(buf, tmpbuf, rlen);
+    return rlen;
+  }
 
   /*
    * There is a parmlib variable at the beginning
    * which needs interpretation
    */
-  buf2e = strchr(buf + 1, '/'); 
+  tmpbuf[rlen] = '\0';
+  delimiter = strchr(tmpbuf + 2, '/'); 
+  if (delimiter == NULL)
+    /* No slash at the end */
+    delimiter = strchr(tmpbuf + 2, '\0');
 
-  realpathstr = uv__malloc(rlen + 1);
-  if (realpathstr == NULL) {
-    errno = ENOMEM;
+  /* Read real path of the variable */
+  old_delim = *delimiter;
+  *delimiter = '\0';
+  if (realpath(tmpbuf, realpathstr) == NULL)
+    return -1;
+
+  /* Reset the delimiter and fill up the buffer */
+  *delimiter = old_delim;
+  rlen = snprintf(buf, len, "%s%s", realpathstr, delimiter);
+  if (rlen >= len) {
+    errno = ENAMETOOLONG;
     return -1;
   }
-
-  *buf2e = '\0';
-  if (realpath(buf, realpathstr) == NULL) {
-    *buf2e = '/';
-    uv__free(realpathstr);
-    return -1;
-  }
-
-  *buf2e = '/';
-  rlen = snprintf(buf, len, "%s%s", realpathstr, buf2e);
-  uv__free(realpathstr);
 
   return rlen;
 }
