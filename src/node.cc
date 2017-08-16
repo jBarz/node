@@ -1172,14 +1172,6 @@ Local<Value> WinapiErrnoException(Isolate* isolate,
 }
 #endif
 
-#ifdef __MVS__
-jmp_buf env;
-void on_sigabrt (int signum)
-{
-  longjmp (env, 1);
-}
-#endif
-
 void* ArrayBufferAllocator::Allocate(size_t size) {
   if (env_ == nullptr ||
       !env_->array_buffer_allocator_info()->no_zero_fill() ||
@@ -2714,6 +2706,17 @@ static void ReleaseResourcesOnExit() {
     }
   }
 }
+
+
+#ifdef __MVS__
+void on_sigabrt (int signum)
+{
+  V8::ReleaseSystemResources();
+  debugger::Agent::ReleaseSystemResources();
+  StopDebugSignalHandler(true);
+  ReleaseResourcesOnExit();
+}
+#endif
 
 
 static void OnFatalError(const char* location, const char* message) {
@@ -4967,14 +4970,11 @@ static void StartNodeInstance(void* arg) {
   }
 
 #ifdef __MVS__
-  if (setjmp (env) == 0) 
-  {
-    signal(SIGABRT, &on_sigabrt);
-    signal(SIGABND, &on_sigabrt);
-    signal(SIGHUP, &on_sigabrt);
-#else
-  {
+  signal(SIGABRT, &on_sigabrt);
+  signal(SIGABND, &on_sigabrt);
+  signal(SIGHUP, &on_sigabrt);
 #endif
+  {
     Locker locker(isolate);
     Isolate::Scope isolate_scope(isolate);
     HandleScope handle_scope(isolate);
@@ -5043,14 +5043,6 @@ static void StartNodeInstance(void* arg) {
     array_buffer_allocator->set_env(nullptr);
     env->Dispose();
     env = nullptr;
-#ifdef __MVS__
-  } else {
-    V8::ReleaseSystemResources();
-    debugger::Agent::ReleaseSystemResources();
-    StopDebugSignalHandler(true);
-    ReleaseResourcesOnExit();
-    abort();
-#endif
   }
 
   {
