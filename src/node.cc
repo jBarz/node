@@ -267,6 +267,10 @@ static void StopDebugSignalHandler(bool);
 static const unsigned kMaxSignal = 32;
 #endif
 
+#ifdef __MVS__
+static uv_thread_t signalHandlerThread;
+#endif
+
 static void PrintString(FILE* out, const char* format, va_list ap) {
 #ifdef _WIN32
   HANDLE stderr_handle = GetStdHandle(STD_ERROR_HANDLE);
@@ -4569,6 +4573,19 @@ static void DebugEnd(const FunctionCallbackInfo<Value>& args) {
 }
 
 
+void SignalHandlerThread(void* data) {
+  int old;
+
+  CHECK_EQ(pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &old), 0);
+  CHECK_EQ(pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &old),0);
+
+  while(true) {
+    CHECK_EQ(pause(),-1);
+    CHECK_EQ(errno,EINTR);
+  }
+}
+
+
 inline void PlatformInit() {
 #ifdef __POSIX__
   sigset_t sigmask;
@@ -4646,15 +4663,11 @@ inline void PlatformInit() {
 #endif  // _WIN32
 #ifdef __MVS__
   atexit(ReleaseResourcesOnExit);
+  sigset_t set;
+  sigfillset(&set);
+  uv_thread_create(&signalHandlerThread, SignalHandlerThread, NULL);
+  sigprocmask(SIG_BLOCK, &set, NULL);
 #endif
-}
-
-
-void SignalHandlerThread(void* data) {
-  while(true) {
-    CHECK_EQ(pause(),-1);
-    CHECK_EQ(errno,EINTR);
-  }
 }
 
 
@@ -4749,14 +4762,6 @@ void Init(int* argc,
   if (!use_debug_agent) {
     RegisterDebugSignalHandler();
   }
-
-#ifdef __MVS__
-  sigset_t set;
-  sigfillset(&set);
-  uv_thread_t thread;
-  uv_thread_create(&thread, SignalHandlerThread, NULL);
-  sigprocmask(SIG_BLOCK, &set, NULL);
-#endif
 
   // We should set node_is_initialized here instead of in node::Start,
   // otherwise embedders using node::Init to initialize everything will not be
@@ -5110,6 +5115,9 @@ int Start(int argc, char** argv) {
   V8::Dispose();
 
   v8_platform.Dispose();
+
+  if (pthread_cancel(signalHandlerThread) == -1)
+    abort();
 
   delete[] exec_argv;
   exec_argv = nullptr;
