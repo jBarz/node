@@ -5119,6 +5119,8 @@ int Start(int argc, char** argv) {
   if (pthread_cancel(signalHandlerThread) == -1)
     abort();
 
+  StopDebugSignalHandler(true);
+
   delete[] exec_argv;
   exec_argv = nullptr;
 
