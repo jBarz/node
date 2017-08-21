@@ -482,7 +482,6 @@
         '<@(icu_src_tools)',
         '<@(icu_src_common)',
         '<@(icu_src_i18n)',
-        '<@(icu_src_io)',
         '<@(icu_src_stubdata)',
       ],
       'sources!': [
@@ -494,7 +493,6 @@
       'include_dirs': [
         '<(icu_path)/source/common',
         '<(icu_path)/source/i18n',
-        '<(icu_path)/source/io',
         '<(icu_path)/source/tools/toolutil',
       ],
       'defines': [
@@ -514,7 +512,6 @@
         'include_dirs': [
           '<(icu_path)/source/common',
           '<(icu_path)/source/i18n',
-          '<(icu_path)/source/io',
           '<(icu_path)/source/tools/toolutil',
         ],
         'conditions': [

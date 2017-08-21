@@ -77,6 +77,21 @@ parser.add_option('-e', '--endian', action='store', dest='endian', help='endian,
 
 optVars = vars(options)
 
+def convert(file, srcEnc, tgtEnc) :
+   tmpfile = file + "tmp";
+   Convert = """
+    iconv -f {srcEnc} -t {targetEnc} {infile} > {tmpfile} &&
+    cp {tmpfile} {infile} &&
+    rm {tmpfile}
+   """
+   cmd = Convert.format(srcEnc=srcEnc,targetEnc=tgtEnc, 
+   infile=file,tmpfile=tmpfile);
+   rc = os.system(cmd);
+   if rc is not 0 and not doContinue:
+       print "FAILED: %s" % cmd
+       sys.exit(1)
+   return rc
+
 for opt in [ "datfile", "filterfile", "tmpdir", "outfile" ]:
     if optVars[opt] is None:
         print "Missing required option: %s" % opt
@@ -175,7 +190,7 @@ runcmd("icupkg", "-t%s %s %s""" % (endian_letter, options.datfile, outfile))
 ## STEP 2 - get listing
 listfile = os.path.join(options.tmpdir,"icudata.lst")
 runcmd("icupkg", "-l %s > %s""" % (outfile, listfile))
-
+convert(listfile, "ISO8859-1", "IBM-1047");
 fi = open(listfile, 'rb')
 items = fi.readlines()
 items = [items[i].strip() for i in range(len(items))]
@@ -283,6 +298,7 @@ for i in range(len(items)):
         # read in the resource list for the tree
         treelistfile = os.path.join(options.tmpdir,"%s.lst" % tree)
         runcmd("iculslocs", "-i %s -N %s -T %s -l > %s" % (outfile, dataname, tree, treelistfile))
+        convert(treelistfile,"ISO8859-1","IBM-1047");
         fi = open(treelistfile, 'rb')
         treeitems = fi.readlines()
         trees[tree]["locs"] = [treeitems[i].strip() for i in range(len(treeitems))]
@@ -309,6 +325,7 @@ def removeList(count=0):
         for i in remove:
             print >>fi, i
         fi.close()
+        convert(removefile,"IBM-1047","ISO8859-1"); 
         rc = runcmd("icupkg","-r %s %s 2> %s" %  (removefile,outfile,hackerrfile),True)
         if rc is not 0:
             if(options.verbose>5):
@@ -351,6 +368,7 @@ for tree in trees:
         os.mkdir(treebunddir)
     treebundres = os.path.join(treebunddir,RES_INDX)
     treebundtxt = "%s.txt" % (treebundres[0:-4])
+    print treebundtxt;
     runcmd("iculslocs", "-i %s -N %s -T %s -b %s" % (outfile, dataname, tree, treebundtxt))
     runcmd("genrb","-d %s -s %s res_index.txt" % (treebunddir, treebunddir))
     runcmd("icupkg","-s %s -a %s%s %s" % (options.tmpdir, trees[tree]["treeprefix"], RES_INDX, outfile))
