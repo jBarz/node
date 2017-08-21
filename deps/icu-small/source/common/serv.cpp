@@ -24,7 +24,7 @@ U_NAMESPACE_BEGIN
 ******************************************************************
 */
 
-const UChar ICUServiceKey::PREFIX_DELIMITER = 0x002F;   /* '/' */
+const UChar ICUServiceKey::PREFIX_DELIMITER = 0x002F;   /* '\x2f' */
 
 ICUServiceKey::ICUServiceKey(const UnicodeString& id)
 : _id(id) {
@@ -104,7 +104,7 @@ UnicodeString&
 ICUServiceKey::debug(UnicodeString& result) const
 {
     debugClass(result);
-    result.append((UnicodeString)" id: ");
+    result.append((UnicodeString)u8" id: ");
     result.append(_id);
     return result;
 }
@@ -112,7 +112,7 @@ ICUServiceKey::debug(UnicodeString& result) const
 UnicodeString&
 ICUServiceKey::debugClass(UnicodeString& result) const
 {
-    return result.append((UnicodeString)"ICUServiceKey");
+    return result.append((UnicodeString)u8"ICUServiceKey");
 }
 #endif
 
@@ -172,17 +172,17 @@ UnicodeString&
 SimpleFactory::debug(UnicodeString& toAppendTo) const
 {
     debugClass(toAppendTo);
-    toAppendTo.append((UnicodeString)" id: ");
+    toAppendTo.append((UnicodeString)u8" id: ");
     toAppendTo.append(_id);
-    toAppendTo.append((UnicodeString)", visible: ");
-    toAppendTo.append(_visible ? (UnicodeString)"T" : (UnicodeString)"F");
+    toAppendTo.append((UnicodeString)u8", visible: ");
+    toAppendTo.append(_visible ? (UnicodeString)u8"T" : (UnicodeString)u8"F");
     return toAppendTo;
 }
 
 UnicodeString&
 SimpleFactory::debugClass(UnicodeString& toAppendTo) const
 {
-    return toAppendTo.append((UnicodeString)"SimpleFactory");
+    return toAppendTo.append((UnicodeString)u8"SimpleFactory");
 }
 #endif
 

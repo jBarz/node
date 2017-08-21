@@ -50,7 +50,7 @@ findLikelySubtags(const char* localeID,
         int32_t resLen = 0;
         const UChar* s = NULL;
         UErrorCode tmpErr = U_ZERO_ERROR;
-        UResourceBundle* subtags = ures_openDirect(NULL, "likelySubtags", &tmpErr);
+        UResourceBundle* subtags = ures_openDirect(NULL, u8"likelySubtags", &tmpErr);
         if (U_SUCCESS(tmpErr)) {
             s = ures_getStringByKey(subtags, localeID, &resLen, &tmpErr);
 
@@ -99,7 +99,7 @@ appendTag(
     int32_t* bufferLength) {
 
     if (*bufferLength > 0) {
-        buffer[*bufferLength] = '_';
+        buffer[*bufferLength] = '\x5f';
         ++(*bufferLength);
     }
 
@@ -114,9 +114,9 @@ appendTag(
 /**
  * These are the canonical strings for unknown languages, scripts and regions.
  **/
-static const char* const unknownLanguage = "und";
-static const char* const unknownScript = "Zzzz";
-static const char* const unknownRegion = "ZZ";
+static const char* const unknownLanguage = u8"und";
+static const char* const unknownScript = u8"Zzzz";
+static const char* const unknownRegion = u8"ZZ";
 
 /**
  * Create a tag string from the supplied parameters.  The lang, script and region
@@ -330,12 +330,12 @@ createTagStringWithAlternates(
         }
 
         if (trailingLength > 0) {
-            if (*trailing != '@' && capacityRemaining > 0) {
-                tag[tagLength++] = '_';
+            if (*trailing != '\x40' && capacityRemaining > 0) {
+                tag[tagLength++] = '\x5f';
                 --capacityRemaining;
                 if (capacityRemaining > 0 && !regionAppended) {
                     /* extra separator is required */
-                    tag[tagLength++] = '_';
+                    tag[tagLength++] = '\x5f';
                     --capacityRemaining;
                 }
             }
@@ -556,7 +556,7 @@ parseTagString(
              **/
             *regionLength = 0;
         }
-    } else if (*position != 0 && *position != '@') {
+    } else if (*position != 0 && *position != '\x40') {
         /* back up over consumed trailing separator */
         --position;
     }
@@ -835,12 +835,12 @@ error:
     {   int32_t count = 0; \
         int32_t i; \
         for (i = 0; i < trailingLength; i++) { \
-            if (trailing[i] == '-' || trailing[i] == '_') { \
+            if (trailing[i] == '\x2d' || trailing[i] == '\x5f') { \
                 count = 0; \
                 if (count > 8) { \
                     goto error; \
                 } \
-            } else if (trailing[i] == '@') { \
+            } else if (trailing[i] == '\x40') { \
                 break; \
             } else if (count > 8) { \
                 goto error; \
@@ -862,7 +862,7 @@ _uloc_addLikelySubtags(const char*    localeID,
     int32_t scriptLength = sizeof(script);
     char region[ULOC_COUNTRY_CAPACITY];
     int32_t regionLength = sizeof(region);
-    const char* trailing = "";
+    const char* trailing = u8"";
     int32_t trailingLength = 0;
     int32_t trailingIndex = 0;
     int32_t resultLength = 0;
@@ -969,7 +969,7 @@ _uloc_minimizeSubtags(const char*    localeID,
     int32_t scriptLength = sizeof(script);
     char region[ULOC_COUNTRY_CAPACITY];
     int32_t regionLength = sizeof(region);
-    const char* trailing = "";
+    const char* trailing = u8"";
     int32_t trailingLength = 0;
     int32_t trailingIndex = 0;
 
@@ -1282,7 +1282,7 @@ uloc_minimizeSubtags(const char*    localeID,
 // Pairs of (language subtag, + or -) for finding out fast if common languages
 // are LTR (minus) or RTL (plus).
 static const char* LANG_DIR_STRING =
-        "root-en-es-pt-zh-ja-ko-de-fr-it-ar+he+fa+ru-nl-pl-th-tr-";
+        u8"root-en-es-pt-zh-ja-ko-de-fr-it-ar+he+fa+ru-nl-pl-th-tr-";
 
 // Implemented here because this calls uloc_addLikelySubtags().
 U_CAPI UBool U_EXPORT2
@@ -1304,8 +1304,8 @@ uloc_isRightToLeft(const char *locale) {
         const char* langPtr = uprv_strstr(LANG_DIR_STRING, lang);
         if (langPtr != NULL) {
             switch (langPtr[langLength]) {
-            case '-': return FALSE;
-            case '+': return TRUE;
+            case '\x2d': return FALSE;
+            case '\x2b': return TRUE;
             default: break;  // partial match of a longer code
             }
         }
@@ -1348,7 +1348,7 @@ ulocimp_getRegionForSupplementalData(const char *localeID, UBool inferRegion,
     UErrorCode rgStatus = U_ZERO_ERROR;
 
     // First check for rg keyword value
-    int32_t rgLen = uloc_getKeywordValue(localeID, "rg", rgBuf, ULOC_RG_BUFLEN, &rgStatus);
+    int32_t rgLen = uloc_getKeywordValue(localeID, u8"rg", rgBuf, ULOC_RG_BUFLEN, &rgStatus);
     if (U_FAILURE(rgStatus) || rgLen != 6) {
         rgLen = 0;
     } else {
@@ -1357,7 +1357,7 @@ ulocimp_getRegionForSupplementalData(const char *localeID, UBool inferRegion,
         for (; *rgPtr!= 0; rgPtr++) {
             *rgPtr = uprv_toupper(*rgPtr);
         }
-        rgLen = (uprv_strcmp(rgBuf+2, "ZZZZ") == 0)? 2: 0;
+        rgLen = (uprv_strcmp(rgBuf+2, u8"ZZZZ") == 0)? 2: 0;
     }
 
     if (rgLen == 0) {

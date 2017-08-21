@@ -18,7 +18,7 @@
 *
 *******************************************************************************
 */
-
+#define _AE_BIMODAL
 // Safer use of UnicodeString.
 #ifndef UNISTR_FROM_CHAR_EXPLICIT
 #   define UNISTR_FROM_CHAR_EXPLICIT explicit
@@ -56,13 +56,13 @@ static int tabCount = 0;
 static FileStream* out=NULL;
 static struct SRBRoot* srBundle ;
 static const char* outDir = NULL;
-static const char* enc ="";
+static const char* enc =u8"";
 static UConverter* conv = NULL;
 
 const char* const* ISOLanguages;
 const char* const* ISOCountries;
-const char* textExt = ".txt";
-const char* xliffExt = ".xlf";
+const char* textExt = u8".txt";
+const char* xliffExt = u8".xlf";
 
 static int32_t write_utf8_file(FileStream* fileStream, UnicodeString outString)
 {
@@ -99,7 +99,7 @@ static int32_t write_utf8_file(FileStream* fileStream, UnicodeString outString)
 static void write_tabs(FileStream* os){
     int i=0;
     for(;i<=tabCount;i++){
-        write_utf8_file(os,UnicodeString("    "));
+        write_utf8_file(os,UnicodeString(u8"    "));
     }
 }
 
@@ -112,9 +112,9 @@ static char* getID(const char* id, const char* curKey, char* result) {
     } else {
         result = (char *)uprv_malloc(sizeof(char)*(uprv_strlen(id) + 1 + uprv_strlen(curKey)) + 1);
         uprv_memset(result, 0, sizeof(char)*(uprv_strlen(id) + 1 + uprv_strlen(curKey)) + 1);
-        if(id[0]!='\0'){
+        if(id[0]!='\x0'){
             uprv_strcpy(result, id);
-            uprv_strcat(result, "_");
+            uprv_strcat(result, u8"_");
         }
         uprv_strcat(result, curKey);
     }
@@ -194,7 +194,7 @@ static char* parseFilename(const char* id, char* /*lang*/) {
     int canonLen = 0;
     /*int i;*/
     UErrorCode status = U_ZERO_ERROR;
-    const char *ext = uprv_strchr(id, '.');
+    const char *ext = uprv_strchr(id, '\x2e');
 
     if(ext != NULL){
         pos = (int) (ext - id);
@@ -209,26 +209,26 @@ static char* parseFilename(const char* id, char* /*lang*/) {
     canonLen = uloc_canonicalize(localeID, canon, canonCapacity, &status);
 
     if(U_FAILURE(status)){
-        fprintf(stderr, "Could not canonicalize the locale ID: %s. Error: %s\n", localeID, u_errorName(status));
+        __fprintf_a(stderr, u8"Could not canonicalize the locale ID: %s. Error: %s\n", localeID, u_errorName(status));
         exit(status);
     }
-    strnrepchr(canon, canonLen, '_', '-');
+    strnrepchr(canon, canonLen, '\x5f', '\x2d');
     return canon;
 }
 
-static const char* xmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+static const char* xmlHeader = u8"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 #if 0
-static const char* bundleStart = "<xliff version = \"1.2\" "
-                                        "xmlns='urn:oasis:names:tc:xliff:document:1.2' "
-                                        "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                                        "xsi:schemaLocation='urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd'>\n";
+static const char* bundleStart = u8"<xliff version = \"1.2\" "
+                                        u8"xmlns='urn:oasis:names:tc:xliff:document:1.2' "
+                                        u8"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                                        u8"xsi:schemaLocation='urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd'>\n";
 #else
-static const char* bundleStart = "<xliff version = \"1.1\" "
-                                        "xmlns='urn:oasis:names:tc:xliff:document:1.1' "
-                                        "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                                        "xsi:schemaLocation='urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd'>\n";
+static const char* bundleStart = u8"<xliff version = \"1.1\" "
+                                        u8"xmlns='urn:oasis:names:tc:xliff:document:1.1' "
+                                        u8"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                                        u8"xsi:schemaLocation='urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd'>\n";
 #endif
-static const char* bundleEnd   = "</xliff>\n";
+static const char* bundleEnd   = u8"</xliff>\n";
 
 void res_write_xml(struct SResource *res, const char* id, const char* language, UBool isTopLevel, UErrorCode *status);
 
@@ -260,7 +260,7 @@ static char* convertAndEscape(char** pDest, int32_t destCap, int32_t* destLength
 
         if (U16_IS_LEAD(c) || U16_IS_TRAIL(c)) {
             *status = U_ILLEGAL_CHAR_FOUND;
-            fprintf(stderr, "Illegal Surrogate! \n");
+            __fprintf_a(stderr, u8"Illegal Surrogate! \n");
             uprv_free(dest);
             return NULL;
         }
@@ -271,24 +271,24 @@ static char* convertAndEscape(char** pDest, int32_t destCap, int32_t* destLength
             if(c <=0x007F){
                 switch(c) {
                 case '\x26':
-                    uprv_strcpy(dest+( destLen),"\x26\x61\x6d\x70\x3b"); /* &amp;*/
-                    destLen+=(int32_t)uprv_strlen("\x26\x61\x6d\x70\x3b");
+                    uprv_strcpy(dest+( destLen),u8"\x26\x61\x6d\x70\x3b"); /* &amp;*/
+                    destLen+=(int32_t)uprv_strlen(u8"\x26\x61\x6d\x70\x3b");
                     break;
                 case '\x3c':
-                    uprv_strcpy(dest+(destLen),"\x26\x6c\x74\x3b"); /* &lt;*/
-                    destLen+=(int32_t)uprv_strlen("\x26\x6c\x74\x3b");
+                    uprv_strcpy(dest+(destLen),u8"\x26\x6c\x74\x3b"); /* &lt;*/
+                    destLen+=(int32_t)uprv_strlen(u8"\x26\x6c\x74\x3b");
                     break;
                 case '\x3e':
-                    uprv_strcpy(dest+(destLen),"\x26\x67\x74\x3b"); /* &gt;*/
-                    destLen+=(int32_t)uprv_strlen("\x26\x67\x74\x3b");
+                    uprv_strcpy(dest+(destLen),u8"\x26\x67\x74\x3b"); /* &gt;*/
+                    destLen+=(int32_t)uprv_strlen(u8"\x26\x67\x74\x3b");
                     break;
                 case '\x22':
-                    uprv_strcpy(dest+(destLen),"\x26\x71\x75\x6f\x74\x3b"); /* &quot;*/
-                    destLen+=(int32_t)uprv_strlen("\x26\x71\x75\x6f\x74\x3b");
+                    uprv_strcpy(dest+(destLen),u8"\x26\x71\x75\x6f\x74\x3b"); /* &quot;*/
+                    destLen+=(int32_t)uprv_strlen(u8"\x26\x71\x75\x6f\x74\x3b");
                     break;
                 case '\x27':
-                    uprv_strcpy(dest+(destLen),"\x26\x61\x70\x6f\x73\x3b"); /* &apos; */
-                    destLen+=(int32_t)uprv_strlen("\x26\x61\x70\x6f\x73\x3b");
+                    uprv_strcpy(dest+(destLen),u8"\x26\x61\x70\x6f\x73\x3b"); /* &apos; */
+                    destLen+=(int32_t)uprv_strlen(u8"\x26\x61\x70\x6f\x73\x3b");
                     break;
 
                  /* Disallow C0 controls except TAB, CR, LF*/
@@ -325,7 +325,7 @@ static char* convertAndEscape(char** pDest, int32_t destCap, int32_t* destLength
                 case 0x1E:
                 case 0x1F:
                     *status = U_ILLEGAL_CHAR_FOUND;
-                    fprintf(stderr, "Illegal Character \\u%04X!\n",(int)c);
+                    __fprintf_a(stderr, u8"Illegal Character \\u%04X!\n",(int)c);
                     uprv_free(dest);
                     return NULL;
                 default:
@@ -336,7 +336,7 @@ static char* convertAndEscape(char** pDest, int32_t destCap, int32_t* destLength
                 U8_APPEND((unsigned char*)dest,destLen,destCap,c,isError);
                 if(isError){
                     *status = U_ILLEGAL_CHAR_FOUND;
-                    fprintf(stderr, "Illegal Character \\U%08X!\n",(int)c);
+                    __fprintf_a(stderr, u8"Illegal Character \\U%08X!\n",(int)c);
                     uprv_free(dest);
                     return NULL;
                 }
@@ -407,16 +407,16 @@ print(UChar* src, int32_t srcLen,const char *tagStart,const char *tagEnd,  UErro
 
     buf = (char*) (uprv_malloc(bufCapacity));
     if(buf==0){
-        fprintf(stderr, "Could not allocate memory!!");
+        __fprintf_a(stderr, u8"Could not allocate memory!!");
         exit(U_MEMORY_ALLOCATION_ERROR);
     }
     buf = convertAndEscape(&buf, bufCapacity, &bufLen, src, srcLen,status);
     if(U_SUCCESS(*status)){
         trim(&buf,&bufLen);
         write_utf8_file(out,UnicodeString(tagStart));
-        write_utf8_file(out,UnicodeString(buf, bufLen, "UTF-8"));
+        write_utf8_file(out,UnicodeString(buf, bufLen, u8"UTF-8"));
         write_utf8_file(out,UnicodeString(tagEnd));
-        write_utf8_file(out,UnicodeString("\n"));
+        write_utf8_file(out,UnicodeString(u8"\n"));
 
     }
 }
@@ -450,13 +450,13 @@ printNoteElements(const UString *src, UErrorCode *status){
         }
         if(noteLen > 0){
             write_tabs(out);
-            print(note, noteLen,"<note>", "</note>", status);
+            print(note, noteLen,u8"<note>", u8"</note>", status);
         }
     }
     uprv_free(note);
 #else
 
-    fprintf(stderr, "Warning: Could not output comments to XLIFF file. ICU has been built without RegularExpression support.\n");
+    __fprintf_a(stderr, u8"Warning: Could not output comments to XLIFF file. ICU has been built without RegularExpression support.\n");
 
 #endif /* UCONFIG_NO_REGULAR_EXPRESSIONS */
 
@@ -464,20 +464,20 @@ printNoteElements(const UString *src, UErrorCode *status){
 
 static void printAttribute(const char *name, const char *value, int32_t /*len*/)
 {
-    write_utf8_file(out, UnicodeString(" "));
+    write_utf8_file(out, UnicodeString(u8" "));
     write_utf8_file(out, UnicodeString(name));
-    write_utf8_file(out, UnicodeString(" = \""));
+    write_utf8_file(out, UnicodeString(u8" = \""));
     write_utf8_file(out, UnicodeString(value));
-    write_utf8_file(out, UnicodeString("\""));
+    write_utf8_file(out, UnicodeString(u8"\""));
 }
 
 static void printAttribute(const char *name, const UnicodeString value, int32_t /*len*/)
 {
-    write_utf8_file(out, UnicodeString(" "));
+    write_utf8_file(out, UnicodeString(u8" "));
     write_utf8_file(out, UnicodeString(name));
-    write_utf8_file(out, UnicodeString(" = \""));
+    write_utf8_file(out, UnicodeString(u8" = \""));
     write_utf8_file(out, value);
-    write_utf8_file(out, UnicodeString("\""));
+    write_utf8_file(out, UnicodeString(u8"\""));
 }
 
 static void
@@ -513,29 +513,29 @@ printComments(struct UString *src, const char *resName, UBool printTranslate, UE
             /* print translate attribute */
             buf = convertAndEscape(&buf, 0, &bufLen, trans, transLen, status);
             if(U_SUCCESS(*status)){
-                printAttribute("translate", UnicodeString(buf, bufLen, "UTF-8"), bufLen);
-                write_utf8_file(out,UnicodeString(">\n"));
+                printAttribute(u8"translate", UnicodeString(buf, bufLen, u8"UTF-8"), bufLen);
+                write_utf8_file(out,UnicodeString(u8">\n"));
             }
         }else if(getShowWarning()){
-            fprintf(stderr, "Warning: Tranlate attribute for resource %s cannot be set. XLIFF prohibits it.\n", resName);
+            __fprintf_a(stderr, u8"Warning: Tranlate attribute for resource %s cannot be set. XLIFF prohibits it.\n", resName);
             /* no translate attribute .. just close the tag */
-            write_utf8_file(out,UnicodeString(">\n"));
+            write_utf8_file(out,UnicodeString(u8">\n"));
         }
     }else{
         /* no translate attribute .. just close the tag */
-        write_utf8_file(out,UnicodeString(">\n"));
+        write_utf8_file(out,UnicodeString(u8">\n"));
     }
 
     if(descLen > 0){
         write_tabs(out);
-        print(desc, descLen, "<!--", "-->", status);
+        print(desc, descLen, u8"<!--", u8"-->", status);
     }
 
     uprv_free(desc);
     uprv_free(trans);
 #else
 
-    fprintf(stderr, "Warning: Could not output comments to XLIFF file. ICU has been built without RegularExpression support.\n");
+    __fprintf_a(stderr, u8"Warning: Could not output comments to XLIFF file. ICU has been built without RegularExpression support.\n");
 
 #endif /* UCONFIG_NO_REGULAR_EXPRESSIONS */
 
@@ -560,20 +560,20 @@ static char *printContainer(SResource *res, const char *container, const char *r
         sid = getID(id, NULL, sid);
     }
 
-    write_utf8_file(out, UnicodeString("<"));
+    write_utf8_file(out, UnicodeString(u8"<"));
     write_utf8_file(out, UnicodeString(container));
-    printAttribute("id", sid, (int32_t) uprv_strlen(sid));
+    printAttribute(u8"id", sid, (int32_t) uprv_strlen(sid));
 
     if (resname != NULL) {
-        printAttribute("resname", resname, (int32_t) uprv_strlen(resname));
+        printAttribute(u8"resname", resname, (int32_t) uprv_strlen(resname));
     }
 
     if (mimetype != NULL) {
-        printAttribute("mime-type", mimetype, (int32_t) uprv_strlen(mimetype));
+        printAttribute(u8"mime-type", mimetype, (int32_t) uprv_strlen(mimetype));
     }
 
     if (restype != NULL) {
-        printAttribute("restype", restype, (int32_t) uprv_strlen(restype));
+        printAttribute(u8"restype", restype, (int32_t) uprv_strlen(restype));
     }
 
     tabCount += 1;
@@ -581,7 +581,7 @@ static char *printContainer(SResource *res, const char *container, const char *r
         /* printComments will print the closing ">\n" */
         printComments(&res->fComment, resname, TRUE, status);
     } else {
-        write_utf8_file(out, UnicodeString(">\n"));
+        write_utf8_file(out, UnicodeString(u8">\n"));
     }
 
     return sid;
@@ -589,30 +589,30 @@ static char *printContainer(SResource *res, const char *container, const char *r
 
 /* Writing Functions */
 
-static const char *trans_unit = "trans-unit";
-static const char *close_trans_unit = "</trans-unit>\n";
-static const char *source = "<source>";
-static const char *close_source = "</source>\n";
-static const char *group = "group";
-static const char *close_group = "</group>\n";
+static const char *trans_unit = u8"trans-unit";
+static const char *close_trans_unit = u8"</trans-unit>\n";
+static const char *source = u8"<source>";
+static const char *close_source = u8"</source>\n";
+static const char *group = u8"group";
+static const char *close_group = u8"</group>\n";
 
-static const char *bin_unit = "bin-unit";
-static const char *close_bin_unit = "</bin-unit>\n";
-static const char *bin_source = "<bin-source>\n";
-static const char *close_bin_source = "</bin-source>\n";
-static const char *external_file = "<external-file";
+static const char *bin_unit = u8"bin-unit";
+static const char *close_bin_unit = u8"</bin-unit>\n";
+static const char *bin_source = u8"<bin-source>\n";
+static const char *close_bin_source = u8"</bin-source>\n";
+static const char *external_file = u8"<external-file";
 /*static const char *close_external_file = "</external-file>\n";*/
-static const char *internal_file = "<internal-file";
-static const char *close_internal_file = "</internal-file>\n";
+static const char *internal_file = u8"<internal-file";
+static const char *close_internal_file = u8"</internal-file>\n";
 
-static const char *application_mimetype = "application"; /* add "/octet-stream"? */
+static const char *application_mimetype = u8"application"; /* add u8"/octet-stream"? */
 
-static const char *alias_restype     = "x-icu-alias";
-static const char *array_restype     = "x-icu-array";
-static const char *binary_restype    = "x-icu-binary";
-static const char *integer_restype   = "x-icu-integer";
-static const char *intvector_restype = "x-icu-intvector";
-static const char *table_restype     = "x-icu-table";
+static const char *alias_restype     = u8"x-icu-alias";
+static const char *array_restype     = u8"x-icu-array";
+static const char *binary_restype    = u8"x-icu-binary";
+static const char *integer_restype   = u8"x-icu-integer";
+static const char *intvector_restype = u8"x-icu-intvector";
+static const char *table_restype     = u8"x-icu-table";
 
 static void
 string_write_xml(StringResource *res, const char* id, const char* /*language*/, UErrorCode *status) {
@@ -637,7 +637,7 @@ string_write_xml(StringResource *res, const char* id, const char* /*language*/, 
         return;
     }
 
-    write_utf8_file(out, UnicodeString(buf, bufLen, "UTF-8"));
+    write_utf8_file(out, UnicodeString(buf, bufLen, u8"UTF-8"));
     write_utf8_file(out, UnicodeString(close_source));
 
     printNoteElements(&res->fComment, status);
@@ -668,7 +668,7 @@ alias_write_xml(AliasResource *res, const char* id, const char* /*language*/, UE
     if(U_FAILURE(*status)){
         return;
     }
-    write_utf8_file(out, UnicodeString(buf, bufLen, "UTF-8"));
+    write_utf8_file(out, UnicodeString(buf, bufLen, u8"UTF-8"));
     write_utf8_file(out, UnicodeString(close_source));
 
     printNoteElements(&res->fComment, status);
@@ -725,7 +725,7 @@ intvector_write_xml(IntVectorResource *res, const char* id, const char* /*langua
     char* ivd = NULL;
     uint32_t i=0;
     uint32_t len=0;
-    char buf[256] = {'0'};
+    char buf[256] = {'\x30'};
 
     sid = printContainer(res, group, intvector_restype, NULL, id, status);
 
@@ -737,13 +737,13 @@ intvector_write_xml(IntVectorResource *res, const char* id, const char* /*langua
         len = itostr(buf, res->fArray[i], 10, 0);
 
         write_tabs(out);
-        write_utf8_file(out, UnicodeString("<"));
+        write_utf8_file(out, UnicodeString(u8"<"));
         write_utf8_file(out, UnicodeString(trans_unit));
 
-        printAttribute("id", ivd, (int32_t)uprv_strlen(ivd));
-        printAttribute("restype", integer_restype, (int32_t) strlen(integer_restype));
+        printAttribute(u8"id", ivd, (int32_t)uprv_strlen(ivd));
+        printAttribute(u8"restype", integer_restype, (int32_t) strlen(integer_restype));
 
-        write_utf8_file(out, UnicodeString(">\n"));
+        write_utf8_file(out, UnicodeString(u8">\n"));
 
         tabCount += 1;
         write_tabs(out);
@@ -815,7 +815,7 @@ bin_write_xml(BinaryResource *res, const char* id, const char* /*language*/, UEr
 
     if(res->fFileName != NULL){
         uprv_strcpy(fileName, res->fFileName);
-        f = uprv_strrchr(fileName, '\\');
+        f = uprv_strrchr(fileName, '\x5c');
 
         if (f != NULL) {
             f++;
@@ -823,21 +823,21 @@ bin_write_xml(BinaryResource *res, const char* id, const char* /*language*/, UEr
             f = fileName;
         }
 
-        ext = uprv_strrchr(fileName, '.');
+        ext = uprv_strrchr(fileName, '\x2e');
 
         if (ext == NULL) {
-            fprintf(stderr, "Error: %s is an unknown binary filename type.\n", fileName);
+            __fprintf_a(stderr, u8"Error: %s is an unknown binary filename type.\n", fileName);
             exit(U_ILLEGAL_ARGUMENT_ERROR);
         }
 
-        if(uprv_strcmp(ext, ".jpg")==0 || uprv_strcmp(ext, ".jpeg")==0 || uprv_strcmp(ext, ".gif")==0 ){
-            m_type = "image";
-        } else if(uprv_strcmp(ext, ".wav")==0 || uprv_strcmp(ext, ".au")==0 ){
-            m_type = "audio";
-        } else if(uprv_strcmp(ext, ".avi")==0 || uprv_strcmp(ext, ".mpg")==0 || uprv_strcmp(ext, ".mpeg")==0){
-            m_type = "video";
-        } else if(uprv_strcmp(ext, ".txt")==0 || uprv_strcmp(ext, ".text")==0){
-            m_type = "text";
+        if(uprv_strcmp(ext, u8".jpg")==0 || uprv_strcmp(ext, u8".jpeg")==0 || uprv_strcmp(ext, u8".gif")==0 ){
+            m_type = u8"image";
+        } else if(uprv_strcmp(ext, u8".wav")==0 || uprv_strcmp(ext, u8".au")==0 ){
+            m_type = u8"audio";
+        } else if(uprv_strcmp(ext, u8".avi")==0 || uprv_strcmp(ext, u8".mpg")==0 || uprv_strcmp(ext, u8".mpeg")==0){
+            m_type = u8"video";
+        } else if(uprv_strcmp(ext, u8".txt")==0 || uprv_strcmp(ext, u8".text")==0){
+            m_type = u8"text";
         }
 
         sid = printContainer(res, bin_unit, binary_restype, m_type, id, status);
@@ -850,8 +850,8 @@ bin_write_xml(BinaryResource *res, const char* id, const char* /*language*/, UEr
         write_tabs(out);
 
         write_utf8_file(out, UnicodeString(external_file));
-        printAttribute("href", f, (int32_t)uprv_strlen(f));
-        write_utf8_file(out, UnicodeString("/>\n"));
+        printAttribute(u8"href", f, (int32_t)uprv_strlen(f));
+        write_utf8_file(out, UnicodeString(u8"/>\n"));
         tabCount -= 1;
         write_tabs(out);
 
@@ -875,7 +875,7 @@ bin_write_xml(BinaryResource *res, const char* id, const char* /*language*/, UEr
         write_tabs(out);
 
         write_utf8_file(out, UnicodeString(internal_file));
-        printAttribute("form", application_mimetype, (int32_t) uprv_strlen(application_mimetype));
+        printAttribute(u8"form", application_mimetype, (int32_t) uprv_strlen(application_mimetype));
 
         while(i <res->fLength){
             len = itostr(temp, res->fData[i], 16, 2);
@@ -884,9 +884,9 @@ bin_write_xml(BinaryResource *res, const char* id, const char* /*language*/, UEr
         }
 
         len = itostr(temp, crc, 10, 0);
-        printAttribute("crc", temp, len);
+        printAttribute(u8"crc", temp, len);
 
-        write_utf8_file(out, UnicodeString(">"));
+        write_utf8_file(out, UnicodeString(u8">"));
 
         i = 0;
         while(i <res->fLength){
@@ -931,7 +931,7 @@ table_write_xml(TableResource *res, const char* id, const char* language, UBool 
     sid = printContainer(res, group, table_restype, NULL, id, status);
 
     if(isTopLevel) {
-        sid[0] = '\0';
+        sid[0] = '\x0';
     }
 
     current = res->fFirst;
@@ -1010,19 +1010,19 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
     char* xmlfileName = NULL;
     char* outputFileName = NULL;
     char* originalFileName = NULL;
-    const char* fileStart = "<file xml:space = \"preserve\" source-language = \"";
-    const char* file1 = "\" datatype = \"x-icu-resource-bundle\" ";
-    const char* file2 = "original = \"";
-    const char* file4 = "\" date = \"";
-    const char* fileEnd = "</file>\n";
-    const char* headerStart = "<header>\n";
-    const char* headerEnd = "</header>\n";
-    const char* bodyStart = "<body>\n";
-    const char* bodyEnd = "</body>\n";
+    const char* fileStart = u8"<file xml:space = \"preserve\" source-language = \"";
+    const char* file1 = u8"\" datatype = \"x-icu-resource-bundle\" ";
+    const char* file2 = u8"original = \"";
+    const char* file4 = u8"\" date = \"";
+    const char* fileEnd = u8"</file>\n";
+    const char* headerStart = u8"<header>\n";
+    const char* headerEnd = u8"</header>\n";
+    const char* bodyStart = u8"<body>\n";
+    const char* bodyEnd = u8"</body>\n";
 
-    const char *tool_start = "<tool";
-    const char *tool_id = "genrb-" GENRB_VERSION "-icu-" U_ICU_VERSION;
-    const char *tool_name = "genrb";
+    const char *tool_start = u8"<tool";
+    const char *tool_id = u8"genrb-" GENRB_VERSION u8"-icu-" U_ICU_VERSION;
+    const char *tool_name = u8"genrb";
 
     char* temp = NULL;
     char* lang = NULL;
@@ -1035,7 +1035,7 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
 
     srBundle = bundle;
 
-    pos = uprv_strrchr(filename, '\\');
+    pos = uprv_strrchr(filename, '\x5c');
     if(pos != NULL) {
         first = (int32_t)(pos - filename + 1);
     } else {
@@ -1047,7 +1047,7 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
     uprv_strncpy(originalFileName, filename + first, index);
 
     if(uprv_strcmp(originalFileName, srBundle->fLocale) != 0) {
-        fprintf(stdout, "Warning: The file name is not same as the resource name!\n");
+        __fprintf_a(stdout, u8"Warning: The file name is not same as the resource name!\n");
     }
 
     temp = originalFileName;
@@ -1082,7 +1082,7 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
               * }
               */
              if(lang==NULL){
-                 fprintf(stderr, "Error: The file name and table name do not contain a valid language code. Please use -l option to specify it.\n");
+                 __fprintf_a(stderr, u8"Error: The file name and table name do not contain a valid language code. Please use -l option to specify it.\n");
                  exit(U_ILLEGAL_ARGUMENT_ERROR);
              }
        /* }*/
@@ -1127,7 +1127,7 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
         goto cleanup_bundle_write_xml;
     }
 
-    out= T_FileStream_open(xmlfileName,"w");
+    out= T_FileStream_open(xmlfileName,u8"w");
 
     if(out==NULL){
         *status = U_FILE_ACCESS_ERROR;
@@ -1135,7 +1135,7 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
     }
     write_utf8_file(out, UnicodeString(xmlHeader));
 
-    if(outputEnc && *outputEnc!='\0'){
+    if(outputEnc && *outputEnc!='\x0'){
         /* store the output encoding */
         enc = outputEnc;
         conv=ucnv_open(enc,status);
@@ -1148,7 +1148,7 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
     write_utf8_file(out, UnicodeString(fileStart));
     /* check if lang and language are the same */
     if(language != NULL && uprv_strcmp(lang, srBundle->fLocale)!=0){
-        fprintf(stderr,"Warning: The top level tag in the resource and language specified are not the same. Please check the input.\n");
+        __fprintf_a(stderr,u8"Warning: The top level tag in the resource and language specified are not the same. Please check the input.\n");
     }
     write_utf8_file(out, UnicodeString(lang));
     write_utf8_file(out, UnicodeString(file1));
@@ -1157,9 +1157,9 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
     write_utf8_file(out, UnicodeString(file4));
 
     time(&currTime);
-    strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%dT%H:%M:%SZ", gmtime(&currTime));
+    strftime(timeBuf, sizeof(timeBuf), u8"%Y-%m-%dT%H:%M:%SZ", gmtime(&currTime));
     write_utf8_file(out, UnicodeString(timeBuf));
-    write_utf8_file(out, UnicodeString("\">\n"));
+    write_utf8_file(out, UnicodeString(u8"\">\n"));
 
     tabCount += 1;
     write_tabs(out);
@@ -1169,9 +1169,9 @@ bundle_write_xml(struct SRBRoot *bundle, const char *outputDir,const char* outpu
     write_tabs(out);
 
     write_utf8_file(out, UnicodeString(tool_start));
-    printAttribute("tool-id", tool_id, (int32_t) uprv_strlen(tool_id));
-    printAttribute("tool-name", tool_name, (int32_t) uprv_strlen(tool_name));
-    write_utf8_file(out, UnicodeString("/>\n"));
+    printAttribute(u8"tool-id", tool_id, (int32_t) uprv_strlen(tool_id));
+    printAttribute(u8"tool-name", tool_name, (int32_t) uprv_strlen(tool_name));
+    write_utf8_file(out, UnicodeString(u8"/>\n"));
 
     tabCount -= 1;
     write_tabs(out);

@@ -493,7 +493,7 @@ getTrail:
                     }
                 } else {
                     /* no more input */
-                    c=-c; /* negative lead surrogate as "incomplete" indicator to avoid c=0 everywhere else */
+                    c=-c; /* negative lead surrogate as u8"incomplete" indicator to avoid c=0 everywhere else */
                     break;
                 }
             }
@@ -736,7 +736,7 @@ getTrail:
                     }
                 } else {
                     /* no more input */
-                    c=-c; /* negative lead surrogate as "incomplete" indicator to avoid c=0 everywhere else */
+                    c=-c; /* negative lead surrogate as u8"incomplete" indicator to avoid c=0 everywhere else */
                     break;
                 }
             }
@@ -1396,7 +1396,7 @@ static const UConverterImpl _Bocu1Impl={
 
 static const UConverterStaticData _Bocu1StaticData={
     sizeof(UConverterStaticData),
-    "BOCU-1",
+    u8"BOCU-1",
     1214, /* CCSID for BOCU-1 */
     UCNV_IBM, UCNV_BOCU1,
     1, 4, /* one UChar generates at least 1 byte and at most 4 bytes */

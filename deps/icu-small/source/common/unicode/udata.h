@@ -44,31 +44,31 @@ U_CDECL_BEGIN
  * Character used to separate package names from tree names
  * @internal ICU 3.0
  */
-#define U_TREE_SEPARATOR '-'
+#define U_TREE_SEPARATOR '\x2d'
 
 /**
  * String used to separate package names from tree names
  * @internal ICU 3.0
  */
-#define U_TREE_SEPARATOR_STRING "-"
+#define U_TREE_SEPARATOR_STRING u8"-"
 
 /**
  * Character used to separate parts of entry names
  * @internal ICU 3.0
  */
-#define U_TREE_ENTRY_SEP_CHAR '/'
+#define U_TREE_ENTRY_SEP_CHAR '\x2f'
 
 /**
  * String used to separate parts of entry names
  * @internal ICU 3.0
  */
-#define U_TREE_ENTRY_SEP_STRING "/"
+#define U_TREE_ENTRY_SEP_STRING u8"/"
 
 /**
  * Alias for standard ICU data
  * @internal ICU 3.0
  */
-#define U_ICUDATA_ALIAS "ICUDATA"
+#define U_ICUDATA_ALIAS u8"ICUDATA"
 
 #endif /* U_HIDE_INTERNAL_API */
 

@@ -53,7 +53,7 @@ RBBIRuleBuilder::RBBIRuleBuilder(const UnicodeString   &rules,
     fParseError = parseErr;
     fDebugEnv   = NULL;
 #ifdef RBBI_DEBUG
-    fDebugEnv   = getenv("U_RBBIDEBUG");
+    fDebugEnv   = getenv(u8"U_RBBIDEBUG");
 #endif
 
 
@@ -279,7 +279,7 @@ RBBIRuleBuilder::createRuleBasedBreakIterator( const UnicodeString    &rules,
     builder.fSafeRevTables->build();
 
 #ifdef RBBI_DEBUG
-    if (builder.fDebugEnv && uprv_strstr(builder.fDebugEnv, "states")) {
+    if (builder.fDebugEnv && uprv_strstr(builder.fDebugEnv, u8"states")) {
         builder.fForwardTables->printRuleStatusTable();
     }
 #endif

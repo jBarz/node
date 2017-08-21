@@ -166,7 +166,7 @@ HebrewCalendar::~HebrewCalendar() {
 }
 
 const char *HebrewCalendar::getType() const {
-    return "hebrew";
+    return u8"hebrew";
 }
 
 Calendar* HebrewCalendar::clone() const {
@@ -698,7 +698,7 @@ static void U_CALLCONV initializeSystemDefaultCentury()
     // on the current time.  They'll be set to 80 years before
     // the current time.
     UErrorCode status = U_ZERO_ERROR;
-    HebrewCalendar calendar(Locale("@calendar=hebrew"),status);
+    HebrewCalendar calendar(Locale(u8"@calendar=hebrew"),status);
     if (U_SUCCESS(status)) {
         calendar.setTime(Calendar::getNow(), status);
         calendar.add(UCAL_YEAR, -80, status);

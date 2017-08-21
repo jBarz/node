@@ -24,7 +24,7 @@
 #include "unicode/uclean.h"
 #include "putilimp.h"
 
-
+using namespace std;
 
 // Forward Declarations. UMutex is not in the ICU namespace (yet) because
 //                       there are some remaining references from plain C.
@@ -36,7 +36,7 @@ struct UInitOnce;
 U_NAMESPACE_END
 
 // Stringify macros, to allow #include of user supplied atomic & mutex files.
-#define U_MUTEX_STR(s) #s
+#define U_MUTEX_STR(s)  USTR(#s)
 #define U_MUTEX_XSTR(s) U_MUTEX_STR(s)
 
 /****************************************************************************
@@ -126,7 +126,8 @@ U_NAMESPACE_END
 /*
  *  Clang __c11 atomic built-ins
  */
-
+using namespace std;
+using namespace std::__1::memory_order;
 U_NAMESPACE_BEGIN
 typedef _Atomic(int32_t) u_atomic_int32_t;
 #define ATOMIC_INT32_T_INITIALIZER(val) val

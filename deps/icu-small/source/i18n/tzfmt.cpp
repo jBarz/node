@@ -60,10 +60,10 @@ static const int16_t STYLE_PARSE_FLAGS[] = {
     0x0800  // UTZFMT_STYLE_EXEMPLAR_LOCATION
 };
 
-static const char gZoneStringsTag[] = "zoneStrings";
-static const char gGmtFormatTag[]= "gmtFormat";
-static const char gGmtZeroFormatTag[] = "gmtZeroFormat";
-static const char gHourFormatTag[]= "hourFormat";
+static const char gZoneStringsTag[] = u8"zoneStrings";
+static const char gGmtFormatTag[]= u8"gmtFormat";
+static const char gGmtZeroFormatTag[] = u8"gmtZeroFormat";
+static const char gHourFormatTag[]= u8"hourFormat";
 
 static const UChar TZID_GMT[] = {0x0045, 0x0074, 0x0063, 0x002F, 0x0047, 0x004D, 0x0054, 0};    // Etc/GMT
 static const UChar UNKNOWN_ZONE_ID[] = {
@@ -85,13 +85,13 @@ static const UChar32 DEFAULT_GMT_DIGITS[] = {
     0x0035, 0x0036, 0x0037, 0x0038, 0x0039
 };
 
-static const UChar DEFAULT_GMT_OFFSET_SEP = 0x003A; // ':'
+static const UChar DEFAULT_GMT_OFFSET_SEP = 0x003A; // '\x3a'
 
-static const UChar ARG0[] = {0x007B, 0x0030, 0x007D};   // "{0}"
+static const UChar ARG0[] = {0x007B, 0x0030, 0x007D};   // u8"{0}"
 static const int32_t ARG0_LEN = 3;
 
-static const UChar DEFAULT_GMT_OFFSET_MINUTE_PATTERN[] = {0x006D, 0x006D, 0};   // "mm"
-static const UChar DEFAULT_GMT_OFFSET_SECOND_PATTERN[] = {0x0073, 0x0073, 0};   // "ss"
+static const UChar DEFAULT_GMT_OFFSET_MINUTE_PATTERN[] = {0x006D, 0x006D, 0};   // u8"mm"
+static const UChar DEFAULT_GMT_OFFSET_SECOND_PATTERN[] = {0x0073, 0x0073, 0};   // u8"ss"
 
 static const UChar ALT_GMT_STRINGS[][4] = {
     {0x0047, 0x004D, 0x0054, 0},    // GMT
@@ -115,8 +115,8 @@ static const int32_t PARSE_GMT_OFFSET_TYPES[] = {
 static const UChar SINGLEQUOTE  = 0x0027;
 static const UChar PLUS         = 0x002B;
 static const UChar MINUS        = 0x002D;
-static const UChar ISO8601_UTC  = 0x005A;   // 'Z'
-static const UChar ISO8601_SEP  = 0x003A;   // ':'
+static const UChar ISO8601_UTC  = 0x005A;   // '\x5a'
+static const UChar ISO8601_SEP  = 0x003A;   // '\x3a'
 
 static const int32_t MILLIS_PER_HOUR = 60 * 60 * 1000;
 static const int32_t MILLIS_PER_MINUTE = 60 * 1000;
@@ -374,7 +374,7 @@ TimeZoneFormat::TimeZoneFormat(const Locale& locale, UErrorCode& status)
 
     UBool useDefaultOffsetPatterns = TRUE;
     if (hourFormats) {
-        UChar *sep = u_strchr(hourFormats, (UChar)0x003B /* ';' */);
+        UChar *sep = u_strchr(hourFormats, (UChar)0x003B /* '\x3b' */);
         if (sep != NULL) {
             UErrorCode tmpStatus = U_ZERO_ERROR;
             fGMTOffsetPatterns[UTZFMT_PAT_POSITIVE_HM].setTo(FALSE, hourFormats, (int32_t)(sep - hourFormats));
@@ -1133,7 +1133,7 @@ TimeZoneFormat::parse(UTimeZoneFormatStyle style, const UnicodeString& text, Par
                 parsedID.setToBogus();
                 parsedTimeType = UTZFMT_TIME_TYPE_UNKNOWN;
                 parsedPos = tmpPos.getIndex();
-                U_ASSERT(parsedPos == startIdx + 1);    // only when "Z" is used
+                U_ASSERT(parsedPos == startIdx + 1);    // only when u8"Z" is used
             }
         }
     }

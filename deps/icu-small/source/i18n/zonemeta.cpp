@@ -120,27 +120,27 @@ U_NAMESPACE_BEGIN
 
 #define ZID_KEY_MAX 128
 
-static const char gMetaZones[]          = "metaZones";
-static const char gMetazoneInfo[]       = "metazoneInfo";
-static const char gMapTimezonesTag[]    = "mapTimezones";
+static const char gMetaZones[]          = u8"metaZones";
+static const char gMetazoneInfo[]       = u8"metazoneInfo";
+static const char gMapTimezonesTag[]    = u8"mapTimezones";
 
-static const char gKeyTypeData[]        = "keyTypeData";
-static const char gTypeAliasTag[]       = "typeAlias";
-static const char gTypeMapTag[]         = "typeMap";
-static const char gTimezoneTag[]        = "timezone";
+static const char gKeyTypeData[]        = u8"keyTypeData";
+static const char gTypeAliasTag[]       = u8"typeAlias";
+static const char gTypeMapTag[]         = u8"typeMap";
+static const char gTimezoneTag[]        = u8"timezone";
 
-static const char gPrimaryZonesTag[]    = "primaryZones";
+static const char gPrimaryZonesTag[]    = u8"primaryZones";
 
-static const char gWorldTag[]           = "001";
+static const char gWorldTag[]           = u8"001";
 
-static const UChar gWorld[] = {0x30, 0x30, 0x31, 0x00}; // "001"
+static const UChar gWorld[] = {0x30, 0x30, 0x31, 0x00}; // u8"001"
 
 static const UChar gDefaultFrom[] = {0x31, 0x39, 0x37, 0x30, 0x2D, 0x30, 0x31, 0x2D, 0x30, 0x31,
-                                     0x20, 0x30, 0x30, 0x3A, 0x30, 0x30, 0x00}; // "1970-01-01 00:00"
+                                     0x20, 0x30, 0x30, 0x3A, 0x30, 0x30, 0x00}; // u8"1970-01-01 00:00"
 static const UChar gDefaultTo[]   = {0x39, 0x39, 0x39, 0x39, 0x2D, 0x31, 0x32, 0x2D, 0x33, 0x31,
-                                     0x20, 0x32, 0x33, 0x3A, 0x35, 0x39, 0x00}; // "9999-12-31 23:59"
+                                     0x20, 0x32, 0x33, 0x3A, 0x35, 0x39, 0x00}; // u8"9999-12-31 23:59"
 
-static const UChar gCustomTzPrefix[]    = {0x47, 0x4D, 0x54, 0};    // "GMT"
+static const UChar gCustomTzPrefix[]    = {0x47, 0x4D, 0x54, 0};    // u8"GMT"
 
 #define ASCII_DIGIT(c) (((c)>=0x30 && (c)<=0x39) ? (c)-0x30 : -1)
 
@@ -281,8 +281,8 @@ ZoneMeta::getCanonicalCLDRID(const UnicodeString &tzid, UErrorCode& status) {
     // replace '/' with ':'
     char *p = id;
     while (*p++) {
-        if (*p == '/') {
-            *p = ':';
+        if (*p == '\x2f') {
+            *p = '\x3a';
         }
     }
 
@@ -321,8 +321,8 @@ ZoneMeta::getCanonicalCLDRID(const UnicodeString &tzid, UErrorCode& status) {
                 // replace '/' with ':'
                 char *p = id;
                 while (*p++) {
-                    if (*p == '/') {
-                        *p = ':';
+                    if (*p == '\x2f') {
+                        *p = '\x3a';
                     }
                 }
 
@@ -641,8 +641,8 @@ ZoneMeta::createMetazoneMappings(const UnicodeString &tzid) {
         // tzid keys are using ':' as separators
         char *p = tzKey;
         while (*p) {
-            if (*p == '/') {
-                *p = ':';
+            if (*p == '\x2f') {
+                *p = '\x3a';
             }
             p++;
         }
@@ -869,18 +869,18 @@ ZoneMeta::formatCustomID(uint8_t hour, uint8_t min, uint8_t sec, UBool negative,
     id.setTo(gCustomTzPrefix, -1);
     if (hour != 0 || min != 0) {
         if (negative) {
-          id.append((UChar)0x2D);    // '-'
+          id.append((UChar)0x2D);    // '\x2d'
         } else {
-          id.append((UChar)0x2B);    // '+'
+          id.append((UChar)0x2B);    // '\x2b'
         }
         // Always use US-ASCII digits
         id.append((UChar)(0x30 + (hour%100)/10));
         id.append((UChar)(0x30 + (hour%10)));
-        id.append((UChar)0x3A);    // ':'
+        id.append((UChar)0x3A);    // '\x3a'
         id.append((UChar)(0x30 + (min%100)/10));
         id.append((UChar)(0x30 + (min%10)));
         if (sec != 0) {
-          id.append((UChar)0x3A);    // ':'
+          id.append((UChar)0x3A);    // '\x3a'
           id.append((UChar)(0x30 + (sec%100)/10));
           id.append((UChar)(0x30 + (sec%10)));
         }
@@ -924,8 +924,8 @@ ZoneMeta::getShortIDFromCanonical(const UChar* canonicalID) {
     // replace '/' with ':'
     char *p = tzidKey;
     while (*p++) {
-        if (*p == '/') {
-            *p = ':';
+        if (*p == '\x2f') {
+            *p = '\x3a';
         }
     }
 

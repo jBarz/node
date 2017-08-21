@@ -52,7 +52,7 @@
  *  @stable ICU 2.4
  */
 #define U_COPYRIGHT_STRING \
-  " Copyright (C) 2016 and later: Unicode, Inc. and others. License & terms of use: http://www.unicode.org/copyright.html "
+  u8" Copyright (C) 2016 and later: Unicode, Inc. and others. License & terms of use: http://www.unicode.org/copyright.html "
 
 /** The current ICU major version as an integer.
  *  This value will change in the subsequent releases of ICU
@@ -136,7 +136,7 @@
 /** Data version in ICU4C.
  * @internal ICU 4.4 Internal Use Only
  **/
-#define U_ICU_DATA_VERSION "59.1"
+#define U_ICU_DATA_VERSION u8"59.1"
 #endif  /* U_HIDE_INTERNAL_API */
 
 /*===========================================================================

@@ -127,10 +127,10 @@ private:
                                                      //  is a reverse direction rule (if it
                                                      //  starts with a '!')
 
-    UBool                          fLookAheadRule;   // True if the rule includes a '/'
+    UBool                          fLookAheadRule;   // True if the rule includes a '\x2f'
                                                      //   somewhere within it.
 
-    UBool                          fNoChainInRule;   // True if the current rule starts with a '^'.
+    UBool                          fNoChainInRule;   // True if the current rule starts with a '\x5e'.
 
     RBBISymbolTable               *fSymbolTable;     // symbol table, holds definitions of
                                                      //   $variable symbols.

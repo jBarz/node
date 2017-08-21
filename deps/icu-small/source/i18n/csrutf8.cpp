@@ -23,7 +23,7 @@ CharsetRecog_UTF8::~CharsetRecog_UTF8()
 
 const char *CharsetRecog_UTF8::getName() const
 {
-    return "UTF-8";
+    return u8"UTF-8";
 }
 
 UBool CharsetRecog_UTF8::match(InputText* input, CharsetMatch *results) const {

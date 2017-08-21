@@ -90,7 +90,7 @@ typedef enum UDateTimePatternField {
      * it is needed for layout of DateTimePatternGenerator object. */
     /**
      * One more than the highest normal UDateTimePatternField value.
-     * @deprecated ICU 58 The numeric value may change over time, see ICU ticket #12420.
+     * @deprecated ICU 58 The numeric value may change over time, see ICU ticket  USTR(#12420).
      */
     UDATPG_FIELD_COUNT
 } UDateTimePatternField;

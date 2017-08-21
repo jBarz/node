@@ -195,10 +195,10 @@
 #ifdef U_LIB_SUFFIX_C_NAME_STRING
     /* Use the predefined value. */
 #elif defined(U_LIB_SUFFIX_C_NAME)
-#   define CONVERT_TO_STRING(s) #s
+#   define CONVERT_TO_STRING(s)  USTR(#s)
 #   define U_LIB_SUFFIX_C_NAME_STRING CONVERT_TO_STRING(U_LIB_SUFFIX_C_NAME)
 #else
-#   define U_LIB_SUFFIX_C_NAME_STRING ""
+#   define U_LIB_SUFFIX_C_NAME_STRING u8""
 #endif
 
 /* common/i18n library switches --------------------------------------------- */

@@ -50,20 +50,20 @@ typedef struct UAmbiguousConverter {
 } UAmbiguousConverter;
 
 static const UAmbiguousConverter ambiguousConverters[]={
-    { "ibm-897_P100-1995", 0xa5 },
-    { "ibm-942_P120-1999", 0xa5 },
-    { "ibm-943_P130-1999", 0xa5 },
-    { "ibm-946_P100-1995", 0xa5 },
-    { "ibm-33722_P120-1999", 0xa5 },
-    { "ibm-1041_P100-1995", 0xa5 },
+    { u8"ibm-897_P100-1995", 0xa5 },
+    { u8"ibm-942_P120-1999", 0xa5 },
+    { u8"ibm-943_P130-1999", 0xa5 },
+    { u8"ibm-946_P100-1995", 0xa5 },
+    { u8"ibm-33722_P120-1999", 0xa5 },
+    { u8"ibm-1041_P100-1995", 0xa5 },
     /*{ "ibm-54191_P100-2006", 0xa5 },*/
-    /*{ "ibm-62383_P100-2007", 0xa5 },*/
-    /*{ "ibm-891_P100-1995", 0x20a9 },*/
-    { "ibm-944_P100-1995", 0x20a9 },
-    { "ibm-949_P110-1999", 0x20a9 },
-    { "ibm-1363_P110-1997", 0x20a9 },
-    { "ISO_2022,locale=ko,version=0", 0x20a9 },
-    { "ibm-1088_P100-1995", 0x20a9 }
+    /*{ u8"ibm-62383_P100-2007", 0xa5 },*/
+    /*{ u8"ibm-891_P100-1995", 0x20a9 },*/
+    { u8"ibm-944_P100-1995", 0x20a9 },
+    { u8"ibm-949_P110-1999", 0x20a9 },
+    { u8"ibm-1363_P110-1997", 0x20a9 },
+    { u8"ISO_2022,locale=ko,version=0", 0x20a9 },
+    { u8"ibm-1088_P100-1995", 0x20a9 }
 };
 
 /*Calls through createConverter */
@@ -117,7 +117,7 @@ ucnv_copyPlatformString(char *platformString, UConverterPlatform pltfrm)
     switch (pltfrm)
     {
     case UCNV_IBM:
-        uprv_strcpy(platformString, "ibm-");
+        uprv_strcpy(platformString, u8"ibm-");
         return 4;
     case UCNV_UNKNOWN:
         break;
@@ -194,7 +194,7 @@ ucnv_safeClone(const UConverter* cnv, void *stackBuffer, int32_t *pBufferSize, U
         return NULL;
     }
 
-    UTRACE_DATA3(UTRACE_OPEN_CLOSE, "clone converter %s at %p into stackBuffer %p",
+    UTRACE_DATA3(UTRACE_OPEN_CLOSE, u8"clone converter %s at %p into stackBuffer %p",
                                     ucnv_getName(cnv, status), cnv, stackBuffer);
 
     if (cnv->sharedData->impl->safeClone != NULL) {
@@ -335,7 +335,7 @@ ucnv_close (UConverter * converter)
         return;
     }
 
-    UTRACE_DATA3(UTRACE_OPEN_CLOSE, "close converter %s at %p, isCopyLocal=%b",
+    UTRACE_DATA3(UTRACE_OPEN_CLOSE, u8"close converter %s at %p, isCopyLocal=%b",
         ucnv_getName(converter, &errorCode), converter, converter->isCopyLocal);
 
     /* In order to speed up the close, only call the callbacks when they have been changed.
@@ -681,11 +681,11 @@ ucnv_getCCSID(const UConverter * converter,
     if (ccsid == 0) {
         /* Rare case. This is for cases like gb18030,
         which doesn't have an IBM canonical name, but does have an IBM alias. */
-        const char *standardName = ucnv_getStandardName(ucnv_getName(converter, err), "IBM", err);
+        const char *standardName = ucnv_getStandardName(ucnv_getName(converter, err), u8"IBM", err);
         if (U_SUCCESS(*err) && standardName) {
-            const char *ccsidStr = uprv_strchr(standardName, '-');
+            const char *ccsidStr = uprv_strchr(standardName, '\x2d');
             if (ccsidStr) {
-                ccsid = (int32_t)atol(ccsidStr+1);  /* +1 to skip '-' */
+                ccsid = (int32_t)atol(ccsidStr+1);  /* +1 to skip '\x2d' */
             }
         }
     }
@@ -2552,7 +2552,7 @@ ucnv_convertAlgorithmic(UBool convertToAlgorithmic,
 
     /* create the algorithmic converter */
     algoConverter=ucnv_createAlgorithmicConverter(&algoConverterStatic, algorithmicType,
-                                                  "", 0, pErrorCode);
+                                                  u8"", 0, pErrorCode);
     if(U_FAILURE(*pErrorCode)) {
         return 0;
     }
@@ -2789,28 +2789,28 @@ ucnv_detectUnicodeSignature( const char* source,
 
     if(start[0] == '\xFE' && start[1] == '\xFF') {
         *signatureLength=2;
-        return  "UTF-16BE";
+        return  u8"UTF-16BE";
     } else if(start[0] == '\xFF' && start[1] == '\xFE') {
         if(start[2] == '\x00' && start[3] =='\x00') {
             *signatureLength=4;
-            return "UTF-32LE";
+            return u8"UTF-32LE";
         } else {
             *signatureLength=2;
-            return  "UTF-16LE";
+            return  u8"UTF-16LE";
         }
     } else if(start[0] == '\xEF' && start[1] == '\xBB' && start[2] == '\xBF') {
         *signatureLength=3;
-        return  "UTF-8";
+        return  u8"UTF-8";
     } else if(start[0] == '\x00' && start[1] == '\x00' &&
               start[2] == '\xFE' && start[3]=='\xFF') {
         *signatureLength=4;
-        return  "UTF-32BE";
+        return  u8"UTF-32BE";
     } else if(start[0] == '\x0E' && start[1] == '\xFE' && start[2] == '\xFF') {
         *signatureLength=3;
-        return "SCSU";
+        return u8"SCSU";
     } else if(start[0] == '\xFB' && start[1] == '\xEE' && start[2] == '\x28') {
         *signatureLength=3;
-        return "BOCU-1";
+        return u8"BOCU-1";
     } else if(start[0] == '\x2B' && start[1] == '\x2F' && start[2] == '\x76') {
         /*
          * UTF-7: Initial U+FEFF is encoded as +/v8  or  +/v9  or  +/v+  or  +/v/
@@ -2823,15 +2823,15 @@ ucnv_detectUnicodeSignature( const char* source,
         if(start[3] == '\x38' && start[4] == '\x2D') {
             /* 5 bytes +/v8- */
             *signatureLength=5;
-            return "UTF-7";
+            return u8"UTF-7";
         } else if(start[3] == '\x38' || start[3] == '\x39' || start[3] == '\x2B' || start[3] == '\x2F') {
             /* 4 bytes +/v8  or  +/v9  or  +/v+  or  +/v/ */
             *signatureLength=4;
-            return "UTF-7";
+            return u8"UTF-7";
         }
     }else if(start[0]=='\xDD' && start[1]== '\x73'&& start[2]=='\x66' && start[3]=='\x73'){
         *signatureLength=4;
-        return "UTF-EBCDIC";
+        return u8"UTF-EBCDIC";
     }
 
 

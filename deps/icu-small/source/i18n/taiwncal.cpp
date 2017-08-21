@@ -60,7 +60,7 @@ Calendar* TaiwanCalendar::clone(void) const
 
 const char *TaiwanCalendar::getType() const
 {
-    return "roc";
+    return u8"roc";
 }
 
 int32_t TaiwanCalendar::handleGetExtendedYear()
@@ -153,7 +153,7 @@ static void U_CALLCONV initializeSystemDefaultCentury()
     // on the current time.  They'll be set to 80 years before
     // the current time.
     UErrorCode status = U_ZERO_ERROR;
-    TaiwanCalendar calendar(Locale("@calendar=roc"),status);
+    TaiwanCalendar calendar(Locale(u8"@calendar=roc"),status);
     if (U_SUCCESS(status))
     {
         calendar.setTime(Calendar::getNow(), status);

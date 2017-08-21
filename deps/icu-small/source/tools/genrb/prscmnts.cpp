@@ -39,8 +39,8 @@ U_NAMESPACE_USE
 #define MAX_SPLIT_STRINGS 20
 
 const char *patternStrings[UPC_LIMIT]={
-    "^translate\\s*(.*)",
-    "^note\\s*(.*)"
+    u8"^translate\\s*(.*)",
+    u8"^note\\s*(.*)"
 };
 
 U_CFUNC int32_t
@@ -69,18 +69,18 @@ removeText(UChar *source, int32_t srcLen,
 }
 U_CFUNC int32_t
 trim(UChar *src, int32_t srcLen, UErrorCode *status){
-     srcLen = removeText(src, srcLen, UnicodeString("^[ \\r\\n]+ "), 0, UnicodeString(), status); // remove leading new lines
-     srcLen = removeText(src, srcLen, UnicodeString("^\\s+"), 0, UnicodeString(), status); // remove leading spaces
-     srcLen = removeText(src, srcLen, UnicodeString("\\s+$"), 0, UnicodeString(), status); // remvoe trailing spcaes
+     srcLen = removeText(src, srcLen, UnicodeString(u8"^[ \\r\\n]+ "), 0, UnicodeString(), status); // remove leading new lines
+     srcLen = removeText(src, srcLen, UnicodeString(u8"^\\s+"), 0, UnicodeString(), status); // remove leading spaces
+     srcLen = removeText(src, srcLen, UnicodeString(u8"\\s+$"), 0, UnicodeString(), status); // remvoe trailing spcaes
      return srcLen;
 }
 
 U_CFUNC int32_t
 removeCmtText(UChar* source, int32_t srcLen, UErrorCode* status){
     srcLen = trim(source, srcLen, status);
-    UnicodeString patString("^\\s*?\\*\\s*?");  // remove pattern like " * " at the begining of the line
+    UnicodeString patString(u8"^\\s*?\\*\\s*?");  // remove pattern like u8" * " at the begining of the line
     srcLen = removeText(source, srcLen, patString, UREGEX_MULTILINE, UnicodeString(), status);
-    return removeText(source, srcLen, UnicodeString("[ \\r\\n]+"), 0, UnicodeString(" "), status);// remove new lines;
+    return removeText(source, srcLen, UnicodeString(u8"[ \\r\\n]+"), 0, UnicodeString(u8" "), status);// remove new lines;
 }
 
 U_CFUNC int32_t
@@ -94,7 +94,7 @@ getText(const UChar* source, int32_t srcLen,
     }
 
     UnicodeString     stringArray[MAX_SPLIT_STRINGS];
-    RegexPattern      *pattern = RegexPattern::compile(UnicodeString("@"), 0, *status);
+    RegexPattern      *pattern = RegexPattern::compile(UnicodeString(u8"@"), 0, *status);
     UnicodeString src (source,srcLen);
 
     if (U_FAILURE(*status)) {
@@ -129,7 +129,7 @@ getDescription( const UChar* source, int32_t srcLen,
     }
 
     UnicodeString     stringArray[MAX_SPLIT_STRINGS];
-    RegexPattern      *pattern = RegexPattern::compile(UnicodeString("@"), UREGEX_MULTILINE, *status);
+    RegexPattern      *pattern = RegexPattern::compile(UnicodeString(u8"@"), UREGEX_MULTILINE, *status);
     UnicodeString src(source, srcLen);
 
     if (U_FAILURE(*status)) {
@@ -153,7 +153,7 @@ getCount(const UChar* source, int32_t srcLen,
     }
 
     UnicodeString     stringArray[MAX_SPLIT_STRINGS];
-    RegexPattern      *pattern = RegexPattern::compile(UnicodeString("@"), UREGEX_MULTILINE, *status);
+    RegexPattern      *pattern = RegexPattern::compile(UnicodeString(u8"@"), UREGEX_MULTILINE, *status);
     UnicodeString src (source, srcLen);
 
 
@@ -175,7 +175,7 @@ getCount(const UChar* source, int32_t srcLen,
         }
     }
     if(option == UPC_TRANSLATE && count > 1){
-        fprintf(stderr, "Multiple @translate tags cannot be supported.\n");
+        fprintf(stderr, u8"Multiple @translate tags cannot be supported.\n");
         exit(U_UNSUPPORTED_ERROR);
     }
     return count;
@@ -193,7 +193,7 @@ getAt(const UChar* source, int32_t srcLen,
     }
 
     UnicodeString     stringArray[MAX_SPLIT_STRINGS];
-    RegexPattern      *pattern = RegexPattern::compile(UnicodeString("@"), UREGEX_MULTILINE, *status);
+    RegexPattern      *pattern = RegexPattern::compile(UnicodeString(u8"@"), UREGEX_MULTILINE, *status);
     UnicodeString src (source, srcLen);
 
 
@@ -227,7 +227,7 @@ U_CFUNC int32_t
 getTranslate( const UChar* source, int32_t srcLen,
               UChar** dest, int32_t destCapacity,
               UErrorCode* status){
-    UnicodeString     notePatternString("^translate\\s*?(.*)");
+    UnicodeString     notePatternString(u8"^translate\\s*?(.*)");
 
     int32_t destLen = getText(source, srcLen, dest, destCapacity, notePatternString, status);
     return trim(*dest, destLen, status);
@@ -238,7 +238,7 @@ getNote(const UChar* source, int32_t srcLen,
         UChar** dest, int32_t destCapacity,
         UErrorCode* status){
 
-    UnicodeString     notePatternString("^note\\s*?(.*)");
+    UnicodeString     notePatternString(u8"^note\\s*?(.*)");
     int32_t destLen =  getText(source, srcLen, dest, destCapacity, notePatternString, status);
     return trim(*dest, destLen, status);
 

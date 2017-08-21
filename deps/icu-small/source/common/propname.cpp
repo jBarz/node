@@ -211,7 +211,7 @@ const char *PropNameData::getName(const char *nameGroup, int32_t nameIndex) {
         nameGroup=uprv_strchr(nameGroup, 0)+1;
     }
     if(*nameGroup==0) {
-        return NULL;  // no name (Property[Value]Aliases.txt has "n/a")
+        return NULL;  // no name (Property[Value]Aliases.txt has u8"n/a")
     }
     return nameGroup;
 }

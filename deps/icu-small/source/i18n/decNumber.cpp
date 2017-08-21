@@ -8,7 +8,7 @@
 /* This software is made available under the terms of the             */
 /* ICU License -- ICU 1.8.1 and later.                                */
 /*                                                                    */
-/* The description and User's Guide ("The decNumber C Library") for   */
+/* The description and User's Guide (u8"The decNumber C Library") for   */
 /* this software is called decNumber.pdf.  This document is           */
 /* available, together with arithmetic and format specifications,     */
 /* testcases, and Web links, on the General Decimal Arithmetic page.  */
@@ -177,7 +177,6 @@
 /* ------------------------------------------------------------------ */
 
 #include <stdlib.h>                /* for malloc, free, etc.  */
-/*  #include <stdio.h>   */        /* for printf [if needed]  */
 #include <string.h>                /* for strcpy  */
 #include <ctype.h>                 /* for lower  */
 #include "cmemory.h"               /* for uprv_malloc, etc., in ICU */
@@ -494,7 +493,7 @@ U_CAPI char * U_EXPORT2 uprv_decNumberToEngString(const decNumber *dn, char *str
 /*                                                                    */
 /* decNumberFromString -- convert string to decNumber                 */
 /*   dn        -- the number structure to fill                        */
-/*   chars[]   -- the string to convert ('\0' terminated)             */
+/*   chars[]   -- the string to convert ('\x0' terminated)             */
 /*   set       -- the context used for processing any error,          */
 /*                determining the maximum precision available         */
 /*                (set.digits), determining the maximum and minimum   */
@@ -536,21 +535,21 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
 
   do {                             /* status & malloc protection  */
     for (c=chars;; c++) {          /* -> input character  */
-      if (*c>='0' && *c<='9') {    /* test for Arabic digit  */
+      if (*c>='\x30' && *c<='\x39') {    /* test for Arabic digit  */
         last=c;
         d++;                       /* count of real digits  */
         continue;                  /* still in decimal part  */
         }
-      if (*c=='.' && dotchar==NULL) { /* first '.'  */
+      if (*c=='\x2e' && dotchar==NULL) { /* first '\x2e'  */
         dotchar=c;                 /* record offset into decimal part  */
         if (c==cfirst) cfirst++;   /* first digit must follow  */
         continue;}
       if (c==chars) {              /* first in string...  */
-        if (*c=='-') {             /* valid - sign  */
+        if (*c=='\x2d') {             /* valid - sign  */
           cfirst++;
           bits=DECNEG;
           continue;}
-        if (*c=='+') {             /* valid + sign  */
+        if (*c=='\x2b') {             /* valid + sign  */
           cfirst++;
           continue;}
         }
@@ -560,7 +559,7 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
 
     if (last==NULL) {              /* no digits yet  */
       status=DEC_Conversion_syntax;/* assume the worst  */
-      if (*c=='\0') break;         /* and no more to come...  */
+      if (*c=='\x0') break;         /* and no more to come...  */
       #if DECSUBSET
       /* if subset then infinities and NaNs are not allowed  */
       if (!set->extended) break;   /* hopeless  */
@@ -568,8 +567,8 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
       /* Infinities and NaNs are possible, here  */
       if (dotchar!=NULL) break;    /* .. unless had a dot  */
       uprv_decNumberZero(dn);           /* be optimistic  */
-      if (decBiStr(c, "infinity", "INFINITY")
-       || decBiStr(c, "inf", "INF")) {
+      if (decBiStr(c, u8"infinity", u8"INFINITY")
+       || decBiStr(c, u8"inf", u8"INF")) {
         dn->bits=bits | DECINF;
         status=0;                  /* is OK  */
         break; /* all done  */
@@ -577,29 +576,29 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
       /* a NaN expected  */
       /* 2003.09.10 NaNs are now permitted to have a sign  */
       dn->bits=bits | DECNAN;      /* assume simple NaN  */
-      if (*c=='s' || *c=='S') {    /* looks like an sNaN  */
+      if (*c=='\x73' || *c=='\x53') {    /* looks like an sNaN  */
         c++;
         dn->bits=bits | DECSNAN;
         }
-      if (*c!='n' && *c!='N') break;    /* check caseless "NaN"  */
+      if (*c!='\x6e' && *c!='\x4e') break;    /* check caseless u8"NaN"  */
       c++;
-      if (*c!='a' && *c!='A') break;    /* ..  */
+      if (*c!='\x61' && *c!='\x41') break;    /* ..  */
       c++;
-      if (*c!='n' && *c!='N') break;    /* ..  */
+      if (*c!='\x6e' && *c!='\x4e') break;    /* ..  */
       c++;
       /* now either nothing, or nnnn payload, expected  */
       /* -> start of integer and skip leading 0s [including plain 0]  */
-      for (cfirst=c; *cfirst=='0';) cfirst++;
-      if (*cfirst=='\0') {         /* "NaN" or "sNaN", maybe with all 0s  */
+      for (cfirst=c; *cfirst=='\x30';) cfirst++;
+      if (*cfirst=='\x0') {         /* u8"NaN" or u8"sNaN", maybe with all 0s  */
         status=0;                  /* it's good  */
         break;                     /* ..  */
         }
       /* something other than 0s; setup last and d as usual [no dots]  */
       for (c=cfirst;; c++, d++) {
-        if (*c<'0' || *c>'9') break; /* test for Arabic digit  */
+        if (*c<'\x30' || *c>'\x39') break; /* test for Arabic digit  */
         last=c;
         }
-      if (*c!='\0') break;         /* not all digits  */
+      if (*c!='\x0') break;         /* not all digits  */
       if (d>set->digits-1) {
         /* [NB: payload in a decNumber can be full length unless  */
         /* clamped, in which case can only be digits-1]  */
@@ -611,34 +610,34 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
       bits=dn->bits;               /* for copy-back  */
       } /* last==NULL  */
 
-     else if (*c!='\0') {          /* more to process...  */
+     else if (*c!='\x0') {          /* more to process...  */
       /* had some digits; exponent is only valid sequence now  */
       Flag nege;                   /* 1=negative exponent  */
       const char *firstexp;        /* -> first significant exponent digit  */
       status=DEC_Conversion_syntax;/* assume the worst  */
-      if (*c!='e' && *c!='E') break;
+      if (*c!='\x65' && *c!='\x45') break;
       /* Found 'e' or 'E' -- now process explicit exponent */
       /* 1998.07.11: sign no longer required  */
       nege=0;
       c++;                         /* to (possible) sign  */
-      if (*c=='-') {nege=1; c++;}
-       else if (*c=='+') c++;
-      if (*c=='\0') break;
+      if (*c=='\x2d') {nege=1; c++;}
+       else if (*c=='\x2b') c++;
+      if (*c=='\x0') break;
 
-      for (; *c=='0' && *(c+1)!='\0';) c++;  /* strip insignificant zeros  */
+      for (; *c=='\x30' && *(c+1)!='\x0';) c++;  /* strip insignificant zeros  */
       firstexp=c;                            /* save exponent digit place  */
       for (; ;c++) {
-        if (*c<'0' || *c>'9') break;         /* not a digit  */
-        exponent=X10(exponent)+(Int)*c-(Int)'0';
+        if (*c<'\x30' || *c>'\x39') break;         /* not a digit  */
+        exponent=X10(exponent)+(Int)*c-(Int)'\x30';
         } /* c  */
-      /* if not now on a '\0', *c must not be a digit  */
-      if (*c!='\0') break;
+      /* if not now on a '\x0', *c must not be a digit  */
+      if (*c!='\x0') break;
 
       /* (this next test must be after the syntax checks)  */
       /* if it was too long the exponent may have wrapped, so check  */
       /* carefully and set it to a certain overflow if wrap possible  */
       if (c>=firstexp+9+1) {
-        if (c>firstexp+9+1 || *firstexp>'1') exponent=DECNUMMAXE*2;
+        if (c>firstexp+9+1 || *firstexp>'\x31') exponent=DECNUMMAXE*2;
         /* [up to 1999999999 is OK, for example 1E-1000000998]  */
         }
       if (nege) exponent=-exponent;     /* was negative  */
@@ -649,15 +648,15 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
     /* cfirst->first digit (never dot), last->last digit (ditto)  */
 
     /* strip leading zeros/dot [leave final 0 if all 0's]  */
-    if (*cfirst=='0') {                 /* [cfirst has stepped over .]  */
+    if (*cfirst=='\x30') {                 /* [cfirst has stepped over .]  */
       for (c=cfirst; c<last; c++, cfirst++) {
-        if (*c=='.') continue;          /* ignore dots  */
-        if (*c!='0') break;             /* non-zero found  */
+        if (*c=='\x2e') continue;          /* ignore dots  */
+        if (*c!='\x30') break;             /* non-zero found  */
         d--;                            /* 0 stripped  */
         } /* c  */
       #if DECSUBSET
       /* make a rapid exit for easy zeros if !extended  */
-      if (*cfirst=='0' && !set->extended) {
+      if (*cfirst=='\x30' && !set->extended) {
         uprv_decNumberZero(dn);              /* clean result  */
         break;                          /* [could be return]  */
         }
@@ -665,7 +664,7 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
       } /* at least one leading 0  */
 
     /* Handle decimal point...  */
-    if (dotchar!=NULL && dotchar<last)  /* non-trailing '.' found?  */
+    if (dotchar!=NULL && dotchar<last)  /* non-trailing '\x2e' found?  */
       exponent-=(last-dotchar);         /* adjust exponent  */
     /* [we can now ignore the .]  */
 
@@ -690,9 +689,9 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
     up=res+D2U(d)-1;               /* -> msu  */
     cut=d-(up-res)*DECDPUN;        /* digits in top unit  */
     for (c=cfirst;; c++) {         /* along the digits  */
-      if (*c=='.') continue;       /* ignore '.' [don't decrement cut]  */
-      out=X10(out)+(Int)*c-(Int)'0';
-      if (c==last) break;          /* done [never get to trailing '.']  */
+      if (*c=='\x2e') continue;       /* ignore '\x2e' [don't decrement cut]  */
+      out=X10(out)+(Int)*c-(Int)'\x30';
+      if (c==last) break;          /* done [never get to trailing '\x2e']  */
       cut--;
       if (cut>0) continue;         /* more for this unit  */
       *up=(Unit)out;               /* write unit  */
@@ -706,8 +705,8 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFromString(decNumber *dn, const char 
     /* DECDPUN==1  */
     up=res;                        /* -> lsu  */
     for (c=last; c>=cfirst; c--) { /* over each character, from least  */
-      if (*c=='.') continue;       /* ignore . [don't step up]  */
-      *up=(Unit)((Int)*c-(Int)'0');
+      if (*c=='\x2e') continue;       /* ignore . [don't step up]  */
+      *up=(Unit)((Int)*c-(Int)'\x30');
       up++;
       } /* c  */
     #endif
@@ -1027,7 +1026,7 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberDivide(decNumber *res, const decNumbe
 /*                                                                    */
 /*   This computes C = A # B, where # is the integer divide operator  */
 /*                                                                    */
-/*   res is C, the result.  C may be A and/or B (e.g., X=X#X)         */
+/*   res is C, the result.  C may be A and/or B (e.g., X=X USTR(#X))         */
 /*   lhs is A                                                         */
 /*   rhs is B                                                         */
 /*   set is the context                                               */
@@ -1166,7 +1165,7 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFMA(decNumber *res, const decNumber *
       acc=allocbufa;                    /* use the allocated space  */
       }
     /* multiply with extended range and necessary precision  */
-    /*printf("emin=%ld\n", dcmul.emin);  */
+    /*printf(u8"emin=%ld\n", dcmul.emin);  */
     decMultiplyOp(acc, lhs, rhs, &dcmul, &status);
     /* Only Invalid operation (from sNaN or Inf * 0) is possible in  */
     /* status; if either is seen than ignore fhs (in case it is  */
@@ -1185,7 +1184,7 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberFMA(decNumber *res, const decNumber *
       }
     #if DECCHECK
      else { /* multiply was OK  */
-      if (status!=0) printf("Status=%08lx after FMA multiply\n", (LI)status);
+      if (status!=0) printf(u8"Status=%08lx after FMA multiply\n", (LI)status);
       }
     #endif
     /* add the third operand and result -> res, and all is done  */
@@ -2766,7 +2765,7 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberShift(decNumber *res, const decNumber
 /* This uses the following varying-precision algorithm in:            */
 /*                                                                    */
 /*   Properly Rounded Variable Precision Square Root, T. E. Hull and  */
-/*   A. Abrham, ACM Transactions on Mathematical Software, Vol 11 #3, */
+/*   A. Abrham, ACM Transactions on Mathematical Software, Vol 11  USTR(#3), */
 /*   pp229-237, ACM, September 1985.                                  */
 /*                                                                    */
 /* The square-root is calculated using Newton's method, after which   */
@@ -3102,7 +3101,7 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberSquareRoot(decNumber *res, const decN
         decCompareOp(t, b, rhs, &workset, COMPARE, &mstatus); /* b ? rhs  */
         if (!ISZERO(t)) status|=DEC_Inexact|DEC_Rounded; /* not equal  */
          else {                              /* is Exact  */
-          /* here, dropped is the count of trailing zeros in 'a'  */
+          /* here, dropped is the count of trailing zeros in '\x61'  */
           /* use closest exponent to ideal...  */
           Int todrop=ideal-a->exponent;      /* most that can be dropped  */
           if (todrop<0) status|=DEC_Rounded; /* ideally would add 0s  */
@@ -3647,12 +3646,12 @@ U_CAPI decNumber * U_EXPORT2 uprv_decNumberZero(decNumber *dn) {
 /* never generated in subset to-number or arithmetic, but can occur   */
 /* in non-subset arithmetic (e.g., -1*0 or 1.234-1.234).              */
 /* ------------------------------------------------------------------ */
-/* If DECCHECK is enabled the string "?" is returned if a number is  */
+/* If DECCHECK is enabled the string u8"?" is returned if a number is  */
 /* invalid.  */
 static void decToString(const decNumber *dn, char *string, Flag eng) {
   Int exp=dn->exponent;       /* local copy  */
   Int e;                      /* E-part value  */
-  Int pre;                    /* digits before the '.'  */
+  Int pre;                    /* digits before the '\x2e'  */
   Int cut;                    /* for counting digits in a Unit  */
   char *c=string;             /* work [output pointer]  */
   const Unit *up=dn->lsu+D2U(dn->digits)-1; /* -> msu [input pointer]  */
@@ -3660,25 +3659,25 @@ static void decToString(const decNumber *dn, char *string, Flag eng) {
 
   #if DECCHECK
   if (decCheckOperands(DECUNRESU, dn, DECUNUSED, DECUNCONT)) {
-    strcpy(string, "?");
+    strcpy(string, u8"?");
     return;}
   #endif
 
   if (decNumberIsNegative(dn)) {   /* Negatives get a minus  */
-    *c='-';
+    *c='\x2d';
     c++;
     }
   if (dn->bits&DECSPECIAL) {       /* Is a special value  */
     if (decNumberIsInfinite(dn)) {
-      strcpy(c,   "Inf");
-      strcpy(c+3, "inity");
+      strcpy(c,   u8"Inf");
+      strcpy(c+3, u8"inity");
       return;}
     /* a NaN  */
     if (dn->bits&DECSNAN) {        /* signalling NaN  */
-      *c='s';
+      *c='\x73';
       c++;
       }
-    strcpy(c, "NaN");
+    strcpy(c, u8"NaN");
     c+=3;                          /* step past  */
     /* if not a clean non-zero coefficient, that's all there is in a  */
     /* NaN string  */
@@ -3696,15 +3695,15 @@ static void decToString(const decNumber *dn, char *string, Flag eng) {
       for (; cut>=0; c++, cut--) TODIGIT(u, cut, c, pow);
       cut=DECDPUN-1;               /* next Unit has all digits  */
       }
-    *c='\0';                       /* terminate the string  */
+    *c='\x0';                       /* terminate the string  */
     return;}
 
   /* non-0 exponent -- assume plain form */
-  pre=dn->digits+exp;              /* digits before '.'  */
+  pre=dn->digits+exp;              /* digits before '\x2e'  */
   e=0;                             /* no E  */
   if ((exp>0) || (pre<-5)) {       /* need exponential form  */
     e=exp+dn->digits-1;            /* calculate E value  */
-    pre=1;                         /* assume one digit before '.'  */
+    pre=1;                         /* assume one digit before '\x2e'  */
     if (eng && (e!=0)) {           /* engineering: may need to adjust  */
       Int adj;                     /* adjustment  */
       /* The C remainder operator is undefined for negative numbers, so  */
@@ -3743,8 +3742,8 @@ static void decToString(const decNumber *dn, char *string, Flag eng) {
         }
       TODIGIT(u, cut, c, pow);
       }
-    if (n<dn->digits) {            /* more to come, after '.'  */
-      *c='.'; c++;
+    if (n<dn->digits) {            /* more to come, after '\x2e'  */
+      *c='\x2e'; c++;
       for (;; c++, cut--) {
         if (cut<0) {               /* need new Unit  */
           if (up==dn->lsu) break;  /* out of input digits  */
@@ -3755,12 +3754,12 @@ static void decToString(const decNumber *dn, char *string, Flag eng) {
         TODIGIT(u, cut, c, pow);
         }
       }
-     else for (; pre>0; pre--, c++) *c='0'; /* 0 padding (for engineering) needed  */
+     else for (; pre>0; pre--, c++) *c='\x30'; /* 0 padding (for engineering) needed  */
     }
    else {                          /* 0.xxx or 0.000xxx form  */
-    *c='0'; c++;
-    *c='.'; c++;
-    for (; pre<0; pre++, c++) *c='0';   /* add any 0's after '.'  */
+    *c='\x30'; c++;
+    *c='\x2e'; c++;
+    for (; pre<0; pre++, c++) *c='\x30';   /* add any 0's after '\x2e'  */
     for (; ; c++, cut--) {
       if (cut<0) {                 /* need new Unit  */
         if (up==dn->lsu) break;    /* out of input digits  */
@@ -3777,22 +3776,22 @@ static void decToString(const decNumber *dn, char *string, Flag eng) {
      could range down to -1999999998 for anormal numbers */
   if (e!=0) {
     Flag had=0;               /* 1=had non-zero  */
-    *c='E'; c++;
-    *c='+'; c++;              /* assume positive  */
+    *c='\x45'; c++;
+    *c='\x2b'; c++;              /* assume positive  */
     u=e;                      /* ..  */
     if (e<0) {
-      *(c-1)='-';             /* oops, need -  */
+      *(c-1)='\x2d';             /* oops, need -  */
       u=-e;                   /* uInt, please  */
       }
     /* lay out the exponent [_itoa or equivalent is not ANSI C]  */
     for (cut=9; cut>=0; cut--) {
       TODIGIT(u, cut, c, pow);
-      if (*c=='0' && !had) continue;    /* skip leading zeros  */
+      if (*c=='\x30' && !had) continue;    /* skip leading zeros  */
       had=1;                            /* had non-0  */
       c++;                              /* step for next  */
       } /* cut  */
     }
-  *c='\0';          /* terminate the string (all paths)  */
+  *c='\x0';          /* terminate the string (all paths)  */
   return;
   } /* decToString  */
 
@@ -4084,9 +4083,9 @@ static decNumber * decAddOp(decNumber *res, const decNumber *lhs,
     res->exponent=lhs->exponent;        /* .. operands (even if aliased)  */
 
     #if DECTRACE
-      decDumpAr('A', lhs->lsu, D2U(lhs->digits));
-      decDumpAr('B', rhs->lsu, D2U(rhs->digits));
-      printf("  :h: %ld %ld\n", rhsshift, mult);
+      decDumpAr('\x41', lhs->lsu, D2U(lhs->digits));
+      decDumpAr('\x42', rhs->lsu, D2U(rhs->digits));
+      printf(u8"  :h: %ld %ld\n", rhsshift, mult);
     #endif
 
     /* add [A+B*m] or subtract [A+B*(-m)]  */
@@ -4101,7 +4100,7 @@ static decNumber * decAddOp(decNumber *res, const decNumber *lhs,
       res->bits^=DECNEG;           /* flip the sign  */
       }
     #if DECTRACE
-      decDumpAr('+', acc, D2U(res->digits));
+      decDumpAr('\x2b', acc, D2U(res->digits));
     #endif
 
     /* If a buffer was used the result must be copied back, possibly  */
@@ -4156,9 +4155,9 @@ static decNumber * decAddOp(decNumber *res, const decNumber *lhs,
     decFinish(res, set, &residue, status);
 
     /* "When the sum of two operands with opposite signs is exactly  */
-    /* zero, the sign of that sum shall be '+' in all rounding modes  */
+    /* zero, the sign of that sum shall be '\x2b' in all rounding modes  */
     /* except round toward -Infinity, in which mode that sign shall be  */
-    /* '-'."  [Subset zeros also never have '-', set by decFinish.]  */
+    /* '\x2d'."  [Subset zeros also never have '\x2d', set by decFinish.]  */
     if (ISZERO(res) && diffsign
      #if DECSUBSET
      && set->extended
@@ -4586,15 +4585,15 @@ static decNumber * decDivideOp(decNumber *res,
         /* processing, as this is an in-place calculation  */
         shift=var2ulen-var2units;
         #if DECTRACE
-          decDumpAr('1', &var1[shift], var1units-shift);
-          decDumpAr('2', var2, var2units);
-          printf("m=%ld\n", -mult);
+          decDumpAr('\x31', &var1[shift], var1units-shift);
+          decDumpAr('\x32', var2, var2units);
+          printf(u8"m=%ld\n", -mult);
         #endif
         decUnitAddSub(&var1[shift], var1units-shift,
                       var2, var2units, 0,
                       &var1[shift], -mult);
         #if DECTRACE
-          decDumpAr('#', &var1[shift], var1units-shift);
+          decDumpAr('\x23', &var1[shift], var1units-shift);
         #endif
         /* var1 now probably has leading zeros; these are removed at the  */
         /* top of the inner loop.  */
@@ -5120,7 +5119,7 @@ static decNumber * decMultiplyOp(decNumber *res, const decNumber *lhs,
       /* is no advantage in calculating from msu to lsu.  So, do it  */
       /* by the book, as it were.  */
       /* Each iteration calculates ACC=ACC+MULTAND*MULT  */
-      accunits=1;                  /* accumulator starts at '0'  */
+      accunits=1;                  /* accumulator starts at '\x30'  */
       *acc=0;                      /* .. (lsu=0)  */
       shift=0;                     /* no multiplicand shift at first  */
       madlength=D2U(lhs->digits);  /* this won't change  */
@@ -5145,7 +5144,7 @@ static decNumber * decMultiplyOp(decNumber *res, const decNumber *lhs,
     #endif
     /* common end-path  */
     #if DECTRACE
-      decDumpAr('*', acc, accunits);         /* Show exact result  */
+      decDumpAr('\x2a', acc, accunits);         /* Show exact result  */
     #endif
 
     /* acc now contains the exact result of the multiplication,  */
@@ -5211,7 +5210,7 @@ static decNumber * decMultiplyOp(decNumber *res, const decNumber *lhs,
 /* This approach used here is similar to the algorithm described in   */
 /*                                                                    */
 /*   Variable Precision Exponential Function, T. E. Hull and          */
-/*   A. Abrham, ACM Transactions on Mathematical Software, Vol 12 #2, */
+/*   A. Abrham, ACM Transactions on Mathematical Software, Vol 12  USTR(#2), */
 /*   pp79-91, ACM, June 1986.                                         */
 /*                                                                    */
 /* with the main difference being that the iterations in the series   */
@@ -5485,7 +5484,7 @@ decNumber * decExpOp(decNumber *res, const decNumber *rhs,
       #if DECCHECK
       /* just a sanity check; comment out test to show always  */
       if (iterations>p+3)
-        printf("Exp iterations=%ld, status=%08lx, p=%ld, d=%ld\n",
+        printf(u8"Exp iterations=%ld, status=%08lx, p=%ld, d=%ld\n",
                (LI)iterations, (LI)*status, (LI)p, (LI)x->digits);
       #endif
       } /* h<=8  */
@@ -5683,13 +5682,13 @@ decNumber * decLnOp(decNumber *res, const decNumber *rhs,
       if (rhs->lsu[0]==10 && rhs->digits==2) {                  /* ln(10)  */
       #endif
         aset=*set; aset.round=DEC_ROUND_HALF_EVEN;
-        #define LN10 "2.302585092994045684017991454684364207601"
+        #define LN10 u8"2.302585092994045684017991454684364207601"
         uprv_decNumberFromString(res, LN10, &aset);
         *status|=(DEC_Inexact | DEC_Rounded); /* is inexact  */
         break;}
       if (rhs->lsu[0]==2 && rhs->digits==1) { /* ln(2)  */
         aset=*set; aset.round=DEC_ROUND_HALF_EVEN;
-        #define LN2 "0.6931471805599453094172321214581765680755"
+        #define LN2 u8"0.6931471805599453094172321214581765680755"
         uprv_decNumberFromString(res, LN2, &aset);
         *status|=(DEC_Inexact | DEC_Rounded);
         break;}
@@ -5829,7 +5828,7 @@ decNumber * decLnOp(decNumber *res, const decNumber *rhs,
     #if DECCHECK
     /* just a sanity check; remove the test to show always  */
     if (iterations>24)
-      printf("Ln iterations=%ld, status=%08lx, p=%ld, d=%ld\n",
+      printf(u8"Ln iterations=%ld, status=%08lx, p=%ld, d=%ld\n",
             (LI)iterations, (LI)*status, (LI)p, (LI)rhs->digits);
     #endif
 
@@ -5997,7 +5996,7 @@ static decNumber * decQuantizeOp(decNumber *res, const decNumber *lhs,
       } /* non-zero  */
 
     /* Check for overflow [do not use Finalize in this case, as an  */
-    /* overflow here is a "don't fit" situation]  */
+    /* overflow here is a u8"don't fit" situation]  */
     if (res->exponent>set->emax-res->digits+1) {  /* too big  */
       *status|=DEC_Invalid_operation;
       break;
@@ -6393,7 +6392,7 @@ static Int decUnitAddSub(const Unit *a, Int alength,
 
   #if DECTRACE
   if (alength<1 || blength<1)
-    printf("decUnitAddSub: alen blen m %ld %ld [%ld]\n", alength, blength, m);
+    printf(u8"decUnitAddSub: alen blen m %ld %ld [%ld]\n", alength, blength, m);
   #endif
 
   maxC=c+alength;                  /* A is usually the longer  */
@@ -6608,7 +6607,7 @@ static Int decUnitAddSub(const Unit *a, Int alength,
     }
   /* add an extra unit iff it would be non-zero  */
   #if DECTRACE
-    printf("UAS borrow: add %ld, carry %ld\n", add, carry);
+    printf(u8"UAS borrow: add %ld, carry %ld\n", add, carry);
   #endif
   if ((add-carry-1)!=0) {
     *c=(Unit)(add-carry-1);
@@ -7185,7 +7184,7 @@ static void decApplyRound(decNumber *dn, decContext *set, Int residue,
     default: {      /* e.g., DEC_ROUND_MAX  */
       *status|=DEC_Invalid_context;
       #if DECTRACE || (DECCHECK && DECVERB)
-      printf("Unknown rounding mode: %d\n", set->round);
+      printf(u8"Unknown rounding mode: %d\n", set->round);
       #endif
       break;}
     } /* switch  */
@@ -7239,7 +7238,7 @@ static void decApplyRound(decNumber *dn, decContext *set, Int residue,
         /* iff the number was at the subnormal boundary (exponent=etiny)  */
         /* then the exponent is now out of range, so it will in fact get  */
         /* clamped to etiny and the final 9 dropped.  */
-        /* printf(">> emin=%d exp=%d sdig=%d\n", set->emin,  */
+        /* printf(u8">> emin=%d exp=%d sdig=%d\n", set->emin,  */
         /*        dn->exponent, set->digits);  */
         if (dn->exponent+1==set->emin-set->digits+1) {
           if (count==1 && dn->digits==1) *sup=0;  /* here 9 -> 0[.9]  */
@@ -7275,7 +7274,7 @@ static void decApplyRound(decNumber *dn, decContext *set, Int residue,
 /*                                                                    */
 /* This finishes off the current number by:                           */
 /*    1. If not extended:                                             */
-/*       a. Converting a zero result to clean '0'                     */
+/*       a. Converting a zero result to clean '\x30'                     */
 /*       b. Reducing positive exponents to 0, if would fit in digits  */
 /*    2. Checking for overflow and subnormals (always)                */
 /* Note this is just Finalize when no subset arithmetic.              */
@@ -7493,7 +7492,7 @@ static void decSetSubnormal(decNumber *dn, decContext *set, Int *residue,
     /* residue can never be non-zero here  */
     #if DECCHECK
       if (*residue!=0) {
-        printf("++ Subnormal 0 residue %ld\n", (LI)*residue);
+        printf(u8"++ Subnormal 0 residue %ld\n", (LI)*residue);
         *status|=DEC_Invalid_operation;
         }
     #endif
@@ -7679,7 +7678,7 @@ static decNumber *decDecap(decNumber *dn, Int drop) {
   if (drop>=dn->digits) {               /* losing the whole thing  */
     #if DECCHECK
     if (drop>dn->digits)
-      printf("decDecap called with drop>digits [%ld>%ld]\n",
+      printf(u8"decDecap called with drop>digits [%ld>%ld]\n",
              (LI)drop, (LI)dn->digits);
     #endif
     dn->lsu[0]=0;
@@ -7707,13 +7706,13 @@ static decNumber *decDecap(decNumber *dn, Int drop) {
 /*                                                                    */
 /* This is used for generic caseless compare, including the awkward   */
 /* case of the Turkish dotted and dotless Is.  Use as (for example):  */
-/*   if (decBiStr(test, "mike", "MIKE")) ...                          */
+/*   if (decBiStr(test, u8"mike", u8"MIKE")) ...                          */
 /* ------------------------------------------------------------------ */
 static Flag decBiStr(const char *targ, const char *str1, const char *str2) {
   for (;;targ++, str1++, str2++) {
     if (*targ!=*str1 && *targ!=*str2) return 0;
     /* *targ has a match in one (or both, if terminator)  */
-    if (*targ=='\0') break;
+    if (*targ=='\x0') break;
     } /* forever  */
   return 1;
   } /* decBiStr  */
@@ -7817,7 +7816,7 @@ static Int decGetDigits(Unit *uar, Int len) {
   #endif
                                    /* (at least 1 in final msu)  */
   #if DECCHECK
-  if (len<1) printf("decGetDigits called with len<1 [%ld]\n", (LI)len);
+  if (len<1) printf(u8"decGetDigits called with len<1 [%ld]\n", (LI)len);
   #endif
 
   for (; up>=uar; up--) {
@@ -7859,44 +7858,44 @@ void uprv_decNumberShow(const decNumber *dn) {
   const Unit *up;                  /* work  */
   uInt u, d;                       /* ..  */
   Int cut;                         /* ..  */
-  char isign='+';                  /* main sign  */
+  char isign='\x2b';                  /* main sign  */
   if (dn==NULL) {
-    printf("NULL\n");
+    printf(u8"NULL\n");
     return;}
-  if (decNumberIsNegative(dn)) isign='-';
-  printf(" >> %c ", isign);
+  if (decNumberIsNegative(dn)) isign='\x2d';
+  printf(u8" >> %c ", isign);
   if (dn->bits&DECSPECIAL) {       /* Is a special value  */
-    if (decNumberIsInfinite(dn)) printf("Infinity");
+    if (decNumberIsInfinite(dn)) printf(u8"Infinity");
      else {                                  /* a NaN  */
-      if (dn->bits&DECSNAN) printf("sNaN");  /* signalling NaN  */
-       else printf("NaN");
+      if (dn->bits&DECSNAN) printf(u8"sNaN");  /* signalling NaN  */
+       else printf(u8"NaN");
       }
     /* if coefficient and exponent are 0, no more to do  */
     if (dn->exponent==0 && dn->digits==1 && *dn->lsu==0) {
-      printf("\n");
+      printf(u8"\n");
       return;}
     /* drop through to report other information  */
-    printf(" ");
+    printf(u8" ");
     }
 
   /* now carefully display the coefficient  */
   up=dn->lsu+D2U(dn->digits)-1;         /* msu  */
-  printf("%ld", (LI)*up);
+  printf(u8"%ld", (LI)*up);
   for (up=up-1; up>=dn->lsu; up--) {
     u=*up;
-    printf(":");
+    printf(u8":");
     for (cut=DECDPUN-1; cut>=0; cut--) {
       d=u/powers[cut];
       u-=d*powers[cut];
-      printf("%ld", (LI)d);
+      printf(u8"%ld", (LI)d);
       } /* cut  */
     } /* up  */
   if (dn->exponent!=0) {
-    char esign='+';
-    if (dn->exponent<0) esign='-';
-    printf(" E%c%ld", esign, (LI)abs(dn->exponent));
+    char esign='\x2b';
+    if (dn->exponent<0) esign='\x2d';
+    printf(u8" E%c%ld", esign, (LI)abs(dn->exponent));
     }
-  printf(" [%ld]\n", (LI)dn->digits);
+  printf(u8" [%ld]\n", (LI)dn->digits);
   } /* decNumberShow  */
 #endif
 
@@ -7911,30 +7910,30 @@ static void decDumpAr(char name, const Unit *ar, Int len) {
   Int i;
   const char *spec;
   #if DECDPUN==9
-    spec="%09d ";
+    spec=u8"%09d ";
   #elif DECDPUN==8
-    spec="%08d ";
+    spec=u8"%08d ";
   #elif DECDPUN==7
-    spec="%07d ";
+    spec=u8"%07d ";
   #elif DECDPUN==6
-    spec="%06d ";
+    spec=u8"%06d ";
   #elif DECDPUN==5
-    spec="%05d ";
+    spec=u8"%05d ";
   #elif DECDPUN==4
-    spec="%04d ";
+    spec=u8"%04d ";
   #elif DECDPUN==3
-    spec="%03d ";
+    spec=u8"%03d ";
   #elif DECDPUN==2
-    spec="%02d ";
+    spec=u8"%02d ";
   #else
-    spec="%d ";
+    spec=u8"%d ";
   #endif
-  printf("  :%c: ", name);
+  printf(u8"  :%c: ", name);
   for (i=len-1; i>=0; i--) {
-    if (i==len-1) printf("%ld ", (LI)ar[i]);
+    if (i==len-1) printf(u8"%ld ", (LI)ar[i]);
      else printf(spec, ar[i]);
     }
-  printf("\n");
+  printf(u8"\n");
   return;}
 #endif
 
@@ -7957,7 +7956,7 @@ static Flag decCheckOperands(decNumber *res, const decNumber *lhs,
   Flag bad=0;
   if (set==NULL) {                 /* oops; hopeless  */
     #if DECTRACE || DECVERB
-    printf("Reference to context is NULL.\n");
+    printf(u8"Reference to context is NULL.\n");
     #endif
     bad=1;
     return 1;}
@@ -7965,7 +7964,7 @@ static Flag decCheckOperands(decNumber *res, const decNumber *lhs,
      && (set->digits<1 || set->round>=DEC_ROUND_MAX)) {
     bad=1;
     #if DECTRACE || DECVERB
-    printf("Bad context [digits=%ld round=%ld].\n",
+    printf(u8"Bad context [digits=%ld round=%ld].\n",
            (LI)set->digits, (LI)set->round);
     #endif
     }
@@ -7974,7 +7973,7 @@ static Flag decCheckOperands(decNumber *res, const decNumber *lhs,
       bad=1;
       #if DECTRACE
       /* this one not DECVERB as standard tests include NULL  */
-      printf("Reference to result is NULL.\n");
+      printf(u8"Reference to result is NULL.\n");
       #endif
       }
     if (!bad && lhs!=DECUNUSED) bad=(decCheckNumber(lhs));
@@ -8007,7 +8006,7 @@ static Flag decCheckNumber(const decNumber *dn) {
   if (dn==NULL) {             /* hopeless  */
     #if DECTRACE
     /* this one not DECVERB as standard tests include NULL  */
-    printf("Reference to decNumber is NULL.\n");
+    printf(u8"Reference to decNumber is NULL.\n");
     #endif
     return 1;}
 
@@ -8015,7 +8014,7 @@ static Flag decCheckNumber(const decNumber *dn) {
   if (dn->bits & DECSPECIAL) {
     if (dn->exponent!=0) {
       #if DECTRACE || DECVERB
-      printf("Exponent %ld (not 0) for a special value [%02x].\n",
+      printf(u8"Exponent %ld (not 0) for a special value [%02x].\n",
              (LI)dn->exponent, dn->bits);
       #endif
       return 1;}
@@ -8024,14 +8023,14 @@ static Flag decCheckNumber(const decNumber *dn) {
     if (decNumberIsInfinite(dn)) {
       if (dn->digits!=1) {
         #if DECTRACE || DECVERB
-        printf("Digits %ld (not 1) for an infinity.\n", (LI)dn->digits);
+        printf(u8"Digits %ld (not 1) for an infinity.\n", (LI)dn->digits);
         #endif
         return 1;}
       if (*dn->lsu!=0) {
         #if DECTRACE || DECVERB
-        printf("LSU %ld (not 0) for an infinity.\n", (LI)*dn->lsu);
+        printf(u8"LSU %ld (not 0) for an infinity.\n", (LI)*dn->lsu);
         #endif
-        decDumpAr('I', dn->lsu, D2U(dn->digits));
+        decDumpAr('\x49', dn->lsu, D2U(dn->digits));
         return 1;}
       } /* Inf  */
     /* 2002.12.26: negative NaNs can now appear through proposed IEEE  */
@@ -8042,7 +8041,7 @@ static Flag decCheckNumber(const decNumber *dn) {
   /* check the coefficient  */
   if (dn->digits<1 || dn->digits>DECNUMMAXP) {
     #if DECTRACE || DECVERB
-    printf("Digits %ld in number.\n", (LI)dn->digits);
+    printf(u8"Digits %ld in number.\n", (LI)dn->digits);
     #endif
     return 1;}
 
@@ -8054,14 +8053,14 @@ static Flag decCheckNumber(const decNumber *dn) {
       maxuint=powers[d]-1;
       if (dn->digits>1 && *up<powers[d-1]) {
         #if DECTRACE || DECVERB
-        printf("Leading 0 in number.\n");
+        printf(u8"Leading 0 in number.\n");
         uprv_decNumberShow(dn);
         #endif
         return 1;}
       }
     if (*up>maxuint) {
       #if DECTRACE || DECVERB
-      printf("Bad Unit [%08lx] in %ld-digit number at offset %ld [maxuint %ld].\n",
+      printf(u8"Bad Unit [%08lx] in %ld-digit number at offset %ld [maxuint %ld].\n",
               (LI)*up, (LI)dn->digits, (LI)(up-dn->lsu), (LI)maxuint);
       #endif
       return 1;}
@@ -8077,13 +8076,13 @@ static Flag decCheckNumber(const decNumber *dn) {
   digits=DECNUMMAXP;
   if (ae<emin-(digits-1)) {
     #if DECTRACE || DECVERB
-    printf("Adjusted exponent underflow [%ld].\n", (LI)ae);
+    printf(u8"Adjusted exponent underflow [%ld].\n", (LI)ae);
     uprv_decNumberShow(dn);
     #endif
     return 1;}
   if (ae>+emax) {
     #if DECTRACE || DECVERB
-    printf("Adjusted exponent overflow [%ld].\n", (LI)ae);
+    printf(u8"Adjusted exponent overflow [%ld].\n", (LI)ae);
     uprv_decNumberShow(dn);
     #endif
     return 1;}
@@ -8104,7 +8103,7 @@ static void decCheckInexact(const decNumber *dn, decContext *set) {
     if ((set->status & (DEC_Inexact|DEC_Subnormal))==DEC_Inexact
      && (set->digits!=dn->digits) && !(dn->bits & DECSPECIAL)) {
       #if DECTRACE || DECVERB
-      printf("Insufficient digits [%ld] on normal Inexact result.\n",
+      printf(u8"Insufficient digits [%ld] on normal Inexact result.\n",
              (LI)dn->digits);
       uprv_decNumberShow(dn);
       #endif
@@ -8146,7 +8145,7 @@ static void *decMalloc(size_t n) {
   b0=(uByte *)alloc;               /* as bytes  */
   decAllocBytes+=n;                /* account for storage  */
   UBFROMUI(alloc, n);              /* save n  */
-  /* printf(" alloc ++ dAB: %ld (%ld)\n", (LI)decAllocBytes, (LI)n);  */
+  /* printf(u8" alloc ++ dAB: %ld (%ld)\n", (LI)decAllocBytes, (LI)n);  */
   for (b=b0+4; b<b0+8; b++) *b=DECFENCE;
   for (b=b0+n+8; b<b0+n+12; b++) *b=DECFENCE;
   return b0+8;                     /* -> play area  */
@@ -8174,14 +8173,14 @@ static void decFree(void *alloc) {
   b0-=8;                           /* -> true start of storage  */
   n=UBTOUI(b0);                    /* lift length  */
   for (b=b0+4; b<b0+8; b++) if (*b!=DECFENCE)
-    printf("=== Corrupt byte [%02x] at offset %d from %ld ===\n", *b,
+    printf(u8"=== Corrupt byte [%02x] at offset %d from %ld ===\n", *b,
            b-b0-8, (LI)b0);
   for (b=b0+n+8; b<b0+n+12; b++) if (*b!=DECFENCE)
-    printf("=== Corrupt byte [%02x] at offset +%d from %ld, n=%ld ===\n", *b,
+    printf(u8"=== Corrupt byte [%02x] at offset +%d from %ld, n=%ld ===\n", *b,
            b-b0-8, (LI)b0, (LI)n);
   free(b0);                        /* drop the storage  */
   decAllocBytes-=n;                /* account for storage  */
-  /* printf(" free -- dAB: %d (%d)\n", decAllocBytes, -n);  */
+  /* printf(u8" free -- dAB: %d (%d)\n", decAllocBytes, -n);  */
   } /* decFree  */
 #define malloc(a) decMalloc(a)
 #define free(a) decFree(a)

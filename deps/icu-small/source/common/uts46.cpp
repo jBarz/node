@@ -216,7 +216,7 @@ IDNA::createUTS46Instance(uint32_t options, UErrorCode &errorCode) {
 // UTS46 implementation ---------------------------------------------------- ***
 
 UTS46::UTS46(uint32_t opt, UErrorCode &errorCode)
-        : uts46Norm2(*Normalizer2::getInstance(NULL, "uts46", UNORM2_COMPOSE, errorCode)),
+        : uts46Norm2(*Normalizer2::getInstance(NULL, u8"uts46", UNORM2_COMPOSE, errorCode)),
           options(opt) {}
 
 UTS46::~UTS46() {}
@@ -362,7 +362,7 @@ UTS46::process(const UnicodeString &src,
             if(c==0x2d) {  // hyphen
                 if(i==(labelStart+3) && srcArray[i-1]==0x2d) {
                     // "??--..." is Punycode or forbidden.
-                    ++i;  // '-' was copied to dest already
+                    ++i;  // '\x2d' was copied to dest already
                     break;
                 }
                 if(i==labelStart) {
@@ -376,7 +376,7 @@ UTS46::process(const UnicodeString &src,
             } else if(c==0x2e) {  // dot
                 if(isLabel) {
                     // Replacing with U+FFFD can be complicated for toASCII.
-                    ++i;  // '.' was copied to dest already
+                    ++i;  // '\x2e' was copied to dest already
                     break;
                 }
                 if(i==labelStart) {
@@ -852,7 +852,7 @@ UTS46::processLabel(UnicodeString &dest,
                     errorCode=U_MEMORY_ALLOCATION_ERROR;
                     return destLabelLength;
                 }
-                buffer[0]=0x78;  // Write "xn--".
+                buffer[0]=0x78;  // Write u8"xn--".
                 buffer[1]=0x6e;
                 buffer[2]=0x2d;
                 buffer[3]=0x2d;
@@ -915,7 +915,7 @@ UTS46::markBadACELabel(UnicodeString &dest,
     UBool onlyLDH=TRUE;
     const UChar *label=dest.getBuffer()+labelStart;
     // Ok to cast away const because we own the UnicodeString.
-    UChar *s=(UChar *)label+4;  // After the initial "xn--".
+    UChar *s=(UChar *)label+4;  // After the initial u8"xn--".
     const UChar *limit=label+labelLength;
     do {
         UChar c=*s;

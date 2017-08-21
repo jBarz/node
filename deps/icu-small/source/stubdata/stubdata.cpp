@@ -58,7 +58,7 @@ extern "C" U_EXPORT const ICU_Data_Header U_ICUDATA_ENTRY_POINT = {
         sizeof(UChar),
         0,               /* reserved      */
         {                /* data format identifier */
-           0x54, 0x6f, 0x43, 0x50}, /* "ToCP" */
+           0x54, 0x6f, 0x43, 0x50}, /* u8"ToCP" */
            {1, 0, 0, 0},   /* format version major, minor, milli, micro */
            {0, 0, 0, 0}    /* dataVersion   */
     },

@@ -33,9 +33,9 @@
 
 static UHashtable* gGenderInfoCache = NULL;
 static UMutex gGenderMetaLock = U_MUTEX_INITIALIZER;
-static const char* gNeutralStr = "neutral";
-static const char* gMailTaintsStr = "maleTaints";
-static const char* gMixedNeutralStr = "mixedNeutral";
+static const char* gNeutralStr = u8"neutral";
+static const char* gMailTaintsStr = u8"maleTaints";
+static const char* gMixedNeutralStr = u8"mixedNeutral";
 static icu::GenderInfo* gObjs = NULL;
 static icu::UInitOnce gGenderInitOnce = U_INITONCE_INITIALIZER;
 
@@ -133,11 +133,11 @@ const GenderInfo* GenderInfo::getInstance(const Locale& locale, UErrorCode& stat
 
 const GenderInfo* GenderInfo::loadInstance(const Locale& locale, UErrorCode& status) {
   LocalUResourceBundlePointer rb(
-      ures_openDirect(NULL, "genderList", &status));
+      ures_openDirect(NULL, u8"genderList", &status));
   if (U_FAILURE(status)) {
     return NULL;
   }
-  LocalUResourceBundlePointer locRes(ures_getByKey(rb.getAlias(), "genderList", NULL, &status));
+  LocalUResourceBundlePointer locRes(ures_getByKey(rb.getAlias(), u8"genderList", NULL, &status));
   if (U_FAILURE(status)) {
     return NULL;
   }

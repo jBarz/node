@@ -35,8 +35,8 @@ U_NAMESPACE_BEGIN
 
 /* prototypes ------------------------------------------------------------- */
 
-static const char DATA_NAME[] = "unames";
-static const char DATA_TYPE[] = "icu";
+static const char DATA_NAME[] = u8"unames";
+static const char DATA_TYPE[] = u8"icu";
 
 #define GROUP_SHIFT 5
 #define LINES_PER_GROUP (1L<<GROUP_SHIFT)
@@ -125,39 +125,39 @@ static uint32_t gNameSet[8]={ 0 };
 #define U_CHAR_EXTENDED_CATEGORY_COUNT (U_CHAR_CATEGORY_COUNT + 3)
 
 static const char * const charCatNames[U_CHAR_EXTENDED_CATEGORY_COUNT] = {
-    "unassigned",
-    "uppercase letter",
-    "lowercase letter",
-    "titlecase letter",
-    "modifier letter",
-    "other letter",
-    "non spacing mark",
-    "enclosing mark",
-    "combining spacing mark",
-    "decimal digit number",
-    "letter number",
-    "other number",
-    "space separator",
-    "line separator",
-    "paragraph separator",
-    "control",
-    "format",
-    "private use area",
-    "surrogate",
-    "dash punctuation",
-    "start punctuation",
-    "end punctuation",
-    "connector punctuation",
-    "other punctuation",
-    "math symbol",
-    "currency symbol",
-    "modifier symbol",
-    "other symbol",
-    "initial punctuation",
-    "final punctuation",
-    "noncharacter",
-    "lead surrogate",
-    "trail surrogate"
+    u8"unassigned",
+    u8"uppercase letter",
+    u8"lowercase letter",
+    u8"titlecase letter",
+    u8"modifier letter",
+    u8"other letter",
+    u8"non spacing mark",
+    u8"enclosing mark",
+    u8"combining spacing mark",
+    u8"decimal digit number",
+    u8"letter number",
+    u8"other number",
+    u8"space separator",
+    u8"line separator",
+    u8"paragraph separator",
+    u8"control",
+    u8"format",
+    u8"private use area",
+    u8"surrogate",
+    u8"dash punctuation",
+    u8"start punctuation",
+    u8"end punctuation",
+    u8"connector punctuation",
+    u8"other punctuation",
+    u8"math symbol",
+    u8"currency symbol",
+    u8"modifier symbol",
+    u8"other symbol",
+    u8"initial punctuation",
+    u8"final punctuation",
+    u8"noncharacter",
+    u8"lead surrogate",
+    u8"trail surrogate"
 };
 
 /* implementation ----------------------------------------------------------- */
@@ -184,7 +184,7 @@ isAcceptable(void * /*context*/,
         pInfo->size>=20 &&
         pInfo->isBigEndian==U_IS_BIG_ENDIAN &&
         pInfo->charsetFamily==U_CHARSET_FAMILY &&
-        pInfo->dataFormat[0]==0x75 &&   /* dataFormat="unam" */
+        pInfo->dataFormat[0]==0x75 &&   /* dataFormat=u8"unam" */
         pInfo->dataFormat[1]==0x6e &&
         pInfo->dataFormat[2]==0x61 &&
         pInfo->dataFormat[3]==0x6d &&
@@ -248,12 +248,12 @@ expandName(UCharNames *names,
          * skip the modern name if it is not requested _and_
          * if the semicolon byte value is a character, not a token number
          */
-        if((uint8_t)';'>=tokenCount || tokens[(uint8_t)';']==(uint16_t)(-1)) {
+        if((uint8_t)'\x3b'>=tokenCount || tokens[(uint8_t)'\x3b']==(uint16_t)(-1)) {
             int fieldIndex= nameChoice==U_ISO_COMMENT ? 2 : nameChoice;
             do {
                 while(nameLength>0) {
                     --nameLength;
-                    if(*name++==';') {
+                    if(*name++=='\x3b') {
                         break;
                     }
                 }
@@ -274,7 +274,7 @@ expandName(UCharNames *names,
         c=*name++;
 
         if(c>=tokenCount) {
-            if(c!=';') {
+            if(c!='\x3b') {
                 /* implicit letter */
                 WRITE_CHAR(buffer, bufferLength, bufferPos, c);
             } else {
@@ -289,7 +289,7 @@ expandName(UCharNames *names,
                 --nameLength;
             }
             if(token==(uint16_t)(-1)) {
-                if(c!=';') {
+                if(c!='\x3b') {
                     /* explicit letter */
                     WRITE_CHAR(buffer, bufferLength, bufferPos, c);
                 } else {
@@ -297,7 +297,7 @@ expandName(UCharNames *names,
                        extended names and there was no 2.0 name but there
                        is a 1.0 name. */
                     if(!bufferPos && nameChoice == U_EXTENDED_CHAR_NAME) {
-                        if ((uint8_t)';'>=tokenCount || tokens[(uint8_t)';']==(uint16_t)(-1)) {
+                        if ((uint8_t)'\x3b'>=tokenCount || tokens[(uint8_t)'\x3b']==(uint16_t)(-1)) {
                             continue;
                         }
                     }
@@ -342,12 +342,12 @@ compareName(UCharNames *names,
          * skip the modern name if it is not requested _and_
          * if the semicolon byte value is a character, not a token number
          */
-        if((uint8_t)';'>=tokenCount || tokens[(uint8_t)';']==(uint16_t)(-1)) {
+        if((uint8_t)'\x3b'>=tokenCount || tokens[(uint8_t)'\x3b']==(uint16_t)(-1)) {
             int fieldIndex= nameChoice==U_ISO_COMMENT ? 2 : nameChoice;
             do {
                 while(nameLength>0) {
                     --nameLength;
-                    if(*name++==';') {
+                    if(*name++=='\x3b') {
                         break;
                     }
                 }
@@ -368,7 +368,7 @@ compareName(UCharNames *names,
         c=*name++;
 
         if(c>=tokenCount) {
-            if(c!=';') {
+            if(c!='\x3b') {
                 /* implicit letter */
                 if((char)c!=*otherName++) {
                     return FALSE;
@@ -385,7 +385,7 @@ compareName(UCharNames *names,
                 --nameLength;
             }
             if(token==(uint16_t)(-1)) {
-                if(c!=';') {
+                if(c!='\x3b') {
                     /* explicit letter */
                     if((char)c!=*otherName++) {
                         return FALSE;
@@ -395,7 +395,7 @@ compareName(UCharNames *names,
                        extended names and there was no 2.0 name but there
                        is a 1.0 name. */
                     if(otherName == origOtherName && nameChoice == U_EXTENDED_CHAR_NAME) {
-                        if ((uint8_t)';'>=tokenCount || tokens[(uint8_t)';']==(uint16_t)(-1)) {
+                        if ((uint8_t)'\x3b'>=tokenCount || tokens[(uint8_t)'\x3b']==(uint16_t)(-1)) {
                             continue;
                         }
                     }
@@ -439,7 +439,7 @@ static const char *getCharCatName(UChar32 cp) {
        date. */
 
     if (cat >= UPRV_LENGTHOF(charCatNames)) {
-        return "unknown";
+        return u8"unknown";
     } else {
         return charCatNames[cat];
     }
@@ -452,22 +452,22 @@ static uint16_t getExtName(uint32_t code, char *buffer, uint16_t bufferLength) {
     UChar32 cp;
     int ndigits, i;
 
-    WRITE_CHAR(buffer, bufferLength, length, '<');
+    WRITE_CHAR(buffer, bufferLength, length, '\x3c');
     while (catname[length - 1]) {
         WRITE_CHAR(buffer, bufferLength, length, catname[length - 1]);
     }
-    WRITE_CHAR(buffer, bufferLength, length, '-');
+    WRITE_CHAR(buffer, bufferLength, length, '\x2d');
     for (cp = code, ndigits = 0; cp; ++ndigits, cp >>= 4)
         ;
     if (ndigits < 4)
         ndigits = 4;
     for (cp = code, i = ndigits; (cp || i > 0) && bufferLength; cp >>= 4, bufferLength--) {
         uint8_t v = (uint8_t)(cp & 0xf);
-        buffer[--i] = (v < 10 ? '0' + v : 'A' + v - 10);
+        buffer[--i] = (v < 10 ? '\x30' + v : '\x41' + v - 10);
     }
     buffer += ndigits;
     length += ndigits;
-    WRITE_CHAR(buffer, bufferLength, length, '>');
+    WRITE_CHAR(buffer, bufferLength, length, '\x3e');
 
     return length;
 }
@@ -887,9 +887,9 @@ getAlgName(AlgorithmicRange *range, uint32_t code, UCharNameChoice nameChoice,
             if(--i<bufferLength) {
                 c=(char)(code&0xf);
                 if(c<10) {
-                    c+='0';
+                    c+='\x30';
                 } else {
-                    c+='A'-10;
+                    c+='\x41'-10;
                 }
                 buffer[i]=c;
             }
@@ -972,14 +972,14 @@ enumAlgNames(AlgorithmicRange *range,
             s=end;
             for (;;) {
                 c=*--s;
-                if(('0'<=c && c<'9') || ('A'<=c && c<'F')) {
+                if(('\x30'<=c && c<'\x39') || ('\x41'<=c && c<'\x46')) {
                     *s=(char)(c+1);
                     break;
-                } else if(c=='9') {
-                    *s='A';
+                } else if(c=='\x39') {
+                    *s='\x41';
                     break;
-                } else if(c=='F') {
-                    *s='0';
+                } else if(c=='\x46') {
+                    *s='\x30';
                 }
             }
 
@@ -1102,10 +1102,10 @@ findAlgName(AlgorithmicRange *range, UCharNameChoice nameChoice, const char *oth
         code=0;
         for(i=0; i<count; ++i) {
             c=*otherName++;
-            if('0'<=c && c<='9') {
-                code=(code<<4)|(c-'0');
-            } else if('A'<=c && c<='F') {
-                code=(code<<4)|(c-'A'+10);
+            if('\x30'<=c && c<='\x39') {
+                code=(code<<4)|(c-'\x30');
+            } else if('\x41'<=c && c<='\x46') {
+                code=(code<<4)|(c-'\x41'+10);
             } else {
                 return 0xffff;
             }
@@ -1176,7 +1176,7 @@ findAlgName(AlgorithmicRange *range, UCharNameChoice nameChoice, const char *oth
                 s=elements[i];
                 while((c=*s++)!=0) {
                     if(c!=*t++) {
-                        s=""; /* does not match */
+                        s=u8""; /* does not match */
                         i=99;
                     }
                 }
@@ -1301,7 +1301,7 @@ calcNameSetLength(const uint16_t *tokens, uint16_t tokenCount, const uint8_t *to
     int32_t length=0, tokenLength;
     uint16_t c, token;
 
-    while(line!=lineLimit && (c=*line++)!=(uint8_t)';') {
+    while(line!=lineLimit && (c=*line++)!=(uint8_t)'\x3b') {
         if(c>=tokenCount) {
             /* implicit letter */
             SET_ADD(set, c);
@@ -1412,7 +1412,7 @@ calcGroupNameSetsLengths(int32_t maxNameLength) {
 
 static UBool
 calcNameSetsLengths(UErrorCode *pErrorCode) {
-    static const char extChars[]="0123456789ABCDEF<>-";
+    static const char extChars[]=u8"0123456789ABCDEF<>-";
     int32_t i, maxNameLength;
 
     if(gMaxNameLength!=0) {
@@ -1559,22 +1559,22 @@ u_charFromName(UCharNameChoice nameChoice,
     // i==strlen(name)==strlen(lower)==strlen(upper)
 
     /* try extended names first */
-    if (lower[0] == '<') {
+    if (lower[0] == '\x3c') {
         if (nameChoice == U_EXTENDED_CHAR_NAME) {
             // Parse a string like "<category-HHHH>" where HHHH is a hex code point.
-            if (lower[--i] == '>' && i >= 3 && lower[--i] != '-') {
-                while (i >= 3 && lower[--i] != '-') {}
+            if (lower[--i] == '\x3e' && i >= 3 && lower[--i] != '\x2d') {
+                while (i >= 3 && lower[--i] != '\x2d') {}
 
-                if (i >= 2 && lower[i] == '-') {
+                if (i >= 2 && lower[i] == '\x2d') {
                     uint32_t cIdx;
 
                     lower[i] = 0;
 
-                    for (++i; lower[i] != '>'; ++i) {
-                        if (lower[i] >= '0' && lower[i] <= '9') {
-                            cp = (cp << 4) + lower[i] - '0';
-                        } else if (lower[i] >= 'a' && lower[i] <= 'f') {
-                            cp = (cp << 4) + lower[i] - 'a' + 10;
+                    for (++i; lower[i] != '\x3e'; ++i) {
+                        if (lower[i] >= '\x30' && lower[i] <= '\x39') {
+                            cp = (cp << 4) + lower[i] - '\x30';
+                        } else if (lower[i] >= '\x61' && lower[i] <= '\x66') {
+                            cp = (cp << 4) + lower[i] - '\x61' + 10;
                         } else {
                             *pErrorCode = U_ILLEGAL_CHAR_FOUND;
                             return error;
@@ -1795,7 +1795,7 @@ makeTokenMap(const UDataSwapper *ds,
                 c1=(uint8_t)i;
                 ds->swapInvChars(ds, &c1, 1, &c2, pErrorCode);
                 if(U_FAILURE(*pErrorCode)) {
-                    udata_printError(ds, "unames/makeTokenMap() finds variant character 0x%02x used (input charset family %d)\n",
+                    udata_printError(ds, u8"unames/makeTokenMap() finds variant character 0x%02x used (input charset family %d)\n",
                                      i, ds->inCharset);
                     return;
                 }
@@ -1850,13 +1850,13 @@ uchar_swapNames(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x75 &&   /* dataFormat="unam" */
+        pInfo->dataFormat[0]==0x75 &&   /* dataFormat=u8"unam" */
         pInfo->dataFormat[1]==0x6e &&
         pInfo->dataFormat[2]==0x61 &&
         pInfo->dataFormat[3]==0x6d &&
         pInfo->formatVersion[0]==1
     )) {
-        udata_printError(ds, "uchar_swapNames(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as unames.icu\n",
+        udata_printError(ds, u8"uchar_swapNames(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as unames.icu\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -1873,7 +1873,7 @@ uchar_swapNames(const UDataSwapper *ds,
         if( length<20 ||
             (uint32_t)length<(algNamesOffset=ds->readUInt32(((const uint32_t *)inBytes)[3]))
         ) {
-            udata_printError(ds, "uchar_swapNames(): too few bytes (%d after header) for unames.icu\n",
+            udata_printError(ds, u8"uchar_swapNames(): too few bytes (%d after header) for unames.icu\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -1948,7 +1948,7 @@ uchar_swapNames(const UDataSwapper *ds,
          */
         temp=(uint16_t *)uprv_malloc(tokenCount*2);
         if(temp==NULL) {
-            udata_printError(ds, "out of memory swapping %u unames.icu tokens\n",
+            udata_printError(ds, u8"out of memory swapping %u unames.icu tokens\n",
                              tokenCount);
             *pErrorCode=U_MEMORY_ALLOCATION_ERROR;
             return 0;
@@ -1975,7 +1975,7 @@ uchar_swapNames(const UDataSwapper *ds,
         udata_swapInvStringBlock(ds, inBytes+tokenStringOffset, (int32_t)(groupsOffset-tokenStringOffset),
                                     outBytes+tokenStringOffset, pErrorCode);
         if(U_FAILURE(*pErrorCode)) {
-            udata_printError(ds, "uchar_swapNames(token strings) failed\n");
+            udata_printError(ds, u8"uchar_swapNames(token strings) failed\n");
             return 0;
         }
 
@@ -2036,7 +2036,7 @@ uchar_swapNames(const UDataSwapper *ds,
 
         for(i=0; i<count; ++i) {
             if(offset>(uint32_t)length) {
-                udata_printError(ds, "uchar_swapNames(): too few bytes (%d after header) for unames.icu algorithmic range %u\n",
+                udata_printError(ds, u8"uchar_swapNames(): too few bytes (%d after header) for unames.icu algorithmic range %u\n",
                                  length, i);
                 *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
                 return 0;
@@ -2054,7 +2054,7 @@ uchar_swapNames(const UDataSwapper *ds,
                 ds->swapInvChars(ds, inRange+1, (int32_t)uprv_strlen((const char *)(inRange+1)),
                                     outRange+1, pErrorCode);
                 if(U_FAILURE(*pErrorCode)) {
-                    udata_printError(ds, "uchar_swapNames(prefix string of algorithmic range %u) failed\n",
+                    udata_printError(ds, u8"uchar_swapNames(prefix string of algorithmic range %u) failed\n",
                                      i);
                     return 0;
                 }
@@ -2080,7 +2080,7 @@ uchar_swapNames(const UDataSwapper *ds,
                 }
                 break;
             default:
-                udata_printError(ds, "uchar_swapNames(): unknown type %u of algorithmic range %u\n",
+                udata_printError(ds, u8"uchar_swapNames(): unknown type %u of algorithmic range %u\n",
                                  inRange->type, i);
                 *pErrorCode=U_UNSUPPORTED_ERROR;
                 return 0;

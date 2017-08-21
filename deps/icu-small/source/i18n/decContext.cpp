@@ -8,7 +8,7 @@
 /* This software is made available under the terms of the             */
 /* ICU License -- ICU 1.8.1 and later.                                */
 /*                                                                    */
-/* The description and User's Guide ("The decNumber C Library") for   */
+/* The description and User's Guide (u8"The decNumber C Library") for   */
 /* this software is called decNumber.pdf.  This document is           */
 /* available, together with arithmetic and format specifications,     */
 /* testcases, and Web links, on the General Decimal Arithmetic page.  */
@@ -378,9 +378,9 @@ U_CAPI Int  U_EXPORT2 uprv_decContextTestEndian(Flag quiet) {
   if (LITEND!=DECLITEND) {
     const char *adj;
     if (!quiet) {
-      if (LITEND) adj="little";
-             else adj="big";
-      printf("Warning: DECLITEND is set to %d, but this computer appears to be %s-endian\n",
+      if (LITEND) adj=u8"little";
+             else adj=u8"big";
+      printf(u8"Warning: DECLITEND is set to %d, but this computer appears to be %s-endian\n",
              DECLITEND, adj);
       }
     res=(Int)LITEND-dle;

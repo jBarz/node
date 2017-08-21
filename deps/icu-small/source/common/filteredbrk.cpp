@@ -34,10 +34,10 @@ static void _fb_trace(const char *m, const UnicodeString *s, UBool b, int32_t d,
   if(s) {
     s->extract(0,s->length(),buf,2048);
   } else {
-    strcpy(buf,"NULL");
+    strcpy(buf,u8"NULL");
   }
-  fprintf(stderr,"%s:%d: %s. s='%s'(%p), b=%c, d=%d\n",
-          f, l, m, buf, (const void*)s, b?'T':'F',(int)d);
+  fprintf(stderr,u8"%s:%d: %s. s='%s'(%p), b=%c, d=%d\n",
+          f, l, m, buf, (const void*)s, b?'\x54':'\x46',(int)d);
 }
 
 #define FB_TRACE(m,s,b,d) _fb_trace(m,s,b,d,__FILE__,__LINE__)
@@ -130,7 +130,7 @@ static const int32_t kPARTIAL = (1<<0); //< partial - need to run through forwar
 static const int32_t kMATCH   = (1<<1); //< exact match - skip this one.
 static const int32_t kSuppressInReverse = (1<<0);
 static const int32_t kAddToForward = (1<<1);
-static const UChar   kFULLSTOP = 0x002E; // '.'
+static const UChar   kFULLSTOP = 0x002E; // '\x2e'
 
 /**
  * Shared data for SimpleFilteredSentenceBreakIterator
@@ -143,8 +143,8 @@ public:
   SimpleFilteredSentenceBreakData *decr() { if((--refcount) <= 0) delete this; return 0; }
   virtual ~SimpleFilteredSentenceBreakData();
 
-  LocalPointer<UCharsTrie>    fForwardsPartialTrie; //  Has ".a" for "a.M."
-  LocalPointer<UCharsTrie>    fBackwardsTrie; //  i.e. ".srM" for Mrs.
+  LocalPointer<UCharsTrie>    fForwardsPartialTrie; //  Has u8".a" for u8"a.M."
+  LocalPointer<UCharsTrie>    fBackwardsTrie; //  i.e. u8".srM" for Mrs.
   int32_t                     refcount;
 };
 
@@ -486,31 +486,31 @@ SimpleFilteredBreakIteratorBuilder::SimpleFilteredBreakIteratorBuilder(const Loc
     if (U_FAILURE(subStatus) || (subStatus == U_USING_DEFAULT_WARNING) ) {
       status = subStatus; // copy the failing status
 #if FB_DEBUG
-      fprintf(stderr, "open BUNDLE %s : %s, %s\n", fromLocale.getBaseName(), "[exit]", u_errorName(status));
+      fprintf(stderr, u8"open BUNDLE %s : %s, %s\n", fromLocale.getBaseName(), u8"[exit]", u_errorName(status));
 #endif
       return;  // leaves the builder empty, if you try to use it.
     }
-    LocalUResourceBundlePointer exceptions(ures_getByKeyWithFallback(b.getAlias(), "exceptions", NULL, &subStatus));
+    LocalUResourceBundlePointer exceptions(ures_getByKeyWithFallback(b.getAlias(), u8"exceptions", NULL, &subStatus));
     if (U_FAILURE(subStatus) || (subStatus == U_USING_DEFAULT_WARNING) ) {
       status = subStatus; // copy the failing status
 #if FB_DEBUG
-      fprintf(stderr, "open EXCEPTIONS %s : %s, %s\n", fromLocale.getBaseName(), "[exit]", u_errorName(status));
+      fprintf(stderr, u8"open EXCEPTIONS %s : %s, %s\n", fromLocale.getBaseName(), u8"[exit]", u_errorName(status));
 #endif
       return;  // leaves the builder empty, if you try to use it.
     }
-    LocalUResourceBundlePointer breaks(ures_getByKeyWithFallback(exceptions.getAlias(), "SentenceBreak", NULL, &subStatus));
+    LocalUResourceBundlePointer breaks(ures_getByKeyWithFallback(exceptions.getAlias(), u8"SentenceBreak", NULL, &subStatus));
 
 #if FB_DEBUG
     {
       UErrorCode subsub = subStatus;
-      fprintf(stderr, "open SentenceBreak %s => %s, %s\n", fromLocale.getBaseName(), ures_getLocale(breaks.getAlias(), &subsub), u_errorName(subStatus));
+      fprintf(stderr, u8"open SentenceBreak %s => %s, %s\n", fromLocale.getBaseName(), ures_getLocale(breaks.getAlias(), &subsub), u_errorName(subStatus));
     }
 #endif
 
     if (U_FAILURE(subStatus) || (subStatus == U_USING_DEFAULT_WARNING) ) {
       status = subStatus; // copy the failing status
 #if FB_DEBUG
-      fprintf(stderr, "open %s : %s, %s\n", fromLocale.getBaseName(), "[exit]", u_errorName(status));
+      fprintf(stderr, u8"open %s : %s, %s\n", fromLocale.getBaseName(), u8"[exit]", u_errorName(status));
 #endif
       return;  // leaves the builder empty, if you try to use it.
     }
@@ -534,7 +534,7 @@ UBool
 SimpleFilteredBreakIteratorBuilder::suppressBreakAfter(const UnicodeString& exception, UErrorCode& status)
 {
   UBool r = fSet.add(exception, status);
-  FB_TRACE("suppressBreakAfter",&exception,r,0);
+  FB_TRACE(u8"suppressBreakAfter",&exception,r,0);
   return r;
 }
 
@@ -542,7 +542,7 @@ UBool
 SimpleFilteredBreakIteratorBuilder::unsuppressBreakAfter(const UnicodeString& exception, UErrorCode& status)
 {
   UBool r = fSet.remove(exception, status);
-  FB_TRACE("unsuppressBreakAfter",&exception,r,0);
+  FB_TRACE(u8"unsuppressBreakAfter",&exception,r,0);
   return r;
 }
 
@@ -579,8 +579,8 @@ SimpleFilteredBreakIteratorBuilder::build(BreakIterator* adoptBreakIterator, UEr
   LocalMemory<int> partials;
   partials.allocateInsteadAndReset(subCount);
 
-  LocalPointer<UCharsTrie>    backwardsTrie; //  i.e. ".srM" for Mrs.
-  LocalPointer<UCharsTrie>    forwardsPartialTrie; //  Has ".a" for "a.M."
+  LocalPointer<UCharsTrie>    backwardsTrie; //  i.e. u8".srM" for Mrs.
+  LocalPointer<UCharsTrie>    forwardsPartialTrie; //  Has u8".a" for u8"a.M."
 
   int n=0;
   for ( int32_t i = 0;
@@ -588,11 +588,11 @@ SimpleFilteredBreakIteratorBuilder::build(BreakIterator* adoptBreakIterator, UEr
         i++) {
     const UnicodeString *abbr = fSet.getStringAt(i);
     if(abbr) {
-      FB_TRACE("build",abbr,TRUE,i);
+      FB_TRACE(u8"build",abbr,TRUE,i);
       ustrs[n] = *abbr; // copy by value
-      FB_TRACE("ustrs[n]",&ustrs[n],TRUE,i);
+      FB_TRACE(u8"ustrs[n]",&ustrs[n],TRUE,i);
     } else {
-      FB_TRACE("build",abbr,FALSE,i);
+      FB_TRACE(u8"build",abbr,FALSE,i);
       status = U_MEMORY_ALLOCATION_ERROR;
       return NULL;
     }
@@ -601,38 +601,38 @@ SimpleFilteredBreakIteratorBuilder::build(BreakIterator* adoptBreakIterator, UEr
   }
   // first pass - find partials.
   for(int i=0;i<subCount;i++) {
-    int nn = ustrs[i].indexOf(kFULLSTOP); // TODO: non-'.' abbreviations
+    int nn = ustrs[i].indexOf(kFULLSTOP); // TODO: non-'\x2e' abbreviations
     if(nn>-1 && (nn+1)!=ustrs[i].length()) {
-      FB_TRACE("partial",&ustrs[i],FALSE,i);
+      FB_TRACE(u8"partial",&ustrs[i],FALSE,i);
       // is partial.
       // is it unique?
       int sameAs = -1;
       for(int j=0;j<subCount;j++) {
         if(j==i) continue;
         if(ustrs[i].compare(0,nn+1,ustrs[j],0,nn+1)==0) {
-          FB_TRACE("prefix",&ustrs[j],FALSE,nn+1);
+          FB_TRACE(u8"prefix",&ustrs[j],FALSE,nn+1);
           //UBool otherIsPartial = ((nn+1)!=ustrs[j].length());  // true if ustrs[j] doesn't end at nn
           if(partials[j]==0) { // hasn't been processed yet
             partials[j] = kSuppressInReverse | kAddToForward;
-            FB_TRACE("suppressing",&ustrs[j],FALSE,j);
+            FB_TRACE(u8"suppressing",&ustrs[j],FALSE,j);
           } else if(partials[j] & kSuppressInReverse) {
             sameAs = j; // the other entry is already in the reverse table.
           }
         }
       }
-      FB_TRACE("for partial same-",&ustrs[i],FALSE,sameAs);
-      FB_TRACE(" == partial #",&ustrs[i],FALSE,partials[i]);
+      FB_TRACE(u8"for partial same-",&ustrs[i],FALSE,sameAs);
+      FB_TRACE(u8" == partial #",&ustrs[i],FALSE,partials[i]);
       UnicodeString prefix(ustrs[i], 0, nn+1);
       if(sameAs == -1 && partials[i] == 0) {
         // first one - add the prefix to the reverse table.
         prefix.reverse();
         builder->add(prefix, kPARTIAL, status);
         revCount++;
-        FB_TRACE("Added partial",&prefix,FALSE, i);
+        FB_TRACE(u8"Added partial",&prefix,FALSE, i);
         FB_TRACE(u_errorName(status),&ustrs[i],FALSE,i);
         partials[i] = kSuppressInReverse | kAddToForward;
       } else {
-        FB_TRACE("NOT adding partial",&prefix,FALSE, i);
+        FB_TRACE(u8"NOT adding partial",&prefix,FALSE, i);
         FB_TRACE(u_errorName(status),&ustrs[i],FALSE,i);
       }
     }
@@ -644,7 +644,7 @@ SimpleFilteredBreakIteratorBuilder::build(BreakIterator* adoptBreakIterator, UEr
       revCount++;
       FB_TRACE(u_errorName(status), &ustrs[i], FALSE, i);
     } else {
-      FB_TRACE("Adding fwd",&ustrs[i], FALSE, i);
+      FB_TRACE(u8"Adding fwd",&ustrs[i], FALSE, i);
 
       // an optimization would be to only add the portion after the '.'
       // for example, for "Ph.D." we store ".hP" in the reverse table. We could just store "D." in the forward,
@@ -656,7 +656,7 @@ SimpleFilteredBreakIteratorBuilder::build(BreakIterator* adoptBreakIterator, UEr
       ////if(debug2) u_printf("SUPPRESS- not Added(%d):  /%S/ status=%s\n",partials[i], ustrs[i].getTerminatedBuffer(), u_errorName(status));
     }
   }
-  FB_TRACE("AbbrCount",NULL,FALSE, subCount);
+  FB_TRACE(u8"AbbrCount",NULL,FALSE, subCount);
 
   if(revCount>0) {
     backwardsTrie.adoptInstead(builder->build(USTRINGTRIE_BUILD_FAST, status));

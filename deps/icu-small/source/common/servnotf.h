@@ -49,7 +49,7 @@ public:
     }
 
     virtual UnicodeString& debugClass(UnicodeString& result) const {
-      return result.append((UnicodeString)"Key");
+      return result.append((UnicodeString)u8"Key");
     }
 #endif
 };

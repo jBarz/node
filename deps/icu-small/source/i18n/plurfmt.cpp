@@ -29,7 +29,7 @@
 U_NAMESPACE_BEGIN
 
 static const UChar OTHER_STRING[] = {
-    0x6F, 0x74, 0x68, 0x65, 0x72, 0  // "other"
+    0x6F, 0x74, 0x68, 0x65, 0x72, 0  // u8"other"
 };
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(PluralFormat)

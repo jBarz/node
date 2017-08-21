@@ -83,7 +83,7 @@ CollationLoader::loadRootRules(UErrorCode &errorCode) {
     if(U_FAILURE(errorCode)) { return; }
     rootBundle = ures_open(U_ICUDATA_COLL, kRootLocaleName, &errorCode);
     if(U_FAILURE(errorCode)) { return; }
-    rootRules = ures_getStringByKey(rootBundle, "UCARules", &rootRulesLength, &errorCode);
+    rootRules = ures_getStringByKey(rootBundle, u8"UCARules", &rootRulesLength, &errorCode);
     if(U_FAILURE(errorCode)) {
         ures_close(rootBundle);
         rootBundle = NULL;
@@ -120,11 +120,11 @@ CollationLoader::loadRules(const char *localeID, const char *collationType,
 
     LocalUResourceBundlePointer bundle(ures_open(U_ICUDATA_COLL, localeID, &errorCode));
     LocalUResourceBundlePointer collations(
-            ures_getByKey(bundle.getAlias(), "collations", NULL, &errorCode));
+            ures_getByKey(bundle.getAlias(), u8"collations", NULL, &errorCode));
     LocalUResourceBundlePointer data(
             ures_getByKeyWithFallback(collations.getAlias(), type, NULL, &errorCode));
     int32_t length;
-    const UChar *s =  ures_getStringByKey(data.getAlias(), "Sequence", &length, &errorCode);
+    const UChar *s =  ures_getStringByKey(data.getAlias(), u8"Sequence", &length, &errorCode);
     if(U_FAILURE(errorCode)) { return; }
 
     // No string pointer aliasing so that we need not hold onto the resource bundle.
@@ -149,7 +149,7 @@ CollationLoader::loadTailoring(const Locale &locale, UErrorCode &errorCode) {
     const CollationCacheEntry *rootEntry = CollationRoot::getRootCacheEntry(errorCode);
     if(U_FAILURE(errorCode)) { return NULL; }
     const char *name = locale.getName();
-    if(*name == 0 || uprv_strcmp(name, "root") == 0) {
+    if(*name == 0 || uprv_strcmp(name, u8"root") == 0) {
 
         // Have to add a ref.
         rootEntry->addRef();
@@ -180,7 +180,7 @@ CollationLoader::CollationLoader(const CollationCacheEntry *re, const Locale &re
         locale = Locale(baseName);
 
         // Fetch the collation type from the locale ID.
-        int32_t typeLength = requested.getKeywordValue("collation",
+        int32_t typeLength = requested.getKeywordValue(u8"collation",
                 type, UPRV_LENGTHOF(type) - 1, errorCode);
         if(U_FAILURE(errorCode)) {
             errorCode = U_ILLEGAL_ARGUMENT_ERROR;
@@ -189,13 +189,13 @@ CollationLoader::CollationLoader(const CollationCacheEntry *re, const Locale &re
         type[typeLength] = 0;  // in case of U_NOT_TERMINATED_WARNING
         if(typeLength == 0) {
             // No collation type.
-        } else if(uprv_stricmp(type, "default") == 0) {
+        } else if(uprv_stricmp(type, u8"default") == 0) {
             // Ignore "default" (case-insensitive).
             type[0] = 0;
         } else {
             // Copy the collation type.
             T_CString_toLowerCase(type);
-            locale.setKeywordValue("collation", type, errorCode);
+            locale.setKeywordValue(u8"collation", type, errorCode);
         }
     }
 }
@@ -241,7 +241,7 @@ CollationLoader::loadFromLocale(UErrorCode &errorCode) {
     if(U_FAILURE(errorCode)) { return NULL; }
     locale = validLocale = Locale(vLocale);  // no type until loadFromCollations()
     if(type[0] != 0) {
-        locale.setKeywordValue("collation", type, errorCode);
+        locale.setKeywordValue(u8"collation", type, errorCode);
     }
     if(locale != requestedLocale) {
         return getCacheEntry(errorCode);
@@ -255,7 +255,7 @@ CollationLoader::loadFromBundle(UErrorCode &errorCode) {
     if(U_FAILURE(errorCode)) { return NULL; }
     U_ASSERT(collations == NULL);
     // There are zero or more tailorings in the collations table.
-    collations = ures_getByKey(bundle, "collations", NULL, &errorCode);
+    collations = ures_getByKey(bundle, u8"collations", NULL, &errorCode);
     if(errorCode == U_MISSING_RESOURCE_ERROR) {
         errorCode = U_USING_DEFAULT_WARNING;
         // Return the root tailoring with the validLocale, without collation type.
@@ -267,13 +267,13 @@ CollationLoader::loadFromBundle(UErrorCode &errorCode) {
     {
         UErrorCode internalErrorCode = U_ZERO_ERROR;
         LocalUResourceBundlePointer def(
-                ures_getByKeyWithFallback(collations, "default", NULL, &internalErrorCode));
+                ures_getByKeyWithFallback(collations, u8"default", NULL, &internalErrorCode));
         int32_t length;
         const UChar *s = ures_getString(def.getAlias(), &length, &internalErrorCode);
         if(U_SUCCESS(internalErrorCode) && 0 < length && length < UPRV_LENGTHOF(defaultType)) {
             u_UCharsToChars(s, defaultType, length + 1);
         } else {
-            uprv_strcpy(defaultType, "standard");
+            uprv_strcpy(defaultType, u8"standard");
         }
     }
 
@@ -289,22 +289,22 @@ CollationLoader::loadFromBundle(UErrorCode &errorCode) {
     if(type[0] == 0) {
         uprv_strcpy(type, defaultType);
         typesTried |= TRIED_DEFAULT;
-        if(uprv_strcmp(type, "search") == 0) {
+        if(uprv_strcmp(type, u8"search") == 0) {
             typesTried |= TRIED_SEARCH;
         }
-        if(uprv_strcmp(type, "standard") == 0) {
+        if(uprv_strcmp(type, u8"standard") == 0) {
             typesTried |= TRIED_STANDARD;
         }
-        locale.setKeywordValue("collation", type, errorCode);
+        locale.setKeywordValue(u8"collation", type, errorCode);
         return getCacheEntry(errorCode);
     } else {
         if(uprv_strcmp(type, defaultType) == 0) {
             typesTried |= TRIED_DEFAULT;
         }
-        if(uprv_strcmp(type, "search") == 0) {
+        if(uprv_strcmp(type, u8"search") == 0) {
             typesTried |= TRIED_SEARCH;
         }
-        if(uprv_strcmp(type, "standard") == 0) {
+        if(uprv_strcmp(type, u8"standard") == 0) {
             typesTried |= TRIED_STANDARD;
         }
         return loadFromCollations(errorCode);
@@ -323,7 +323,7 @@ CollationLoader::loadFromCollations(UErrorCode &errorCode) {
         errorCode = U_USING_DEFAULT_WARNING;
         typeFallback = TRUE;
         if((typesTried & TRIED_SEARCH) == 0 &&
-                typeLength > 6 && uprv_strncmp(type, "search", 6) == 0) {
+                typeLength > 6 && uprv_strncmp(type, u8"search", 6) == 0) {
             // fall back from something like "searchjl" to "search"
             typesTried |= TRIED_SEARCH;
             type[6] = 0;
@@ -334,12 +334,12 @@ CollationLoader::loadFromCollations(UErrorCode &errorCode) {
         } else if((typesTried & TRIED_STANDARD) == 0) {
             // fall back to the "standard" type
             typesTried |= TRIED_STANDARD;
-            uprv_strcpy(type, "standard");
+            uprv_strcpy(type, u8"standard");
         } else {
             // Return the root tailoring with the validLocale, without collation type.
             return makeCacheEntryFromRoot(validLocale, errorCode);
         }
-        locale.setKeywordValue("collation", type, errorCode);
+        locale.setKeywordValue(u8"collation", type, errorCode);
         return getCacheEntry(errorCode);
     }
     if(U_FAILURE(errorCode)) { return NULL; }
@@ -354,13 +354,13 @@ CollationLoader::loadFromCollations(UErrorCode &errorCode) {
     // except when they match the default types (for brevity and backwards compatibility).
     // For the valid locale, suppress the default type.
     if(uprv_strcmp(type, defaultType) != 0) {
-        validLocale.setKeywordValue("collation", type, errorCode);
+        validLocale.setKeywordValue(u8"collation", type, errorCode);
         if(U_FAILURE(errorCode)) { return NULL; }
     }
 
     // Is this the same as the root collator? If so, then use that instead.
-    if((*actualLocale == 0 || uprv_strcmp(actualLocale, "root") == 0) &&
-            uprv_strcmp(type, "standard") == 0) {
+    if((*actualLocale == 0 || uprv_strcmp(actualLocale, u8"root") == 0) &&
+            uprv_strcmp(type, u8"standard") == 0) {
         if(typeFallback) {
             errorCode = U_USING_DEFAULT_WARNING;
         }
@@ -369,7 +369,7 @@ CollationLoader::loadFromCollations(UErrorCode &errorCode) {
 
     locale = Locale(actualLocale);
     if(actualAndValidLocalesAreDifferent) {
-        locale.setKeywordValue("collation", type, errorCode);
+        locale.setKeywordValue(u8"collation", type, errorCode);
         const CollationCacheEntry *entry = getCacheEntry(errorCode);
         return makeCacheEntry(validLocale, entry, errorCode);
     } else {
@@ -387,7 +387,7 @@ CollationLoader::loadFromData(UErrorCode &errorCode) {
     }
 
     // deserialize
-    LocalUResourceBundlePointer binary(ures_getByKey(data, "%%CollationBin", NULL, &errorCode));
+    LocalUResourceBundlePointer binary(ures_getByKey(data, u8"%%CollationBin", NULL, &errorCode));
     // Note: U_MISSING_RESOURCE_ERROR --> The old code built from rules if available
     // but that created undesirable dependencies.
     int32_t length;
@@ -401,7 +401,7 @@ CollationLoader::loadFromData(UErrorCode &errorCode) {
     {
         UErrorCode internalErrorCode = U_ZERO_ERROR;
         int32_t length;
-        const UChar *s = ures_getStringByKey(data, "Sequence", &length,
+        const UChar *s = ures_getStringByKey(data, u8"Sequence", &length,
                                              &internalErrorCode);
         if(U_SUCCESS(internalErrorCode)) {
             t->rules.setTo(TRUE, s, length);
@@ -424,22 +424,22 @@ CollationLoader::loadFromData(UErrorCode &errorCode) {
         if(U_FAILURE(errorCode)) { return NULL; }
         UErrorCode internalErrorCode = U_ZERO_ERROR;
         LocalUResourceBundlePointer def(
-                ures_getByKeyWithFallback(actualBundle.getAlias(), "collations/default", NULL,
+                ures_getByKeyWithFallback(actualBundle.getAlias(), u8"collations/default", NULL,
                                           &internalErrorCode));
         int32_t length;
         const UChar *s = ures_getString(def.getAlias(), &length, &internalErrorCode);
         if(U_SUCCESS(internalErrorCode) && length < UPRV_LENGTHOF(defaultType)) {
             u_UCharsToChars(s, defaultType, length + 1);
         } else {
-            uprv_strcpy(defaultType, "standard");
+            uprv_strcpy(defaultType, u8"standard");
         }
     }
     t->actualLocale = locale;
     if(uprv_strcmp(type, defaultType) != 0) {
-        t->actualLocale.setKeywordValue("collation", type, errorCode);
+        t->actualLocale.setKeywordValue(u8"collation", type, errorCode);
     } else if(uprv_strcmp(locale.getName(), locale.getBaseName()) != 0) {
         // Remove the collation keyword if it was set.
-        t->actualLocale.setKeywordValue("collation", NULL, errorCode);
+        t->actualLocale.setKeywordValue(u8"collation", NULL, errorCode);
     }
     if(U_FAILURE(errorCode)) { return NULL; }
 
@@ -506,7 +506,7 @@ ucol_open(const char *loc,
           UErrorCode *status)
 {
     UTRACE_ENTRY_OC(UTRACE_UCOL_OPEN);
-    UTRACE_DATA1(UTRACE_INFO, "locale = \"%s\"", loc);
+    UTRACE_DATA1(UTRACE_INFO, u8"locale = \"%s\"", loc);
     UCollator *result = NULL;
 
     Collator *coll = Collator::createInstance(loc, *status);
@@ -573,9 +573,9 @@ ucol_openAvailableLocales(UErrorCode *status) {
 
 // Note: KEYWORDS[0] != RESOURCE_NAME - alan
 
-static const char RESOURCE_NAME[] = "collations";
+static const char RESOURCE_NAME[] = u8"collations";
 
-static const char* const KEYWORDS[] = { "collation" };
+static const char* const KEYWORDS[] = { u8"collation" };
 
 #define KEYWORD_COUNT UPRV_LENGTHOF(KEYWORDS)
 
@@ -628,7 +628,7 @@ public:
         for (int32_t i = 0; collations.getKeyAndValue(i, key, value); ++i) {
             UResType type = value.getType();
             if (type == URES_STRING) {
-                if (!hasDefault && uprv_strcmp(key, "default") == 0) {
+                if (!hasDefault && uprv_strcmp(key, u8"default") == 0) {
                     CharString defcoll;
                     defcoll.appendInvariantChars(value.getUnicodeString(errorCode), errorCode);
                     if (U_SUCCESS(errorCode) && !defcoll.isEmpty()) {
@@ -642,7 +642,7 @@ public:
                         hasDefault = TRUE;
                     }
                 }
-            } else if (type == URES_TABLE && uprv_strncmp(key, "private-", 8) != 0) {
+            } else if (type == URES_TABLE && uprv_strncmp(key, u8"private-", 8) != 0) {
                 if (!ulist_containsString(values, key, (int32_t)uprv_strlen(key))) {
                     ulist_addItemEndList(values, key, FALSE, &errorCode);
                 }
@@ -693,7 +693,7 @@ ucol_getFunctionalEquivalent(char* result, int32_t resultCapacity,
 {
     // N.B.: Resource name is "collations" but keyword is "collation"
     return ures_getFunctionalEquivalent(result, resultCapacity, U_ICUDATA_COLL,
-        "collations", keyword, locale,
+        u8"collations", keyword, locale,
         isAvailable, TRUE, status);
 }
 

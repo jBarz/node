@@ -419,7 +419,7 @@ template<typename T, int32_t stackCapacity>
 inline T *MaybeStackArray<T, stackCapacity>::resize(int32_t newCapacity, int32_t length) {
     if(newCapacity>0) {
 #if U_DEBUG && defined(UPRV_MALLOC_COUNT)
-      ::fprintf(::stderr,"MaybeStacArray (resize) alloc %d * %lu\n", newCapacity,sizeof(T));
+      ::fprintf(::stderr,u8"MaybeStacArray (resize) alloc %d * %lu\n", newCapacity,sizeof(T));
 #endif
         T *p=(T *)uprv_malloc(newCapacity*sizeof(T));
         if(p!=NULL) {
@@ -456,7 +456,7 @@ inline T *MaybeStackArray<T, stackCapacity>::orphanOrClone(int32_t length, int32
         }
         p=(T *)uprv_malloc(length*sizeof(T));
 #if U_DEBUG && defined(UPRV_MALLOC_COUNT)
-      ::fprintf(::stderr,"MaybeStacArray (orphan) alloc %d * %lu\n", length,sizeof(T));
+      ::fprintf(::stderr,u8"MaybeStacArray (orphan) alloc %d * %lu\n", length,sizeof(T));
 #endif
         if(p==NULL) {
             return NULL;
@@ -595,7 +595,7 @@ inline H *MaybeStackHeaderAndArray<H, T, stackCapacity>::resize(int32_t newCapac
                                                                 int32_t length) {
     if(newCapacity>=0) {
 #if U_DEBUG && defined(UPRV_MALLOC_COUNT)
-      ::fprintf(::stderr,"MaybeStackHeaderAndArray alloc %d + %d * %ul\n", sizeof(H),newCapacity,sizeof(T));
+      ::fprintf(::stderr,u8"MaybeStackHeaderAndArray alloc %d + %d * %ul\n", sizeof(H),newCapacity,sizeof(T));
 #endif
         H *p=(H *)uprv_malloc(sizeof(H)+newCapacity*sizeof(T));
         if(p!=NULL) {
@@ -634,7 +634,7 @@ inline H *MaybeStackHeaderAndArray<H, T, stackCapacity>::orphanOrClone(int32_t l
             length=capacity;
         }
 #if U_DEBUG && defined(UPRV_MALLOC_COUNT)
-      ::fprintf(::stderr,"MaybeStackHeaderAndArray (orphan) alloc %ul + %d * %lu\n", sizeof(H),length,sizeof(T));
+      ::fprintf(::stderr,u8"MaybeStackHeaderAndArray (orphan) alloc %ul + %d * %lu\n", sizeof(H),length,sizeof(T));
 #endif
         p=(H *)uprv_malloc(sizeof(H)+length*sizeof(T));
         if(p==NULL) {

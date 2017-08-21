@@ -126,68 +126,68 @@ static struct {
   const UConverterType type;
 } const cnvNameType[] = {
 #if !UCONFIG_ONLY_HTML_CONVERSION
-  { "bocu1", UCNV_BOCU1 },
-  { "cesu8", UCNV_CESU8 },
+  { u8"bocu1", UCNV_BOCU1 },
+  { u8"cesu8", UCNV_CESU8 },
 #endif
 #if !UCONFIG_NO_LEGACY_CONVERSION && !UCONFIG_ONLY_HTML_CONVERSION
-  { "hz",UCNV_HZ },
+  { u8"hz",UCNV_HZ },
 #endif
 #if !UCONFIG_ONLY_HTML_CONVERSION
-  { "imapmailboxname", UCNV_IMAP_MAILBOX },
+  { u8"imapmailboxname", UCNV_IMAP_MAILBOX },
 #endif
 #if !UCONFIG_NO_LEGACY_CONVERSION && !UCONFIG_ONLY_HTML_CONVERSION
-  { "iscii", UCNV_ISCII },
+  { u8"iscii", UCNV_ISCII },
 #endif
 #if !UCONFIG_NO_LEGACY_CONVERSION
-  { "iso2022", UCNV_ISO_2022 },
+  { u8"iso2022", UCNV_ISO_2022 },
 #endif
-  { "iso88591", UCNV_LATIN_1 },
+  { u8"iso88591", UCNV_LATIN_1 },
 #if !UCONFIG_NO_LEGACY_CONVERSION && !UCONFIG_ONLY_HTML_CONVERSION
-  { "lmbcs1", UCNV_LMBCS_1 },
-  { "lmbcs11",UCNV_LMBCS_11 },
-  { "lmbcs16",UCNV_LMBCS_16 },
-  { "lmbcs17",UCNV_LMBCS_17 },
-  { "lmbcs18",UCNV_LMBCS_18 },
-  { "lmbcs19",UCNV_LMBCS_19 },
-  { "lmbcs2", UCNV_LMBCS_2 },
-  { "lmbcs3", UCNV_LMBCS_3 },
-  { "lmbcs4", UCNV_LMBCS_4 },
-  { "lmbcs5", UCNV_LMBCS_5 },
-  { "lmbcs6", UCNV_LMBCS_6 },
-  { "lmbcs8", UCNV_LMBCS_8 },
+  { u8"lmbcs1", UCNV_LMBCS_1 },
+  { u8"lmbcs11",UCNV_LMBCS_11 },
+  { u8"lmbcs16",UCNV_LMBCS_16 },
+  { u8"lmbcs17",UCNV_LMBCS_17 },
+  { u8"lmbcs18",UCNV_LMBCS_18 },
+  { u8"lmbcs19",UCNV_LMBCS_19 },
+  { u8"lmbcs2", UCNV_LMBCS_2 },
+  { u8"lmbcs3", UCNV_LMBCS_3 },
+  { u8"lmbcs4", UCNV_LMBCS_4 },
+  { u8"lmbcs5", UCNV_LMBCS_5 },
+  { u8"lmbcs6", UCNV_LMBCS_6 },
+  { u8"lmbcs8", UCNV_LMBCS_8 },
 #endif
 #if !UCONFIG_ONLY_HTML_CONVERSION
-  { "scsu", UCNV_SCSU },
+  { u8"scsu", UCNV_SCSU },
 #endif
-  { "usascii", UCNV_US_ASCII },
-  { "utf16", UCNV_UTF16 },
-  { "utf16be", UCNV_UTF16_BigEndian },
-  { "utf16le", UCNV_UTF16_LittleEndian },
+  { u8"usascii", UCNV_US_ASCII },
+  { u8"utf16", UCNV_UTF16 },
+  { u8"utf16be", UCNV_UTF16_BigEndian },
+  { u8"utf16le", UCNV_UTF16_LittleEndian },
 #if U_IS_BIG_ENDIAN
-  { "utf16oppositeendian", UCNV_UTF16_LittleEndian },
-  { "utf16platformendian", UCNV_UTF16_BigEndian },
+  { u8"utf16oppositeendian", UCNV_UTF16_LittleEndian },
+  { u8"utf16platformendian", UCNV_UTF16_BigEndian },
 #else
-  { "utf16oppositeendian", UCNV_UTF16_BigEndian},
-  { "utf16platformendian", UCNV_UTF16_LittleEndian },
+  { u8"utf16oppositeendian", UCNV_UTF16_BigEndian},
+  { u8"utf16platformendian", UCNV_UTF16_LittleEndian },
 #endif
 #if !UCONFIG_ONLY_HTML_CONVERSION
-  { "utf32", UCNV_UTF32 },
-  { "utf32be", UCNV_UTF32_BigEndian },
-  { "utf32le", UCNV_UTF32_LittleEndian },
+  { u8"utf32", UCNV_UTF32 },
+  { u8"utf32be", UCNV_UTF32_BigEndian },
+  { u8"utf32le", UCNV_UTF32_LittleEndian },
 #if U_IS_BIG_ENDIAN
-  { "utf32oppositeendian", UCNV_UTF32_LittleEndian },
-  { "utf32platformendian", UCNV_UTF32_BigEndian },
+  { u8"utf32oppositeendian", UCNV_UTF32_LittleEndian },
+  { u8"utf32platformendian", UCNV_UTF32_BigEndian },
 #else
-  { "utf32oppositeendian", UCNV_UTF32_BigEndian },
-  { "utf32platformendian", UCNV_UTF32_LittleEndian },
+  { u8"utf32oppositeendian", UCNV_UTF32_BigEndian },
+  { u8"utf32platformendian", UCNV_UTF32_LittleEndian },
 #endif
 #endif
 #if !UCONFIG_ONLY_HTML_CONVERSION
-  { "utf7", UCNV_UTF7 },
+  { u8"utf7", UCNV_UTF7 },
 #endif
-  { "utf8", UCNV_UTF8 },
+  { u8"utf8", UCNV_UTF8 },
 #if !UCONFIG_ONLY_HTML_CONVERSION
-  { "x11compoundtext", UCNV_COMPOUND_TEXT}
+  { u8"x11compoundtext", UCNV_COMPOUND_TEXT}
 #endif
 };
 
@@ -221,7 +221,7 @@ static UBool gDefaultConverterContainsOption;
 
 #endif  /* !U_CHARSET_IS_UTF8 */
 
-static const char DATA_TYPE[] = "cnv";
+static const char DATA_TYPE[] = u8"cnv";
 
 /* ucnv_flushAvailableConverterCache. This is only called from ucnv_cleanup().
  *                       If it is ever to be called from elsewhere, synchronization
@@ -270,7 +270,7 @@ isCnvAcceptable(void * /*context*/,
         pInfo->isBigEndian==U_IS_BIG_ENDIAN &&
         pInfo->charsetFamily==U_CHARSET_FAMILY &&
         pInfo->sizeofUChar==U_SIZEOF_UCHAR &&
-        pInfo->dataFormat[0]==0x63 &&   /* dataFormat="cnvt" */
+        pInfo->dataFormat[0]==0x63 &&   /* dataFormat=u8"cnvt" */
         pInfo->dataFormat[1]==0x6e &&
         pInfo->dataFormat[2]==0x76 &&
         pInfo->dataFormat[3]==0x74 &&
@@ -344,7 +344,7 @@ static UConverterSharedData *createConverterFromFile(UConverterLoadArgs *pArgs, 
         return NULL;
     }
 
-    UTRACE_DATA2(UTRACE_OPEN_CLOSE, "load converter %s from package %s", pArgs->name, pArgs->pkg);
+    UTRACE_DATA2(UTRACE_OPEN_CLOSE, u8"load converter %s from package %s", pArgs->name, pArgs->pkg);
 
     data = udata_openChoice(pArgs->pkg, DATA_TYPE, pArgs->name, isCnvAcceptable, NULL, err);
     if(U_FAILURE(*err))
@@ -464,7 +464,7 @@ ucnv_shareConverterData(UConverterSharedData * data)
             keyDeleter == NULL */
             data,
             &err);
-    UCNV_DEBUG_LOG("put", data->staticData->name,data);
+    UCNV_DEBUG_LOG(u8"put", data->staticData->name,data);
 
 }
 
@@ -487,7 +487,7 @@ ucnv_getSharedConverterData(const char *name)
         UConverterSharedData *rc;
 
         rc = (UConverterSharedData*)uhash_get(SHARED_DATA_HASHTABLE, name);
-        UCNV_DEBUG_LOG("get",name,rc);
+        UCNV_DEBUG_LOG(u8"get",name,rc);
         return rc;
     }
 }
@@ -507,7 +507,7 @@ static UBool
 ucnv_deleteSharedConverterData(UConverterSharedData * deadSharedData)
 {
     UTRACE_ENTRY_OC(UTRACE_UCNV_UNLOAD);
-    UTRACE_DATA2(UTRACE_OPEN_CLOSE, "unload converter %s shared data %p", deadSharedData->staticData->name, deadSharedData);
+    UTRACE_DATA2(UTRACE_OPEN_CLOSE, u8"unload converter %s shared data %p", deadSharedData->staticData->name, deadSharedData);
 
     if (deadSharedData->referenceCounter > 0) {
         UTRACE_EXIT_VALUE((int32_t)FALSE);
@@ -651,7 +651,7 @@ parseConverterOptions(const char *inName,
         }
 
         /* inName is behind an option separator */
-        if(uprv_strncmp(inName, "locale=", 7)==0) {
+        if(uprv_strncmp(inName, u8"locale=", 7)==0) {
             /* do not modify locale itself in case we have multiple locale options */
             char *dest=pPieces->locale;
 
@@ -670,18 +670,18 @@ parseConverterOptions(const char *inName,
                 *dest++=c;
             }
             *dest=0;
-        } else if(uprv_strncmp(inName, "version=", 8)==0) {
+        } else if(uprv_strncmp(inName, u8"version=", 8)==0) {
             /* copy the version option value into bits 3..0 of pPieces->options */
             inName+=8;
             c=*inName;
             if(c==0) {
                 pArgs->options=(pPieces->options&=~UCNV_OPTION_VERSION);
                 return;
-            } else if((uint8_t)(c-'0')<10) {
-                pArgs->options=pPieces->options=(pPieces->options&~UCNV_OPTION_VERSION)|(uint32_t)(c-'0');
+            } else if((uint8_t)(c-'\x30')<10) {
+                pArgs->options=pPieces->options=(pPieces->options&~UCNV_OPTION_VERSION)|(uint32_t)(c-'\x30');
                 ++inName;
             }
-        } else if(uprv_strncmp(inName, "swaplfnl", 8)==0) {
+        } else if(uprv_strncmp(inName, u8"swaplfnl", 8)==0) {
             inName+=8;
             pArgs->options=(pPieces->options|=UCNV_OPTION_SWAP_LFNL);
         /* add processing for new options here with another } else if(uprv_strncmp(inName, "option-name=", XX)==0) { */
@@ -747,7 +747,7 @@ ucnv_loadSharedData(const char *converterName,
     /* In case "name" is NULL we want to open the default converter. */
     if (converterName == NULL) {
 #if U_CHARSET_IS_UTF8
-        pArgs->name = "UTF-8";
+        pArgs->name = u8"UTF-8";
         return (UConverterSharedData *)converterData[UCNV_UTF8];
 #else
         /* Call ucnv_getDefaultName first to query the name from the OS. */
@@ -764,7 +764,7 @@ ucnv_loadSharedData(const char *converterName,
     }
     else if(UCNV_FAST_IS_UTF8(converterName)) {
         /* fastpath for UTF-8 */
-        pArgs->name = "UTF-8";
+        pArgs->name = u8"UTF-8";
         return (UConverterSharedData *)converterData[UCNV_UTF8];
     }
     else {
@@ -829,7 +829,7 @@ ucnv_createConverter(UConverter *myUConverter, const char *converterName, UError
     UTRACE_ENTRY_OC(UTRACE_UCNV_OPEN);
 
     if(U_SUCCESS(*err)) {
-        UTRACE_DATA1(UTRACE_OPEN_CLOSE, "open converter %s", converterName);
+        UTRACE_DATA1(UTRACE_OPEN_CLOSE, u8"open converter %s", converterName);
 
         mySharedConverterData = ucnv_loadSharedData(converterName, &stackPieces, &stackArgs, err);
 
@@ -859,7 +859,7 @@ ucnv_canCreateConverter(const char *converterName, UErrorCode *err) {
     UTRACE_ENTRY_OC(UTRACE_UCNV_OPEN);
 
     if(U_SUCCESS(*err)) {
-        UTRACE_DATA1(UTRACE_OPEN_CLOSE, "test if can open converter %s", converterName);
+        UTRACE_DATA1(UTRACE_OPEN_CLOSE, u8"test if can open converter %s", converterName);
 
         stackArgs.onlyTestIsLoadable=TRUE;
         mySharedConverterData = ucnv_loadSharedData(converterName, &stackPieces, &stackArgs, err);
@@ -884,7 +884,7 @@ ucnv_createAlgorithmicConverter(UConverter *myUConverter,
     UConverterLoadArgs stackArgs=UCNV_LOAD_ARGS_INITIALIZER;
 
     UTRACE_ENTRY_OC(UTRACE_UCNV_OPEN_ALGORITHMIC);
-    UTRACE_DATA1(UTRACE_OPEN_CLOSE, "open algorithmic converter type %d", (int32_t)type);
+    UTRACE_DATA1(UTRACE_OPEN_CLOSE, u8"open algorithmic converter type %d", (int32_t)type);
 
     if(type<0 || UCNV_NUMBER_OF_SUPPORTED_CONVERTER_TYPES<=type) {
         *err = U_ILLEGAL_ARGUMENT_ERROR;
@@ -900,7 +900,7 @@ ucnv_createAlgorithmicConverter(UConverter *myUConverter,
         return NULL;
     }
 
-    stackArgs.name = "";
+    stackArgs.name = u8"";
     stackArgs.options = options;
     stackArgs.locale=locale;
     cnv = ucnv_createConverterFromSharedData(
@@ -926,7 +926,7 @@ ucnv_createConverterFromPackage(const char *packageName, const char *converterNa
         return NULL;
     }
 
-    UTRACE_DATA2(UTRACE_OPEN_CLOSE, "open converter %s from package %s", converterName, packageName);
+    UTRACE_DATA2(UTRACE_OPEN_CLOSE, u8"open converter %s from package %s", converterName, packageName);
 
     /* first, get the options out of the converterName string */
     stackPieces.cnvName[0] = 0;
@@ -1075,7 +1075,7 @@ ucnv_flushCache ()
             {
                 tableDeletedNum++;
 
-                UCNV_DEBUG_LOG("del",mySharedData->staticData->name,mySharedData);
+                UCNV_DEBUG_LOG(u8"del",mySharedData->staticData->name,mySharedData);
 
                 uhash_removeElement(SHARED_DATA_HASHTABLE, e);
                 mySharedData->sharedDataCached = FALSE;
@@ -1087,7 +1087,7 @@ ucnv_flushCache ()
     } while(++i == 1 && remaining > 0);
     umtx_unlock(&cnvCacheMutex);
 
-    UTRACE_DATA1(UTRACE_INFO, "ucnv_flushCache() exits with %d converters remaining", remaining);
+    UTRACE_DATA1(UTRACE_INFO, u8"ucnv_flushCache() exits with %d converters remaining", remaining);
 
     UTRACE_EXIT_VALUE(tableDeletedNum);
     return tableDeletedNum;
@@ -1222,7 +1222,7 @@ internalSetName(const char *name, UErrorCode *status) {
 U_CAPI const char*  U_EXPORT2
 ucnv_getDefaultName() {
 #if U_CHARSET_IS_UTF8
-    return "UTF-8";
+    return u8"UTF-8";
 #else
     /* local variable to be thread-safe */
     const char *name;
@@ -1255,12 +1255,12 @@ ucnv_getDefaultName() {
         {
             /* Panic time, let's use a fallback. */
 #if (U_CHARSET_FAMILY == U_ASCII_FAMILY)
-            name = "US-ASCII";
+            name = u8"US-ASCII";
             /* there is no 'algorithmic' converter for EBCDIC */
 #elif U_PLATFORM == U_PF_OS390
-            name = "ibm-1047_P100-1995" UCNV_SWAP_LFNL_OPTION_STRING;
+            name = u8"ibm-1047_P100-1995" UCNV_SWAP_LFNL_OPTION_STRING;
 #else
-            name = "ibm-37_P100-1995";
+            name = u8"ibm-37_P100-1995";
 #endif
         }
 
@@ -1355,14 +1355,14 @@ ucnv_swap(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x63 &&   /* dataFormat="cnvt" */
+        pInfo->dataFormat[0]==0x63 &&   /* dataFormat=u8"cnvt" */
         pInfo->dataFormat[1]==0x6e &&
         pInfo->dataFormat[2]==0x76 &&
         pInfo->dataFormat[3]==0x74 &&
         pInfo->formatVersion[0]==6 &&
         pInfo->formatVersion[1]>=2
     )) {
-        udata_printError(ds, "ucnv_swap(): data format %02x.%02x.%02x.%02x (format version %02x.%02x) is not recognized as an ICU .cnv conversion table\n",
+        udata_printError(ds, u8"ucnv_swap(): data format %02x.%02x.%02x.%02x (format version %02x.%02x) is not recognized as an ICU .cnv conversion table\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0], pInfo->formatVersion[1]);
@@ -1384,7 +1384,7 @@ ucnv_swap(const UDataSwapper *ds,
         if( length<(int32_t)sizeof(UConverterStaticData) ||
             (uint32_t)length<(staticDataSize=ds->readUInt32(inStaticData->structSize))
         ) {
-            udata_printError(ds, "ucnv_swap(): too few bytes (%d after header) for an ICU .cnv conversion table\n",
+            udata_printError(ds, u8"ucnv_swap(): too few bytes (%d after header) for an ICU .cnv conversion table\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -1405,7 +1405,7 @@ ucnv_swap(const UDataSwapper *ds,
         ds->swapInvChars(ds, inStaticData->name, (int32_t)uprv_strlen(inStaticData->name),
                             outStaticData->name, pErrorCode);
         if(U_FAILURE(*pErrorCode)) {
-            udata_printError(ds, "ucnv_swap(): error swapping converter name\n");
+            udata_printError(ds, u8"ucnv_swap(): error swapping converter name\n");
             return 0;
         }
     }
@@ -1423,7 +1423,7 @@ ucnv_swap(const UDataSwapper *ds,
         outMBCSHeader=(_MBCSHeader *)outBytes;
 
         if(0<=length && length<(int32_t)sizeof(_MBCSHeader)) {
-            udata_printError(ds, "ucnv_swap(): too few bytes (%d after headers) for an ICU MBCS .cnv conversion table\n",
+            udata_printError(ds, u8"ucnv_swap(): too few bytes (%d after headers) for an ICU MBCS .cnv conversion table\n",
                                 length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -1437,7 +1437,7 @@ ucnv_swap(const UDataSwapper *ds,
             mbcsHeaderLength=mbcsHeader.options&MBCS_OPT_LENGTH_MASK;
             noFromU=(UBool)((mbcsHeader.options&MBCS_OPT_NO_FROM_U)!=0);
         } else {
-            udata_printError(ds, "ucnv_swap(): unsupported _MBCSHeader.version %d.%d\n",
+            udata_printError(ds, u8"ucnv_swap(): unsupported _MBCSHeader.version %d.%d\n",
                              inMBCSHeader->version[0], inMBCSHeader->version[1]);
             *pErrorCode=U_UNSUPPORTED_ERROR;
             return 0;
@@ -1456,7 +1456,7 @@ ucnv_swap(const UDataSwapper *ds,
         extOffset=(int32_t)(mbcsHeader.flags>>8);
         outputType=(uint8_t)mbcsHeader.flags;
         if(noFromU && outputType==MBCS_OUTPUT_1) {
-            udata_printError(ds, "ucnv_swap(): unsupported combination of makeconv --small with SBCS\n");
+            udata_printError(ds, u8"ucnv_swap(): unsupported combination of makeconv --small with SBCS\n");
             *pErrorCode=U_UNSUPPORTED_ERROR;
             return 0;
         }
@@ -1474,7 +1474,7 @@ ucnv_swap(const UDataSwapper *ds,
             /* OK */
             break;
         default:
-            udata_printError(ds, "ucnv_swap(): unsupported MBCS output type 0x%x\n",
+            udata_printError(ds, u8"ucnv_swap(): unsupported MBCS output type 0x%x\n",
                              outputType);
             *pErrorCode=U_UNSUPPORTED_ERROR;
             return 0;
@@ -1508,7 +1508,7 @@ ucnv_swap(const UDataSwapper *ds,
         } else {
             /* there is extension data after the base data, see ucnv_ext.h */
             if(length>=0 && length<(extOffset+UCNV_EXT_INDEXES_MIN_LENGTH*4)) {
-                udata_printError(ds, "ucnv_swap(): too few bytes (%d after headers) for an ICU MBCS .cnv conversion table with extension data\n",
+                udata_printError(ds, u8"ucnv_swap(): too few bytes (%d after headers) for an ICU MBCS .cnv conversion table with extension data\n",
                                  length);
                 *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
                 return 0;
@@ -1520,7 +1520,7 @@ ucnv_swap(const UDataSwapper *ds,
 
         if(length>=0) {
             if(length<size) {
-                udata_printError(ds, "ucnv_swap(): too few bytes (%d after headers) for an ICU MBCS .cnv conversion table\n",
+                udata_printError(ds, u8"ucnv_swap(): too few bytes (%d after headers) for an ICU MBCS .cnv conversion table\n",
                                  length);
                 *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
                 return 0;
@@ -1670,7 +1670,7 @@ ucnv_swap(const UDataSwapper *ds,
             }
         }
     } else {
-        udata_printError(ds, "ucnv_swap(): unknown conversionType=%d!=UCNV_MBCS\n",
+        udata_printError(ds, u8"ucnv_swap(): unknown conversionType=%d!=UCNV_MBCS\n",
                          inStaticData->conversionType);
         *pErrorCode=U_UNSUPPORTED_ERROR;
         return 0;

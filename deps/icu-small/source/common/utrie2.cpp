@@ -86,7 +86,7 @@ utrie2_get32FromLeadSurrogateCodeUnit(const UTrie2 *trie, UChar32 c) {
 }
 
 static inline int32_t
-u8Index(const UTrie2 *trie, UChar32 c, int32_t i) {
+Index(const UTrie2 *trie, UChar32 c, int32_t i) {
     int32_t idx=
         _UTRIE2_INDEX_FROM_CP(
             trie,
@@ -107,7 +107,7 @@ utrie2_internalU8NextIndex(const UTrie2 *trie, UChar32 c,
         length=7;
     }
     c=utf8_nextCharSafeBody(src, &i, length, c, -1);
-    return u8Index(trie, c, i);
+    return Index(trie, c, i);
 }
 
 U_CAPI int32_t U_EXPORT2
@@ -123,7 +123,7 @@ utrie2_internalU8PrevIndex(const UTrie2 *trie, UChar32 c,
     }
     c=utf8_prevCharSafeBody(start, 0, &i, c, -1);
     i=length-i;  /* number of bytes read backward from src */
-    return u8Index(trie, c, i);
+    return Index(trie, c, i);
 }
 
 U_CAPI UTrie2 * U_EXPORT2
@@ -298,7 +298,7 @@ utrie2_openDummy(UTrie2ValueBits valueBits,
     /* set the header fields */
     header=(UTrie2Header *)trie->memory;
 
-    header->signature=UTRIE2_SIG; /* "Tri2" */
+    header->signature=UTRIE2_SIG; /* u8"Tri2" */
     header->options=(uint16_t)valueBits;
 
     header->indexLength=(uint16_t)indexLength;

@@ -34,7 +34,7 @@ static const char
 std::string prog;
 
 void usage() {
-  fprintf(stderr, "%s: usage: %s infile.cpp outfile.cpp\n", prog.c_str(), prog.c_str());
+  fprintf(stderr, u8"%s: usage: %s infile.cpp outfile.cpp\n", prog.c_str(), prog.c_str());
 }
 
 
@@ -43,13 +43,13 @@ int cleanup(const std::string &outfile) {
   if(outstr && *outstr) {
     int rc = unlink(outstr);
     if(rc == 0) {
-      fprintf(stderr, "%s: deleted %s\n", prog.c_str(), outstr);
+      fprintf(stderr, u8"%s: deleted %s\n", prog.c_str(), outstr);
       return 0;
     } else {
       if( errno == ENOENT ) {
         return 0; // File did not exist - no error.
       } else {
-        perror("unlink");
+        perror(u8"unlink");
         return 1;
       }
     }
@@ -109,7 +109,7 @@ inline const char *skipws(const char *p, const char *e) {
 void appendByte(std::string &outstr,
                 uint8_t byte) {
     char tmp2[5];
-    sprintf(tmp2, "\\x%02X", 0xFF & (int)(byte));
+    sprintf(tmp2, u8"\\x%02X", 0xFF & (int)(byte));
     outstr += tmp2;
 }
 
@@ -126,13 +126,13 @@ bool appendUtf8(std::string &outstr,
   }
   tmp[chars] = 0;
   unsigned int c;
-  sscanf(tmp, "%X", &c);
+  sscanf(tmp, u8"%X", &c);
   UChar32 ch = c & 0x1FFFFF;
 
   // now to append \\x%% etc
   uint8_t bytesNeeded = U8_LENGTH(ch);
   if(bytesNeeded == 0) {
-    fprintf(stderr, "Illegal code point U+%X\n", ch);
+    fprintf(stderr, u8"Illegal code point U+%X\n", ch);
     return true;
   }
   uint8_t bytes[4];
@@ -151,26 +151,26 @@ bool appendUtf8(std::string &outstr,
  * @param pos end, points to "
  * @return false for no-problem, true for failure!
  */
-bool fixu8(std::string &linestr, size_t origpos, size_t &endpos) {
+bool fix(std::string &linestr, size_t origpos, size_t &endpos) {
   size_t pos = origpos + 3;
   std::string outstr;
-  outstr += '\"'; // local encoding
+  outstr += '\x22'; // local encoding
   for(;pos<endpos;pos++) {
     char c = linestr[pos];
-    if(c == '\\') {
+    if(c == '\x5c') {
       char c2 = linestr[++pos];
       switch(c2) {
-      case '\'':
-      case '"':
+      case '\x27':
+      case '\x22':
 #if (U_CHARSET_FAMILY == U_EBCDIC_FAMILY)
         c2 = cp1047_to_8859(c2);
 #endif
         appendByte(outstr, c2);
         break;
-      case 'u':
+      case '\x75':
         appendUtf8(outstr, linestr, pos, 4);
         break;
-      case 'U':
+      case '\x55':
         appendUtf8(outstr, linestr, pos, 8);
         break;
       }
@@ -181,7 +181,7 @@ bool fixu8(std::string &linestr, size_t origpos, size_t &endpos) {
       appendByte(outstr, c);
     }
   }
-  outstr += ('\"');
+  outstr += ('\x22');
 
   linestr.replace(origpos, (endpos-origpos+1), outstr);
 
@@ -196,29 +196,29 @@ bool fixu8(std::string &linestr, size_t origpos, size_t &endpos) {
 bool fixAt(std::string &linestr, size_t pos) {
   size_t origpos = pos;
 
-  if(linestr[pos] != 'u') {
-    fprintf(stderr, "Not a 'u'?");
+  if(linestr[pos] != '\x75') {
+    fprintf(stderr, u8"Not a 'u'?");
     return true;
   }
 
-  pos++; // past 'u'
+  pos++; // past '\x75'
 
   bool utf8 = false;
 
-  if(linestr[pos] == '8') { // u8"
+  if(linestr[pos] == '\x38') { // "
     utf8 = true;
     pos++;
   }
 
   char quote = linestr[pos];
 
-  if(quote != '\'' && quote != '\"') {
-    fprintf(stderr, "Quote is '%c' - not sure what to do.\n", quote);
+  if(quote != '\x27' && quote != '\x22') {
+    fprintf(stderr, u8"Quote is '%c' - not sure what to do.\n", quote);
     return true;
   }
 
-  if(quote == '\'' && utf8) {
-    fprintf(stderr, "Cannot do u8'...'\n");
+  if(quote == '\x27' && utf8) {
+    fprintf(stderr, u8"Cannot do u8'...'\n");
     return true;
   }
 
@@ -229,16 +229,16 @@ bool fixAt(std::string &linestr, size_t pos) {
   for(; pos < linestr.size(); pos++) {
     if(linestr[pos] == quote) {
       if(utf8) {
-        return fixu8(linestr, origpos, pos); // fix u8"..."
+        return fix(linestr, origpos, pos); // fix u8"..."
       } else {
         return false; // end of quote
       }
     }
-    if(linestr[pos] == '\\') {
+    if(linestr[pos] == '\x5c') {
       pos++;
       if(linestr[pos] == quote) continue; // quoted quote
-      if(linestr[pos] == 'u') continue; // for now ... unicode escape
-      if(linestr[pos] == '\\') continue;
+      if(linestr[pos] == '\x75') continue; // for now ... unicode escape
+      if(linestr[pos] == '\x5c') continue;
       // some other escape… ignore
     } else {
       size_t old_pos = pos;
@@ -273,8 +273,8 @@ bool fixAt(std::string &linestr, size_t pos) {
         U8_NEXT(s, i, length, c);
       }
       if(c<0) {
-        fprintf(stderr, "Illegal utf-8 sequence at Column: %d\n", old_pos);
-        fprintf(stderr, "Line: >>%s<<\n", linestr.c_str());
+        fprintf(stderr, u8"Illegal utf-8 sequence at Column: %d\n", old_pos);
+        fprintf(stderr, u8"Line: >>%s<<\n", linestr.c_str());
         return true;
       }
 
@@ -284,9 +284,9 @@ bool fixAt(std::string &linestr, size_t pos) {
 
       char newSeq[20];
       if( c <= 0xFFFF) {
-        sprintf(newSeq, "\\u%04X", c);
+        sprintf(newSeq, u8"\\u%04X", c);
       } else {
-        sprintf(newSeq, "\\U%08X", c);
+        sprintf(newSeq, u8"\\U%08X", c);
       }
       linestr.replace(pos, seqLen, newSeq);
       pos += strlen(newSeq) - 1;
@@ -305,7 +305,7 @@ bool fixLine(int /*no*/, std::string &linestr) {
   size_t len = linestr.size();
 
   // no u' in the line?
-  if(!strstr(line, "u'") && !strstr(line, "u\"") && !strstr(line, "u8\"")) {
+  if(!strstr(line, u8"u'") && !strstr(line, u8"u\"") && !strstr(line, u8"u8\"")) {
     return false; // Nothing to do. No u' or u" detected
   }
 
@@ -322,7 +322,7 @@ bool fixLine(int /*no*/, std::string &linestr) {
 
   // start from the end and find all u" cases
   size_t pos = len = linestr.size();
-  while((pos>0) && (pos = linestr.rfind("u\"", pos)) != std::string::npos) {
+  while((pos>0) && (pos = linestr.rfind(u8"u\"", pos)) != std::string::npos) {
     //printf("found doublequote at %d\n", pos);
     if(fixAt(linestr, pos)) return true;
     if(pos == 0) break;
@@ -331,7 +331,7 @@ bool fixLine(int /*no*/, std::string &linestr) {
 
   // reset and find all u' cases
   pos = len = linestr.size();
-  while((pos>0) && (pos = linestr.rfind("u'", pos)) != std::string::npos) {
+  while((pos>0) && (pos = linestr.rfind(u8"u'", pos)) != std::string::npos) {
     //printf("found singlequote at %d\n", pos);
     if(fixAt(linestr, pos)) return true;
     if(pos == 0) break;
@@ -340,7 +340,7 @@ bool fixLine(int /*no*/, std::string &linestr) {
 
   // reset and find all u8" cases
   pos = len = linestr.size();
-  while((pos>0) && (pos = linestr.rfind("u8\"", pos)) != std::string::npos) {
+  while((pos>0) && (pos = linestr.rfind(u8"u8\"", pos)) != std::string::npos) {
     if(fixAt(linestr, pos)) return true;
     if(pos == 0) break;
     pos--;
@@ -351,14 +351,14 @@ bool fixLine(int /*no*/, std::string &linestr) {
 }
 
 int convert(const std::string &infile, const std::string &outfile) {
-  fprintf(stderr, "escapesrc: %s -> %s\n", infile.c_str(), outfile.c_str());
+  fprintf(stderr, u8"escapesrc: %s -> %s\n", infile.c_str(), outfile.c_str());
 
   std::ifstream inf;
 
   inf.open(infile.c_str(), std::ios::in);
 
   if(!inf.is_open()) {
-    fprintf(stderr, "%s: could not open input file %s\n", prog.c_str(), infile.c_str());
+    fprintf(stderr, u8"%s: could not open input file %s\n", prog.c_str(), infile.c_str());
     cleanup(outfile);
     return 1;
   }
@@ -368,12 +368,12 @@ int convert(const std::string &infile, const std::string &outfile) {
   outf.open(outfile.c_str(), std::ios::out);
 
   if(!outf.is_open()) {
-    fprintf(stderr, "%s: could not open output file %s\n", prog.c_str(), outfile.c_str());
+    fprintf(stderr, u8"%s: could not open output file %s\n", prog.c_str(), outfile.c_str());
     return 1;
   }
 
   // TODO: any platform variations of #line?
-  outf << "#line 1 \"" << infile << "\"" << '\n';
+  outf << u8"#line 1 \"" << infile << u8"\"" << '\xa';
 
   int no = 0;
   std::string linestr;
@@ -381,11 +381,11 @@ int convert(const std::string &infile, const std::string &outfile) {
     no++;
     if(fixLine(no, linestr)) {
       outf.close();
-      fprintf(stderr, "%s:%d: Fixup failed by %s\n", infile.c_str(), no, prog.c_str());
+      fprintf(stderr, u8"%s:%d: Fixup failed by %s\n", infile.c_str(), no, prog.c_str());
       cleanup(outfile);
       return 1;
     }
-    outf << linestr << '\n';
+    outf << linestr << '\xa';
   }
 
   return 0;

@@ -63,7 +63,7 @@ ICUNotifier::addListener(const EventListener* l, UErrorCode& status)
         }
 #ifdef NOTIFIER_DEBUG
         else {
-            fprintf(stderr, "Listener invalid for this notifier.");
+            fprintf(stderr, u8"Listener invalid for this notifier.");
             exit(1);
         }
 #endif

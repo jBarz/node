@@ -13,7 +13,7 @@
 U_NAMESPACE_BEGIN
 
 static const char * const gPluralForms[] = {
-        "other", "zero", "one", "two", "few", "many"};
+        u8"other", u8"zero", u8"one", u8"two", u8"few", u8"many"};
 
 PluralMapBase::Category
 PluralMapBase::toCategory(const char *pluralForm) {

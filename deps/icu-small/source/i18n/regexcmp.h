@@ -141,8 +141,8 @@ private:
     int64_t                       fScanIndex;        // Index of current character being processed
                                                      //   in the rule input string.
     UBool                         fQuoteMode;        // Scan is in a \Q...\E quoted region
-    UBool                         fInBackslashQuote; // Scan is between a '\' and the following char.
-    UBool                         fEOLComments;      // When scan is just after '(?',  inhibit #... to
+    UBool                         fInBackslashQuote; // Scan is between a '\x5c' and the following char.
+    UBool                         fEOLComments;      // When scan is just after '\x28\x3f',  inhibit #... to
                                                      //   end of line comments, in favor of (?#...) comments.
     int64_t                       fLineNum;          // Line number in input file.
     int64_t                       fCharNum;          // Char position within the line.
@@ -236,11 +236,11 @@ enum SetOperations {
     setEnd           = 1 << 16 | 2,
     setNegation      = 2 << 16 | 3,
     setCaseClose     = 2 << 16 | 9,
-    setDifference2   = 3 << 16 | 4,    // '--' set difference operator
-    setIntersection2 = 3 << 16 | 5,    // '&&' set intersection operator
+    setDifference2   = 3 << 16 | 4,    // '\x2d\x2d' set difference operator
+    setIntersection2 = 3 << 16 | 5,    // '\x26\x26' set intersection operator
     setUnion         = 4 << 16 | 6,    // implicit union of adjacent items
-    setDifference1   = 4 << 16 | 7,    // '-', single dash difference op, for compatibility with old UnicodeSet.
-    setIntersection1 = 4 << 16 | 8     // '&', single amp intersection op, for compatibility with old UnicodeSet.
+    setDifference1   = 4 << 16 | 7,    // '\x2d', single dash difference op, for compatibility with old UnicodeSet.
+    setIntersection1 = 4 << 16 | 8     // '\x26', single amp intersection op, for compatibility with old UnicodeSet.
     };
 
 U_NAMESPACE_END

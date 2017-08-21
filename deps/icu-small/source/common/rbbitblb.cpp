@@ -79,8 +79,8 @@ void  RBBITableBuilder::build() {
     //
     fTree = fTree->flattenVariables();
 #ifdef RBBI_DEBUG
-    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, "ftree")) {
-        RBBIDebugPuts("\nParse tree after flattening variable references.");
+    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, u8"ftree")) {
+        RBBIDebugPuts(u8"\nParse tree after flattening variable references.");
         RBBINode::printTree(fTree, TRUE);
     }
 #endif
@@ -137,8 +137,8 @@ void  RBBITableBuilder::build() {
     //
     fTree->flattenSets();
 #ifdef RBBI_DEBUG
-    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, "stree")) {
-        RBBIDebugPuts("\nParse tree after flattening Unicode Set references.");
+    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, u8"stree")) {
+        RBBIDebugPuts(u8"\nParse tree after flattening Unicode Set references.");
         RBBINode::printTree(fTree, TRUE);
     }
 #endif
@@ -155,8 +155,8 @@ void  RBBITableBuilder::build() {
     calcFirstPos(fTree);
     calcLastPos(fTree);
     calcFollowPos(fTree);
-    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, "pos")) {
-        RBBIDebugPuts("\n");
+    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, u8"pos")) {
+        RBBIDebugPuts(u8"\n");
         printPosSets(fTree);
     }
 
@@ -189,7 +189,7 @@ void  RBBITableBuilder::build() {
     //
     mergeRuleStatusVals();
 
-    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, "states")) {printStates();};
+    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, u8"states")) {printStates();};
 }
 
 
@@ -350,7 +350,7 @@ void RBBITableBuilder::calcFollowPos(RBBINode *n) {
 
     // Aho rule #1
     if (n->fType == RBBINode::opCat) {
-        RBBINode *i;   // is 'i' in Aho's description
+        RBBINode *i;   // is '\x69' in Aho's description
         uint32_t     ix;
 
         UVector *LastPosOfLeftChild = n->fLeftChild->fLastPosSet;
@@ -1058,18 +1058,18 @@ void RBBITableBuilder::printPosSets(RBBINode *n) {
     if (n==NULL) {
         return;
     }
-    printf("\n");
+    printf(u8"\n");
     RBBINode::printNodeHeader();
     RBBINode::printNode(n);
-    RBBIDebugPrintf("         Nullable:  %s\n", n->fNullable?"TRUE":"FALSE");
+    RBBIDebugPrintf(u8"         Nullable:  %s\n", n->fNullable?u8"TRUE":u8"FALSE");
 
-    RBBIDebugPrintf("         firstpos:  ");
+    RBBIDebugPrintf(u8"         firstpos:  ");
     printSet(n->fFirstPosSet);
 
-    RBBIDebugPrintf("         lastpos:   ");
+    RBBIDebugPrintf(u8"         lastpos:   ");
     printSet(n->fLastPosSet);
 
-    RBBIDebugPrintf("         followpos: ");
+    RBBIDebugPrintf(u8"         followpos: ");
     printSet(n->fFollowPos);
 
     printPosSets(n->fLeftChild);
@@ -1170,9 +1170,9 @@ void RBBITableBuilder::printSet(UVector *s) {
     int32_t  i;
     for (i=0; i<s->size(); i++) {
         const RBBINode *v = static_cast<const RBBINode *>(s->elementAt(i));
-        RBBIDebugPrintf("%5d", v==NULL? -1 : v->fSerialNum);
+        RBBIDebugPrintf(u8"%5d", v==NULL? -1 : v->fSerialNum);
     }
-    RBBIDebugPrintf("\n");
+    RBBIDebugPrintf(u8"\n");
 }
 #endif
 
@@ -1184,31 +1184,31 @@ void RBBITableBuilder::printSet(UVector *s) {
 //-----------------------------------------------------------------------------
 #ifdef RBBI_DEBUG
 void RBBITableBuilder::printStates() {
-    int     c;    // input "character"
+    int     c;    // input u8"character"
     int     n;    // state number
 
-    RBBIDebugPrintf("state |           i n p u t     s y m b o l s \n");
-    RBBIDebugPrintf("      | Acc  LA    Tag");
+    RBBIDebugPrintf(u8"state |           i n p u t     s y m b o l s \n");
+    RBBIDebugPrintf(u8"      | Acc  LA    Tag");
     for (c=0; c<fRB->fSetBuilder->getNumCharCategories(); c++) {
-        RBBIDebugPrintf(" %2d", c);
+        RBBIDebugPrintf(u8" %2d", c);
     }
-    RBBIDebugPrintf("\n");
-    RBBIDebugPrintf("      |---------------");
+    RBBIDebugPrintf(u8"\n");
+    RBBIDebugPrintf(u8"      |---------------");
     for (c=0; c<fRB->fSetBuilder->getNumCharCategories(); c++) {
-        RBBIDebugPrintf("---");
+        RBBIDebugPrintf(u8"---");
     }
-    RBBIDebugPrintf("\n");
+    RBBIDebugPrintf(u8"\n");
 
     for (n=0; n<fDStates->size(); n++) {
         RBBIStateDescriptor *sd = (RBBIStateDescriptor *)fDStates->elementAt(n);
-        RBBIDebugPrintf("  %3d | " , n);
-        RBBIDebugPrintf("%3d %3d %5d ", sd->fAccepting, sd->fLookAhead, sd->fTagsIdx);
+        RBBIDebugPrintf(u8"  %3d | " , n);
+        RBBIDebugPrintf(u8"%3d %3d %5d ", sd->fAccepting, sd->fLookAhead, sd->fTagsIdx);
         for (c=0; c<fRB->fSetBuilder->getNumCharCategories(); c++) {
-            RBBIDebugPrintf(" %2d", sd->fDtran->elementAti(c));
+            RBBIDebugPrintf(u8" %2d", sd->fDtran->elementAti(c));
         }
-        RBBIDebugPrintf("\n");
+        RBBIDebugPrintf(u8"\n");
     }
-    RBBIDebugPrintf("\n\n");
+    RBBIDebugPrintf(u8"\n\n");
 }
 #endif
 
@@ -1226,19 +1226,19 @@ void RBBITableBuilder::printRuleStatusTable() {
     int      i;
     UVector  *tbl = fRB->fRuleStatusVals;
 
-    RBBIDebugPrintf("index |  tags \n");
-    RBBIDebugPrintf("-------------------\n");
+    RBBIDebugPrintf(u8"index |  tags \n");
+    RBBIDebugPrintf(u8"-------------------\n");
 
     while (nextRecord < tbl->size()) {
         thisRecord = nextRecord;
         nextRecord = thisRecord + tbl->elementAti(thisRecord) + 1;
-        RBBIDebugPrintf("%4d   ", thisRecord);
+        RBBIDebugPrintf(u8"%4d   ", thisRecord);
         for (i=thisRecord+1; i<nextRecord; i++) {
-            RBBIDebugPrintf("  %5d", tbl->elementAti(i));
+            RBBIDebugPrintf(u8"  %5d", tbl->elementAti(i));
         }
-        RBBIDebugPrintf("\n");
+        RBBIDebugPrintf(u8"\n");
     }
-    RBBIDebugPrintf("\n\n");
+    RBBIDebugPrintf(u8"\n\n");
 }
 #endif
 

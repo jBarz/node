@@ -86,13 +86,13 @@ upname_swap(const UDataSwapper *ds,
         reinterpret_cast<const UDataInfo *>(
             static_cast<const char *>(inData)+4);
     if(!(
-        pInfo->dataFormat[0]==0x70 &&   /* dataFormat="pnam" */
+        pInfo->dataFormat[0]==0x70 &&   /* dataFormat=u8"pnam" */
         pInfo->dataFormat[1]==0x6e &&
         pInfo->dataFormat[2]==0x61 &&
         pInfo->dataFormat[3]==0x6d &&
         pInfo->formatVersion[0]==2
     )) {
-        udata_printError(ds, "upname_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as pnames.icu\n",
+        udata_printError(ds, u8"upname_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as pnames.icu\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -107,7 +107,7 @@ upname_swap(const UDataSwapper *ds,
         length-=headerSize;
         // formatVersion 2 initially has indexes[8], 32 bytes.
         if(length<32) {
-            udata_printError(ds, "upname_swap(): too few bytes (%d after header) for pnames.icu\n",
+            udata_printError(ds, u8"upname_swap(): too few bytes (%d after header) for pnames.icu\n",
                              (int)length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -118,8 +118,8 @@ upname_swap(const UDataSwapper *ds,
     int32_t totalSize=udata_readInt32(ds, inIndexes[PropNameData::IX_TOTAL_SIZE]);
     if(length>=0) {
         if(length<totalSize) {
-            udata_printError(ds, "upname_swap(): too few bytes (%d after header, should be %d) "
-                             "for pnames.icu\n",
+            udata_printError(ds, u8"upname_swap(): too few bytes (%d after header, should be %d) "
+                             u8"for pnames.icu\n",
                              (int)length, (int)totalSize);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -175,7 +175,7 @@ uprops_swap(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x55 &&   /* dataFormat="UPro" */
+        pInfo->dataFormat[0]==0x55 &&   /* dataFormat=u8"UPro" */
         pInfo->dataFormat[1]==0x50 &&
         pInfo->dataFormat[2]==0x72 &&
         pInfo->dataFormat[3]==0x6f &&
@@ -184,7 +184,7 @@ uprops_swap(const UDataSwapper *ds,
             (pInfo->formatVersion[2]==UTRIE_SHIFT &&
              pInfo->formatVersion[3]==UTRIE_INDEX_SHIFT))
     )) {
-        udata_printError(ds, "uprops_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not a Unicode properties file\n",
+        udata_printError(ds, u8"uprops_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not a Unicode properties file\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -194,7 +194,7 @@ uprops_swap(const UDataSwapper *ds,
 
     /* the properties file must contain at least the indexes array */
     if(length>=0 && (length-headerSize)<(int32_t)sizeof(dataIndexes)) {
-        udata_printError(ds, "uprops_swap(): too few bytes (%d after header) for a Unicode properties file\n",
+        udata_printError(ds, u8"uprops_swap(): too few bytes (%d after header) for a Unicode properties file\n",
                          length-headerSize);
         *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;
@@ -222,7 +222,7 @@ uprops_swap(const UDataSwapper *ds,
         for(i=UPROPS_DATA_TOP_INDEX; i>0 && (dataTop=dataIndexes[i])==0; --i) {}
 
         if((length-headerSize)<(4*dataTop)) {
-            udata_printError(ds, "uprops_swap(): too few bytes (%d after header) for a Unicode properties file\n",
+            udata_printError(ds, u8"uprops_swap(): too few bytes (%d after header) for a Unicode properties file\n",
                              length-headerSize);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -328,7 +328,7 @@ ucase_swap(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==UCASE_FMT_0 &&    /* dataFormat="cAsE" */
+        pInfo->dataFormat[0]==UCASE_FMT_0 &&    /* dataFormat=u8"cAsE" */
         pInfo->dataFormat[1]==UCASE_FMT_1 &&
         pInfo->dataFormat[2]==UCASE_FMT_2 &&
         pInfo->dataFormat[3]==UCASE_FMT_3 &&
@@ -337,7 +337,7 @@ ucase_swap(const UDataSwapper *ds,
           pInfo->formatVersion[3]==UTRIE_INDEX_SHIFT) ||
          pInfo->formatVersion[0]==2 || pInfo->formatVersion[0]==3)
     )) {
-        udata_printError(ds, "ucase_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as case mapping data\n",
+        udata_printError(ds, u8"ucase_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as case mapping data\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -353,7 +353,7 @@ ucase_swap(const UDataSwapper *ds,
     if(length>=0) {
         length-=headerSize;
         if(length<16*4) {
-            udata_printError(ds, "ucase_swap(): too few bytes (%d after header) for case mapping data\n",
+            udata_printError(ds, u8"ucase_swap(): too few bytes (%d after header) for case mapping data\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -370,7 +370,7 @@ ucase_swap(const UDataSwapper *ds,
 
     if(length>=0) {
         if(length<size) {
-            udata_printError(ds, "ucase_swap(): too few bytes (%d after header) for all of case mapping data\n",
+            udata_printError(ds, u8"ucase_swap(): too few bytes (%d after header) for all of case mapping data\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -430,7 +430,7 @@ ubidi_swap(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==UBIDI_FMT_0 &&    /* dataFormat="BiDi" */
+        pInfo->dataFormat[0]==UBIDI_FMT_0 &&    /* dataFormat=u8"BiDi" */
         pInfo->dataFormat[1]==UBIDI_FMT_1 &&
         pInfo->dataFormat[2]==UBIDI_FMT_2 &&
         pInfo->dataFormat[3]==UBIDI_FMT_3 &&
@@ -439,7 +439,7 @@ ubidi_swap(const UDataSwapper *ds,
           pInfo->formatVersion[3]==UTRIE_INDEX_SHIFT) ||
          pInfo->formatVersion[0]==2)
     )) {
-        udata_printError(ds, "ubidi_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as bidi/shaping data\n",
+        udata_printError(ds, u8"ubidi_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as bidi/shaping data\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -455,7 +455,7 @@ ubidi_swap(const UDataSwapper *ds,
     if(length>=0) {
         length-=headerSize;
         if(length<16*4) {
-            udata_printError(ds, "ubidi_swap(): too few bytes (%d after header) for bidi/shaping data\n",
+            udata_printError(ds, u8"ubidi_swap(): too few bytes (%d after header) for bidi/shaping data\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -472,7 +472,7 @@ ubidi_swap(const UDataSwapper *ds,
 
     if(length>=0) {
         if(length<size) {
-            udata_printError(ds, "ubidi_swap(): too few bytes (%d after header) for all of bidi/shaping data\n",
+            udata_printError(ds, u8"ubidi_swap(): too few bytes (%d after header) for all of bidi/shaping data\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -540,13 +540,13 @@ unorm_swap(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x4e &&   /* dataFormat="Norm" */
+        pInfo->dataFormat[0]==0x4e &&   /* dataFormat=u8"Norm" */
         pInfo->dataFormat[1]==0x6f &&
         pInfo->dataFormat[2]==0x72 &&
         pInfo->dataFormat[3]==0x6d &&
         pInfo->formatVersion[0]==2
     )) {
-        udata_printError(ds, "unorm_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as unorm.icu\n",
+        udata_printError(ds, u8"unorm_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as unorm.icu\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -562,7 +562,7 @@ unorm_swap(const UDataSwapper *ds,
     if(length>=0) {
         length-=headerSize;
         if(length<32*4) {
-            udata_printError(ds, "unorm_swap(): too few bytes (%d after header) for unorm.icu\n",
+            udata_printError(ds, u8"unorm_swap(): too few bytes (%d after header) for unorm.icu\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -586,7 +586,7 @@ unorm_swap(const UDataSwapper *ds,
 
     if(length>=0) {
         if(length<size) {
-            udata_printError(ds, "unorm_swap(): too few bytes (%d after header) for all of unorm.icu\n",
+            udata_printError(ds, u8"unorm_swap(): too few bytes (%d after header) for all of unorm.icu\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -655,20 +655,20 @@ test_swap(const UDataSwapper *ds,
     /* udata_swapDataHeader checks the arguments */
     headerSize=udata_swapDataHeader(ds, inData, length, outData, pErrorCode);
     if(pErrorCode==NULL || U_FAILURE(*pErrorCode)) {
-        udata_printError(ds, "test_swap(): data header swap failed %s\n", pErrorCode != NULL ? u_errorName(*pErrorCode) : "pErrorCode is NULL");
+        udata_printError(ds, u8"test_swap(): data header swap failed %s\n", pErrorCode != NULL ? u_errorName(*pErrorCode) : u8"pErrorCode is NULL");
         return 0;
     }
 
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x54 &&   /* dataFormat="Norm" */
+        pInfo->dataFormat[0]==0x54 &&   /* dataFormat=u8"Norm" */
         pInfo->dataFormat[1]==0x65 &&
         pInfo->dataFormat[2]==0x73 &&
         pInfo->dataFormat[3]==0x74 &&
         pInfo->formatVersion[0]==1
     )) {
-        udata_printError(ds, "test_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as testdata\n",
+        udata_printError(ds, u8"test_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as testdata\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -685,7 +685,7 @@ test_swap(const UDataSwapper *ds,
 
     if(length>=0) {
         if(length<size) {
-            udata_printError(ds, "test_swap(): too few bytes (%d after header, wanted %d) for all of testdata\n",
+            udata_printError(ds, u8"test_swap(): too few bytes (%d after header, wanted %d) for all of testdata\n",
                              length, size);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -707,43 +707,43 @@ static const struct {
     uint8_t dataFormat[4];
     UDataSwapFn *swapFn;
 } swapFns[]={
-    { { 0x52, 0x65, 0x73, 0x42 }, ures_swap },          /* dataFormat="ResB" */
+    { { 0x52, 0x65, 0x73, 0x42 }, ures_swap },          /* dataFormat=u8"ResB" */
 #if !UCONFIG_NO_LEGACY_CONVERSION
-    { { 0x63, 0x6e, 0x76, 0x74 }, ucnv_swap },          /* dataFormat="cnvt" */
+    { { 0x63, 0x6e, 0x76, 0x74 }, ucnv_swap },          /* dataFormat=u8"cnvt" */
 #endif
 #if !UCONFIG_NO_CONVERSION
-    { { 0x43, 0x76, 0x41, 0x6c }, ucnv_swapAliases },   /* dataFormat="CvAl" */
+    { { 0x43, 0x76, 0x41, 0x6c }, ucnv_swapAliases },   /* dataFormat=u8"CvAl" */
 #endif
 #if !UCONFIG_NO_IDNA
-    { { 0x53, 0x50, 0x52, 0x50 }, usprep_swap },        /* dataFormat="SPRP" */
+    { { 0x53, 0x50, 0x52, 0x50 }, usprep_swap },        /* dataFormat=u8"SPRP" */
 #endif
     /* insert data formats here, descending by expected frequency of occurrence */
-    { { 0x55, 0x50, 0x72, 0x6f }, uprops_swap },        /* dataFormat="UPro" */
+    { { 0x55, 0x50, 0x72, 0x6f }, uprops_swap },        /* dataFormat=u8"UPro" */
 
     { { UCASE_FMT_0, UCASE_FMT_1, UCASE_FMT_2, UCASE_FMT_3 },
-                                  ucase_swap },         /* dataFormat="cAsE" */
+                                  ucase_swap },         /* dataFormat=u8"cAsE" */
 
     { { UBIDI_FMT_0, UBIDI_FMT_1, UBIDI_FMT_2, UBIDI_FMT_3 },
-                                  ubidi_swap },         /* dataFormat="BiDi" */
+                                  ubidi_swap },         /* dataFormat=u8"BiDi" */
 
 #if !UCONFIG_NO_NORMALIZATION
-    { { 0x4e, 0x6f, 0x72, 0x6d }, unorm_swap },         /* dataFormat="Norm" */
-    { { 0x4e, 0x72, 0x6d, 0x32 }, unorm2_swap },        /* dataFormat="Nrm2" */
+    { { 0x4e, 0x6f, 0x72, 0x6d }, unorm_swap },         /* dataFormat=u8"Norm" */
+    { { 0x4e, 0x72, 0x6d, 0x32 }, unorm2_swap },        /* dataFormat=u8"Nrm2" */
 #endif
 #if !UCONFIG_NO_COLLATION
-    { { 0x55, 0x43, 0x6f, 0x6c }, ucol_swap },          /* dataFormat="UCol" */
-    { { 0x49, 0x6e, 0x76, 0x43 }, ucol_swapInverseUCA },/* dataFormat="InvC" */
+    { { 0x55, 0x43, 0x6f, 0x6c }, ucol_swap },          /* dataFormat=u8"UCol" */
+    { { 0x49, 0x6e, 0x76, 0x43 }, ucol_swapInverseUCA },/* dataFormat=u8"InvC" */
 #endif
 #if !UCONFIG_NO_BREAK_ITERATION
-    { { 0x42, 0x72, 0x6b, 0x20 }, ubrk_swap },          /* dataFormat="Brk " */
-    { { 0x44, 0x69, 0x63, 0x74 }, udict_swap },         /* dataFormat="Dict" */
+    { { 0x42, 0x72, 0x6b, 0x20 }, ubrk_swap },          /* dataFormat=u8"Brk " */
+    { { 0x44, 0x69, 0x63, 0x74 }, udict_swap },         /* dataFormat=u8"Dict" */
 #endif
-    { { 0x70, 0x6e, 0x61, 0x6d }, upname_swap },        /* dataFormat="pnam" */
-    { { 0x75, 0x6e, 0x61, 0x6d }, uchar_swapNames },    /* dataFormat="unam" */
+    { { 0x70, 0x6e, 0x61, 0x6d }, upname_swap },        /* dataFormat=u8"pnam" */
+    { { 0x75, 0x6e, 0x61, 0x6d }, uchar_swapNames },    /* dataFormat=u8"unam" */
 #if !UCONFIG_NO_NORMALIZATION
-    { { 0x43, 0x66, 0x75, 0x20 }, uspoof_swap },         /* dataFormat="Cfu " */
+    { { 0x43, 0x66, 0x75, 0x20 }, uspoof_swap },         /* dataFormat=u8"Cfu " */
 #endif
-    { { 0x54, 0x65, 0x73, 0x74 }, test_swap }            /* dataFormat="Test" */
+    { { 0x54, 0x65, 0x73, 0x74 }, test_swap }            /* dataFormat=u8"Test" */
 };
 
 U_CAPI int32_t U_EXPORT2
@@ -787,7 +787,7 @@ udata_swap(const UDataSwapper *ds,
         if(uprv_isInvariantUString(u, 4)) {
             u_UCharsToChars(u, dataFormatChars, 4);
         } else {
-            dataFormatChars[0]=dataFormatChars[1]=dataFormatChars[2]=dataFormatChars[3]='?';
+            dataFormatChars[0]=dataFormatChars[1]=dataFormatChars[2]=dataFormatChars[3]='\x3f';
         }
     }
 
@@ -797,7 +797,7 @@ udata_swap(const UDataSwapper *ds,
             swappedLength=swapFns[i].swapFn(ds, inData, length, outData, pErrorCode);
 
             if(U_FAILURE(*pErrorCode)) {
-                udata_printError(ds, "udata_swap(): failure swapping data format %02x.%02x.%02x.%02x (\"%c%c%c%c\") - %s\n",
+                udata_printError(ds, u8"udata_swap(): failure swapping data format %02x.%02x.%02x.%02x (\"%c%c%c%c\") - %s\n",
                                  pInfo->dataFormat[0], pInfo->dataFormat[1],
                                  pInfo->dataFormat[2], pInfo->dataFormat[3],
                                  dataFormatChars[0], dataFormatChars[1],
@@ -805,7 +805,7 @@ udata_swap(const UDataSwapper *ds,
                                  u_errorName(*pErrorCode));
             } else if(swappedLength<(length-15)) {
                 /* swapped less than expected */
-                udata_printError(ds, "udata_swap() warning: swapped only %d out of %d bytes - data format %02x.%02x.%02x.%02x (\"%c%c%c%c\")\n",
+                udata_printError(ds, u8"udata_swap() warning: swapped only %d out of %d bytes - data format %02x.%02x.%02x.%02x (\"%c%c%c%c\")\n",
                                  swappedLength, length,
                                  pInfo->dataFormat[0], pInfo->dataFormat[1],
                                  pInfo->dataFormat[2], pInfo->dataFormat[3],
@@ -819,7 +819,7 @@ udata_swap(const UDataSwapper *ds,
     }
 
     /* the dataFormat was not recognized */
-    udata_printError(ds, "udata_swap(): unknown data format %02x.%02x.%02x.%02x (\"%c%c%c%c\")\n",
+    udata_printError(ds, u8"udata_swap(): unknown data format %02x.%02x.%02x.%02x (\"%c%c%c%c\")\n",
                      pInfo->dataFormat[0], pInfo->dataFormat[1],
                      pInfo->dataFormat[2], pInfo->dataFormat[3],
                      dataFormatChars[0], dataFormatChars[1],

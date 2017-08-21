@@ -52,17 +52,17 @@ U_CDECL_END
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(CurrencyPluralInfo)
 
-static const UChar gDefaultCurrencyPluralPattern[] = {'0', '.', '#', '#', ' ', 0xA4, 0xA4, 0xA4, 0};
+static const UChar gDefaultCurrencyPluralPattern[] = {'\x30', '\x2e', '\x23', '\x23', '\x20', 0xA4, 0xA4, 0xA4, 0};
 static const UChar gTripleCurrencySign[] = {0xA4, 0xA4, 0xA4, 0};
 static const UChar gPluralCountOther[] = {0x6F, 0x74, 0x68, 0x65, 0x72, 0};
 static const UChar gPart0[] = {0x7B, 0x30, 0x7D, 0};
 static const UChar gPart1[] = {0x7B, 0x31, 0x7D, 0};
 
-static const char gNumberElementsTag[]="NumberElements";
-static const char gLatnTag[]="latn";
-static const char gPatternsTag[]="patterns";
-static const char gDecimalFormatTag[]="decimalFormat";
-static const char gCurrUnitPtnTag[]="CurrencyUnitPatterns";
+static const char gNumberElementsTag[]=u8"NumberElements";
+static const char gLatnTag[]=u8"latn";
+static const char gPatternsTag[]=u8"patterns";
+static const char gDecimalFormatTag[]=u8"decimalFormat";
+static const char gCurrUnitPtnTag[]=u8"CurrencyUnitPatterns";
 
 CurrencyPluralInfo::CurrencyPluralInfo(UErrorCode& status)
 :   fPluralCountToCurrencyUnitPattern(NULL),
@@ -131,13 +131,13 @@ UBool
 CurrencyPluralInfo::operator==(const CurrencyPluralInfo& info) const {
 #ifdef CURRENCY_PLURAL_INFO_DEBUG
     if (*fPluralRules == *info.fPluralRules) {
-        std::cout << "same plural rules\n";
+        std::cout << u8"same plural rules\n";
     }
     if (*fLocale == *info.fLocale) {
-        std::cout << "same locale\n";
+        std::cout << u8"same locale\n";
     }
     if (fPluralCountToCurrencyUnitPattern->equals(*info.fPluralCountToCurrencyUnitPattern)) {
-        std::cout << "same pattern\n";
+        std::cout << u8"same pattern\n";
     }
 #endif
     return *fPluralRules == *info.fPluralRules &&
@@ -288,7 +288,7 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
     UResourceBundle *currencyRes = ures_getByKeyWithFallback(currRb, gCurrUnitPtnTag, NULL, &ec);
 
 #ifdef CURRENCY_PLURAL_INFO_DEBUG
-    std::cout << "in set up\n";
+    std::cout << u8"in set up\n";
 #endif
     StringEnumeration* keywords = fPluralRules->getKeywords(ec);
     if (U_SUCCESS(ec)) {
@@ -303,8 +303,8 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
                     UnicodeString* pattern = new UnicodeString(patternChars, ptnLen);
 #ifdef CURRENCY_PLURAL_INFO_DEBUG
                     char result_1[1000];
-                    pattern->extract(0, pattern->length(), result_1, "UTF-8");
-                    std::cout << "pluralCount: " << pluralCount << "; pattern: " << result_1 << "\n";
+                    pattern->extract(0, pattern->length(), result_1, u8"UTF-8");
+                    std::cout << u8"pluralCount: " << pluralCount << u8"; pattern: " << result_1 << u8"\n";
 #endif
                     pattern->findAndReplace(UnicodeString(TRUE, gPart0, 3),
                       UnicodeString(numberStylePattern, numberStylePatternLen));
@@ -319,8 +319,8 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
                         pattern->append(negPattern);
                     }
 #ifdef CURRENCY_PLURAL_INFO_DEBUG
-                    pattern->extract(0, pattern->length(), result_1, "UTF-8");
-                    std::cout << "pluralCount: " << pluralCount << "; pattern: " << result_1 << "\n";
+                    pattern->extract(0, pattern->length(), result_1, u8"UTF-8");
+                    std::cout << u8"pluralCount: " << pluralCount << u8"; pattern: " << result_1 << u8"\n";
 #endif
 
                     fPluralCountToCurrencyUnitPattern->put(UnicodeString(pluralCount, -1, US_INV), pattern, status);

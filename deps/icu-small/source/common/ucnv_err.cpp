@@ -44,13 +44,13 @@
 #define UNICODE_RIGHT_CURLY_CODEPOINT   0x007D
 #define UNICODE_SPACE_CODEPOINT         0x0020
 #define UCNV_PRV_ESCAPE_ICU         0
-#define UCNV_PRV_ESCAPE_C           'C'
-#define UCNV_PRV_ESCAPE_XML_DEC     'D'
-#define UCNV_PRV_ESCAPE_XML_HEX     'X'
-#define UCNV_PRV_ESCAPE_JAVA        'J'
-#define UCNV_PRV_ESCAPE_UNICODE     'U'
-#define UCNV_PRV_ESCAPE_CSS2        'S'
-#define UCNV_PRV_STOP_ON_ILLEGAL    'i'
+#define UCNV_PRV_ESCAPE_C           '\x43'
+#define UCNV_PRV_ESCAPE_XML_DEC     '\x44'
+#define UCNV_PRV_ESCAPE_XML_HEX     '\x58'
+#define UCNV_PRV_ESCAPE_JAVA        '\x4a'
+#define UCNV_PRV_ESCAPE_UNICODE     '\x55'
+#define UCNV_PRV_ESCAPE_CSS2        '\x53'
+#define UCNV_PRV_STOP_ON_ILLEGAL    '\x69'
 
 /*
  * IS_DEFAULT_IGNORABLE_CODE_POINT

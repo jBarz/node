@@ -35,15 +35,15 @@ static const UChar gSpace = 0x0020;
 static const UChar gEqualsEquals[] =
 {
     0x3D, 0x3D, 0
-}; /* "==" */
+}; /* u8"==" */
 static const UChar gGreaterGreaterGreaterThan[] =
 {
     0x3E, 0x3E, 0x3E, 0
-}; /* ">>>" */
+}; /* u8">>>" */
 static const UChar gGreaterGreaterThan[] =
 {
     0x3E, 0x3E, 0
-}; /* ">>" */
+}; /* u8">>" */
 
 U_NAMESPACE_BEGIN
 
@@ -59,7 +59,7 @@ public:
     virtual double transformNumber(double number) const { return number; }
     virtual double composeRuleValue(double newRuleValue, double /*oldRuleValue*/) const { return newRuleValue; }
     virtual double calcUpperBound(double oldUpperBound) const { return oldUpperBound; }
-    virtual UChar tokenChar() const { return (UChar)0x003d; } // '='
+    virtual UChar tokenChar() const { return (UChar)0x003d; } // '\x3d'
 
 public:
     static UClassID getStaticClassID(void);
@@ -113,7 +113,7 @@ public:
 
     virtual double calcUpperBound(double /*oldUpperBound*/) const { return divisor; }
 
-    virtual UChar tokenChar() const { return (UChar)0x003c; } // '<'
+    virtual UChar tokenChar() const { return (UChar)0x003c; } // '\x3c'
 
 public:
     static UClassID getStaticClassID(void);
@@ -165,7 +165,7 @@ public:
 
     virtual UBool isModulusSubstitution() const { return TRUE; }
 
-    virtual UChar tokenChar() const { return (UChar)0x003e; } // '>'
+    virtual UChar tokenChar() const { return (UChar)0x003e; } // '\x3e'
 
 	virtual void toString(UnicodeString& result) const;
 
@@ -189,7 +189,7 @@ public:
     virtual double transformNumber(double number) const { return uprv_floor(number); }
     virtual double composeRuleValue(double newRuleValue, double oldRuleValue) const { return newRuleValue + oldRuleValue; }
     virtual double calcUpperBound(double /*oldUpperBound*/) const { return DBL_MAX; }
-    virtual UChar tokenChar() const { return (UChar)0x003c; } // '<'
+    virtual UChar tokenChar() const { return (UChar)0x003c; } // '\x3c'
 
 public:
     static UClassID getStaticClassID(void);
@@ -225,7 +225,7 @@ public:
 
     virtual double composeRuleValue(double newRuleValue, double oldRuleValue) const { return newRuleValue + oldRuleValue; }
     virtual double calcUpperBound(double /*oldUpperBound*/) const { return 0.0; }
-    virtual UChar tokenChar() const { return (UChar)0x003e; } // '>'
+    virtual UChar tokenChar() const { return (UChar)0x003e; } // '\x3e'
 
 public:
     static UClassID getStaticClassID(void);
@@ -247,7 +247,7 @@ public:
     virtual double transformNumber(double number) const { return uprv_fabs(number); }
     virtual double composeRuleValue(double newRuleValue, double /*oldRuleValue*/) const { return -newRuleValue; }
     virtual double calcUpperBound(double /*oldUpperBound*/) const { return DBL_MAX; }
-    virtual UChar tokenChar() const { return (UChar)0x003e; } // '>'
+    virtual UChar tokenChar() const { return (UChar)0x003e; } // '\x3e'
 
 public:
     static UClassID getStaticClassID(void);
@@ -296,7 +296,7 @@ public:
 
     virtual double composeRuleValue(double newRuleValue, double oldRuleValue) const { return newRuleValue / oldRuleValue; }
     virtual double calcUpperBound(double /*oldUpperBound*/) const { return denominator; }
-    virtual UChar tokenChar() const { return (UChar)0x003c; } // '<'
+    virtual UChar tokenChar() const { return (UChar)0x003c; } // '\x3c'
 private:
     static const UChar LTLT[2];
 
@@ -692,7 +692,7 @@ NFSubstitution::doParse(const UnicodeString& text,
                         Formattable& result) const
 {
 #ifdef RBNF_DEBUG
-    fprintf(stderr, "<nfsubs> %x bv: %g ub: %g\n", this, baseValue, upperBound);
+    fprintf(stderr, u8"<nfsubs> %x bv: %g ub: %g\n", this, baseValue, upperBound);
 #endif
     // figure out the highest base value a rule can have and match
     // the text being parsed (this varies according to the type of
@@ -1079,7 +1079,7 @@ FractionalPartSubstitution::doSubstitution(double number, UnicodeString& toInser
       } else {
         pad = TRUE;
       }
-      int64_t digit = didx>=0 ? dl.getDigit(didx) - '0' : 0;
+      int64_t digit = didx>=0 ? dl.getDigit(didx) - '\x30' : 0;
       getRuleSet()->format(digit, toInsertInto, _pos + getPos(), recursionCount, status);
     }
 
@@ -1164,7 +1164,7 @@ FractionalPartSubstitution::doParse(const UnicodeString& text,
             }
 
             if (workPos.getIndex() != 0) {
-                dl.append((char)('0' + digit));
+                dl.append((char)('\x30' + digit));
 //                  result += digit * p10;
 //                  p10 /= 10;
                 parsePosition.setIndex(parsePosition.getIndex() + workPos.getIndex());

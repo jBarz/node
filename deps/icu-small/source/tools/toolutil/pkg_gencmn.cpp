@@ -5,6 +5,7 @@
  *   Corporation and others.  All Rights Reserved.
  *******************************************************************************
  */
+#define _AE_BIMODAL
 #include "unicode/utypes.h"
 
 #include <stdio.h>
@@ -23,7 +24,7 @@
 #define STRING_STORE_SIZE 200000
 
 #define COMMON_DATA_NAME U_ICUDATA_NAME
-#define DATA_TYPE "dat"
+#define DATA_TYPE u8"dat"
 
 /* ICU package data file format (.dat files) ------------------------------- ***
 
@@ -71,7 +72,7 @@ static const UDataInfo dataInfo={
     sizeof(UChar),
     0,
 
-    {0x43, 0x6d, 0x6e, 0x44},     /* dataFormat="CmnD" */
+    {0x43, 0x6d, 0x6e, 0x44},     /* dataFormat=u8"CmnD" */
     {1, 0, 0, 0},                 /* formatVersion */
     {3, 0, 0, 0}                  /* dataVersion */
 };
@@ -129,7 +130,7 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
 
     line = (char *)uprv_malloc(sizeof(char) * LINE_BUFFER_SIZE);
     if (line == NULL) {
-        fprintf(stderr, "gencmn: unable to allocate memory for line buffer of size %d\n", LINE_BUFFER_SIZE);
+        __fprintf_a(stderr, u8"gencmn: unable to allocate memory for line buffer of size %d\n", LINE_BUFFER_SIZE);
         exit(U_MEMORY_ALLOCATION_ERROR);
     }
 
@@ -147,7 +148,7 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
         type = DATA_TYPE;
     }
     if (source == NULL) {
-        source = ".";
+        source = u8".";
     }
 
     if (dataFile == NULL) {
@@ -155,16 +156,16 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
     } else {
         in = T_FileStream_open(dataFile, "r");
         if(in == NULL) {
-            fprintf(stderr, "gencmn: unable to open input file %s\n", dataFile);
+            __fprintf_a(stderr, u8"gencmn: unable to open input file %s\n", dataFile);
             exit(U_FILE_ACCESS_ERROR);
         }
     }
 
     if (verbose) {
         if(sourceTOC) {
-            printf("generating %s_%s.c (table of contents source file)\n", name, type);
+            __printf_a(u8"generating %s_%s.c (table of contents source file)\n", name, type);
         } else {
-            printf("generating %s.%s (common data file with table of contents)\n", name, type);
+            __printf_a(u8"generating %s.%s (common data file with table of contents)\n", name, type);
         }
     }
 
@@ -178,11 +179,11 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
             s=line;
         }
         while(*s!=0) {
-            if(*s==' ') {
+            if(*s=='\x20') {
                 *s=0;
                 ++s;
                 break;
-            } else if(*s=='\r' || *s=='\n') {
+            } else if(*s=='\xd' || *s=='\xa') {
                 *s=0;
                 break;
             }
@@ -191,7 +192,7 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
 
         /* check for comment */
 
-        if (*line == '#') {
+        if (*line == '\x23') {
             continue;
         }
 
@@ -214,7 +215,7 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
     }
 
     if(fileCount==0) {
-        fprintf(stderr, "gencmn: no files listed in %s\n", dataFile == NULL ? "<stdin>" : dataFile);
+        __fprintf_a(stderr, u8"gencmn: no files listed in %s\n", dataFile == NULL ? u8"<stdin>" : dataFile);
         return;
     }
 
@@ -240,7 +241,7 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
                          copyRight == NULL ? U_COPYRIGHT_STRING : copyRight,
                          &errorCode);
         if(U_FAILURE(errorCode)) {
-            fprintf(stderr, "gencmn: udata_create(-d %s -n %s -t %s) failed - %s\n",
+            __fprintf_a(stderr, u8"gencmn: udata_create(-d %s -n %s -t %s) failed - %s\n",
                 destDir, name, type,
                 u_errorName(errorCode));
             exit(errorCode);
@@ -268,13 +269,13 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
             }
 
             if (verbose) {
-                printf("adding %s (%ld byte%s)\n", files[i].pathname, (long)files[i].fileSize, files[i].fileSize == 1 ? "" : "s");
+                __printf_a(u8"adding %s (%ld byte%s)\n", files[i].pathname, (long)files[i].fileSize, files[i].fileSize == 1 ? u8"" : u8"s");
             }
 
             /* copy the next file */
             file=T_FileStream_open(files[i].pathname, "rb");
             if(file==NULL) {
-                fprintf(stderr, "gencmn: unable to open listed file %s\n", files[i].pathname);
+                __fprintf_a(stderr, u8"gencmn: unable to open listed file %s\n", files[i].pathname);
                 exit(U_FILE_ACCESS_ERROR);
             }
             for(nread = 0;;) {
@@ -289,7 +290,7 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
             length=files[i].fileSize;
 
             if (nread != files[i].fileSize) {
-              fprintf(stderr, "gencmn: unable to read %s properly (got %ld/%ld byte%s)\n", files[i].pathname,  (long)nread, (long)files[i].fileSize, files[i].fileSize == 1 ? "" : "s");
+              __fprintf_a(stderr, u8"gencmn: unable to read %s properly (got %ld/%ld byte%s)\n", files[i].pathname,  (long)nread, (long)files[i].fileSize, files[i].fileSize == 1 ? u8"" : u8"s");
                 exit(U_FILE_ACCESS_ERROR);
             }
         }
@@ -303,7 +304,7 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
         /* finish */
         udata_finish(out, &errorCode);
         if(U_FAILURE(errorCode)) {
-            fprintf(stderr, "gencmn: udata_finish() failed - %s\n", u_errorName(errorCode));
+            __fprintf_a(stderr, u8"gencmn: udata_finish() failed - %s\n", u_errorName(errorCode));
             exit(errorCode);
         }
     } else {
@@ -321,11 +322,11 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
         uprv_strcpy(s, name);
         if(*(type)!=0) {
             s+=uprv_strlen(s);
-            *s++='_';
+            *s++='\x5f';
             uprv_strcpy(s, type);
         }
         s+=uprv_strlen(s);
-        uprv_strcpy(s, ".c");
+        uprv_strcpy(s, u8".c");
 
         /* open the output file */
         out=T_FileStream_open(filename, "w");
@@ -333,52 +334,52 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
             uprv_strcpy(gencmnFileName, filename);
         }
         if(out==NULL) {
-            fprintf(stderr, "gencmn: unable to open .c output file %s\n", filename);
+            __fprintf_a(stderr, u8"gencmn: unable to open .c output file %s\n", filename);
             exit(U_FILE_ACCESS_ERROR);
         }
 
         /* write the source file */
-        sprintf(buffer,
-            "/*\n"
-            " * ICU common data table of contents for %s.%s\n"
-            " * Automatically generated by icu/source/tools/gencmn/gencmn .\n"
-            " */\n\n"
-            "#include \"unicode/utypes.h\"\n"
-            "#include \"unicode/udata.h\"\n"
-            "\n"
-            "/* external symbol declarations for data (%d files) */\n",
+        __sprintf_a(buffer,
+            u8"/*\n"
+            u8" * ICU common data table of contents for %s.%s\n"
+            u8" * Automatically generated by icu/source/tools/gencmn/gencmn .\n"
+            u8" */\n\n"
+            u8"#include \"unicode/utypes.h\"\n"
+            u8"#include \"unicode/udata.h\"\n"
+            u8"\n"
+            u8"/* external symbol declarations for data (%d files) */\n",
                 name, type, fileCount);
         T_FileStream_writeLine(out, buffer);
 
-        sprintf(buffer, "extern const char\n    %s%s[]", symPrefix?symPrefix:"", files[0].pathname);
+        __sprintf_a(buffer, u8"extern const char\n    %s%s[]", symPrefix?symPrefix:u8"", files[0].pathname);
         T_FileStream_writeLine(out, buffer);
         for(i=1; i<fileCount; ++i) {
-            sprintf(buffer, ",\n    %s%s[]", symPrefix?symPrefix:"", files[i].pathname);
+            __sprintf_a(buffer, u8",\n    %s%s[]", symPrefix?symPrefix:u8"", files[i].pathname);
             T_FileStream_writeLine(out, buffer);
         }
-        T_FileStream_writeLine(out, ";\n\n");
+        T_FileStream_writeLine(out, u8";\n\n");
 
-        sprintf(
+        __sprintf_a(
             buffer,
-            "U_EXPORT struct {\n"
-            "    uint16_t headerSize;\n"
-            "    uint8_t magic1, magic2;\n"
-            "    UDataInfo info;\n"
-            "    char padding[%lu];\n"
-            "    uint32_t count, reserved;\n"
-            "    struct {\n"
-            "        const char *name;\n"
-            "        const void *data;\n"
-            "    } toc[%lu];\n"
-            "} U_EXPORT2 %s_dat = {\n"
-            "    32, 0xda, 0x27, {\n"
-            "        %lu, 0,\n"
-            "        %u, %u, %u, 0,\n"
-            "        {0x54, 0x6f, 0x43, 0x50},\n"
-            "        {1, 0, 0, 0},\n"
-            "        {0, 0, 0, 0}\n"
-            "    },\n"
-            "    \"\", %lu, 0, {\n",
+            u8"U_EXPORT struct {\n"
+            u8"    uint16_t headerSize;\n"
+            u8"    uint8_t magic1, magic2;\n"
+            u8"    UDataInfo info;\n"
+            u8"    char padding[%lu];\n"
+            u8"    uint32_t count, reserved;\n"
+            u8"    struct {\n"
+            u8"        const char *name;\n"
+            u8"        const void *data;\n"
+            u8"    } toc[%lu];\n"
+            u8"} U_EXPORT2 %s_dat = {\n"
+            u8"    32, 0xda, 0x27, {\n"
+            u8"        %lu, 0,\n"
+            u8"        %u, %u, %u, 0,\n"
+            u8"        {0x54, 0x6f, 0x43, 0x50},\n"
+            u8"        {1, 0, 0, 0},\n"
+            u8"        {0, 0, 0, 0}\n"
+            u8"    },\n"
+            u8"    \"\", %lu, 0, {\n",
             (unsigned long)32-4-sizeof(UDataInfo),
             (unsigned long)fileCount,
             entrypointName,
@@ -390,14 +391,14 @@ createCommonDataFile(const char *destDir, const char *name, const char *entrypoi
         );
         T_FileStream_writeLine(out, buffer);
 
-        sprintf(buffer, "        { \"%s\", %s%s }", files[0].basename, symPrefix?symPrefix:"", files[0].pathname);
+        __sprintf_a(buffer, u8"        { \"%s\", %s%s }", files[0].basename, symPrefix?symPrefix:u8"", files[0].pathname);
         T_FileStream_writeLine(out, buffer);
         for(i=1; i<fileCount; ++i) {
-            sprintf(buffer, ",\n        { \"%s\", %s%s }", files[i].basename, symPrefix?symPrefix:"", files[i].pathname);
+            __sprintf_a(buffer, u8",\n        { \"%s\", %s%s }", files[i].basename, symPrefix?symPrefix:u8"", files[i].pathname);
             T_FileStream_writeLine(out, buffer);
         }
 
-        T_FileStream_writeLine(out, "\n    }\n};\n");
+        T_FileStream_writeLine(out, u8"\n    }\n};\n");
         T_FileStream_close(out);
 
         uprv_free(symPrefix);
@@ -414,7 +415,7 @@ addFile(const char *filename, const char *name, const char *source, UBool source
       fileMax += CHUNK_FILE_COUNT;
       files = (File *)uprv_realloc(files, fileMax*sizeof(files[0])); /* note: never freed. */
       if(files==NULL) {
-        fprintf(stderr, "pkgdata/gencmn: Could not allocate %u bytes for %d files\n", (unsigned int)(fileMax*sizeof(files[0])), fileCount);
+        __fprintf_a(stderr, u8"pkgdata/gencmn: Could not allocate %u bytes for %d files\n", (unsigned int)(fileMax*sizeof(files[0])), fileCount);
         exit(U_MEMORY_ALLOCATION_ERROR);
       }
     }
@@ -423,7 +424,7 @@ addFile(const char *filename, const char *name, const char *source, UBool source
         FileStream *file;
 
         if(uprv_pathIsAbsolute(filename)) {
-            fprintf(stderr, "gencmn: Error: absolute path encountered. Old style paths are not supported. Use relative paths such as 'fur.res' or 'translit%cfur.res'.\n\tBad path: '%s'\n", U_FILE_SEP_CHAR, filename);
+            __fprintf_a(stderr, u8"gencmn: Error: absolute path encountered. Old style paths are not supported. Use relative paths such as 'fur.res' or 'translit%cfur.res'.\n\tBad path: '%s'\n", U_FILE_SEP_CHAR, filename);
             exit(U_ILLEGAL_ARGUMENT_ERROR);
         }
         fullPath = pathToFullPath(filename, source);
@@ -446,14 +447,14 @@ addFile(const char *filename, const char *name, const char *source, UBool source
         /* try to open the file */
         file=T_FileStream_open(fullPath, "rb");
         if(file==NULL) {
-            fprintf(stderr, "gencmn: unable to open listed file %s\n", fullPath);
+            __fprintf_a(stderr, u8"gencmn: unable to open listed file %s\n", fullPath);
             exit(U_FILE_ACCESS_ERROR);
         }
 
         /* get the file length */
         length=T_FileStream_size(file);
         if(T_FileStream_error(file) || length<=20) {
-            fprintf(stderr, "gencmn: unable to get length of listed file %s\n", fullPath);
+            __fprintf_a(stderr, u8"gencmn: unable to get length of listed file %s\n", fullPath);
             exit(U_FILE_ACCESS_ERROR);
         }
 
@@ -462,7 +463,7 @@ addFile(const char *filename, const char *name, const char *source, UBool source
         /* do not add files that are longer than maxSize */
         if(maxSize && length>maxSize) {
             if (verbose) {
-                printf("%s ignored (size %ld > %ld)\n", fullPath, (long)length, (long)maxSize);
+                __printf_a(u8"%s ignored (size %ld > %ld)\n", fullPath, (long)length, (long)maxSize);
             }
             return;
         }
@@ -481,8 +482,8 @@ addFile(const char *filename, const char *name, const char *source, UBool source
         /* turn the basename into an entry point name and store in the pathname field */
         t=files[fileCount].pathname=allocString(length);
         while(--length>0) {
-            if(*s=='.' || *s=='-' || *s=='/') {
-                *t='_';
+            if(*s=='\x2e' || *s=='\x2d' || *s=='\x2f') {
+                *t='\x5f';
             } else {
                 *t=*s;
             }
@@ -500,7 +501,7 @@ allocString(uint32_t length) {
     char *p;
 
     if(top>STRING_STORE_SIZE) {
-        fprintf(stderr, "gencmn: out of memory\n");
+        __fprintf_a(stderr, u8"gencmn: out of memory\n");
         exit(U_MEMORY_ALLOCATION_ERROR);
     }
     p=stringStore+stringTop;

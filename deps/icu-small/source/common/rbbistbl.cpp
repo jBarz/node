@@ -228,9 +228,9 @@ RBBISymbolTableEntry::~RBBISymbolTableEntry() {
 //
 #ifdef RBBI_DEBUG
 void RBBISymbolTable::rbbiSymtablePrint() const {
-    RBBIDebugPrintf("Variable Definitions Symbol Table\n"
-           "Name                  Node         serial  String Val\n"
-           "-------------------------------------------------------------------\n");
+    RBBIDebugPrintf(u8"Variable Definitions Symbol Table\n"
+           u8"Name                  Node         serial  String Val\n"
+           u8"-------------------------------------------------------------------\n");
 
     int32_t pos = UHASH_FIRST;
     const UHashElement  *e   = NULL;
@@ -241,11 +241,11 @@ void RBBISymbolTable::rbbiSymtablePrint() const {
         }
         RBBISymbolTableEntry  *s   = (RBBISymbolTableEntry *)e->value.pointer;
 
-        RBBIDebugPrintf("%-19s   %8p %7d ", CStr(s->key)(), (void *)s->val, s->val->fSerialNum);
-        RBBIDebugPrintf(" %s\n", CStr(s->val->fLeftChild->fText)());
+        RBBIDebugPrintf(u8"%-19s   %8p %7d ", CStr(s->key)(), (void *)s->val, s->val->fSerialNum);
+        RBBIDebugPrintf(u8" %s\n", CStr(s->val->fLeftChild->fText)());
     }
 
-    RBBIDebugPrintf("\nParsed Variable Definitions\n");
+    RBBIDebugPrintf(u8"\nParsed Variable Definitions\n");
     pos = -1;
     for (;;) {
         e = uhash_nextElement(fHashTable,  &pos);
@@ -253,10 +253,10 @@ void RBBISymbolTable::rbbiSymtablePrint() const {
             break;
         }
         RBBISymbolTableEntry  *s   = (RBBISymbolTableEntry *)e->value.pointer;
-        RBBIDebugPrintf("%s\n", CStr(s->key)());
+        RBBIDebugPrintf(u8"%s\n", CStr(s->key)());
         RBBINode::printTree(s->val, TRUE);
         RBBINode::printTree(s->val->fLeftChild, FALSE);
-        RBBIDebugPrintf("\n");
+        RBBIDebugPrintf(u8"\n");
     }
 }
 #endif

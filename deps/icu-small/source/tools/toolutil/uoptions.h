@@ -22,7 +22,9 @@
 #define __UOPTIONS_H__
 
 #include "unicode/utypes.h"
-
+#define argvtoascii(argc,argv)     \
+    for (int i = 0; i < argc; i++) \
+        __e2a_s(argv[i])
 /* This should usually be called before calling u_parseArgs */
 /*#if U_PLATFORM == U_PF_OS390 && (U_CHARSET_FAMILY == U_ASCII_FAMILY)*/
     /* translate args from EBCDIC to ASCII */
@@ -34,7 +36,7 @@
 #   define U_MAIN_INIT_ARGS(argc, argv) argc = ccommand((char***)&argv)
 #else
     /* Normally we do nothing. */
-#   define U_MAIN_INIT_ARGS(argc, argv)
+#   define U_MAIN_INIT_ARGS(argc, argv) argvtoascii(argc, argv)
 #endif
 
 
@@ -51,13 +53,13 @@ enum { UOPT_NO_ARG, UOPT_REQUIRES_ARG, UOPT_OPTIONAL_ARG };
 
 /* structure describing a command line option */
 struct UOption {
-    const char *longName;   /* "foo" for --foo */
+    const char *longName;   /* u8"foo" for --foo */
     const char *value;      /* output placeholder, will point to the argument string, if any */
     UOptionFn *optionFn;    /* function to be called when this option occurs */
     void *context;          /* parameter for the function */
-    char shortName;         /* 'f' for -f */
+    char shortName;         /* '\x66' for -f */
     char hasArg;            /* enum value: option takes no/requires/may have argument */
-    char doesOccur;         /* boolean for "this one occured" */
+    char doesOccur;         /* boolean for u8"this one occured" */
 };
 
 /* macro for an entry in a declaration of UOption[] */
@@ -65,20 +67,20 @@ struct UOption {
     { longName, NULL, NULL, NULL, shortName, hasArg, 0 }
 
 /* ICU Tools option definitions */
-#define UOPTION_HELP_H              UOPTION_DEF("help", 'h', UOPT_NO_ARG)
-#define UOPTION_HELP_QUESTION_MARK  UOPTION_DEF("help", '?', UOPT_NO_ARG)
-#define UOPTION_VERBOSE             UOPTION_DEF("verbose", 'v', UOPT_NO_ARG)
-#define UOPTION_QUIET               UOPTION_DEF("quiet", 'q', UOPT_NO_ARG)
-#define UOPTION_VERSION             UOPTION_DEF("version", 'V', UOPT_NO_ARG)
-#define UOPTION_COPYRIGHT           UOPTION_DEF("copyright", 'c', UOPT_NO_ARG)
+#define UOPTION_HELP_H              UOPTION_DEF(u8"help", '\x68', UOPT_NO_ARG)
+#define UOPTION_HELP_QUESTION_MARK  UOPTION_DEF(u8"help", '\x3f', UOPT_NO_ARG)
+#define UOPTION_VERBOSE             UOPTION_DEF(u8"verbose", '\x76', UOPT_NO_ARG)
+#define UOPTION_QUIET               UOPTION_DEF(u8"quiet", '\x71', UOPT_NO_ARG)
+#define UOPTION_VERSION             UOPTION_DEF(u8"version", '\x56', UOPT_NO_ARG)
+#define UOPTION_COPYRIGHT           UOPTION_DEF(u8"copyright", '\x63', UOPT_NO_ARG)
 
-#define UOPTION_DESTDIR             UOPTION_DEF("destdir", 'd', UOPT_REQUIRES_ARG)
-#define UOPTION_SOURCEDIR           UOPTION_DEF("sourcedir", 's', UOPT_REQUIRES_ARG)
-#define UOPTION_ENCODING            UOPTION_DEF("encoding", 'e', UOPT_REQUIRES_ARG)
-#define UOPTION_ICUDATADIR          UOPTION_DEF("icudatadir", 'i', UOPT_REQUIRES_ARG)
-#define UOPTION_WRITE_JAVA          UOPTION_DEF("write-java", 'j', UOPT_OPTIONAL_ARG)
-#define UOPTION_PACKAGE_NAME        UOPTION_DEF("package-name", 'p', UOPT_REQUIRES_ARG)
-#define UOPTION_BUNDLE_NAME         UOPTION_DEF("bundle-name", 'b', UOPT_REQUIRES_ARG)
+#define UOPTION_DESTDIR             UOPTION_DEF(u8"destdir", '\x64', UOPT_REQUIRES_ARG)
+#define UOPTION_SOURCEDIR           UOPTION_DEF(u8"sourcedir", '\x73', UOPT_REQUIRES_ARG)
+#define UOPTION_ENCODING            UOPTION_DEF(u8"encoding", '\x65', UOPT_REQUIRES_ARG)
+#define UOPTION_ICUDATADIR          UOPTION_DEF(u8"icudatadir", '\x69', UOPT_REQUIRES_ARG)
+#define UOPTION_WRITE_JAVA          UOPTION_DEF(u8"write-java", '\x6a', UOPT_OPTIONAL_ARG)
+#define UOPTION_PACKAGE_NAME        UOPTION_DEF(u8"package-name", '\x70', UOPT_REQUIRES_ARG)
+#define UOPTION_BUNDLE_NAME         UOPTION_DEF(u8"bundle-name", '\x62', UOPT_REQUIRES_ARG)
 
 /**
  * C Command line argument parser.

@@ -24,7 +24,7 @@
 *                                restructured order & breakdown of functions
 *   06/28/2000  helena           Major rewrite for the callback API changes.
 */
-
+#define USTR(x) u8##x
 #include "unicode/utypes.h"
 
 #if !UCONFIG_NO_CONVERSION && !UCONFIG_NO_LEGACY_CONVERSION && !UCONFIG_ONLY_HTML_CONVERSION
@@ -40,7 +40,7 @@
 #include "ucnv_cnv.h"
 
 #ifdef EBCDIC_RTL
-    #include "ascii_a.h"
+     #include "ascii_a.h"
 #endif
 
 /*
@@ -236,25 +236,25 @@ some loops and searches, we define a value for that last group converter:*/
 
 static const char * const OptGroupByteToCPName[ULMBCS_GRP_LAST + 1] = {
    /* 0x0000 */ "lmb-excp", /* internal home for the LOTUS exceptions list */
-   /* 0x0001 */ "ibm-850",
-   /* 0x0002 */ "ibm-851",
-   /* 0x0003 */ "windows-1255",
-   /* 0x0004 */ "windows-1256",
-   /* 0x0005 */ "windows-1251",
-   /* 0x0006 */ "ibm-852",
+   /* 0x0001 */ "\x69\x62\x6d\x2d\x38\x35\x30",
+   /* 0x0002 */ "\x69\x62\x6d\x2d\x38\x35\x31",
+   /* 0x0003 */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x31\x32\x35\x35",
+   /* 0x0004 */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x31\x32\x35\x36",
+   /* 0x0005 */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x31\x32\x35\x31",
+   /* 0x0006 */ "\x69\x62\x6d\x2d\x38\x35\x32",
    /* 0x0007 */ NULL,      /* Unused */
-   /* 0x0008 */ "windows-1254",
+   /* 0x0008 */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x31\x32\x35\x34",
    /* 0x0009 */ NULL,      /* Control char HT */
    /* 0x000A */ NULL,      /* Control char LF */
-   /* 0x000B */ "windows-874",
+   /* 0x000B */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x38\x37\x34",
    /* 0x000C */ NULL,      /* Unused */
    /* 0x000D */ NULL,      /* Control char CR */
    /* 0x000E */ NULL,      /* Unused */
    /* 0x000F */ NULL,      /* Control chars: 0x0F20 + C0/C1 character: algorithmic */
-   /* 0x0010 */ "windows-932",
-   /* 0x0011 */ "windows-949",
-   /* 0x0012 */ "windows-950",
-   /* 0x0013 */ "windows-936"
+   /* 0x0010 */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x39\x33\x32",
+   /* 0x0011 */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x39\x34\x39",
+   /* 0x0012 */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x39\x35\x30",
+   /* 0x0013 */ "\x77\x69\x6e\x64\x6f\x77\x73\x2d\x39\x33\x36"
 
    /* The rest are null, including the 0x0014 Unicode compatibility region
    and 0x0019, the 1-2-3 system range control char */
@@ -489,47 +489,47 @@ static const struct _LocaleLMBCSGrpMap
    const ulmbcs_byte_t OptGroup;
 } LocaleLMBCSGrpMap[] =
 {
-    {"ar", ULMBCS_GRP_AR},
-    {"be", ULMBCS_GRP_RU},
-    {"bg", ULMBCS_GRP_L2},
+    {"\x61\x72", ULMBCS_GRP_AR},
+    {"\x62\x65", ULMBCS_GRP_RU},
+    {"\x62\x67", ULMBCS_GRP_L2},
    /* {"ca", ULMBCS_GRP_L1}, */
-    {"cs", ULMBCS_GRP_L2},
+    {"\x63\x73", ULMBCS_GRP_L2},
    /* {"da", ULMBCS_GRP_L1}, */
-   /* {"de", ULMBCS_GRP_L1}, */
-    {"el", ULMBCS_GRP_GR},
+   /* {"\x64\x65", ULMBCS_GRP_L1}, */
+    {"\x65\x6c", ULMBCS_GRP_GR},
    /* {"en", ULMBCS_GRP_L1}, */
-   /* {"es", ULMBCS_GRP_L1}, */
-   /* {"et", ULMBCS_GRP_L1}, */
-   /* {"fi", ULMBCS_GRP_L1}, */
-   /* {"fr", ULMBCS_GRP_L1}, */
-    {"he", ULMBCS_GRP_HE},
-    {"hu", ULMBCS_GRP_L2},
+   /* {"\x65\x73", ULMBCS_GRP_L1}, */
+   /* {"\x65\x74", ULMBCS_GRP_L1}, */
+   /* {"\x66\x69", ULMBCS_GRP_L1}, */
+   /* {"\x66\x72", ULMBCS_GRP_L1}, */
+    {"\x68\x65", ULMBCS_GRP_HE},
+    {"\x68\x75", ULMBCS_GRP_L2},
    /* {"is", ULMBCS_GRP_L1}, */
-   /* {"it", ULMBCS_GRP_L1}, */
-    {"iw", ULMBCS_GRP_HE},
-    {"ja", ULMBCS_GRP_JA},
-    {"ko", ULMBCS_GRP_KO},
+   /* {"\x69\x74", ULMBCS_GRP_L1}, */
+    {"\x69\x77", ULMBCS_GRP_HE},
+    {"\x6a\x61", ULMBCS_GRP_JA},
+    {"\x6b\x6f", ULMBCS_GRP_KO},
    /* {"lt", ULMBCS_GRP_L1}, */
-   /* {"lv", ULMBCS_GRP_L1}, */
-    {"mk", ULMBCS_GRP_RU},
+   /* {"\x6c\x76", ULMBCS_GRP_L1}, */
+    {"\x6d\x6b", ULMBCS_GRP_RU},
    /* {"nl", ULMBCS_GRP_L1}, */
-   /* {"no", ULMBCS_GRP_L1}, */
-    {"pl", ULMBCS_GRP_L2},
+   /* {"\x6e\x6f", ULMBCS_GRP_L1}, */
+    {"\x70\x6c", ULMBCS_GRP_L2},
    /* {"pt", ULMBCS_GRP_L1}, */
-    {"ro", ULMBCS_GRP_L2},
-    {"ru", ULMBCS_GRP_RU},
-    {"sh", ULMBCS_GRP_L2},
-    {"sk", ULMBCS_GRP_L2},
-    {"sl", ULMBCS_GRP_L2},
-    {"sq", ULMBCS_GRP_L2},
-    {"sr", ULMBCS_GRP_RU},
+    {"\x72\x6f", ULMBCS_GRP_L2},
+    {"\x72\x75", ULMBCS_GRP_RU},
+    {"\x73\x68", ULMBCS_GRP_L2},
+    {"\x73\x6b", ULMBCS_GRP_L2},
+    {"\x73\x6c", ULMBCS_GRP_L2},
+    {"\x73\x71", ULMBCS_GRP_L2},
+    {"\x73\x72", ULMBCS_GRP_RU},
    /* {"sv", ULMBCS_GRP_L1}, */
-    {"th", ULMBCS_GRP_TH},
-    {"tr", ULMBCS_GRP_TR},
-    {"uk", ULMBCS_GRP_RU},
+    {"\x74\x68", ULMBCS_GRP_TH},
+    {"\x74\x72", ULMBCS_GRP_TR},
+    {"\x75\x6b", ULMBCS_GRP_RU},
    /* {"vi", ULMBCS_GRP_L1}, */
-    {"zhTW", ULMBCS_GRP_TW},
-    {"zh", ULMBCS_GRP_CN},
+    {"\x7a\x68\x54\x57", ULMBCS_GRP_TW},
+    {"\x7a\x68", ULMBCS_GRP_CN},
     {NULL, ULMBCS_GRP_L1}
 };
 
@@ -608,7 +608,7 @@ static const UConverterImpl _LMBCSImpl##n={\
 };\
 static const UConverterStaticData _LMBCSStaticData##n={\
   sizeof(UConverterStaticData),\
- "LMBCS-"  #n,\
+ "\x4c\x4d\x42\x43\x53\x2d"   USTR(#n),\
     0, UCNV_IBM, UCNV_LMBCS_##n, 1, 3,\
     { 0x3f, 0, 0, 0 },1,FALSE,FALSE,0,0,{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} \
 };\
@@ -904,7 +904,7 @@ _LMBCSFromUnicode(UConverterFromUnicodeArgs*     args,
       /* check cases in rough order of how common they are, for speed */
 
       /* single byte matches: strategy 1 */
-      /*Fix for SPR#DJOE66JFN3 (Lotus)*/
+      /*Fix for SPR USTR(#DJOE66JFN3) (Lotus)*/
       if((uniChar>=0x80) && (uniChar<=0xff)
       /*Fix for SPR#JUYA6XAERU and TSAO7GL5NK (Lotus)*/ &&(uniChar!=0xB1) &&(uniChar!=0xD7) &&(uniChar!=0xF7)
         &&(uniChar!=0xB0) &&(uniChar!=0xB4) &&(uniChar!=0xB6) &&(uniChar!=0xA7) &&(uniChar!=0xA8))
@@ -1384,3 +1384,4 @@ DECLARE_LMBCS_DATA(19)
 U_CDECL_END
 
 #endif /* #if !UCONFIG_NO_LEGACY_CONVERSION */
+#undef USTR

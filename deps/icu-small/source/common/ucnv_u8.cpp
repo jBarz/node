@@ -1045,7 +1045,7 @@ static const UConverterImpl _UTF8Impl={
 /* The 1208 CCSID refers to any version of Unicode of UTF-8 */
 static const UConverterStaticData _UTF8StaticData={
     sizeof(UConverterStaticData),
-    "UTF-8",
+    u8"UTF-8",
     1208, UCNV_IBM, UCNV_UTF8,
     1, 3, /* max 3 bytes per UChar from UTF-8 (4 bytes from surrogate _pair_) */
     { 0xef, 0xbf, 0xbd, 0 },3,FALSE,FALSE,
@@ -1088,7 +1088,7 @@ static const UConverterImpl _CESU8Impl={
 
 static const UConverterStaticData _CESU8StaticData={
     sizeof(UConverterStaticData),
-    "CESU-8",
+    u8"CESU-8",
     9400, /* CCSID for CESU-8 */
     UCNV_UNKNOWN, UCNV_CESU8, 1, 3,
     { 0xef, 0xbf, 0xbd, 0 },3,FALSE,FALSE,

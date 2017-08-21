@@ -128,9 +128,9 @@ UnicodeString&
 LocaleKeyFactory::debug(UnicodeString& result) const
 {
     debugClass(result);
-    result.append((UnicodeString)", name: ");
+    result.append((UnicodeString)u8", name: ");
     result.append(_name);
-    result.append((UnicodeString)", coverage: ");
+    result.append((UnicodeString)u8", coverage: ");
     result.append(_coverage);
     return result;
 }
@@ -138,7 +138,7 @@ LocaleKeyFactory::debug(UnicodeString& result) const
 UnicodeString&
 LocaleKeyFactory::debugClass(UnicodeString& result) const
 {
-  return result.append((UnicodeString)"LocaleKeyFactory");
+  return result.append((UnicodeString)u8"LocaleKeyFactory");
 }
 #endif
 

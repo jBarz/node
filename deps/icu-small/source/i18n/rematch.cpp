@@ -2629,7 +2629,7 @@ UBool RegexMatcher::isUWordBoundary(int64_t pos) {
 
     if (pos >= fLookLimit) {
         fHitEnd = TRUE;
-        returnVal = TRUE;   // With Unicode word rules, only positions within the interior of "real"
+        returnVal = TRUE;   // With Unicode word rules, only positions within the interior of u8"real"
                             //    words are not boundaries.  All non-word chars stand by themselves,
                             //    with word boundaries on both sides.
     } else {
@@ -2759,9 +2759,9 @@ void RegexMatcher::MatchAt(int64_t startIdx, UBool toEnd, UErrorCode &status) {
 
 #ifdef REGEX_RUN_DEBUG
     if (fTraceDebug) {
-        printf("MatchAt(startIdx=%ld)\n", startIdx);
-        printf("Original Pattern: \"%s\"\n", CStr(StringFromUText(fPattern->fPattern))());
-        printf("Input String:     \"%s\"\n\n", CStr(StringFromUText(fInputText))());
+        printf(u8"MatchAt(startIdx=%ld)\n", startIdx);
+        printf(u8"Original Pattern: \"%s\"\n", CStr(StringFromUText(fPattern->fPattern))());
+        printf(u8"Input String:     \"%s\"\n\n", CStr(StringFromUText(fInputText))());
     }
 #endif
 
@@ -2803,7 +2803,7 @@ void RegexMatcher::MatchAt(int64_t startIdx, UBool toEnd, UErrorCode &status) {
 #ifdef REGEX_RUN_DEBUG
         if (fTraceDebug) {
             UTEXT_SETNATIVEINDEX(fInputText, fp->fInputIdx);
-            printf("inputIdx=%ld   inputChar=%x   sp=%3ld   activeLimit=%ld  ", fp->fInputIdx,
+            printf(u8"inputIdx=%ld   inputChar=%x   sp=%3ld   activeLimit=%ld  ", fp->fInputIdx,
                 UTEXT_CURRENT32(fInputText), (int64_t *)fp-fStack->getBuffer(), fActiveLimit);
             fPattern->dumpOp(fp->fPatIdx);
         }
@@ -4298,9 +4298,9 @@ breakFromLoop:
 #ifdef REGEX_RUN_DEBUG
     if (fTraceDebug) {
         if (isMatch) {
-            printf("Match.  start=%ld   end=%ld\n\n", fMatchStart, fMatchEnd);
+            printf(u8"Match.  start=%ld   end=%ld\n\n", fMatchStart, fMatchEnd);
         } else {
-            printf("No match\n\n");
+            printf(u8"No match\n\n");
         }
     }
 #endif
@@ -4335,9 +4335,9 @@ void RegexMatcher::MatchChunkAt(int32_t startIdx, UBool toEnd, UErrorCode &statu
 
 #ifdef REGEX_RUN_DEBUG
     if (fTraceDebug) {
-        printf("MatchAt(startIdx=%d)\n", startIdx);
-        printf("Original Pattern: \"%s\"\n", CStr(StringFromUText(fPattern->fPattern))());
-        printf("Input String:     \"%s\"\n\n", CStr(StringFromUText(fInputText))());
+        printf(u8"MatchAt(startIdx=%d)\n", startIdx);
+        printf(u8"Original Pattern: \"%s\"\n", CStr(StringFromUText(fPattern->fPattern))());
+        printf(u8"Input String:     \"%s\"\n\n", CStr(StringFromUText(fInputText))());
     }
 #endif
 
@@ -4381,7 +4381,7 @@ void RegexMatcher::MatchChunkAt(int32_t startIdx, UBool toEnd, UErrorCode &statu
 #ifdef REGEX_RUN_DEBUG
         if (fTraceDebug) {
             UTEXT_SETNATIVEINDEX(fInputText, fp->fInputIdx);
-            printf("inputIdx=%ld   inputChar=%x   sp=%3ld   activeLimit=%ld  ", fp->fInputIdx,
+            printf(u8"inputIdx=%ld   inputChar=%x   sp=%3ld   activeLimit=%ld  ", fp->fInputIdx,
                    UTEXT_CURRENT32(fInputText), (int64_t *)fp-fStack->getBuffer(), fActiveLimit);
             fPattern->dumpOp(fp->fPatIdx);
         }
@@ -5798,9 +5798,9 @@ breakFromLoop:
 #ifdef REGEX_RUN_DEBUG
     if (fTraceDebug) {
         if (isMatch) {
-            printf("Match.  start=%ld   end=%ld\n\n", fMatchStart, fMatchEnd);
+            printf(u8"Match.  start=%ld   end=%ld\n\n", fMatchStart, fMatchEnd);
         } else {
-            printf("No match\n\n");
+            printf(u8"No match\n\n");
         }
     }
 #endif

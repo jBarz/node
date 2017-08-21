@@ -75,11 +75,11 @@ uprv_isInvariantUnicodeString(const icu::UnicodeString &s) {
  * @internal
  */
 #if U_CHARSET_FAMILY==U_ASCII_FAMILY
-#   define U_UPPER_ORDINAL(x) ((x)-'A')
+#   define U_UPPER_ORDINAL(x) ((x)-'\x41')
 #elif U_CHARSET_FAMILY==U_EBCDIC_FAMILY
-#   define U_UPPER_ORDINAL(x) (((x) < 'J') ? ((x)-'A') : \
-                              (((x) < 'S') ? ((x)-'J'+9) : \
-                               ((x)-'S'+18)))
+#   define U_UPPER_ORDINAL(x) (((x) < '\x4a') ? ((x)-'\x41') : \
+                              (((x) < '\x53') ? ((x)-'\x4a'+9) : \
+                               ((x)-'\x53'+18)))
 #else
 #   error Unknown charset family!
 #endif

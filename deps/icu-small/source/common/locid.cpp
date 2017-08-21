@@ -139,25 +139,25 @@ static void U_CALLCONV locale_init(UErrorCode &status) {
         return;
     }
     ucln_common_registerCleanup(UCLN_COMMON_LOCALE, locale_cleanup);
-    gLocaleCache[eROOT]          = Locale("");
-    gLocaleCache[eENGLISH]       = Locale("en");
-    gLocaleCache[eFRENCH]        = Locale("fr");
-    gLocaleCache[eGERMAN]        = Locale("de");
-    gLocaleCache[eITALIAN]       = Locale("it");
-    gLocaleCache[eJAPANESE]      = Locale("ja");
-    gLocaleCache[eKOREAN]        = Locale("ko");
-    gLocaleCache[eCHINESE]       = Locale("zh");
-    gLocaleCache[eFRANCE]        = Locale("fr", "FR");
-    gLocaleCache[eGERMANY]       = Locale("de", "DE");
-    gLocaleCache[eITALY]         = Locale("it", "IT");
-    gLocaleCache[eJAPAN]         = Locale("ja", "JP");
-    gLocaleCache[eKOREA]         = Locale("ko", "KR");
-    gLocaleCache[eCHINA]         = Locale("zh", "CN");
-    gLocaleCache[eTAIWAN]        = Locale("zh", "TW");
-    gLocaleCache[eUK]            = Locale("en", "GB");
-    gLocaleCache[eUS]            = Locale("en", "US");
-    gLocaleCache[eCANADA]        = Locale("en", "CA");
-    gLocaleCache[eCANADA_FRENCH] = Locale("fr", "CA");
+    gLocaleCache[eROOT]          = Locale(u8"");
+    gLocaleCache[eENGLISH]       = Locale(u8"en");
+    gLocaleCache[eFRENCH]        = Locale(u8"fr");
+    gLocaleCache[eGERMAN]        = Locale(u8"de");
+    gLocaleCache[eITALIAN]       = Locale(u8"it");
+    gLocaleCache[eJAPANESE]      = Locale(u8"ja");
+    gLocaleCache[eKOREAN]        = Locale(u8"ko");
+    gLocaleCache[eCHINESE]       = Locale(u8"zh");
+    gLocaleCache[eFRANCE]        = Locale(u8"fr", u8"FR");
+    gLocaleCache[eGERMANY]       = Locale(u8"de", u8"DE");
+    gLocaleCache[eITALY]         = Locale(u8"it", u8"IT");
+    gLocaleCache[eJAPAN]         = Locale(u8"ja", u8"JP");
+    gLocaleCache[eKOREA]         = Locale(u8"ko", u8"KR");
+    gLocaleCache[eCHINA]         = Locale(u8"zh", u8"CN");
+    gLocaleCache[eTAIWAN]        = Locale(u8"zh", u8"TW");
+    gLocaleCache[eUK]            = Locale(u8"en", u8"GB");
+    gLocaleCache[eUS]            = Locale(u8"en", u8"US");
+    gLocaleCache[eCANADA]        = Locale(u8"en", u8"CA");
+    gLocaleCache[eCANADA_FRENCH] = Locale(u8"fr", u8"CA");
 }
 
 U_CDECL_END
@@ -247,7 +247,7 @@ UOBJECT_DEFINE_RTTI_IMPLEMENTATION(Locale)
 /*Character separating the posix id fields*/
 // '_'
 // In the platform codepage.
-#define SEP_CHAR '_'
+#define SEP_CHAR '\x5f'
 
 Locale::~Locale()
 {
@@ -395,13 +395,13 @@ Locale::Locale( const   char * newLanguage,
 
         if ( ksize != 0)
         {
-            if (uprv_strchr(newKeywords, '=')) {
-                togo.append('@', status); /* keyword parsing */
+            if (uprv_strchr(newKeywords, '\x3d')) {
+                togo.append('\x40', status); /* keyword parsing */
             }
             else {
-                togo.append('_', status); /* Variant parsing with a script */
+                togo.append('\x5f', status); /* Variant parsing with a script */
                 if ( vsize == 0) {
-                    togo.append('_', status); /* No country found */
+                    togo.append('\x5f', status); /* No country found */
                 }
             }
             togo.append(newKeywords, status);
@@ -481,7 +481,7 @@ Locale::operator==( const   Locale& other) const
     return (uprv_strcmp(other.fullName, fullName) == 0);
 }
 
-#define ISASCIIALPHA(c) (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z'))
+#define ISASCIIALPHA(c) (((c) >= '\x61' && (c) <= '\x7a') || ((c) >= '\x41' && (c) <= '\x5a'))
 
 /*This function initializes a Locale from a C locale ID*/
 Locale& Locale::init(const char* localeID, UBool canonicalize)
@@ -551,8 +551,8 @@ Locale& Locale::init(const char* localeID, UBool canonicalize)
             fieldIdx++;
         }
         // variant may contain @foo or .foo POSIX cruft; remove it
-        separator = uprv_strchr(field[fieldIdx-1], '@');
-        char* sep2 = uprv_strchr(field[fieldIdx-1], '.');
+        separator = uprv_strchr(field[fieldIdx-1], '\x40');
+        char* sep2 = uprv_strchr(field[fieldIdx-1], '\x2e');
         if (separator!=NULL || sep2!=NULL) {
             if (separator==NULL || (sep2!=NULL && separator > sep2)) {
                 separator = sep2;
@@ -624,8 +624,8 @@ Locale::initBaseName(UErrorCode &status) {
         return;
     }
     U_ASSERT(baseName==NULL || baseName==fullName);
-    const char *atPtr = uprv_strchr(fullName, '@');
-    const char *eqPtr = uprv_strchr(fullName, '=');
+    const char *atPtr = uprv_strchr(fullName, '\x40');
+    const char *eqPtr = uprv_strchr(fullName, '\x3d');
     if (atPtr && eqPtr && atPtr < eqPtr) {
         // Key words exist.
         int32_t baseNameLength = (int32_t)(atPtr - fullName);
@@ -708,7 +708,7 @@ Locale U_EXPORT2
 Locale::createFromName (const char *name)
 {
     if (name) {
-        Locale l("");
+        Locale l(u8"");
         l.init(name, FALSE);
         return l;
     }
@@ -719,7 +719,7 @@ Locale::createFromName (const char *name)
 
 Locale U_EXPORT2
 Locale::createCanonical(const char* name) {
-    Locale loc("");
+    Locale loc(u8"");
     loc.init(name, TRUE);
     return loc;
 }
@@ -1004,7 +1004,7 @@ public:
     }
 };
 
-const char KeywordEnumeration::fgClassID = '\0';
+const char KeywordEnumeration::fgClassID = '\x0';
 
 KeywordEnumeration::~KeywordEnumeration() {
     uprv_free(keywords);
@@ -1017,11 +1017,11 @@ Locale::createKeywords(UErrorCode &status) const
     int32_t keywordCapacity = 256;
     StringEnumeration *result = NULL;
 
-    const char* variantStart = uprv_strchr(fullName, '@');
-    const char* assignment = uprv_strchr(fullName, '=');
+    const char* variantStart = uprv_strchr(fullName, '\x40');
+    const char* assignment = uprv_strchr(fullName, '\x3d');
     if(variantStart) {
         if(assignment > variantStart) {
-            int32_t keyLen = locale_getKeywords(variantStart+1, '@', keywords, keywordCapacity, NULL, 0, NULL, FALSE, &status);
+            int32_t keyLen = locale_getKeywords(variantStart+1, '\x40', keywords, keywordCapacity, NULL, 0, NULL, FALSE, &status);
             if(keyLen) {
                 result = new KeywordEnumeration(keywords, keyLen, 0, status);
             }

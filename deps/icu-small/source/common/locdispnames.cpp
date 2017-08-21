@@ -277,19 +277,19 @@ U_NAMESPACE_USE
 
 /* These strings describe the resources we attempt to load from
  the locale ResourceBundle data file.*/
-static const char _kLanguages[]       = "Languages";
-static const char _kScripts[]         = "Scripts";
-static const char _kScriptsStandAlone[] = "Scripts%stand-alone";
-static const char _kCountries[]       = "Countries";
-static const char _kVariants[]        = "Variants";
-static const char _kKeys[]            = "Keys";
-static const char _kTypes[]           = "Types";
+static const char _kLanguages[]       = u8"Languages";
+static const char _kScripts[]         = u8"Scripts";
+static const char _kScriptsStandAlone[] = u8"Scripts%stand-alone";
+static const char _kCountries[]       = u8"Countries";
+static const char _kVariants[]        = u8"Variants";
+static const char _kKeys[]            = u8"Keys";
+static const char _kTypes[]           = u8"Types";
 //static const char _kRootName[]        = "root";
-static const char _kCurrency[]        = "currency";
-static const char _kCurrencies[]      = "Currencies";
-static const char _kLocaleDisplayPattern[] = "localeDisplayPattern";
-static const char _kPattern[]         = "pattern";
-static const char _kSeparator[]       = "separator";
+static const char _kCurrency[]        = u8"currency";
+static const char _kCurrencies[]      = u8"Currencies";
+static const char _kLocaleDisplayPattern[] = u8"localeDisplayPattern";
+static const char _kPattern[]         = u8"pattern";
+static const char _kSeparator[]       = u8"separator";
 
 /* ### Display name **************************************************/
 
@@ -317,7 +317,7 @@ _getStringOrCopyKey(const char *path, const char *locale,
         }
     } else {
         /* Language code should not be a number. If it is, set the error code. */
-        if (!uprv_strncmp(tableKey, "Languages", 9) && uprv_strtol(itemKey, NULL, 10)) {
+        if (!uprv_strncmp(tableKey, u8"Languages", 9) && uprv_strtol(itemKey, NULL, 10)) {
             *pErrorCode = U_MISSING_RESOURCE_ERROR;
         } else {
             /* second-level item, use special fallback */
@@ -467,7 +467,7 @@ uloc_getDisplayName(const char *locale,
                     UChar *dest, int32_t destCapacity,
                     UErrorCode *pErrorCode)
 {
-    static const UChar defaultSeparator[9] = { 0x007b, 0x0030, 0x007d, 0x002c, 0x0020, 0x007b, 0x0031, 0x007d, 0x0000 }; /* "{0}, {1}" */
+    static const UChar defaultSeparator[9] = { 0x007b, 0x0030, 0x007d, 0x002c, 0x0020, 0x007b, 0x0031, 0x007d, 0x0000 }; /* u8"{0}, {1}" */
     static const UChar sub0[4] = { 0x007b, 0x0030, 0x007d , 0x0000 } ; /* {0} */
     static const UChar sub1[4] = { 0x007b, 0x0031, 0x007d , 0x0000 } ; /* {1} */
     static const int32_t subLen = 3;
@@ -653,7 +653,7 @@ uloc_getDisplayName(const char *locale,
                                 len = uloc_getDisplayKeyword(kw, displayLocale, p, cap, pErrorCode);
                                 if(len) {
                                     if(len < cap) {
-                                        p[len]=0x3d; /* '=', assume we'll need it */
+                                        p[len]=0x3d; /* '\x3d', assume we'll need it */
                                     }
                                     len+=1;
 
@@ -673,7 +673,7 @@ uloc_getDisplayName(const char *locale,
                                                                            p, cap, pErrorCode);
                                 if(len) {
                                     if(vlen==0) {
-                                        --len; /* remove unneeded '=' */
+                                        --len; /* remove unneeded '\x3d' */
                                     }
                                     /* restore cap and p to what they were at start */
                                     cap=destCapacity-length;
@@ -683,7 +683,7 @@ uloc_getDisplayName(const char *locale,
                                         p=dest+length;
                                     }
                                 }
-                                len+=vlen; /* total we added for key + '=' + value */
+                                len+=vlen; /* total we added for key + '\x3d' + value */
                             }
                         } break;
                     } /* end switch */

@@ -64,7 +64,7 @@ typedef enum UScriptCode {
       /** @stable ICU 2.2 */
       USCRIPT_COMMON       =  0,  /* Zyyy */
       /** @stable ICU 2.2 */
-      USCRIPT_INHERITED    =  1,  /* Zinh */ /* "Code for inherited script", for non-spacing combining marks; also Qaai */
+      USCRIPT_INHERITED    =  1,  /* Zinh */ /* u8"Code for inherited script", for non-spacing combining marks; also Qaai */
       /** @stable ICU 2.2 */
       USCRIPT_ARABIC       =  2,  /* Arab */
       /** @stable ICU 2.2 */
@@ -284,7 +284,7 @@ typedef enum UScriptCode {
       /** @stable ICU 3.6 */
       USCRIPT_UNWRITTEN_LANGUAGES           = 102,/* Zxxx */
       /** @stable ICU 3.6 */
-      USCRIPT_UNKNOWN                       = 103,/* Zzzz */ /* Unknown="Code for uncoded script", for unassigned code points */
+      USCRIPT_UNKNOWN                       = 103,/* Zzzz */ /* Unknown=u8"Code for uncoded script", for unassigned code points */
 
       /** @stable ICU 3.8 */
       USCRIPT_CARIAN                        = 104,/* Cari */

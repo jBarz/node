@@ -331,7 +331,7 @@ enum UCurrencySpacing {
      * it is needed for layout of DecimalFormatSymbols object. */
     /**
      * One more than the highest normal UCurrencySpacing value.
-     * @deprecated ICU 58 The numeric value may change over time, see ICU ticket #12420.
+     * @deprecated ICU 58 The numeric value may change over time, see ICU ticket  USTR(#12420).
      */
     UNUM_CURRENCY_SPACING_COUNT
 };

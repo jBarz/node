@@ -58,7 +58,7 @@ LoadedNormalizer2Impl::isAcceptable(void * /*context*/,
         pInfo->size>=20 &&
         pInfo->isBigEndian==U_IS_BIG_ENDIAN &&
         pInfo->charsetFamily==U_CHARSET_FAMILY &&
-        pInfo->dataFormat[0]==0x4e &&    /* dataFormat="Nrm2" */
+        pInfo->dataFormat[0]==0x4e &&    /* dataFormat=u8"Nrm2" */
         pInfo->dataFormat[1]==0x72 &&
         pInfo->dataFormat[2]==0x6d &&
         pInfo->dataFormat[3]==0x32 &&
@@ -77,7 +77,7 @@ LoadedNormalizer2Impl::load(const char *packageName, const char *name, UErrorCod
     if(U_FAILURE(errorCode)) {
         return;
     }
-    memory=udata_openChoice(packageName, "nrm", name, isAcceptable, this, &errorCode);
+    memory=udata_openChoice(packageName, u8"nrm", name, isAcceptable, this, &errorCode);
     if(U_FAILURE(errorCode)) {
         return;
     }
@@ -140,10 +140,10 @@ static icu::UInitOnce nfkc_cfInitOnce = U_INITONCE_INITIALIZER;
 
 // UInitOnce singleton initialization function
 static void U_CALLCONV initSingletons(const char *what, UErrorCode &errorCode) {
-    if (uprv_strcmp(what, "nfkc") == 0) {
-        nfkcSingleton    = Norm2AllModes::createInstance(NULL, "nfkc", errorCode);
-    } else if (uprv_strcmp(what, "nfkc_cf") == 0) {
-        nfkc_cfSingleton = Norm2AllModes::createInstance(NULL, "nfkc_cf", errorCode);
+    if (uprv_strcmp(what, u8"nfkc") == 0) {
+        nfkcSingleton    = Norm2AllModes::createInstance(NULL, u8"nfkc", errorCode);
+    } else if (uprv_strcmp(what, u8"nfkc_cf") == 0) {
+        nfkc_cfSingleton = Norm2AllModes::createInstance(NULL, u8"nfkc_cf", errorCode);
     } else {
         U_ASSERT(FALSE);   // Unknown singleton
     }
@@ -173,14 +173,14 @@ U_CDECL_END
 const Norm2AllModes *
 Norm2AllModes::getNFKCInstance(UErrorCode &errorCode) {
     if(U_FAILURE(errorCode)) { return NULL; }
-    umtx_initOnce(nfkcInitOnce, &initSingletons, "nfkc", errorCode);
+    umtx_initOnce(nfkcInitOnce, &initSingletons, u8"nfkc", errorCode);
     return nfkcSingleton;
 }
 
 const Norm2AllModes *
 Norm2AllModes::getNFKC_CFInstance(UErrorCode &errorCode) {
     if(U_FAILURE(errorCode)) { return NULL; }
-    umtx_initOnce(nfkc_cfInitOnce, &initSingletons, "nfkc_cf", errorCode);
+    umtx_initOnce(nfkc_cfInitOnce, &initSingletons, u8"nfkc_cf", errorCode);
     return nfkc_cfSingleton;
 }
 
@@ -216,11 +216,11 @@ Normalizer2::getInstance(const char *packageName,
     }
     const Norm2AllModes *allModes=NULL;
     if(packageName==NULL) {
-        if(0==uprv_strcmp(name, "nfc")) {
+        if(0==uprv_strcmp(name, u8"nfc")) {
             allModes=Norm2AllModes::getNFCInstance(errorCode);
-        } else if(0==uprv_strcmp(name, "nfkc")) {
+        } else if(0==uprv_strcmp(name, u8"nfkc")) {
             allModes=Norm2AllModes::getNFKCInstance(errorCode);
-        } else if(0==uprv_strcmp(name, "nfkc_cf")) {
+        } else if(0==uprv_strcmp(name, u8"nfkc_cf")) {
             allModes=Norm2AllModes::getNFKC_CFInstance(errorCode);
         }
     }

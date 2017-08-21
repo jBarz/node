@@ -458,7 +458,7 @@ static const UConverterImpl _Latin1Impl={
 
 static const UConverterStaticData _Latin1StaticData={
     sizeof(UConverterStaticData),
-    "ISO-8859-1",
+    u8"ISO-8859-1",
     819, UCNV_IBM, UCNV_LATIN_1, 1, 1,
     { 0x1a, 0, 0, 0 }, 1, FALSE, FALSE,
     0,
@@ -737,7 +737,7 @@ static const UConverterImpl _ASCIIImpl={
 
 static const UConverterStaticData _ASCIIStaticData={
     sizeof(UConverterStaticData),
-    "US-ASCII",
+    u8"US-ASCII",
     367, UCNV_IBM, UCNV_US_ASCII, 1, 1,
     { 0x1a, 0, 0, 0 }, 1, FALSE, FALSE,
     0,

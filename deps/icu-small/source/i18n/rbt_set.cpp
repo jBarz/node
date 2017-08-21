@@ -65,7 +65,7 @@ static UnicodeString& _formatInput(UnicodeString &appendTo,
             append((UChar)124/*|*/).append(c).append((UChar)124/*|*/).append(d).
             append((UChar)125/*}*/).append(e);
     } else {
-        appendTo.append("INVALID UTransPosition");
+        appendTo.append(u8"INVALID UTransPosition");
         //appendTo.append((UnicodeString)"INVALID UTransPosition {cs=" +
         //                pos.contextStart + ", s=" + pos.start + ", l=" +
         //                pos.limit + ", cl=" + pos.contextLimit + "} on " +
@@ -96,10 +96,10 @@ UnicodeString& _escape(const UnicodeString &source,
         i += U16_LENGTH(ch);
         if (ch < 0x09 || (ch > 0x0A && ch < 0x20)|| ch > 0x7E) {
             if (ch <= 0xFFFF) {
-                target += "\\u";
+                target += u8"\\u";
                 _appendHex(ch, 4, target);
             } else {
-                target += "\\U";
+                target += u8"\\U";
                 _appendHex(ch, 8, target);
             }
         } else {
@@ -111,19 +111,19 @@ UnicodeString& _escape(const UnicodeString &source,
 
 inline void _debugOut(const char* msg, TransliterationRule* rule,
                       const Replaceable& theText, UTransPosition& pos) {
-    UnicodeString buf(msg, "");
+    UnicodeString buf(msg, u8"");
     if (rule) {
         UnicodeString r;
         rule->toRule(r, TRUE);
         buf.append((UChar)32).append(r);
     }
-    buf.append(UnicodeString(" => ", ""));
+    buf.append(UnicodeString(u8" => ", u8""));
     UnicodeString* text = (UnicodeString*)&theText;
     _formatInput(buf, *text, pos);
     UnicodeString esc;
     _escape(buf, esc);
     CharString cbuf(esc);
-    printf("%s\n", (const char*) cbuf);
+    printf(u8"%s\n", (const char*) cbuf);
 }
 
 #else
@@ -409,10 +409,10 @@ UBool TransliterationRuleSet::transliterate(Replaceable& text,
         UMatchDegree m = rules[i]->matchAndReplace(text, pos, incremental);
         switch (m) {
         case U_MATCH:
-            _debugOut("match", rules[i], text, pos);
+            _debugOut(u8"match", rules[i], text, pos);
             return TRUE;
         case U_PARTIAL_MATCH:
-            _debugOut("partial match", rules[i], text, pos);
+            _debugOut(u8"partial match", rules[i], text, pos);
             return FALSE;
         default: /* Ram: added default to make GCC happy */
             break;
@@ -420,7 +420,7 @@ UBool TransliterationRuleSet::transliterate(Replaceable& text,
     }
     // No match or partial match from any rule
     pos.start += U16_LENGTH(text.char32At(pos.start));
-    _debugOut("no match", NULL, text, pos);
+    _debugOut(u8"no match", NULL, text, pos);
     return TRUE;
 }
 

@@ -496,7 +496,7 @@ utrie_fold(UNewTrie *trie, UNewTrieGetFoldedValue *getFoldedValue, UErrorCode *p
     }
 #ifdef UTRIE_DEBUG
     if(countLeadCUWithData>0) {
-        printf("supplementary data for %d lead surrogates\n", countLeadCUWithData);
+        printf(u8"supplementary data for %d lead surrogates\n", countLeadCUWithData);
     }
 #endif
 
@@ -527,7 +527,7 @@ utrie_fold(UNewTrie *trie, UNewTrieGetFoldedValue *getFoldedValue, UErrorCode *p
     indexLength+=UTRIE_SURROGATE_BLOCK_COUNT;
 
 #ifdef UTRIE_DEBUG
-    printf("trie index count: BMP %ld  all Unicode %ld  folded %ld\n",
+    printf(u8"trie index count: BMP %ld  all Unicode %ld  folded %ld\n",
            UTRIE_BMP_INDEX_LENGTH, (long)UTRIE_MAX_INDEX_LENGTH, indexLength);
 #endif
 
@@ -687,7 +687,7 @@ utrie_compact(UNewTrie *trie, UBool overlap, UErrorCode *pErrorCode) {
 
 #ifdef UTRIE_DEBUG
     /* we saved some space */
-    printf("compacting trie: count of 32-bit words %lu->%lu\n",
+    printf(u8"compacting trie: count of 32-bit words %lu->%lu\n",
             (long)trie->dataLength, (long)newStart);
 #endif
 
@@ -797,7 +797,7 @@ utrie_serialize(UNewTrie *trie, void *dt, int32_t capacity,
     }
 
 #ifdef UTRIE_DEBUG
-    printf("**UTrieLengths(serialize)** index:%6ld  data:%6ld  serialized:%6ld\n",
+    printf(u8"**UTrieLengths(serialize)** index:%6ld  data:%6ld  serialized:%6ld\n",
            (long)trie->indexLength, (long)trie->dataLength, (long)length);
 #endif
 
@@ -805,7 +805,7 @@ utrie_serialize(UNewTrie *trie, void *dt, int32_t capacity,
     header=(UTrieHeader *)data;
     data+=sizeof(UTrieHeader);
 
-    header->signature=0x54726965; /* "Trie" */
+    header->signature=0x54726965; /* u8"Trie" */
     header->options=UTRIE_SHIFT | (UTRIE_INDEX_SHIFT<<UTRIE_OPTIONS_INDEX_SHIFT);
 
     if(!reduceTo16Bits) {

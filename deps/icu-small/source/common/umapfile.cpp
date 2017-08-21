@@ -18,7 +18,7 @@
  *
  *----------------------------------------------------------------------------*/
 /* Defines _XOPEN_SOURCE for access to POSIX functions.
- * Must be before any other #includes. */
+ * Must be before any other  USTR(#includes). */
 #include "uposixdefs.h"
 
 #include "unicode/putil.h"
@@ -62,10 +62,10 @@
 #       include "cstring.h"
 #       include "cmemory.h"
 #       include "unicode/udata.h"
-#       define LIB_PREFIX "lib"
-#       define LIB_SUFFIX ".dll"
+#       define LIB_PREFIX u8"lib"
+#       define LIB_SUFFIX u8".dll"
         /* This is inconvienient until we figure out what to do with U_ICUDATA_NAME in utypes.h */
-#       define U_ICUDATA_ENTRY_NAME "icudt" U_ICU_VERSION_SHORT U_LIB_SUFFIX_C_NAME_STRING "_dat"
+#       define U_ICUDATA_ENTRY_NAME u8"icudt" U_ICU_VERSION_SHORT U_LIB_SUFFIX_C_NAME_STRING u8"_dat"
 #   endif
 #elif MAP_IMPLEMENTATION==MAP_STDIO
 #   include <stdio.h>
@@ -121,7 +121,7 @@
         for (i = 0; i < UPRV_LENGTHOF(utf16Path); i++)
         {
             utf16Path[i] = path[i];
-            if (path[i] == '\0')
+            if (path[i] == '\x0')
             {
                 break;
             }
@@ -129,7 +129,7 @@
         if (i >= UPRV_LENGTHOF(utf16Path))
         {
             // Ran out of room, unlikely but be safe
-            utf16Path[UPRV_LENGTHOF(utf16Path) - 1] = '\0';
+            utf16Path[UPRV_LENGTHOF(utf16Path) - 1] = '\x0';
         }
 
         // TODO: Is it worth setting extended parameters to specify random access?
@@ -387,7 +387,7 @@
     }
 
 
-#   define DATA_TYPE "dat"
+#   define DATA_TYPE u8"dat"
 
     U_CFUNC UBool uprv_mapFile(UDataMemory *pData, const char *path) {
         const char *inBasename;
@@ -404,7 +404,7 @@
             inBasename++;
         }
         basename=uprv_computeDirPath(path, pathBuffer);
-        if(uprv_strcmp(inBasename, U_ICUDATA_NAME".dat") != 0) {
+        if(uprv_strcmp(inBasename, U_ICUDATA_NAMEu8".dat") != 0) {
             /* must mmap file... for build */
             int fd;
             int length;
@@ -446,20 +446,20 @@
             /* BUT FOR BATCH MODE IT IS AN EXCEPTION BECAUSE */
             /* THE FIRST THREE LETTERS ARE PREASSIGNED TO THE */
             /* PROJECT!!!!! */
-            uprv_strcpy(pathBuffer, "IXMI" U_ICU_VERSION_SHORT "DA");
+            uprv_strcpy(pathBuffer, u8"IXMI" U_ICU_VERSION_SHORT u8"DA");
 #       else
             /* set up the library name */
             uprv_strcpy(basename, LIB_PREFIX U_LIBICUDATA_NAME U_ICU_VERSION_SHORT LIB_SUFFIX);
 #       endif
 
 #       ifdef UDATA_DEBUG
-             fprintf(stderr, "dllload: %s ", pathBuffer);
+             fprintf(stderr, u8"dllload: %s ", pathBuffer);
 #       endif
 
         handle=dllload(pathBuffer);
 
 #       ifdef UDATA_DEBUG
-               fprintf(stderr, " -> %08X\n", handle );
+               fprintf(stderr, u8" -> %08X\n", handle );
 #       endif
 
         if(handle != NULL) {
@@ -472,7 +472,7 @@
                     return FALSE;
                }
 #              ifdef UDATA_DEBUG
-                    fprintf(stderr, "dllqueryvar(%08X, %s) -> %08X\n", handle, U_ICUDATA_ENTRY_NAME, val);
+                    fprintf(stderr, u8"dllqueryvar(%08X, %s) -> %08X\n", handle, U_ICUDATA_ENTRY_NAME, val);
 #              endif
 
                pData->pHeader=(const DataHeader *)val;

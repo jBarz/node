@@ -38,11 +38,11 @@ utrace_entry(int32_t fnNumber) {
 }
 
 
-static const char gExitFmt[]             = "Returns.";
-static const char gExitFmtValue[]        = "Returns %d.";
-static const char gExitFmtStatus[]       = "Returns.  Status = %d.";
-static const char gExitFmtValueStatus[]  = "Returns %d.  Status = %d.";
-static const char gExitFmtPtrStatus[]    = "Returns %d.  Status = %p.";
+static const char gExitFmt[]             = u8"Returns.";
+static const char gExitFmtValue[]        = u8"Returns %d.";
+static const char gExitFmtStatus[]       = u8"Returns.  Status = %d.";
+static const char gExitFmtValueStatus[]  = u8"Returns %d.  Status = %d.";
+static const char gExitFmtPtrStatus[]    = u8"Returns %d.  Status = %p.";
 
 U_CAPI void U_EXPORT2
 utrace_exit(int32_t fnNumber, int32_t returnType, ...) {
@@ -102,13 +102,13 @@ static void outputChar(char c, char *outBuf, int32_t *outIx, int32_t capacity, i
      *       buffer size needed.  No harm done.
      */
     if (*outIx==0 ||   /* case 1. */
-        (c!='\n' && c!=0 && *outIx < capacity && outBuf[(*outIx)-1]=='\n') ||  /* case 2. */
-        (c=='\n' && *outIx>=capacity))    /* case 3 */
+        (c!='\xa' && c!=0 && *outIx < capacity && outBuf[(*outIx)-1]=='\xa') ||  /* case 2. */
+        (c=='\xa' && *outIx>=capacity))    /* case 3 */
     {
         /* At the start of a line.  Indent. */
         for(i=0; i<indent; i++) {
             if (*outIx < capacity) {
-                outBuf[*outIx] = ' ';
+                outBuf[*outIx] = '\x20';
             }
             (*outIx)++;
         }
@@ -127,7 +127,7 @@ static void outputChar(char c, char *outBuf, int32_t *outIx, int32_t capacity, i
 
 static void outputHexBytes(int64_t val, int32_t charsToOutput,
                            char *outBuf, int32_t *outIx, int32_t capacity) {
-    static const char gHexChars[] = "0123456789abcdef";
+    static const char gHexChars[] = u8"0123456789abcdef";
     int32_t shiftCount;
     for  (shiftCount=(charsToOutput-1)*4; shiftCount >= 0; shiftCount-=4) {
         char c = gHexChars[(val >> shiftCount) & 0xf];
@@ -159,7 +159,7 @@ static void outputString(const char *s, char *outBuf, int32_t *outIx, int32_t ca
     int32_t i = 0;
     char    c;
     if (s==NULL) {
-        s = "*NULL*";
+        s = u8"*NULL*";
     }
     do {
         c = s[i++];
@@ -181,7 +181,7 @@ static void outputUString(const UChar *s, int32_t len,
     for (i=0; i<len || len==-1; i++) {
         c = s[i];
         outputHexBytes(c, 4, outBuf, outIx, capacity);
-        outputChar(' ', outBuf, outIx, capacity, indent);
+        outputChar('\x20', outBuf, outIx, capacity, indent);
         if (len == -1 && c==0) {
             break;
         }
@@ -202,7 +202,7 @@ utrace_vformat(char *outBuf, int32_t capacity, int32_t indent, const char *fmt, 
      */
     for (;;) {
         fmtC = fmt[fmtIx++];
-        if (fmtC != '%') {
+        if (fmtC != '\x25') {
             /* Literal character, not part of a %sequence.  Just copy it to the output. */
             outputChar(fmtC, outBuf, &outIx, capacity, indent);
             if (fmtC == 0) {
@@ -219,50 +219,50 @@ utrace_vformat(char *outBuf, int32_t capacity, int32_t indent, const char *fmt, 
         fmtC = fmt[fmtIx++];
 
         switch (fmtC) {
-        case 'c':
+        case '\x63':
             /* single 8 bit char   */
             c = (char)va_arg(args, int32_t);
             outputChar(c, outBuf, &outIx, capacity, indent);
             break;
 
-        case 's':
+        case '\x73':
             /* char * string, null terminated.  */
             ptrArg = va_arg(args, char *);
             outputString((const char *)ptrArg, outBuf, &outIx, capacity, indent);
             break;
 
-        case 'S':
+        case '\x53':
             /* UChar * string, with length, len==-1 for null terminated. */
             ptrArg = va_arg(args, char *);             /* Ptr    */
             intArg =(int32_t)va_arg(args, int32_t);    /* Length */
             outputUString((const UChar *)ptrArg, intArg, outBuf, &outIx, capacity, indent);
             break;
 
-        case 'b':
+        case '\x62':
             /*  8 bit int  */
             intArg = va_arg(args, int);
             outputHexBytes(intArg, 2, outBuf, &outIx, capacity);
             break;
 
-        case 'h':
+        case '\x68':
             /*  16 bit int  */
             intArg = va_arg(args, int);
             outputHexBytes(intArg, 4, outBuf, &outIx, capacity);
             break;
 
-        case 'd':
+        case '\x64':
             /*  32 bit int  */
             intArg = va_arg(args, int);
             outputHexBytes(intArg, 8, outBuf, &outIx, capacity);
             break;
 
-        case 'l':
+        case '\x6c':
             /*  64 bit long  */
             longArg = va_arg(args, int64_t);
             outputHexBytes(longArg, 16, outBuf, &outIx, capacity);
             break;
 
-        case 'p':
+        case '\x70':
             /*  Pointers.   */
             ptrArg = va_arg(args, char *);
             outputPtrBytes(ptrArg, outBuf, &outIx, capacity);
@@ -273,11 +273,11 @@ utrace_vformat(char *outBuf, int32_t capacity, int32_t indent, const char *fmt, 
              * Back up index into format string so that the terminating null will be
              * re-fetched in the outer loop, causing it to terminate.
              */
-            outputChar('%', outBuf, &outIx, capacity, indent);
+            outputChar('\x25', outBuf, &outIx, capacity, indent);
             fmtIx--;
             break;
 
-        case 'v':
+        case '\x76':
             {
                 /* Vector of values, e.g. %vh */
                 char     vectorType;
@@ -301,50 +301,50 @@ utrace_vformat(char *outBuf, int32_t capacity, int32_t indent, const char *fmt, 
                 ptrPtr = (void **)i8Ptr;
                 vectorLen =(int32_t)va_arg(args, int32_t);
                 if (ptrPtr == NULL) {
-                    outputString("*NULL* ", outBuf, &outIx, capacity, indent);
+                    outputString(u8"*NULL* ", outBuf, &outIx, capacity, indent);
                 } else {
                     for (i=0; i<vectorLen || vectorLen==-1; i++) {
                         switch (vectorType) {
-                        case 'b':
+                        case '\x62':
                             charsToOutput = 2;
                             longArg = *i8Ptr++;
                             break;
-                        case 'h':
+                        case '\x68':
                             charsToOutput = 4;
                             longArg = *i16Ptr++;
                             break;
-                        case 'd':
+                        case '\x64':
                             charsToOutput = 8;
                             longArg = *i32Ptr++;
                             break;
-                        case 'l':
+                        case '\x6c':
                             charsToOutput = 16;
                             longArg = *i64Ptr++;
                             break;
-                        case 'p':
+                        case '\x70':
                             charsToOutput = 0;
                             outputPtrBytes(*ptrPtr, outBuf, &outIx, capacity);
                             longArg = *ptrPtr==NULL? 0: 1;    /* test for null terminated array. */
                             ptrPtr++;
                             break;
-                        case 'c':
+                        case '\x63':
                             charsToOutput = 0;
                             outputChar(*i8Ptr, outBuf, &outIx, capacity, indent);
                             longArg = *i8Ptr;    /* for test for null terminated array. */
                             i8Ptr++;
                             break;
-                        case 's':
+                        case '\x73':
                             charsToOutput = 0;
                             outputString((const char *)*ptrPtr, outBuf, &outIx, capacity, indent);
-                            outputChar('\n', outBuf, &outIx, capacity, indent);
+                            outputChar('\xa', outBuf, &outIx, capacity, indent);
                             longArg = *ptrPtr==NULL? 0: 1;   /* for test for null term. array. */
                             ptrPtr++;
                             break;
 
-                        case 'S':
+                        case '\x53':
                             charsToOutput = 0;
                             outputUString((const UChar *)*ptrPtr, -1, outBuf, &outIx, capacity, indent);
-                            outputChar('\n', outBuf, &outIx, capacity, indent);
+                            outputChar('\xa', outBuf, &outIx, capacity, indent);
                             longArg = *ptrPtr==NULL? 0: 1;   /* for test for null term. array. */
                             ptrPtr++;
                             break;
@@ -353,16 +353,16 @@ utrace_vformat(char *outBuf, int32_t capacity, int32_t indent, const char *fmt, 
                         }
                         if (charsToOutput > 0) {
                             outputHexBytes(longArg, charsToOutput, outBuf, &outIx, capacity);
-                            outputChar(' ', outBuf, &outIx, capacity, indent);
+                            outputChar('\x20', outBuf, &outIx, capacity, indent);
                         }
                         if (vectorLen == -1 && longArg == 0) {
                             break;
                         }
                     }
                 }
-                outputChar('[', outBuf, &outIx, capacity, indent);
+                outputChar('\x5b', outBuf, &outIx, capacity, indent);
                 outputHexBytes(vectorLen, 8, outBuf, &outIx, capacity);
-                outputChar(']', outBuf, &outIx, capacity, indent);
+                outputChar('\x5d', outBuf, &outIx, capacity, indent);
             }
             break;
 
@@ -443,37 +443,37 @@ utrace_cleanup() {
 
 static const char * const
 trFnName[] = {
-    "u_init",
-    "u_cleanup",
+    u8"u_init",
+    u8"u_cleanup",
     NULL
 };
 
 
 static const char * const
 trConvNames[] = {
-    "ucnv_open",
-    "ucnv_openPackage",
-    "ucnv_openAlgorithmic",
-    "ucnv_clone",
-    "ucnv_close",
-    "ucnv_flushCache",
-    "ucnv_load",
-    "ucnv_unload",
+    u8"ucnv_open",
+    u8"ucnv_openPackage",
+    u8"ucnv_openAlgorithmic",
+    u8"ucnv_clone",
+    u8"ucnv_close",
+    u8"ucnv_flushCache",
+    u8"ucnv_load",
+    u8"ucnv_unload",
     NULL
 };
 
 
 static const char * const
 trCollNames[] = {
-    "ucol_open",
-    "ucol_close",
-    "ucol_strcoll",
-    "ucol_getSortKey",
-    "ucol_getLocale",
-    "ucol_nextSortKeyPart",
-    "ucol_strcollIter",
-    "ucol_openFromShortString",
-    "ucol_strcollUTF8",
+    u8"ucol_open",
+    u8"ucol_close",
+    u8"ucol_strcoll",
+    u8"ucol_getSortKey",
+    u8"ucol_getLocale",
+    u8"ucol_nextSortKeyPart",
+    u8"ucol_strcollIter",
+    u8"ucol_openFromShortString",
+    u8"ucol_strcollUTF8",
     NULL
 };
 
@@ -487,6 +487,6 @@ utrace_functionName(int32_t fnNumber) {
     } else if(UTRACE_COLLATION_START <= fnNumber && fnNumber < UTRACE_COLLATION_LIMIT){
         return trCollNames[fnNumber - UTRACE_COLLATION_START];
     } else {
-        return "[BOGUS Trace Function Number]";
+        return u8"[BOGUS Trace Function Number]";
     }
 }

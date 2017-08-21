@@ -32,6 +32,7 @@
 #include "uoptions.h"
 #include "putilimp.h"
 #include "pkg_gencmn.h"
+#include <unistd.h>
 
 static UOption options[]={
 /*0*/ UOPTION_HELP_H,
@@ -39,11 +40,11 @@ static UOption options[]={
 /*2*/ UOPTION_VERBOSE,
 /*3*/ UOPTION_COPYRIGHT,
 /*4*/ UOPTION_DESTDIR,
-/*5*/ UOPTION_DEF( "comment", 'C', UOPT_REQUIRES_ARG),
-/*6*/ UOPTION_DEF( "name", 'n', UOPT_REQUIRES_ARG),
-/*7*/ UOPTION_DEF( "type", 't', UOPT_REQUIRES_ARG),
-/*8*/ UOPTION_DEF( "source", 'S', UOPT_NO_ARG),
-/*9*/ UOPTION_DEF( "entrypoint", 'e', UOPT_REQUIRES_ARG),
+/*5*/ UOPTION_DEF( u8"comment", '\x43', UOPT_REQUIRES_ARG),
+/*6*/ UOPTION_DEF( u8"name", '\x6e', UOPT_REQUIRES_ARG),
+/*7*/ UOPTION_DEF( u8"type", '\x74', UOPT_REQUIRES_ARG),
+/*8*/ UOPTION_DEF( u8"source", '\x53', UOPT_NO_ARG),
+/*9*/ UOPTION_DEF( u8"entrypoint", '\x65', UOPT_REQUIRES_ARG),
 /*10*/UOPTION_SOURCEDIR,
 };
 
@@ -53,14 +54,13 @@ main(int argc, char* argv[]) {
     uint32_t maxSize;
 
     U_MAIN_INIT_ARGS(argc, argv);
-
     /* preset then read command line options */
     argc=u_parseArgs(argc, argv, UPRV_LENGTHOF(options), options);
 
     /* error handling, printing usage message */
     if(argc<0) {
         fprintf(stderr,
-            "error in command line argument \"%s\"\n",
+            u8"error in command line argument \"%s\"\n",
             argv[-argc]);
     } else if(argc<2) {
         argc=-1;
@@ -74,27 +74,27 @@ main(int argc, char* argv[]) {
          * required supported string length is 509 bytes.
          */
         fprintf(where,
-                "%csage: %s [ -h, -?, --help ] [ -v, --verbose ] [ -c, --copyright ] [ -C, --comment comment ] [ -d, --destdir dir ] [ -n, --name filename ] [ -t, --type filetype ] [ -S, --source tocfile ] [ -e, --entrypoint name ] maxsize listfile\n", argc < 0 ? 'u' : 'U', *argv);
+                u8"%csage: %s [ -h, -?, --help ] [ -v, --verbose ] [ -c, --copyright ] [ -C, --comment comment ] [ -d, --destdir dir ] [ -n, --name filename ] [ -t, --type filetype ] [ -S, --source tocfile ] [ -e, --entrypoint name ] maxsize listfile\n", argc < 0 ? '\x75' : '\x55', *argv);
         if (options[0].doesOccur || options[1].doesOccur) {
-            fprintf(where, "\n"
-                "Read the list file (default: standard input) and create a common data\n"
-                "file from specified files. Omit any files larger than maxsize, if maxsize > 0.\n");
-            fprintf(where, "\n"
-            "Options:\n"
-            "\t-h, -?, --help              this usage text\n"
-            "\t-v, --verbose               verbose output\n"
-            "\t-c, --copyright             include the ICU copyright notice\n"
-            "\t-C, --comment comment       include a comment string\n"
-            "\t-d, --destdir dir           destination directory\n");
+            fprintf(where, u8"\n"
+                u8"Read the list file (default: standard input) and create a common data\n"
+                u8"file from specified files. Omit any files larger than maxsize, if maxsize > 0.\n");
+            fprintf(where, u8"\n"
+            u8"Options:\n"
+            u8"\t-h, -?, --help              this usage text\n"
+            u8"\t-v, --verbose               verbose output\n"
+            u8"\t-c, --copyright             include the ICU copyright notice\n"
+            u8"\t-C, --comment comment       include a comment string\n"
+            u8"\t-d, --destdir dir           destination directory\n");
             fprintf(where,
-            "\t-n, --name filename         output filename, without .type extension\n"
-            "\t                            (default: " U_ICUDATA_NAME ")\n"
-            "\t-t, --type filetype         type of the destination file\n"
-            "\t                            (default: \" dat \")\n"
-            "\t-S, --source tocfile        write a .c source file with the table of\n"
-            "\t                            contents\n"
-            "\t-e, --entrypoint name       override the c entrypoint name\n"
-            "\t                            (default: \"<name>_<type>\")\n");
+            u8"\t-n, --name filename         output filename, without .type extension\n"
+            u8"\t                            (default: " U_ICUDATA_NAME u8")\n"
+            u8"\t-t, --type filetype         type of the destination file\n"
+            u8"\t                            (default: \" dat \")\n"
+            u8"\t-S, --source tocfile        write a .c source file with the table of\n"
+            u8"\t                            contents\n"
+            u8"\t-e, --entrypoint name       override the c entrypoint name\n"
+            u8"\t                            (default: \"<name>_<type>\")\n");
         }
         return argc<0 ? U_ILLEGAL_ARGUMENT_ERROR : U_ZERO_ERROR;
     }

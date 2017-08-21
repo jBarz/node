@@ -18,9 +18,9 @@
 #include "unicode/uniset.h"
 #include "funcrepl.h"
 
-static const UChar AMPERSAND = 38; // '&'
-static const UChar OPEN[]    = {40,32,0}; // "( "
-static const UChar CLOSE[]   = {32,41,0}; // " )"
+static const UChar AMPERSAND = 38; // '\x26'
+static const UChar OPEN[]    = {40,32,0}; // u8"( "
+static const UChar CLOSE[]   = {32,41,0}; // u8" )"
 
 U_NAMESPACE_BEGIN
 

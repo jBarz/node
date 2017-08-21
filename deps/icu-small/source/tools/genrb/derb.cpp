@@ -34,7 +34,7 @@
 
 #if !UCONFIG_NO_FORMATTING
 
-#define DERB_VERSION "1.1"
+#define DERB_VERSION u8"1.1"
 
 #define DERB_DEFAULT_TRUNC 80
 
@@ -55,15 +55,15 @@ static UOption options[]={
     UOPTION_HELP_H,
     UOPTION_HELP_QUESTION_MARK,
 /* 2 */    UOPTION_ENCODING,
-/* 3 */    { "to-stdout", NULL, NULL, NULL, 'c', UOPT_NO_ARG, 0 } ,
-/* 4 */    { "truncate", NULL, NULL, NULL, 't', UOPT_OPTIONAL_ARG, 0 },
+/* 3 */    { u8"to-stdout", NULL, NULL, NULL, '\x63', UOPT_NO_ARG, 0 } ,
+/* 4 */    { u8"truncate", NULL, NULL, NULL, '\x74', UOPT_OPTIONAL_ARG, 0 },
 /* 5 */    UOPTION_VERBOSE,
 /* 6 */    UOPTION_DESTDIR,
 /* 7 */    UOPTION_SOURCEDIR,
-/* 8 */    { "bom", NULL, NULL, NULL, 0, UOPT_NO_ARG, 0 },
+/* 8 */    { u8"bom", NULL, NULL, NULL, 0, UOPT_NO_ARG, 0 },
 /* 9 */    UOPTION_ICUDATADIR,
 /* 10 */   UOPTION_VERSION,
-/* 11 */   { "suppressAliases", NULL, NULL, NULL, 'A', UOPT_NO_ARG, 0 },
+/* 11 */   { u8"suppressAliases", NULL, NULL, NULL, '\x41', UOPT_NO_ARG, 0 },
 };
 
 static UBool verbose = FALSE;
@@ -74,7 +74,7 @@ extern int
 main(int argc, char* argv[]) {
     const char *encoding = NULL;
     const char *outputDir = NULL; /* NULL = no output directory, use current */
-    const char *inputDir  = ".";
+    const char *inputDir  = u8".";
     int tostdout = 0;
     int prbom = 0;
 
@@ -104,26 +104,26 @@ main(int argc, char* argv[]) {
     /* error handling, printing usage message */
     if(argc<0) {
         fprintf(stderr,
-            "%s: error in command line argument \"%s\"\n", pname,
+            u8"%s: error in command line argument \"%s\"\n", pname,
             argv[-argc]);
     }
     if(argc<0 || options[0].doesOccur || options[1].doesOccur) {
         fprintf(argc < 0 ? stderr : stdout,
-            "%csage: %s [ -h, -?, --help ] [ -V, --version ]\n"
-            " [ -v, --verbose ] [ -e, --encoding encoding ] [ --bom ]\n"
-            " [ -t, --truncate [ size ] ]\n"
-            " [ -s, --sourcedir source ] [ -d, --destdir destination ]\n"
-            " [ -i, --icudatadir directory ] [ -c, --to-stdout ]\n"
-            " [ -A, --suppressAliases]\n"
-            " bundle ...\n", argc < 0 ? 'u' : 'U',
+            u8"%csage: %s [ -h, -?, --help ] [ -V, --version ]\n"
+            u8" [ -v, --verbose ] [ -e, --encoding encoding ] [ --bom ]\n"
+            u8" [ -t, --truncate [ size ] ]\n"
+            u8" [ -s, --sourcedir source ] [ -d, --destdir destination ]\n"
+            u8" [ -i, --icudatadir directory ] [ -c, --to-stdout ]\n"
+            u8" [ -A, --suppressAliases]\n"
+            u8" bundle ...\n", argc < 0 ? '\x75' : '\x55',
             pname);
         return argc<0 ? U_ILLEGAL_ARGUMENT_ERROR : U_ZERO_ERROR;
     }
 
     if(options[10].doesOccur) {
         fprintf(stderr,
-                "%s version %s (ICU version %s).\n"
-                "%s\n",
+                u8"%s version %s (ICU version %s).\n"
+                u8"%s\n",
                 pname, DERB_VERSION, U_ICU_VERSION, U_COPYRIGHT_STRING);
         return U_ZERO_ERROR;
     }
@@ -133,7 +133,7 @@ main(int argc, char* argv[]) {
 
     if (options[3].doesOccur) {
       if(options[2].doesOccur) {
-        fprintf(stderr, "%s: Error: don't specify an encoding (-e) when writing to stdout (-c).\n", pname);
+        fprintf(stderr, u8"%s: Error: don't specify an encoding (-e) when writing to stdout (-c).\n", pname);
         return 3;
       }
       tostdout = 1;
@@ -178,19 +178,19 @@ main(int argc, char* argv[]) {
     ustderr = u_finit(stderr, NULL, NULL);
 
     for (i = 1; i < argc; ++i) {
-        static const UChar sp[] = { 0x0020 }; /* " " */
+        static const UChar sp[] = { 0x0020 }; /* u8" " */
 
         arg = getLongPathname(argv[i]);
 
         if (verbose) {
-          u_fprintf(ustderr, "processing bundle \"%s\"\n", argv[i]);
+          u_fprintf(ustderr, u8"processing bundle \"%s\"\n", argv[i]);
         }
 
         icu::CharString locale;
         UErrorCode status = U_ZERO_ERROR;
         {
             const char *p = findBasename(arg);
-            const char *q = uprv_strrchr(p, '.');
+            const char *q = uprv_strrchr(p, '\x2e');
             if (q == NULL) {
                 locale.append(p, status);
             } else {
@@ -203,13 +203,13 @@ main(int argc, char* argv[]) {
 
         icu::CharString infile;
         const char *thename = NULL;
-        UBool fromICUData = !uprv_strcmp(inputDir, "-");
+        UBool fromICUData = !uprv_strcmp(inputDir, u8"-");
         if (!fromICUData) {
             UBool absfilename = *arg == U_FILE_SEP_CHAR;
 #if U_PLATFORM_HAS_WIN32_API
             if (!absfilename) {
                 absfilename = (uprv_strlen(arg) > 2 && isalpha(arg[0])
-                    && arg[1] == ':' && arg[2] == U_FILE_SEP_CHAR);
+                    && arg[1] == '\x3a' && arg[2] == U_FILE_SEP_CHAR);
             }
 #endif
             if (absfilename) {
@@ -244,7 +244,7 @@ main(int argc, char* argv[]) {
 
             if (locale.isEmpty() || !tostdout) {
                 filename = findBasename(arg);
-                ext = uprv_strrchr(filename, '.');
+                ext = uprv_strrchr(filename, '\x2e');
                 if (!ext) {
                     ext = uprv_strchr(filename, 0);
                 }
@@ -261,14 +261,14 @@ main(int argc, char* argv[]) {
                 if (*ext) {
                     thefile.truncate(thefile.length() - (int32_t)uprv_strlen(ext));
                 }
-                thefile.append(".txt", status);
+                thefile.append(u8".txt", status);
                 if (U_FAILURE(status)) {
                     return status;
                 }
 
                 out = u_fopen(thefile.data(), "w", NULL, encoding);
                 if (!out) {
-                  u_fprintf(ustderr, "%s: couldn't create %s\n", pname, thefile.data());
+                  u_fprintf(ustderr, u8"%s: couldn't create %s\n", pname, thefile.data());
                   u_fclose(ustderr);
                   return 4;
                 }
@@ -277,7 +277,7 @@ main(int argc, char* argv[]) {
             // now, set the callback.
             ucnv_setFromUCallBack(u_fgetConverter(out), UCNV_FROM_U_CALLBACK_ESCAPE, UCNV_ESCAPE_C, 0, 0, &status);
             if (U_FAILURE(status)) {
-              u_fprintf(ustderr, "%s: couldn't configure converter for encoding\n", pname);
+              u_fprintf(ustderr, u8"%s: couldn't configure converter for encoding\n", pname);
               u_fclose(ustderr);
               if(!tostdout) {
                 u_fclose(out);
@@ -288,20 +288,20 @@ main(int argc, char* argv[]) {
             if (prbom) { /* XXX: Should be done only for UTFs */
               u_fputc(0xFEFF, out);
             }
-            u_fprintf(out, "// -*- Coding: %s; -*-\n//\n", encoding ? encoding : getEncodingName(ucnv_getDefaultName()));
-            u_fprintf(out, "// This file was dumped by derb(8) from ");
+            u_fprintf(out, u8"// -*- Coding: %s; -*-\n//\n", encoding ? encoding : getEncodingName(ucnv_getDefaultName()));
+            u_fprintf(out, u8"// This file was dumped by derb(8) from ");
             if (thename) {
-              u_fprintf(out, "%s", thename);
+              u_fprintf(out, u8"%s", thename);
             } else if (fromICUData) {
-              u_fprintf(out, "the ICU internal %s locale", locale.data());
+              u_fprintf(out, u8"the ICU internal %s locale", locale.data());
             }
 
-            u_fprintf(out, "\n// derb(8) by Vladimir Weinstein and Yves Arrouye\n\n");
+            u_fprintf(out, u8"\n// derb(8) by Vladimir Weinstein and Yves Arrouye\n\n");
 
             if (!locale.isEmpty()) {
-              u_fprintf(out, "%s", locale.data());
+              u_fprintf(out, u8"%s", locale.data());
             } else {
-              u_fprintf(out, "%.*s%.*S", (int32_t)(ext - filename),  filename, UPRV_LENGTHOF(sp), sp);
+              u_fprintf(out, u8"%.*s%.*S", (int32_t)(ext - filename),  filename, UPRV_LENGTHOF(sp), sp);
             }
             printOutBundle(out, bundle, 0, pname, &status);
 
@@ -310,7 +310,7 @@ main(int argc, char* argv[]) {
             }
         }
         else {
-            reportError(pname, &status, "opening resource file");
+            reportError(pname, &status, u8"opening resource file");
         }
 
         ures_close(bundle);
@@ -327,7 +327,7 @@ static UChar *quotedString(const UChar *string) {
 
     for (sp = string; *sp; ++sp) {
         switch (*sp) {
-            case '\n':
+            case '\xa':
             case 0x0022:
                 ++alen;
                 break;
@@ -337,7 +337,7 @@ static UChar *quotedString(const UChar *string) {
     newstr = (UChar *) uprv_malloc((1 + alen) * U_SIZEOF_UCHAR);
     for (sp = string, np = newstr; *sp; ++sp) {
         switch (*sp) {
-            case '\n':
+            case '\xa':
                 *np++ = 0x005C;
                 *np++ = 0x006E;
                 break;
@@ -362,9 +362,9 @@ static void printString(UFILE *out, const UChar *str, int32_t len) {
 
 static void printCString(UFILE *out, const char *str, int32_t len) {
   if(len==-1) {
-    u_fprintf(out, "%s", str);
+    u_fprintf(out, u8"%s", str);
   } else {
-    u_fprintf(out, "%.*s", len, str);
+    u_fprintf(out, u8"%.*s", len, str);
   }
 }
 
@@ -374,7 +374,7 @@ static void printIndent(UFILE *out, int32_t indent) {
 }
 
 static void printHex(UFILE *out, uint8_t what) {
-    static const char map[] = "0123456789ABCDEF";
+    static const char map[] = u8"0123456789ABCDEF";
     UChar hex[2];
 
     hex[0] = map[what >> 4];
@@ -391,14 +391,14 @@ static void printOutAlias(UFILE *out,  UResourceBundle *parent, Resource r, cons
     if(opt_truncate && len > truncsize) {
         char msg[128];
         printIndent(out, indent);
-        sprintf(msg, "// WARNING: this resource, size %li is truncated to %li\n",
+        sprintf(msg, u8"// WARNING: this resource, size %li is truncated to %li\n",
             (long)len, (long)truncsize/2);
         printCString(out, msg, -1);
         len = truncsize;
     }
     if(U_SUCCESS(*status)) {
-        static const UChar openStr[] = { 0x003A, 0x0061, 0x006C, 0x0069, 0x0061, 0x0073, 0x0020, 0x007B, 0x0020, 0x0022 }; /* ":alias { \"" */
-        static const UChar closeStr[] = { 0x0022, 0x0020, 0x007D, 0x0020 }; /* "\" } " */
+        static const UChar openStr[] = { 0x003A, 0x0061, 0x006C, 0x0069, 0x0061, 0x0073, 0x0020, 0x007B, 0x0020, 0x0022 }; /* u8":alias { \"" */
+        static const UChar closeStr[] = { 0x0022, 0x0020, 0x007D, 0x0020 }; /* u8"\" } " */
         printIndent(out, indent);
         if(key != NULL) {
             printCString(out, key, -1);
@@ -407,11 +407,11 @@ static void printOutAlias(UFILE *out,  UResourceBundle *parent, Resource r, cons
         printString(out, string, len);
         printString(out, closeStr, UPRV_LENGTHOF(closeStr));
         if(verbose) {
-            printCString(out, " // ALIAS", -1);
+            printCString(out, u8" // ALIAS", -1);
         }
         printString(out, cr, UPRV_LENGTHOF(cr));
     } else {
-        reportError(pname, status, "getting binary value");
+        reportError(pname, status, u8"getting binary value");
     }
     uprv_free(string);
 }
@@ -435,22 +435,22 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
             if(opt_truncate && len > truncsize) {
                 char msg[128];
                 printIndent(out, indent);
-                sprintf(msg, "// WARNING: this resource, size %li is truncated to %li\n",
+                sprintf(msg, u8"// WARNING: this resource, size %li is truncated to %li\n",
                         (long)len, (long)(truncsize/2));
                 printCString(out, msg, -1);
                 len = truncsize/2;
             }
             printIndent(out, indent);
             if(key != NULL) {
-                static const UChar openStr[] = { 0x0020, 0x007B, 0x0020, 0x0022 }; /* " { \"" */
-                static const UChar closeStr[] = { 0x0022, 0x0020, 0x007D }; /* "\" }" */
+                static const UChar openStr[] = { 0x0020, 0x007B, 0x0020, 0x0022 }; /* u8" { \"" */
+                static const UChar closeStr[] = { 0x0022, 0x0020, 0x007D }; /* u8"\" }" */
                 printCString(out, key, (int32_t)uprv_strlen(key));
                 printString(out, openStr, UPRV_LENGTHOF(openStr));
                 printString(out, string, len);
                 printString(out, closeStr, UPRV_LENGTHOF(closeStr));
             } else {
-                static const UChar openStr[] = { 0x0022 }; /* "\"" */
-                static const UChar closeStr[] = { 0x0022, 0x002C }; /* "\"," */
+                static const UChar openStr[] = { 0x0022 }; /* u8"\"" */
+                static const UChar closeStr[] = { 0x0022, 0x002C }; /* u8"\"," */
 
                 printString(out, openStr, UPRV_LENGTHOF(openStr));
                 printString(out, string, (int32_t)(u_strlen(string)));
@@ -458,7 +458,7 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
             }
 
             if(verbose) {
-                printCString(out, "// STRING", -1);
+                printCString(out, u8"// STRING", -1);
             }
             printString(out, cr, UPRV_LENGTHOF(cr));
 
@@ -468,8 +468,8 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
 
     case URES_INT :
         {
-            static const UChar openStr[] = { 0x003A, 0x0069, 0x006E, 0x0074, 0x0020, 0x007B, 0x0020 }; /* ":int { " */
-            static const UChar closeStr[] = { 0x0020, 0x007D }; /* " }" */
+            static const UChar openStr[] = { 0x003A, 0x0069, 0x006E, 0x0074, 0x0020, 0x007B, 0x0020 }; /* u8":int { " */
+            static const UChar closeStr[] = { 0x0020, 0x007D }; /* u8" }" */
             UChar num[20];
 
             printIndent(out, indent);
@@ -482,7 +482,7 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
             printString(out, closeStr, UPRV_LENGTHOF(closeStr));
 
             if(verbose) {
-                printCString(out, "// INT", -1);
+                printCString(out, u8"// INT", -1);
             }
             printString(out, cr, UPRV_LENGTHOF(cr));
             break;
@@ -494,14 +494,14 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
             if(opt_truncate && len > truncsize) {
                 char msg[128];
                 printIndent(out, indent);
-                sprintf(msg, "// WARNING: this resource, size %li is truncated to %li\n",
+                sprintf(msg, u8"// WARNING: this resource, size %li is truncated to %li\n",
                         (long)len, (long)(truncsize/2));
                 printCString(out, msg, -1);
                 len = truncsize;
             }
             if(U_SUCCESS(*status)) {
-                static const UChar openStr[] = { 0x003A, 0x0062, 0x0069, 0x006E, 0x0061, 0x0072, 0x0079, 0x0020, 0x007B, 0x0020 }; /* ":binary { " */
-                static const UChar closeStr[] = { 0x0020, 0x007D, 0x0020 }; /* " } " */
+                static const UChar openStr[] = { 0x003A, 0x0062, 0x0069, 0x006E, 0x0061, 0x0072, 0x0079, 0x0020, 0x007B, 0x0020 }; /* u8":binary { " */
+                static const UChar closeStr[] = { 0x0020, 0x007D, 0x0020 }; /* u8" } " */
                 printIndent(out, indent);
                 if(key != NULL) {
                     printCString(out, key, -1);
@@ -512,11 +512,11 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
                 }
                 printString(out, closeStr, UPRV_LENGTHOF(closeStr));
                 if(verbose) {
-                    printCString(out, " // BINARY", -1);
+                    printCString(out, u8" // BINARY", -1);
                 }
                 printString(out, cr, UPRV_LENGTHOF(cr));
             } else {
-                reportError(pname, status, "getting binary value");
+                reportError(pname, status, u8"getting binary value");
             }
         }
         break;
@@ -525,8 +525,8 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
             int32_t len = 0;
             const int32_t *data = ures_getIntVector(resource, &len, status);
             if(U_SUCCESS(*status)) {
-                static const UChar openStr[] = { 0x003A, 0x0069, 0x006E, 0x0074, 0x0076, 0x0065, 0x0063, 0x0074, 0x006F, 0x0072, 0x0020, 0x007B, 0x0020 }; /* ":intvector { " */
-                static const UChar closeStr[] = { 0x0020, 0x007D, 0x0020 }; /* " } " */
+                static const UChar openStr[] = { 0x003A, 0x0069, 0x006E, 0x0074, 0x0076, 0x0065, 0x0063, 0x0074, 0x006F, 0x0072, 0x0020, 0x007B, 0x0020 }; /* u8":intvector { " */
+                static const UChar closeStr[] = { 0x0020, 0x007D, 0x0020 }; /* u8" } " */
                 UChar num[20];
 
                 printIndent(out, indent);
@@ -536,8 +536,8 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
                 printString(out, openStr, UPRV_LENGTHOF(openStr));
                 for(i = 0; i < len - 1; i++) {
                     int32_t numLen =  uprv_itou(num, 20, data[i], 10, 0);
-                    num[numLen++] = 0x002C; /* ',' */
-                    num[numLen++] = 0x0020; /* ' ' */
+                    num[numLen++] = 0x002C; /* '\x2c' */
+                    num[numLen++] = 0x0020; /* '\x20' */
                     num[numLen] = 0;
                     printString(out, num, u_strlen(num));
                 }
@@ -547,19 +547,19 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
                 }
                 printString(out, closeStr, UPRV_LENGTHOF(closeStr));
                 if(verbose) {
-                    printCString(out, "// INTVECTOR", -1);
+                    printCString(out, u8"// INTVECTOR", -1);
                 }
                 printString(out, cr, UPRV_LENGTHOF(cr));
             } else {
-                reportError(pname, status, "getting int vector");
+                reportError(pname, status, u8"getting int vector");
             }
       }
       break;
     case URES_TABLE :
     case URES_ARRAY :
         {
-            static const UChar openStr[] = { 0x007B }; /* "{" */
-            static const UChar closeStr[] = { 0x007D, '\n' }; /* "}\n" */
+            static const UChar openStr[] = { 0x007B }; /* u8"{" */
+            static const UChar closeStr[] = { 0x007D, '\xa' }; /* u8"}\n" */
 
             UResourceBundle *t = NULL;
             ures_resetIterator(resource);
@@ -570,9 +570,9 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
             printString(out, openStr, UPRV_LENGTHOF(openStr));
             if(verbose) {
                 if(ures_getType(resource) == URES_TABLE) {
-                    printCString(out, "// TABLE", -1);
+                    printCString(out, u8"// TABLE", -1);
                 } else {
-                    printCString(out, "// ARRAY", -1);
+                    printCString(out, u8"// ARRAY", -1);
                 }
             }
             printString(out, cr, UPRV_LENGTHOF(cr));
@@ -583,7 +583,7 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
                   if(U_SUCCESS(*status)) {
                     printOutBundle(out, t, indent+indentsize, pname, status);
                   } else {
-                    reportError(pname, status, "While processing table");
+                    reportError(pname, status, u8"While processing table");
                     *status = U_ZERO_ERROR;
                   }
               }
@@ -606,7 +606,7 @@ static void printOutBundle(UFILE *out, UResourceBundle *resource, int32_t indent
                     printOutBundle(out, t, indent+indentsize, pname, status);
                   }
                 } else {
-                  reportError(pname, status, "While processing table");
+                  reportError(pname, status, u8"While processing table");
                   *status = U_ZERO_ERROR;
                 }
               }
@@ -628,9 +628,9 @@ static const char *getEncodingName(const char *encoding) {
     const char *enc;
 
     err = U_ZERO_ERROR;
-    if (!(enc = ucnv_getStandardName(encoding, "MIME", &err))) {
+    if (!(enc = ucnv_getStandardName(encoding, u8"MIME", &err))) {
         err = U_ZERO_ERROR;
-        if (!(enc = ucnv_getStandardName(encoding, "IANA", &err))) {
+        if (!(enc = ucnv_getStandardName(encoding, u8"IANA", &err))) {
             ;
         }
     }
@@ -639,7 +639,7 @@ static const char *getEncodingName(const char *encoding) {
 }
 
 static void reportError(const char *pname, UErrorCode *status, const char *when) {
-  u_fprintf(ustderr, "%s: error %d while %s: %s\n", pname, *status, when, u_errorName(*status));
+  u_fprintf(ustderr, u8"%s: error %d while %s: %s\n", pname, *status, when, u_errorName(*status));
 }
 
 #else

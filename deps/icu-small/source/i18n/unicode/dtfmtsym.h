@@ -427,13 +427,13 @@ public:
      * doesn't specify any time separator, and always recognized when parsing.
      * @internal
      */
-    static const char16_t DEFAULT_TIME_SEPARATOR = 0x003a;  // ':'
+    static const char16_t DEFAULT_TIME_SEPARATOR = 0x003a;  // '\x3a'
 
     /**
      * This alternate time separator is always recognized when parsing.
      * @internal
      */
-    static const char16_t ALTERNATE_TIME_SEPARATOR = 0x002e;  // '.'
+    static const char16_t ALTERNATE_TIME_SEPARATOR = 0x002e;  // '\x2e'
 
     /**
      * Gets the time separator string. For example: ":".

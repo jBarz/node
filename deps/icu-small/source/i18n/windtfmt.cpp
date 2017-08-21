@@ -60,18 +60,18 @@ UnicodeString* Win32DateFormat::getTimeDateFormat(const Calendar *cal, const Loc
     const char *type = cal->getType();
     const char *base = locale->getBaseName();
     UResourceBundle *topBundle = ures_open((char *) 0, base, &status);
-    UResourceBundle *calBundle = ures_getByKey(topBundle, "calendar", NULL, &status);
+    UResourceBundle *calBundle = ures_getByKey(topBundle, u8"calendar", NULL, &status);
     UResourceBundle *typBundle = ures_getByKeyWithFallback(calBundle, type, NULL, &status);
-    UResourceBundle *patBundle = ures_getByKeyWithFallback(typBundle, "DateTimePatterns", NULL, &status);
+    UResourceBundle *patBundle = ures_getByKeyWithFallback(typBundle, u8"DateTimePatterns", NULL, &status);
 
     if (status == U_MISSING_RESOURCE_ERROR) {
         status = U_ZERO_ERROR;
-        typBundle = ures_getByKeyWithFallback(calBundle, "gregorian", typBundle, &status);
-        patBundle = ures_getByKeyWithFallback(typBundle, "DateTimePatterns", patBundle, &status);
+        typBundle = ures_getByKeyWithFallback(calBundle, u8"gregorian", typBundle, &status);
+        patBundle = ures_getByKeyWithFallback(typBundle, u8"DateTimePatterns", patBundle, &status);
     }
 
     if (U_FAILURE(status)) {
-        static const UChar defaultPattern[] = {0x007B, 0x0031, 0x007D, 0x0020, 0x007B, 0x0030, 0x007D, 0x0000}; // "{1} {0}"
+        static const UChar defaultPattern[] = {0x007B, 0x0031, 0x007D, 0x0020, 0x007B, 0x0030, 0x007D, 0x0000}; // u8"{1} {0}"
         return new UnicodeString(defaultPattern, UPRV_LENGTHOF(defaultPattern));
     }
 
@@ -112,7 +112,7 @@ static UErrorCode GetEquivalentWindowsLocaleName(const Locale& locale, UnicodeSt
         int32_t i;
         for (i = 0; i < UPRV_LENGTHOF(bcp47Tag); i++)
         {
-            if (asciiBCP47Tag[i] == '\0')
+            if (asciiBCP47Tag[i] == '\x0')
             {
                 break;
             }
@@ -126,12 +126,12 @@ static UErrorCode GetEquivalentWindowsLocaleName(const Locale& locale, UnicodeSt
         // Ensure it's null terminated
         if (i < (UPRV_LENGTHOF(bcp47Tag) - 1))
         {
-            bcp47Tag[i] = L'\0';
+            bcp47Tag[i] = L'\x0';
         }
         else
         {
             // Ran out of room.
-            bcp47Tag[UPRV_LENGTHOF(bcp47Tag) - 1] = L'\0';
+            bcp47Tag[UPRV_LENGTHOF(bcp47Tag) - 1] = L'\x0';
         }
 
 

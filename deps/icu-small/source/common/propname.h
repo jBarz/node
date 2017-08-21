@@ -68,8 +68,8 @@ U_CDECL_END
 
 /* UDataMemory structure and signatures ------------------------------------- */
 
-#define PNAME_DATA_NAME "pnames"
-#define PNAME_DATA_TYPE "icu"
+#define PNAME_DATA_NAME u8"pnames"
+#define PNAME_DATA_TYPE u8"icu"
 
 /* Fields in UDataInfo: */
 

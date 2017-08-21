@@ -233,8 +233,8 @@ public:
         MILLISECOND,          // Example: 0..999
         ZONE_OFFSET,          // Example: -12*U_MILLIS_PER_HOUR..12*U_MILLIS_PER_HOUR
         DST_OFFSET,           // Example: 0 or U_MILLIS_PER_HOUR
-        YEAR_WOY,             // 'Y' Example: 1..big number - Year of Week of Year
-        DOW_LOCAL,            // 'e' Example: 1..7 - Day of Week / Localized
+        YEAR_WOY,             // '\x59' Example: 1..big number - Year of Week of Year
+        DOW_LOCAL,            // '\x65' Example: 1..7 - Day of Week / Localized
 
         EXTENDED_YEAR,
         JULIAN_DAY,

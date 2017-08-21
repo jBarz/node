@@ -586,7 +586,7 @@ u_strtok_r(UChar    *src,
     /* If saveState is NULL, the user messed up. */
     if (src != NULL) {
         tokSource = src;
-        *saveState = src; /* Set to "src" in case there are no delimiters */
+        *saveState = src; /* Set to u8"src" in case there are no delimiters */
     }
     else if (*saveState) {
         tokSource = *saveState;
@@ -1236,13 +1236,13 @@ u_unescapeAt(UNESCAPE_CHAR_AT charAt,
 
     /* Convert hexadecimal and octal escapes */
     switch (c) {
-    case 0x0075 /*'u'*/:
+    case 0x0075 /*'\x75'*/:
         minDig = maxDig = 4;
         break;
-    case 0x0055 /*'U'*/:
+    case 0x0055 /*'\x55'*/:
         minDig = maxDig = 8;
         break;
-    case 0x0078 /*'x'*/:
+    case 0x0078 /*'\x78'*/:
         minDig = 1;
         if (*offset < length && charAt(*offset, context) == 0x7B /*{*/) {
             ++(*offset);
@@ -1293,7 +1293,7 @@ u_unescapeAt(UNESCAPE_CHAR_AT charAt,
         if (*offset < length && U16_IS_LEAD(result)) {
             int32_t ahead = *offset + 1;
             c = charAt(*offset, context);
-            if (c == 0x5C /*'\\'*/ && ahead < length) {
+            if (c == 0x5C /*'\x5c'*/ && ahead < length) {
                 c = (UChar) u_unescapeAt(charAt, &ahead, length, context);
             }
             if (U16_IS_TRAIL(c)) {
@@ -1314,7 +1314,7 @@ u_unescapeAt(UNESCAPE_CHAR_AT charAt,
     }
 
     /* Map \cX to control-X: X & 0x1F */
-    if (c == 0x0063 /*'c'*/ && *offset < length) {
+    if (c == 0x0063 /*'\x63'*/ && *offset < length) {
         c = charAt((*offset)++, context);
         if (U16_IS_LEAD(c) && *offset < length) {
             UChar c2 = charAt(*offset, context);
@@ -1377,7 +1377,7 @@ u_unescape(const char *src, UChar *dest, int32_t destCapacity) {
         /* '\\' intentionally written as compiler-specific
          * character constant to correspond to compiler-specific
          * char* constants. */
-        if (c == '\\') {
+        if (c == '\x5c') {
             int32_t lenParsed = 0;
             UChar32 c32;
             if (src != segment) {
@@ -1387,7 +1387,7 @@ u_unescape(const char *src, UChar *dest, int32_t destCapacity) {
                 }
                 i += (int32_t)(src - segment);
             }
-            ++src; /* advance past '\\' */
+            ++src; /* advance past '\x5c' */
             c32 = (UChar32)u_unescapeAt(_charPtr_charAt, &lenParsed, (int32_t)uprv_strlen(src), (void*)src);
             if (lenParsed == 0) {
                 goto err;

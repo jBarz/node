@@ -38,8 +38,8 @@ static const UChar OPEN_REV    = 0x0028; // (
 static const UChar CLOSE_REV   = 0x0029; // )
 
 //static const UChar EMPTY[]     = {0}; // ""
-static const UChar ANY[]       = {65,110,121,0}; // "Any"
-static const UChar ANY_NULL[]  = {65,110,121,45,78,117,108,108,0}; // "Any-Null"
+static const UChar ANY[]       = {65,110,121,0}; // u8"Any"
+static const UChar ANY_NULL[]  = {65,110,121,45,78,117,108,108,0}; // u8"Any-Null"
 
 static const int32_t FORWARD = UTRANS_FORWARD;
 static const int32_t REVERSE = UTRANS_REVERSE;

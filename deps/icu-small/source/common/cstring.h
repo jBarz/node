@@ -94,7 +94,7 @@ uprv_ebcdictolower(char c);
 
 /* Conversion from a digit to the character with radix base from 2-19 */
 /* May need to use U_UPPER_ORDINAL*/
-#define T_CString_itosOffset(a) ((a)<=9?('0'+(a)):('A'+(a)-10))
+#define T_CString_itosOffset(a) ((a)<=9?('\x30'+(a)):('\x41'+(a)-10))
 
 U_CAPI char* U_EXPORT2
 uprv_strdup(const char *src);

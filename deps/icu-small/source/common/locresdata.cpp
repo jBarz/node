@@ -96,9 +96,9 @@ uloc_getTableStringWithFallback(const char *path, const char *locale,
                 *pErrorCode = errorCode; /*save the errorCode*/
                 errorCode = U_ZERO_ERROR;
                 /* may be a deprecated code */
-                if(uprv_strcmp(tableKey, "Countries")==0){
+                if(uprv_strcmp(tableKey, u8"Countries")==0){
                     replacement =  uloc_getCurrentCountryID(itemKey);
-                }else if(uprv_strcmp(tableKey, "Languages")==0){
+                }else if(uprv_strcmp(tableKey, u8"Languages")==0){
                     replacement =  uloc_getCurrentLanguageID(itemKey);
                 }
                 /*pointer comparison is ok since uloc_getCurrentCountryID & uloc_getCurrentLanguageID return the key itself is replacement is not found*/
@@ -122,7 +122,7 @@ uloc_getTableStringWithFallback(const char *path, const char *locale,
             *pErrorCode = errorCode;
             errorCode = U_ZERO_ERROR;
 
-            fallbackLocale = ures_getStringByKeyWithFallback(&table, "Fallback", &len, &errorCode);
+            fallbackLocale = ures_getStringByKeyWithFallback(&table, u8"Fallback", &len, &errorCode);
             if(U_FAILURE(errorCode)){
                *pErrorCode = errorCode;
                 break;
@@ -171,7 +171,7 @@ _uloc_getOrientationHelper(const char* localeId,
                 uloc_getTableStringWithFallback(
                     NULL,
                     localeBuffer,
-                    "layout",
+                    u8"layout",
                     NULL,
                     key,
                     &length,
@@ -180,16 +180,16 @@ _uloc_getOrientationHelper(const char* localeId,
             if (!U_FAILURE(*status) && length != 0) {
                 switch(value[0])
                 {
-                case 0x0062: /* 'b' */
+                case 0x0062: /* '\x62' */
                     result = ULOC_LAYOUT_BTT;
                     break;
-                case 0x006C: /* 'l' */
+                case 0x006C: /* '\x6c' */
                     result = ULOC_LAYOUT_LTR;
                     break;
-                case 0x0072: /* 'r' */
+                case 0x0072: /* '\x72' */
                     result = ULOC_LAYOUT_RTL;
                     break;
-                case 0x0074: /* 't' */
+                case 0x0074: /* '\x74' */
                     result = ULOC_LAYOUT_TTB;
                     break;
                 default:
@@ -207,7 +207,7 @@ U_CAPI ULayoutType U_EXPORT2
 uloc_getCharacterOrientation(const char* localeId,
                              UErrorCode *status)
 {
-    return _uloc_getOrientationHelper(localeId, "characters", status);
+    return _uloc_getOrientationHelper(localeId, u8"characters", status);
 }
 
 /**
@@ -221,5 +221,5 @@ U_CAPI ULayoutType U_EXPORT2
 uloc_getLineOrientation(const char* localeId,
                         UErrorCode *status)
 {
-    return _uloc_getOrientationHelper(localeId, "lines", status);
+    return _uloc_getOrientationHelper(localeId, u8"lines", status);
 }

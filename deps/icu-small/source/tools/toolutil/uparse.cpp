@@ -60,10 +60,10 @@ static const char *
 getMissingLimit(const char *s) {
     const char *s0=s;
     if(
-        *(s=u_skipWhitespace(s))=='#' &&
-        *(s=u_skipWhitespace(s+1))=='@' &&
-        0==strncmp((s=u_skipWhitespace(s+1)), "missing", 7) &&
-        *(s=u_skipWhitespace(s+7))==':'
+        *(s=u_skipWhitespace(s))=='\x23' &&
+        *(s=u_skipWhitespace(s+1))=='\x40' &&
+        0==strncmp((s=u_skipWhitespace(s+1)), u8"missing", 7) &&
+        *(s=u_skipWhitespace(s+7))=='\x3a'
     ) {
         return u_skipWhitespace(s+1);
     } else {
@@ -90,7 +90,7 @@ u_parseDelimitedFile(const char *filename, char delimiter,
         return;
     }
 
-    if(filename==NULL || *filename==0 || (*filename=='-' && filename[1]==0)) {
+    if(filename==NULL || *filename==0 || (*filename=='\x2d' && filename[1]==0)) {
         filename=NULL;
         file=T_FileStream_stdin();
     } else {
@@ -118,12 +118,12 @@ u_parseDelimitedFile(const char *filename, char delimiter,
         }
 
         /* skip this line if it is empty or a comment */
-        if(*start==0 || *start=='#') {
+        if(*start==0 || *start=='\x23') {
             continue;
         }
 
         /* remove in-line comments */
-        limit=uprv_strchr(start, '#');
+        limit=uprv_strchr(start, '\x23');
         if(limit!=NULL) {
             /* get white space before the pound sign */
             while(limit>start && U_IS_INV_WHITESPACE(*(limit-1))) {
@@ -204,13 +204,13 @@ u_parseCodePoints(const char *s,
     count=0;
     for(;;) {
         s=u_skipWhitespace(s);
-        if(*s==';' || *s==0) {
+        if(*s=='\x3b' || *s==0) {
             return count;
         }
 
         /* read one code point */
         value=(uint32_t)uprv_strtoul(s, &end, 16);
-        if(end<=s || (!U_IS_INV_WHITESPACE(*end) && *end!=';' && *end!=0) || value>=0x110000) {
+        if(end<=s || (!U_IS_INV_WHITESPACE(*end) && *end!='\x3b' && *end!=0) || value>=0x110000) {
             *pErrorCode=U_PARSE_ERROR;
             return 0;
         }
@@ -257,7 +257,7 @@ u_parseString(const char *s,
     destLength=0;
     for(;;) {
         s=u_skipWhitespace(s);
-        if(*s==';' || *s==0) {
+        if(*s=='\x3b' || *s==0) {
             if(destLength<destCapacity) {
                 dest[destLength]=0;
             } else if(destLength==destCapacity) {
@@ -270,7 +270,7 @@ u_parseString(const char *s,
 
         /* read one code point */
         value=(uint32_t)uprv_strtoul(s, &end, 16);
-        if(end<=s || (!U_IS_INV_WHITESPACE(*end) && *end!=';' && *end!=0) || value>=0x110000) {
+        if(end<=s || (!U_IS_INV_WHITESPACE(*end) && *end!='\x3b' && *end!=0) || value>=0x110000) {
             *pErrorCode=U_PARSE_ERROR;
             return 0;
         }
@@ -321,7 +321,7 @@ u_parseCodePointRangeAnyTerminator(const char *s,
 
     /* is there a "..end"? */
     s=u_skipWhitespace(end);
-    if(*s!='.' || s[1]!='.') {
+    if(*s!='\x2e' || s[1]!='\x2e') {
         *terminator=end;
         return 1;
     }
@@ -354,7 +354,7 @@ u_parseCodePointRange(const char *s,
         u_parseCodePointRangeAnyTerminator(s, pStart, pEnd, &terminator, pErrorCode);
     if(U_SUCCESS(*pErrorCode)) {
         terminator=u_skipWhitespace(terminator);
-        if(*terminator!=';' && *terminator!=0) {
+        if(*terminator!='\x3b' && *terminator!=0) {
             *pErrorCode=U_PARSE_ERROR;
             return 0;
         }
@@ -372,7 +372,7 @@ u_parseUTF8(const char *source, int32_t sLen, char *dest, int32_t destCapacity, 
     }
 
     while(read < source+sLen) {
-        sscanf(read, "%2x", &value);
+        sscanf(read, u8"%2x", &value);
         if(i < destCapacity) {
             dest[i] = (char)value;
         }

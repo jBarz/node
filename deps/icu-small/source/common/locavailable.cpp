@@ -97,8 +97,8 @@ U_NAMESPACE_USE
 
 /* These strings describe the resources we attempt to load from
  the locale ResourceBundle data file.*/
-static const char _kIndexLocaleName[] = "res_index";
-static const char _kIndexTag[]        = "InstalledLocales";
+static const char _kIndexLocaleName[] = u8"res_index";
+static const char _kIndexTag[]        = u8"InstalledLocales";
 
 static char** _installedLocales = NULL;
 static int32_t _installedLocalesCount = 0;

@@ -153,7 +153,7 @@ ucal_open(  const UChar*  zoneID,
           locale = uloc_getDefault();
       }
       uprv_strncpy(localeBuf, locale, ULOC_LOCALE_IDENTIFIER_CAPACITY);
-      uloc_setKeywordValue("calendar", "gregorian", localeBuf, ULOC_LOCALE_IDENTIFIER_CAPACITY, status);
+      uloc_setKeywordValue(u8"calendar", u8"gregorian", localeBuf, ULOC_LOCALE_IDENTIFIER_CAPACITY, status);
       if (U_FAILURE(*status)) {
           return NULL;
       }
@@ -648,24 +648,24 @@ static const UEnumeration defaultKeywordValues = {
 };
 
 static const char * const CAL_TYPES[] = {
-        "gregorian",
-        "japanese",
-        "buddhist",
-        "roc",
-        "persian",
-        "islamic-civil",
-        "islamic",
-        "hebrew",
-        "chinese",
-        "indian",
-        "coptic",
-        "ethiopic",
-        "ethiopic-amete-alem",
-        "iso8601",
-        "dangi",
-        "islamic-umalqura",
-        "islamic-tbla",
-        "islamic-rgsa",
+        u8"gregorian",
+        u8"japanese",
+        u8"buddhist",
+        u8"roc",
+        u8"persian",
+        u8"islamic-civil",
+        u8"islamic",
+        u8"hebrew",
+        u8"chinese",
+        u8"indian",
+        u8"coptic",
+        u8"ethiopic",
+        u8"ethiopic-amete-alem",
+        u8"iso8601",
+        u8"dangi",
+        u8"islamic-umalqura",
+        u8"islamic-tbla",
+        u8"islamic-rgsa",
         NULL
 };
 
@@ -676,12 +676,12 @@ ucal_getKeywordValuesForLocale(const char * /* key */, const char* locale, UBool
     (void)ulocimp_getRegionForSupplementalData(locale, TRUE, prefRegion, sizeof(prefRegion), status);
 
     // Read preferred calendar values from supplementalData calendarPreference
-    UResourceBundle *rb = ures_openDirect(NULL, "supplementalData", status);
-    ures_getByKey(rb, "calendarPreferenceData", rb, status);
+    UResourceBundle *rb = ures_openDirect(NULL, u8"supplementalData", status);
+    ures_getByKey(rb, u8"calendarPreferenceData", rb, status);
     UResourceBundle *order = ures_getByKey(rb, prefRegion, NULL, status);
     if (*status == U_MISSING_RESOURCE_ERROR && rb != NULL) {
         *status = U_ZERO_ERROR;
-        order = ures_getByKey(rb, "001", NULL, status);
+        order = ures_getByKey(rb, u8"001", NULL, status);
     }
 
     // Create a list of calendar type strings

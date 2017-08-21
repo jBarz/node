@@ -410,17 +410,17 @@ struct LocaleDisplayNamesImpl::CapitalizationContextSink : public ResourceSink {
         for (int i = 0; contexts.getKeyAndValue(i, key, value); ++i) {
 
             CapContextUsage usageEnum;
-            if (uprv_strcmp(key, "key") == 0) {
+            if (uprv_strcmp(key, u8"key") == 0) {
                 usageEnum = kCapContextUsageKey;
-            } else if (uprv_strcmp(key, "keyValue") == 0) {
+            } else if (uprv_strcmp(key, u8"keyValue") == 0) {
                 usageEnum = kCapContextUsageKeyValue;
-            } else if (uprv_strcmp(key, "languages") == 0) {
+            } else if (uprv_strcmp(key, u8"languages") == 0) {
                 usageEnum = kCapContextUsageLanguage;
-            } else if (uprv_strcmp(key, "script") == 0) {
+            } else if (uprv_strcmp(key, u8"script") == 0) {
                 usageEnum = kCapContextUsageScript;
-            } else if (uprv_strcmp(key, "territory") == 0) {
+            } else if (uprv_strcmp(key, u8"territory") == 0) {
                 usageEnum = kCapContextUsageTerritory;
-            } else if (uprv_strcmp(key, "variant") == 0) {
+            } else if (uprv_strcmp(key, u8"variant") == 0) {
                 usageEnum = kCapContextUsageVariant;
             } else {
                 continue;
@@ -451,17 +451,17 @@ LocaleDisplayNamesImpl::initialize(void) {
         : langData.getLocale();
 
     UnicodeString sep;
-    langData.getNoFallback("localeDisplayPattern", "separator", sep);
+    langData.getNoFallback(u8"localeDisplayPattern", u8"separator", sep);
     if (sep.isBogus()) {
-        sep = UnicodeString("{0}, {1}", -1, US_INV);
+        sep = UnicodeString(u8"{0}, {1}", -1, US_INV);
     }
     UErrorCode status = U_ZERO_ERROR;
     separatorFormat.applyPatternMinMaxArguments(sep, 2, 2, status);
 
     UnicodeString pattern;
-    langData.getNoFallback("localeDisplayPattern", "pattern", pattern);
+    langData.getNoFallback(u8"localeDisplayPattern", u8"pattern", pattern);
     if (pattern.isBogus()) {
-        pattern = UnicodeString("{0} ({1})", -1, US_INV);
+        pattern = UnicodeString(u8"{0} ({1})", -1, US_INV);
     }
     format.applyPatternMinMaxArguments(pattern, 2, 2, status);
     if (pattern.indexOf((UChar)0xFF08) >= 0) {
@@ -477,9 +477,9 @@ LocaleDisplayNamesImpl::initialize(void) {
     }
 
     UnicodeString ktPattern;
-    langData.get("localeDisplayPattern", "keyTypePattern", ktPattern);
+    langData.get(u8"localeDisplayPattern", u8"keyTypePattern", ktPattern);
     if (ktPattern.isBogus()) {
-        ktPattern = UnicodeString("{0}={1}", -1, US_INV);
+        ktPattern = UnicodeString(u8"{0}={1}", -1, US_INV);
     }
     keyTypeFormat.applyPatternMinMaxArguments(ktPattern, 2, 2, status);
 
@@ -492,7 +492,7 @@ LocaleDisplayNamesImpl::initialize(void) {
         LocalUResourceBundlePointer resource(ures_open(NULL, locale.getName(), &status));
         if (U_FAILURE(status)) { return; }
         CapitalizationContextSink sink(*this);
-        ures_getAllItemsWithFallback(resource.getAlias(), "contextTransforms", sink, status);
+        ures_getAllItemsWithFallback(resource.getAlias(), u8"contextTransforms", sink, status);
         if (status == U_MISSING_RESOURCE_ERROR) {
             // Silently ignore.  Not every locale has contextTransforms.
             status = U_ZERO_ERROR;
@@ -570,7 +570,7 @@ LocaleDisplayNamesImpl::localeDisplayName(const Locale& locale,
 
   const char* lang = locale.getLanguage();
   if (uprv_strlen(lang) == 0) {
-    lang = "root";
+    lang = u8"root";
   }
   const char* script = locale.getScript();
   const char* country = locale.getCountry();
@@ -584,7 +584,7 @@ LocaleDisplayNamesImpl::localeDisplayName(const Locale& locale,
     char buffer[ULOC_FULLNAME_CAPACITY];
     do { // loop construct is so we can break early out of search
       if (hasScript && hasCountry) {
-        ncat(buffer, ULOC_FULLNAME_CAPACITY, lang, "_", script, "_", country, (char *)0);
+        ncat(buffer, ULOC_FULLNAME_CAPACITY, lang, u8"_", script, u8"_", country, (char *)0);
         localeIdName(buffer, resultName);
         if (!resultName.isBogus()) {
           hasScript = FALSE;
@@ -593,7 +593,7 @@ LocaleDisplayNamesImpl::localeDisplayName(const Locale& locale,
         }
       }
       if (hasScript) {
-        ncat(buffer, ULOC_FULLNAME_CAPACITY, lang, "_", script, (char *)0);
+        ncat(buffer, ULOC_FULLNAME_CAPACITY, lang, u8"_", script, (char *)0);
         localeIdName(buffer, resultName);
         if (!resultName.isBogus()) {
           hasScript = FALSE;
@@ -601,7 +601,7 @@ LocaleDisplayNamesImpl::localeDisplayName(const Locale& locale,
         }
       }
       if (hasCountry) {
-        ncat(buffer, ULOC_FULLNAME_CAPACITY, lang, "_", country, (char*)0);
+        ncat(buffer, ULOC_FULLNAME_CAPACITY, lang, u8"_", country, (char*)0);
         localeIdName(buffer, resultName);
         if (!resultName.isBogus()) {
           hasCountry = FALSE;
@@ -692,27 +692,27 @@ UnicodeString&
 LocaleDisplayNamesImpl::localeIdName(const char* localeId,
                                      UnicodeString& result) const {
     if (nameLength == UDISPCTX_LENGTH_SHORT) {
-        langData.getNoFallback("Languages%short", localeId, result);
+        langData.getNoFallback(u8"Languages%short", localeId, result);
         if (!result.isBogus()) {
             return result;
         }
     }
-    return langData.getNoFallback("Languages", localeId, result);
+    return langData.getNoFallback(u8"Languages", localeId, result);
 }
 
 UnicodeString&
 LocaleDisplayNamesImpl::languageDisplayName(const char* lang,
                                             UnicodeString& result) const {
-    if (uprv_strcmp("root", lang) == 0 || uprv_strchr(lang, '_') != NULL) {
+    if (uprv_strcmp(u8"root", lang) == 0 || uprv_strchr(lang, '\x5f') != NULL) {
         return result = UnicodeString(lang, -1, US_INV);
     }
     if (nameLength == UDISPCTX_LENGTH_SHORT) {
-        langData.get("Languages%short", lang, result);
+        langData.get(u8"Languages%short", lang, result);
         if (!result.isBogus()) {
             return adjustForUsageAndContext(kCapContextUsageLanguage, result);
         }
     }
-    langData.get("Languages", lang, result);
+    langData.get(u8"Languages", lang, result);
     return adjustForUsageAndContext(kCapContextUsageLanguage, result);
 }
 
@@ -721,12 +721,12 @@ LocaleDisplayNamesImpl::scriptDisplayName(const char* script,
                                           UnicodeString& result,
                                           UBool skipAdjust) const {
     if (nameLength == UDISPCTX_LENGTH_SHORT) {
-        langData.get("Scripts%short", script, result);
+        langData.get(u8"Scripts%short", script, result);
         if (!result.isBogus()) {
             return skipAdjust? result: adjustForUsageAndContext(kCapContextUsageScript, result);
         }
     }
-    langData.get("Scripts", script, result);
+    langData.get(u8"Scripts", script, result);
     return skipAdjust? result: adjustForUsageAndContext(kCapContextUsageScript, result);
 }
 
@@ -747,12 +747,12 @@ LocaleDisplayNamesImpl::regionDisplayName(const char* region,
                                           UnicodeString& result,
                                           UBool skipAdjust) const {
     if (nameLength == UDISPCTX_LENGTH_SHORT) {
-        regionData.get("Countries%short", region, result);
+        regionData.get(u8"Countries%short", region, result);
         if (!result.isBogus()) {
             return skipAdjust? result: adjustForUsageAndContext(kCapContextUsageTerritory, result);
         }
     }
-    regionData.get("Countries", region, result);
+    regionData.get(u8"Countries", region, result);
     return skipAdjust? result: adjustForUsageAndContext(kCapContextUsageTerritory, result);
 }
 
@@ -768,7 +768,7 @@ LocaleDisplayNamesImpl::variantDisplayName(const char* variant,
                                            UnicodeString& result,
                                            UBool skipAdjust) const {
     // don't have a resource for short variant names
-    langData.get("Variants", variant, result);
+    langData.get(u8"Variants", variant, result);
     return skipAdjust? result: adjustForUsageAndContext(kCapContextUsageVariant, result);
 }
 
@@ -783,7 +783,7 @@ LocaleDisplayNamesImpl::keyDisplayName(const char* key,
                                        UnicodeString& result,
                                        UBool skipAdjust) const {
     // don't have a resource for short key names
-    langData.get("Keys", key, result);
+    langData.get(u8"Keys", key, result);
     return skipAdjust? result: adjustForUsageAndContext(kCapContextUsageKey, result);
 }
 
@@ -798,7 +798,7 @@ LocaleDisplayNamesImpl::keyValueDisplayName(const char* key,
                                             const char* value,
                                             UnicodeString& result,
                                             UBool skipAdjust) const {
-    if (uprv_strcmp(key, "currency") == 0) {
+    if (uprv_strcmp(key, u8"currency") == 0) {
         // ICU4C does not have ICU4J CurrencyDisplayInfo equivalent for now.
         UErrorCode sts = U_ZERO_ERROR;
         UnicodeString ustrValue(value, -1, US_INV);
@@ -816,12 +816,12 @@ LocaleDisplayNamesImpl::keyValueDisplayName(const char* key,
     }
 
     if (nameLength == UDISPCTX_LENGTH_SHORT) {
-        langData.get("Types%short", key, value, result);
+        langData.get(u8"Types%short", key, value, result);
         if (!result.isBogus()) {
             return skipAdjust? result: adjustForUsageAndContext(kCapContextUsageKeyValue, result);
         }
     }
-    langData.get("Types", key, value, result);
+    langData.get(u8"Types", key, value, result);
     return skipAdjust? result: adjustForUsageAndContext(kCapContextUsageKeyValue, result);
 }
 

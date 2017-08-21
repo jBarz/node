@@ -183,7 +183,7 @@ MeasureFormatCacheData::~MeasureFormatCacheData() {
 }
 
 static UBool isCurrency(const MeasureUnit &unit) {
-    return (uprv_strcmp(unit.getType(), "currency") == 0);
+    return (uprv_strcmp(unit.getType(), u8"currency") == 0);
 }
 
 static UBool getString(
@@ -261,10 +261,10 @@ struct UnitDataSink : public ResourceSink {
      */
     void consumePattern(const char *key, const ResourceValue &value, UErrorCode &errorCode) {
         if (U_FAILURE(errorCode)) { return; }
-        if (uprv_strcmp(key, "dnam") == 0) {
+        if (uprv_strcmp(key, u8"dnam") == 0) {
             // The display name for the unit in the current width.
             setDnamIfAbsent(value, errorCode);
-        } else if (uprv_strcmp(key, "per") == 0) {
+        } else if (uprv_strcmp(key, u8"per") == 0) {
             // For example, "{0}/h".
             setFormatterIfAbsent(MeasureFormatCacheData::PER_UNIT_INDEX, value, 1, errorCode);
         } else {
@@ -309,7 +309,7 @@ struct UnitDataSink : public ResourceSink {
      * unitsShort/compound/per may be "{0}/{1}".
      */
     void consumeCompoundPattern(const char *key, const ResourceValue &value, UErrorCode &errorCode) {
-        if (U_SUCCESS(errorCode) && uprv_strcmp(key, "per") == 0) {
+        if (U_SUCCESS(errorCode) && uprv_strcmp(key, u8"per") == 0) {
             cacheData.perFormatters[width].
                     applyPatternMinMaxArguments(value.getUnicodeString(errorCode), 2, 2, errorCode);
         }
@@ -322,9 +322,9 @@ struct UnitDataSink : public ResourceSink {
      */
     void consumeUnitTypesTable(const char *key, ResourceValue &value, UErrorCode &errorCode) {
         if (U_FAILURE(errorCode)) { return; }
-        if (uprv_strcmp(key, "currency") == 0) {
+        if (uprv_strcmp(key, u8"currency") == 0) {
             // Skip.
-        } else if (uprv_strcmp(key, "compound") == 0) {
+        } else if (uprv_strcmp(key, u8"compound") == 0) {
             if (!cacheData.hasPerFormatter(width)) {
                 ResourceTable compoundTable = value.getTable(errorCode);
                 if (U_FAILURE(errorCode)) { return; }
@@ -332,7 +332,7 @@ struct UnitDataSink : public ResourceSink {
                     consumeCompoundPattern(key, value, errorCode);
                 }
             }
-        } else if (uprv_strcmp(key, "coordinate") == 0) {
+        } else if (uprv_strcmp(key, u8"coordinate") == 0) {
             // special handling but we need to determine what that is
         } else {
             type = key;
@@ -378,13 +378,13 @@ struct UnitDataSink : public ResourceSink {
     }
 
     static UMeasureFormatWidth widthFromKey(const char *key) {
-        if (uprv_strncmp(key, "units", 5) == 0) {
+        if (uprv_strncmp(key, u8"units", 5) == 0) {
             key += 5;
             if (*key == 0) {
                 return UMEASFMT_WIDTH_WIDE;
-            } else if (uprv_strcmp(key, "Short") == 0) {
+            } else if (uprv_strcmp(key, u8"Short") == 0) {
                 return UMEASFMT_WIDTH_SHORT;
-            } else if (uprv_strcmp(key, "Narrow") == 0) {
+            } else if (uprv_strcmp(key, u8"Narrow") == 0) {
                 return UMEASFMT_WIDTH_NARROW;
             }
         }
@@ -434,7 +434,7 @@ static UBool loadMeasureUnitData(
         MeasureFormatCacheData &cacheData,
         UErrorCode &status) {
     UnitDataSink sink(cacheData);
-    ures_getAllItemsWithFallback(resource, "", sink, status);
+    ures_getAllItemsWithFallback(resource, u8"", sink, status);
     return U_SUCCESS(status);
 }
 
@@ -447,8 +447,8 @@ static UnicodeString loadNumericDateFormatterPattern(
         return result;
     }
     CharString chs;
-    chs.append("durationUnits", status)
-            .append("/", status).append(pattern, status);
+    chs.append(u8"durationUnits", status)
+            .append(u8"/", status).append(pattern, status);
     LocalUResourceBundlePointer patternBundle(
             ures_getByKeyWithFallback(
                 resource,
@@ -463,8 +463,8 @@ static UnicodeString loadNumericDateFormatterPattern(
     int32_t len = result.length();
     UChar *buffer = result.getBuffer(len);
     for (int32_t i = 0; i < len; ++i) {
-        if (buffer[i] == 0x68) { // 'h'
-            buffer[i] = 0x48; // 'H'
+        if (buffer[i] == 0x68) { // '\x68'
+            buffer[i] = 0x48; // '\x48'
         }
     }
     result.releaseBuffer(len);
@@ -478,9 +478,9 @@ static NumericDateFormatters *loadNumericDateFormatters(
         return NULL;
     }
     NumericDateFormatters *result = new NumericDateFormatters(
-        loadNumericDateFormatterPattern(resource, "hm", status),
-        loadNumericDateFormatterPattern(resource, "ms", status),
-        loadNumericDateFormatterPattern(resource, "hms", status),
+        loadNumericDateFormatterPattern(resource, u8"hm", status),
+        loadNumericDateFormatterPattern(resource, u8"ms", status),
+        loadNumericDateFormatterPattern(resource, u8"hms", status),
         status);
     if (U_FAILURE(status)) {
         delete result;
@@ -541,7 +541,7 @@ const MeasureFormatCacheData *LocaleCacheKey<MeasureFormatCacheData>::createObje
 }
 
 static UBool isTimeUnit(const MeasureUnit &mu, const char *tu) {
-    return uprv_strcmp(mu.getType(), "duration") == 0 &&
+    return uprv_strcmp(mu.getType(), u8"duration") == 0 &&
             uprv_strcmp(mu.getSubtype(), tu) == 0;
 }
 
@@ -568,7 +568,7 @@ static int32_t toHMS(
     // are instances of MeasureUnit base class and not a subclass. Otherwise,
     // operator== will immediately return false.
     for (int32_t i = 0; i < measureCount; ++i) {
-        if (isTimeUnit(measures[i].getUnit(), "hour")) {
+        if (isTimeUnit(measures[i].getUnit(), u8"hour")) {
             // hour must come first
             if (result >= 1) {
                 return 0;
@@ -578,7 +578,7 @@ static int32_t toHMS(
                 return 0;
             }
             result |= 1;
-        } else if (isTimeUnit(measures[i].getUnit(), "minute")) {
+        } else if (isTimeUnit(measures[i].getUnit(), u8"minute")) {
             // minute must come after hour
             if (result >= 2) {
                 return 0;
@@ -588,7 +588,7 @@ static int32_t toHMS(
                 return 0;
             }
             result |= 2;
-        } else if (isTimeUnit(measures[i].getUnit(), "second")) {
+        } else if (isTimeUnit(measures[i].getUnit(), u8"second")) {
             // second must come after hour and minute
             if (result >= 4) {
                 return 0;
@@ -853,7 +853,7 @@ void MeasureFormat::initMeasureFormat(
         UMeasureFormatWidth w,
         NumberFormat *nfToAdopt,
         UErrorCode &status) {
-    static const char *listStyles[] = {"unit", "unit-short", "unit-narrow"};
+    static const char *listStyles[] = {u8"unit", u8"unit-short", u8"unit-narrow"};
     LocalPointer<NumberFormat> nf(nfToAdopt);
     if (U_FAILURE(status)) {
         return;

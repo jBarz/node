@@ -469,7 +469,7 @@ CollationFastLatinBuilder::encodeUniqueCEs(UErrorCode &errorCode) {
                     pri += CollationFastLatin::LONG_INC;
                 } else {
 #if DEBUG_COLLATION_FAST_LATIN_BUILDER
-                    printf("long-primary overflow for %08x\n", p);
+                    printf(u8"long-primary overflow for %08x\n", p);
 #endif
                     miniCEs[i] = CollationFastLatin::BAIL_OUT;
                     continue;
@@ -482,7 +482,7 @@ CollationFastLatinBuilder::encodeUniqueCEs(UErrorCode &errorCode) {
                     pri += CollationFastLatin::SHORT_INC;
                 } else {
 #if DEBUG_COLLATION_FAST_LATIN_BUILDER
-                    printf("short-primary overflow for %08x\n", p);
+                    printf(u8"short-primary overflow for %08x\n", p);
 #endif
                     shortPrimaryOverflow = TRUE;
                     miniCEs[i] = CollationFastLatin::BAIL_OUT;
@@ -550,12 +550,12 @@ CollationFastLatinBuilder::encodeUniqueCEs(UErrorCode &errorCode) {
         }
     }
 #if DEBUG_COLLATION_FAST_LATIN_BUILDER
-    printf("last mini primary: %04x\n", pri);
+    printf(u8"last mini primary: %04x\n", pri);
 #endif
 #if DEBUG_COLLATION_FAST_LATIN_BUILDER >= 2
     for(int32_t i = 0; i < uniqueCEs.size(); ++i) {
         int64_t ce = uniqueCEs.elementAti(i);
-        printf("unique CE 0x%016lx -> 0x%04x\n", ce, miniCEs[i]);
+        printf(u8"unique CE 0x%016lx -> 0x%04x\n", ce, miniCEs[i]);
     }
 #endif
     return U_SUCCESS(errorCode);
@@ -638,30 +638,30 @@ CollationFastLatinBuilder::encodeContractions(UErrorCode &errorCode) {
         return FALSE;
     }
 #if DEBUG_COLLATION_FAST_LATIN_BUILDER
-    printf("** fast Latin %d * 2 = %d bytes\n", result.length(), result.length() * 2);
-    puts("   header & below-digit groups map");
+    printf(u8"** fast Latin %d * 2 = %d bytes\n", result.length(), result.length() * 2);
+    puts(u8"   header & below-digit groups map");
     int32_t i = 0;
     for(; i < headerLength; ++i) {
-        printf(" %04x", result[i]);
+        printf(u8" %04x", result[i]);
     }
-    printf("\n   char mini CEs");
+    printf(u8"\n   char mini CEs");
     U_ASSERT(CollationFastLatin::NUM_FAST_CHARS % 16 == 0);
     for(; i < indexBase; i += 16) {
         UChar32 c = i - headerLength;
         if(c >= CollationFastLatin::LATIN_LIMIT) {
             c = CollationFastLatin::PUNCT_START + c - CollationFastLatin::LATIN_LIMIT;
         }
-        printf("\n %04x:", c);
+        printf(u8"\n %04x:", c);
         for(int32_t j = 0; j < 16; ++j) {
-            printf(" %04x", result[i + j]);
+            printf(u8" %04x", result[i + j]);
         }
     }
-    printf("\n   expansions & contractions");
+    printf(u8"\n   expansions & contractions");
     for(; i < result.length(); ++i) {
-        if((i - indexBase) % 16 == 0) { puts(""); }
-        printf(" %04x", result[i]);
+        if((i - indexBase) % 16 == 0) { puts(u8""); }
+        printf(u8" %04x", result[i]);
     }
-    puts("");
+    puts(u8"");
 #endif
     return TRUE;
 }

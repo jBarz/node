@@ -233,7 +233,7 @@ offsetTOCLookupFn(const UDataMemory *pData,
 #if defined (UDATA_DEBUG_DUMP)
         /* list the contents of the TOC each time .. not recommended */
         for(number=0; number<count; ++number) {
-            fprintf(stderr, "\tx%d: %s\n", number, &base[toc->entry[number].nameOffset]);
+            fprintf(stderr, u8"\tx%d: %s\n", number, &base[toc->entry[number].nameOffset]);
         }
 #endif
         number=offsetTOCPrefixBinarySearch(tocEntryName, base, toc->entry, count);
@@ -241,7 +241,7 @@ offsetTOCLookupFn(const UDataMemory *pData,
             /* found it */
             const UDataOffsetTOCEntry *entry=toc->entry+number;
 #ifdef UDATA_DEBUG
-            fprintf(stderr, "%s: Found.\n", tocEntryName);
+            fprintf(stderr, u8"%s: Found.\n", tocEntryName);
 #endif
             if((number+1) < count) {
                 *pLength = (int32_t)(entry[1].dataOffset - entry->dataOffset);
@@ -251,13 +251,13 @@ offsetTOCLookupFn(const UDataMemory *pData,
             return (const DataHeader *)(base+entry->dataOffset);
         } else {
 #ifdef UDATA_DEBUG
-            fprintf(stderr, "%s: Not found.\n", tocEntryName);
+            fprintf(stderr, u8"%s: Not found.\n", tocEntryName);
 #endif
             return NULL;
         }
     } else {
 #ifdef UDATA_DEBUG
-        fprintf(stderr, "returning header\n");
+        fprintf(stderr, u8"returning header\n");
 #endif
 
         return pData->pHeader;
@@ -282,20 +282,20 @@ static const DataHeader * U_CALLCONV pointerTOCLookupFn(const UDataMemory *pData
 #if defined (UDATA_DEBUG_DUMP)
         /* list the contents of the TOC each time .. not recommended */
         for(number=0; number<count; ++number) {
-            fprintf(stderr, "\tx%d: %s\n", number, toc->entry[number].entryName);
+            fprintf(stderr, u8"\tx%d: %s\n", number, toc->entry[number].entryName);
         }
 #endif
         number=pointerTOCPrefixBinarySearch(name, toc->entry, count);
         if(number>=0) {
             /* found it */
 #ifdef UDATA_DEBUG
-            fprintf(stderr, "%s: Found.\n", toc->entry[number].entryName);
+            fprintf(stderr, u8"%s: Found.\n", toc->entry[number].entryName);
 #endif
             *pLength=-1;
             return UDataMemory_normalizeDataPointer(toc->entry[number].pHeader);
         } else {
 #ifdef UDATA_DEBUG
-            fprintf(stderr, "%s: Not found.\n", name);
+            fprintf(stderr, u8"%s: Not found.\n", name);
 #endif
             return NULL;
         }

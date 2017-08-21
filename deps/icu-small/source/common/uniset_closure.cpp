@@ -244,7 +244,7 @@ UnicodeSet& UnicodeSet::closeOver(int32_t attribute) {
                         }
                     }
                 } else {
-                    Locale root("");
+                    Locale root(u8"");
 #if !UCONFIG_NO_BREAK_ITERATION
                     UErrorCode status = U_ZERO_ERROR;
                     BreakIterator *bi = BreakIterator::createWordInstance(root, status);

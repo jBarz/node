@@ -52,22 +52,22 @@ U_CAPI UBool U_EXPORT2
 uprv_isASCIILetter(char c) {
 #if U_CHARSET_FAMILY==U_EBCDIC_FAMILY
     return
-        ('a'<=c && c<='i') || ('j'<=c && c<='r') || ('s'<=c && c<='z') ||
-        ('A'<=c && c<='I') || ('J'<=c && c<='R') || ('S'<=c && c<='Z');
+        ('\x61'<=c && c<='\x69') || ('\x6a'<=c && c<='\x72') || ('\x73'<=c && c<='\x7a') ||
+        ('\x41'<=c && c<='\x49') || ('\x4a'<=c && c<='\x52') || ('\x53'<=c && c<='\x5a');
 #else
-    return ('a'<=c && c<='z') || ('A'<=c && c<='Z');
+    return ('\x61'<=c && c<='\x7a') || ('\x41'<=c && c<='\x5a');
 #endif
 }
 
 U_CAPI char U_EXPORT2
 uprv_toupper(char c) {
 #if U_CHARSET_FAMILY==U_EBCDIC_FAMILY
-    if(('a'<=c && c<='i') || ('j'<=c && c<='r') || ('s'<=c && c<='z')) {
-        c=(char)(c+('A'-'a'));
+    if(('\x61'<=c && c<='\x69') || ('\x6a'<=c && c<='\x72') || ('\x73'<=c && c<='\x7a')) {
+        c=(char)(c+('\x41'-'\x61'));
     }
 #else
-    if('a'<=c && c<='z') {
-        c=(char)(c+('A'-'a'));
+    if('\x61'<=c && c<='\x7a') {
+        c=(char)(c+('\x41'-'\x61'));
     }
 #endif
     return c;
@@ -87,12 +87,12 @@ uprv_toupper(char c) {
 U_CAPI char U_EXPORT2
 uprv_tolower(char c) {
 #if U_CHARSET_FAMILY==U_EBCDIC_FAMILY
-    if(('A'<=c && c<='I') || ('J'<=c && c<='R') || ('S'<=c && c<='Z')) {
-        c=(char)(c+('a'-'A'));
+    if(('\x41'<=c && c<='\x49') || ('\x4a'<=c && c<='\x52') || ('\x53'<=c && c<='\x5a')) {
+        c=(char)(c+('\x61'-'\x41'));
     }
 #else
-    if('A'<=c && c<='Z') {
-        c=(char)(c+('a'-'A'));
+    if('\x41'<=c && c<='\x5a') {
+        c=(char)(c+('\x61'-'\x41'));
     }
 #endif
     return c;
@@ -167,7 +167,7 @@ T_CString_integerToString(char* buffer, int32_t v, int32_t radix)
     if(v<0 && radix == 10) {
         /* Only in base 10 do we conside numbers to be signed. */
         uval = (uint32_t)(-v);
-        buffer[length++] = '-';
+        buffer[length++] = '\x2d';
     }
 
     tbx = sizeof(tbuf)-1;
@@ -205,7 +205,7 @@ T_CString_int64ToString(char* buffer, int64_t v, uint32_t radix)
     if(v<0 && radix == 10) {
         /* Only in base 10 do we conside numbers to be signed. */
         uval = (uint64_t)(-v);
-        buffer[length++] = '-';
+        buffer[length++] = '\x2d';
     }
 
     tbx = sizeof(tbuf)-1;

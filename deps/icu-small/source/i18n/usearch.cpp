@@ -3846,12 +3846,12 @@ U_CAPI UBool U_EXPORT2 usearch_search(UStringSearch  *strsrch,
     // TODO:  reject search patterns beginning with a combining char.
 
 #ifdef USEARCH_DEBUG
-    if (getenv("USEARCH_DEBUG") != NULL) {
-        printf("Pattern CEs\n");
+    if (getenv(u8"USEARCH_DEBUG") != NULL) {
+        printf(u8"Pattern CEs\n");
         for (int ii=0; ii<strsrch->pattern.cesLength; ii++) {
-            printf(" %8x", strsrch->pattern.ces[ii]);
+            printf(u8" %8x", strsrch->pattern.ces[ii]);
         }
-        printf("\n");
+        printf(u8"\n");
     }
 
 #endif
@@ -4078,8 +4078,8 @@ U_CAPI UBool U_EXPORT2 usearch_search(UStringSearch  *strsrch,
         }
 
     #ifdef USEARCH_DEBUG
-        if (getenv("USEARCH_DEBUG") != NULL) {
-            printf("minLimit, maxLimit, mLimit = %d, %d, %d\n", minLimit, maxLimit, mLimit);
+        if (getenv(u8"USEARCH_DEBUG") != NULL) {
+            printf(u8"minLimit, maxLimit, mLimit = %d, %d, %d\n", minLimit, maxLimit, mLimit);
         }
     #endif
 
@@ -4105,13 +4105,13 @@ U_CAPI UBool U_EXPORT2 usearch_search(UStringSearch  *strsrch,
     }
 
     #ifdef USEARCH_DEBUG
-    if (getenv("USEARCH_DEBUG") != NULL) {
-        printf("Target CEs [%d .. %d]\n", ceb.firstIx, ceb.limitIx);
+    if (getenv(u8"USEARCH_DEBUG") != NULL) {
+        printf(u8"Target CEs [%d .. %d]\n", ceb.firstIx, ceb.limitIx);
         int32_t  lastToPrint = ceb.limitIx+2;
         for (int ii=ceb.firstIx; ii<lastToPrint; ii++) {
-            printf("%8x@%d ", ceb.get(ii)->ce, ceb.get(ii)->srcIndex);
+            printf(u8"%8x@%d ", ceb.get(ii)->ce, ceb.get(ii)->srcIndex);
         }
-        printf("\n%s\n", found? "match found" : "no match");
+        printf(u8"\n%s\n", found? u8"match found" : u8"no match");
     }
     #endif
 
@@ -4146,12 +4146,12 @@ U_CAPI UBool U_EXPORT2 usearch_searchBackwards(UStringSearch  *strsrch,
     // TODO:  reject search patterns beginning with a combining char.
 
 #ifdef USEARCH_DEBUG
-    if (getenv("USEARCH_DEBUG") != NULL) {
-        printf("Pattern CEs\n");
+    if (getenv(u8"USEARCH_DEBUG") != NULL) {
+        printf(u8"Pattern CEs\n");
         for (int ii=0; ii<strsrch->pattern.cesLength; ii++) {
-            printf(" %8x", strsrch->pattern.ces[ii]);
+            printf(u8" %8x", strsrch->pattern.ces[ii]);
         }
-        printf("\n");
+        printf(u8"\n");
     }
 
 #endif
@@ -4372,8 +4372,8 @@ U_CAPI UBool U_EXPORT2 usearch_searchBackwards(UStringSearch  *strsrch,
         }
 
     #ifdef USEARCH_DEBUG
-        if (getenv("USEARCH_DEBUG") != NULL) {
-            printf("minLimit, maxLimit, mLimit = %d, %d, %d\n", minLimit, maxLimit, mLimit);
+        if (getenv(u8"USEARCH_DEBUG") != NULL) {
+            printf(u8"minLimit, maxLimit, mLimit = %d, %d, %d\n", minLimit, maxLimit, mLimit);
         }
     #endif
 
@@ -4388,13 +4388,13 @@ U_CAPI UBool U_EXPORT2 usearch_searchBackwards(UStringSearch  *strsrch,
     }
 
     #ifdef USEARCH_DEBUG
-    if (getenv("USEARCH_DEBUG") != NULL) {
-        printf("Target CEs [%d .. %d]\n", ceb.firstIx, ceb.limitIx);
+    if (getenv(u8"USEARCH_DEBUG") != NULL) {
+        printf(u8"Target CEs [%d .. %d]\n", ceb.firstIx, ceb.limitIx);
         int32_t  lastToPrint = ceb.limitIx+2;
         for (int ii=ceb.firstIx; ii<lastToPrint; ii++) {
-            printf("%8x@%d ", ceb.get(ii)->ce, ceb.get(ii)->srcIndex);
+            printf(u8"%8x@%d ", ceb.get(ii)->ce, ceb.get(ii)->srcIndex);
         }
-        printf("\n%s\n", found? "match found" : "no match");
+        printf(u8"\n%s\n", found? u8"match found" : u8"no match");
     }
     #endif
 

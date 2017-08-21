@@ -117,7 +117,7 @@ ucol_looksLikeCollationBinary(const UDataSwapper *ds,
     (void)udata_swapDataHeader(ds, inData, -1, NULL, &errorCode);
     if(U_SUCCESS(errorCode)) {
         const UDataInfo &info=*(const UDataInfo *)((const char *)inData+4);
-        if(info.dataFormat[0]==0x55 &&   // dataFormat="UCol"
+        if(info.dataFormat[0]==0x55 &&   // dataFormat=u8"UCol"
                 info.dataFormat[1]==0x43 &&
                 info.dataFormat[2]==0x6f &&
                 info.dataFormat[3]==0x6c) {
@@ -199,7 +199,7 @@ swapFormatVersion3(const UDataSwapper *ds,
     if(length<0) {
         header.size=udata_readInt32(ds, inHeader->size);
     } else if((length<(42*4) || length<(header.size=udata_readInt32(ds, inHeader->size)))) {
-        udata_printError(ds, "ucol_swap(formatVersion=3): too few bytes (%d after header) for collation data\n",
+        udata_printError(ds, u8"ucol_swap(formatVersion=3): too few bytes (%d after header) for collation data\n",
                          length);
         *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;
@@ -211,7 +211,7 @@ swapFormatVersion3(const UDataSwapper *ds,
         inHeader->formatVersion[0]==3 /*&&
         inHeader->formatVersion[1]>=0*/
     )) {
-        udata_printError(ds, "ucol_swap(formatVersion=3): magic 0x%08x or format version %02x.%02x is not a collation binary\n",
+        udata_printError(ds, u8"ucol_swap(formatVersion=3): magic 0x%08x or format version %02x.%02x is not a collation binary\n",
                          header.magic,
                          inHeader->formatVersion[0], inHeader->formatVersion[1]);
         *pErrorCode=U_UNSUPPORTED_ERROR;
@@ -219,7 +219,7 @@ swapFormatVersion3(const UDataSwapper *ds,
     }
 
     if(inHeader->isBigEndian!=ds->inIsBigEndian || inHeader->charSetFamily!=ds->inCharset) {
-        udata_printError(ds, "ucol_swap(formatVersion=3): endianness %d or charset %d does not match the swapper\n",
+        udata_printError(ds, u8"ucol_swap(formatVersion=3): endianness %d or charset %d does not match the swapper\n",
                          inHeader->isBigEndian, inHeader->charSetFamily);
         *pErrorCode=U_INVALID_FORMAT_ERROR;
         return 0;
@@ -389,8 +389,8 @@ swapFormatVersion4(const UDataSwapper *ds,
 
     // Need at least IX_INDEXES_LENGTH and IX_OPTIONS.
     if(0<=length && length<8) {
-        udata_printError(ds, "ucol_swap(formatVersion=4): too few bytes "
-                         "(%d after header) for collation data\n",
+        udata_printError(ds, u8"ucol_swap(formatVersion=4): too few bytes "
+                         u8"(%d after header) for collation data\n",
                          length);
         errorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;
@@ -398,8 +398,8 @@ swapFormatVersion4(const UDataSwapper *ds,
 
     int32_t indexesLength=indexes[0]=udata_readInt32(ds, inIndexes[0]);
     if(0<=length && length<(indexesLength*4)) {
-        udata_printError(ds, "ucol_swap(formatVersion=4): too few bytes "
-                         "(%d after header) for collation data\n",
+        udata_printError(ds, u8"ucol_swap(formatVersion=4): too few bytes "
+                         u8"(%d after header) for collation data\n",
                          length);
         errorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;
@@ -425,8 +425,8 @@ swapFormatVersion4(const UDataSwapper *ds,
     if(length<0) { return size; }
 
     if(length<size) {
-        udata_printError(ds, "ucol_swap(formatVersion=4): too few bytes "
-                         "(%d after header) for collation data\n",
+        udata_printError(ds, u8"ucol_swap(formatVersion=4): too few bytes "
+                         u8"(%d after header) for collation data\n",
                          length);
         errorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;
@@ -467,7 +467,7 @@ swapFormatVersion4(const UDataSwapper *ds,
     offset = indexes[index];
     length = indexes[index + 1] - offset;
     if(length > 0) {
-        udata_printError(ds, "ucol_swap(formatVersion=4): unknown data at IX_RESERVED8_OFFSET\n", length);
+        udata_printError(ds, u8"ucol_swap(formatVersion=4): unknown data at IX_RESERVED8_OFFSET\n", length);
         errorCode = U_UNSUPPORTED_ERROR;
         return 0;
     }
@@ -483,7 +483,7 @@ swapFormatVersion4(const UDataSwapper *ds,
     offset = indexes[index];
     length = indexes[index + 1] - offset;
     if(length > 0) {
-        udata_printError(ds, "ucol_swap(formatVersion=4): unknown data at IX_RESERVED10_OFFSET\n", length);
+        udata_printError(ds, u8"ucol_swap(formatVersion=4): unknown data at IX_RESERVED10_OFFSET\n", length);
         errorCode = U_UNSUPPORTED_ERROR;
         return 0;
     }
@@ -536,7 +536,7 @@ swapFormatVersion4(const UDataSwapper *ds,
     offset = indexes[index];
     length = indexes[index + 1] - offset;
     if(length > 0) {
-        udata_printError(ds, "ucol_swap(formatVersion=4): unknown data at IX_RESERVED18_OFFSET\n", length);
+        udata_printError(ds, u8"ucol_swap(formatVersion=4): unknown data at IX_RESERVED18_OFFSET\n", length);
         errorCode = U_UNSUPPORTED_ERROR;
         return 0;
     }
@@ -564,14 +564,14 @@ ucol_swap(const UDataSwapper *ds,
     /* check data format and format version */
     const UDataInfo &info=*(const UDataInfo *)((const char *)inData+4);
     if(!(
-        info.dataFormat[0]==0x55 &&   // dataFormat="UCol"
+        info.dataFormat[0]==0x55 &&   // dataFormat=u8"UCol"
         info.dataFormat[1]==0x43 &&
         info.dataFormat[2]==0x6f &&
         info.dataFormat[3]==0x6c &&
         (3<=info.formatVersion[0] && info.formatVersion[0]<=5)
     )) {
-        udata_printError(ds, "ucol_swap(): data format %02x.%02x.%02x.%02x "
-                         "(format version %02x.%02x) is not recognized as collation data\n",
+        udata_printError(ds, u8"ucol_swap(): data format %02x.%02x.%02x.%02x "
+                         u8"(format version %02x.%02x) is not recognized as collation data\n",
                          info.dataFormat[0], info.dataFormat[1],
                          info.dataFormat[2], info.dataFormat[3],
                          info.formatVersion[0], info.formatVersion[1]);
@@ -619,14 +619,14 @@ ucol_swapInverseUCA(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x49 &&   /* dataFormat="InvC" */
+        pInfo->dataFormat[0]==0x49 &&   /* dataFormat=u8"InvC" */
         pInfo->dataFormat[1]==0x6e &&
         pInfo->dataFormat[2]==0x76 &&
         pInfo->dataFormat[3]==0x43 &&
         pInfo->formatVersion[0]==2 &&
         pInfo->formatVersion[1]>=1
     )) {
-        udata_printError(ds, "ucol_swapInverseUCA(): data format %02x.%02x.%02x.%02x (format version %02x.%02x) is not an inverse UCA collation file\n",
+        udata_printError(ds, u8"ucol_swapInverseUCA(): data format %02x.%02x.%02x.%02x (format version %02x.%02x) is not an inverse UCA collation file\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0], pInfo->formatVersion[1]);
@@ -652,7 +652,7 @@ ucol_swapInverseUCA(const UDataSwapper *ds,
         ((length-headerSize)<(8*4) ||
          (uint32_t)(length-headerSize)<(header.byteSize=udata_readInt32(ds, inHeader->byteSize)))
     ) {
-        udata_printError(ds, "ucol_swapInverseUCA(): too few bytes (%d after header) for inverse UCA collation data\n",
+        udata_printError(ds, u8"ucol_swapInverseUCA(): too few bytes (%d after header) for inverse UCA collation data\n",
                          length);
         *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;

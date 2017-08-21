@@ -538,17 +538,17 @@ ucase_isCaseSensitive(UChar32 c) {
  *     zero or more case-ignorable characters.
  */
 
-#define is_d(c) ((c)=='d' || (c)=='D')
-#define is_e(c) ((c)=='e' || (c)=='E')
-#define is_i(c) ((c)=='i' || (c)=='I')
-#define is_l(c) ((c)=='l' || (c)=='L')
-#define is_r(c) ((c)=='r' || (c)=='R')
-#define is_t(c) ((c)=='t' || (c)=='T')
-#define is_u(c) ((c)=='u' || (c)=='U')
-#define is_z(c) ((c)=='z' || (c)=='Z')
+#define is_d(c) ((c)=='\x64' || (c)=='\x44')
+#define is_e(c) ((c)=='\x65' || (c)=='\x45')
+#define is_i(c) ((c)=='\x69' || (c)=='\x49')
+#define is_l(c) ((c)=='\x6c' || (c)=='\x4c')
+#define is_r(c) ((c)=='\x72' || (c)=='\x52')
+#define is_t(c) ((c)=='\x74' || (c)=='\x54')
+#define is_u(c) ((c)=='\x75' || (c)=='\x55')
+#define is_z(c) ((c)=='\x7a' || (c)=='\x5a')
 
 /* separator? */
-#define is_sep(c) ((c)=='_' || (c)=='-' || (c)==0)
+#define is_sep(c) ((c)=='\x5f' || (c)=='\x2d' || (c)==0)
 
 /**
  * Requires non-NULL locale ID but otherwise does the equivalent of
@@ -571,7 +571,7 @@ ucase_getCaseLocale(const char *locale) {
     // and for Chinese "zh": Very common but no special case mapping behavior.
     // Then check lowercase vs. uppercase to reduce the number of comparisons
     // for other locales without special behavior.
-    if(c=='e') {
+    if(c=='\x65') {
         /* el or ell? */
         c=*locale++;
         if(is_l(c)) {
@@ -584,17 +584,17 @@ ucase_getCaseLocale(const char *locale) {
             }
         }
         // en, es, ... -> root
-    } else if(c=='z') {
+    } else if(c=='\x7a') {
         return UCASE_LOC_ROOT;
 #if U_CHARSET_FAMILY==U_ASCII_FAMILY
-    } else if(c>='a') {  // ASCII a-z = 0x61..0x7a, after A-Z
+    } else if(c>='\x61') {  // ASCII a-z = 0x61..0x7a, after A-Z
 #elif U_CHARSET_FAMILY==U_EBCDIC_FAMILY
-    } else if(c<='z') {  // EBCDIC a-z = 0x81..0xa9 with two gaps, before A-Z
+    } else if(c<='\x7a') {  // EBCDIC a-z = 0x81..0xa9 with two gaps, before A-Z
 #else
 #   error Unknown charset family!
 #endif
         // lowercase c
-        if(c=='t') {
+        if(c=='\x74') {
             /* tr or tur? */
             c=*locale++;
             if(is_u(c)) {
@@ -606,7 +606,7 @@ ucase_getCaseLocale(const char *locale) {
                     return UCASE_LOC_TURKISH;
                 }
             }
-        } else if(c=='a') {
+        } else if(c=='\x61') {
             /* az or aze? */
             c=*locale++;
             if(is_z(c)) {
@@ -618,7 +618,7 @@ ucase_getCaseLocale(const char *locale) {
                     return UCASE_LOC_TURKISH;
                 }
             }
-        } else if(c=='l') {
+        } else if(c=='\x6c') {
             /* lt or lit? */
             c=*locale++;
             if(is_i(c)) {
@@ -630,7 +630,7 @@ ucase_getCaseLocale(const char *locale) {
                     return UCASE_LOC_LITHUANIAN;
                 }
             }
-        } else if(c=='n') {
+        } else if(c=='\x6e') {
             /* nl or nld? */
             c=*locale++;
             if(is_l(c)) {
@@ -646,7 +646,7 @@ ucase_getCaseLocale(const char *locale) {
     } else {
         // uppercase c
         // Same code as for lowercase c but also check for 'E'.
-        if(c=='T') {
+        if(c=='\x54') {
             /* tr or tur? */
             c=*locale++;
             if(is_u(c)) {
@@ -658,7 +658,7 @@ ucase_getCaseLocale(const char *locale) {
                     return UCASE_LOC_TURKISH;
                 }
             }
-        } else if(c=='A') {
+        } else if(c=='\x41') {
             /* az or aze? */
             c=*locale++;
             if(is_z(c)) {
@@ -670,7 +670,7 @@ ucase_getCaseLocale(const char *locale) {
                     return UCASE_LOC_TURKISH;
                 }
             }
-        } else if(c=='L') {
+        } else if(c=='\x4c') {
             /* lt or lit? */
             c=*locale++;
             if(is_i(c)) {
@@ -682,7 +682,7 @@ ucase_getCaseLocale(const char *locale) {
                     return UCASE_LOC_LITHUANIAN;
                 }
             }
-        } else if(c=='E') {
+        } else if(c=='\x45') {
             /* el or ell? */
             c=*locale++;
             if(is_l(c)) {
@@ -694,7 +694,7 @@ ucase_getCaseLocale(const char *locale) {
                     return UCASE_LOC_GREEK;
                 }
             }
-        } else if(c=='N') {
+        } else if(c=='\x4e') {
             /* nl or nld? */
             c=*locale++;
             if(is_l(c)) {

@@ -78,7 +78,7 @@
  * This is the zero digit.  The base for the digits returned by getDigit()
  * Note that it is the platform invariant digit, and is not Unicode.
  */
-#define kZero '0'
+#define kZero '\x30'
 
 
 /* Only for 32 bit numbers. Ignore the negative sign. */
@@ -252,7 +252,7 @@ formatBase10(int64_t number, char *outputStr) {
     } while (n > 0);
 
     if (number < 0) {
-        outputStr[--destIdx] = '-';
+        outputStr[--destIdx] = '\x2d';
     }
 
     // Slide the number to the start of the output str
@@ -362,7 +362,7 @@ void
 DigitList::setDigit(int32_t i, char v) {
     int32_t count = fDecNumber->digits;
     U_ASSERT(i<count);
-    U_ASSERT(v>='0' && v<='9');
+    U_ASSERT(v>='\x30' && v<='\x39');
     v &= 0x0f;
     fDecNumber->lsu[count-i-1] = v;
     internalClear();
@@ -372,7 +372,7 @@ char
 DigitList::getDigit(int32_t i) {
     int32_t count = fDecNumber->digits;
     U_ASSERT(i<count);
-    return fDecNumber->lsu[count-i-1] + '0';
+    return fDecNumber->lsu[count-i-1] + '\x30';
 }
 
 // copied from DigitList::getDigit()
@@ -394,7 +394,7 @@ DigitList::getDigitValue(int32_t i) {
 void
 DigitList::append(char digit)
 {
-    U_ASSERT(digit>='0' && digit<='9');
+    U_ASSERT(digit>='\x30' && digit<='\x39');
     // Ignore digits which exceed the precision we can represent
     //    And don't fix for larger precision.  Fix callers instead.
     if (decNumberIsZero(fDecNumber)) {
@@ -454,7 +454,7 @@ DigitList::getDouble() const
             tDouble = std::numeric_limits<double>::max();
         }
         if (!isPositive()) {
-            tDouble = -tDouble; //this was incorrectly "-fDouble" originally.
+            tDouble = -tDouble; //this was incorrectly u8"-fDouble" originally.
         }
     } else {
         MaybeStackArray<char, MAX_DBL_DIGITS+18> s;
@@ -514,9 +514,9 @@ static void U_CALLCONV initCLocale(void) {
     ucln_i18n_registerCleanup(UCLN_I18N_DIGITLIST, digitList_cleanup);
 #if U_USE_STRTOD_L
 # if U_PLATFORM_USES_ONLY_WIN32_API
-    gCLocale = _create_locale(LC_ALL, "C");
+    gCLocale = _create_locale(LC_ALL, u8"C");
 # else
-    gCLocale = newlocale(LC_ALL_MASK, "C", (locale_t)0);
+    gCLocale = newlocale(LC_ALL_MASK, u8"C", (locale_t)0);
 # endif
 #endif
 }
@@ -528,13 +528,13 @@ DigitList::decimalStrToDouble(char *decstr, char **end) {
 #if U_USE_STRTOD_L
     return strtod_l(decstr, end, gCLocale);
 #else
-    char *decimalPt = strchr(decstr, '.');
+    char *decimalPt = strchr(decstr, '\x2e');
     if (decimalPt) {
         // We need to know the decimal separator character that will be used with strtod().
         // Depends on the C runtime global locale.
         // Most commonly is '.'
         char rep[MAX_DIGITS];
-        sprintf(rep, "%+1.1f", 1.0);
+        sprintf(rep, u8"%+1.1f", 1.0);
         *decimalPt = rep[2];
     }
     return uprv_strtod(decstr, end);
@@ -678,11 +678,11 @@ DigitList::fitsIntoLong(UBool ignoreNegativeZero) /*const*/
     // TODO:  Should cache these constants; construction is relatively costly.
     //        But not of huge consequence; they're only needed for 10 digit ints.
     UErrorCode status = U_ZERO_ERROR;
-    DigitList min32; min32.set("-2147483648", status);
+    DigitList min32; min32.set(u8"-2147483648", status);
     if (this->compare(min32) < 0) {
         return FALSE;
     }
-    DigitList max32; max32.set("2147483647", status);
+    DigitList max32; max32.set(u8"2147483647", status);
     if (this->compare(max32) > 0) {
         return FALSE;
     }
@@ -725,11 +725,11 @@ DigitList::fitsIntoInt64(UBool ignoreNegativeZero) /*const*/
     // TODO:  Should cache these constants; construction is relatively costly.
     //        But not of huge consequence; they're only needed for 19 digit ints.
     UErrorCode status = U_ZERO_ERROR;
-    DigitList min64; min64.set("-9223372036854775808", status);
+    DigitList min64; min64.set(u8"-9223372036854775808", status);
     if (this->compare(min64) < 0) {
         return FALSE;
     }
-    DigitList max64; max64.set("9223372036854775807", status);
+    DigitList max64; max64.set(u8"9223372036854775807", status);
     if (this->compare(max64) > 0) {
         return FALSE;
     }
@@ -788,13 +788,13 @@ DigitList::set(StringPiece source, UErrorCode &status, uint32_t /*fastpathBits*/
       // fast parse
       while(size>0) {
         char ch = data[--size];
-        if(ch=='+') {
+        if(ch=='\x2b') {
           break;
-        } else if(ch=='-') {
+        } else if(ch=='\x2d') {
           r = -r;
           break;
         } else {
-          int64_t d = ch-'0';
+          int64_t d = ch-'\x30';
           //printf("CH[%d]=%c, %d, *=%d\n", size,ch, (int)d, (int)m);
           r+=(d)*m;
           m *= 10;
@@ -837,7 +837,7 @@ void
 DigitList::set(double source)
 {
     // for now, simple implementation; later, do proper IEEE stuff
-    char rep[MAX_DIGITS + 8]; // Extra space for '+', '.', e+NNN, and '\0' (actually +8 is enough)
+    char rep[MAX_DIGITS + 8]; // Extra space for '\x2b', '\x2e', e+NNN, and '\x0' (actually +8 is enough)
 
     // Generate a representation of the form /[+-][0-9].[0-9]+e[+-][0-9]+/
     // Can also generate /[+-]nan/ or /[+-]inf/
@@ -845,21 +845,21 @@ DigitList::set(double source)
     //       That is why infinity is special cased here.
     if (uprv_isInfinite(source)) {
         if (uprv_isNegativeInfinity(source)) {
-            uprv_strcpy(rep,"-inf"); // Handle negative infinity
+            uprv_strcpy(rep,u8"-inf"); // Handle negative infinity
         } else {
-            uprv_strcpy(rep,"inf");
+            uprv_strcpy(rep,u8"inf");
         }
     } else {
-        sprintf(rep, "%+1.*e", MAX_DBL_DIGITS - 1, source);
+        sprintf(rep, u8"%+1.*e", MAX_DBL_DIGITS - 1, source);
     }
     U_ASSERT(uprv_strlen(rep) < sizeof(rep));
 
     // uprv_decNumberFromString() will parse the string expecting '.' as a
     // decimal separator, however sprintf() can use ',' in certain locales.
     // Overwrite a ',' with '.' here before proceeding.
-    char *decimalSeparator = strchr(rep, ',');
+    char *decimalSeparator = strchr(rep, '\x2c');
     if (decimalSeparator != NULL) {
-        *decimalSeparator = '.';
+        *decimalSeparator = '\x2e';
     }
 
     // Create a decNumber from the string.

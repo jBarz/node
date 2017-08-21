@@ -68,7 +68,7 @@ RBBIDataWrapper::RBBIDataWrapper(UDataMemory* udm, UErrorCode &status) {
     if (  !(headerSize >= 20 &&
             dh->info.isBigEndian == U_IS_BIG_ENDIAN &&
             dh->info.charsetFamily == U_CHARSET_FAMILY &&
-            dh->info.dataFormat[0] == 0x42 &&  // dataFormat="Brk "
+            dh->info.dataFormat[0] == 0x42 &&  // dataFormat=u8"Brk "
             dh->info.dataFormat[1] == 0x72 &&
             dh->info.dataFormat[2] == 0x6b &&
             dh->info.dataFormat[3] == 0x20)
@@ -152,8 +152,8 @@ void RBBIDataWrapper::init(const RBBIDataHeader *data, UErrorCode &status) {
     fRefCount = 1;
 
 #ifdef RBBI_DEBUG
-    char *debugEnv = getenv("U_RBBIDEBUG");
-    if (debugEnv && uprv_strstr(debugEnv, "data")) {this->printData();}
+    char *debugEnv = getenv(u8"U_RBBIDEBUG");
+    if (debugEnv && uprv_strstr(debugEnv, u8"data")) {this->printData();}
 #endif
 }
 
@@ -244,51 +244,51 @@ void  RBBIDataWrapper::printTable(const char *heading, const RBBIStateTable *tab
     uint32_t   c;
     uint32_t   s;
 
-    RBBIDebugPrintf("   %s\n", heading);
+    RBBIDebugPrintf(u8"   %s\n", heading);
 
-    RBBIDebugPrintf("State |  Acc  LA TagIx");
-    for (c=0; c<fHeader->fCatCount; c++) {RBBIDebugPrintf("%3d ", c);}
-    RBBIDebugPrintf("\n------|---------------"); for (c=0;c<fHeader->fCatCount; c++) {
-        RBBIDebugPrintf("----");
+    RBBIDebugPrintf(u8"State |  Acc  LA TagIx");
+    for (c=0; c<fHeader->fCatCount; c++) {RBBIDebugPrintf(u8"%3d ", c);}
+    RBBIDebugPrintf(u8"\n------|---------------"); for (c=0;c<fHeader->fCatCount; c++) {
+        RBBIDebugPrintf(u8"----");
     }
-    RBBIDebugPrintf("\n");
+    RBBIDebugPrintf(u8"\n");
 
     if (table == NULL) {
-        RBBIDebugPrintf("         N U L L   T A B L E\n\n");
+        RBBIDebugPrintf(u8"         N U L L   T A B L E\n\n");
         return;
     }
     for (s=0; s<table->fNumStates; s++) {
         RBBIStateTableRow *row = (RBBIStateTableRow *)
                                   (table->fTableData + (table->fRowLen * s));
-        RBBIDebugPrintf("%4d  |  %3d %3d %3d ", s, row->fAccepting, row->fLookAhead, row->fTagIdx);
+        RBBIDebugPrintf(u8"%4d  |  %3d %3d %3d ", s, row->fAccepting, row->fLookAhead, row->fTagIdx);
         for (c=0; c<fHeader->fCatCount; c++)  {
-            RBBIDebugPrintf("%3d ", row->fNextState[c]);
+            RBBIDebugPrintf(u8"%3d ", row->fNextState[c]);
         }
-        RBBIDebugPrintf("\n");
+        RBBIDebugPrintf(u8"\n");
     }
-    RBBIDebugPrintf("\n");
+    RBBIDebugPrintf(u8"\n");
 }
 #endif
 
 
 #ifdef RBBI_DEBUG
 void  RBBIDataWrapper::printData() {
-    RBBIDebugPrintf("RBBI Data at %p\n", (void *)fHeader);
-    RBBIDebugPrintf("   Version = {%d %d %d %d}\n", fHeader->fFormatVersion[0], fHeader->fFormatVersion[1],
+    RBBIDebugPrintf(u8"RBBI Data at %p\n", (void *)fHeader);
+    RBBIDebugPrintf(u8"   Version = {%d %d %d %d}\n", fHeader->fFormatVersion[0], fHeader->fFormatVersion[1],
                                                     fHeader->fFormatVersion[2], fHeader->fFormatVersion[3]);
-    RBBIDebugPrintf("   total length of data  = %d\n", fHeader->fLength);
-    RBBIDebugPrintf("   number of character categories = %d\n\n", fHeader->fCatCount);
+    RBBIDebugPrintf(u8"   total length of data  = %d\n", fHeader->fLength);
+    RBBIDebugPrintf(u8"   number of character categories = %d\n\n", fHeader->fCatCount);
 
-    printTable("Forward State Transition Table", fForwardTable);
-    printTable("Reverse State Transition Table", fReverseTable);
-    printTable("Safe Forward State Transition Table", fSafeFwdTable);
-    printTable("Safe Reverse State Transition Table", fSafeRevTable);
+    printTable(u8"Forward State Transition Table", fForwardTable);
+    printTable(u8"Reverse State Transition Table", fReverseTable);
+    printTable(u8"Safe Forward State Transition Table", fSafeFwdTable);
+    printTable(u8"Safe Reverse State Transition Table", fSafeRevTable);
 
-    RBBIDebugPrintf("\nOrignal Rules source:\n");
+    RBBIDebugPrintf(u8"\nOrignal Rules source:\n");
     for (int32_t c=0; fRuleSource[c] != 0; c++) {
-        RBBIDebugPrintf("%c", fRuleSource[c]);
+        RBBIDebugPrintf(u8"%c", fRuleSource[c]);
     }
-    RBBIDebugPrintf("\n\n");
+    RBBIDebugPrintf(u8"\n\n");
 }
 #endif
 
@@ -319,12 +319,12 @@ ubrk_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *outD
     //    (Header contents are defined in genbrk.cpp)
     //
     const UDataInfo *pInfo = (const UDataInfo *)((const char *)inData+4);
-    if(!(  pInfo->dataFormat[0]==0x42 &&   /* dataFormat="Brk " */
+    if(!(  pInfo->dataFormat[0]==0x42 &&   /* dataFormat=u8"Brk " */
            pInfo->dataFormat[1]==0x72 &&
            pInfo->dataFormat[2]==0x6b &&
            pInfo->dataFormat[3]==0x20 &&
            pInfo->formatVersion[0]==3  )) {
-        udata_printError(ds, "ubrk_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized\n",
+        udata_printError(ds, u8"ubrk_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -355,7 +355,7 @@ ubrk_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *outD
         rbbiDH->fFormatVersion[0] != 3 ||
         ds->readUInt32(rbbiDH->fLength)  <  sizeof(RBBIDataHeader))
     {
-        udata_printError(ds, "ubrk_swap(): RBBI Data header is invalid.\n");
+        udata_printError(ds, u8"ubrk_swap(): RBBI Data header is invalid.\n");
         *status=U_UNSUPPORTED_ERROR;
         return 0;
     }
@@ -373,7 +373,7 @@ ubrk_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *outD
     // Check that length passed in is consistent with length from RBBI data header.
     //
     if (length < totalSize) {
-        udata_printError(ds, "ubrk_swap(): too few bytes (%d after ICU Data header) for break data.\n",
+        udata_printError(ds, u8"ubrk_swap(): too few bytes (%d after ICU Data header) for break data.\n",
                             breakDataLength);
         *status=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;

@@ -47,7 +47,7 @@ struct BinaryProperty;
 typedef UBool BinaryPropertyContains(const BinaryProperty &prop, UChar32 c, UProperty which);
 
 struct BinaryProperty {
-    int32_t column;  // SRC_PROPSVEC column, or "source" if mask==0
+    int32_t column;  // SRC_PROPSVEC column, or u8"source" if mask==0
     uint32_t mask;
     BinaryPropertyContains *contains;
 };
@@ -296,7 +296,7 @@ typedef int32_t IntPropertyGetValue(const IntProperty &prop, UChar32 c, UPropert
 typedef int32_t IntPropertyGetMaxValue(const IntProperty &prop, UProperty which);
 
 struct IntProperty {
-    int32_t column;  // SRC_PROPSVEC column, or "source" if mask==0
+    int32_t column;  // SRC_PROPSVEC column, or u8"source" if mask==0
     uint32_t mask;
     int32_t shift;  // =maxValue if getMaxValueFromShift() is used
     IntPropertyGetValue *getValue;

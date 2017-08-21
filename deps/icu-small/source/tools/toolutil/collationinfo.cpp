@@ -10,7 +10,7 @@
 * created on: 2013aug05
 * created by: Markus W. Scherer
 */
-
+#define _AE_BIMODAL
 #include <stdio.h>
 #include <string.h>
 
@@ -30,85 +30,85 @@ void
 CollationInfo::printSizes(int32_t sizeWithHeader, const int32_t indexes[]) {
     int32_t totalSize = indexes[CollationDataReader::IX_TOTAL_SIZE];
     if(sizeWithHeader > totalSize) {
-        printf("  header size:                  %6ld\n", (long)(sizeWithHeader - totalSize));
+        __printf_a(u8"  header size:                  %6ld\n", (long)(sizeWithHeader - totalSize));
     }
 
     int32_t length = indexes[CollationDataReader::IX_INDEXES_LENGTH];
-    printf("  indexes:          %6ld *4 = %6ld\n", (long)length, (long)length * 4);
+    __printf_a(u8"  indexes:          %6ld *4 = %6ld\n", (long)length, (long)length * 4);
 
     length = getDataLength(indexes, CollationDataReader::IX_REORDER_CODES_OFFSET);
     if(length != 0) {
-        printf("  reorder codes:    %6ld *4 = %6ld\n", (long)length / 4, (long)length);
+        __printf_a(u8"  reorder codes:    %6ld *4 = %6ld\n", (long)length / 4, (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_REORDER_TABLE_OFFSET);
     if(length != 0) {
         U_ASSERT(length >= 256);
-        printf("  reorder table:                %6ld\n", (long)length);
+        __printf_a(u8"  reorder table:                %6ld\n", (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_TRIE_OFFSET);
     if(length != 0) {
-        printf("  trie size:                    %6ld\n", (long)length);
+        __printf_a(u8"  trie size:                    %6ld\n", (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_RESERVED8_OFFSET);
     if(length != 0) {
-        printf("  reserved (offset 8):          %6ld\n", (long)length);
+        __printf_a(u8"  reserved (offset 8):          %6ld\n", (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_CES_OFFSET);
     if(length != 0) {
-        printf("  CEs:              %6ld *8 = %6ld\n", (long)length / 8, (long)length);
+        __printf_a(u8"  CEs:              %6ld *8 = %6ld\n", (long)length / 8, (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_RESERVED10_OFFSET);
     if(length != 0) {
-        printf("  reserved (offset 10):         %6ld\n", (long)length);
+        __printf_a(u8"  reserved (offset 10):         %6ld\n", (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_CE32S_OFFSET);
     if(length != 0) {
-        printf("  CE32s:            %6ld *4 = %6ld\n", (long)length / 4, (long)length);
+        __printf_a(u8"  CE32s:            %6ld *4 = %6ld\n", (long)length / 4, (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_ROOT_ELEMENTS_OFFSET);
     if(length != 0) {
-        printf("  rootElements:     %6ld *4 = %6ld\n", (long)length / 4, (long)length);
+        __printf_a(u8"  rootElements:     %6ld *4 = %6ld\n", (long)length / 4, (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_CONTEXTS_OFFSET);
     if(length != 0) {
-        printf("  contexts:         %6ld *2 = %6ld\n", (long)length / 2, (long)length);
+        __printf_a(u8"  contexts:         %6ld *2 = %6ld\n", (long)length / 2, (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_UNSAFE_BWD_OFFSET);
     if(length != 0) {
-        printf("  unsafeBwdSet:     %6ld *2 = %6ld\n", (long)length / 2, (long)length);
+        __printf_a(u8"  unsafeBwdSet:     %6ld *2 = %6ld\n", (long)length / 2, (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_FAST_LATIN_TABLE_OFFSET);
     if(length != 0) {
-        printf("  fastLatin table:  %6ld *2 = %6ld\n", (long)length / 2, (long)length);
+        __printf_a(u8"  fastLatin table:  %6ld *2 = %6ld\n", (long)length / 2, (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_SCRIPTS_OFFSET);
     if(length != 0) {
-        printf("  scripts data:     %6ld *2 = %6ld\n", (long)length / 2, (long)length);
+        __printf_a(u8"  scripts data:     %6ld *2 = %6ld\n", (long)length / 2, (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_COMPRESSIBLE_BYTES_OFFSET);
     if(length != 0) {
         U_ASSERT(length >= 256);
-        printf("  compressibleBytes:            %6ld\n", (long)length);
+        __printf_a(u8"  compressibleBytes:            %6ld\n", (long)length);
     }
 
     length = getDataLength(indexes, CollationDataReader::IX_RESERVED18_OFFSET);
     if(length != 0) {
-        printf("  reserved (offset 18):         %6ld\n", (long)length);
+        __printf_a(u8"  reserved (offset 18):         %6ld\n", (long)length);
     }
 
-    printf(" collator binary total size:    %6ld\n", (long)sizeWithHeader);
+    __printf_a(u8" collator binary total size:    %6ld\n", (long)sizeWithHeader);
 }
 
 int32_t
@@ -122,7 +122,7 @@ CollationInfo::printReorderRanges(const CollationData &data, const int32_t *code
     UVector32 ranges(errorCode);
     data.makeReorderRanges(codes, length, ranges, errorCode);
     if(U_FAILURE(errorCode)) {
-        printf("  error building reorder ranges: %s\n", u_errorName(errorCode));
+        __printf_a(u8"  error building reorder ranges: %s\n", u_errorName(errorCode));
         return;
     }
 
@@ -133,13 +133,13 @@ CollationInfo::printReorderRanges(const CollationData &data, const int32_t *code
         int16_t offset = (int16_t)pair;
         if(offset == 0) {
             // [inclusive-start, exclusive-limit[
-            printf("          [%04x, %04x[\n", start, limit);
+            __printf_a(u8"          [%04x, %04x[\n", start, limit);
         } else if(offset > 0) {
-            printf("  reorder [%04x, %04x[ by offset  %02x to [%04x, %04x[\n",
+            __printf_a(u8"  reorder [%04x, %04x[ by offset  %02x to [%04x, %04x[\n",
                     start, limit, offset,
                     start + (offset << 8), limit + (offset << 8));
         } else /* offset < 0 */ {
-            printf("  reorder [%04x, %04x[ by offset -%02x to [%04x, %04x[\n",
+            __printf_a(u8"  reorder [%04x, %04x[ by offset -%02x to [%04x, %04x[\n",
                     start, limit, -offset,
                     start + (offset << 8), limit + (offset << 8));
         }

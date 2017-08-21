@@ -8,7 +8,7 @@
 /* This software is made available under the terms of the             */
 /* ICU License -- ICU 1.8.1 and later.                                */
 /*                                                                    */
-/* The description and User's Guide ("The decNumber C Library") for   */
+/* The description and User's Guide (u8"The decNumber C Library") for   */
 /* this software is called decNumber.pdf.  This document is           */
 /* available, together with arithmetic and format specifications,     */
 /* testcases, and Web links, on the General Decimal Arithmetic page.  */
@@ -26,12 +26,12 @@
 
 #if !defined(DECNUMBERLOC)
   #define DECNUMBERLOC
-  #define DECVERSION    "decNumber 3.61" /* Package Version [16 max.] */
-  #define DECNLAUTHOR   "Mike Cowlishaw"              /* Who to blame */
+  #define DECVERSION    u8"decNumber 3.61" /* Package Version [16 max.] */
+  #define DECNLAUTHOR   u8"Mike Cowlishaw"              /* Who to blame */
 
-  #include <stdlib.h>         /* for abs                              */
-  #include <string.h>         /* for memset, strcpy                   */
-  #include "decContext.h"
+   #include <stdlib.h>         /* for abs                              */
+   #include <string.h>         /* for memset, strcpy                   */
+   #include "decContext.h"
 
   /* Conditional code flag -- set this to match hardware platform     */
   #if !defined(DECLITEND)
@@ -142,7 +142,7 @@
   /* Useful constants                                                 */
   #define BILLION      1000000000            /* 10**9                 */
   /* CHARMASK: 0x30303030 for ASCII/UTF8; 0xF0F0F0F0 for EBCDIC       */
-  #define CHARMASK ((((((((uInt)'0')<<8)+'0')<<8)+'0')<<8)+'0')
+  #define CHARMASK ((((((((uInt)'\x30')<<8)+'\x30')<<8)+'\x30')<<8)+'\x30')
 
 
   /* ---------------------------------------------------------------- */
@@ -258,7 +258,7 @@
   /* subnormals).  The unsigned integer pow is used as a temporary    */
   /* variable. */
   #define TODIGIT(u, cut, c, pow) {       \
-    *(c)='0';                             \
+    *(c)='\x30';                             \
     pow=DECPOWERS[cut]*2;                 \
     if ((u)>pow) {                        \
       pow*=4;                             \

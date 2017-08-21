@@ -29,7 +29,7 @@ static const UnicodeString&  _fieldString(UDebugEnumType type, int32_t field, Un
     if(str == NULL) {
         return fillin.remove();
     } else {
-        return fillin = UnicodeString(str, ""); // optimize?
+        return fillin = UnicodeString(str, u8""); // optimize?
     }
 }
 
@@ -143,9 +143,9 @@ udbg_escape(const UnicodeString &src, UnicodeString *dst)
     for (int32_t i = 0; i < src.length(); ++i) {
         UChar c = src[i];
         if(ICU_Utility::isUnprintable(c)) {
-            *dst += UnicodeString("[");
+            *dst += UnicodeString(u8"[");
             ICU_Utility::escapeUnprintable(*dst, c);
-            *dst += UnicodeString("]");
+            *dst += UnicodeString(u8"]");
         }
         else {
             *dst += c;

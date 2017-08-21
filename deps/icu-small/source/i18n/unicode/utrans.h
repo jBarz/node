@@ -47,10 +47,10 @@
  *
  * An old, deprecated set uses char * IDs, which works for true and pure
  * identifiers that these APIs were designed for,
- * for example "Cyrillic-Latin".
- * It does not work when the ID contains filters ("[:Script=Cyrl:]")
+ * for example u8"Cyrillic-Latin".
+ * It does not work when the ID contains filters (u8"[:Script=Cyrl:]")
  * or even a complete set of rules because then the ID string contains more
- * than just "invariant" characters (see utypes.h).
+ * than just u8"invariant" characters (see utypes.h).
  *
  * A new set of functions replaces the old ones and uses UChar * IDs,
  * paralleling the UnicodeString IDs in the C++ API. (New in ICU 2.8.)

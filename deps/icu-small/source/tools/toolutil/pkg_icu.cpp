@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 // read a file list -------------------------------------------------------- ***
 
@@ -27,9 +28,9 @@ static const struct {
     const char *suffix;
     int32_t length;
 } listFileSuffixes[]={
-    { ".txt", 4 },
-    { ".lst", 4 },
-    { ".tmp", 4 }
+    { u8".txt", 4 },
+    { u8".lst", 4 },
+    { u8".tmp", 4 }
 };
 
 /* check for multiple text file suffixes to see if this list name is a text file name */
@@ -62,14 +63,14 @@ readList(const char *filesPath, const char *listname, UBool readContents, Packag
     const char *listNameEnd;
 
     if(listname==NULL || listname[0]==0) {
-        fprintf(stderr, "missing list file\n");
+        fprintf(stderr, u8"missing list file\n");
         return NULL;
     }
 
     if (listPkg == NULL) {
         listPkg=new Package();
         if(listPkg==NULL) {
-            fprintf(stderr, "icupkg: not enough memory\n");
+            fprintf(stderr, u8"icupkg: not enough memory\n");
             exit(U_MEMORY_ALLOCATION_ERROR);
         }
     }
@@ -80,23 +81,25 @@ readList(const char *filesPath, const char *listname, UBool readContents, Packag
         char line[1024];
         char *end;
         const char *start;
-
+        __a2e_s((char *)listname);
         file=fopen(listname, "r");
+        __e2a_s((char *)listname);
+
         if(file==NULL) {
-            fprintf(stderr, "icupkg: unable to open list file \"%s\"\n", listname);
+            fprintf(stderr, u8"icupkg: unable to open list file \"%s\"\n", listname);
             delete listPkg;
             exit(U_FILE_ACCESS_ERROR);
         }
 
         while(fgets(line, sizeof(line), file)) {
             // remove comments
-            end=strchr(line, '#');
+            end=strchr(line, '\x23');
             if(end!=NULL) {
                 *end=0;
             } else {
                 // remove trailing CR LF
                 end=strchr(line, 0);
-                while(line<end && (*(end-1)=='\r' || *(end-1)=='\n')) {
+                while(line<end && (*(end-1)=='\xd' || *(end-1)=='\xa')) {
                     *--end=0;
                 }
             }
@@ -112,7 +115,7 @@ readList(const char *filesPath, const char *listname, UBool readContents, Packag
             // take whitespace-separated items from the line
             for(;;) {
                 // find whitespace after the item or the end of the line
-                for(end=(char *)start; *end!=0 && *end!=' ' && *end!='\t'; ++end) {}
+                for(end=(char *)start; *end!=0 && *end!='\x20' && *end!='\x9'; ++end) {}
                 if(*end==0) {
                     // this item is the last one on the line
                     end=NULL;
@@ -133,7 +136,7 @@ readList(const char *filesPath, const char *listname, UBool readContents, Packag
             }
         }
         fclose(file);
-    } else if((listNameEnd-listname)>4 && 0==memcmp(listNameEnd-4, ".dat", 4)) {
+    } else if((listNameEnd-listname)>4 && 0==memcmp(listNameEnd-4, u8".dat", 4)) {
         // read the ICU .dat package
         // Accept a .dat file whose name differs from the ToC prefixes.
         listPkg->setAutoPrefix();
@@ -158,7 +161,7 @@ writePackageDatFile(const char *outFilename, const char *outComment, const char 
     if (pkg == NULL) {
         ownedPkg.adoptInstead(new Package);
         if(ownedPkg.isNull()) {
-            fprintf(stderr, "icupkg: not enough memory\n");
+            fprintf(stderr, u8"icupkg: not enough memory\n");
             return U_MEMORY_ALLOCATION_ERROR;
         }
         pkg = ownedPkg.getAlias();

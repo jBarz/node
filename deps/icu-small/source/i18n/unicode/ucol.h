@@ -326,13 +326,13 @@ typedef enum {
       * When turned on, this attribute makes
       * substrings of digits sort according to their numeric values.
       *
-      * This is a way to get '100' to sort AFTER '2'. Note that the longest
+      * This is a way to get '100' to sort AFTER '\x32'. Note that the longest
       * digit substring that can be treated as a single unit is
       * 254 digits (not counting leading zeros). If a digit substring is
       * longer than that, the digits beyond the limit will be treated as a
       * separate digit substring.
       *
-      * A "digit" in this sense is a code point with General_Category=Nd,
+      * A u8"digit" in this sense is a code point with General_Category=Nd,
       * which does not include circled numbers, roman numerals, etc.
       * Only a contiguous digit substring is considered, that is,
       * non-negative integers without separators.
@@ -346,7 +346,7 @@ typedef enum {
      * it is needed for layout of RuleBasedCollator object. */
     /**
      * One more than the highest normal UColAttribute value.
-     * @deprecated ICU 58 The numeric value may change over time, see ICU ticket #12420.
+     * @deprecated ICU 58 The numeric value may change over time, see ICU ticket  USTR(#12420).
      */
      UCOL_ATTRIBUTE_COUNT
 } UColAttribute;

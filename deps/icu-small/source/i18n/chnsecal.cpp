@@ -33,7 +33,7 @@
 # include <stdarg.h>
 static void debug_chnsecal_loc(const char *f, int32_t l)
 {
-    fprintf(stderr, "%s:%d: ", f, l);
+    fprintf(stderr, u8"%s:%d: ", f, l);
 }
 
 static void debug_chnsecal_msg(const char *pat, ...)
@@ -152,7 +152,7 @@ ChineseCalendar::~ChineseCalendar()
 }
 
 const char *ChineseCalendar::getType() const {
-    return "chinese";
+    return u8"chinese";
 }
 
 static void U_CALLCONV initChineseCalZoneAstroCalc() {
@@ -644,7 +644,7 @@ UBool ChineseCalendar::isLeapMonthBetween(int32_t newMoon1, int32_t newMoon2) co
     // Remove this later. Liu 11/9/00
     if (synodicMonthsBetween(newMoon1, newMoon2) >= 50) {
         U_DEBUG_CHNSECAL_MSG((
-            "isLeapMonthBetween(%d, %d): Invalid parameters", newMoon1, newMoon2
+            u8"isLeapMonthBetween(%d, %d): Invalid parameters", newMoon1, newMoon2
             ));
     }
 #endif
@@ -867,7 +867,7 @@ static void U_CALLCONV initializeSystemDefaultCentury()
     // on the current time.  They'll be set to 80 years before
     // the current time.
     UErrorCode status = U_ZERO_ERROR;
-    ChineseCalendar calendar(Locale("@calendar=chinese"),status);
+    ChineseCalendar calendar(Locale(u8"@calendar=chinese"),status);
     if (U_SUCCESS(status)) {
         calendar.setTime(Calendar::getNow(), status);
         calendar.add(UCAL_YEAR, -80, status);

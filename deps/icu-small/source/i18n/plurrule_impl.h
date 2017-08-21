@@ -111,18 +111,18 @@ enum tokenType {
   tSemiColon,
   tSpace,
   tColon,
-  tAt,           // '@'
+  tAt,           // '\x40'
   tDot,
   tDot2,
   tEllipsis,
   tKeyword,
   tAnd,
   tOr,
-  tMod,          // 'mod' or '%'
+  tMod,          // 'mod' or '\x25'
   tNot,          //  'not' only.
-  tIn,           //  'in'  only.
-  tEqual,        //  '='   only.
-  tNotEqual,     //  '!='
+  tIn,           //  '\x69\x6e'  only.
+  tEqual,        //  '\x3d'   only.
+  tNotEqual,     //  '\x21\x3d'
   tTilde,
   tWithin,
   tIs,
@@ -228,8 +228,8 @@ public:
     } RuleOp;
     RuleOp  op;
     int32_t opNum;           // for mod expressions, the right operand of the mod.
-    int32_t     value;       // valid for 'is' rules only.
-    UVector32   *rangeList;  // for 'in', 'within' rules. Null otherwise.
+    int32_t     value;       // valid for '\x69\x73' rules only.
+    UVector32   *rangeList;  // for '\x69\x6e', 'within' rules. Null otherwise.
     UBool   negated;           // TRUE for negated rules.
     UBool   integerOnly;     // TRUE for 'within' rules.
     tokenType digitsType;    // n | i | v | f constraint.

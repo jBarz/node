@@ -70,7 +70,7 @@ struct Field {
  * @param x the actual enum value - it will be copied in both string and symbolic form.
  * @see Field
  */
-#define FIELD_NAME_STR(y,x)  { y, #x, x }
+#define FIELD_NAME_STR(y,x)  { y,  USTR(#x), x }
 
 
 // TODO: Currently, this whole functionality goes away with UCONFIG_NO_FORMATTING. Should be split up.
@@ -130,7 +130,7 @@ static const Field names_UCalendarMonths[] =
 
 #include "unicode/udat.h"
 
-#define LEN_UDAT 5 /* "UDAT_" */
+#define LEN_UDAT 5 /* u8"UDAT_" */
 static const int32_t count_UDateFormatStyle = UDAT_SHORT+1;
 static const Field names_UDateFormatStyle[] =
 {
@@ -150,7 +150,7 @@ static const Field names_UDateFormatStyle[] =
 
 #include "unicode/uloc.h"
 
-#define LEN_UAR 12 /* "ULOC_ACCEPT_" */
+#define LEN_UAR 12 /* u8"ULOC_ACCEPT_" */
 static const int32_t count_UAcceptResult = 3;
 static const Field names_UAcceptResult[] =
 {
@@ -206,7 +206,7 @@ static const Field names_UPlugLevel[]  = {
 };
 #endif
 
-#define LEN_UDBG 5 /* "UDBG_" */
+#define LEN_UDBG 5 /* u8"UDBG_" */
 static const int32_t count_UDebugEnumType = UDBG_ENUM_COUNT;
 static const Field names_UDebugEnumType[] =
 {
@@ -352,29 +352,29 @@ int32_t udbg_enumByName(UDebugEnumType type, const char *value) {
 U_CAPI const char *udbg_getPlatform(void)
 {
 #if U_PLATFORM_USES_ONLY_WIN32_API
-    return "Windows";
+    return u8"Windows";
 #elif U_PLATFORM == U_PF_CYGWIN
-    return "Cygwin";
+    return u8"Cygwin";
 #elif U_PLATFORM == U_PF_UNKNOWN
-    return "unknown";
+    return u8"unknown";
 #elif U_PLATFORM == U_PF_DARWIN
-    return "Darwin";
+    return u8"Darwin";
 #elif U_PLATFORM == U_PF_BSD
-    return "BSD";
+    return u8"BSD";
 #elif U_PLATFORM == U_PF_QNX
-    return "QNX";
+    return u8"QNX";
 #elif U_PLATFORM == U_PF_LINUX
-    return "Linux";
+    return u8"Linux";
 #elif U_PLATFORM == U_PF_ANDROID
-    return "Android";
+    return u8"Android";
 #elif U_PLATFORM == U_PF_CLASSIC_MACOS
-    return "MacOS (Classic)";
+    return u8"MacOS (Classic)";
 #elif U_PLATFORM == U_PF_OS390
-    return "IBM z";
+    return u8"IBM z";
 #elif U_PLATFORM == U_PF_OS400
-    return "IBM i";
+    return u8"IBM i";
 #else
-    return "Other (POSIX-like)";
+    return u8"Other (POSIX-like)";
 #endif
 }
 
@@ -407,7 +407,7 @@ paramStatic(const USystemParams *param, char *target, int32_t targetCapacity, UE
   return u_terminateChars(target, targetCapacity, len, status);
 }
 
-static const char *nullString = "(null)";
+static const char *nullString = u8"(null)";
 
 static int32_t stringToStringBuffer(char *target, int32_t targetCapacity, const char *str, UErrorCode *status) {
   if(str==NULL) str=nullString;
@@ -437,13 +437,13 @@ static int32_t integerToStringBuffer(char *target, int32_t targetCapacity, int32
 U_CAPI  int32_t
 paramInteger(const USystemParams *param, char *target, int32_t targetCapacity, UErrorCode *status) {
   if(U_FAILURE(*status))return 0;
-  if(param->paramStr==NULL || param->paramStr[0]=='d') {
+  if(param->paramStr==NULL || param->paramStr[0]=='\x64') {
     return integerToStringBuffer(target,targetCapacity,param->paramInt, 10,status);
-  } else if(param->paramStr[0]=='x') {
+  } else if(param->paramStr[0]=='\x78') {
     return integerToStringBuffer(target,targetCapacity,param->paramInt, 16,status);
-  } else if(param->paramStr[0]=='o') {
+  } else if(param->paramStr[0]=='\x6f') {
     return integerToStringBuffer(target,targetCapacity,param->paramInt, 8,status);
-  } else if(param->paramStr[0]=='b') {
+  } else if(param->paramStr[0]=='\x62') {
     return integerToStringBuffer(target,targetCapacity,param->paramInt, 2,status);
   } else {
     *status = U_INTERNAL_PROGRAM_ERROR;
@@ -455,7 +455,7 @@ paramInteger(const USystemParams *param, char *target, int32_t targetCapacity, U
 U_CAPI  int32_t
 paramCldrVersion(const USystemParams * /* param */, char *target, int32_t targetCapacity, UErrorCode *status) {
   if(U_FAILURE(*status))return 0;
-  char str[200]="";
+  char str[200]=u8"";
   UVersionInfo icu;
 
   ulocdata_getCLDRVersion(icu, status);
@@ -511,50 +511,50 @@ STRING_PARAM(paramTimezoneVersion, ucal_getTZDataVersion(status))
 #endif
 
 static const USystemParams systemParams[] = {
-  { "copyright",    paramStatic, U_COPYRIGHT_STRING,0 },
-  { "product",      paramStatic, "icu4c",0 },
-  { "product.full", paramStatic, "International Components for Unicode for C/C++",0 },
-  { "version",      paramStatic, U_ICU_VERSION,0 },
-  { "version.unicode", paramStatic, U_UNICODE_VERSION,0 },
-  { "platform.number", paramInteger, "d",U_PLATFORM},
-  { "platform.type", paramPlatform, NULL ,0},
-  { "locale.default", paramLocaleDefault, NULL, 0},
-  { "locale.default.bcp47", paramLocaleDefaultBcp47, NULL, 0},
+  { u8"copyright",    paramStatic, U_COPYRIGHT_STRING,0 },
+  { u8"product",      paramStatic, u8"icu4c",0 },
+  { u8"product.full", paramStatic, u8"International Components for Unicode for C/C++",0 },
+  { u8"version",      paramStatic, U_ICU_VERSION,0 },
+  { u8"version.unicode", paramStatic, U_UNICODE_VERSION,0 },
+  { u8"platform.number", paramInteger, u8"d",U_PLATFORM},
+  { u8"platform.type", paramPlatform, NULL ,0},
+  { u8"locale.default", paramLocaleDefault, NULL, 0},
+  { u8"locale.default.bcp47", paramLocaleDefaultBcp47, NULL, 0},
 #if !UCONFIG_NO_CONVERSION
-  { "converter.default", paramConverterDefault, NULL, 0},
+  { u8"converter.default", paramConverterDefault, NULL, 0},
 #endif
-  { "icudata.name", paramStatic, U_ICUDATA_NAME, 0},
-  { "icudata.path", paramIcudataPath, NULL, 0},
+  { u8"icudata.name", paramStatic, U_ICUDATA_NAME, 0},
+  { u8"icudata.path", paramIcudataPath, NULL, 0},
 
-  { "cldr.version", paramCldrVersion, NULL, 0},
+  { u8"cldr.version", paramCldrVersion, NULL, 0},
 
 #if !UCONFIG_NO_FORMATTING
-  { "tz.version", paramTimezoneVersion, NULL, 0},
-  { "tz.default", paramTimezoneDefault, NULL, 0},
+  { u8"tz.version", paramTimezoneVersion, NULL, 0},
+  { u8"tz.default", paramTimezoneDefault, NULL, 0},
 #endif
 
-  { "cpu.bits",       paramInteger, "d", (sizeof(void*))*8},
-  { "cpu.big_endian", paramInteger, "b", U_IS_BIG_ENDIAN},
-  { "os.wchar_width", paramInteger, "d", U_SIZEOF_WCHAR_T},
-  { "os.charset_family", paramInteger, "d", U_CHARSET_FAMILY},
+  { u8"cpu.bits",       paramInteger, u8"d", (sizeof(void*))*8},
+  { u8"cpu.big_endian", paramInteger, u8"b", U_IS_BIG_ENDIAN},
+  { u8"os.wchar_width", paramInteger, u8"d", U_SIZEOF_WCHAR_T},
+  { u8"os.charset_family", paramInteger, u8"d", U_CHARSET_FAMILY},
 #if defined (U_HOST)
-  { "os.host", paramStatic, U_HOST, 0},
+  { u8"os.host", paramStatic, U_HOST, 0},
 #endif
 #if defined (U_BUILD)
-  { "build.build", paramStatic, U_BUILD, 0},
+  { u8"build.build", paramStatic, U_BUILD, 0},
 #endif
 #if defined (U_CC)
-  { "build.cc", paramStatic, U_CC, 0},
+  { u8"build.cc", paramStatic, U_CC, 0},
 #endif
 #if defined (U_CXX)
-  { "build.cxx", paramStatic, U_CXX, 0},
+  { u8"build.cxx", paramStatic, U_CXX, 0},
 #endif
 #if defined (CYGWINMSVC)
-  { "build.cygwinmsvc", paramInteger, "b", 1},
+  { u8"build.cygwinmsvc", paramInteger, u8"b", 1},
 #endif
-  { "uconfig.internal_digitlist", paramInteger, "b", 1}, /* always 1 */
-  { "uconfig.have_parseallinput", paramInteger, "b", UCONFIG_HAVE_PARSEALLINPUT},
-  { "uconfig.format_fastpaths_49",paramInteger, "b", UCONFIG_FORMAT_FASTPATHS_49},
+  { u8"uconfig.internal_digitlist", paramInteger, u8"b", 1}, /* always 1 */
+  { u8"uconfig.have_parseallinput", paramInteger, u8"b", UCONFIG_HAVE_PARSEALLINPUT},
+  { u8"uconfig.format_fastpaths_49",paramInteger, u8"b", UCONFIG_FORMAT_FASTPATHS_49},
 
 
 };
@@ -581,23 +581,23 @@ U_CAPI int32_t udbg_getSystemParameterValueByIndex(int32_t i, char *buffer, int3
 U_CAPI void udbg_writeIcuInfo(FILE *out) {
   char str[2000];
   /* todo: API for writing DTD? */
-  fprintf(out, " <icuSystemParams type=\"icu4c\">\n");
+  fprintf(out, u8" <icuSystemParams type=\"icu4c\">\n");
   const char *paramName;
   for(int32_t i=0;(paramName=udbg_getSystemParameterNameByIndex(i))!=NULL;i++) {
     UErrorCode status2 = U_ZERO_ERROR;
     udbg_getSystemParameterValueByIndex(i, str,2000,&status2);
     if(U_SUCCESS(status2)) {
-      fprintf(out,"    <param name=\"%s\">%s</param>\n", paramName,str);
+      fprintf(out,u8"    <param name=\"%s\">%s</param>\n", paramName,str);
     } else {
-      fprintf(out,"  <!-- n=\"%s\" ERROR: %s -->\n", paramName, u_errorName(status2));
+      fprintf(out,u8"  <!-- n=\"%s\" ERROR: %s -->\n", paramName, u_errorName(status2));
     }
   }
-  fprintf(out, " </icuSystemParams>\n");
+  fprintf(out, u8" </icuSystemParams>\n");
 }
 
-#define ICU_TRAC_URL "http://bugs.icu-project.org/trac/ticket/"
-#define CLDR_TRAC_URL "http://unicode.org/cldr/trac/ticket/"
-#define CLDR_TICKET_PREFIX "cldrbug:"
+#define ICU_TRAC_URL u8"http://bugs.icu-project.org/trac/ticket/"
+#define CLDR_TRAC_URL u8"http://unicode.org/cldr/trac/ticket/"
+#define CLDR_TICKET_PREFIX u8"cldrbug:"
 
 U_CAPI char *udbg_knownIssueURLFrom(const char *ticket, char *buf) {
   if( ticket==NULL ) {
@@ -693,22 +693,22 @@ UBool KnownIssues::print()
     return FALSE;
   }
 
-  std::cout << "KNOWN ISSUES" << std::endl;
+  std::cout << u8"KNOWN ISSUES" << std::endl;
   for( std::map<  std::string,
           std::map <  std::string,  std::set <  std::string > > >::iterator i = fTable.begin();
        i != fTable.end();
        i++ ) {
     char URL[1024];
-    std::cout << '#' << (*i).first << " <" << udbg_knownIssueURLFrom( (*i).first.c_str(), URL ) << ">" << std::endl;
+    std::cout << '\x23' << (*i).first << u8" <" << udbg_knownIssueURLFrom( (*i).first.c_str(), URL ) << u8">" << std::endl;
 
     for( std::map< std::string, std::set < std::string > >::iterator ii = (*i).second.begin();
          ii != (*i).second.end();
          ii++ ) {
-      std::cout << "  " << (*ii).first << std::endl;
+      std::cout << u8"  " << (*ii).first << std::endl;
       for ( std::set < std::string >::iterator iii = (*ii).second.begin();
             iii != (*ii).second.end();
             iii++ ) {
-        std::cout << "     " << '"' << (*iii) << '"' << std::endl;
+        std::cout << u8"     " << '\x22' << (*iii) << '\x22' << std::endl;
       }
     }
   }

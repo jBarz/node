@@ -251,7 +251,7 @@ static const UDataInfo dataInfo = {
   U_SIZEOF_UCHAR,
   0,
 
-  { 0x43, 0x53, 0x65, 0x6c },   /* dataFormat="CSel" */
+  { 0x43, 0x53, 0x65, 0x6c },   /* dataFormat=u8"CSel" */
   { 1, 0, 0, 0 },               /* formatVersion */
   { 0, 0, 0, 0 }                /* dataVersion */
 };
@@ -378,19 +378,19 @@ ucnvsel_swap(const UDataSwapper *ds,
   /* check data format and format version */
   const UDataInfo *pInfo = (const UDataInfo *)((const char *)inData + 4);
   if(!(
-    pInfo->dataFormat[0] == 0x43 &&  /* dataFormat="CSel" */
+    pInfo->dataFormat[0] == 0x43 &&  /* dataFormat=u8"CSel" */
     pInfo->dataFormat[1] == 0x53 &&
     pInfo->dataFormat[2] == 0x65 &&
     pInfo->dataFormat[3] == 0x6c
   )) {
-    udata_printError(ds, "ucnvsel_swap(): data format %02x.%02x.%02x.%02x is not recognized as UConverterSelector data\n",
+    udata_printError(ds, u8"ucnvsel_swap(): data format %02x.%02x.%02x.%02x is not recognized as UConverterSelector data\n",
                      pInfo->dataFormat[0], pInfo->dataFormat[1],
                      pInfo->dataFormat[2], pInfo->dataFormat[3]);
     *status = U_INVALID_FORMAT_ERROR;
     return 0;
   }
   if(pInfo->formatVersion[0] != 1) {
-    udata_printError(ds, "ucnvsel_swap(): format version %02x is not supported\n",
+    udata_printError(ds, u8"ucnvsel_swap(): format version %02x is not supported\n",
                      pInfo->formatVersion[0]);
     *status = U_UNSUPPORTED_ERROR;
     return 0;
@@ -399,7 +399,7 @@ ucnvsel_swap(const UDataSwapper *ds,
   if(length >= 0) {
     length -= headerSize;
     if(length < 16*4) {
-      udata_printError(ds, "ucnvsel_swap(): too few bytes (%d after header) for UConverterSelector data\n",
+      udata_printError(ds, u8"ucnvsel_swap(): too few bytes (%d after header) for UConverterSelector data\n",
                        length);
       *status = U_INDEX_OUTOFBOUNDS_ERROR;
       return 0;
@@ -421,7 +421,7 @@ ucnvsel_swap(const UDataSwapper *ds,
   int32_t size = indexes[UCNVSEL_INDEX_SIZE];
   if(length >= 0) {
     if(length < size) {
-      udata_printError(ds, "ucnvsel_swap(): too few bytes (%d after header) for all of UConverterSelector data\n",
+      udata_printError(ds, u8"ucnvsel_swap(): too few bytes (%d after header) for all of UConverterSelector data\n",
                        length);
       *status = U_INDEX_OUTOFBOUNDS_ERROR;
       return 0;

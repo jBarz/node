@@ -166,7 +166,7 @@ private:
     virtual int32_t writeValueAndType(UBool hasValue, int32_t value, int32_t node);
     virtual int32_t writeDeltaTo(int32_t jumpTarget);
 
-    CharString *strings;  // Pointer not object so we need not #include internal charstr.h.
+    CharString *strings;  // Pointer not object so we need not  USTR(#include) internal charstr.h.
     BytesTrieElement *elements;
     int32_t elementsCapacity;
     int32_t elementsLength;

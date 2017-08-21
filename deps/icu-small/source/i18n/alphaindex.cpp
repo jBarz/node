@@ -313,7 +313,7 @@ void AlphabeticIndex::initLabels(UVector &indexCharacters, UErrorCode &errorCode
         int32_t itemLength = item->length();
         if (!item->hasMoreChar32Than(0, itemLength, 1)) {
             checkDistinct = FALSE;
-        } else if(item->charAt(itemLength - 1) == 0x2a &&  // '*'
+        } else if(item->charAt(itemLength - 1) == 0x2a &&  // '\x2a'
                 item->charAt(itemLength - 2) != 0x2a) {
             // Use a label if it is marked with one trailing star,
             // even if the label string sorts the same when all contractions are suppressed.
@@ -509,7 +509,7 @@ BucketList *AlphabeticIndex::createBucketList(UErrorCode &errorCode) const {
         if (!current.startsWith(BASE, BASE_LENGTH) &&
                 hasMultiplePrimaryWeights(*collatorPrimaryOnly_, variableTop, current,
                                           ces, errorCode) &&
-                current.charAt(current.length() - 1) != 0xFFFF /* !current.endsWith("\uffff") */) {
+                current.charAt(current.length() - 1) != 0xFFFF /* !current.endsWith(u8"\uffff") */) {
             // "AE-ligature" or "Sch" etc.
             for (int32_t i = bucketList->size() - 2;; --i) {
                 Bucket *singleBucket = getBucket(*bucketList, i);

@@ -104,16 +104,16 @@ static inline void _dbgct(UnicodeSet* set) {
     UnicodeString str;
     set->toPattern(str, TRUE);
     char buf[40];
-    str.extract(0, 39, buf, "");
-    printf("DEBUG UnicodeSet: ct 0x%08X; %d %s\n", set, ++_dbgCount, buf);
+    str.extract(0, 39, buf, u8"");
+    printf(u8"DEBUG UnicodeSet: ct 0x%08X; %d %s\n", set, ++_dbgCount, buf);
 }
 
 static inline void _dbgdt(UnicodeSet* set) {
     UnicodeString str;
     set->toPattern(str, TRUE);
     char buf[40];
-    str.extract(0, 39, buf, "");
-    printf("DEBUG UnicodeSet: dt 0x%08X; %d %s\n", set, --_dbgCount, buf);
+    str.extract(0, 39, buf, u8"");
+    printf(u8"DEBUG UnicodeSet: dt 0x%08X; %d %s\n", set, --_dbgCount, buf);
 }
 
 #else
@@ -854,18 +854,18 @@ UnicodeSet& UnicodeSet::add(UChar32 start, UChar32 end) {
 #include <stdio.h>
 void dump(UChar32 c) {
     if (c <= 0xFF) {
-        printf("%c", (char)c);
+        printf(u8"%c", (char)c);
     } else {
-        printf("U+%04X", c);
+        printf(u8"U+%04X", c);
     }
 }
 void dump(const UChar32* list, int32_t len) {
-    printf("[");
+    printf(u8"[");
     for (int32_t i=0; i<len; ++i) {
-        if (i != 0) printf(", ");
+        if (i != 0) printf(u8", ");
         dump(list[i]);
     }
-    printf("]");
+    printf(u8"]");
 }
 #endif
 
@@ -896,12 +896,12 @@ UnicodeSet& UnicodeSet::add(UChar32 c) {
     // i == 0 means c is before the first range
 
 #ifdef DEBUG_US_ADD
-    printf("Add of ");
+    printf(u8"Add of ");
     dump(c);
-    printf(" found at %d", i);
-    printf(": ");
+    printf(u8" found at %d", i);
+    printf(u8": ");
     dump(list, len);
-    printf(" => ");
+    printf(u8" => ");
 #endif
 
     if (c == list[i]-1) {
@@ -975,12 +975,12 @@ UnicodeSet& UnicodeSet::add(UChar32 c) {
 
 #ifdef DEBUG_US_ADD
     dump(list, len);
-    printf("\n");
+    printf(u8"\n");
 
     for (i=1; i<len; ++i) {
         if (list[i] <= list[i-1]) {
             // Corrupt array!
-            printf("ERROR: list has been corrupted\n");
+            printf(u8"ERROR: list has been corrupted\n");
             exit(1);
         }
     }
@@ -1507,7 +1507,7 @@ UnicodeSet::UnicodeSet(const uint16_t data[], int32_t dataLen, ESerialization se
 
   len = (((data[0]&0x7FFF)-bmpLength)/2)+bmpLength;
 #ifdef DEBUG_SERIALIZE
-  printf("dataLen %d headerSize %d bmpLen %d len %d. data[0]=%X/%X/%X/%X\n", dataLen,headerSize,bmpLength,len, data[0],data[1],data[2],data[3]);
+  printf(u8"dataLen %d headerSize %d bmpLen %d len %d. data[0]=%X/%X/%X/%X\n", dataLen,headerSize,bmpLength,len, data[0],data[1],data[2],data[3]);
 #endif
   capacity = len+1;
   list = (UChar32*) uprv_malloc(sizeof(UChar32) * capacity);
@@ -1520,7 +1520,7 @@ UnicodeSet::UnicodeSet(const uint16_t data[], int32_t dataLen, ESerialization se
   for(i = 0; i< bmpLength;i++) {
     list[i] = data[i+headerSize];
 #ifdef DEBUG_SERIALIZE
-    printf("<<16@%d[%d] %X\n", i+headerSize, i, list[i]);
+    printf(u8"<<16@%d[%d] %X\n", i+headerSize, i, list[i]);
 #endif
   }
   // copy smp
@@ -1528,7 +1528,7 @@ UnicodeSet::UnicodeSet(const uint16_t data[], int32_t dataLen, ESerialization se
     list[i] = ((UChar32)data[headerSize+bmpLength+(i-bmpLength)*2+0] << 16) +
               ((UChar32)data[headerSize+bmpLength+(i-bmpLength)*2+1]);
 #ifdef DEBUG_SERIALIZE
-    printf("<<32@%d+[%d] %lX\n", headerSize+bmpLength+i, i, list[i]);
+    printf(u8"<<32@%d+[%d] %lX\n", headerSize+bmpLength+i, i, list[i]);
 #endif
   }
   // terminator
@@ -1575,7 +1575,7 @@ int32_t UnicodeSet::serialize(uint16_t *dest, int32_t destCapacity, UErrorCode& 
         length=bmpLength+2*(length-bmpLength);
     }
 #ifdef DEBUG_SERIALIZE
-    printf(">> bmpLength%d length%d len%d\n", bmpLength, length, len);
+    printf(u8">> bmpLength%d length%d len%d\n", bmpLength, length, len);
 #endif
     /* length: number of 16-bit array units */
     if (length>0x7fff) {
@@ -1596,7 +1596,7 @@ int32_t UnicodeSet::serialize(uint16_t *dest, int32_t destCapacity, UErrorCode& 
         int32_t i;
 
 #ifdef DEBUG_SERIALIZE
-        printf("writeHdr\n");
+        printf(u8"writeHdr\n");
 #endif
         *dest=(uint16_t)length;
         if (length>bmpLength) {
@@ -1609,7 +1609,7 @@ int32_t UnicodeSet::serialize(uint16_t *dest, int32_t destCapacity, UErrorCode& 
         p=this->list;
         for (i=0; i<bmpLength; ++i) {
 #ifdef DEBUG_SERIALIZE
-          printf("writebmp: %x\n", (int)*p);
+          printf(u8"writebmp: %x\n", (int)*p);
 #endif
             *dest++=(uint16_t)*p++;
         }
@@ -1617,7 +1617,7 @@ int32_t UnicodeSet::serialize(uint16_t *dest, int32_t destCapacity, UErrorCode& 
         /* write the supplementary part of the array */
         for (; i<length; i+=2) {
 #ifdef DEBUG_SERIALIZE
-          printf("write32: %x\n", (int)*p);
+          printf(u8"write32: %x\n", (int)*p);
 #endif
             *dest++=(uint16_t)(*p>>16);
             *dest++=(uint16_t)*p++;

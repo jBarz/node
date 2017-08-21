@@ -45,15 +45,15 @@ print(const UnicodeString& s,
       const char *name)
 {
   UChar c;
-  cout << name << ":|";
+  cout << name << u8":|";
   for(int i = 0; i < s.length(); ++i) {
     c = s[i];
     if(c>= 0x007E || c < 0x0020)
-      cout << "[0x" << hex << s[i] << "]";
+      cout << u8"[0x" << hex << s[i] << u8"]";
     else
       cout << (char) s[i];
   }
-  cout << '|' << endl;
+  cout << '\x7c' << endl;
 }
 
 void
@@ -62,15 +62,15 @@ print(const UChar *s,
       const char *name)
 {
   UChar c;
-  cout << name << ":|";
+  cout << name << u8":|";
   for(int i = 0; i < len; ++i) {
     c = s[i];
     if(c>= 0x007E || c < 0x0020)
-      cout << "[0x" << hex << s[i] << "]";
+      cout << u8"[0x" << hex << s[i] << u8"]";
     else
       cout << (char) s[i];
   }
-  cout << '|' << endl;
+  cout << '\x7c' << endl;
 }
 // END DEBUGGING
 #endif
@@ -411,13 +411,13 @@ static u_atomic_int32_t beyondCount(0);
 U_CAPI void unistr_printLengths() {
   int32_t i;
   for(i = 0; i <= 59; ++i) {
-    printf("%2d,  %9d\n", i, (int32_t)finalLengthCounts[i]);
+    printf(u8"%2d,  %9d\n", i, (int32_t)finalLengthCounts[i]);
   }
   int32_t beyond = beyondCount;
   for(; i < UPRV_LENGTHOF(finalLengthCounts); ++i) {
     beyond += finalLengthCounts[i];
   }
-  printf(">59, %9d\n", beyond);
+  printf(u8">59, %9d\n", beyond);
 }
 #endif
 
@@ -636,7 +636,7 @@ UnicodeString UnicodeString::unescape() const {
             result.append(array, prev, len - prev);
             break;
         }
-        if (array[i++] == 0x5C /*'\\'*/) {
+        if (array[i++] == 0x5C /*'\x5c'*/) {
             result.append(array, prev, (i - 1) - prev);
             UChar32 c = unescapeAt(i); // advances i
             if (c < 0) {

@@ -717,7 +717,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x657220, 0x657320, 0x666F72, 0x686174, 0x686520, 0x686572, 0x696420, 0x696E20, 0x696E67, 0x696F6E, 0x697320, 0x6E2061, 0x6E2074, 0x6E6420, 0x6E6720, 0x6E7420,
     0x6F6620, 0x6F6E20, 0x6F7220, 0x726520, 0x727320, 0x732061, 0x732074, 0x736169, 0x737420, 0x742074, 0x746572, 0x746861, 0x746865, 0x74696F, 0x746F20, 0x747320,
     },
-    "en"
+    u8"en"
   },
   {
     {
@@ -726,7 +726,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x657420, 0x666F72, 0x676520, 0x67656E, 0x676572, 0x696765, 0x696C20, 0x696E67, 0x6B6520, 0x6B6B65, 0x6C6572, 0x6C6967, 0x6C6C65, 0x6D6564, 0x6E6465, 0x6E6520,
     0x6E6720, 0x6E6765, 0x6F6720, 0x6F6D20, 0x6F7220, 0x70E520, 0x722064, 0x722065, 0x722073, 0x726520, 0x737465, 0x742073, 0x746520, 0x746572, 0x74696C, 0x766572,
     },
-    "da"
+    u8"da"
   },
   {
     {
@@ -735,7 +735,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x657320, 0x67656E, 0x68656E, 0x687420, 0x696368, 0x696520, 0x696E20, 0x696E65, 0x697420, 0x6C6963, 0x6C6C65, 0x6E2061, 0x6E2064, 0x6E2073, 0x6E6420, 0x6E6465,
     0x6E6520, 0x6E6720, 0x6E6765, 0x6E7465, 0x722064, 0x726465, 0x726569, 0x736368, 0x737465, 0x742064, 0x746520, 0x74656E, 0x746572, 0x756E64, 0x756E67, 0x766572,
     },
-    "de"
+    u8"de"
   },
   {
     {
@@ -744,7 +744,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x646F20, 0x652064, 0x652065, 0x65206C, 0x656C20, 0x656E20, 0x656E74, 0x657320, 0x657374, 0x69656E, 0x69F36E, 0x6C6120, 0x6C6F73, 0x6E2065, 0x6E7465, 0x6F2064,
     0x6F2065, 0x6F6E20, 0x6F7220, 0x6F7320, 0x706172, 0x717565, 0x726120, 0x726573, 0x732064, 0x732065, 0x732070, 0x736520, 0x746520, 0x746F20, 0x756520, 0xF36E20,
     },
-    "es"
+    u8"es"
   },
   {
     {
@@ -753,7 +753,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x656E74, 0x657220, 0x657320, 0x657420, 0x657572, 0x696F6E, 0x697320, 0x697420, 0x6C6120, 0x6C6520, 0x6C6573, 0x6D656E, 0x6E2064, 0x6E6520, 0x6E7320, 0x6E7420,
     0x6F6E20, 0x6F6E74, 0x6F7572, 0x717565, 0x72206C, 0x726520, 0x732061, 0x732064, 0x732065, 0x73206C, 0x732070, 0x742064, 0x746520, 0x74696F, 0x756520, 0x757220,
     },
-    "fr"
+    u8"fr"
   },
   {
     {
@@ -762,7 +762,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x686520, 0x692061, 0x692063, 0x692064, 0x692073, 0x696120, 0x696C20, 0x696E20, 0x696F6E, 0x6C6120, 0x6C6520, 0x6C6920, 0x6C6C61, 0x6E6520, 0x6E6920, 0x6E6F20,
     0x6E7465, 0x6F2061, 0x6F2064, 0x6F2069, 0x6F2073, 0x6F6E20, 0x6F6E65, 0x706572, 0x726120, 0x726520, 0x736920, 0x746120, 0x746520, 0x746920, 0x746F20, 0x7A696F,
     },
-    "it"
+    u8"it"
   },
   {
     {
@@ -771,7 +771,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x656572, 0x656E20, 0x657220, 0x657273, 0x657420, 0x67656E, 0x686574, 0x696520, 0x696E20, 0x696E67, 0x697320, 0x6E2062, 0x6E2064, 0x6E2065, 0x6E2068, 0x6E206F,
     0x6E2076, 0x6E6465, 0x6E6720, 0x6F6E64, 0x6F6F72, 0x6F7020, 0x6F7220, 0x736368, 0x737465, 0x742064, 0x746520, 0x74656E, 0x746572, 0x76616E, 0x766572, 0x766F6F,
     },
-    "nl"
+    u8"nl"
   },
   {
     {
@@ -780,7 +780,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x666F72, 0x67656E, 0x696B6B, 0x696C20, 0x696E67, 0x6B6520, 0x6B6B65, 0x6C6520, 0x6C6C65, 0x6D6564, 0x6D656E, 0x6E2073, 0x6E6520, 0x6E6720, 0x6E6765, 0x6E6E65,
     0x6F6720, 0x6F6D20, 0x6F7220, 0x70E520, 0x722073, 0x726520, 0x736F6D, 0x737465, 0x742073, 0x746520, 0x74656E, 0x746572, 0x74696C, 0x747420, 0x747465, 0x766572,
     },
-    "no"
+    u8"no"
   },
   {
     {
@@ -789,7 +789,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x646F73, 0x652061, 0x652064, 0x656D20, 0x656E74, 0x657320, 0x657374, 0x696120, 0x696361, 0x6D656E, 0x6E7465, 0x6E746F, 0x6F2061, 0x6F2063, 0x6F2064, 0x6F2065,
     0x6F2070, 0x6F7320, 0x706172, 0x717565, 0x726120, 0x726573, 0x732061, 0x732064, 0x732065, 0x732070, 0x737461, 0x746520, 0x746F20, 0x756520, 0xE36F20, 0xE7E36F,
     },
-    "pt"
+    u8"pt"
   },
   {
     {
@@ -798,7 +798,7 @@ static const NGramsPlusLang ngrams_8859_1[] =  {
     0x657420, 0x66F672, 0x67656E, 0x696C6C, 0x696E67, 0x6B6120, 0x6C6C20, 0x6D6564, 0x6E2073, 0x6E6120, 0x6E6465, 0x6E6720, 0x6E6765, 0x6E696E, 0x6F6368, 0x6F6D20,
     0x6F6E20, 0x70E520, 0x722061, 0x722073, 0x726120, 0x736B61, 0x736F6D, 0x742073, 0x746120, 0x746520, 0x746572, 0x74696C, 0x747420, 0x766172, 0xE47220, 0xF67220,
     },
-    "sv"
+    u8"sv"
   }
 };
 
@@ -811,7 +811,7 @@ static const NGramsPlusLang ngrams_8859_2[] =  {
     0x6C6520, 0x6C6920, 0x6E6120, 0x6EE920, 0x6EEC20, 0x6EED20, 0x6F2070, 0x6F646E, 0x6F6A69, 0x6F7374, 0x6F7520, 0x6F7661, 0x706F64, 0x706F6A, 0x70726F, 0x70F865,
     0x736520, 0x736F75, 0x737461, 0x737469, 0x73746E, 0x746572, 0x746EED, 0x746F20, 0x752070, 0xBE6520, 0xE16EED, 0xE9686F, 0xED2070, 0xED2073, 0xED6D20, 0xF86564,
     },
-    "cs"
+    u8"cs"
   },
   {
     {
@@ -820,7 +820,7 @@ static const NGramsPlusLang ngrams_8859_2[] =  {
     0x656C65, 0x656D20, 0x656E20, 0x657265, 0x657420, 0x657465, 0x657474, 0x677920, 0x686F67, 0x696E74, 0x697320, 0x6B2061, 0x6BF67A, 0x6D6567, 0x6D696E, 0x6E2061,
     0x6E616B, 0x6E656B, 0x6E656D, 0x6E7420, 0x6F6779, 0x732061, 0x737A65, 0x737A74, 0x737AE1, 0x73E967, 0x742061, 0x747420, 0x74E173, 0x7A6572, 0xE16E20, 0xE97320,
     },
-    "hu"
+    u8"hu"
   },
   {
     {
@@ -829,7 +829,7 @@ static const NGramsPlusLang ngrams_8859_2[] =  {
     0x656D20, 0x656E69, 0x676F20, 0x696120, 0x696520, 0x69656A, 0x6B6120, 0x6B6920, 0x6B6965, 0x6D6965, 0x6E6120, 0x6E6961, 0x6E6965, 0x6F2070, 0x6F7761, 0x6F7769,
     0x706F6C, 0x707261, 0x70726F, 0x70727A, 0x727A65, 0x727A79, 0x7369EA, 0x736B69, 0x737461, 0x776965, 0x796368, 0x796D20, 0x7A6520, 0x7A6965, 0x7A7920, 0xF37720,
     },
-    "pl"
+    u8"pl"
   },
   {
     {
@@ -838,7 +838,7 @@ static const NGramsPlusLang ngrams_8859_2[] =  {
     0x652073, 0x656120, 0x656920, 0x656C65, 0x656E74, 0x657374, 0x692061, 0x692063, 0x692064, 0x692070, 0x696520, 0x696920, 0x696E20, 0x6C6120, 0x6C6520, 0x6C6F72,
     0x6C7569, 0x6E6520, 0x6E7472, 0x6F7220, 0x70656E, 0x726520, 0x726561, 0x727520, 0x73E320, 0x746520, 0x747275, 0x74E320, 0x756920, 0x756C20, 0xBA6920, 0xEE6E20,
     },
-    "ro"
+    u8"ro"
   }
 };
 
@@ -890,7 +890,7 @@ CharsetRecog_8859_1::~CharsetRecog_8859_1()
 }
 
 UBool CharsetRecog_8859_1::match(InputText *textIn, CharsetMatch *results) const {
-    const char *name = textIn->fC1Bytes? "windows-1252" : "ISO-8859-1";
+    const char *name = textIn->fC1Bytes? u8"windows-1252" : u8"ISO-8859-1";
     uint32_t i;
     int32_t bestConfidenceSoFar = -1;
     for (i=0; i < UPRV_LENGTHOF(ngrams_8859_1) ; i++) {
@@ -907,7 +907,7 @@ UBool CharsetRecog_8859_1::match(InputText *textIn, CharsetMatch *results) const
 
 const char *CharsetRecog_8859_1::getName() const
 {
-    return "ISO-8859-1";
+    return u8"ISO-8859-1";
 }
 
 
@@ -917,7 +917,7 @@ CharsetRecog_8859_2::~CharsetRecog_8859_2()
 }
 
 UBool CharsetRecog_8859_2::match(InputText *textIn, CharsetMatch *results) const {
-    const char *name = textIn->fC1Bytes? "windows-1250" : "ISO-8859-2";
+    const char *name = textIn->fC1Bytes? u8"windows-1250" : u8"ISO-8859-2";
     uint32_t i;
     int32_t bestConfidenceSoFar = -1;
     for (i=0; i < UPRV_LENGTHOF(ngrams_8859_2) ; i++) {
@@ -934,7 +934,7 @@ UBool CharsetRecog_8859_2::match(InputText *textIn, CharsetMatch *results) const
 
 const char *CharsetRecog_8859_2::getName() const
 {
-    return "ISO-8859-2";
+    return u8"ISO-8859-2";
 }
 
 
@@ -945,7 +945,7 @@ CharsetRecog_8859_5::~CharsetRecog_8859_5()
 
 const char *CharsetRecog_8859_5::getName() const
 {
-    return "ISO-8859-5";
+    return u8"ISO-8859-5";
 }
 
 CharsetRecog_8859_5_ru::~CharsetRecog_8859_5_ru()
@@ -955,7 +955,7 @@ CharsetRecog_8859_5_ru::~CharsetRecog_8859_5_ru()
 
 const char *CharsetRecog_8859_5_ru::getLanguage() const
 {
-    return "ru";
+    return u8"ru";
 }
 
 UBool CharsetRecog_8859_5_ru::match(InputText *textIn, CharsetMatch *results) const
@@ -972,7 +972,7 @@ CharsetRecog_8859_6::~CharsetRecog_8859_6()
 
 const char *CharsetRecog_8859_6::getName() const
 {
-    return "ISO-8859-6";
+    return u8"ISO-8859-6";
 }
 
 CharsetRecog_8859_6_ar::~CharsetRecog_8859_6_ar()
@@ -982,7 +982,7 @@ CharsetRecog_8859_6_ar::~CharsetRecog_8859_6_ar()
 
 const char *CharsetRecog_8859_6_ar::getLanguage() const
 {
-    return "ar";
+    return u8"ar";
 }
 
 UBool CharsetRecog_8859_6_ar::match(InputText *textIn, CharsetMatch *results) const
@@ -999,7 +999,7 @@ CharsetRecog_8859_7::~CharsetRecog_8859_7()
 
 const char *CharsetRecog_8859_7::getName() const
 {
-    return "ISO-8859-7";
+    return u8"ISO-8859-7";
 }
 
 CharsetRecog_8859_7_el::~CharsetRecog_8859_7_el()
@@ -1009,14 +1009,14 @@ CharsetRecog_8859_7_el::~CharsetRecog_8859_7_el()
 
 const char *CharsetRecog_8859_7_el::getLanguage() const
 {
-    return "el";
+    return u8"el";
 }
 
 UBool CharsetRecog_8859_7_el::match(InputText *textIn, CharsetMatch *results) const
 {
-    const char *name = textIn->fC1Bytes? "windows-1253" : "ISO-8859-7";
+    const char *name = textIn->fC1Bytes? u8"windows-1253" : u8"ISO-8859-7";
     int32_t confidence = match_sbcs(textIn, ngrams_8859_7_el, charMap_8859_7);
-    results->set(textIn, this, confidence, name, "el");
+    results->set(textIn, this, confidence, name, u8"el");
     return (confidence > 0);
 }
 
@@ -1027,7 +1027,7 @@ CharsetRecog_8859_8::~CharsetRecog_8859_8()
 
 const char *CharsetRecog_8859_8::getName() const
 {
-    return "ISO-8859-8";
+    return u8"ISO-8859-8";
 }
 
 CharsetRecog_8859_8_I_he::~CharsetRecog_8859_8_I_he ()
@@ -1037,19 +1037,19 @@ CharsetRecog_8859_8_I_he::~CharsetRecog_8859_8_I_he ()
 
 const char *CharsetRecog_8859_8_I_he::getName() const
 {
-    return "ISO-8859-8-I";
+    return u8"ISO-8859-8-I";
 }
 
 const char *CharsetRecog_8859_8_I_he::getLanguage() const
 {
-    return "he";
+    return u8"he";
 }
 
 UBool CharsetRecog_8859_8_I_he::match(InputText *textIn, CharsetMatch *results) const
 {
-    const char *name = textIn->fC1Bytes? "windows-1255" : "ISO-8859-8-I";
+    const char *name = textIn->fC1Bytes? u8"windows-1255" : u8"ISO-8859-8-I";
     int32_t confidence = match_sbcs(textIn, ngrams_8859_8_I_he, charMap_8859_8);
-    results->set(textIn, this, confidence, name, "he");
+    results->set(textIn, this, confidence, name, u8"he");
     return (confidence > 0);
 }
 
@@ -1060,14 +1060,14 @@ CharsetRecog_8859_8_he::~CharsetRecog_8859_8_he()
 
 const char *CharsetRecog_8859_8_he::getLanguage() const
 {
-    return "he";
+    return u8"he";
 }
 
 UBool CharsetRecog_8859_8_he::match(InputText *textIn, CharsetMatch *results) const
 {
-    const char *name = textIn->fC1Bytes? "windows-1255" : "ISO-8859-8";
+    const char *name = textIn->fC1Bytes? u8"windows-1255" : u8"ISO-8859-8";
     int32_t confidence = match_sbcs(textIn, ngrams_8859_8_he, charMap_8859_8);
-    results->set(textIn, this, confidence, name, "he");
+    results->set(textIn, this, confidence, name, u8"he");
     return (confidence > 0);
 }
 
@@ -1078,7 +1078,7 @@ CharsetRecog_8859_9::~CharsetRecog_8859_9()
 
 const char *CharsetRecog_8859_9::getName() const
 {
-    return "ISO-8859-9";
+    return u8"ISO-8859-9";
 }
 
 CharsetRecog_8859_9_tr::~CharsetRecog_8859_9_tr ()
@@ -1088,14 +1088,14 @@ CharsetRecog_8859_9_tr::~CharsetRecog_8859_9_tr ()
 
 const char *CharsetRecog_8859_9_tr::getLanguage() const
 {
-    return "tr";
+    return u8"tr";
 }
 
 UBool CharsetRecog_8859_9_tr::match(InputText *textIn, CharsetMatch *results) const
 {
-    const char *name = textIn->fC1Bytes? "windows-1254" : "ISO-8859-9";
+    const char *name = textIn->fC1Bytes? u8"windows-1254" : u8"ISO-8859-9";
     int32_t confidence = match_sbcs(textIn, ngrams_8859_9_tr, charMap_8859_9);
-    results->set(textIn, this, confidence, name, "tr");
+    results->set(textIn, this, confidence, name, u8"tr");
     return (confidence > 0);
 }
 
@@ -1106,12 +1106,12 @@ CharsetRecog_windows_1256::~CharsetRecog_windows_1256()
 
 const char *CharsetRecog_windows_1256::getName() const
 {
-    return  "windows-1256";
+    return  u8"windows-1256";
 }
 
 const char *CharsetRecog_windows_1256::getLanguage() const
 {
-    return "ar";
+    return u8"ar";
 }
 
 UBool CharsetRecog_windows_1256::match(InputText *textIn, CharsetMatch *results) const
@@ -1128,12 +1128,12 @@ CharsetRecog_windows_1251::~CharsetRecog_windows_1251()
 
 const char *CharsetRecog_windows_1251::getName() const
 {
-    return  "windows-1251";
+    return  u8"windows-1251";
 }
 
 const char *CharsetRecog_windows_1251::getLanguage() const
 {
-    return "ru";
+    return u8"ru";
 }
 
 UBool CharsetRecog_windows_1251::match(InputText *textIn, CharsetMatch *results) const
@@ -1150,12 +1150,12 @@ CharsetRecog_KOI8_R::~CharsetRecog_KOI8_R()
 
 const char *CharsetRecog_KOI8_R::getName() const
 {
-    return  "KOI8-R";
+    return  u8"KOI8-R";
 }
 
 const char *CharsetRecog_KOI8_R::getLanguage() const
 {
-    return "ru";
+    return u8"ru";
 }
 
 UBool CharsetRecog_KOI8_R::match(InputText *textIn, CharsetMatch *results) const
@@ -1173,7 +1173,7 @@ CharsetRecog_IBM424_he::~CharsetRecog_IBM424_he()
 
 const char *CharsetRecog_IBM424_he::getLanguage() const
 {
-    return "he";
+    return u8"he";
 }
 
 CharsetRecog_IBM424_he_rtl::~CharsetRecog_IBM424_he_rtl()
@@ -1183,7 +1183,7 @@ CharsetRecog_IBM424_he_rtl::~CharsetRecog_IBM424_he_rtl()
 
 const char *CharsetRecog_IBM424_he_rtl::getName() const
 {
-    return  "IBM424_rtl";
+    return  u8"IBM424_rtl";
 }
 
 UBool CharsetRecog_IBM424_he_rtl::match(InputText *textIn, CharsetMatch *results) const
@@ -1200,7 +1200,7 @@ CharsetRecog_IBM424_he_ltr::~CharsetRecog_IBM424_he_ltr()
 
 const char *CharsetRecog_IBM424_he_ltr::getName() const
 {
-    return  "IBM424_ltr";
+    return  u8"IBM424_ltr";
 }
 
 UBool CharsetRecog_IBM424_he_ltr::match(InputText *textIn, CharsetMatch *results) const
@@ -1217,7 +1217,7 @@ CharsetRecog_IBM420_ar::~CharsetRecog_IBM420_ar()
 
 const char *CharsetRecog_IBM420_ar::getLanguage() const
 {
-    return "ar";
+    return u8"ar";
 }
 
 
@@ -1238,7 +1238,7 @@ CharsetRecog_IBM420_ar_rtl::~CharsetRecog_IBM420_ar_rtl()
 
 const char *CharsetRecog_IBM420_ar_rtl::getName() const
 {
-    return  "IBM420_rtl";
+    return  u8"IBM420_rtl";
 }
 
 UBool CharsetRecog_IBM420_ar_rtl::match(InputText *textIn, CharsetMatch *results) const
@@ -1255,7 +1255,7 @@ CharsetRecog_IBM420_ar_ltr::~CharsetRecog_IBM420_ar_ltr()
 
 const char *CharsetRecog_IBM420_ar_ltr::getName() const
 {
-    return  "IBM420_ltr";
+    return  u8"IBM420_ltr";
 }
 
 UBool CharsetRecog_IBM420_ar_ltr::match(InputText *textIn, CharsetMatch *results) const

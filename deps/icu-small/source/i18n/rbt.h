@@ -21,7 +21,7 @@
 #include "unicode/parseerr.h"
 #include "unicode/udata.h"
 
-#define U_ICUDATA_TRANSLIT U_ICUDATA_NAME U_TREE_SEPARATOR_STRING "translit"
+#define U_ICUDATA_TRANSLIT U_ICUDATA_NAME U_TREE_SEPARATOR_STRING u8"translit"
 
 U_NAMESPACE_BEGIN
 

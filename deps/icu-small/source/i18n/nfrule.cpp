@@ -78,25 +78,25 @@ static const UChar gTick = 0x0027;
 static const UChar gSemicolon = 0x003b;
 static const UChar gX = 0x0078;
 
-static const UChar gMinusX[] =                  {0x2D, 0x78, 0};    /* "-x" */
-static const UChar gInf[] =                     {0x49, 0x6E, 0x66, 0}; /* "Inf" */
-static const UChar gNaN[] =                     {0x4E, 0x61, 0x4E, 0}; /* "NaN" */
+static const UChar gMinusX[] =                  {0x2D, 0x78, 0};    /* u8"-x" */
+static const UChar gInf[] =                     {0x49, 0x6E, 0x66, 0}; /* u8"Inf" */
+static const UChar gNaN[] =                     {0x4E, 0x61, 0x4E, 0}; /* u8"NaN" */
 
-static const UChar gDollarOpenParenthesis[] =   {0x24, 0x28, 0}; /* "$(" */
-static const UChar gClosedParenthesisDollar[] = {0x29, 0x24, 0}; /* ")$" */
+static const UChar gDollarOpenParenthesis[] =   {0x24, 0x28, 0}; /* u8"$(" */
+static const UChar gClosedParenthesisDollar[] = {0x29, 0x24, 0}; /* u8")$" */
 
-static const UChar gLessLess[] =                {0x3C, 0x3C, 0};    /* "<<" */
-static const UChar gLessPercent[] =             {0x3C, 0x25, 0};    /* "<%" */
-static const UChar gLessHash[] =                {0x3C, 0x23, 0};    /* "<#" */
-static const UChar gLessZero[] =                {0x3C, 0x30, 0};    /* "<0" */
-static const UChar gGreaterGreater[] =          {0x3E, 0x3E, 0};    /* ">>" */
-static const UChar gGreaterPercent[] =          {0x3E, 0x25, 0};    /* ">%" */
-static const UChar gGreaterHash[] =             {0x3E, 0x23, 0};    /* ">#" */
-static const UChar gGreaterZero[] =             {0x3E, 0x30, 0};    /* ">0" */
-static const UChar gEqualPercent[] =            {0x3D, 0x25, 0};    /* "=%" */
-static const UChar gEqualHash[] =               {0x3D, 0x23, 0};    /* "=#" */
-static const UChar gEqualZero[] =               {0x3D, 0x30, 0};    /* "=0" */
-static const UChar gGreaterGreaterGreater[] =   {0x3E, 0x3E, 0x3E, 0}; /* ">>>" */
+static const UChar gLessLess[] =                {0x3C, 0x3C, 0};    /* u8"<<" */
+static const UChar gLessPercent[] =             {0x3C, 0x25, 0};    /* u8"<%" */
+static const UChar gLessHash[] =                {0x3C, 0x23, 0};    /* u8"<#" */
+static const UChar gLessZero[] =                {0x3C, 0x30, 0};    /* u8"<0" */
+static const UChar gGreaterGreater[] =          {0x3E, 0x3E, 0};    /* u8">>" */
+static const UChar gGreaterPercent[] =          {0x3E, 0x25, 0};    /* u8">%" */
+static const UChar gGreaterHash[] =             {0x3E, 0x23, 0};    /* u8">#" */
+static const UChar gGreaterZero[] =             {0x3E, 0x30, 0};    /* u8">0" */
+static const UChar gEqualPercent[] =            {0x3D, 0x25, 0};    /* u8"=%" */
+static const UChar gEqualHash[] =               {0x3D, 0x23, 0};    /* u8"=#" */
+static const UChar gEqualZero[] =               {0x3D, 0x30, 0};    /* u8"=0" */
+static const UChar gGreaterGreaterGreater[] =   {0x3E, 0x3E, 0x3E, 0}; /* u8">>>" */
 
 static const UChar * const RULE_PREFIXES[] = {
     gLessLess, gLessPercent, gLessHash, gLessZero,
@@ -890,7 +890,7 @@ static void dumpUS(FILE* f, const UnicodeString& us) {
   if (buf != NULL) {
 	  us.extract(0, len, buf);
 	  buf[len] = 0;
-	  fprintf(f, "%s", buf);
+	  fprintf(f, u8"%s", buf);
 	  uprv_free(buf); //delete[] buf;
   }
 }
@@ -918,23 +918,23 @@ NFRule::doParse(const UnicodeString& text,
     prefix.setTo(ruleText, 0, sub1Pos);
 
 #ifdef RBNF_DEBUG
-    fprintf(stderr, "doParse %p ", this);
+    fprintf(stderr, u8"doParse %p ", this);
     {
         UnicodeString rt;
         _appendRuleText(rt);
         dumpUS(stderr, rt);
     }
 
-    fprintf(stderr, " text: '");
+    fprintf(stderr, u8" text: '");
     dumpUS(stderr, text);
-    fprintf(stderr, "' prefix: '");
+    fprintf(stderr, u8"' prefix: '");
     dumpUS(stderr, prefix);
 #endif
     stripPrefix(workText, prefix, pp);
     int32_t prefixLength = text.length() - workText.length();
 
 #ifdef RBNF_DEBUG
-    fprintf(stderr, "' pl: %d ppi: %d s1p: %d\n", prefixLength, pp.getIndex(), sub1Pos);
+    fprintf(stderr, u8"' pl: %d ppi: %d s1p: %d\n", prefixLength, pp.getIndex(), sub1Pos);
 #endif
 
     if (pp.getIndex() == 0 && sub1Pos != 0) {
@@ -1385,7 +1385,7 @@ NFRule::prefixLength(const UnicodeString& str, const UnicodeString& prefix, UErr
         }
 
 #ifdef RBNF_DEBUG
-        fprintf(stderr, "prefix length: %d\n", result);
+        fprintf(stderr, u8"prefix length: %d\n", result);
 #endif
         return result;
 #if 0
@@ -1410,7 +1410,7 @@ NFRule::prefixLength(const UnicodeString& str, const UnicodeString& prefix, UErr
             temp.setTo(str, 0, prefix.length());
             if (collator->equals(temp, prefix)) {
 #ifdef RBNF_DEBUG
-                fprintf(stderr, "returning: %d\n", prefix.length());
+                fprintf(stderr, u8"returning: %d\n", prefix.length());
 #endif
                 return prefix.length();
             }

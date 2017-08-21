@@ -17,7 +17,7 @@
 *   5/10/01     Ram         removed ustdio dependency
 *******************************************************************************
 */
-
+#define _AE_BIMODAL
 #include <assert.h>
 #include "genrb.h"
 #include "unicode/localpointer.h"
@@ -27,6 +27,7 @@
 #include "cmemory.h"
 #include "reslist.h"
 #include "ucmndata.h"  /* TODO: for reading the pool bundle */
+#include <unistd.h>
 
 U_NAMESPACE_USE
 
@@ -38,8 +39,8 @@ static char *make_res_filename(const char *filename, const char *outputDir,
                                const char *packageName, UErrorCode &status);
 
 /* File suffixes */
-#define RES_SUFFIX ".res"
-#define COL_SUFFIX ".col"
+#define RES_SUFFIX u8".res"
+#define COL_SUFFIX u8".col"
 
 const char *gCurrentFileName = NULL;
 #ifdef XP_MAC_CONSOLE
@@ -91,22 +92,22 @@ UOption options[]={
                       UOPTION_ICUDATADIR,
                       UOPTION_WRITE_JAVA,
                       UOPTION_COPYRIGHT,
-                      UOPTION_DEF("java-package", '\x01', UOPT_REQUIRES_ARG),
+                      UOPTION_DEF(u8"java-package", '\x01', UOPT_REQUIRES_ARG),
                       UOPTION_BUNDLE_NAME,
-                      UOPTION_DEF("write-xliff", 'x', UOPT_OPTIONAL_ARG),
-                      UOPTION_DEF("strict",    'k', UOPT_NO_ARG), /* 14 */
-                      UOPTION_DEF("noBinaryCollation", 'C', UOPT_NO_ARG),/* 15 */
-                      UOPTION_DEF("language",  'l', UOPT_REQUIRES_ARG), /* 16 */
-                      UOPTION_DEF("omitCollationRules", 'R', UOPT_NO_ARG),/* 17 */
-                      UOPTION_DEF("formatVersion", '\x01', UOPT_REQUIRES_ARG),/* 18 */
-                      UOPTION_DEF("writePoolBundle", '\x01', UOPT_NO_ARG),/* 19 */
-                      UOPTION_DEF("usePoolBundle", '\x01', UOPT_OPTIONAL_ARG),/* 20 */
-                      UOPTION_DEF("includeUnihanColl", '\x01', UOPT_NO_ARG),/* 21 */ /* temporary, don't display in usage info */
+                      UOPTION_DEF(u8"write-xliff", '\x78', UOPT_OPTIONAL_ARG),
+                      UOPTION_DEF(u8"strict",    '\x6b', UOPT_NO_ARG), /* 14 */
+                      UOPTION_DEF(u8"noBinaryCollation", '\x43', UOPT_NO_ARG),/* 15 */
+                      UOPTION_DEF(u8"language",  '\x6c', UOPT_REQUIRES_ARG), /* 16 */
+                      UOPTION_DEF(u8"omitCollationRules", '\x52', UOPT_NO_ARG),/* 17 */
+                      UOPTION_DEF(u8"formatVersion", '\x01', UOPT_REQUIRES_ARG),/* 18 */
+                      UOPTION_DEF(u8"writePoolBundle", '\x01', UOPT_NO_ARG),/* 19 */
+                      UOPTION_DEF(u8"usePoolBundle", '\x01', UOPT_OPTIONAL_ARG),/* 20 */
+                      UOPTION_DEF(u8"includeUnihanColl", '\x01', UOPT_NO_ARG),/* 21 */ /* temporary, don't display in usage info */
                   };
 
 static     UBool       write_java = FALSE;
 static     UBool       write_xliff = FALSE;
-static     const char* outputEnc ="";
+static     const char* outputEnc =u8"";
 
 static ResFile poolBundle;
 
@@ -121,55 +122,54 @@ main(int argc,
     const char *arg       = NULL;
     const char *outputDir = NULL; /* NULL = no output directory, use current */
     const char *inputDir  = NULL;
-    const char *encoding  = "";
+    const char *encoding  = u8"";
     int         i;
     UBool illegalArg = FALSE;
-
     U_MAIN_INIT_ARGS(argc, argv);
 
-    options[JAVA_PACKAGE].value = "com.ibm.icu.impl.data";
-    options[BUNDLE_NAME].value = "LocaleElements";
+    options[JAVA_PACKAGE].value = u8"com.ibm.icu.impl.data";
+    options[BUNDLE_NAME].value = u8"LocaleElements";
     argc = u_parseArgs(argc, argv, UPRV_LENGTHOF(options), options);
 
     /* error handling, printing usage message */
     if(argc<0) {
-        fprintf(stderr, "%s: error in command line argument \"%s\"\n", argv[0], argv[-argc]);
+        __fprintf_a(stderr, u8"%s: error in command line argument \"%s\"\n", argv[0], argv[-argc]);
         illegalArg = TRUE;
     } else if(argc<2) {
         illegalArg = TRUE;
     }
     if(options[WRITE_POOL_BUNDLE].doesOccur && options[USE_POOL_BUNDLE].doesOccur) {
-        fprintf(stderr, "%s: cannot combine --writePoolBundle and --usePoolBundle\n", argv[0]);
+        __fprintf_a(stderr, u8"%s: cannot combine --writePoolBundle and --usePoolBundle\n", argv[0]);
         illegalArg = TRUE;
     }
     if(options[FORMAT_VERSION].doesOccur) {
         const char *s = options[FORMAT_VERSION].value;
-        if(uprv_strlen(s) != 1 || (s[0] < '1' && '3' < s[0])) {
-            fprintf(stderr, "%s: unsupported --formatVersion %s\n", argv[0], s);
+        if(uprv_strlen(s) != 1 || (s[0] < '\x31' && '\x33' < s[0])) {
+            __fprintf_a(stderr, u8"%s: unsupported --formatVersion %s\n", argv[0], s);
             illegalArg = TRUE;
-        } else if(s[0] == '1' &&
+        } else if(s[0] == '\x31' &&
                   (options[WRITE_POOL_BUNDLE].doesOccur || options[USE_POOL_BUNDLE].doesOccur)
         ) {
-            fprintf(stderr, "%s: cannot combine --formatVersion 1 with --writePoolBundle or --usePoolBundle\n", argv[0]);
+            __fprintf_a(stderr, u8"%s: cannot combine --formatVersion 1 with --writePoolBundle or --usePoolBundle\n", argv[0]);
             illegalArg = TRUE;
         } else {
-            setFormatVersion(s[0] - '0');
+            setFormatVersion(s[0] - '\x30');
         }
     }
 
     if((options[JAVA_PACKAGE].doesOccur || options[BUNDLE_NAME].doesOccur) &&
             !options[WRITE_JAVA].doesOccur) {
-        fprintf(stderr,
-                "%s error: command line argument --java-package or --bundle-name "
-                "without --write-java\n",
+        __fprintf_a(stderr,
+                u8"%s error: command line argument --java-package or --bundle-name "
+                u8"without --write-java\n",
                 argv[0]);
         illegalArg = TRUE;
     }
 
     if(options[VERSION].doesOccur) {
-        fprintf(stderr,
-                "%s version %s (ICU version %s).\n"
-                "%s\n",
+        __fprintf_a(stderr,
+                u8"%s version %s (ICU version %s).\n"
+                u8"%s\n",
                 argv[0], GENRB_VERSION, U_ICU_VERSION, U_COPYRIGHT_STRING);
         if(!illegalArg) {
             return U_ZERO_ERROR;
@@ -181,53 +181,53 @@ main(int argc,
          * Broken into chunks because the C89 standard says the minimum
          * required supported string length is 509 bytes.
          */
-        fprintf(stderr,
-                "Usage: %s [OPTIONS] [FILES]\n"
-                "\tReads the list of resource bundle source files and creates\n"
-                "\tbinary version of resource bundles (.res files)\n",
+        __fprintf_a(stderr,
+                u8"Usage: %s [OPTIONS] [FILES]\n"
+                u8"\tReads the list of resource bundle source files and creates\n"
+                u8"\tbinary version of resource bundles (.res files)\n",
                 argv[0]);
-        fprintf(stderr,
-                "Options:\n"
-                "\t-h or -? or --help       this usage text\n"
-                "\t-q or --quiet            do not display warnings\n"
-                "\t-v or --verbose          print extra information when processing files\n"
-                "\t-V or --version          prints out version number and exits\n"
-                "\t-c or --copyright        include copyright notice\n");
-        fprintf(stderr,
-                "\t-e or --encoding         encoding of source files\n"
-                "\t-d of --destdir          destination directory, followed by the path, defaults to %s\n"
-                "\t-s or --sourcedir        source directory for files followed by path, defaults to %s\n"
-                "\t-i or --icudatadir       directory for locating any needed intermediate data files,\n"
-                "\t                         followed by path, defaults to %s\n",
+        __fprintf_a(stderr,
+                u8"Options:\n"
+                u8"\t-h or -? or --help       this usage text\n"
+                u8"\t-q or --quiet            do not display warnings\n"
+                u8"\t-v or --verbose          print extra information when processing files\n"
+                u8"\t-V or --version          prints out version number and exits\n"
+                u8"\t-c or --copyright        include copyright notice\n");
+        __fprintf_a(stderr,
+                u8"\t-e or --encoding         encoding of source files\n"
+                u8"\t-d of --destdir          destination directory, followed by the path, defaults to %s\n"
+                u8"\t-s or --sourcedir        source directory for files followed by path, defaults to %s\n"
+                u8"\t-i or --icudatadir       directory for locating any needed intermediate data files,\n"
+                u8"\t                         followed by path, defaults to %s\n",
                 u_getDataDirectory(), u_getDataDirectory(), u_getDataDirectory());
-        fprintf(stderr,
-                "\t-j or --write-java       write a Java ListResourceBundle for ICU4J, followed by optional encoding\n"
-                "\t                         defaults to ASCII and \\uXXXX format.\n"
-                "\t      --java-package     For --write-java: package name for writing the ListResourceBundle,\n"
-                "\t                         defaults to com.ibm.icu.impl.data\n");
-        fprintf(stderr,
-                "\t-b or --bundle-name      For --write-java: root resource bundle name for writing the ListResourceBundle,\n"
-                "\t                         defaults to LocaleElements\n"
-                "\t-x or --write-xliff      write an XLIFF file for the resource bundle. Followed by\n"
-                "\t                         an optional output file name.\n"
-                "\t-k or --strict           use pedantic parsing of syntax\n"
+        __fprintf_a(stderr,
+                u8"\t-j or --write-java       write a Java ListResourceBundle for ICU4J, followed by optional encoding\n"
+                u8"\t                         defaults to ASCII and \\uXXXX format.\n"
+                u8"\t      --java-package     For --write-java: package name for writing the ListResourceBundle,\n"
+                u8"\t                         defaults to com.ibm.icu.impl.data\n");
+        __fprintf_a(stderr,
+                u8"\t-b or --bundle-name      For --write-java: root resource bundle name for writing the ListResourceBundle,\n"
+                u8"\t                         defaults to LocaleElements\n"
+                u8"\t-x or --write-xliff      write an XLIFF file for the resource bundle. Followed by\n"
+                u8"\t                         an optional output file name.\n"
+                u8"\t-k or --strict           use pedantic parsing of syntax\n"
                 /*added by Jing*/
-                "\t-l or --language         for XLIFF: language code compliant with BCP 47.\n");
-        fprintf(stderr,
-                "\t-C or --noBinaryCollation  do not generate binary collation image;\n"
-                "\t                           makes .res file smaller but collator instantiation much slower;\n"
-                "\t                           maintains ability to get tailoring rules\n"
-                "\t-R or --omitCollationRules do not include collation (tailoring) rules;\n"
-                "\t                           makes .res file smaller and maintains collator instantiation speed\n"
-                "\t                           but tailoring rules will not be available (they are rarely used)\n");
-        fprintf(stderr,
-                "\t      --formatVersion      write a .res file compatible with the requested formatVersion (single digit);\n"
-                "\t                           for example, --formatVersion 1\n");
-        fprintf(stderr,
-                "\t      --writePoolBundle    write a pool.res file with all of the keys of all input bundles\n"
-                "\t      --usePoolBundle [path-to-pool.res]  point to keys from the pool.res keys pool bundle if they are available there;\n"
-                "\t                           makes .res files smaller but dependent on the pool bundle\n"
-                "\t                           (--writePoolBundle and --usePoolBundle cannot be combined)\n");
+                u8"\t-l or --language         for XLIFF: language code compliant with BCP 47.\n");
+        __fprintf_a(stderr,
+                u8"\t-C or --noBinaryCollation  do not generate binary collation image;\n"
+                u8"\t                           makes .res file smaller but collator instantiation much slower;\n"
+                u8"\t                           maintains ability to get tailoring rules\n"
+                u8"\t-R or --omitCollationRules do not include collation (tailoring) rules;\n"
+                u8"\t                           makes .res file smaller and maintains collator instantiation speed\n"
+                u8"\t                           but tailoring rules will not be available (they are rarely used)\n");
+        __fprintf_a(stderr,
+                u8"\t      --formatVersion      write a .res file compatible with the requested formatVersion (single digit);\n"
+                u8"\t                           for example, --formatVersion 1\n");
+        __fprintf_a(stderr,
+                u8"\t      --writePoolBundle    write a pool.res file with all of the keys of all input bundles\n"
+                u8"\t      --usePoolBundle [path-to-pool.res]  point to keys from the pool.res keys pool bundle if they are available there;\n"
+                u8"\t                           makes .res files smaller but dependent on the pool bundle\n"
+                u8"\t                           (--writePoolBundle and --usePoolBundle cannot be combined)\n");
 
         return illegalArg ? U_ILLEGAL_ARGUMENT_ERROR : U_ZERO_ERROR;
     }
@@ -268,7 +268,7 @@ main(int argc,
          *       failures here are expected when building ICU from scratch.
          *       ignore them.
         */
-        fprintf(stderr, "%s: can not initialize ICU.  status = %s\n",
+        __fprintf_a(stderr, u8"%s: can not initialize ICU.  status = %s\n",
             argv[0], u_errorName(status));
         exit(1);
     }
@@ -296,23 +296,23 @@ main(int argc,
     if(options[WRITE_POOL_BUNDLE].doesOccur) {
         newPoolBundle.adoptInsteadAndCheckErrorCode(new SRBRoot(NULL, TRUE, status), status);
         if(U_FAILURE(status)) {
-            fprintf(stderr, "unable to create an empty bundle for the pool keys: %s\n", u_errorName(status));
+            __fprintf_a(stderr, u8"unable to create an empty bundle for the pool keys: %s\n", u_errorName(status));
             return status;
         } else {
-            const char *poolResName = "pool.res";
+            const char *poolResName = u8"pool.res";
             char *nameWithoutSuffix = static_cast<char *>(uprv_malloc(uprv_strlen(poolResName) + 1));
             if (nameWithoutSuffix == NULL) {
-                fprintf(stderr, "out of memory error\n");
+                __fprintf_a(stderr, u8"out of memory error\n");
                 return U_MEMORY_ALLOCATION_ERROR;
             }
             uprv_strcpy(nameWithoutSuffix, poolResName);
-            *uprv_strrchr(nameWithoutSuffix, '.') = 0;
+            *uprv_strrchr(nameWithoutSuffix, '\x2e') = 0;
             newPoolBundle->fLocale = nameWithoutSuffix;
         }
     }
 
     if(options[USE_POOL_BUNDLE].doesOccur) {
-        const char *poolResName = "pool.res";
+        const char *poolResName = u8"pool.res";
         FileStream *poolFile;
         int32_t poolFileSize;
         int32_t indexLength;
@@ -336,17 +336,17 @@ main(int argc,
         }
         poolFile = T_FileStream_open(poolFileName.data(), "rb");
         if (poolFile == NULL) {
-            fprintf(stderr, "unable to open pool bundle file %s\n", poolFileName.data());
+            __fprintf_a(stderr, u8"unable to open pool bundle file %s\n", poolFileName.data());
             return 1;
         }
         poolFileSize = T_FileStream_size(poolFile);
         if (poolFileSize < 32) {
-            fprintf(stderr, "the pool bundle file %s is too small\n", poolFileName.data());
+            __fprintf_a(stderr, u8"the pool bundle file %s is too small\n", poolFileName.data());
             return 1;
         }
         poolBundle.fBytes = new uint8_t[(poolFileSize + 15) & ~15];
         if (poolFileSize > 0 && poolBundle.fBytes == NULL) {
-            fprintf(stderr, "unable to allocate memory for the pool bundle file %s\n", poolFileName.data());
+            __fprintf_a(stderr, u8"unable to allocate memory for the pool bundle file %s\n", poolFileName.data());
             return U_MEMORY_ALLOCATION_ERROR;
         }
 
@@ -354,7 +354,7 @@ main(int argc,
         const DataHeader *header;
         int32_t bytesRead = T_FileStream_read(poolFile, poolBundle.fBytes, poolFileSize);
         if (bytesRead != poolFileSize) {
-            fprintf(stderr, "unable to read the pool bundle file %s\n", poolFileName.data());
+            __fprintf_a(stderr, u8"unable to read the pool bundle file %s\n", poolFileName.data());
             return 1;
         }
         /*
@@ -365,20 +365,20 @@ main(int argc,
         ds = udata_openSwapperForInputData(poolBundle.fBytes, bytesRead,
                                            U_IS_BIG_ENDIAN, U_CHARSET_FAMILY, &status);
         if (U_FAILURE(status)) {
-            fprintf(stderr, "udata_openSwapperForInputData(pool bundle %s) failed: %s\n",
+            __fprintf_a(stderr, u8"udata_openSwapperForInputData(pool bundle %s) failed: %s\n",
                     poolFileName.data(), u_errorName(status));
             return status;
         }
         ures_swap(ds, poolBundle.fBytes, bytesRead, poolBundle.fBytes, &status);
         udata_closeSwapper(ds);
         if (U_FAILURE(status)) {
-            fprintf(stderr, "ures_swap(pool bundle %s) failed: %s\n",
+            __fprintf_a(stderr, u8"ures_swap(pool bundle %s) failed: %s\n",
                     poolFileName.data(), u_errorName(status));
             return status;
         }
         header = (const DataHeader *)poolBundle.fBytes;
         if (header->info.formatVersion[0] < 2) {
-            fprintf(stderr, "invalid format of pool bundle file %s\n", poolFileName.data());
+            __fprintf_a(stderr, u8"invalid format of pool bundle file %s\n", poolFileName.data());
             return U_INVALID_FORMAT_ERROR;
         }
         const int32_t *pRoot = (const int32_t *)(
@@ -386,7 +386,7 @@ main(int argc,
         poolBundle.fIndexes = pRoot + 1;
         indexLength = poolBundle.fIndexes[URES_INDEX_LENGTH] & 0xff;
         if (indexLength <= URES_INDEX_POOL_CHECKSUM) {
-            fprintf(stderr, "insufficient indexes[] in pool bundle file %s\n", poolFileName.data());
+            __fprintf_a(stderr, u8"insufficient indexes[] in pool bundle file %s\n", poolFileName.data());
             return U_INVALID_FORMAT_ERROR;
         }
         int32_t keysBottom = 1 + indexLength;
@@ -408,7 +408,7 @@ main(int argc,
         if (stringUnitsLength >= 2 && getFormatVersion() >= 3) {
             poolBundle.fStrings = new PseudoListResource(NULL, status);
             if (poolBundle.fStrings == NULL) {
-                fprintf(stderr, "unable to allocate memory for the pool bundle strings %s\n",
+                __fprintf_a(stderr, u8"unable to allocate memory for the pool bundle strings %s\n",
                         poolFileName.data());
                 return U_MEMORY_ALLOCATION_ERROR;
             }
@@ -458,7 +458,7 @@ main(int argc,
                             new StringResource(poolStringIndex, numCharsForLength,
                                                p, length, status);
                     if (sr == NULL) {
-                        fprintf(stderr, "unable to allocate memory for a pool bundle string %s\n",
+                        __fprintf_a(stderr, u8"unable to allocate memory for a pool bundle string %s\n",
                                 poolFileName.data());
                         return U_MEMORY_ALLOCATION_ERROR;
                     }
@@ -479,9 +479,9 @@ main(int argc,
         T_FileStream_close(poolFile);
         setUsePoolBundle(TRUE);
         if (isVerbose() && poolBundle.fStrings != NULL) {
-            printf("number of shared strings: %d\n", (int)poolBundle.fStrings->fCount);
+            __printf_a(u8"number of shared strings: %d\n", (int)poolBundle.fStrings->fCount);
             int32_t length = poolBundle.fStringIndexLimit + 1;  // incl. last NUL
-            printf("16-bit units for strings: %6d = %6d bytes\n",
+            __printf_a(u8"16-bit units for strings: %6d = %6d bytes\n",
                    (int)length, (int)length * 2);
         }
     }
@@ -497,14 +497,14 @@ main(int argc,
     }
 
     if(options[INCLUDE_UNIHAN_COLL].doesOccur) {
-        puts("genrb option --includeUnihanColl ignored: \n"
-                "CLDR 26/ICU 54 unihan data is small, except\n"
-                "the ucadata-unihan.icu version of the collation root data\n"
-                "is about 300kB larger than the ucadata-implicithan.icu version.");
+        puts(u8"genrb option --includeUnihanColl ignored: \n"
+                u8"CLDR 26/ICU 54 unihan data is small, except\n"
+                u8"the ucadata-unihan.icu version of the collation root data\n"
+                u8"is about 300kB larger than the ucadata-implicithan.icu version.");
     }
 
     if((argc-1)!=1) {
-        printf("genrb number of files: %d\n", argc - 1);
+        __printf_a(u8"genrb number of files: %d\n", argc - 1);
     }
     /* generate the binary files */
     for(i = 1; i < argc; ++i) {
@@ -522,7 +522,7 @@ main(int argc,
 
         gCurrentFileName = theCurrentFileName.data();
         if (isVerbose()) {
-            printf("Processing file \"%s\"\n", theCurrentFileName.data());
+            __printf_a(u8"Processing file \"%s\"\n", theCurrentFileName.data());
         }
         processFile(arg, encoding, inputDir, outputDir, NULL,
                     newPoolBundle.getAlias(),
@@ -535,7 +535,7 @@ main(int argc,
         char outputFileName[256];
         newPoolBundle->write(outputDir, NULL, outputFileName, sizeof(outputFileName), status);
         if(U_FAILURE(status)) {
-            fprintf(stderr, "unable to write the pool bundle: %s\n", u_errorName(status));
+            __fprintf_a(stderr, u8"unable to write the pool bundle: %s\n", u_errorName(status));
         }
     }
 
@@ -579,7 +579,7 @@ processFile(const char *filename, const char *cp,
     if(inputDir == NULL) {
         const char *filenameBegin = uprv_strrchr(filename, U_FILE_SEP_CHAR);
         openFileName = (char *) uprv_malloc(dirlen + filelen + 2);
-        openFileName[0] = '\0';
+        openFileName[0] = '\x0';
         if (filenameBegin != NULL) {
             /*
              * When a filename ../../../data/root.txt is specified,
@@ -612,7 +612,7 @@ processFile(const char *filename, const char *cp,
                 goto finish;
             }
 
-            openFileName[0] = '\0';
+            openFileName[0] = '\x0';
             /*
              * append the input dir to openFileName if the first char in
              * filename is not file seperation char and the last char input directory is  not '.'.
@@ -624,11 +624,11 @@ processFile(const char *filename, const char *cp,
              * user should use
              * genrb -s. icu/data  --- start from CWD and look in icu/data dir
              */
-            if( (filename[0] != U_FILE_SEP_CHAR) && (inputDir[dirlen-1] !='.')){
+            if( (filename[0] != U_FILE_SEP_CHAR) && (inputDir[dirlen-1] !='\x2e')){
                 uprv_strcpy(openFileName, inputDir);
                 openFileName[dirlen]     = U_FILE_SEP_CHAR;
             }
-            openFileName[dirlen + 1] = '\0';
+            openFileName[dirlen + 1] = '\x0';
         } else {
             openFileName = (char *) uprv_malloc(dirlen + filelen + 1);
 
@@ -648,24 +648,24 @@ processFile(const char *filename, const char *cp,
     ucbuf = ucbuf_open(openFileName, &cp,getShowWarning(),TRUE, &status);
     if(status == U_FILE_ACCESS_ERROR) {
 
-        fprintf(stderr, "couldn't open file %s\n", openFileName == NULL ? filename : openFileName);
+        __fprintf_a(stderr, u8"couldn't open file %s\n", openFileName == NULL ? filename : openFileName);
         goto finish;
     }
     if (ucbuf == NULL || U_FAILURE(status)) {
-        fprintf(stderr, "An error occured processing file %s. Error: %s\n",
+        __fprintf_a(stderr, u8"An error occured processing file %s. Error: %s\n",
                 openFileName == NULL ? filename : openFileName, u_errorName(status));
         goto finish;
     }
     /* auto detected popular encodings? */
     if (cp!=NULL && isVerbose()) {
-        printf("autodetected encoding %s\n", cp);
+        __printf_a(u8"autodetected encoding %s\n", cp);
     }
     /* Parse the data into an SRBRoot */
     data.adoptInstead(parse(ucbuf, inputDir, outputDir, filename,
             !omitBinaryCollation, options[NO_COLLATION_RULES].doesOccur, &status));
 
     if (data.isNull() || U_FAILURE(status)) {
-        fprintf(stderr, "couldn't parse the file %s. Error:%s\n", filename, u_errorName(status));
+        __fprintf_a(stderr, u8"couldn't parse the file %s. Error:%s\n", filename, u_errorName(status));
         goto finish;
     }
     if(options[WRITE_POOL_BUNDLE].doesOccur) {
@@ -675,7 +675,7 @@ processFile(const char *filename, const char *cp,
         const char *newKeys = data->getKeyBytes(&newKeysLength);
         newPoolBundle->addKeyBytes(newKeys, newKeysLength, status);
         if(U_FAILURE(status)) {
-            fprintf(stderr, "bundle_compactKeys(%s) or bundle_getKeyBytes() failed: %s\n",
+            __fprintf_a(stderr, u8"bundle_compactKeys(%s) or bundle_getKeyBytes() failed: %s\n",
                     filename, u_errorName(status));
             goto finish;
         }
@@ -694,7 +694,7 @@ processFile(const char *filename, const char *cp,
     /* Determine the target rb filename */
     rbname = make_res_filename(filename, outputDir, packageName, status);
     if(U_FAILURE(status)) {
-        fprintf(stderr, "couldn't make the res fileName for  bundle %s. Error:%s\n",
+        __fprintf_a(stderr, u8"couldn't make the res fileName for  bundle %s. Error:%s\n",
                 filename, u_errorName(status));
         goto finish;
     }
@@ -711,7 +711,7 @@ processFile(const char *filename, const char *cp,
         data->write(outputDir, packageName, outputFileName, sizeof(outputFileName), status);
     }
     if (U_FAILURE(status)) {
-        fprintf(stderr, "couldn't write bundle %s. Error:%s\n", outputFileName, u_errorName(status));
+        __fprintf_a(stderr, u8"couldn't write bundle %s. Error:%s\n", outputFileName, u_errorName(status));
     }
 
 finish:
@@ -791,7 +791,7 @@ make_res_filename(const char *filename,
         if(packageName != NULL)
         {
             uprv_strcat(resName, packageName);
-            uprv_strcat(resName, "_");
+            uprv_strcat(resName, u8"_");
         }
 
         uprv_strcat(resName, basename);
@@ -811,13 +811,13 @@ make_res_filename(const char *filename,
 
         if(outputDir[dirlen] != U_FILE_SEP_CHAR) {
             resName[dirlen]     = U_FILE_SEP_CHAR;
-            resName[dirlen + 1] = '\0';
+            resName[dirlen + 1] = '\x0';
         }
 
         if(packageName != NULL)
         {
             uprv_strcat(resName, packageName);
-            uprv_strcat(resName, "_");
+            uprv_strcat(resName, u8"_");
         }
 
         uprv_strcat(resName, basename);

@@ -63,7 +63,7 @@ void SpoofImpl::construct(UErrorCode& status) {
 
     UnicodeSet *allowedCharsSet = new UnicodeSet(0, 0x10ffff);
     fAllowedCharsSet = allowedCharsSet;
-    fAllowedLocales  = uprv_strdup("");
+    fAllowedLocales  = uprv_strdup(u8"");
     if (fAllowedCharsSet == NULL || fAllowedLocales == NULL) {
         status = U_MEMORY_ALLOCATION_ERROR;
         return;
@@ -146,15 +146,15 @@ void SpoofImpl::setAllowedLocales(const char *localesList, UErrorCode &status) {
 
     // Loop runs once per locale from the localesList, a comma separated list of locales.
     do {
-        locEnd = uprv_strchr(locStart, ',');
+        locEnd = uprv_strchr(locStart, '\x2c');
         if (locEnd == NULL) {
             locEnd = localesListEnd;
         }
-        while (*locStart == ' ') {
+        while (*locStart == '\x20') {
             locStart++;
         }
         const char *trimmedEnd = locEnd-1;
-        while (trimmedEnd > locStart && *trimmedEnd == ' ') {
+        while (trimmedEnd > locStart && *trimmedEnd == '\x20') {
             trimmedEnd--;
         }
         if (trimmedEnd <= locStart) {
@@ -177,7 +177,7 @@ void SpoofImpl::setAllowedLocales(const char *localesList, UErrorCode &status) {
     // If our caller provided an empty list of locales, we disable the allowed characters checking
     if (localeListCount == 0) {
         uprv_free((void *)fAllowedLocales);
-        fAllowedLocales = uprv_strdup("");
+        fAllowedLocales = uprv_strdup(u8"");
         tmpSet = new UnicodeSet(0, 0x10ffff);
         if (fAllowedLocales == NULL || tmpSet == NULL) {
             status = U_MEMORY_ALLOCATION_ERROR;
@@ -394,10 +394,10 @@ UChar32 SpoofImpl::ScanHex(const UChar *s, int32_t start, int32_t limit, UErrorC
     for (i=start; i<limit; i++) {
         int digitVal = s[i] - 0x30;
         if (digitVal>9) {
-            digitVal = 0xa + (s[i] - 0x41);  // Upper Case 'A'
+            digitVal = 0xa + (s[i] - 0x41);  // Upper Case '\x41'
         }
         if (digitVal>15) {
-            digitVal = 0xa + (s[i] - 0x61);  // Lower Case 'a'
+            digitVal = 0xa + (s[i] - 0x61);  // Lower Case '\x61'
         }
         U_ASSERT(digitVal <= 0xf);
         val <<= 4;
@@ -494,7 +494,7 @@ spoofDataIsAcceptable(void *context,
         pInfo->size >= 20 &&
         pInfo->isBigEndian == U_IS_BIG_ENDIAN &&
         pInfo->charsetFamily == U_CHARSET_FAMILY &&
-        pInfo->dataFormat[0] == 0x43 &&  // dataFormat="Cfu "
+        pInfo->dataFormat[0] == 0x43 &&  // dataFormat=u8"Cfu "
         pInfo->dataFormat[1] == 0x66 &&
         pInfo->dataFormat[2] == 0x75 &&
         pInfo->dataFormat[3] == 0x20 &&
@@ -539,7 +539,7 @@ uspoof_cleanupDefaultData(void) {
 }
 
 static void U_CALLCONV uspoof_loadDefaultData(UErrorCode& status) {
-    UDataMemory *udm = udata_openChoice(NULL, "cfu", "confusables",
+    UDataMemory *udm = udata_openChoice(NULL, u8"cfu", u8"confusables",
                                         spoofDataIsAcceptable,
                                         NULL,       // context, would receive dataVersion if supplied.
                                         &status);
@@ -824,7 +824,7 @@ uspoof_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *ou
     //    (Header contents are defined in gencfu.cpp)
     //
     const UDataInfo *pInfo = (const UDataInfo *)((const char *)inData+4);
-    if(!(  pInfo->dataFormat[0]==0x43 &&   /* dataFormat="Cfu " */
+    if(!(  pInfo->dataFormat[0]==0x43 &&   /* dataFormat=u8"Cfu " */
            pInfo->dataFormat[1]==0x66 &&
            pInfo->dataFormat[2]==0x75 &&
            pInfo->dataFormat[3]==0x20 &&
@@ -832,8 +832,8 @@ uspoof_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *ou
            pInfo->formatVersion[1]==0 &&
            pInfo->formatVersion[2]==0 &&
            pInfo->formatVersion[3]==0  )) {
-        udata_printError(ds, "uspoof_swap(): data format %02x.%02x.%02x.%02x "
-                             "(format version %02x %02x %02x %02x) is not recognized\n",
+        udata_printError(ds, u8"uspoof_swap(): data format %02x.%02x.%02x.%02x "
+                             u8"(format version %02x %02x %02x %02x) is not recognized\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0], pInfo->formatVersion[1],
@@ -860,7 +860,7 @@ uspoof_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *ou
     if (ds->readUInt32(spoofDH->fMagic)   != USPOOF_MAGIC ||
         ds->readUInt32(spoofDH->fLength)  <  sizeof(SpoofDataHeader))
     {
-        udata_printError(ds, "uspoof_swap(): Spoof Data header is invalid.\n");
+        udata_printError(ds, u8"uspoof_swap(): Spoof Data header is invalid.\n");
         *status=U_UNSUPPORTED_ERROR;
         return 0;
     }
@@ -878,7 +878,7 @@ uspoof_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *ou
     // Check that length passed in is consistent with length from Spoof data header.
     //
     if (length < totalSize) {
-        udata_printError(ds, "uspoof_swap(): too few bytes (%d after ICU Data header) for spoof data.\n",
+        udata_printError(ds, u8"uspoof_swap(): too few bytes (%d after ICU Data header) for spoof data.\n",
                             spoofDataLength);
         *status=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;

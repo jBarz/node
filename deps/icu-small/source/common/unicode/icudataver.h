@@ -23,12 +23,12 @@
 /**
  * @stable ICU 49
  */
-#define U_ICU_VERSION_BUNDLE "icuver"
+#define U_ICU_VERSION_BUNDLE u8"icuver"
 
 /**
  * @stable ICU 49
  */
-#define U_ICU_DATA_KEY "DataVersion"
+#define U_ICU_DATA_KEY u8"DataVersion"
 
 /**
  * Retrieves the data version from icuver and stores it in dataVersionFillin.

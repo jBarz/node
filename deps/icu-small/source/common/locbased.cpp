@@ -17,7 +17,7 @@ U_NAMESPACE_BEGIN
 
 Locale LocaleBased::getLocale(ULocDataLocaleType type, UErrorCode& status) const {
     const char* id = getLocaleID(type, status);
-    return Locale((id != 0) ? id : "");
+    return Locale((id != 0) ? id : u8"");
 }
 
 const char* LocaleBased::getLocaleID(ULocDataLocaleType type, UErrorCode& status) const {

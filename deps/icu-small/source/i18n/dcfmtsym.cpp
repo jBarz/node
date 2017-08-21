@@ -47,40 +47,40 @@ U_NAMESPACE_BEGIN
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(DecimalFormatSymbols)
 
-static const char gNumberElements[] = "NumberElements";
-static const char gCurrencySpacingTag[] = "currencySpacing";
-static const char gBeforeCurrencyTag[] = "beforeCurrency";
-static const char gAfterCurrencyTag[] = "afterCurrency";
-static const char gCurrencyMatchTag[] = "currencyMatch";
-static const char gCurrencySudMatchTag[] = "surroundingMatch";
-static const char gCurrencyInsertBtnTag[] = "insertBetween";
-static const char gLatn[] =  "latn";
-static const char gSymbols[] = "symbols";
-static const char gNumberElementsLatnSymbols[] = "NumberElements/latn/symbols";
+static const char gNumberElements[] = u8"NumberElements";
+static const char gCurrencySpacingTag[] = u8"currencySpacing";
+static const char gBeforeCurrencyTag[] = u8"beforeCurrency";
+static const char gAfterCurrencyTag[] = u8"afterCurrency";
+static const char gCurrencyMatchTag[] = u8"currencyMatch";
+static const char gCurrencySudMatchTag[] = u8"surroundingMatch";
+static const char gCurrencyInsertBtnTag[] = u8"insertBetween";
+static const char gLatn[] =  u8"latn";
+static const char gSymbols[] = u8"symbols";
+static const char gNumberElementsLatnSymbols[] = u8"NumberElements/latn/symbols";
 
 static const UChar INTL_CURRENCY_SYMBOL_STR[] = {0xa4, 0xa4, 0};
 
 // List of field names to be loaded from the data files.
 // These are parallel with the enum ENumberFormatSymbol in unicode/dcfmtsym.h.
 static const char *gNumberElementKeys[DecimalFormatSymbols::kFormatSymbolCount] = {
-    "decimal",
-    "group",
-    "list",
-    "percentSign",
+    u8"decimal",
+    u8"group",
+    u8"list",
+    u8"percentSign",
     NULL, /* Native zero digit is deprecated from CLDR - get it from the numbering system */
     NULL, /* Pattern digit character is deprecated from CLDR - use # by default always */
-    "minusSign",
-    "plusSign",
+    u8"minusSign",
+    u8"plusSign",
     NULL, /* currency symbol - Wait until we know the currency before loading from CLDR */
     NULL, /* intl currency symbol - Wait until we know the currency before loading from CLDR */
-    "currencyDecimal",
-    "exponential",
-    "perMille",
+    u8"currencyDecimal",
+    u8"exponential",
+    u8"perMille",
     NULL, /* Escape padding character - not in CLDR */
-    "infinity",
-    "nan",
+    u8"infinity",
+    u8"nan",
     NULL, /* Significant digit symbol - not in CLDR */
-    "currencyGroup",
+    u8"currencyGroup",
     NULL, /* one digit - get it from the numbering system */
     NULL, /* two digit - get it from the numbering system */
     NULL, /* three digit - get it from the numbering system */
@@ -90,7 +90,7 @@ static const char *gNumberElementKeys[DecimalFormatSymbols::kFormatSymbolCount] 
     NULL, /* seven digit - get it from the numbering system */
     NULL, /* eight digit - get it from the numbering system */
     NULL, /* nine digit - get it from the numbering system */
-    "superscriptingExponent", /* Multiplication (x) symbol for exponents */
+    u8"superscriptingExponent", /* Multiplication (x) symbol for exponents */
 };
 
 // -------------------------------------
@@ -323,7 +323,7 @@ struct CurrencySpacingSink : public ResourceSink {
     void resolveMissing() {
         // For consistency with Java, this method overwrites everything with the defaults unless
         // both beforeCurrency and afterCurrency were found in CLDR.
-        static const char* defaults[] = { "[:letter:]", "[:digit:]", " " };
+        static const char* defaults[] = { u8"[:letter:]", u8"[:digit:]", u8" " };
         if (!hasBeforeCurrency || !hasAfterCurrency) {
             for (UBool beforeCurrency = 0; beforeCurrency <= TRUE; beforeCurrency++) {
                 for (int32_t pattern = 0; pattern < UNUM_CURRENCY_SPACING_COUNT; pattern++) {
@@ -403,9 +403,9 @@ DecimalFormatSymbols::initialize(const Locale& loc, UErrorCode& status, UBool us
     if (uprv_strcmp(nsName, gLatn) != 0) {
         CharString path;
         path.append(gNumberElements, status)
-            .append('/', status)
+            .append('\x2f', status)
             .append(nsName, status)
-            .append('/', status)
+            .append('\x2f', status)
             .append(gSymbols, status);
         ures_getAllItemsWithFallback(resource.getAlias(), path.data(), sink, status);
 
@@ -455,7 +455,7 @@ DecimalFormatSymbols::initialize(const Locale& loc, UErrorCode& status, UBool us
         /* An explicit currency was requested */
         LocalUResourceBundlePointer currencyResource(ures_open(U_ICUDATA_CURR, locStr, &localStatus));
         LocalUResourceBundlePointer currency(
-            ures_getByKeyWithFallback(currencyResource.getAlias(), "Currencies", NULL, &localStatus));
+            ures_getByKeyWithFallback(currencyResource.getAlias(), u8"Currencies", NULL, &localStatus));
         ures_getByKeyWithFallback(currency.getAlias(), cc, currency.getAlias(), &localStatus);
         if(U_SUCCESS(localStatus) && ures_getSize(currency.getAlias())>2) { // the length is 3 if more data is present
             ures_getByIndex(currency.getAlias(), 2, currency.getAlias(), &localStatus);
@@ -493,34 +493,34 @@ DecimalFormatSymbols::initialize() {
      * cannot initialize a static array with class constructors.
      *  markus 2000may25
      */
-    fSymbols[kDecimalSeparatorSymbol] = (UChar)0x2e;    // '.' decimal separator
+    fSymbols[kDecimalSeparatorSymbol] = (UChar)0x2e;    // '\x2e' decimal separator
     fSymbols[kGroupingSeparatorSymbol].remove();        //     group (thousands) separator
-    fSymbols[kPatternSeparatorSymbol] = (UChar)0x3b;    // ';' pattern separator
-    fSymbols[kPercentSymbol] = (UChar)0x25;             // '%' percent sign
-    fSymbols[kZeroDigitSymbol] = (UChar)0x30;           // '0' native 0 digit
-    fSymbols[kOneDigitSymbol] = (UChar)0x31;            // '1' native 1 digit
-    fSymbols[kTwoDigitSymbol] = (UChar)0x32;            // '2' native 2 digit
-    fSymbols[kThreeDigitSymbol] = (UChar)0x33;          // '3' native 3 digit
-    fSymbols[kFourDigitSymbol] = (UChar)0x34;           // '4' native 4 digit
-    fSymbols[kFiveDigitSymbol] = (UChar)0x35;           // '5' native 5 digit
-    fSymbols[kSixDigitSymbol] = (UChar)0x36;            // '6' native 6 digit
-    fSymbols[kSevenDigitSymbol] = (UChar)0x37;          // '7' native 7 digit
-    fSymbols[kEightDigitSymbol] = (UChar)0x38;          // '8' native 8 digit
-    fSymbols[kNineDigitSymbol] = (UChar)0x39;           // '9' native 9 digit
-    fSymbols[kDigitSymbol] = (UChar)0x23;               // '#' pattern digit
-    fSymbols[kPlusSignSymbol] = (UChar)0x002b;          // '+' plus sign
-    fSymbols[kMinusSignSymbol] = (UChar)0x2d;           // '-' minus sign
-    fSymbols[kCurrencySymbol] = (UChar)0xa4;            // 'OX' currency symbol
+    fSymbols[kPatternSeparatorSymbol] = (UChar)0x3b;    // '\x3b' pattern separator
+    fSymbols[kPercentSymbol] = (UChar)0x25;             // '\x25' percent sign
+    fSymbols[kZeroDigitSymbol] = (UChar)0x30;           // '\x30' native 0 digit
+    fSymbols[kOneDigitSymbol] = (UChar)0x31;            // '\x31' native 1 digit
+    fSymbols[kTwoDigitSymbol] = (UChar)0x32;            // '\x32' native 2 digit
+    fSymbols[kThreeDigitSymbol] = (UChar)0x33;          // '\x33' native 3 digit
+    fSymbols[kFourDigitSymbol] = (UChar)0x34;           // '\x34' native 4 digit
+    fSymbols[kFiveDigitSymbol] = (UChar)0x35;           // '\x35' native 5 digit
+    fSymbols[kSixDigitSymbol] = (UChar)0x36;            // '\x36' native 6 digit
+    fSymbols[kSevenDigitSymbol] = (UChar)0x37;          // '\x37' native 7 digit
+    fSymbols[kEightDigitSymbol] = (UChar)0x38;          // '\x38' native 8 digit
+    fSymbols[kNineDigitSymbol] = (UChar)0x39;           // '\x39' native 9 digit
+    fSymbols[kDigitSymbol] = (UChar)0x23;               // '\x23' pattern digit
+    fSymbols[kPlusSignSymbol] = (UChar)0x002b;          // '\x2b' plus sign
+    fSymbols[kMinusSignSymbol] = (UChar)0x2d;           // '\x2d' minus sign
+    fSymbols[kCurrencySymbol] = (UChar)0xa4;            // '\x4f\x58' currency symbol
     fSymbols[kIntlCurrencySymbol].setTo(TRUE, INTL_CURRENCY_SYMBOL_STR, 2);
-    fSymbols[kMonetarySeparatorSymbol] = (UChar)0x2e;   // '.' monetary decimal separator
-    fSymbols[kExponentialSymbol] = (UChar)0x45;         // 'E' exponential
-    fSymbols[kPerMillSymbol] = (UChar)0x2030;           // '%o' per mill
-    fSymbols[kPadEscapeSymbol] = (UChar)0x2a;           // '*' pad escape symbol
-    fSymbols[kInfinitySymbol] = (UChar)0x221e;          // 'oo' infinite
+    fSymbols[kMonetarySeparatorSymbol] = (UChar)0x2e;   // '\x2e' monetary decimal separator
+    fSymbols[kExponentialSymbol] = (UChar)0x45;         // '\x45' exponential
+    fSymbols[kPerMillSymbol] = (UChar)0x2030;           // '\x25\x6f' per mill
+    fSymbols[kPadEscapeSymbol] = (UChar)0x2a;           // '\x2a' pad escape symbol
+    fSymbols[kInfinitySymbol] = (UChar)0x221e;          // '\x6f\x6f' infinite
     fSymbols[kNaNSymbol] = (UChar)0xfffd;               // SUB NaN
-    fSymbols[kSignificantDigitSymbol] = (UChar)0x0040;  // '@' significant digit
+    fSymbols[kSignificantDigitSymbol] = (UChar)0x0040;  // '\x40' significant digit
     fSymbols[kMonetaryGroupingSeparatorSymbol].remove(); //
-    fSymbols[kExponentMultiplicationSymbol] = (UChar)0xd7; // 'x' multiplication symbol for exponents
+    fSymbols[kExponentMultiplicationSymbol] = (UChar)0xd7; // '\x78' multiplication symbol for exponents
     fIsCustomCurrencySymbol = FALSE;
     fIsCustomIntlCurrencySymbol = FALSE;
 

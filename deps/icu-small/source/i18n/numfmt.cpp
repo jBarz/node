@@ -63,9 +63,9 @@
 static inline void debugout(UnicodeString s) {
     char buf[2000];
     s.extract((int32_t) 0, s.length(), buf);
-    printf("%s", buf);
+    printf(u8"%s", buf);
 }
-#define debug(x) printf("%s", x);
+#define debug(x) printf(u8"%s", x);
 #else
 #define debugout(x)
 #define debug(x)
@@ -74,25 +74,25 @@ static inline void debugout(UnicodeString s) {
 // If no number pattern can be located for a locale, this is the last
 // resort. The patterns are same as the ones in root locale.
 static const UChar gLastResortDecimalPat[] = {
-    0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x23, 0x23, 0x23, 0 /* "#,##0.###" */
+    0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x23, 0x23, 0x23, 0 /* u8"#,##0.###" */
 };
 static const UChar gLastResortCurrencyPat[] = {
-    0xA4, 0xA0, 0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x30, 0x30, 0 /* "\u00A4\u00A0#,##0.00" */
+    0xA4, 0xA0, 0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x30, 0x30, 0 /* u8"\u00A4\u00A0#,##0.00" */
 };
 static const UChar gLastResortPercentPat[] = {
-    0x23, 0x2C, 0x23, 0x23, 0x30, 0x25, 0 /* "#,##0%" */
+    0x23, 0x2C, 0x23, 0x23, 0x30, 0x25, 0 /* u8"#,##0%" */
 };
 static const UChar gLastResortScientificPat[] = {
-    0x23, 0x45, 0x30, 0 /* "#E0" */
+    0x23, 0x45, 0x30, 0 /* u8"#E0" */
 };
 static const UChar gLastResortIsoCurrencyPat[] = {
-    0xA4, 0xA4, 0xA0, 0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x30, 0x30, 0  /* "\u00A4\u00A4\u00A0#,##0.00" */
+    0xA4, 0xA4, 0xA0, 0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x30, 0x30, 0  /* u8"\u00A4\u00A4\u00A0#,##0.00" */
 };
 static const UChar gLastResortPluralCurrencyPat[] = {
     0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x23, 0x23, 0x23, 0x20, 0xA4, 0xA4, 0xA4, 0 /* "#,##0.### \u00A4\u00A4\u00A4*/
 };
 static const UChar gLastResortAccountingCurrencyPat[] =  {
-    0xA4, 0xA0, 0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x30, 0x30, 0 /* "\u00A4\u00A0#,##0.00" */
+    0xA4, 0xA0, 0x23, 0x2C, 0x23, 0x23, 0x30, 0x2E, 0x30, 0x30, 0 /* u8"\u00A4\u00A0#,##0.00" */
 };
 
 static const UChar gSingleCurrencySign[] = {0xA4, 0};
@@ -129,15 +129,15 @@ static const UChar * const gLastResortNumberPatterns[UNUM_FORMAT_STYLE_COUNT] = 
 
 // Keys used for accessing resource bundles
 
-static const char *gNumberElements = "NumberElements";
-static const char *gLatn = "latn";
-static const char *gPatterns = "patterns";
+static const char *gNumberElements = u8"NumberElements";
+static const char *gLatn = u8"latn";
+static const char *gPatterns = u8"patterns";
 static const char *gFormatKeys[UNUM_FORMAT_STYLE_COUNT] = {
     NULL,  // UNUM_PATTERN_DECIMAL
-    "decimalFormat",  // UNUM_DECIMAL
-    "currencyFormat",  // UNUM_CURRENCY
-    "percentFormat",  // UNUM_PERCENT
-    "scientificFormat",  // UNUM_SCIENTIFIC
+    u8"decimalFormat",  // UNUM_DECIMAL
+    u8"currencyFormat",  // UNUM_CURRENCY
+    u8"percentFormat",  // UNUM_PERCENT
+    u8"scientificFormat",  // UNUM_SCIENTIFIC
     NULL,  // UNUM_SPELLOUT
     NULL,  // UNUM_ORDINAL
     NULL,  // UNUM_DURATION
@@ -147,13 +147,13 @@ static const char *gFormatKeys[UNUM_FORMAT_STYLE_COUNT] = {
     // the pattern is the same as the pattern of UNUM_CURRENCY
     // except for replacing the single currency sign with
     // double currency sign or triple currency sign.
-    "currencyFormat",  // UNUM_CURRENCY_ISO
-    "currencyFormat",  // UNUM_CURRENCY_PLURAL
-    "accountingFormat",  // UNUM_CURRENCY_ACCOUNTING
-    "currencyFormat",  // UNUM_CASH_CURRENCY
+    u8"currencyFormat",  // UNUM_CURRENCY_ISO
+    u8"currencyFormat",  // UNUM_CURRENCY_PLURAL
+    u8"accountingFormat",  // UNUM_CURRENCY_ACCOUNTING
+    u8"currencyFormat",  // UNUM_CASH_CURRENCY
     NULL,  // UNUM_DECIMAL_COMPACT_SHORT
     NULL,  // UNUM_DECIMAL_COMPACT_LONG
-    "currencyFormat",  // UNUM_CURRENCY_STANDARD
+    u8"currencyFormat",  // UNUM_CURRENCY_STANDARD
 };
 
 // Static hashtable cache of NumberingSystem objects used by NumberFormat
@@ -299,40 +299,40 @@ NumberFormat::operator==(const Format& that) const
     // be equal aren't.
     UBool first = TRUE;
     if (!Format::operator==(that)) {
-        if (first) { printf("[ "); first = FALSE; } else { printf(", "); }
-        debug("Format::!=");
+        if (first) { printf(u8"[ "); first = FALSE; } else { printf(u8", "); }
+        debug(u8"Format::!=");
     }
     if (!(fMaxIntegerDigits == other->fMaxIntegerDigits &&
           fMinIntegerDigits == other->fMinIntegerDigits)) {
-        if (first) { printf("[ "); first = FALSE; } else { printf(", "); }
-        debug("Integer digits !=");
+        if (first) { printf(u8"[ "); first = FALSE; } else { printf(u8", "); }
+        debug(u8"Integer digits !=");
     }
     if (!(fMaxFractionDigits == other->fMaxFractionDigits &&
           fMinFractionDigits == other->fMinFractionDigits)) {
-        if (first) { printf("[ "); first = FALSE; } else { printf(", "); }
-        debug("Fraction digits !=");
+        if (first) { printf(u8"[ "); first = FALSE; } else { printf(u8", "); }
+        debug(u8"Fraction digits !=");
     }
     if (!(fGroupingUsed == other->fGroupingUsed)) {
-        if (first) { printf("[ "); first = FALSE; } else { printf(", "); }
-        debug("fGroupingUsed != ");
+        if (first) { printf(u8"[ "); first = FALSE; } else { printf(u8", "); }
+        debug(u8"fGroupingUsed != ");
     }
     if (!(fParseIntegerOnly == other->fParseIntegerOnly)) {
-        if (first) { printf("[ "); first = FALSE; } else { printf(", "); }
-        debug("fParseIntegerOnly != ");
+        if (first) { printf(u8"[ "); first = FALSE; } else { printf(u8", "); }
+        debug(u8"fParseIntegerOnly != ");
     }
     if (!(u_strcmp(fCurrency, other->fCurrency) == 0)) {
-        if (first) { printf("[ "); first = FALSE; } else { printf(", "); }
-        debug("fCurrency !=");
+        if (first) { printf(u8"[ "); first = FALSE; } else { printf(u8", "); }
+        debug(u8"fCurrency !=");
     }
     if (!(fLenient == other->fLenient)) {
-        if (first) { printf("[ "); first = FALSE; } else { printf(", "); }
-        debug("fLenient != ");
+        if (first) { printf(u8"[ "); first = FALSE; } else { printf(u8", "); }
+        debug(u8"fLenient != ");
     }
     if (!(fCapitalizationContext == other->fCapitalizationContext)) {
-        if (first) { printf("[ "); first = FALSE; } else { printf(", "); }
-        debug("fCapitalizationContext != ");
+        if (first) { printf(u8"[ "); first = FALSE; } else { printf(u8", "); }
+        debug(u8"fCapitalizationContext != ");
     }
-    if (!first) { printf(" ]"); }
+    if (!first) { printf(u8" ]"); }
 #endif
 
     return ((this == &that) ||
@@ -1036,8 +1036,8 @@ NumberFormat::internalCreateInstance(const Locale& loc, UNumberFormatStyle kind,
     if (kind == UNUM_CURRENCY) {
         char cfKeyValue[kKeyValueLenMax] = {0};
         UErrorCode kvStatus = U_ZERO_ERROR;
-        int32_t kLen = loc.getKeywordValue("cf", cfKeyValue, kKeyValueLenMax, kvStatus);
-        if (U_SUCCESS(kvStatus) && kLen > 0 && uprv_strcmp(cfKeyValue,"account")==0) {
+        int32_t kLen = loc.getKeywordValue(u8"cf", cfKeyValue, kKeyValueLenMax, kvStatus);
+        if (U_SUCCESS(kvStatus) && kLen > 0 && uprv_strcmp(cfKeyValue,u8"account")==0) {
             kind = UNUM_CURRENCY_ACCOUNTING;
         }
     }
@@ -1324,10 +1324,10 @@ NumberFormat::makeInstance(const Locale& desiredLocale,
 #if U_PLATFORM_USES_ONLY_WIN32_API
     if (!mustBeDecimalFormat) {
         char buffer[8];
-        int32_t count = desiredLocale.getKeywordValue("compat", buffer, sizeof(buffer), status);
+        int32_t count = desiredLocale.getKeywordValue(u8"compat", buffer, sizeof(buffer), status);
 
         // if the locale has "@compat=host", create a host-specific NumberFormat
-        if (U_SUCCESS(status) && count > 0 && uprv_strcmp(buffer, "host") == 0) {
+        if (U_SUCCESS(status) && count > 0 && uprv_strcmp(buffer, u8"host") == 0) {
             Win32NumberFormat *f = NULL;
             UBool curr = TRUE;
 

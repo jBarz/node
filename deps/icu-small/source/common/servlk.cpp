@@ -160,13 +160,13 @@ UnicodeString&
 LocaleKey::debug(UnicodeString& result) const
 {
     ICUServiceKey::debug(result);
-    result.append((UnicodeString)" kind: ");
+    result.append((UnicodeString)u8" kind: ");
     result.append(_kind);
-    result.append((UnicodeString)" primaryID: ");
+    result.append((UnicodeString)u8" primaryID: ");
     result.append(_primaryID);
-    result.append((UnicodeString)" fallbackID: ");
+    result.append((UnicodeString)u8" fallbackID: ");
     result.append(_fallbackID);
-    result.append((UnicodeString)" currentID: ");
+    result.append((UnicodeString)u8" currentID: ");
     result.append(_currentID);
     return result;
 }
@@ -174,7 +174,7 @@ LocaleKey::debug(UnicodeString& result) const
 UnicodeString&
 LocaleKey::debugClass(UnicodeString& result) const
 {
-    return result.append((UnicodeString)"LocaleKey ");
+    return result.append((UnicodeString)u8"LocaleKey ");
 }
 #endif
 

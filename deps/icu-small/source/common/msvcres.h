@@ -19,7 +19,7 @@ STLPort's broken stddef.h from being used when rc.exe parses this file.
 
 #include "unicode/uversion.h"
 
-#define ICU_WEBSITE "http://icu-project.org"
-#define ICU_COMPANY "The ICU Project"
-#define ICU_PRODUCT_PREFIX "ICU"
-#define ICU_PRODUCT "International Components for Unicode"
+#define ICU_WEBSITE u8"http://icu-project.org"
+#define ICU_COMPANY u8"The ICU Project"
+#define ICU_PRODUCT_PREFIX u8"ICU"
+#define ICU_PRODUCT u8"International Components for Unicode"

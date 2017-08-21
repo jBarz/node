@@ -126,12 +126,12 @@ static const UChar gLineFeed = 0x000a;
 static const UChar gPercentPercent[] =
 {
     0x25, 0x25, 0
-}; /* "%%" */
+}; /* u8"%%" */
 
 static const UChar gNoparse[] =
 {
     0x40, 0x6E, 0x6F, 0x70, 0x61, 0x72, 0x73, 0x65, 0
-}; /* "@noparse" */
+}; /* u8"@noparse" */
 
 NFRuleSet::NFRuleSet(RuleBasedNumberFormat *_owner, UnicodeString* descriptions, int32_t index, UErrorCode& status)
   : name()
@@ -674,7 +674,7 @@ static void dumpUS(FILE* f, const UnicodeString& us) {
   if (buf != NULL) {
 	  us.extract(0, len, buf);
 	  buf[len] = 0;
-	  fprintf(f, "%s", buf);
+	  fprintf(f, u8"%s", buf);
 	  uprv_free(buf); //delete[] buf;
   }
 }
@@ -698,12 +698,12 @@ NFRuleSet::parse(const UnicodeString& text, ParsePosition& pos, double upperBoun
     ParsePosition workingPos = pos;
 
 #ifdef RBNF_DEBUG
-    fprintf(stderr, "<nfrs> %x '", this);
+    fprintf(stderr, u8"<nfrs> %x '", this);
     dumpUS(stderr, name);
-    fprintf(stderr, "' text '");
+    fprintf(stderr, u8"' text '");
     dumpUS(stderr, text);
-    fprintf(stderr, "'\n");
-    fprintf(stderr, "  parse negative: %d\n", this, negativeNumberRule != 0);
+    fprintf(stderr, u8"'\n");
+    fprintf(stderr, u8"  parse negative: %d\n", this, negativeNumberRule != 0);
 #endif
     // Try each of the negative rules, fraction rules, infinity rules and NaN rules
     for (int i = 0; i < NON_NUMERICAL_RULE_LENGTH; i++) {
@@ -718,9 +718,9 @@ NFRuleSet::parse(const UnicodeString& text, ParsePosition& pos, double upperBoun
         }
     }
 #ifdef RBNF_DEBUG
-    fprintf(stderr, "<nfrs> continue other with text '");
+    fprintf(stderr, u8"<nfrs> continue other with text '");
     dumpUS(stderr, text);
-    fprintf(stderr, "' hwm: %d\n", highWaterMark.getIndex());
+    fprintf(stderr, u8"' hwm: %d\n", highWaterMark.getIndex());
 #endif
 
     // finally, go through the regular rules one at a time.  We start
@@ -740,7 +740,7 @@ NFRuleSet::parse(const UnicodeString& text, ParsePosition& pos, double upperBoun
             util64_toa(ub, ubstr, 64);
             char ubstrhex[64];
             util64_toa(ub, ubstrhex, 64, 16);
-            fprintf(stderr, "ub: %g, i64: %s (%s)\n", upperBound, ubstr, ubstrhex);
+            fprintf(stderr, u8"ub: %g, i64: %s (%s)\n", upperBound, ubstr, ubstrhex);
         }
 #endif
         for (int32_t i = rules.size(); --i >= 0 && highWaterMark.getIndex() < text.length();) {
@@ -757,7 +757,7 @@ NFRuleSet::parse(const UnicodeString& text, ParsePosition& pos, double upperBoun
         }
     }
 #ifdef RBNF_DEBUG
-    fprintf(stderr, "<nfrs> exit\n");
+    fprintf(stderr, u8"<nfrs> exit\n");
 #endif
     // finally, update the parse postion we were passed to point to the
     // first character we didn't use, and return the result that
@@ -857,7 +857,7 @@ static const uint8_t asciiDigits[] = {
 static const UChar kUMinus = (UChar)0x002d;
 
 #ifdef RBNF_DEBUG
-static const char kMinus = '-';
+static const char kMinus = '\x2d';
 
 static const uint8_t digitInfo[] = {
         0,     0,     0,     0,     0,     0,     0,     0,

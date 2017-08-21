@@ -1678,10 +1678,10 @@ u_shapeArabic(const UChar *source, int32_t sourceLength,
         /* select the requested digit group */
         switch(options&U_SHAPE_DIGIT_TYPE_MASK) {
         case U_SHAPE_DIGIT_TYPE_AN:
-            digitBase=0x660; /* Unicode: "Arabic-Indic digits" */
+            digitBase=0x660; /* Unicode: u8"Arabic-Indic digits" */
             break;
         case U_SHAPE_DIGIT_TYPE_AN_EXTENDED:
-            digitBase=0x6f0; /* Unicode: "Eastern Arabic-Indic digits (Persian and Urdu)" */
+            digitBase=0x6f0; /* Unicode: u8"Eastern Arabic-Indic digits (Persian and Urdu)" */
             break;
         default:
             /* will never occur because of validity checks above */

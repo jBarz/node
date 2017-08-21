@@ -43,24 +43,24 @@
 #include <stdio.h>
 #endif
 
-#define U_ICUDATA_RBNF U_ICUDATA_NAME U_TREE_SEPARATOR_STRING "rbnf"
+#define U_ICUDATA_RBNF U_ICUDATA_NAME U_TREE_SEPARATOR_STRING u8"rbnf"
 
 static const UChar gPercentPercent[] =
 {
     0x25, 0x25, 0
-}; /* "%%" */
+}; /* u8"%%" */
 
 // All urbnf objects are created through openRules, so we init all of the
 // Unicode string constants required by rbnf, nfrs, or nfr here.
 static const UChar gLenientParse[] =
 {
     0x25, 0x25, 0x6C, 0x65, 0x6E, 0x69, 0x65, 0x6E, 0x74, 0x2D, 0x70, 0x61, 0x72, 0x73, 0x65, 0x3A, 0
-}; /* "%%lenient-parse:" */
+}; /* u8"%%lenient-parse:" */
 static const UChar gSemiColon = 0x003B;
 static const UChar gSemiPercent[] =
 {
     0x3B, 0x25, 0
-}; /* ";%" */
+}; /* u8";%" */
 
 #define kSomeNumberOfBitsDiv2 22
 #define kHalfMaxDouble (double)(1 << kSomeNumberOfBitsDiv2)
@@ -284,8 +284,8 @@ private:
 
 
 enum {
-    OPEN_ANGLE = 0x003c, /* '<' */
-    CLOSE_ANGLE = 0x003e, /* '>' */
+    OPEN_ANGLE = 0x003c, /* '\x3c' */
+    CLOSE_ANGLE = 0x003e, /* '\x3e' */
     COMMA = 0x002c,
     TICK = 0x0027,
     QUOTE = 0x0022,
@@ -394,7 +394,7 @@ StringLocalizationInfo*
 LocDataParser::doParse(void) {
     skipWhitespace();
     if (!checkInc(OPEN_ANGLE)) {
-        ERROR("Missing open angle");
+        ERROR(u8"Missing open angle");
     } else {
         VArray array(DeleteFn);
         UBool mightHaveNext = TRUE;
@@ -411,22 +411,22 @@ LocDataParser::doParse(void) {
                     mightHaveNext = TRUE;
                 }
             } else if (haveComma) {
-                ERROR("Unexpected character");
+                ERROR(u8"Unexpected character");
             }
         }
 
         skipWhitespace();
         if (!checkInc(CLOSE_ANGLE)) {
             if (check(OPEN_ANGLE)) {
-                ERROR("Missing comma in outer array");
+                ERROR(u8"Missing comma in outer array");
             } else {
-                ERROR("Missing close angle bracket in outer array");
+                ERROR(u8"Missing close angle bracket in outer array");
             }
         }
 
         skipWhitespace();
         if (p != e) {
-            ERROR("Extra text after close of localization data");
+            ERROR(u8"Extra text after close of localization data");
         }
 
         array.add(NULL, ec);
@@ -438,7 +438,7 @@ LocDataParser::doParse(void) {
         }
     }
 
-    ERROR("Unknown error");
+    ERROR(u8"Unknown error");
 }
 
 UChar**
@@ -449,7 +449,7 @@ LocDataParser::nextArray(int32_t& requiredLength) {
 
     skipWhitespace();
     if (!checkInc(OPEN_ANGLE)) {
-        ERROR("Missing open angle");
+        ERROR(u8"Missing open angle");
     }
 
     VArray array;
@@ -466,15 +466,15 @@ LocDataParser::nextArray(int32_t& requiredLength) {
                 mightHaveNext = TRUE;
             }
         } else if (haveComma) {
-            ERROR("Unexpected comma");
+            ERROR(u8"Unexpected comma");
         }
     }
     skipWhitespace();
     if (!checkInc(CLOSE_ANGLE)) {
         if (check(OPEN_ANGLE)) {
-            ERROR("Missing close angle bracket in inner array");
+            ERROR(u8"Missing close angle bracket in inner array");
         } else {
-            ERROR("Missing comma in inner array");
+            ERROR(u8"Missing comma in inner array");
         }
     }
 
@@ -484,12 +484,12 @@ LocDataParser::nextArray(int32_t& requiredLength) {
             requiredLength = array.length() + 1;
         } else if (array.length() != requiredLength) {
             ec = U_ILLEGAL_ARGUMENT_ERROR;
-            ERROR("Array not of required length");
+            ERROR(u8"Array not of required length");
         }
 
         return (UChar**)array.release();
     }
-    ERROR("Unknown Error");
+    ERROR(u8"Unknown Error");
 }
 
 UChar*
@@ -510,7 +510,7 @@ LocDataParser::nextString() {
         UChar* start = p;
         while (p < e && !inList(*p, terminators)) ++p;
         if (p == e) {
-            ERROR("Unexpected end of data");
+            ERROR(u8"Unexpected end of data");
         }
 
         UChar x = *p;
@@ -521,13 +521,13 @@ LocDataParser::nextString() {
         }
         if (haveQuote) {
             if (x != c) {
-                ERROR("Missing matching quote");
+                ERROR(u8"Missing matching quote");
             } else if (p == start) {
-                ERROR("Empty string");
+                ERROR(u8"Empty string");
             }
             inc();
         } else if (x == OPEN_ANGLE || x == TICK || x == QUOTE) {
-            ERROR("Unexpected character in string");
+            ERROR(u8"Unexpected character in string");
         }
     }
 
@@ -562,7 +562,7 @@ void LocDataParser::parseError(const char* EXPLANATION_ARG)
     pe.offset = (int32_t)(p - data);
 
 #ifdef RBNF_DEBUG
-    fprintf(stderr, "%s at or near character %ld: ", EXPLANATION_ARG, p-data);
+    fprintf(stderr, u8"%s at or near character %ld: ", EXPLANATION_ARG, p-data);
 
     UnicodeString msg;
     msg.append(start, p - start);
@@ -577,7 +577,7 @@ void LocDataParser::parseError(const char* EXPLANATION_ARG)
     } else {
         buf[len] = 0;
     }
-    fprintf(stderr, "%s\n", buf);
+    fprintf(stderr, u8"%s\n", buf);
     fflush(stderr);
 #endif
 
@@ -795,13 +795,13 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(URBNFRuleSetTag tag, const Locale& 
         return;
     }
 
-    const char* rules_tag = "RBNFRules";
-    const char* fmt_tag = "";
+    const char* rules_tag = u8"RBNFRules";
+    const char* fmt_tag = u8"";
     switch (tag) {
-    case URBNF_SPELLOUT: fmt_tag = "SpelloutRules"; break;
-    case URBNF_ORDINAL: fmt_tag = "OrdinalRules"; break;
-    case URBNF_DURATION: fmt_tag = "DurationRules"; break;
-    case URBNF_NUMBERING_SYSTEM: fmt_tag = "NumberingSystemRules"; break;
+    case URBNF_SPELLOUT: fmt_tag = u8"SpelloutRules"; break;
+    case URBNF_ORDINAL: fmt_tag = u8"OrdinalRules"; break;
+    case URBNF_DURATION: fmt_tag = u8"DurationRules"; break;
+    case URBNF_NUMBERING_SYSTEM: fmt_tag = u8"NumberingSystemRules"; break;
     default: status = U_ILLEGAL_ARGUMENT_ERROR; return;
     }
 
@@ -1001,7 +1001,7 @@ RuleBasedNumberFormat::getNumberOfRuleSetDisplayNameLocales(void) const {
 Locale
 RuleBasedNumberFormat::getRuleSetDisplayNameLocale(int32_t index, UErrorCode& status) const {
     if (U_FAILURE(status)) {
-        return Locale("");
+        return Locale(u8"");
     }
     if (localizations && index >= 0 && index < localizations->getNumberOfDisplayLocales()) {
         UnicodeString name(TRUE, localizations->getLocaleName(index), -1);
@@ -1012,7 +1012,7 @@ RuleBasedNumberFormat::getRuleSetDisplayNameLocale(int32_t index, UErrorCode& st
             bp = (char *)uprv_malloc(cap);
             if (bp == NULL) {
                 status = U_MEMORY_ALLOCATION_ERROR;
-                return Locale("");
+                return Locale(u8"");
             }
         }
         name.extract(0, name.length(), bp, cap, UnicodeString::kInvariant);
@@ -1651,8 +1651,8 @@ RuleBasedNumberFormat::initCapitalizationContextInfo(const Locale& thelocale)
     const char * localeID = (thelocale != NULL)? thelocale.getBaseName(): NULL;
     UErrorCode status = U_ZERO_ERROR;
     UResourceBundle *rb = ures_open(NULL, localeID, &status);
-    rb = ures_getByKeyWithFallback(rb, "contextTransforms", rb, &status);
-    rb = ures_getByKeyWithFallback(rb, "number-spellout", rb, &status);
+    rb = ures_getByKeyWithFallback(rb, u8"contextTransforms", rb, &status);
+    rb = ures_getByKeyWithFallback(rb, u8"number-spellout", rb, &status);
     if (U_SUCCESS(status) && rb != NULL) {
         int32_t len = 0;
         const int32_t * intVector = ures_getIntVector(rb, &len, &status);

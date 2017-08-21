@@ -481,9 +481,9 @@ u_digit(UChar32 ch, int8_t radix) {
         if(value<0) {
             /* ch is not a decimal digit, try latin letters */
             if(ch>=0x61 && ch<=0x7A) {
-                value=(int8_t)(ch-0x57);  /* ch - 'a' + 10 */
+                value=(int8_t)(ch-0x57);  /* ch - '\x61' + 10 */
             } else if(ch>=0x41 && ch<=0x5A) {
-                value=(int8_t)(ch-0x37);  /* ch - 'A' + 10 */
+                value=(int8_t)(ch-0x37);  /* ch - '\x41' + 10 */
             } else if(ch>=0xFF41 && ch<=0xFF5A) {
                 value=(int8_t)(ch-0xFF37);  /* fullwidth ASCII a-z */
             } else if(ch>=0xFF21 && ch<=0xFF3A) {

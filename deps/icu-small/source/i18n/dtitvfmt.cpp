@@ -38,7 +38,7 @@ U_NAMESPACE_BEGIN
 
 
 #ifdef DTITVFMT_DEBUG
-#define PRINTMESG(msg) { std::cout << "(" << __FILE__ << ":" << __LINE__ << ") " << msg << "\n"; }
+#define PRINTMESG(msg) { std::cout << u8"(" << __FILE__ << u8":" << __LINE__ << u8") " << msg << u8"\n"; }
 #endif
 
 
@@ -53,9 +53,9 @@ static const UChar gDateFormatSkeleton[][11] = {
 {LOW_Y, CAP_M, LOW_D, 0} };
 
 
-static const char gCalendarTag[] = "calendar";
-static const char gGregorianTag[] = "gregorian";
-static const char gDateTimePatternsTag[] = "DateTimePatterns";
+static const char gCalendarTag[] = u8"calendar";
+static const char gGregorianTag[] = u8"gregorian";
+static const char gDateTimePatternsTag[] = u8"DateTimePatterns";
 
 
 // latestFirst:
@@ -87,11 +87,11 @@ DateIntervalFormat::createInstance(const UnicodeString& skeleton,
     char result[1000];
     char result_1[1000];
     char mesg[2000];
-    skeleton.extract(0,  skeleton.length(), result, "UTF-8");
+    skeleton.extract(0,  skeleton.length(), result, u8"UTF-8");
     UnicodeString pat;
     ((SimpleDateFormat*)dtfmt)->toPattern(pat);
-    pat.extract(0,  pat.length(), result_1, "UTF-8");
-    sprintf(mesg, "skeleton: %s; pattern: %s\n", result, result_1);
+    pat.extract(0,  pat.length(), result_1, u8"UTF-8");
+    sprintf(mesg, u8"skeleton: %s; pattern: %s\n", result, result_1);
     PRINTMESG(mesg)
 #endif
 
@@ -598,8 +598,8 @@ DateIntervalFormat::initializePattern(UErrorCode& status) {
     char result[1000];
     char result_1[1000];
     char mesg[2000];
-    fSkeleton.extract(0,  fSkeleton.length(), result, "UTF-8");
-    sprintf(mesg, "in getBestSkeleton: fSkeleton: %s; \n", result);
+    fSkeleton.extract(0,  fSkeleton.length(), result, u8"UTF-8");
+    sprintf(mesg, u8"in getBestSkeleton: fSkeleton: %s; \n", result);
     PRINTMESG(mesg)
 #endif
         // fSkeleton is already set by createDateIntervalInstance()
@@ -644,8 +644,8 @@ DateIntervalFormat::initializePattern(UErrorCode& status) {
     char result[1000];
     char result_1[1000];
     char mesg[2000];
-    fSkeleton.extract(0,  fSkeleton.length(), result, "UTF-8");
-    sprintf(mesg, "in getBestSkeleton: fSkeleton: %s; \n", result);
+    fSkeleton.extract(0,  fSkeleton.length(), result, u8"UTF-8");
+    sprintf(mesg, u8"in getBestSkeleton: fSkeleton: %s; \n", result);
     PRINTMESG(mesg)
 #endif
 
@@ -1277,8 +1277,8 @@ DateIntervalFormat::splitPatternInto2Part(const UnicodeString& intervalPattern) 
                 inQuote = ! inQuote;
             }
         }
-        else if (!inQuote && ((ch >= 0x0061 /*'a'*/ && ch <= 0x007A /*'z'*/)
-                    || (ch >= 0x0041 /*'A'*/ && ch <= 0x005A /*'Z'*/))) {
+        else if (!inQuote && ((ch >= 0x0061 /*'\x61'*/ && ch <= 0x007A /*'\x7a'*/)
+                    || (ch >= 0x0041 /*'\x41'*/ && ch <= 0x005A /*'\x5a'*/))) {
             // ch is a date-time pattern character
             prevCh = ch;
             ++count;
@@ -1309,7 +1309,7 @@ DateIntervalFormat::adjustPosition(UnicodeString& combiningPattern, // has {0} a
     if (index0 < 0 || index1 < 0) {
         return;
     }
-    int32_t placeholderLen = 3; // length of "{0}" or "{1}"
+    int32_t placeholderLen = 3; // length of u8"{0}" or u8"{1}"
     if (index0 < index1) {
         if (pos0.getEndIndex() > 0) {
             posResult.setBeginIndex(pos0.getBeginIndex() + index0);
@@ -1480,8 +1480,8 @@ DateIntervalFormat::adjustFieldWidth(const UnicodeString& inputSkeleton,
                 inQuote = ! inQuote;
             }
         }
-        else if ( ! inQuote && ((ch >= 0x0061 /*'a'*/ && ch <= 0x007A /*'z'*/)
-                    || (ch >= 0x0041 /*'A'*/ && ch <= 0x005A /*'Z'*/))) {
+        else if ( ! inQuote && ((ch >= 0x0061 /*'\x61'*/ && ch <= 0x007A /*'\x7a'*/)
+                    || (ch >= 0x0041 /*'\x41'*/ && ch <= 0x005A /*'\x5a'*/))) {
             // ch is a date-time pattern character
             prevCh = ch;
             ++count;

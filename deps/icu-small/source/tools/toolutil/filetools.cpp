@@ -5,7 +5,7 @@
  *   Corporation and others.  All Rights Reserved.
  *******************************************************************************
  */
-
+#define _AE_BIMODAL
 #include "unicode/platform.h"
 #if U_PLATFORM == U_PF_MINGW
 // *cough* - for struct stat
@@ -31,8 +31,8 @@
 #include <dirent.h>
 typedef struct dirent DIRENT;
 
-#define SKIP1 "."
-#define SKIP2 ".."
+#define SKIP1 u8"."
+#define SKIP2 u8".."
 #endif
 
 static int32_t whichFileModTimeIsLater(const char *file1, const char *file2);
@@ -63,7 +63,7 @@ isFileModTimeLater(const char *filePath, const char *checkAgainst, UBool isDir) 
                     newpath.append(U_FILE_SEP_STRING, -1, status);
                     newpath.append(dirEntry->d_name, -1, status);
                     if (U_FAILURE(status)) {
-                        fprintf(stderr, "%s:%d: %s\n", __FILE__, __LINE__, u_errorName(status));
+                        __fprintf_a(stderr, u8"%s:%d: %s\n", __FILE__, __LINE__, u_errorName(status));
                         return FALSE;
                     };
 
@@ -86,7 +86,7 @@ isFileModTimeLater(const char *filePath, const char *checkAgainst, UBool isDir) 
             }
             closedir(pDir);
         } else {
-            fprintf(stderr, "Unable to open directory: %s\n", checkAgainst);
+            __fprintf_a(stderr, u8"Unable to open directory: %s\n", checkAgainst);
             return FALSE;
         }
 #endif
@@ -124,7 +124,7 @@ static int32_t whichFileModTimeIsLater(const char *file1, const char *file2) {
         }
 
     } else {
-        fprintf(stderr, "Unable to get stats from file: %s or %s\n", file1, file2);
+        __fprintf_a(stderr, u8"Unable to get stats from file: %s or %s\n", file1, file2);
         result = -1;
     }
 

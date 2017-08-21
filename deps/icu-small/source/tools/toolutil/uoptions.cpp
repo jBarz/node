@@ -31,11 +31,11 @@ u_parseArgs(int argc, char* argv[],
 
     while(i<argc) {
         arg=argv[i];
-        if(!stopOptions && *arg=='-' && (c=arg[1])!=0) {
+        if(!stopOptions && *arg=='\x2d' && (c=arg[1])!=0) {
             /* process an option */
             UOption *option=NULL;
             arg+=2;
-            if(c=='-') {
+            if(c=='\x2d') {
                 /* process a long option */
                 if(*arg==0) {
                     /* stop processing options after "--" */
@@ -57,7 +57,7 @@ u_parseArgs(int argc, char* argv[],
 
                     if(option->hasArg!=UOPT_NO_ARG) {
                         /* parse the argument for the option, if any */
-                        if(i+1<argc && !(argv[i+1][0]=='-' && argv[i+1][1]!=0)) {
+                        if(i+1<argc && !(argv[i+1][0]=='\x2d' && argv[i+1][1]!=0)) {
                             /* argument in the next argv[], and there is not an option in there */
                             option->value=argv[++i];
                         } else if(option->hasArg==UOPT_REQUIRES_ARG) {
@@ -97,7 +97,7 @@ u_parseArgs(int argc, char* argv[],
                             option->value=arg;
                             /* do not process the rest of this arg as option letters */
                             break;
-                        } else if(i+1<argc && !(argv[i+1][0]=='-' && argv[i+1][1]!=0)) {
+                        } else if(i+1<argc && !(argv[i+1][0]=='\x2d' && argv[i+1][1]!=0)) {
                             /* argument in the next argv[], and there is not an option in there */
                             option->value=argv[++i];
                             /* this break is redundant because we know that *arg==0 */

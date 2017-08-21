@@ -460,7 +460,7 @@ CollationDataReader::isAcceptable(void *context,
         pInfo->size >= 20 &&
         pInfo->isBigEndian == U_IS_BIG_ENDIAN &&
         pInfo->charsetFamily == U_CHARSET_FAMILY &&
-        pInfo->dataFormat[0] == 0x55 &&  // dataFormat="UCol"
+        pInfo->dataFormat[0] == 0x55 &&  // dataFormat=u8"UCol"
         pInfo->dataFormat[1] == 0x43 &&
         pInfo->dataFormat[2] == 0x6f &&
         pInfo->dataFormat[3] == 0x6c &&

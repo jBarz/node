@@ -26,11 +26,11 @@
 static const UChar ID_DELIM = 0x003B; /*;*/
 static const UChar NEWLINE  = 10;
 
-static const UChar COLON_COLON[] = {0x3A, 0x3A, 0}; //"::"
+static const UChar COLON_COLON[] = {0x3A, 0x3A, 0}; //u8"::"
 
 U_NAMESPACE_BEGIN
 
-const UChar CompoundTransliterator::PASS_STRING[] = { 0x0025, 0x0050, 0x0061, 0x0073, 0x0073, 0 }; // "%Pass"
+const UChar CompoundTransliterator::PASS_STRING[] = { 0x0025, 0x0050, 0x0061, 0x0073, 0x0073, 0 }; // u8"%Pass"
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(CompoundTransliterator)
 

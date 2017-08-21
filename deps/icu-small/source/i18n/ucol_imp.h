@@ -50,7 +50,7 @@ ucol_equals(const UCollator *source, const UCollator *target);
 /**
  * Convenience string denoting the Collation data tree
  */
-#define U_ICUDATA_COLL U_ICUDATA_NAME U_TREE_SEPARATOR_STRING "coll"
+#define U_ICUDATA_COLL U_ICUDATA_NAME U_TREE_SEPARATOR_STRING u8"coll"
 
 #ifdef __cplusplus
 

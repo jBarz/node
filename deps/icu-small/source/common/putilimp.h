@@ -67,7 +67,7 @@
  *
  * Do not use ptrdiff_t since it is signed. size_t is unsigned.
  */
-/* TODO: This check fails on some z environments. Filed a ticket #9357 for this. */
+/* TODO: This check fails on some z environments. Filed a ticket  USTR(#9357) for this. */
 #if !defined(__intptr_t_defined) && !defined(UINTPTR_MAX) && (U_PLATFORM != U_PF_OS390)
 typedef size_t uintptr_t;
 #endif
@@ -242,18 +242,17 @@ typedef size_t uintptr_t;
  *  Defines whether Clang c11 style built-in atomics are avaialable.
  *  These are used in preference to gcc atomics when both are available.
  */
-#define U_HAVE_CLANG_ATOMICS 0
+/*
 #ifdef U_HAVE_CLANG_ATOMICS
-    /* Use the predefined value. */
 #elif __has_builtin(__c11_atomic_load) && \
     __has_builtin(__c11_atomic_store) && \
     __has_builtin(__c11_atomic_fetch_add) && \
     __has_builtin(__c11_atomic_fetch_sub)
-#    define U_HAVE_CLANG_ATOMICS 1 
+#    define U_HAVE_CLANG_ATOMICS 1
 #else
 #    define U_HAVE_CLANG_ATOMICS 0
 #endif
-
+*/
 /*===========================================================================*/
 /** @{ Programs used by ICU code                                             */
 /*===========================================================================*/

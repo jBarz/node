@@ -52,7 +52,7 @@ IndianCalendar::~IndianCalendar()
 {
 }
 const char *IndianCalendar::getType() const {
-   return "indian";
+   return u8"indian";
 }
 
 static const int32_t LIMITS[UCAL_FIELD_COUNT][4] = {
@@ -421,7 +421,7 @@ IndianCalendar::initializeSystemDefaultCentury()
     if (fgSystemDefaultCenturyStart == fgSystemDefaultCentury) {
         UErrorCode status = U_ZERO_ERROR;
 
-        IndianCalendar calendar(Locale("@calendar=Indian"),status);
+        IndianCalendar calendar(Locale(u8"@calendar=Indian"),status);
         if (U_SUCCESS(status)) {
             calendar.setTime(Calendar::getNow(), status);
             calendar.add(UCAL_YEAR, -80, status);

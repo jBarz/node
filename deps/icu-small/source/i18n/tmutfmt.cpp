@@ -57,16 +57,16 @@ U_NAMESPACE_BEGIN
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(TimeUnitFormat)
 
-static const char gUnitsTag[] = "units";
-static const char gShortUnitsTag[] = "unitsShort";
-static const char gTimeUnitYear[] = "year";
-static const char gTimeUnitMonth[] = "month";
-static const char gTimeUnitDay[] = "day";
-static const char gTimeUnitWeek[] = "week";
-static const char gTimeUnitHour[] = "hour";
-static const char gTimeUnitMinute[] = "minute";
-static const char gTimeUnitSecond[] = "second";
-static const char gPluralCountOther[] = "other";
+static const char gUnitsTag[] = u8"units";
+static const char gShortUnitsTag[] = u8"unitsShort";
+static const char gTimeUnitYear[] = u8"year";
+static const char gTimeUnitMonth[] = u8"month";
+static const char gTimeUnitDay[] = u8"day";
+static const char gTimeUnitWeek[] = u8"week";
+static const char gTimeUnitHour[] = u8"hour";
+static const char gTimeUnitMinute[] = u8"minute";
+static const char gTimeUnitSecond[] = u8"second";
+static const char gPluralCountOther[] = u8"other";
 
 static const UChar DEFAULT_PATTERN_FOR_SECOND[] = {LEFT_CURLY_BRACKET, DIGIT_ZERO, RIGHT_CURLY_BRACKET, SPACE, LOW_S, 0};
 static const UChar DEFAULT_PATTERN_FOR_MINUTE[] = {LEFT_CURLY_BRACKET, DIGIT_ZERO, RIGHT_CURLY_BRACKET, SPACE, LOW_M, LOW_I, LOW_N, 0};
@@ -183,8 +183,8 @@ TimeUnitFormat::parseObject(const UnicodeString& source,
     UnicodeString* countOfLongestMatch = NULL;
 #ifdef TMUTFMT_DEBUG
     char res[1000];
-    source.extract(0, source.length(), res, "UTF-8");
-    std::cout << "parse source: " << res << "\n";
+    source.extract(0, source.length(), res, u8"UTF-8");
+    std::cout << u8"parse source: " << res << u8"\n";
 #endif
     // parse by iterating through all available patterns
     // and looking for the longest match.
@@ -198,8 +198,8 @@ TimeUnitFormat::parseObject(const UnicodeString& source,
             const UHashTok keyTok = elem->key;
             UnicodeString* count = (UnicodeString*)keyTok.pointer;
 #ifdef TMUTFMT_DEBUG
-            count->extract(0, count->length(), res, "UTF-8");
-            std::cout << "parse plural count: " << res << "\n";
+            count->extract(0, count->length(), res, u8"UTF-8");
+            std::cout << u8"parse plural count: " << res << u8"\n";
 #endif
             const UHashTok valueTok = elem->value;
             // the value is a pair of MessageFormat*
@@ -216,7 +216,7 @@ TimeUnitFormat::parseObject(const UnicodeString& source,
                     continue;
                 }
     #ifdef TMUTFMT_DEBUG
-                std::cout << "parsed.getType: " << parsed.getType() << "\n";
+                std::cout << u8"parsed.getType: " << parsed.getType() << u8"\n";
     #endif
                 Formattable tmpNumber(0.0);
                 if (pattern->getArgTypeCount() != 0) {
@@ -472,13 +472,13 @@ TimeUnitFormat::readFromCurrentLocale(UTimeUnitFormatStyle style, const char* ke
     LocalUResourceBundlePointer rb(ures_open(U_ICUDATA_UNIT, getLocaleID(status), &status));
 
     LocalUResourceBundlePointer unitsRes(ures_getByKey(rb.getAlias(), key, NULL, &status));
-    ures_getByKey(unitsRes.getAlias(), "duration", unitsRes.getAlias(), &status);
+    ures_getByKey(unitsRes.getAlias(), u8"duration", unitsRes.getAlias(), &status);
     if (U_FAILURE(status)) {
         return;
     }
 
     TimeUnitFormatReadSink sink(this, pluralCounts, style);
-    ures_getAllItemsWithFallback(unitsRes.getAlias(), "", sink, status);
+    ures_getAllItemsWithFallback(unitsRes.getAlias(), u8"", sink, status);
 }
 
 void
@@ -603,12 +603,12 @@ TimeUnitFormat::searchInLocaleChain(UTimeUnitFormatStyle style, const char* key,
     // then search the units resource fallback from the current level to root
     if ( locNameLen == 0 && uprv_strcmp(key, gShortUnitsTag) == 0) {
 #ifdef TMUTFMT_DEBUG
-        std::cout << "loop into searchInLocaleChain since Short-Long-Alternative \n";
+        std::cout << u8"loop into searchInLocaleChain since Short-Long-Alternative \n";
 #endif
         CharString pLocale(localeName, -1, err);
         // Add an underscore at the tail of locale name,
         // so that searchInLocaleChain will check the current locale before falling back
-        pLocale.append('_', err);
+        pLocale.append('\x5f', err);
         searchInLocaleChain(style, gUnitsTag, pLocale.data(), srcTimeUnitField, srcPluralCount,
                              searchPluralCount, countToPatterns, err);
         if (U_FAILURE(err)) {

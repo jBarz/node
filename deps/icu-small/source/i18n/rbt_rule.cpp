@@ -26,7 +26,7 @@
 #include "util.h"
 #include "putilimp.h"
 
-static const UChar FORWARD_OP[] = {32,62,32,0}; // " > "
+static const UChar FORWARD_OP[] = {32,62,32,0}; // u8" > "
 
 U_NAMESPACE_BEGIN
 

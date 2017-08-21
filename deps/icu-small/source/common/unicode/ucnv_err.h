@@ -99,13 +99,13 @@ typedef struct UConverter UConverter;
  * FROM_U, TO_U context options for sub callback
  * @stable ICU 2.0
  */
-#define UCNV_SUB_STOP_ON_ILLEGAL "i"
+#define UCNV_SUB_STOP_ON_ILLEGAL u8"i"
 
 /**
  * FROM_U, TO_U context options for skip callback
  * @stable ICU 2.0
  */
-#define UCNV_SKIP_STOP_ON_ILLEGAL "i"
+#define UCNV_SKIP_STOP_ON_ILLEGAL u8"i"
 
 /**
  * FROM_U_CALLBACK_ESCAPE context option to escape the code unit according to ICU (%UXXXX)
@@ -116,37 +116,37 @@ typedef struct UConverter UConverter;
  * FROM_U_CALLBACK_ESCAPE context option to escape the code unit according to JAVA (\\uXXXX)
  * @stable ICU 2.0
  */
-#define UCNV_ESCAPE_JAVA      "J"
+#define UCNV_ESCAPE_JAVA      u8"J"
 /**
  * FROM_U_CALLBACK_ESCAPE context option to escape the code unit according to C (\\uXXXX \\UXXXXXXXX)
  * TO_U_CALLBACK_ESCAPE option to escape the character value accoding to C (\\xXXXX)
  * @stable ICU 2.0
  */
-#define UCNV_ESCAPE_C         "C"
+#define UCNV_ESCAPE_C         u8"C"
 /**
  * FROM_U_CALLBACK_ESCAPE context option to escape the code unit according to XML Decimal escape \htmlonly(&amp;#DDDD;)\endhtmlonly
  * TO_U_CALLBACK_ESCAPE context option to escape the character value accoding to XML Decimal escape \htmlonly(&amp;#DDDD;)\endhtmlonly
  * @stable ICU 2.0
  */
-#define UCNV_ESCAPE_XML_DEC   "D"
+#define UCNV_ESCAPE_XML_DEC   u8"D"
 /**
  * FROM_U_CALLBACK_ESCAPE context option to escape the code unit according to XML Hex escape \htmlonly(&amp;#xXXXX;)\endhtmlonly
  * TO_U_CALLBACK_ESCAPE context option to escape the character value accoding to XML Hex escape \htmlonly(&amp;#xXXXX;)\endhtmlonly
  * @stable ICU 2.0
  */
-#define UCNV_ESCAPE_XML_HEX   "X"
+#define UCNV_ESCAPE_XML_HEX   u8"X"
 /**
  * FROM_U_CALLBACK_ESCAPE context option to escape the code unit according to Unicode (U+XXXXX)
  * @stable ICU 2.0
  */
-#define UCNV_ESCAPE_UNICODE   "U"
+#define UCNV_ESCAPE_UNICODE   u8"U"
 
 /**
  * FROM_U_CALLBACK_ESCAPE context option to escape the code unit according to CSS2 conventions (\\HH..H<space>, that is,
  * a backslash, 1..6 hex digits, and a space)
  * @stable ICU 4.0
  */
-#define UCNV_ESCAPE_CSS2   "S"
+#define UCNV_ESCAPE_CSS2   u8"S"
 
 /**
  * The process condition code to be used with the callbacks.

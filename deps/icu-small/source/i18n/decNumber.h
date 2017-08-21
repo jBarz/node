@@ -8,7 +8,7 @@
 /* This software is made available under the terms of the             */
 /* ICU License -- ICU 1.8.1 and later.                                */
 /*                                                                    */
-/* The description and User's Guide ("The decNumber C Library") for   */
+/* The description and User's Guide (u8"The decNumber C Library") for   */
 /* this software is called decNumber.pdf.  This document is           */
 /* available, together with arithmetic and format specifications,     */
 /* testcases, and Web links, on the General Decimal Arithmetic page.  */
@@ -32,12 +32,12 @@
 
 #if !defined(DECNUMBER)
   #define DECNUMBER
-  #define DECNAME     "decNumber"                       /* Short name */
-  #define DECFULLNAME "Decimal Number Module"         /* Verbose name */
-  #define DECAUTHOR   "Mike Cowlishaw"                /* Who to blame */
+  #define DECNAME     u8"decNumber"                       /* Short name */
+  #define DECFULLNAME u8"Decimal Number Module"         /* Verbose name */
+  #define DECAUTHOR   u8"Mike Cowlishaw"                /* Who to blame */
 
   #if !defined(DECCONTEXT)
-    #include "decContext.h"
+     #include "decContext.h"
   #endif
 
   /* Bit settings for decNumber.bits                                  */
@@ -105,7 +105,7 @@
   /* 2. A decNumber converted to a string may need up to digits+14    */
   /*    characters.  The worst cases (non-exponential and exponential */
   /*    formats) are -0.00000{9...}# and -9.{9...}E+999999999#        */
-  /*    (where # is '\0')                                             */
+  /*    (where # is '\x0')                                             */
 
 
   /* ---------------------------------------------------------------- */

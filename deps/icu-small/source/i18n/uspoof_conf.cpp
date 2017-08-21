@@ -227,13 +227,13 @@ void ConfusabledataBuilder::build(const char * confusables, int32_t confusablesL
     // Example Line from the confusables.txt source file:
     //   "1D702 ;	006E 0329 ;	SL	# MATHEMATICAL ITALIC SMALL ETA ... "
     UnicodeString pattern(
-        "(?m)^[ \\t]*([0-9A-Fa-f]+)[ \\t]+;"      // Match the source char
-        "[ \\t]*([0-9A-Fa-f]+"                    // Match the replacement char(s)
-           "(?:[ \\t]+[0-9A-Fa-f]+)*)[ \\t]*;"    //     (continued)
-        "\\s*(?:(SL)|(SA)|(ML)|(MA))"             // Match the table type
-        "[ \\t]*(?:#.*?)?$"                       // Match any trailing #comment
-        "|^([ \\t]*(?:#.*?)?)$"       // OR match empty lines or lines with only a #comment
-        "|^(.*?)$", -1, US_INV);      // OR match any line, which catches illegal lines.
+        u8"(?m)^[ \\t]*([0-9A-Fa-f]+)[ \\t]+;"      // Match the source char
+        u8"[ \\t]*([0-9A-Fa-f]+"                    // Match the replacement char(s)
+           u8"(?:[ \\t]+[0-9A-Fa-f]+)*)[ \\t]*;"    //     (continued)
+        u8"\\s*(?:(SL)|(SA)|(ML)|(MA))"             // Match the table type
+        u8"[ \\t]*(?:#.*?)?$"                       // Match any trailing  USTR(#comment)
+        u8"|^([ \\t]*(?:#.*?)?)$"       // OR match empty lines or lines with only a  USTR(#comment)
+        u8"|^(.*?)$", -1, US_INV);      // OR match any line, which catches illegal lines.
     // TODO: Why are we using the regex C API here? C++ would just take UnicodeString...
     fParseLine = uregex_open(pattern.getBuffer(), pattern.length(), 0, NULL, &status);
 

@@ -46,7 +46,7 @@
 
 #define UCNV_GET_VERSION(cnv) ((cnv)->options&UCNV_OPTION_VERSION)
 
-U_CDECL_BEGIN /* We must declare the following as 'extern "C"' so that if ucnv
+U_CDECL_BEGIN /* We must declare the following as 'extern u8"C"' so that if ucnv
                  itself is compiled under C++, the linkage of the funcptrs will
                  work.
               */
@@ -187,7 +187,7 @@ struct UConverter {
 
     UBool  useFallback;
     int8_t toULength;                   /* number of bytes in toUBytes */
-    uint8_t toUBytes[UCNV_MAX_CHAR_LEN-1];/* more "toU status"; keeps the bytes of the current character */
+    uint8_t toUBytes[UCNV_MAX_CHAR_LEN-1];/* more u8"toU status"; keeps the bytes of the current character */
     uint32_t toUnicodeStatus;           /* Used to internalize stream status information */
     int32_t mode;
     uint32_t fromUnicodeStatus;
@@ -242,7 +242,7 @@ struct UConverter {
 
 U_CDECL_END /* end of UConverter */
 
-#define CONVERTER_FILE_EXTENSION ".cnv"
+#define CONVERTER_FILE_EXTENSION u8".cnv"
 
 
 /**

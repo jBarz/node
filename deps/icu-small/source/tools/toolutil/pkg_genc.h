@@ -54,7 +54,7 @@
 
 /* Need to fix the file seperator character when using MinGW. */
 #if defined(WINDOWS_WITH_GNUC) || defined(USING_CYGWIN)
-#define PKGDATA_FILE_SEP_STRING "/"
+#define PKGDATA_FILE_SEP_STRING u8"/"
 #else
 #define PKGDATA_FILE_SEP_STRING U_FILE_SEP_STRING
 #endif

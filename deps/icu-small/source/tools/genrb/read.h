@@ -29,7 +29,7 @@
    NOTE: Keep these in sync with tokenNames in parse.c */
 enum ETokenType
 {
-    TOK_STRING,          /* A string token, such as "MonthNames" */
+    TOK_STRING,          /* A string token, such as u8"MonthNames" */
     TOK_OPEN_BRACE,      /* An opening brace character */
     TOK_CLOSE_BRACE,     /* A closing brace character */
     TOK_COMMA,           /* A comma */
@@ -37,7 +37,7 @@ enum ETokenType
 
     TOK_EOF,             /* End of the file has been reached successfully */
     TOK_ERROR,           /* An error, such an unterminated quoted string */
-    TOK_TOKEN_COUNT      /* Number of "real" token types */
+    TOK_TOKEN_COUNT      /* Number of u8"real" token types */
 };
 
 U_CFUNC UChar32 unescape(UCHARBUF *buf, UErrorCode *status);

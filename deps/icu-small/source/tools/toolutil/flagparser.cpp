@@ -59,11 +59,11 @@ parseFlagsFile(const char *fileName, char **flagBuffer, int32_t flagBufferSize, 
                 /* End of file reached. */
                 break;
             }
-            if (buffer[0] == '#') {
+            if (buffer[0] == '\x23') {
                 continue;
             }
 
-            if ((int32_t)uprv_strlen(buffer) == (currentBufferSize - 1) && buffer[currentBufferSize-2] != '\n') {
+            if ((int32_t)uprv_strlen(buffer) == (currentBufferSize - 1) && buffer[currentBufferSize-2] != '\xa') {
                 /* Allocate more space for buffer if it didnot read the entrire line */
                 allocateMoreSpace = TRUE;
                 T_FileStream_rewind(f);
@@ -147,7 +147,7 @@ static int32_t extractFlag(char* buffer, int32_t bufferSize, char* flag, int32_t
     }
 
     if (flagNames != NULL && offset>0) {
-        offset--;  /* Move offset back 1 because of '='*/
+        offset--;  /* Move offset back 1 because of '\x3d'*/
         for (i = 0; i < numOfFlags; i++) {
             if (uprv_strncmp(buffer, flagNames[i], offset) == 0) {
                 idx = i;
@@ -166,7 +166,7 @@ static int32_t getFlagOffset(const char *buffer, int32_t bufferSize) {
     int32_t offset = 0;
 
     for (offset = 0; offset < bufferSize;offset++) {
-        if (buffer[offset] == '=') {
+        if (buffer[offset] == '\x3d') {
             offset++;
             break;
         }

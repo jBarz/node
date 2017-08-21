@@ -304,7 +304,7 @@ umsg_getLocale(const UMessageFormat *fmt)
 {
     //check arguments
     if(fmt==NULL){
-        return "";
+        return u8"";
     }
     return ((const MessageFormat*)fmt)->getLocale().getName();
 }

@@ -106,7 +106,7 @@ struct  RBBIStateTableRow {
                                     /*           Value here == fLookAhead in earlier      */
                                     /*              state, at actual boundary pos.        */
     int16_t          fLookAhead;    /*  Non-zero if this row is for a state that          */
-                                    /*    corresponds to a '/' in the rule source.        */
+                                    /*    corresponds to a '\x2f' in the rule source.        */
                                     /*    Value is the same as the fAccepting             */
                                     /*      value for the rule (which will appear         */
                                     /*      in a different state.                         */

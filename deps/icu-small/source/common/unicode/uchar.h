@@ -41,7 +41,7 @@ U_CDECL_BEGIN
  * @see u_getUnicodeVersion
  * @stable ICU 2.0
  */
-#define U_UNICODE_VERSION "9.0"
+#define U_UNICODE_VERSION u8"9.0"
 
 /**
  * \file
@@ -1198,9 +1198,9 @@ enum UBlockCode {
     UBLOCK_PRIVATE_USE_AREA =78, /*[E000]*/
     /**
      * Same as UBLOCK_PRIVATE_USE_AREA.
-     * Until Unicode 3.1.1, the corresponding block name was "Private Use",
+     * Until Unicode 3.1.1, the corresponding block name was u8"Private Use",
      * and multiple code point ranges had this block.
-     * Unicode 3.2 renames the block for the BMP PUA to "Private Use Area" and
+     * Unicode 3.2 renames the block for the BMP PUA to u8"Private Use Area" and
      * adds separate blocks for the supplementary PUAs.
      *
      * @stable ICU 2.0
@@ -1260,7 +1260,7 @@ enum UBlockCode {
     /** @stable ICU 3.0  */
     UBLOCK_CYRILLIC_SUPPLEMENT = 97, /*[0500]*/
     /**
-     * Unicode 4.0.1 renames the "Cyrillic Supplementary" block to "Cyrillic Supplement".
+     * Unicode 4.0.1 renames the u8"Cyrillic Supplementary" block to u8"Cyrillic Supplement".
      * @stable ICU 2.2
      */
     UBLOCK_CYRILLIC_SUPPLEMENTARY = UBLOCK_CYRILLIC_SUPPLEMENT,
@@ -2119,7 +2119,7 @@ typedef enum ULineBreak {
     U_LB_GLUE = 12,              /*[GL]*/
     U_LB_HYPHEN = 13,            /*[HY]*/
     U_LB_IDEOGRAPHIC = 14,       /*[ID]*/
-    /** Renamed from the misspelled "inseperable" in Unicode 4.0.1/ICU 3.0 @stable ICU 3.0 */
+    /** Renamed from the misspelled u8"inseperable" in Unicode 4.0.1/ICU 3.0 @stable ICU 3.0 */
     U_LB_INSEPARABLE = 15,       /*[IN]*/
     U_LB_INSEPERABLE = U_LB_INSEPARABLE,
     U_LB_INFIX_NUMERIC = 16,     /*[IS]*/

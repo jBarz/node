@@ -175,33 +175,33 @@ ChoiceFormat::dtos(double value,
     char *itrPtr = temp;
     char *expPtr;
 
-    sprintf(temp, "%.*g", DBL_DIG, value);
+    sprintf(temp, u8"%.*g", DBL_DIG, value);
 
     /* Find and convert the decimal point.
        Using setlocale on some machines will cause sprintf to use a comma for certain locales.
     */
-    while (*itrPtr && (*itrPtr == '-' || isdigit(*itrPtr))) {
+    while (*itrPtr && (*itrPtr == '\x2d' || isdigit(*itrPtr))) {
         itrPtr++;
     }
-    if (*itrPtr != 0 && *itrPtr != 'e') {
+    if (*itrPtr != 0 && *itrPtr != '\x65') {
         /* We reached something that looks like a decimal point.
         In case someone used setlocale(), which changes the decimal point. */
-        *itrPtr = '.';
+        *itrPtr = '\x2e';
         itrPtr++;
     }
     /* Search for the exponent */
-    while (*itrPtr && *itrPtr != 'e') {
+    while (*itrPtr && *itrPtr != '\x65') {
         itrPtr++;
     }
-    if (*itrPtr == 'e') {
+    if (*itrPtr == '\x65') {
         itrPtr++;
         /* Verify the exponent sign */
-        if (*itrPtr == '+' || *itrPtr == '-') {
+        if (*itrPtr == '\x2b' || *itrPtr == '\x2d') {
             itrPtr++;
         }
         /* Remove leading zeros. You will see this on Windows machines. */
         expPtr = itrPtr;
-        while (*itrPtr == '0') {
+        while (*itrPtr == '\x30') {
             itrPtr++;
         }
         if (*itrPtr && expPtr != itrPtr) {

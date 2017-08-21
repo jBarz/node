@@ -23,7 +23,7 @@
 U_NAMESPACE_BEGIN
 
 static const char *gKeywords[StandardPlural::COUNT] = {
-    "zero", "one", "two", "few", "many", "other"
+    u8"zero", u8"one", u8"two", u8"few", u8"many", u8"other"
 };
 
 const char *StandardPlural::getKeyword(Form p) {
@@ -33,30 +33,30 @@ const char *StandardPlural::getKeyword(Form p) {
 
 int32_t StandardPlural::indexOrNegativeFromString(const char *keyword) {
     switch (*keyword++) {
-    case 'f':
-        if (uprv_strcmp(keyword, "ew") == 0) {
+    case '\x66':
+        if (uprv_strcmp(keyword, u8"ew") == 0) {
             return FEW;
         }
         break;
-    case 'm':
-        if (uprv_strcmp(keyword, "any") == 0) {
+    case '\x6d':
+        if (uprv_strcmp(keyword, u8"any") == 0) {
             return MANY;
         }
         break;
-    case 'o':
-        if (uprv_strcmp(keyword, "ther") == 0) {
+    case '\x6f':
+        if (uprv_strcmp(keyword, u8"ther") == 0) {
             return OTHER;
-        } else if (uprv_strcmp(keyword, "ne") == 0) {
+        } else if (uprv_strcmp(keyword, u8"ne") == 0) {
             return ONE;
         }
         break;
-    case 't':
-        if (uprv_strcmp(keyword, "wo") == 0) {
+    case '\x74':
+        if (uprv_strcmp(keyword, u8"wo") == 0) {
             return TWO;
         }
         break;
-    case 'z':
-        if (uprv_strcmp(keyword, "ero") == 0) {
+    case '\x7a':
+        if (uprv_strcmp(keyword, u8"ero") == 0) {
             return ZERO;
         }
         break;

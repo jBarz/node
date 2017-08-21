@@ -138,35 +138,35 @@ char * convertToNativePathSeparators(char *path);
 
 #if U_PLATFORM_HAS_WIN32_API
 # ifndef UDATA_SO_SUFFIX
-#  define UDATA_SO_SUFFIX ".dll"
+#  define UDATA_SO_SUFFIX u8".dll"
 # endif
-# define LIB_PREFIX ""
-# define LIB_STATIC_PREFIX ""
-# define OBJ_SUFFIX ".obj"
-# define UDATA_LIB_SUFFIX ".lib"
+# define LIB_PREFIX u8""
+# define LIB_STATIC_PREFIX u8""
+# define OBJ_SUFFIX u8".obj"
+# define UDATA_LIB_SUFFIX u8".lib"
 
 #elif U_PLATFORM == U_PF_CYGWIN
-# define LIB_PREFIX "cyg"
-# define LIB_STATIC_PREFIX "lib"
-# define OBJ_SUFFIX ".o"
-# define UDATA_LIB_SUFFIX ".a"
+# define LIB_PREFIX u8"cyg"
+# define LIB_STATIC_PREFIX u8"lib"
+# define OBJ_SUFFIX u8".o"
+# define UDATA_LIB_SUFFIX u8".a"
 
 #else  /* POSIX? */
-# define LIB_PREFIX "lib"
-# define LIB_STATIC_PREFIX "lib"
-# define OBJ_SUFFIX ".o"
-# define UDATA_LIB_SUFFIX ".a"
+# define LIB_PREFIX u8"lib"
+# define LIB_STATIC_PREFIX u8"lib"
+# define OBJ_SUFFIX u8".o"
+# define UDATA_LIB_SUFFIX u8".a"
 #endif
 
-#define ASM_SUFFIX ".s"
+#define ASM_SUFFIX u8".s"
 
 /* defines for common file names */
-#define UDATA_CMN_PREFIX ""
-#define UDATA_CMN_SUFFIX ".dat"
-#define UDATA_CMN_INTERMEDIATE_SUFFIX "_dat"
+#define UDATA_CMN_PREFIX u8""
+#define UDATA_CMN_SUFFIX u8".dat"
+#define UDATA_CMN_INTERMEDIATE_SUFFIX u8"_dat"
 
-#define ICUDATA_RES_FILE "icudata.res"
+#define ICUDATA_RES_FILE u8"icudata.res"
 
-#define PKGDATA_DERIVED_PATH '\t'
+#define PKGDATA_DERIVED_PATH '\x9'
 
 #endif

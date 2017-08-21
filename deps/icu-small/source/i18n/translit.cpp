@@ -56,21 +56,21 @@
 
 static const UChar TARGET_SEP  = 0x002D; /*-*/
 static const UChar ID_DELIM    = 0x003B; /*;*/
-static const UChar VARIANT_SEP = 0x002F; // '/'
+static const UChar VARIANT_SEP = 0x002F; // '\x2f'
 
 /**
  * Prefix for resource bundle key for the display name for a
  * transliterator.  The ID is appended to this to form the key.
  * The resource bundle value should be a String.
  */
-static const char RB_DISPLAY_NAME_PREFIX[] = "%Translit%%";
+static const char RB_DISPLAY_NAME_PREFIX[] = u8"%Translit%%";
 
 /**
  * Prefix for resource bundle key for the display name for a
  * transliterator SCRIPT.  The ID is appended to this to form the key.
  * The resource bundle value should be a String.
  */
-static const char RB_SCRIPT_DISPLAY_NAME_PREFIX[] = "%Translit%";
+static const char RB_SCRIPT_DISPLAY_NAME_PREFIX[] = u8"%Translit%";
 
 /**
  * Resource bundle key for display name pattern.
@@ -78,7 +78,7 @@ static const char RB_SCRIPT_DISPLAY_NAME_PREFIX[] = "%Translit%";
  * MessageFormat pattern, e.g.:
  * "{0,choice,0#|1#{1} Transliterator|2#{1} to {2} Transliterator}".
  */
-static const char RB_DISPLAY_NAME_PATTERN[] = "TransliteratorNamePattern";
+static const char RB_DISPLAY_NAME_PATTERN[] = u8"TransliteratorNamePattern";
 
 /**
  * Resource bundle key for the list of RuleBasedTransliterator IDs.
@@ -86,7 +86,7 @@ static const char RB_DISPLAY_NAME_PATTERN[] = "TransliteratorNamePattern";
  * being a valid ID.  The ID will be appended to RB_RULE_BASED_PREFIX
  * to obtain the class name in which the RB_RULE key will be sought.
  */
-static const char RB_RULE_BASED_IDS[] = "RuleBasedTransliteratorIDs";
+static const char RB_RULE_BASED_IDS[] = u8"RuleBasedTransliteratorIDs";
 
 /**
  * The mutex controlling access to registry object.
@@ -750,7 +750,7 @@ UnicodeString& U_EXPORT2 Transliterator::getDisplayName(const UnicodeString& id,
         // No target; malformed id
         return result;
     }
-    if (variant.length() > 0) { // Change "Foo" to "/Foo"
+    if (variant.length() > 0) { // Change u8"Foo" to u8"/Foo"
         variant.insert(0, VARIANT_SEP);
     }
     UnicodeString ID(source);
@@ -1525,22 +1525,22 @@ UBool Transliterator::initializeRegistry(UErrorCode &status) {
                     int32_t len = 0;
                     const UChar *resString;
                     switch (type) {
-                    case 0x66: // 'f'
-                    case 0x69: // 'i'
+                    case 0x66: // '\x66'
+                    case 0x69: // '\x69'
                         // 'file' or 'internal';
                         // row[2]=resource, row[3]=direction
                         {
 
-                            resString = ures_getStringByKey(res, "resource", &len, &status);
+                            resString = ures_getStringByKey(res, u8"resource", &len, &status);
                             UBool visible = (type == 0x0066 /*f*/);
                             UTransDirection dir =
-                                (ures_getUnicodeStringByKey(res, "direction", &status).charAt(0) ==
+                                (ures_getUnicodeStringByKey(res, u8"direction", &status).charAt(0) ==
                                  0x0046 /*F*/) ?
                                 UTRANS_FORWARD : UTRANS_REVERSE;
                             registry->put(id, UnicodeString(TRUE, resString, len), dir, TRUE, visible, status);
                         }
                         break;
-                    case 0x61: // 'a'
+                    case 0x61: // '\x61'
                         // 'alias'; row[2]=createInstance argument
                         resString = ures_getString(res, &len, &status);
                         registry->put(id, UnicodeString(TRUE, resString, len), TRUE, TRUE, status);

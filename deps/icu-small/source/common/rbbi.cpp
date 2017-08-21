@@ -279,8 +279,8 @@ void RuleBasedBreakIterator::init() {
 #ifdef RBBI_DEBUG
     static UBool debugInitDone = FALSE;
     if (debugInitDone == FALSE) {
-        char *debugEnv = getenv("U_RBBIDEBUG");
-        if (debugEnv && uprv_strstr(debugEnv, "trace")) {
+        char *debugEnv = getenv(u8"U_RBBIDEBUG");
+        if (debugEnv && uprv_strstr(debugEnv, u8"trace")) {
             fTrace = TRUE;
         }
         debugInitDone = TRUE;
@@ -1043,7 +1043,7 @@ int32_t RuleBasedBreakIterator::handleNext(const RBBIStateTable *statetable) {
 
     #ifdef RBBI_DEBUG
         if (fTrace) {
-            RBBIDebugPuts("Handle Next   pos   char  state category");
+            RBBIDebugPuts(u8"Handle Next   pos   char  state category");
         }
     #endif
 
@@ -1116,13 +1116,13 @@ int32_t RuleBasedBreakIterator::handleNext(const RBBIStateTable *statetable) {
 
        #ifdef RBBI_DEBUG
             if (fTrace) {
-                RBBIDebugPrintf("             %4ld   ", utext_getNativeIndex(fText));
+                RBBIDebugPrintf(u8"             %4ld   ", utext_getNativeIndex(fText));
                 if (0x20<=c && c<0x7f) {
-                    RBBIDebugPrintf("\"%c\"  ", c);
+                    RBBIDebugPrintf(u8"\"%c\"  ", c);
                 } else {
-                    RBBIDebugPrintf("%5x  ", c);
+                    RBBIDebugPrintf(u8"%5x  ", c);
                 }
-                RBBIDebugPrintf("%3d  %3d\n", state, category);
+                RBBIDebugPrintf(u8"%3d  %3d\n", state, category);
             }
         #endif
 
@@ -1201,7 +1201,7 @@ int32_t RuleBasedBreakIterator::handleNext(const RBBIStateTable *statetable) {
     UTEXT_SETNATIVEINDEX(fText, result);
     #ifdef RBBI_DEBUG
         if (fTrace) {
-            RBBIDebugPrintf("result = %d\n\n", result);
+            RBBIDebugPrintf(u8"result = %d\n\n", result);
         }
     #endif
     return result;
@@ -1231,7 +1231,7 @@ int32_t RuleBasedBreakIterator::handlePrevious(const RBBIStateTable *statetable)
 
     #ifdef RBBI_DEBUG
         if (fTrace) {
-            RBBIDebugPuts("Handle Previous   pos   char  state category");
+            RBBIDebugPuts(u8"Handle Previous   pos   char  state category");
         }
     #endif
 
@@ -1313,13 +1313,13 @@ int32_t RuleBasedBreakIterator::handlePrevious(const RBBIStateTable *statetable)
 
         #ifdef RBBI_DEBUG
             if (fTrace) {
-                RBBIDebugPrintf("             %4d   ", (int32_t)utext_getNativeIndex(fText));
+                RBBIDebugPrintf(u8"             %4d   ", (int32_t)utext_getNativeIndex(fText));
                 if (0x20<=c && c<0x7f) {
-                    RBBIDebugPrintf("\"%c\"  ", c);
+                    RBBIDebugPrintf(u8"\"%c\"  ", c);
                 } else {
-                    RBBIDebugPrintf("%5x  ", c);
+                    RBBIDebugPrintf(u8"%5x  ", c);
                 }
-                RBBIDebugPrintf("%3d  %3d\n", state, category);
+                RBBIDebugPrintf(u8"%3d  %3d\n", state, category);
             }
         #endif
 
@@ -1390,7 +1390,7 @@ int32_t RuleBasedBreakIterator::handlePrevious(const RBBIStateTable *statetable)
     UTEXT_SETNATIVEINDEX(fText, result);
     #ifdef RBBI_DEBUG
         if (fTrace) {
-            RBBIDebugPrintf("result = %d\n\n", result);
+            RBBIDebugPrintf(u8"result = %d\n\n", result);
         }
     #endif
     return result;
@@ -1749,7 +1749,7 @@ static void U_CALLCONV initLanguageFactories() {
         ICULanguageBreakFactory *builtIn = new ICULanguageBreakFactory(status);
         gLanguageBreakFactories->push(builtIn, status);
 #ifdef U_LOCAL_SERVICE_HOOK
-        LanguageBreakFactory *extra = (LanguageBreakFactory *)uprv_svc_hook("languageBreakFactory", &status);
+        LanguageBreakFactory *extra = (LanguageBreakFactory *)uprv_svc_hook(u8"languageBreakFactory", &status);
         if (extra != NULL) {
             gLanguageBreakFactories->push(extra, status);
         }

@@ -327,7 +327,7 @@ CollationRootElements::findP(uint32_t p) const {
                 }
             }
         }
-        if(p < (q & 0xffffff00)) {  // Reset the "step" bits of a range end primary.
+        if(p < (q & 0xffffff00)) {  // Reset the u8"step" bits of a range end primary.
             limit = i;
         } else {
             start = i;

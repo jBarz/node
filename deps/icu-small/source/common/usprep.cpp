@@ -57,20 +57,20 @@ static UVersionInfo dataVersion={ 0, 0, 0, 0 };
 
 /* Profile names must be aligned to UStringPrepProfileType */
 static const char * const PROFILE_NAMES[] = {
-    "rfc3491",      /* USPREP_RFC3491_NAMEPREP */
-    "rfc3530cs",    /* USPREP_RFC3530_NFS4_CS_PREP */
-    "rfc3530csci",  /* USPREP_RFC3530_NFS4_CS_PREP_CI */
-    "rfc3491",      /* USPREP_RFC3530_NSF4_CIS_PREP */
-    "rfc3530mixp",  /* USPREP_RFC3530_NSF4_MIXED_PREP_PREFIX */
-    "rfc3491",      /* USPREP_RFC3530_NSF4_MIXED_PREP_SUFFIX */
-    "rfc3722",      /* USPREP_RFC3722_ISCSI */
-    "rfc3920node",  /* USPREP_RFC3920_NODEPREP */
-    "rfc3920res",   /* USPREP_RFC3920_RESOURCEPREP */
-    "rfc4011",      /* USPREP_RFC4011_MIB */
-    "rfc4013",      /* USPREP_RFC4013_SASLPREP */
-    "rfc4505",      /* USPREP_RFC4505_TRACE */
-    "rfc4518",      /* USPREP_RFC4518_LDAP */
-    "rfc4518ci",    /* USPREP_RFC4518_LDAP_CI */
+    u8"rfc3491",      /* USPREP_RFC3491_NAMEPREP */
+    u8"rfc3530cs",    /* USPREP_RFC3530_NFS4_CS_PREP */
+    u8"rfc3530csci",  /* USPREP_RFC3530_NFS4_CS_PREP_CI */
+    u8"rfc3491",      /* USPREP_RFC3530_NSF4_CIS_PREP */
+    u8"rfc3530mixp",  /* USPREP_RFC3530_NSF4_MIXED_PREP_PREFIX */
+    u8"rfc3491",      /* USPREP_RFC3530_NSF4_MIXED_PREP_SUFFIX */
+    u8"rfc3722",      /* USPREP_RFC3722_ISCSI */
+    u8"rfc3920node",  /* USPREP_RFC3920_NODEPREP */
+    u8"rfc3920res",   /* USPREP_RFC3920_RESOURCEPREP */
+    u8"rfc4011",      /* USPREP_RFC4011_MIB */
+    u8"rfc4013",      /* USPREP_RFC4013_SASLPREP */
+    u8"rfc4505",      /* USPREP_RFC4505_TRACE */
+    u8"rfc4518",      /* USPREP_RFC4518_LDAP */
+    u8"rfc4518ci",    /* USPREP_RFC4518_LDAP_CI */
 };
 
 static UBool U_CALLCONV
@@ -82,7 +82,7 @@ isSPrepAcceptable(void * /* context */,
         pInfo->size>=20 &&
         pInfo->isBigEndian==U_IS_BIG_ENDIAN &&
         pInfo->charsetFamily==U_CHARSET_FAMILY &&
-        pInfo->dataFormat[0]==0x53 &&   /* dataFormat="SPRP" */
+        pInfo->dataFormat[0]==0x53 &&   /* dataFormat=u8"SPRP" */
         pInfo->dataFormat[1]==0x50 &&
         pInfo->dataFormat[2]==0x52 &&
         pInfo->dataFormat[3]==0x50 &&
@@ -797,13 +797,13 @@ usprep_swap(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x53 &&   /* dataFormat="SPRP" */
+        pInfo->dataFormat[0]==0x53 &&   /* dataFormat=u8"SPRP" */
         pInfo->dataFormat[1]==0x50 &&
         pInfo->dataFormat[2]==0x52 &&
         pInfo->dataFormat[3]==0x50 &&
         pInfo->formatVersion[0]==3
     )) {
-        udata_printError(ds, "usprep_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as StringPrep .spp data\n",
+        udata_printError(ds, u8"usprep_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as StringPrep .spp data\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -819,7 +819,7 @@ usprep_swap(const UDataSwapper *ds,
     if(length>=0) {
         length-=headerSize;
         if(length<16*4) {
-            udata_printError(ds, "usprep_swap(): too few bytes (%d after header) for StringPrep .spp data\n",
+            udata_printError(ds, u8"usprep_swap(): too few bytes (%d after header) for StringPrep .spp data\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -839,7 +839,7 @@ usprep_swap(const UDataSwapper *ds,
 
     if(length>=0) {
         if(length<size) {
-            udata_printError(ds, "usprep_swap(): too few bytes (%d after header) for all of StringPrep .spp data\n",
+            udata_printError(ds, u8"usprep_swap(): too few bytes (%d after header) for all of StringPrep .spp data\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;

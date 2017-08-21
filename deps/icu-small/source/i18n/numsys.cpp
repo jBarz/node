@@ -35,16 +35,16 @@ U_NAMESPACE_BEGIN
 // Useful constants
 
 #define DEFAULT_DIGITS UNICODE_STRING_SIMPLE("0123456789");
-static const char gNumberingSystems[] = "numberingSystems";
-static const char gNumberElements[] = "NumberElements";
-static const char gDefault[] = "default";
-static const char gNative[] = "native";
-static const char gTraditional[] = "traditional";
-static const char gFinance[] = "finance";
-static const char gDesc[] = "desc";
-static const char gRadix[] = "radix";
-static const char gAlgorithmic[] = "algorithmic";
-static const char gLatn[] = "latn";
+static const char gNumberingSystems[] = u8"numberingSystems";
+static const char gNumberElements[] = u8"NumberElements";
+static const char gDefault[] = u8"default";
+static const char gNative[] = u8"native";
+static const char gTraditional[] = u8"traditional";
+static const char gFinance[] = u8"finance";
+static const char gDesc[] = u8"desc";
+static const char gRadix[] = u8"radix";
+static const char gAlgorithmic[] = u8"algorithmic";
+static const char gLatn[] = u8"latn";
 
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(NumberingSystem)
@@ -114,9 +114,9 @@ NumberingSystem::createInstance(const Locale & inLocale, UErrorCode& status) {
     UBool nsResolved = TRUE;
     UBool usingFallback = FALSE;
     char buffer[ULOC_KEYWORDS_CAPACITY];
-    int32_t count = inLocale.getKeywordValue("numbers",buffer, sizeof(buffer),status);
+    int32_t count = inLocale.getKeywordValue(u8"numbers",buffer, sizeof(buffer),status);
     if ( count > 0 ) { // @numbers keyword was specified in the locale
-        buffer[count] = '\0'; // Make sure it is null terminated.
+        buffer[count] = '\x0'; // Make sure it is null terminated.
         if ( !uprv_strcmp(buffer,gDefault) || !uprv_strcmp(buffer,gNative) ||
              !uprv_strcmp(buffer,gTraditional) || !uprv_strcmp(buffer,gFinance)) {
             nsResolved = FALSE;
@@ -126,7 +126,7 @@ NumberingSystem::createInstance(const Locale & inLocale, UErrorCode& status) {
         nsResolved = FALSE;
     }
 
-    if (!nsResolved) { // Resolve the numbering system ( default, native, traditional or finance ) into a "real" numbering system
+    if (!nsResolved) { // Resolve the numbering system ( default, native, traditional or finance ) into a u8"real" numbering system
         UErrorCode localStatus = U_ZERO_ERROR;
         UResourceBundle *resource = ures_open(NULL, inLocale.getName(), &localStatus);
         UResourceBundle *numberElementsRes = ures_getByKey(resource,gNumberElements,NULL,&localStatus);
@@ -136,7 +136,7 @@ NumberingSystem::createInstance(const Locale & inLocale, UErrorCode& status) {
             const UChar *nsName = ures_getStringByKeyWithFallback(numberElementsRes, buffer, &count, &localStatus);
             if ( count > 0 && count < ULOC_KEYWORDS_CAPACITY ) { // numbering system found
                 u_UCharsToChars(nsName,buffer,count);
-                buffer[count] = '\0'; // Make sure it is null terminated.
+                buffer[count] = '\x0'; // Make sure it is null terminated.
                 nsResolved = TRUE;
             }
 
@@ -261,8 +261,8 @@ StringEnumeration* NumberingSystem::getAvailableNames(UErrorCode &status) {
         }
 
         UErrorCode rbstatus = U_ZERO_ERROR;
-        UResourceBundle *numberingSystemsInfo = ures_openDirect(NULL, "numberingSystems", &rbstatus);
-        numberingSystemsInfo = ures_getByKey(numberingSystemsInfo,"numberingSystems",numberingSystemsInfo,&rbstatus);
+        UResourceBundle *numberingSystemsInfo = ures_openDirect(NULL, u8"numberingSystems", &rbstatus);
+        numberingSystemsInfo = ures_getByKey(numberingSystemsInfo,u8"numberingSystems",numberingSystemsInfo,&rbstatus);
         if(U_FAILURE(rbstatus)) {
             status = U_MISSING_RESOURCE_ERROR;
             ures_close(numberingSystemsInfo);

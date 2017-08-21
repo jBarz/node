@@ -576,7 +576,7 @@ _UTF16BEReset(UConverter *cnv, UConverterResetChoice choice) {
         if(UCNV_GET_VERSION(cnv)==0) {
             cnv->mode=8; /* no BOM handling */
         } else {
-            cnv->mode=0; /* Java-specific "UnicodeBig" requires BE BOM or no BOM */
+            cnv->mode=0; /* Java-specific u8"UnicodeBig" requires BE BOM or no BOM */
         }
     }
     if(choice!=UCNV_RESET_TO_UNICODE && UCNV_GET_VERSION(cnv)==1) {
@@ -600,9 +600,9 @@ _UTF16BEOpen(UConverter *cnv,
 static const char *  U_CALLCONV
 _UTF16BEGetName(const UConverter *cnv) {
     if(UCNV_GET_VERSION(cnv)==0) {
-        return "UTF-16BE";
+        return u8"UTF-16BE";
     } else {
-        return "UTF-16BE,version=1";
+        return u8"UTF-16BE,version=1";
     }
 }
 U_CDECL_END
@@ -635,7 +635,7 @@ static const UConverterImpl _UTF16BEImpl={
 
 static const UConverterStaticData _UTF16BEStaticData={
     sizeof(UConverterStaticData),
-    "UTF-16BE",
+    u8"UTF-16BE",
     1200, UCNV_IBM, UCNV_UTF16_BigEndian, 2, 2,
     { 0xff, 0xfd, 0, 0 },2,FALSE,FALSE,
     0,
@@ -1177,7 +1177,7 @@ _UTF16LEReset(UConverter *cnv, UConverterResetChoice choice) {
         if(UCNV_GET_VERSION(cnv)==0) {
             cnv->mode=8; /* no BOM handling */
         } else {
-            cnv->mode=0; /* Java-specific "UnicodeLittle" requires LE BOM or no BOM */
+            cnv->mode=0; /* Java-specific u8"UnicodeLittle" requires LE BOM or no BOM */
         }
     }
     if(choice!=UCNV_RESET_TO_UNICODE && UCNV_GET_VERSION(cnv)==1) {
@@ -1201,9 +1201,9 @@ _UTF16LEOpen(UConverter *cnv,
 static const char *  U_CALLCONV
 _UTF16LEGetName(const UConverter *cnv) {
     if(UCNV_GET_VERSION(cnv)==0) {
-        return "UTF-16LE";
+        return u8"UTF-16LE";
     } else {
-        return "UTF-16LE,version=1";
+        return u8"UTF-16LE,version=1";
     }
 }
 U_CDECL_END
@@ -1237,7 +1237,7 @@ static const UConverterImpl _UTF16LEImpl={
 
 static const UConverterStaticData _UTF16LEStaticData={
     sizeof(UConverterStaticData),
-    "UTF-16LE",
+    u8"UTF-16LE",
     1202, UCNV_IBM, UCNV_UTF16_LittleEndian, 2, 2,
     { 0xfd, 0xff, 0, 0 },2,FALSE,FALSE,
     0,
@@ -1313,11 +1313,11 @@ _UTF16Open(UConverter *cnv,
 static const char *  U_CALLCONV
 _UTF16GetName(const UConverter *cnv) {
     if(UCNV_GET_VERSION(cnv)==0) {
-        return "UTF-16";
+        return u8"UTF-16";
     } else if(UCNV_GET_VERSION(cnv)==1) {
-        return "UTF-16,version=1";
+        return u8"UTF-16,version=1";
     } else {
-        return "UTF-16,version=2";
+        return u8"UTF-16,version=2";
     }
 }
 U_CDECL_END
@@ -1365,18 +1365,18 @@ _UTF16ToUnicodeWithOffsets(UConverterToUnicodeArgs *pArgs,
             b=*source;
             if(cnv->toUBytes[0]==0xfe && b==0xff) {
                 if(IS_UTF16LE(cnv)) {
-                    state=7; /* illegal reverse BOM for Java "UnicodeLittle" */
+                    state=7; /* illegal reverse BOM for Java u8"UnicodeLittle" */
                 } else {
                     state=8; /* detect UTF-16BE */
                 }
             } else if(cnv->toUBytes[0]==0xff && b==0xfe) {
                 if(IS_UTF16BE(cnv)) {
-                    state=6; /* illegal reverse BOM for Java "UnicodeBig" */
+                    state=6; /* illegal reverse BOM for Java u8"UnicodeBig" */
                 } else {
                     state=9; /* detect UTF-16LE */
                 }
             } else if((IS_UTF16(cnv) && UCNV_GET_VERSION(cnv)==1)) {
-                state=6; /* illegal missing BOM for Java "Unicode" */
+                state=6; /* illegal missing BOM for Java u8"Unicode" */
             }
             if(state>=8) {
                 /* BOM detected, consume it */
@@ -1410,8 +1410,8 @@ _UTF16ToUnicodeWithOffsets(UConverterToUnicodeArgs *pArgs,
                 pArgs->source=source+1;
                 /* continue with conversion if the callback resets the error */
                 /*
-                 * Make Java "Unicode" default to BE like standard UTF-16.
-                 * Make Java "UnicodeBig" and "UnicodeLittle" default
+                 * Make Java u8"Unicode" default to BE like standard UTF-16.
+                 * Make Java u8"UnicodeBig" and u8"UnicodeLittle" default
                  * to their normal endiannesses.
                  */
                 cnv->mode=state+2;
@@ -1510,7 +1510,7 @@ static const UConverterImpl _UTF16Impl = {
 
 static const UConverterStaticData _UTF16StaticData = {
     sizeof(UConverterStaticData),
-    "UTF-16",
+    u8"UTF-16",
     1204, /* CCSID for BOM sensitive UTF-16 */
     UCNV_IBM, UCNV_UTF16, 2, 2,
 #if U_IS_BIG_ENDIAN
@@ -1555,7 +1555,7 @@ static const UConverterImpl _UTF16v2Impl = {
 
 static const UConverterStaticData _UTF16v2StaticData = {
     sizeof(UConverterStaticData),
-    "UTF-16,version=2",
+    u8"UTF-16,version=2",
     1204, /* CCSID for BOM sensitive UTF-16 */
     UCNV_IBM, UCNV_UTF16, 2, 2,
     { 0xff, 0xfd, 0, 0 }, 2,

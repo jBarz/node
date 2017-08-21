@@ -90,54 +90,54 @@ static const UChar gPatternChars[] = {
 // These are the month names and abbreviations of last resort.
 static const UChar gLastResortMonthNames[13][3] =
 {
-    {0x0030, 0x0031, 0x0000}, /* "01" */
-    {0x0030, 0x0032, 0x0000}, /* "02" */
-    {0x0030, 0x0033, 0x0000}, /* "03" */
-    {0x0030, 0x0034, 0x0000}, /* "04" */
-    {0x0030, 0x0035, 0x0000}, /* "05" */
-    {0x0030, 0x0036, 0x0000}, /* "06" */
-    {0x0030, 0x0037, 0x0000}, /* "07" */
-    {0x0030, 0x0038, 0x0000}, /* "08" */
-    {0x0030, 0x0039, 0x0000}, /* "09" */
-    {0x0031, 0x0030, 0x0000}, /* "10" */
-    {0x0031, 0x0031, 0x0000}, /* "11" */
-    {0x0031, 0x0032, 0x0000}, /* "12" */
-    {0x0031, 0x0033, 0x0000}  /* "13" */
+    {0x0030, 0x0031, 0x0000}, /* u8"01" */
+    {0x0030, 0x0032, 0x0000}, /* u8"02" */
+    {0x0030, 0x0033, 0x0000}, /* u8"03" */
+    {0x0030, 0x0034, 0x0000}, /* u8"04" */
+    {0x0030, 0x0035, 0x0000}, /* u8"05" */
+    {0x0030, 0x0036, 0x0000}, /* u8"06" */
+    {0x0030, 0x0037, 0x0000}, /* u8"07" */
+    {0x0030, 0x0038, 0x0000}, /* u8"08" */
+    {0x0030, 0x0039, 0x0000}, /* u8"09" */
+    {0x0031, 0x0030, 0x0000}, /* u8"10" */
+    {0x0031, 0x0031, 0x0000}, /* u8"11" */
+    {0x0031, 0x0032, 0x0000}, /* u8"12" */
+    {0x0031, 0x0033, 0x0000}  /* u8"13" */
 };
 
 // These are the weekday names and abbreviations of last resort.
 static const UChar gLastResortDayNames[8][2] =
 {
-    {0x0030, 0x0000}, /* "0" */
-    {0x0031, 0x0000}, /* "1" */
-    {0x0032, 0x0000}, /* "2" */
-    {0x0033, 0x0000}, /* "3" */
-    {0x0034, 0x0000}, /* "4" */
-    {0x0035, 0x0000}, /* "5" */
-    {0x0036, 0x0000}, /* "6" */
-    {0x0037, 0x0000}  /* "7" */
+    {0x0030, 0x0000}, /* u8"0" */
+    {0x0031, 0x0000}, /* u8"1" */
+    {0x0032, 0x0000}, /* u8"2" */
+    {0x0033, 0x0000}, /* u8"3" */
+    {0x0034, 0x0000}, /* u8"4" */
+    {0x0035, 0x0000}, /* u8"5" */
+    {0x0036, 0x0000}, /* u8"6" */
+    {0x0037, 0x0000}  /* u8"7" */
 };
 
 // These are the quarter names and abbreviations of last resort.
 static const UChar gLastResortQuarters[4][2] =
 {
-    {0x0031, 0x0000}, /* "1" */
-    {0x0032, 0x0000}, /* "2" */
-    {0x0033, 0x0000}, /* "3" */
-    {0x0034, 0x0000}, /* "4" */
+    {0x0031, 0x0000}, /* u8"1" */
+    {0x0032, 0x0000}, /* u8"2" */
+    {0x0033, 0x0000}, /* u8"3" */
+    {0x0034, 0x0000}, /* u8"4" */
 };
 
 // These are the am/pm and BC/AD markers of last resort.
 static const UChar gLastResortAmPmMarkers[2][3] =
 {
-    {0x0041, 0x004D, 0x0000}, /* "AM" */
-    {0x0050, 0x004D, 0x0000}  /* "PM" */
+    {0x0041, 0x004D, 0x0000}, /* u8"AM" */
+    {0x0050, 0x004D, 0x0000}  /* u8"PM" */
 };
 
 static const UChar gLastResortEras[2][3] =
 {
-    {0x0042, 0x0043, 0x0000}, /* "BC" */
-    {0x0041, 0x0044, 0x0000}  /* "AD" */
+    {0x0042, 0x0043, 0x0000}, /* u8"BC" */
+    {0x0041, 0x0044, 0x0000}  /* u8"AD" */
 };
 
 /* Sizes for the last resort string arrays */
@@ -194,43 +194,43 @@ const SharedDateFormatSymbols *
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(DateFormatSymbols)
 
-#define kSUPPLEMENTAL "supplementalData"
+#define kSUPPLEMENTAL u8"supplementalData"
 
 /**
  * These are the tags we expect to see in normal resource bundle files associated
  * with a locale and calendar
  */
-static const char gCalendarTag[]="calendar";
-static const char gGregorianTag[]="gregorian";
-static const char gErasTag[]="eras";
-static const char gCyclicNameSetsTag[]="cyclicNameSets";
-static const char gNameSetYearsTag[]="years";
-static const char gNameSetZodiacsTag[]="zodiacs";
-static const char gMonthNamesTag[]="monthNames";
-static const char gMonthPatternsTag[]="monthPatterns";
-static const char gDayNamesTag[]="dayNames";
-static const char gNamesWideTag[]="wide";
-static const char gNamesAbbrTag[]="abbreviated";
-static const char gNamesShortTag[]="short";
-static const char gNamesNarrowTag[]="narrow";
-static const char gNamesAllTag[]="all";
-static const char gNamesFormatTag[]="format";
-static const char gNamesStandaloneTag[]="stand-alone";
-static const char gNamesNumericTag[]="numeric";
-static const char gAmPmMarkersTag[]="AmPmMarkers";
-static const char gAmPmMarkersAbbrTag[]="AmPmMarkersAbbr";
-static const char gAmPmMarkersNarrowTag[]="AmPmMarkersNarrow";
-static const char gQuartersTag[]="quarters";
-static const char gNumberElementsTag[]="NumberElements";
-static const char gSymbolsTag[]="symbols";
-static const char gTimeSeparatorTag[]="timeSeparator";
-static const char gDayPeriodTag[]="dayPeriod";
+static const char gCalendarTag[]=u8"calendar";
+static const char gGregorianTag[]=u8"gregorian";
+static const char gErasTag[]=u8"eras";
+static const char gCyclicNameSetsTag[]=u8"cyclicNameSets";
+static const char gNameSetYearsTag[]=u8"years";
+static const char gNameSetZodiacsTag[]=u8"zodiacs";
+static const char gMonthNamesTag[]=u8"monthNames";
+static const char gMonthPatternsTag[]=u8"monthPatterns";
+static const char gDayNamesTag[]=u8"dayNames";
+static const char gNamesWideTag[]=u8"wide";
+static const char gNamesAbbrTag[]=u8"abbreviated";
+static const char gNamesShortTag[]=u8"short";
+static const char gNamesNarrowTag[]=u8"narrow";
+static const char gNamesAllTag[]=u8"all";
+static const char gNamesFormatTag[]=u8"format";
+static const char gNamesStandaloneTag[]=u8"stand-alone";
+static const char gNamesNumericTag[]=u8"numeric";
+static const char gAmPmMarkersTag[]=u8"AmPmMarkers";
+static const char gAmPmMarkersAbbrTag[]=u8"AmPmMarkersAbbr";
+static const char gAmPmMarkersNarrowTag[]=u8"AmPmMarkersNarrow";
+static const char gQuartersTag[]=u8"quarters";
+static const char gNumberElementsTag[]=u8"NumberElements";
+static const char gSymbolsTag[]=u8"symbols";
+static const char gTimeSeparatorTag[]=u8"timeSeparator";
+static const char gDayPeriodTag[]=u8"dayPeriod";
 
 // static const char gZoneStringsTag[]="zoneStrings";
 
 // static const char gLocalPatternCharsTag[]="localPatternChars";
 
-static const char gContextTransformsTag[]="contextTransforms";
+static const char gContextTransformsTag[]=u8"contextTransforms";
 
 static UMutex LOCK = U_MUTEX_INITIALIZER;
 
@@ -1936,21 +1936,21 @@ static CharString
 static CharString
 &buildResourcePath(CharString &path, const char* segment1, const char* segment2,
                    UErrorCode &errorCode) {
-    return buildResourcePath(path, segment1, errorCode).append('/', errorCode)
+    return buildResourcePath(path, segment1, errorCode).append('\x2f', errorCode)
                                                        .append(segment2, -1, errorCode);
 }
 
 static CharString
 &buildResourcePath(CharString &path, const char* segment1, const char* segment2,
                    const char* segment3, UErrorCode &errorCode) {
-    return buildResourcePath(path, segment1, segment2, errorCode).append('/', errorCode)
+    return buildResourcePath(path, segment1, segment2, errorCode).append('\x2f', errorCode)
                                                                  .append(segment3, -1, errorCode);
 }
 
 static CharString
 &buildResourcePath(CharString &path, const char* segment1, const char* segment2,
                    const char* segment3, const char* segment4, UErrorCode &errorCode) {
-    return buildResourcePath(path, segment1, segment2, segment3, errorCode).append('/', errorCode)
+    return buildResourcePath(path, segment1, segment2, segment3, errorCode).append('\x2f', errorCode)
                                                                            .append(segment4, -1, errorCode);
 }
 
@@ -1961,28 +1961,28 @@ typedef struct {
 
 static const ContextUsageTypeNameToEnumValue contextUsageTypeMap[] = {
    // Entries must be sorted by usageTypeName; entry with NULL name terminates list.
-    { "day-format-except-narrow", DateFormatSymbols::kCapContextUsageDayFormat },
-    { "day-narrow",     DateFormatSymbols::kCapContextUsageDayNarrow },
-    { "day-standalone-except-narrow", DateFormatSymbols::kCapContextUsageDayStandalone },
-    { "era-abbr",       DateFormatSymbols::kCapContextUsageEraAbbrev },
-    { "era-name",       DateFormatSymbols::kCapContextUsageEraWide },
-    { "era-narrow",     DateFormatSymbols::kCapContextUsageEraNarrow },
-    { "metazone-long",  DateFormatSymbols::kCapContextUsageMetazoneLong },
-    { "metazone-short", DateFormatSymbols::kCapContextUsageMetazoneShort },
-    { "month-format-except-narrow", DateFormatSymbols::kCapContextUsageMonthFormat },
-    { "month-narrow",   DateFormatSymbols::kCapContextUsageMonthNarrow },
-    { "month-standalone-except-narrow", DateFormatSymbols::kCapContextUsageMonthStandalone },
-    { "zone-long",      DateFormatSymbols::kCapContextUsageZoneLong },
-    { "zone-short",     DateFormatSymbols::kCapContextUsageZoneShort },
+    { u8"day-format-except-narrow", DateFormatSymbols::kCapContextUsageDayFormat },
+    { u8"day-narrow",     DateFormatSymbols::kCapContextUsageDayNarrow },
+    { u8"day-standalone-except-narrow", DateFormatSymbols::kCapContextUsageDayStandalone },
+    { u8"era-abbr",       DateFormatSymbols::kCapContextUsageEraAbbrev },
+    { u8"era-name",       DateFormatSymbols::kCapContextUsageEraWide },
+    { u8"era-narrow",     DateFormatSymbols::kCapContextUsageEraNarrow },
+    { u8"metazone-long",  DateFormatSymbols::kCapContextUsageMetazoneLong },
+    { u8"metazone-short", DateFormatSymbols::kCapContextUsageMetazoneShort },
+    { u8"month-format-except-narrow", DateFormatSymbols::kCapContextUsageMonthFormat },
+    { u8"month-narrow",   DateFormatSymbols::kCapContextUsageMonthNarrow },
+    { u8"month-standalone-except-narrow", DateFormatSymbols::kCapContextUsageMonthStandalone },
+    { u8"zone-long",      DateFormatSymbols::kCapContextUsageZoneLong },
+    { u8"zone-short",     DateFormatSymbols::kCapContextUsageZoneShort },
     { NULL, (DateFormatSymbols::ECapitalizationContextUsageType)0 },
 };
 
 // Resource keys to look up localized strings for day periods.
 // The first one must be midnight and the second must be noon, so that their indices coincide
 // with the am/pm field. Formatting and parsing code for day periods relies on this coincidence.
-static const char *dayPeriodKeys[] = {"midnight", "noon",
-                         "morning1", "afternoon1", "evening1", "night1",
-                         "morning2", "afternoon2", "evening2", "night2"};
+static const char *dayPeriodKeys[] = {u8"midnight", u8"noon",
+                         u8"morning1", u8"afternoon1", u8"evening1", u8"night1",
+                         u8"morning2", u8"afternoon2", u8"evening2", u8"night2"};
 
 UnicodeString* loadDayPeriodStrings(CalendarDataSink &sink, CharString &path,
                                     int32_t &stringCount,  UErrorCode &status) {
@@ -2109,7 +2109,7 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     if (U_FAILURE(status)) return;
 
     // Iterate over the resource bundle data following the fallbacks through different calendar types
-    UnicodeString calendarType((type != NULL && *type != '\0')? type : gGregorianTag, -1, US_INV);
+    UnicodeString calendarType((type != NULL && *type != '\x0')? type : gGregorianTag, -1, US_INV);
     while (!calendarType.isBogus()) {
         CharString calendarTypeBuffer;
         calendarTypeBuffer.appendInvariantChars(calendarType, status);
@@ -2131,7 +2131,7 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
         }
 
         calendarSink.preEnumerate(calendarType);
-        ures_getAllItemsWithFallback(ctb, "", calendarSink, status);
+        ures_getAllItemsWithFallback(ctb, u8"", calendarSink, status);
         ures_close(ctb);
         if (U_FAILURE(status)) break;
 

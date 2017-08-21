@@ -28,7 +28,7 @@
 *   gencmn, decmn, and icuswap tools.
 *   Will not work with data DLLs (shared libraries).
 */
-
+#define _AE_BIMODAL
 #include "unicode/utypes.h"
 #include "unicode/putil.h"
 #include "cstring.h"
@@ -38,7 +38,7 @@
 #include "filestrm.h"
 #include "package.h"
 #include "pkg_icu.h"
-
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,159 +55,159 @@ static void
 printUsage(const char *pname, UBool isHelp) {
     FILE *where=isHelp ? stdout : stderr;
 
-    fprintf(where,
-            "%csage: %s [-h|-?|--help ] [-tl|-tb|-te] [-c] [-C comment]\n"
-            "\t[-a list] [-r list] [-x list] [-l [-o outputListFileName]]\n"
-            "\t[-s path] [-d path] [-w] [-m mode]\n"
-            "\t[--auto_toc_prefix] [--auto_toc_prefix_with_type] [--toc_prefix]\n"
-            "\tinfilename [outfilename]\n",
-            isHelp ? 'U' : 'u', pname);
+    __fprintf_a(where,
+            u8"%csage: %s [-h|-?|--help ] [-tl|-tb|-te] [-c] [-C comment]\n"
+            u8"\t[-a list] [-r list] [-x list] [-l [-o outputListFileName]]\n"
+            u8"\t[-s path] [-d path] [-w] [-m mode]\n"
+            u8"\t[--auto_toc_prefix] [--auto_toc_prefix_with_type] [--toc_prefix]\n"
+            u8"\tinfilename [outfilename]\n",
+            isHelp ? '\x55' : '\x75', pname);
     if(isHelp) {
-        fprintf(where,
-            "\n"
-            "Read the input ICU .dat package file, modify it according to the options,\n"
-            "swap it to the desired platform properties (charset & endianness),\n"
-            "and optionally write the resulting ICU .dat package to the output file.\n"
-            "Items are removed, then added, then extracted and listed.\n"
-            "An ICU .dat package is written if items are removed or added,\n"
-            "or if the input and output filenames differ,\n"
-            "or if the --writepkg (-w) option is set.\n");
-        fprintf(where,
-            "\n"
-            "If the input filename is \"new\" then an empty package is created.\n"
-            "If the output filename is missing, then it is automatically generated\n"
-            "from the input filename: If the input filename ends with an l, b, or e\n"
-            "matching its platform properties, then the output filename will\n"
-            "contain the letter from the -t (--type) option.\n");
-        fprintf(where,
-            "\n"
-            "This tool can also be used to just swap a single ICU data file, replacing the\n"
-            "former icuswap tool. For this mode, provide the infilename (and optional\n"
-            "outfilename) for a non-package ICU data file.\n"
-            "Allowed options include -t, -w, -s and -d.\n"
-            "The filenames can be absolute, or relative to the source/dest dir paths.\n"
-            "Other options are not allowed in this mode.\n");
-        fprintf(where,
-            "\n"
-            "Options:\n"
-            "\t(Only the last occurrence of an option is used.)\n"
-            "\n"
-            "\t-h or -? or --help    print this message and exit\n");
-        fprintf(where,
-            "\n"
-            "\t-tl or --type l   output for little-endian/ASCII charset family\n"
-            "\t-tb or --type b   output for big-endian/ASCII charset family\n"
-            "\t-te or --type e   output for big-endian/EBCDIC charset family\n"
-            "\t                  The output type defaults to the input type.\n"
-            "\n"
-            "\t-c or --copyright include the ICU copyright notice\n"
-            "\t-C comment or --comment comment   include a comment string\n");
-        fprintf(where,
-            "\n"
-            "\t-a list or --add list      add items to the package\n"
-            "\t-r list or --remove list   remove items from the package\n"
-            "\t-x list or --extract list  extract items from the package\n"
-            "\tThe list can be a single item's filename,\n"
-            "\tor a .txt filename with a list of item filenames,\n"
-            "\tor an ICU .dat package filename.\n");
-        fprintf(where,
-            "\n"
-            "\t-w or --writepkg  write the output package even if no items are removed\n"
-            "\t                  or added (e.g., for only swapping the data)\n");
-        fprintf(where,
-            "\n"
-            "\t-m mode or --matchmode mode  set the matching mode for item names with\n"
-            "\t                             wildcards\n"
-            "\t        noslash: the '*' wildcard does not match the '/' tree separator\n");
-        fprintf(where,
-            "\n"
-            "\tIn the .dat package, the Table of Contents (ToC) contains an entry\n"
-            "\tfor each item of the form prefix/tree/itemname .\n"
-            "\tThe prefix normally matches the package basename, and icupkg checks that,\n"
-            "\tbut this is not necessary when ICU need not find and load the package by filename.\n"
-            "\tICU package names end with the platform type letter, and thus differ\n"
-            "\tbetween platform types. This is not required for user data packages.\n");
-        fprintf(where,
-            "\n"
-            "\t--auto_toc_prefix            automatic ToC entries prefix\n"
-            "\t                             Uses the prefix of the first entry of the\n"
-            "\t                             input package, rather than its basename.\n"
-            "\t                             Requires a non-empty input package.\n"
-            "\t--auto_toc_prefix_with_type  auto_toc_prefix + adjust platform type\n"
-            "\t                             Same as auto_toc_prefix but also checks that\n"
-            "\t                             the prefix ends with the input platform\n"
-            "\t                             type letter, and modifies it to the output\n"
-            "\t                             platform type letter.\n"
-            "\t                At most one of the auto_toc_prefix options\n"
-            "\t                can be used at a time.\n"
-            "\t--toc_prefix prefix          ToC prefix to be used in the output package\n"
-            "\t                             Overrides the package basename\n"
-            "\t                             and --auto_toc_prefix.\n"
-            "\t                             Cannot be combined with --auto_toc_prefix_with_type.\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"Read the input ICU .dat package file, modify it according to the options,\n"
+            u8"swap it to the desired platform properties (charset & endianness),\n"
+            u8"and optionally write the resulting ICU .dat package to the output file.\n"
+            u8"Items are removed, then added, then extracted and listed.\n"
+            u8"An ICU .dat package is written if items are removed or added,\n"
+            u8"or if the input and output filenames differ,\n"
+            u8"or if the --writepkg (-w) option is set.\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"If the input filename is \"new\" then an empty package is created.\n"
+            u8"If the output filename is missing, then it is automatically generated\n"
+            u8"from the input filename: If the input filename ends with an l, b, or e\n"
+            u8"matching its platform properties, then the output filename will\n"
+            u8"contain the letter from the -t (--type) option.\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"This tool can also be used to just swap a single ICU data file, replacing the\n"
+            u8"former icuswap tool. For this mode, provide the infilename (and optional\n"
+            u8"outfilename) for a non-package ICU data file.\n"
+            u8"Allowed options include -t, -w, -s and -d.\n"
+            u8"The filenames can be absolute, or relative to the source/dest dir paths.\n"
+            u8"Other options are not allowed in this mode.\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"Options:\n"
+            u8"\t(Only the last occurrence of an option is used.)\n"
+            u8"\n"
+            u8"\t-h or -? or --help    print this message and exit\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"\t-tl or --type l   output for little-endian/ASCII charset family\n"
+            u8"\t-tb or --type b   output for big-endian/ASCII charset family\n"
+            u8"\t-te or --type e   output for big-endian/EBCDIC charset family\n"
+            u8"\t                  The output type defaults to the input type.\n"
+            u8"\n"
+            u8"\t-c or --copyright include the ICU copyright notice\n"
+            u8"\t-C comment or --comment comment   include a comment string\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"\t-a list or --add list      add items to the package\n"
+            u8"\t-r list or --remove list   remove items from the package\n"
+            u8"\t-x list or --extract list  extract items from the package\n"
+            u8"\tThe list can be a single item's filename,\n"
+            u8"\tor a .txt filename with a list of item filenames,\n"
+            u8"\tor an ICU .dat package filename.\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"\t-w or --writepkg  write the output package even if no items are removed\n"
+            u8"\t                  or added (e.g., for only swapping the data)\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"\t-m mode or --matchmode mode  set the matching mode for item names with\n"
+            u8"\t                             wildcards\n"
+            u8"\t        noslash: the '*' wildcard does not match the '/' tree separator\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"\tIn the .dat package, the Table of Contents (ToC) contains an entry\n"
+            u8"\tfor each item of the form prefix/tree/itemname .\n"
+            u8"\tThe prefix normally matches the package basename, and icupkg checks that,\n"
+            u8"\tbut this is not necessary when ICU need not find and load the package by filename.\n"
+            u8"\tICU package names end with the platform type letter, and thus differ\n"
+            u8"\tbetween platform types. This is not required for user data packages.\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"\t--auto_toc_prefix            automatic ToC entries prefix\n"
+            u8"\t                             Uses the prefix of the first entry of the\n"
+            u8"\t                             input package, rather than its basename.\n"
+            u8"\t                             Requires a non-empty input package.\n"
+            u8"\t--auto_toc_prefix_with_type  auto_toc_prefix + adjust platform type\n"
+            u8"\t                             Same as auto_toc_prefix but also checks that\n"
+            u8"\t                             the prefix ends with the input platform\n"
+            u8"\t                             type letter, and modifies it to the output\n"
+            u8"\t                             platform type letter.\n"
+            u8"\t                At most one of the auto_toc_prefix options\n"
+            u8"\t                can be used at a time.\n"
+            u8"\t--toc_prefix prefix          ToC prefix to be used in the output package\n"
+            u8"\t                             Overrides the package basename\n"
+            u8"\t                             and --auto_toc_prefix.\n"
+            u8"\t                             Cannot be combined with --auto_toc_prefix_with_type.\n");
         /*
          * Usage text columns, starting after the initial TAB.
          *      1         2         3         4         5         6         7         8
          *     901234567890123456789012345678901234567890123456789012345678901234567890
          */
-        fprintf(where,
-            "\n"
-            "\tList file syntax: Items are listed on one or more lines and separated\n"
-            "\tby whitespace (space+tab).\n"
-            "\tComments begin with # and are ignored. Empty lines are ignored.\n"
-            "\tLines where the first non-whitespace character is one of %s\n"
-            "\tare also ignored, to reserve for future syntax.\n",
+        __fprintf_a(where,
+            u8"\n"
+            u8"\tList file syntax: Items are listed on one or more lines and separated\n"
+            u8"\tby whitespace (space+tab).\n"
+            u8"\tComments begin with # and are ignored. Empty lines are ignored.\n"
+            u8"\tLines where the first non-whitespace character is one of %s\n"
+            u8"\tare also ignored, to reserve for future syntax.\n",
             U_PKG_RESERVED_CHARS);
-        fprintf(where,
-            "\tItems for removal or extraction may contain a single '*' wildcard\n"
-            "\tcharacter. The '*' matches zero or more characters.\n"
-            "\tIf --matchmode noslash (-m noslash) is set, then the '*'\n"
-            "\tdoes not match '/'.\n");
-        fprintf(where,
-            "\n"
-            "\tItems must be listed relative to the package, and the --sourcedir or\n"
-            "\tthe --destdir path will be prepended.\n"
-            "\tThe paths are only prepended to item filenames while adding or\n"
-            "\textracting items, not to ICU .dat package or list filenames.\n"
-            "\t\n"
-            "\tPaths may contain '/' instead of the platform's\n"
-            "\tfile separator character, and are converted as appropriate.\n");
-        fprintf(where,
-            "\n"
-            "\t-s path or --sourcedir path  directory for the --add items\n"
-            "\t-d path or --destdir path    directory for the --extract items\n"
-            "\n"
-            "\t-l or --list                 list the package items\n"
-            "\t                             (after modifying the package)\n"
-            "\t                             to stdout or to output list file\n"
-            "\t-o path or --outlist path    path/filename for the --list output\n");
+        __fprintf_a(where,
+            u8"\tItems for removal or extraction may contain a single '*' wildcard\n"
+            u8"\tcharacter. The '*' matches zero or more characters.\n"
+            u8"\tIf --matchmode noslash (-m noslash) is set, then the '*'\n"
+            u8"\tdoes not match '/'.\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"\tItems must be listed relative to the package, and the --sourcedir or\n"
+            u8"\tthe --destdir path will be prepended.\n"
+            u8"\tThe paths are only prepended to item filenames while adding or\n"
+            u8"\textracting items, not to ICU .dat package or list filenames.\n"
+            u8"\t\n"
+            u8"\tPaths may contain '/' instead of the platform's\n"
+            u8"\tfile separator character, and are converted as appropriate.\n");
+        __fprintf_a(where,
+            u8"\n"
+            u8"\t-s path or --sourcedir path  directory for the --add items\n"
+            u8"\t-d path or --destdir path    directory for the --extract items\n"
+            u8"\n"
+            u8"\t-l or --list                 list the package items\n"
+            u8"\t                             (after modifying the package)\n"
+            u8"\t                             to stdout or to output list file\n"
+            u8"\t-o path or --outlist path    path/filename for the --list output\n");
     }
 }
 
 static UOption options[]={
     UOPTION_HELP_H,
     UOPTION_HELP_QUESTION_MARK,
-    UOPTION_DEF("type", 't', UOPT_REQUIRES_ARG),
+    UOPTION_DEF(u8"type", '\x74', UOPT_REQUIRES_ARG),
 
     UOPTION_COPYRIGHT,
-    UOPTION_DEF("comment", 'C', UOPT_REQUIRES_ARG),
+    UOPTION_DEF(u8"comment", '\x43', UOPT_REQUIRES_ARG),
 
     UOPTION_SOURCEDIR,
     UOPTION_DESTDIR,
 
-    UOPTION_DEF("writepkg", 'w', UOPT_NO_ARG),
+    UOPTION_DEF(u8"writepkg", '\x77', UOPT_NO_ARG),
 
-    UOPTION_DEF("matchmode", 'm', UOPT_REQUIRES_ARG),
+    UOPTION_DEF(u8"matchmode", '\x6d', UOPT_REQUIRES_ARG),
 
-    UOPTION_DEF("add", 'a', UOPT_REQUIRES_ARG),
-    UOPTION_DEF("remove", 'r', UOPT_REQUIRES_ARG),
-    UOPTION_DEF("extract", 'x', UOPT_REQUIRES_ARG),
+    UOPTION_DEF(u8"add", '\x61', UOPT_REQUIRES_ARG),
+    UOPTION_DEF(u8"remove", '\x72', UOPT_REQUIRES_ARG),
+    UOPTION_DEF(u8"extract", '\x78', UOPT_REQUIRES_ARG),
 
-    UOPTION_DEF("list", 'l', UOPT_NO_ARG),
-    UOPTION_DEF("outlist", 'o', UOPT_REQUIRES_ARG),
+    UOPTION_DEF(u8"list", '\x6c', UOPT_NO_ARG),
+    UOPTION_DEF(u8"outlist", '\x6f', UOPT_REQUIRES_ARG),
 
-    UOPTION_DEF("auto_toc_prefix", '\1', UOPT_NO_ARG),
-    UOPTION_DEF("auto_toc_prefix_with_type", '\1', UOPT_NO_ARG),
-    UOPTION_DEF("toc_prefix", '\1', UOPT_REQUIRES_ARG)
+    UOPTION_DEF(u8"auto_toc_prefix", '\1', UOPT_NO_ARG),
+    UOPTION_DEF(u8"auto_toc_prefix_with_type", '\1', UOPT_NO_ARG),
+    UOPTION_DEF(u8"toc_prefix", '\1', UOPT_REQUIRES_ARG)
 };
 
 enum {
@@ -243,8 +243,8 @@ static UBool
 isPackageName(const char *filename) {
     int32_t len;
 
-    len=(int32_t)strlen(filename)-4; /* -4: subtract the length of ".dat" */
-    return (UBool)(len>0 && 0==strcmp(filename+len, ".dat"));
+    len=(int32_t)strlen(filename)-4; /* -4: subtract the length of u8".dat" */
+    return (UBool)(len>0 && 0==strcmp(filename+len, u8".dat"));
 }
 /*
 This line is required by MinGW because it incorrectly globs the arguments.
@@ -273,9 +273,10 @@ main(int argc, char *argv[]) {
         return U_ZERO_ERROR;
     }
 
+
     pkg=new Package;
     if(pkg==NULL) {
-        fprintf(stderr, "icupkg: not enough memory\n");
+        __fprintf_a(stderr, u8"icupkg: not enough memory\n");
         return U_MEMORY_ALLOCATION_ERROR;
     }
     isModified=FALSE;
@@ -287,7 +288,7 @@ main(int argc, char *argv[]) {
     }
     if(options[OPT_AUTO_TOC_PREFIX_WITH_TYPE].doesOccur) {
         if(options[OPT_TOC_PREFIX].doesOccur) {
-            fprintf(stderr, "icupkg: --auto_toc_prefix_with_type and also --toc_prefix\n");
+            __fprintf_a(stderr, u8"icupkg: --auto_toc_prefix_with_type and also --toc_prefix\n");
             printUsage(pname, FALSE);
             return U_ILLEGAL_ARGUMENT_ERROR;
         }
@@ -312,9 +313,9 @@ main(int argc, char *argv[]) {
         destPath=NULL;
     }
 
-    if(0==strcmp(argv[1], "new")) {
+    if(0==strcmp(argv[1], u8"new")) {
         if(autoPrefix) {
-            fprintf(stderr, "icupkg: --auto_toc_prefix[_with_type] but no input package\n");
+            __fprintf_a(stderr, u8"icupkg: --auto_toc_prefix[_with_type] but no input package\n");
             printUsage(pname, FALSE);
             return U_ILLEGAL_ARGUMENT_ERROR;
         }
@@ -354,9 +355,9 @@ main(int argc, char *argv[]) {
         }
         outType=type[0];
         switch(outType) {
-        case 'l':
-        case 'b':
-        case 'e':
+        case '\x6c':
+        case '\x62':
+        case '\x65':
             break;
         default:
             printUsage(pname, FALSE);
@@ -415,7 +416,7 @@ main(int argc, char *argv[]) {
     }
 
     if(options[OPT_MATCHMODE].doesOccur) {
-        if(0==strcmp(options[OPT_MATCHMODE].value, "noslash")) {
+        if(0==strcmp(options[OPT_MATCHMODE].value, u8"noslash")) {
             pkg->setMatchMode(Package::MATCH_NOSLASH);
         } else {
             printUsage(pname, FALSE);
@@ -427,7 +428,7 @@ main(int argc, char *argv[]) {
     if(options[OPT_REMOVE_LIST].doesOccur) {
         listPkg=new Package();
         if(listPkg==NULL) {
-            fprintf(stderr, "icupkg: not enough memory\n");
+            __fprintf_a(stderr, u8"icupkg: not enough memory\n");
             exit(U_MEMORY_ALLOCATION_ERROR);
         }
         if(readList(NULL, options[OPT_REMOVE_LIST].value, FALSE, listPkg)) {
@@ -449,7 +450,7 @@ main(int argc, char *argv[]) {
     if(options[OPT_ADD_LIST].doesOccur) {
         addListPkg=new Package();
         if(addListPkg==NULL) {
-            fprintf(stderr, "icupkg: not enough memory\n");
+            __fprintf_a(stderr, u8"icupkg: not enough memory\n");
             exit(U_MEMORY_ALLOCATION_ERROR);
         }
         if(readList(sourcePath, options[OPT_ADD_LIST].value, TRUE, addListPkg)) {
@@ -466,7 +467,7 @@ main(int argc, char *argv[]) {
     if(options[OPT_EXTRACT_LIST].doesOccur) {
         listPkg=new Package();
         if(listPkg==NULL) {
-            fprintf(stderr, "icupkg: not enough memory\n");
+            __fprintf_a(stderr, u8"icupkg: not enough memory\n");
             exit(U_MEMORY_ALLOCATION_ERROR);
         }
         if(readList(NULL, options[OPT_EXTRACT_LIST].value, FALSE, listPkg)) {
@@ -483,11 +484,11 @@ main(int argc, char *argv[]) {
         int32_t i;
         if (options[OPT_LIST_FILE].doesOccur) {
             FileStream *out;
-            out = T_FileStream_open(options[OPT_LIST_FILE].value, "w");
+            out = T_FileStream_open(options[OPT_LIST_FILE].value, u8"w");
             if (out != NULL) {
                 for(i=0; i<pkg->getItemCount(); ++i) {
                     T_FileStream_writeLine(out, pkg->getItem(i)->name);
-                    T_FileStream_writeLine(out, "\n");
+                    T_FileStream_writeLine(out, u8"\n");
                 }
                 T_FileStream_close(out);
             } else {
@@ -495,7 +496,7 @@ main(int argc, char *argv[]) {
             }
         } else {
             for(i=0; i<pkg->getItemCount(); ++i) {
-                fprintf(stdout, "%s\n", pkg->getItem(i)->name);
+                __fprintf_a(stdout, u8"%s\n", pkg->getItem(i)->name);
             }
         }
     }
@@ -512,7 +513,7 @@ main(int argc, char *argv[]) {
 
         if(outFilename==NULL || outFilename[0]==0) {
             if(inFilename==NULL || inFilename[0]==0) {
-                fprintf(stderr, "icupkg: unable to auto-generate an output filename if there is no input filename\n");
+                __fprintf_a(stderr, u8"icupkg: unable to auto-generate an output filename if there is no input filename\n");
                 exit(U_ILLEGAL_ARGUMENT_ERROR);
             }
 
@@ -522,7 +523,7 @@ main(int argc, char *argv[]) {
              * and if the last basename character matches the input file's type,
              * then replace it with the output file's type
              */
-            char suffix[6]="?.dat";
+            char suffix[6]=u8"?.dat";
             char *s;
 
             suffix[0]=pkg->getInType();

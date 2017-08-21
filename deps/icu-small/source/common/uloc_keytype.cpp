@@ -94,18 +94,18 @@ initFromResourceBundle(UErrorCode& sts) {
 
     gLocExtKeyMap = uhash_open(uhash_hashIChars, uhash_compareIChars, NULL, &sts);
 
-    LocalUResourceBundlePointer keyTypeDataRes(ures_openDirect(NULL, "keyTypeData", &sts));
-    LocalUResourceBundlePointer keyMapRes(ures_getByKey(keyTypeDataRes.getAlias(), "keyMap", NULL, &sts));
-    LocalUResourceBundlePointer typeMapRes(ures_getByKey(keyTypeDataRes.getAlias(), "typeMap", NULL, &sts));
+    LocalUResourceBundlePointer keyTypeDataRes(ures_openDirect(NULL, u8"keyTypeData", &sts));
+    LocalUResourceBundlePointer keyMapRes(ures_getByKey(keyTypeDataRes.getAlias(), u8"keyMap", NULL, &sts));
+    LocalUResourceBundlePointer typeMapRes(ures_getByKey(keyTypeDataRes.getAlias(), u8"typeMap", NULL, &sts));
 
     if (U_FAILURE(sts)) {
         return;
     }
 
     UErrorCode tmpSts = U_ZERO_ERROR;
-    LocalUResourceBundlePointer typeAliasRes(ures_getByKey(keyTypeDataRes.getAlias(), "typeAlias", NULL, &tmpSts));
+    LocalUResourceBundlePointer typeAliasRes(ures_getByKey(keyTypeDataRes.getAlias(), u8"typeAlias", NULL, &tmpSts));
     tmpSts = U_ZERO_ERROR;
-    LocalUResourceBundlePointer bcpTypeAliasRes(ures_getByKey(keyTypeDataRes.getAlias(), "bcpTypeAlias", NULL, &tmpSts));
+    LocalUResourceBundlePointer bcpTypeAliasRes(ures_getByKey(keyTypeDataRes.getAlias(), u8"bcpTypeAlias", NULL, &tmpSts));
 
     // initialize vectors storing dynamically allocated objects
     gKeyTypeStringPool = new UVector(uloc_deleteKeyTypeStringPoolEntry, NULL, sts);
@@ -168,7 +168,7 @@ initFromResourceBundle(UErrorCode& sts) {
             bcpKeyId = bcpKeyIdBuf;
         }
 
-        UBool isTZ = uprv_strcmp(legacyKeyId, "timezone") == 0;
+        UBool isTZ = uprv_strcmp(legacyKeyId, u8"timezone") == 0;
 
         UHashtable* typeDataMap = uhash_open(uhash_hashIChars, uhash_compareIChars, NULL, &sts);
         if (U_FAILURE(sts)) {
@@ -211,15 +211,15 @@ initFromResourceBundle(UErrorCode& sts) {
                 const char* legacyTypeId = ures_getKey(typeMapEntry.getAlias());
 
                 // special types
-                if (uprv_strcmp(legacyTypeId, "CODEPOINTS") == 0) {
+                if (uprv_strcmp(legacyTypeId, u8"CODEPOINTS") == 0) {
                     specialTypes |= SPECIALTYPE_CODEPOINTS;
                     continue;
                 }
-                if (uprv_strcmp(legacyTypeId, "REORDER_CODE") == 0) {
+                if (uprv_strcmp(legacyTypeId, u8"REORDER_CODE") == 0) {
                     specialTypes |= SPECIALTYPE_REORDER_CODE;
                     continue;
                 }
-                if (uprv_strcmp(legacyTypeId, "RG_KEY_VALUE") == 0) {
+                if (uprv_strcmp(legacyTypeId, u8"RG_KEY_VALUE") == 0) {
                     specialTypes |= SPECIALTYPE_RG_KEY_VALUE;
                     continue;
                 }
@@ -227,7 +227,7 @@ initFromResourceBundle(UErrorCode& sts) {
                 if (isTZ) {
                     // a timezone key uses a colon instead of a slash in the resource.
                     // e.g. America:Los_Angeles
-                    if (uprv_strchr(legacyTypeId, ':') != NULL) {
+                    if (uprv_strchr(legacyTypeId, '\x3a') != NULL) {
                         int32_t legacyTypeIdLen = uprv_strlen(legacyTypeId);
                         char* legacyTypeIdBuf = (char*)uprv_malloc(legacyTypeIdLen + 1);
                         if (legacyTypeIdBuf == NULL) {
@@ -237,8 +237,8 @@ initFromResourceBundle(UErrorCode& sts) {
                         const char* p = legacyTypeId;
                         char* q = legacyTypeIdBuf;
                         while (*p) {
-                            if (*p == ':') {
-                                *q++ = '/';
+                            if (*p == '\x3a') {
+                                *q++ = '\x2f';
                             } else {
                                 *q++ = *p;
                             }
@@ -319,7 +319,7 @@ initFromResourceBundle(UErrorCode& sts) {
                             const char* from = ures_getKey(typeAliasDataEntry.getAlias());
                             if (isTZ) {
                                 // replace colon with slash if necessary
-                                if (uprv_strchr(from, ':') != NULL) {
+                                if (uprv_strchr(from, '\x3a') != NULL) {
                                     int32_t fromLen = uprv_strlen(from);
                                     char* fromBuf = (char*)uprv_malloc(fromLen + 1);
                                     if (fromBuf == NULL) {
@@ -329,8 +329,8 @@ initFromResourceBundle(UErrorCode& sts) {
                                     const char* p = from;
                                     char* q = fromBuf;
                                     while (*p) {
-                                        if (*p == ':') {
-                                            *q++ = '/';
+                                        if (*p == '\x3a') {
+                                            *q++ = '\x2f';
                                         } else {
                                             *q++ = *p;
                                         }
@@ -421,14 +421,14 @@ isSpecialTypeCodepoints(const char* val) {
     int32_t subtagLen = 0;
     const char* p = val;
     while (*p) {
-        if (*p == '-') {
+        if (*p == '\x2d') {
             if (subtagLen < 4 || subtagLen > 6) {
                 return FALSE;
             }
             subtagLen = 0;
-        } else if ((*p >= '0' && *p <= '9') ||
-                    (*p >= 'A' && *p <= 'F') || // A-F/a-f are contiguous
-                    (*p >= 'a' && *p <= 'f')) { // also in EBCDIC
+        } else if ((*p >= '\x30' && *p <= '\x39') ||
+                    (*p >= '\x41' && *p <= '\x46') || // A-F/a-f are contiguous
+                    (*p >= '\x61' && *p <= '\x66')) { // also in EBCDIC
             subtagLen++;
         } else {
             return FALSE;
@@ -443,7 +443,7 @@ isSpecialTypeReorderCode(const char* val) {
     int32_t subtagLen = 0;
     const char* p = val;
     while (*p) {
-        if (*p == '-') {
+        if (*p == '\x2d') {
             if (subtagLen < 3 || subtagLen > 8) {
                 return FALSE;
             }
@@ -464,7 +464,7 @@ isSpecialTypeRgKeyValue(const char* val) {
     const char* p = val;
     while (*p) {
         if ( (subtagLen < 2 && uprv_isASCIILetter(*p)) ||
-                    (subtagLen >= 2 && (*p == 'Z' || *p == 'z')) ) {
+                    (subtagLen >= 2 && (*p == '\x5a' || *p == '\x7a')) ) {
             subtagLen++;
         } else {
             return FALSE;

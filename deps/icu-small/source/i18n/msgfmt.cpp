@@ -63,22 +63,22 @@
 // static data
 
 static const UChar ID_NUMBER[]    = {
-    0x6E, 0x75, 0x6D, 0x62, 0x65, 0x72, 0  /* "number" */
+    0x6E, 0x75, 0x6D, 0x62, 0x65, 0x72, 0  /* u8"number" */
 };
 static const UChar ID_DATE[]      = {
-    0x64, 0x61, 0x74, 0x65, 0              /* "date" */
+    0x64, 0x61, 0x74, 0x65, 0              /* u8"date" */
 };
 static const UChar ID_TIME[]      = {
-    0x74, 0x69, 0x6D, 0x65, 0              /* "time" */
+    0x74, 0x69, 0x6D, 0x65, 0              /* u8"time" */
 };
 static const UChar ID_SPELLOUT[]  = {
-    0x73, 0x70, 0x65, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0 /* "spellout" */
+    0x73, 0x70, 0x65, 0x6c, 0x6c, 0x6f, 0x75, 0x74, 0 /* u8"spellout" */
 };
 static const UChar ID_ORDINAL[]   = {
-    0x6f, 0x72, 0x64, 0x69, 0x6e, 0x61, 0x6c, 0 /* "ordinal" */
+    0x6f, 0x72, 0x64, 0x69, 0x6e, 0x61, 0x6c, 0 /* u8"ordinal" */
 };
 static const UChar ID_DURATION[]  = {
-    0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0 /* "duration" */
+    0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0 /* u8"duration" */
 };
 
 // MessageFormat Type List  Number, Date, Time or Choice
@@ -96,13 +96,13 @@ static const UChar ID_EMPTY[]     = {
     0 /* empty string, used for default so that null can mark end of list */
 };
 static const UChar ID_CURRENCY[]  = {
-    0x63, 0x75, 0x72, 0x72, 0x65, 0x6E, 0x63, 0x79, 0  /* "currency" */
+    0x63, 0x75, 0x72, 0x72, 0x65, 0x6E, 0x63, 0x79, 0  /* u8"currency" */
 };
 static const UChar ID_PERCENT[]   = {
-    0x70, 0x65, 0x72, 0x63, 0x65, 0x6E, 0x74, 0        /* "percent" */
+    0x70, 0x65, 0x72, 0x63, 0x65, 0x6E, 0x74, 0        /* u8"percent" */
 };
 static const UChar ID_INTEGER[]   = {
-    0x69, 0x6E, 0x74, 0x65, 0x67, 0x65, 0x72, 0        /* "integer" */
+    0x69, 0x6E, 0x74, 0x65, 0x67, 0x65, 0x72, 0        /* u8"integer" */
 };
 
 // NumberFormat modifier list, default, currency, percent or integer
@@ -115,16 +115,16 @@ static const UChar * const NUMBER_STYLE_IDS[] = {
 };
 
 static const UChar ID_SHORT[]     = {
-    0x73, 0x68, 0x6F, 0x72, 0x74, 0        /* "short" */
+    0x73, 0x68, 0x6F, 0x72, 0x74, 0        /* u8"short" */
 };
 static const UChar ID_MEDIUM[]    = {
-    0x6D, 0x65, 0x64, 0x69, 0x75, 0x6D, 0  /* "medium" */
+    0x6D, 0x65, 0x64, 0x69, 0x75, 0x6D, 0  /* u8"medium" */
 };
 static const UChar ID_LONG[]      = {
-    0x6C, 0x6F, 0x6E, 0x67, 0              /* "long" */
+    0x6C, 0x6F, 0x6E, 0x67, 0              /* u8"long" */
 };
 static const UChar ID_FULL[]      = {
-    0x66, 0x75, 0x6C, 0x6C, 0              /* "full" */
+    0x66, 0x75, 0x6C, 0x6C, 0              /* u8"full" */
 };
 
 // DateFormat modifier list, default, short, medium, long or full
@@ -148,11 +148,11 @@ static const icu::DateFormat::EStyle DATE_STYLES[] = {
 static const int32_t DEFAULT_INITIAL_CAPACITY = 10;
 
 static const UChar NULL_STRING[] = {
-    0x6E, 0x75, 0x6C, 0x6C, 0  // "null"
+    0x6E, 0x75, 0x6C, 0x6C, 0  // u8"null"
 };
 
 static const UChar OTHER_STRING[] = {
-    0x6F, 0x74, 0x68, 0x65, 0x72, 0  // "other"
+    0x6F, 0x74, 0x68, 0x65, 0x72, 0  // u8"other"
 };
 
 U_CDECL_BEGIN
@@ -1208,7 +1208,7 @@ void MessageFormat::formatComplexSubMessage(int32_t msgStart,
         }
     }
     if (sb.indexOf(LEFT_CURLY_BRACE) >= 0) {
-        UnicodeString emptyPattern;  // gcc 3.3.3 fails with "UnicodeString()" as the first parameter.
+        UnicodeString emptyPattern;  // gcc 3.3.3 fails with u8"UnicodeString()" as the first parameter.
         MessageFormat subMsgFormat(emptyPattern, fLocale, success);
         subMsgFormat.applyPattern(sb, UMSGPAT_APOS_DOUBLE_REQUIRED, NULL, success);
         subMsgFormat.format(0, NULL, arguments, argumentNames, cnt, appendTo, NULL, success);
@@ -1273,7 +1273,7 @@ MessageFormat::findOtherSubMessage(int32_t partIndex) const {
             return partIndex;
         }
         if(MessagePattern::Part::hasNumericValue(msgPattern.getPartType(partIndex))) {
-            ++partIndex;  // skip the numeric-value part of "=1" etc.
+            ++partIndex;  // skip the numeric-value part of u8"=1" etc.
         }
         partIndex=msgPattern.getLimitPartIndex(partIndex);
     } while(++partIndex<count);
@@ -1768,7 +1768,7 @@ int32_t MessageFormat::findKeyword(const UnicodeString& s,
     UnicodeString buffer(FALSE, ps, length);
     // Trims the space characters and turns all characters
     // in s to lower case.
-    buffer.toLower("");
+    buffer.toLower(u8"");
     for (int32_t i = 0; list[i]; ++i) {
         if (!buffer.compare(list[i], u_strlen(list[i]))) {
             return i;

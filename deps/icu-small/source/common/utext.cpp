@@ -943,7 +943,7 @@ utf8TextAccess(UText *ut, int64_t index, UBool forward) {
     //         return;
     //
     const uint8_t *s8=(const uint8_t *)ut->context;
-    UTF8Buf *u8b = NULL;
+    UTF8Buf *b = NULL;
     int32_t  length = ut->b;         // Length of original utf-8
     int32_t  ix= (int32_t)index;     // Requested index, trimmed to 32 bits.
     int32_t  mapIndex = 0;
@@ -1005,8 +1005,8 @@ utf8TextAccess(UText *ut, int64_t index, UBool forward) {
         //    being in the other buffer.  This will be the case for uses that
         //    move back and forth over a fairly limited range
         {
-            u8b = (UTF8Buf *)ut->q;   // the alternate buffer
-            if (ix>=u8b->bufNativeStart && ix<u8b->bufNativeLimit) {
+            b = (UTF8Buf *)ut->q;   // the alternate buffer
+            if (ix>=b->bufNativeStart && ix<b->bufNativeLimit) {
                 // Requested index is in the other buffer.
                 goto swapBuffers;
             }
@@ -1020,7 +1020,7 @@ utf8TextAccess(UText *ut, int64_t index, UBool forward) {
                     ut->chunkOffset = ut->chunkLength;
                     return FALSE;
                 }
-                if (ix == u8b->bufNativeLimit) {
+                if (ix == b->bufNativeLimit) {
                     // Alternate buffer extends to the end of string.
                     //   Swap it in as the current buffer.
                     goto swapBuffersAndFail;
@@ -1036,10 +1036,10 @@ utf8TextAccess(UText *ut, int64_t index, UBool forward) {
             }
 
             // Requested index is in this buffer.
-            u8b = (UTF8Buf *)ut->p;   // the current buffer
-            mapIndex = ix - u8b->toUCharsMapStart;
+            b = (UTF8Buf *)ut->p;   // the current buffer
+            mapIndex = ix - b->toUCharsMapStart;
             U_ASSERT(mapIndex < (int32_t)sizeof(UTF8Buf::mapToUChars));
-            ut->chunkOffset = u8b->mapToUChars[mapIndex] - u8b->bufStartIdx;
+            ut->chunkOffset = b->mapToUChars[mapIndex] - b->bufStartIdx;
             return TRUE;
 
         }
@@ -1073,8 +1073,8 @@ utf8TextAccess(UText *ut, int64_t index, UBool forward) {
     //    Most likely case:  in the other buffer.
     //    Second most likely: in neither buffer.
     //    Unlikely, but must work:  in the current buffer.
-    u8b = (UTF8Buf *)ut->q;   // the alternate buffer
-    if (ix>u8b->bufNativeStart && ix<=u8b->bufNativeLimit) {
+    b = (UTF8Buf *)ut->q;   // the alternate buffer
+    if (ix>b->bufNativeStart && ix<=b->bufNativeLimit) {
         // Requested index is in the other buffer.
         goto swapBuffers;
     }
@@ -1082,7 +1082,7 @@ utf8TextAccess(UText *ut, int64_t index, UBool forward) {
     //   (this is the case of randomly seeking to the start.
     //    The case of iterating off the start is handled earlier.)
     if (ix==0) {
-        if (u8b->bufNativeStart==0) {
+        if (b->bufNativeStart==0) {
             // Alternate buffer contains the data for the start string.
             // Make it be the current buffer.
             goto swapBuffersAndFail;
@@ -1101,9 +1101,9 @@ utf8TextAccess(UText *ut, int64_t index, UBool forward) {
 
     // Requested index is in this buffer.
     //   Set the utf16 buffer index.
-    u8b = (UTF8Buf *)ut->p;
-    mapIndex = ix - u8b->toUCharsMapStart;
-    ut->chunkOffset = u8b->mapToUChars[mapIndex] - u8b->bufStartIdx;
+    b = (UTF8Buf *)ut->p;
+    mapIndex = ix - b->toUCharsMapStart;
+    ut->chunkOffset = b->mapToUChars[mapIndex] - b->bufStartIdx;
     if (ut->chunkOffset==0) {
         // This occurs when the first character in the text is
         //   a multi-byte UTF-8 char, and the requested index is to
@@ -1122,24 +1122,24 @@ swapBuffers:
     //  Swap the primary and alternate buffers, and set the
     //   chunk index into the new primary buffer.
     {
-        u8b   = (UTF8Buf *)ut->q;
+        b   = (UTF8Buf *)ut->q;
         ut->q = ut->p;
-        ut->p = u8b;
-        ut->chunkContents       = &u8b->buf[u8b->bufStartIdx];
-        ut->chunkLength         = u8b->bufLimitIdx - u8b->bufStartIdx;
-        ut->chunkNativeStart    = u8b->bufNativeStart;
-        ut->chunkNativeLimit    = u8b->bufNativeLimit;
-        ut->nativeIndexingLimit = u8b->bufNILimit;
+        ut->p = b;
+        ut->chunkContents       = &b->buf[b->bufStartIdx];
+        ut->chunkLength         = b->bufLimitIdx - b->bufStartIdx;
+        ut->chunkNativeStart    = b->bufNativeStart;
+        ut->chunkNativeLimit    = b->bufNativeLimit;
+        ut->nativeIndexingLimit = b->bufNILimit;
 
         // Index into the (now current) chunk
         // Use the map to set the chunk index.  It's more trouble than it's worth
         //    to check whether native indexing can be used.
-        U_ASSERT(ix>=u8b->bufNativeStart);
-        U_ASSERT(ix<=u8b->bufNativeLimit);
-        mapIndex = ix - u8b->toUCharsMapStart;
+        U_ASSERT(ix>=b->bufNativeStart);
+        U_ASSERT(ix<=b->bufNativeLimit);
+        mapIndex = ix - b->toUCharsMapStart;
         U_ASSERT(mapIndex>=0);
-        U_ASSERT(mapIndex<(int32_t)sizeof(u8b->mapToUChars));
-        ut->chunkOffset = u8b->mapToUChars[mapIndex] - u8b->bufStartIdx;
+        U_ASSERT(mapIndex<(int32_t)sizeof(b->mapToUChars));
+        ut->chunkOffset = b->mapToUChars[mapIndex] - b->bufStartIdx;
 
         return TRUE;
     }
@@ -1154,23 +1154,23 @@ swapBuffers:
     //  make things correct for continuing the iteration in the requested
     //  direction.  The position & buffer are correct should the
     //  user decide to iterate in the opposite direction.
-    u8b   = (UTF8Buf *)ut->q;
+    b   = (UTF8Buf *)ut->q;
     ut->q = ut->p;
-    ut->p = u8b;
-    ut->chunkContents       = &u8b->buf[u8b->bufStartIdx];
-    ut->chunkLength         = u8b->bufLimitIdx - u8b->bufStartIdx;
-    ut->chunkNativeStart    = u8b->bufNativeStart;
-    ut->chunkNativeLimit    = u8b->bufNativeLimit;
-    ut->nativeIndexingLimit = u8b->bufNILimit;
+    ut->p = b;
+    ut->chunkContents       = &b->buf[b->bufStartIdx];
+    ut->chunkLength         = b->bufLimitIdx - b->bufStartIdx;
+    ut->chunkNativeStart    = b->bufNativeStart;
+    ut->chunkNativeLimit    = b->bufNativeLimit;
+    ut->nativeIndexingLimit = b->bufNILimit;
 
     // Index into the (now current) chunk
     //  For this function  (swapBuffersAndFail), the requested index
     //    will always be at either the start or end of the chunk.
-    if (ix==u8b->bufNativeLimit) {
+    if (ix==b->bufNativeLimit) {
         ut->chunkOffset = ut->chunkLength;
     } else  {
         ut->chunkOffset = 0;
-        U_ASSERT(ix == u8b->bufNativeStart);
+        U_ASSERT(ix == b->bufNativeStart);
     }
     return FALSE;
 
@@ -1179,15 +1179,15 @@ makeStubBuffer:
     //   of the string.  Rather than loading data that is likely
     //   to never be used, just set up a zero-length buffer at
     //   the position.
-    u8b = (UTF8Buf *)ut->q;
-    u8b->bufNativeStart   = ix;
-    u8b->bufNativeLimit   = ix;
-    u8b->bufStartIdx      = 0;
-    u8b->bufLimitIdx      = 0;
-    u8b->bufNILimit       = 0;
-    u8b->toUCharsMapStart = ix;
-    u8b->mapToNative[0]   = 0;
-    u8b->mapToUChars[0]   = 0;
+    b = (UTF8Buf *)ut->q;
+    b->bufNativeStart   = ix;
+    b->bufNativeLimit   = ix;
+    b->bufStartIdx      = 0;
+    b->bufLimitIdx      = 0;
+    b->bufNILimit       = 0;
+    b->toUCharsMapStart = ix;
+    b->mapToNative[0]   = 0;
+    b->mapToUChars[0]   = 0;
     goto swapBuffersAndFail;
 
 
@@ -1200,9 +1200,9 @@ fillForward:
         // Swap the UText buffers.
         //  We want to fill what was previously the alternate buffer,
         //  and make what was the current buffer be the new alternate.
-        UTF8Buf *u8b = (UTF8Buf *)ut->q;
+        UTF8Buf *b = (UTF8Buf *)ut->q;
         ut->q = ut->p;
-        ut->p = u8b;
+        ut->p = b;
 
         int32_t strLen = ut->b;
         UBool   nulTerminated = FALSE;
@@ -1211,9 +1211,9 @@ fillForward:
             nulTerminated = TRUE;
         }
 
-        UChar   *buf = u8b->buf;
-        uint8_t *mapToNative  = u8b->mapToNative;
-        uint8_t *mapToUChars  = u8b->mapToUChars;
+        UChar   *buf = b->buf;
+        uint8_t *mapToNative  = b->mapToNative;
+        uint8_t *mapToUChars  = b->mapToUChars;
         int32_t  destIx       = 0;
         int32_t  srcIx        = ix;
         UBool    seenNonAscii = FALSE;
@@ -1234,7 +1234,7 @@ fillForward:
                 // General case, handle everything.
                 if (seenNonAscii == FALSE) {
                     seenNonAscii = TRUE;
-                    u8b->bufNILimit = destIx;
+                    b->bufNILimit = destIx;
                 }
 
                 int32_t  cIx      = srcIx;
@@ -1267,22 +1267,22 @@ fillForward:
         mapToUChars[srcIx - ix] = (uint8_t)destIx;
 
         //  fill in Buffer descriptor
-        u8b->bufNativeStart     = ix;
-        u8b->bufNativeLimit     = srcIx;
-        u8b->bufStartIdx        = 0;
-        u8b->bufLimitIdx        = destIx;
+        b->bufNativeStart     = ix;
+        b->bufNativeLimit     = srcIx;
+        b->bufStartIdx        = 0;
+        b->bufLimitIdx        = destIx;
         if (seenNonAscii == FALSE) {
-            u8b->bufNILimit     = destIx;
+            b->bufNILimit     = destIx;
         }
-        u8b->toUCharsMapStart   = u8b->bufNativeStart;
+        b->toUCharsMapStart   = b->bufNativeStart;
 
         // Set UText chunk to refer to this buffer.
         ut->chunkContents       = buf;
         ut->chunkOffset         = 0;
-        ut->chunkLength         = u8b->bufLimitIdx;
-        ut->chunkNativeStart    = u8b->bufNativeStart;
-        ut->chunkNativeLimit    = u8b->bufNativeLimit;
-        ut->nativeIndexingLimit = u8b->bufNILimit;
+        ut->chunkLength         = b->bufLimitIdx;
+        ut->chunkNativeStart    = b->bufNativeStart;
+        ut->chunkNativeLimit    = b->bufNativeLimit;
+        ut->nativeIndexingLimit = b->bufNILimit;
 
         // For zero terminated strings, keep track of the maximum point
         //   scanned so far.
@@ -1315,13 +1315,13 @@ fillReverse:
         // Swap the UText buffers.
         //  We want to fill what was previously the alternate buffer,
         //  and make what was the current buffer be the new alternate.
-        UTF8Buf *u8b = (UTF8Buf *)ut->q;
+        UTF8Buf *b = (UTF8Buf *)ut->q;
         ut->q = ut->p;
-        ut->p = u8b;
+        ut->p = b;
 
-        UChar   *buf = u8b->buf;
-        uint8_t *mapToNative = u8b->mapToNative;
-        uint8_t *mapToUChars = u8b->mapToUChars;
+        UChar   *buf = b->buf;
+        uint8_t *mapToNative = b->mapToNative;
+        uint8_t *mapToUChars = b->mapToUChars;
         int32_t  toUCharsMapStart = ix - sizeof(UTF8Buf::mapToUChars) + 1;
         // Note that toUCharsMapStart can be negative. Happens when the remaining
         // text from current position to the beginning is less than the buffer size.
@@ -1358,7 +1358,7 @@ fillReverse:
             } else {
                 // General case, handle everything non-ASCII.
 
-                int32_t  sIx      = srcIx;  // ix of last byte of multi-byte u8 char
+                int32_t  sIx      = srcIx;  // ix of last byte of multi-byte  char
 
                 // Get the full character from the UTF8 string.
                 //   use code derived from tbe macros in utf8.h
@@ -1391,19 +1391,19 @@ fillReverse:
                 bufNILimit = destIx;
             }
         }
-        u8b->bufNativeStart     = srcIx;
-        u8b->bufNativeLimit     = ix;
-        u8b->bufStartIdx        = destIx;
-        u8b->bufLimitIdx        = UTF8_TEXT_CHUNK_SIZE+2;
-        u8b->bufNILimit         = bufNILimit - u8b->bufStartIdx;
-        u8b->toUCharsMapStart   = toUCharsMapStart;
+        b->bufNativeStart     = srcIx;
+        b->bufNativeLimit     = ix;
+        b->bufStartIdx        = destIx;
+        b->bufLimitIdx        = UTF8_TEXT_CHUNK_SIZE+2;
+        b->bufNILimit         = bufNILimit - b->bufStartIdx;
+        b->toUCharsMapStart   = toUCharsMapStart;
 
-        ut->chunkContents       = &buf[u8b->bufStartIdx];
-        ut->chunkLength         = u8b->bufLimitIdx - u8b->bufStartIdx;
+        ut->chunkContents       = &buf[b->bufStartIdx];
+        ut->chunkLength         = b->bufLimitIdx - b->bufStartIdx;
         ut->chunkOffset         = ut->chunkLength;
-        ut->chunkNativeStart    = u8b->bufNativeStart;
-        ut->chunkNativeLimit    = u8b->bufNativeLimit;
-        ut->nativeIndexingLimit = u8b->bufNILimit;
+        ut->chunkNativeStart    = b->bufNativeStart;
+        ut->chunkNativeLimit    = b->bufNativeLimit;
+        ut->nativeIndexingLimit = b->bufNILimit;
         return TRUE;
     }
 
@@ -1539,9 +1539,9 @@ utf8TextExtract(UText *ut,
 static int64_t U_CALLCONV
 utf8TextMapOffsetToNative(const UText *ut) {
     //
-    UTF8Buf *u8b = (UTF8Buf *)ut->p;
+    UTF8Buf *b = (UTF8Buf *)ut->p;
     U_ASSERT(ut->chunkOffset>ut->nativeIndexingLimit && ut->chunkOffset<=ut->chunkLength);
-    int32_t nativeOffset = u8b->mapToNative[ut->chunkOffset + u8b->bufStartIdx] + u8b->toUCharsMapStart;
+    int32_t nativeOffset = b->mapToNative[ut->chunkOffset + b->bufStartIdx] + b->toUCharsMapStart;
     U_ASSERT(nativeOffset >= ut->chunkNativeStart && nativeOffset <= ut->chunkNativeLimit);
     return nativeOffset;
 }
@@ -1553,12 +1553,12 @@ static int32_t U_CALLCONV
 utf8TextMapIndexToUTF16(const UText *ut, int64_t index64) {
     U_ASSERT(index64 <= 0x7fffffff);
     int32_t index = (int32_t)index64;
-    UTF8Buf *u8b = (UTF8Buf *)ut->p;
+    UTF8Buf *b = (UTF8Buf *)ut->p;
     U_ASSERT(index>=ut->chunkNativeStart+ut->nativeIndexingLimit);
     U_ASSERT(index<=ut->chunkNativeLimit);
-    int32_t mapIndex = index - u8b->toUCharsMapStart;
+    int32_t mapIndex = index - b->toUCharsMapStart;
     U_ASSERT(mapIndex < (int32_t)sizeof(UTF8Buf::mapToUChars));
-    int32_t offset = u8b->mapToUChars[mapIndex] - u8b->bufStartIdx;
+    int32_t offset = b->mapToUChars[mapIndex] - b->bufStartIdx;
     U_ASSERT(offset>=0 && offset<=ut->chunkLength);
     return offset;
 }

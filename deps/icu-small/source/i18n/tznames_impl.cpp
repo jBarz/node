@@ -37,15 +37,15 @@ U_NAMESPACE_BEGIN
 #define ZID_KEY_MAX  128
 #define MZ_PREFIX_LEN 5
 
-static const char gZoneStrings[]        = "zoneStrings";
-static const char gMZPrefix[]           = "meta:";
+static const char gZoneStrings[]        = u8"zoneStrings";
+static const char gMZPrefix[]           = u8"meta:";
 
-static const char EMPTY[]               = "<empty>";   // place holder for empty ZNames
-static const char DUMMY_LOADER[]        = "<dummy>";   // place holder for dummy ZNamesLoader
+static const char EMPTY[]               = u8"<empty>";   // place holder for empty ZNames
+static const char DUMMY_LOADER[]        = u8"<dummy>";   // place holder for dummy ZNamesLoader
 static const UChar NO_NAME[]            = { 0 };   // for empty no-fallback time zone names
 
 // stuff for TZDBTimeZoneNames
-static const char* TZDBNAMES_KEYS[]               = {"ss", "sd"};
+static const char* TZDBNAMES_KEYS[]               = {u8"ss", u8"sd"};
 static const int32_t TZDBNAMES_KEYS_SIZE = UPRV_LENGTHOF(TZDBNAMES_KEYS);
 
 static UMutex gTZDBNamesMapLock = U_MUTEX_INITIALIZER;
@@ -761,7 +761,7 @@ struct ZNames::ZNamesLoader : public ResourceSink {
     void loadNames(const UResourceBundle* zoneStrings, const char* key, UErrorCode& errorCode) {
         U_ASSERT(zoneStrings != NULL);
         U_ASSERT(key != NULL);
-        U_ASSERT(key[0] != '\0');
+        U_ASSERT(key[0] != '\x0');
 
         UErrorCode localStatus = U_ZERO_ERROR;
         clear();
@@ -802,15 +802,15 @@ struct ZNames::ZNamesLoader : public ResourceSink {
         if ((c0 = key[0]) == 0 || (c1 = key[1]) == 0 || key[2] != 0) {
             return UTZNM_INDEX_UNKNOWN;
         }
-        if (c0 == 'l') {
-            return c1 == 'g' ? UTZNM_INDEX_LONG_GENERIC :
-                    c1 == 's' ? UTZNM_INDEX_LONG_STANDARD :
-                        c1 == 'd' ? UTZNM_INDEX_LONG_DAYLIGHT : UTZNM_INDEX_UNKNOWN;
-        } else if (c0 == 's') {
-            return c1 == 'g' ? UTZNM_INDEX_SHORT_GENERIC :
-                    c1 == 's' ? UTZNM_INDEX_SHORT_STANDARD :
-                        c1 == 'd' ? UTZNM_INDEX_SHORT_DAYLIGHT : UTZNM_INDEX_UNKNOWN;
-        } else if (c0 == 'e' && c1 == 'c') {
+        if (c0 == '\x6c') {
+            return c1 == '\x67' ? UTZNM_INDEX_LONG_GENERIC :
+                    c1 == '\x73' ? UTZNM_INDEX_LONG_STANDARD :
+                        c1 == '\x64' ? UTZNM_INDEX_LONG_DAYLIGHT : UTZNM_INDEX_UNKNOWN;
+        } else if (c0 == '\x73') {
+            return c1 == '\x67' ? UTZNM_INDEX_SHORT_GENERIC :
+                    c1 == '\x73' ? UTZNM_INDEX_SHORT_STANDARD :
+                        c1 == '\x64' ? UTZNM_INDEX_SHORT_DAYLIGHT : UTZNM_INDEX_UNKNOWN;
+        } else if (c0 == '\x65' && c1 == '\x63') {
             return UTZNM_INDEX_EXEMPLAR_LOCATION;
         }
         return UTZNM_INDEX_UNKNOWN;
@@ -1274,7 +1274,7 @@ TimeZoneNamesImpl::getExemplarLocationName(const UnicodeString& tzID, UnicodeStr
 // Merge the MZ_PREFIX and mzId
 static void mergeTimeZoneKey(const UnicodeString& mzID, char* result) {
     if (mzID.isEmpty()) {
-        result[0] = '\0';
+        result[0] = '\x0';
         return;
     }
 
@@ -1284,7 +1284,7 @@ static void mergeTimeZoneKey(const UnicodeString& mzID, char* result) {
     keyLen = mzID.extract(0, mzID.length(), mzIdChar, ZID_KEY_MAX + 1, US_INV);
     uprv_memcpy((void *)result, (void *)gMZPrefix, prefixLen);
     uprv_memcpy((void *)(result + prefixLen), (void *)mzIdChar, keyLen);
-    result[keyLen + prefixLen] = '\0';
+    result[keyLen + prefixLen] = '\x0';
 }
 
 /*
@@ -1455,7 +1455,7 @@ struct TimeZoneNamesImpl::ZoneStringsLoader : public ResourceSink {
             return NULL;
         }
         uprv_memcpy(newKey, key, len);
-        newKey[len-1] = '\0';
+        newKey[len-1] = '\x0';
         return (void*) newKey;
     }
 
@@ -1479,7 +1479,7 @@ struct TimeZoneNamesImpl::ZoneStringsLoader : public ResourceSink {
     }
 
     void load(UErrorCode& status) {
-        ures_getAllItemsWithFallback(tzn.fZoneStrings, "", *this, status);
+        ures_getAllItemsWithFallback(tzn.fZoneStrings, u8"", *this, status);
         if (U_FAILURE(status)) { return; }
 
         int32_t pos = UHASH_FIRST;
@@ -1671,11 +1671,11 @@ void TimeZoneNamesImpl::internalLoadAllDisplayNames(UErrorCode& status) {
 
 
 
-static const UChar gEtcPrefix[]         = { 0x45, 0x74, 0x63, 0x2F }; // "Etc/"
+static const UChar gEtcPrefix[]         = { 0x45, 0x74, 0x63, 0x2F }; // u8"Etc/"
 static const int32_t gEtcPrefixLen      = 4;
 static const UChar gSystemVPrefix[]     = { 0x53, 0x79, 0x73, 0x74, 0x65, 0x6D, 0x56, 0x2F }; // "SystemV/
 static const int32_t gSystemVPrefixLen  = 8;
-static const UChar gRiyadh8[]           = { 0x52, 0x69, 0x79, 0x61, 0x64, 0x68, 0x38 }; // "Riyadh8"
+static const UChar gRiyadh8[]           = { 0x52, 0x69, 0x79, 0x61, 0x64, 0x68, 0x38 }; // u8"Riyadh8"
 static const int32_t gRiyadh8Len       = 7;
 
 UnicodeString& U_EXPORT2
@@ -1686,7 +1686,7 @@ TimeZoneNamesImpl::getDefaultExemplarLocationName(const UnicodeString& tzID, Uni
         return name;
     }
 
-    int32_t sep = tzID.lastIndexOf((UChar)0x2F /* '/' */);
+    int32_t sep = tzID.lastIndexOf((UChar)0x2F /* '\x2f' */);
     if (sep > 0 && sep + 1 < tzID.length()) {
         name.setTo(tzID, sep + 1);
         name.findAndReplace(UnicodeString((UChar)0x5f /* _ */),
@@ -1782,7 +1782,7 @@ TZDBNames::createInstance(UResourceBundle* rb, const char* key) {
         return NULL;
     }
 
-    UResourceBundle *regionsRes = ures_getByKey(rbTable, "parseRegions", NULL, &status);
+    UResourceBundle *regionsRes = ures_getByKey(rbTable, u8"parseRegions", NULL, &status);
     UBool regionError = FALSE;
     if (U_SUCCESS(status)) {
         numRegions = ures_getSize(regionsRes);
@@ -2134,7 +2134,7 @@ TZDBTimeZoneNames::TZDBTimeZoneNames(const Locale& locale)
         useWorld = FALSE;
     }
     if (useWorld) {
-        uprv_strcpy(fRegion, "001");
+        uprv_strcpy(fRegion, u8"001");
     }
 }
 
@@ -2237,7 +2237,7 @@ TZDBTimeZoneNames::getMetaZoneNames(const UnicodeString& mzID, UErrorCode& statu
     {
         void *cacheVal = uhash_get(gTZDBNamesMap, mzIDKey);
         if (cacheVal == NULL) {
-            UResourceBundle *zoneStringsRes = ures_openDirect(U_ICUDATA_ZONE, "tzdbNames", &status);
+            UResourceBundle *zoneStringsRes = ures_openDirect(U_ICUDATA_ZONE, u8"tzdbNames", &status);
             zoneStringsRes = ures_getByKey(zoneStringsRes, gZoneStrings, zoneStringsRes, &status);
             if (U_SUCCESS(status)) {
                 char key[ZID_KEY_MAX + 1];

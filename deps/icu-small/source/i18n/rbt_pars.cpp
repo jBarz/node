@@ -67,7 +67,7 @@
 
 #define DOT                ((UChar)46)     /*.*/
 
-static const UChar DOT_SET[] = { // "[^[:Zp:][:Zl:]\r\n$]";
+static const UChar DOT_SET[] = { // u8"[^[:Zp:][:Zl:]\r\n$]";
     91, 94, 91, 58, 90, 112, 58, 93, 91, 58, 90,
     108, 58, 93, 92, 114, 92, 110, 36, 93, 0
 };
@@ -84,25 +84,25 @@ static const UChar DOT_SET[] = { // "[^[:Zp:][:Zl:]\r\n$]";
 #define ALT_FUNCTION        ((UChar)0x2206) // Increment (~Greek Capital Delta)
 
 // Special characters disallowed at the top level
-static const UChar ILLEGAL_TOP[] = {41,0}; // ")"
+static const UChar ILLEGAL_TOP[] = {41,0}; // u8")"
 
 // Special characters disallowed within a segment
-static const UChar ILLEGAL_SEG[] = {123,125,124,64,0}; // "{}|@"
+static const UChar ILLEGAL_SEG[] = {123,125,124,64,0}; // u8"{}|@"
 
 // Special characters disallowed within a function argument
-static const UChar ILLEGAL_FUNC[] = {94,40,46,42,43,63,123,125,124,64,0}; // "^(.*+?{}|@"
+static const UChar ILLEGAL_FUNC[] = {94,40,46,42,43,63,123,125,124,64,0}; // u8"^(.*+?{}|@"
 
 // By definition, the ANCHOR_END special character is a
 // trailing SymbolTable.SYMBOL_REF character.
 // private static final char ANCHOR_END       = '$';
 
-static const UChar gOPERATORS[] = { // "=><"
+static const UChar gOPERATORS[] = { // u8"=><"
     VARIABLE_DEF_OP, FORWARD_RULE_OP, REVERSE_RULE_OP,
     ALT_FORWARD_RULE_OP, ALT_REVERSE_RULE_OP, ALT_FWDREV_RULE_OP,
     0
 };
 
-static const UChar HALF_ENDERS[] = { // "=><;"
+static const UChar HALF_ENDERS[] = { // u8"=><;"
     VARIABLE_DEF_OP, FORWARD_RULE_OP, REVERSE_RULE_OP,
     ALT_FORWARD_RULE_OP, ALT_REVERSE_RULE_OP, ALT_FWDREV_RULE_OP,
     END_OF_RULE,
@@ -111,7 +111,7 @@ static const UChar HALF_ENDERS[] = { // "=><;"
 
 // These are also used in Transliterator::toRules()
 static const int32_t ID_TOKEN_LEN = 2;
-static const UChar   ID_TOKEN[]   = { 0x3A, 0x3A }; // ':', ':'
+static const UChar   ID_TOKEN[]   = { 0x3A, 0x3A }; // '\x3a', '\x3a'
 
 /*
 commented out until we do real ::BEGIN/::END functionality
@@ -267,8 +267,8 @@ public:
     UnicodeString text;
 
     int32_t cursor; // position of cursor in text
-    int32_t ante;   // position of ante context marker '{' in text
-    int32_t post;   // position of post context marker '}' in text
+    int32_t ante;   // position of ante context marker '\x7b' in text
+    int32_t post;   // position of post context marker '\x7d' in text
 
     // Record the offset to the cursor either to the left or to the
     // right of the key.  This is indicated by characters on the output
@@ -432,7 +432,7 @@ int32_t RuleHalf::parseSection(const UnicodeString& rule, int32_t pos, int32_t l
             return syntaxError(U_MALFORMED_VARIABLE_REFERENCE, rule, start, status);
         }
         if (UnicodeSet::resemblesPattern(rule, pos-1)) {
-            pp.setIndex(pos-1); // Backup to opening '['
+            pp.setIndex(pos-1); // Backup to opening '\x5b'
             buf.append(parser.parseSet(rule, pp, status));
             if (U_FAILURE(status)) {
                 return syntaxError(U_MALFORMED_SET, rule, start, status);
@@ -445,7 +445,7 @@ int32_t RuleHalf::parseSection(const UnicodeString& rule, int32_t pos, int32_t l
             if (pos == limit) {
                 return syntaxError(U_TRAILING_BACKSLASH, rule, start, status);
             }
-            UChar32 escaped = rule.unescapeAt(pos); // pos is already past '\\'
+            UChar32 escaped = rule.unescapeAt(pos); // pos is already past '\x5c'
             if (escaped == (UChar32) -1) {
                 return syntaxError(U_MALFORMED_UNICODE_ESCAPE, rule, start, status);
             }
@@ -760,9 +760,9 @@ int32_t RuleHalf::parseSection(const UnicodeString& rule, int32_t pos, int32_t l
             // in the printable ASCII range.  These characters are
             // reserved for possible future use.
             if (c >= 0x0021 && c <= 0x007E &&
-                !((c >= 0x0030/*'0'*/ && c <= 0x0039/*'9'*/) ||
-                  (c >= 0x0041/*'A'*/ && c <= 0x005A/*'Z'*/) ||
-                  (c >= 0x0061/*'a'*/ && c <= 0x007A/*'z'*/))) {
+                !((c >= 0x0030/*'\x30'*/ && c <= 0x0039/*'\x39'*/) ||
+                  (c >= 0x0041/*'\x41'*/ && c <= 0x005A/*'\x5a'*/) ||
+                  (c >= 0x0061/*'\x61'*/ && c <= 0x007A/*'\x7a'*/))) {
                 return syntaxError(U_UNQUOTED_SPECIAL, rule, start, status);
             }
             buf.append(c);
@@ -945,7 +945,7 @@ void TransliteratorParser::parseRules(const UnicodeString& rule,
         if (c == RULE_COMMENT_CHAR) {
             pos = rule.indexOf((UChar)0x000A /*\n*/, pos) + 1;
             if (pos == 0) {
-                break; // No "\n" found; rest of rule is a commnet
+                break; // No u8"\n" found; rest of rule is a commnet
             }
             continue; // Either fall out or restart with next line
         }
@@ -1182,15 +1182,15 @@ void TransliteratorParser::pragmaNormalizeRules(UNormalizationMode /*mode*/) {
     //TODO Finish
 }
 
-static const UChar PRAGMA_USE[] = {0x75,0x73,0x65,0x20,0}; // "use "
+static const UChar PRAGMA_USE[] = {0x75,0x73,0x65,0x20,0}; // u8"use "
 
-static const UChar PRAGMA_VARIABLE_RANGE[] = {0x7E,0x76,0x61,0x72,0x69,0x61,0x62,0x6C,0x65,0x20,0x72,0x61,0x6E,0x67,0x65,0x20,0x23,0x20,0x23,0x7E,0x3B,0}; // "~variable range # #~;"
+static const UChar PRAGMA_VARIABLE_RANGE[] = {0x7E,0x76,0x61,0x72,0x69,0x61,0x62,0x6C,0x65,0x20,0x72,0x61,0x6E,0x67,0x65,0x20,0x23,0x20,0x23,0x7E,0x3B,0}; // u8"~variable range # #~;"
 
-static const UChar PRAGMA_MAXIMUM_BACKUP[] = {0x7E,0x6D,0x61,0x78,0x69,0x6D,0x75,0x6D,0x20,0x62,0x61,0x63,0x6B,0x75,0x70,0x20,0x23,0x7E,0x3B,0}; // "~maximum backup #~;"
+static const UChar PRAGMA_MAXIMUM_BACKUP[] = {0x7E,0x6D,0x61,0x78,0x69,0x6D,0x75,0x6D,0x20,0x62,0x61,0x63,0x6B,0x75,0x70,0x20,0x23,0x7E,0x3B,0}; // u8"~maximum backup #~;"
 
-static const UChar PRAGMA_NFD_RULES[] = {0x7E,0x6E,0x66,0x64,0x20,0x72,0x75,0x6C,0x65,0x73,0x7E,0x3B,0}; // "~nfd rules~;"
+static const UChar PRAGMA_NFD_RULES[] = {0x7E,0x6E,0x66,0x64,0x20,0x72,0x75,0x6C,0x65,0x73,0x7E,0x3B,0}; // u8"~nfd rules~;"
 
-static const UChar PRAGMA_NFC_RULES[] = {0x7E,0x6E,0x66,0x63,0x20,0x72,0x75,0x6C,0x65,0x73,0x7E,0x3B,0}; // "~nfc rules~;"
+static const UChar PRAGMA_NFC_RULES[] = {0x7E,0x6E,0x66,0x63,0x20,0x72,0x75,0x6C,0x65,0x73,0x7E,0x3B,0}; // u8"~nfc rules~;"
 
 /**
  * Return true if the given rule looks like a pragma.
@@ -1360,7 +1360,7 @@ int32_t TransliteratorParser::parseRule(const UnicodeString& rule, int32_t pos, 
     // If this is not a variable definition rule, we shouldn't have
     // any undefined variable names.
     if (undefinedVariableName.length() != 0) {
-        return syntaxError(// "Undefined variable $" + undefinedVariableName,
+        return syntaxError(// u8"Undefined variable $" + undefinedVariableName,
                     U_UNDEFINED_VARIABLE,
                     rule, start, status);
     }

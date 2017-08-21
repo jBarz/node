@@ -5,6 +5,7 @@
  *   Corporation and others.  All Rights Reserved.
  *******************************************************************************
  */
+#define _AE_BIMODAL
 #include "unicode/utypes.h"
 
 #if U_PLATFORM_HAS_WIN32_API
@@ -47,6 +48,7 @@
 #include "unicode/uclean.h"
 #include "uoptions.h"
 #include "pkg_genc.h"
+#include <unistd.h>
 
 #define MAX_COLUMN ((uint32_t)(0xFFFFFFFFU))
 
@@ -117,113 +119,113 @@ static const struct AssemblyType {
     /* For gcc assemblers, the meaning of .align changes depending on the */
     /* hardware, so we use .balign 16 which always means 16 bytes. */
     /* https://sourceware.org/binutils/docs/as/Pseudo-Ops.html */
-    {"gcc",
-        ".globl %s\n"
-        "\t.section .note.GNU-stack,\"\",%%progbits\n"
-        "\t.section .rodata\n"
-        "\t.balign 16\n"
-        "#ifdef U_HIDE_DATA_SYMBOL\n"
-        "\t.hidden %s\n"
-        "#endif\n"
-        "\t.type %s,%%object\n"
-        "%s:\n\n",
+    {u8"gcc",
+        u8".globl %s\n"
+        u8"\t.section .note.GNU-stack,\"\",%%progbits\n"
+        u8"\t.section .rodata\n"
+        u8"\t.balign 16\n"
+        u8"#ifdef U_HIDE_DATA_SYMBOL\n"
+        u8"\t.hidden %s\n"
+        u8"#endif\n"
+        u8"\t.type %s,%%object\n"
+        u8"%s:\n\n",
 
-        ".long ",".size %s, .-%s\n",HEX_0X
+        u8".long ",u8".size %s, .-%s\n",HEX_0X
     },
-    {"gcc-darwin",
+    {u8"gcc-darwin",
         /*"\t.section __TEXT,__text,regular,pure_instructions\n"
         "\t.section __TEXT,__picsymbolstub1,symbol_stubs,pure_instructions,32\n"*/
-        ".globl _%s\n"
-        "#ifdef U_HIDE_DATA_SYMBOL\n"
-        "\t.private_extern _%s\n"
-        "#endif\n"
-        "\t.data\n"
-        "\t.const\n"
-        "\t.balign 16\n"
-        "_%s:\n\n",
+        u8".globl _%s\n"
+        u8"#ifdef U_HIDE_DATA_SYMBOL\n"
+        u8"\t.private_extern _%s\n"
+        u8"#endif\n"
+        u8"\t.data\n"
+        u8"\t.const\n"
+        u8"\t.balign 16\n"
+        u8"_%s:\n\n",
 
-        ".long ","",HEX_0X
+        u8".long ",u8"",HEX_0X
     },
-    {"gcc-cygwin",
-        ".globl _%s\n"
-        "\t.section .rodata\n"
-        "\t.balign 16\n"
-        "_%s:\n\n",
+    {u8"gcc-cygwin",
+        u8".globl _%s\n"
+        u8"\t.section .rodata\n"
+        u8"\t.balign 16\n"
+        u8"_%s:\n\n",
 
-        ".long ","",HEX_0X
+        u8".long ",u8"",HEX_0X
     },
-    {"gcc-mingw64",
-        ".globl %s\n"
-        "\t.section .rodata\n"
-        "\t.balign 16\n"
-        "%s:\n\n",
+    {u8"gcc-mingw64",
+        u8".globl %s\n"
+        u8"\t.section .rodata\n"
+        u8"\t.balign 16\n"
+        u8"%s:\n\n",
 
-        ".long ","",HEX_0X
+        u8".long ",u8"",HEX_0X
     },
 /* 16 bytes alignment. */
 /* http://docs.oracle.com/cd/E19641-01/802-1947/802-1947.pdf */
-    {"sun",
-        "\t.section \".rodata\"\n"
-        "\t.align   16\n"
-        ".globl     %s\n"
-        "%s:\n",
+    {u8"sun",
+        u8"\t.section \".rodata\"\n"
+        u8"\t.align   16\n"
+        u8".globl     %s\n"
+        u8"%s:\n",
 
-        ".word ","",HEX_0X
+        u8".word ",u8"",HEX_0X
     },
 /* 16 bytes alignment for sun-x86. */
 /* http://docs.oracle.com/cd/E19963-01/html/821-1608/eoiyg.html */
-    {"sun-x86",
-        "Drodata.rodata:\n"
-        "\t.type   Drodata.rodata,@object\n"
-        "\t.size   Drodata.rodata,0\n"
-        "\t.globl  %s\n"
-        "\t.align  16\n"
-        "%s:\n",
+    {u8"sun-x86",
+        u8"Drodata.rodata:\n"
+        u8"\t.type   Drodata.rodata,@object\n"
+        u8"\t.size   Drodata.rodata,0\n"
+        u8"\t.globl  %s\n"
+        u8"\t.align  16\n"
+        u8"%s:\n",
 
-        ".4byte ","",HEX_0X
+        u8".4byte ",u8"",HEX_0X
     },
 /* 1<<4 bit alignment for aix. */
 /* http://pic.dhe.ibm.com/infocenter/aix/v6r1/index.jsp?topic=%2Fcom.ibm.aix.aixassem%2Fdoc%2Falangref%2Fidalangref_csect_pseudoop.htm */
-    {"xlc",
-        ".globl %s{RO}\n"
-        "\t.toc\n"
-        "%s:\n"
-        "\t.csect %s{RO}, 4\n",
+    {u8"xlc",
+        u8".globl %s{RO}\n"
+        u8"\t.toc\n"
+        u8"%s:\n"
+        u8"\t.csect %s{RO}, 4\n",
 
-        ".long ","",HEX_0X
+        u8".long ",u8"",HEX_0X
     },
-    {"aCC-ia64",
-        "\t.file   \"%s.s\"\n"
-        "\t.type   %s,@object\n"
-        "\t.global %s\n"
-        "\t.secalias .abe$0.rodata, \".rodata\"\n"
-        "\t.section .abe$0.rodata = \"a\", \"progbits\"\n"
-        "\t.align  16\n"
-        "%s::\t",
+    {u8"aCC-ia64",
+        u8"\t.file   \"%s.s\"\n"
+        u8"\t.type   %s,@object\n"
+        u8"\t.global %s\n"
+        u8"\t.secalias .abe$0.rodata, \".rodata\"\n"
+        u8"\t.section .abe$0.rodata = \"a\", \"progbits\"\n"
+        u8"\t.align  16\n"
+        u8"%s::\t",
 
-        "data4 ","",HEX_0X
+        u8"data4 ",u8"",HEX_0X
     },
-    {"aCC-parisc",
-        "\t.SPACE  $TEXT$\n"
-        "\t.SUBSPA $LIT$\n"
-        "%s\n"
-        "\t.EXPORT %s\n"
-        "\t.ALIGN  16\n",
+    {u8"aCC-parisc",
+        u8"\t.SPACE  $TEXT$\n"
+        u8"\t.SUBSPA $LIT$\n"
+        u8"%s\n"
+        u8"\t.EXPORT %s\n"
+        u8"\t.ALIGN  16\n",
 
-        ".WORD ","",HEX_0X
+        u8".WORD ",u8"",HEX_0X
     },
 /* align 16 bytes */
 /*  http://msdn.microsoft.com/en-us/library/dwa9fwef.aspx */
-    { "masm",
-      "\tTITLE %s\n"
-      "; generated by genccode\n"
-      ".386\n"
-      ".model flat\n"
-      "\tPUBLIC _%s\n"
-      "ICUDATA_%s\tSEGMENT READONLY PARA PUBLIC FLAT 'DATA'\n"
-      "\tALIGN 16\n"
-      "_%s\tLABEL DWORD\n",
-      "\tDWORD ","\nICUDATA_%s\tENDS\n\tEND\n",HEX_0H
+    { u8"masm",
+      u8"\tTITLE %s\n"
+      u8"; generated by genccode\n"
+      u8".386\n"
+      u8".model flat\n"
+      u8"\tPUBLIC _%s\n"
+      u8"ICUDATA_%s\tSEGMENT READONLY PARA PUBLIC FLAT 'DATA'\n"
+      u8"\tALIGN 16\n"
+      u8"_%s\tLABEL DWORD\n",
+      u8"\tDWORD ",u8"\nICUDATA_%s\tENDS\n\tEND\n",HEX_0H
     }
 };
 
@@ -249,12 +251,12 @@ checkAssemblyHeaderName(const char* optAssembly) {
 U_CAPI void U_EXPORT2
 printAssemblyHeadersToStdErr(void) {
     int32_t idx;
-    fprintf(stderr, "%s", assemblyHeader[0].name);
+    __fprintf_a(stderr, u8"%s", assemblyHeader[0].name);
     for (idx = 1; idx < UPRV_LENGTHOF(assemblyHeader); idx++) {
-        fprintf(stderr, ", %s", assemblyHeader[idx].name);
+        __fprintf_a(stderr, u8", %s", assemblyHeader[idx].name);
     }
-    fprintf(stderr,
-        ")\n");
+    __fprintf_a(stderr,
+        u8")\n");
 }
 
 U_CAPI void U_EXPORT2
@@ -268,14 +270,14 @@ writeAssemblyCode(const char *filename, const char *destdir, const char *optEntr
 
     in=T_FileStream_open(filename, "rb");
     if(in==NULL) {
-        fprintf(stderr, "genccode: unable to open input file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: unable to open input file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 
-    getOutFilename(filename, destdir, bufferStr, entry, ".S", optFilename);
-    out=T_FileStream_open(bufferStr, "w");
+    getOutFilename(filename, destdir, bufferStr, entry, u8".S", optFilename);
+    out=T_FileStream_open(bufferStr,"w");
     if(out==NULL) {
-        fprintf(stderr, "genccode: unable to open output file %s\n", bufferStr);
+        __fprintf_a(stderr, u8"genccode: unable to open output file %s\n", bufferStr);
         exit(U_FILE_ACCESS_ERROR);
     }
 
@@ -285,23 +287,23 @@ writeAssemblyCode(const char *filename, const char *destdir, const char *optEntr
 
 #if defined (WINDOWS_WITH_GNUC) && U_PLATFORM != U_PF_CYGWIN
     /* Need to fix the file seperator character when using MinGW. */
-    swapFileSepChar(outFilePath, U_FILE_SEP_CHAR, '/');
+    swapFileSepChar(outFilePath, U_FILE_SEP_CHAR, '\x2f');
 #endif
 
     if(optEntryPoint != NULL) {
         uprv_strcpy(entry, optEntryPoint);
-        uprv_strcat(entry, "_dat");
+        uprv_strcat(entry, u8"_dat");
     }
 
     /* turn dashes or dots in the entry name into underscores */
     length=uprv_strlen(entry);
     for(i=0; i<length; ++i) {
-        if(entry[i]=='-' || entry[i]=='.') {
-            entry[i]='_';
+        if(entry[i]=='\x2d' || entry[i]=='\x2e') {
+            entry[i]='\x5f';
         }
     }
 
-    sprintf(bufferStr, assemblyHeader[assemblyHeaderIndex].header,
+    __sprintf_a(bufferStr, assemblyHeader[assemblyHeaderIndex].header,
         entry, entry, entry, entry,
         entry, entry, entry, entry);
     T_FileStream_writeLine(out, bufferStr);
@@ -323,20 +325,20 @@ writeAssemblyCode(const char *filename, const char *destdir, const char *optEntr
         }
     }
 
-    T_FileStream_writeLine(out, "\n");
+    T_FileStream_writeLine(out, u8"\n");
 
-    sprintf(bufferStr, assemblyHeader[assemblyHeaderIndex].footer,
+    __sprintf_a(bufferStr, assemblyHeader[assemblyHeaderIndex].footer,
         entry, entry, entry, entry,
         entry, entry, entry, entry);
     T_FileStream_writeLine(out, bufferStr);
 
     if(T_FileStream_error(in)) {
-        fprintf(stderr, "genccode: file read error while generating from file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: file read error while generating from file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 
     if(T_FileStream_error(out)) {
-        fprintf(stderr, "genccode: file write error while generating from file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: file write error while generating from file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 
@@ -353,32 +355,32 @@ writeCCode(const char *filename, const char *destdir, const char *optName, const
 
     in=T_FileStream_open(filename, "rb");
     if(in==NULL) {
-        fprintf(stderr, "genccode: unable to open input file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: unable to open input file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 
     if(optName != NULL) { /* prepend  'icudt28_' */
       strcpy(entry, optName);
-      strcat(entry, "_");
+      strcat(entry, u8"_");
     } else {
       entry[0] = 0;
     }
 
-    getOutFilename(filename, destdir, buffer, entry+uprv_strlen(entry), ".c", optFilename);
+    getOutFilename(filename, destdir, buffer, entry+uprv_strlen(entry), u8".c", optFilename);
     if (outFilePath != NULL) {
         uprv_strcpy(outFilePath, buffer);
     }
     out=T_FileStream_open(buffer, "w");
     if(out==NULL) {
-        fprintf(stderr, "genccode: unable to open output file %s\n", buffer);
+        __fprintf_a(stderr, u8"genccode: unable to open output file %s\n", buffer);
         exit(U_FILE_ACCESS_ERROR);
     }
 
     /* turn dashes or dots in the entry name into underscores */
     length=uprv_strlen(entry);
     for(i=0; i<length; ++i) {
-        if(entry[i]=='-' || entry[i]=='.') {
-            entry[i]='_';
+        if(entry[i]=='\x2d' || entry[i]=='\x2e') {
+            entry[i]='\x5f';
         }
     }
 
@@ -422,6 +424,7 @@ writeCCode(const char *filename, const char *destdir, const char *optName, const
     T_FileStream_writeLine(out, "\"\n};\nU_CDECL_END\n");
 #else
     /* Function renaming shouldn't be done in data */
+    __a2e_s(entry);
     sprintf(buffer,
         "#ifndef IN_GENERATED_CCODE\n"
         "#define IN_GENERATED_CCODE\n"
@@ -450,12 +453,12 @@ writeCCode(const char *filename, const char *destdir, const char *optName, const
 #endif
 
     if(T_FileStream_error(in)) {
-        fprintf(stderr, "genccode: file read error while generating from file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: file read error while generating from file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 
     if(T_FileStream_error(out)) {
-        fprintf(stderr, "genccode: file write error while generating from file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: file write error while generating from file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 
@@ -470,10 +473,10 @@ write32(FileStream *out, uint32_t bitField, uint32_t column) {
     char *s = bitFieldStr;
     uint8_t *ptrIdx = (uint8_t *)&bitField;
     static const char hexToStr[16] = {
-        '0','1','2','3',
-        '4','5','6','7',
-        '8','9','A','B',
-        'C','D','E','F'
+        '\x30','\x31','\x32','\x33',
+        '\x34','\x35','\x36','\x37',
+        '\x38','\x39','\x41','\x42',
+        '\x43','\x44','\x45','\x46'
     };
 
     /* write the value, possibly with comma and newline */
@@ -481,10 +484,10 @@ write32(FileStream *out, uint32_t bitField, uint32_t column) {
         /* first byte */
         column=1;
     } else if(column<32) {
-        *(s++)=',';
+        *(s++)='\x2c';
         ++column;
     } else {
-        *(s++)='\n';
+        *(s++)='\xa';
         uprv_strcpy(s, assemblyHeader[assemblyHeaderIndex].beginLine);
         s+=uprv_strlen(s);
         column=1;
@@ -498,10 +501,10 @@ write32(FileStream *out, uint32_t bitField, uint32_t column) {
         int seenNonZero = 0; /* This is used to remove leading zeros */
 
         if(hexType==HEX_0X) {
-         *(s++)='0';
-         *(s++)='x';
+         *(s++)='\x30';
+         *(s++)='\x78';
         } else if(hexType==HEX_0H) {
-         *(s++)='0';
+         *(s++)='\x30';
         }
 
         /* This creates a 32-bit field */
@@ -519,7 +522,7 @@ write32(FileStream *out, uint32_t bitField, uint32_t column) {
             }
         }
         if(hexType==HEX_0H) {
-         *(s++)='h';
+         *(s++)='\x68';
         }
     }
 
@@ -535,14 +538,14 @@ write8(FileStream *out, uint8_t byte, uint32_t column) {
 
     /* convert the byte value to a string */
     if(byte>=100) {
-        s[i++]=(char)('0'+byte/100);
+        s[i++]=(char)('\x30'+byte/100);
         byte%=100;
     }
     if(i>0 || byte>=10) {
-        s[i++]=(char)('0'+byte/10);
+        s[i++]=(char)('\x30'+byte/10);
         byte%=10;
     }
-    s[i++]=(char)('0'+byte);
+    s[i++]=(char)('\x30'+byte);
     s[i]=0;
 
     /* write the value, possibly with comma and newline */
@@ -556,6 +559,7 @@ write8(FileStream *out, uint8_t byte, uint32_t column) {
         T_FileStream_writeLine(out, ",\n");
         column=1;
     }
+    __a2e_s(s);
     T_FileStream_writeLine(out, s);
     return column;
 }
@@ -588,7 +592,7 @@ write8str(FileStream *out, uint8_t byte, uint32_t column) {
 
 static void
 getOutFilename(const char *inFilename, const char *destdir, char *outFilename, char *entryName, const char *newSuffix, const char *optFilename) {
-    const char *basename=findBasename(inFilename), *suffix=uprv_strrchr(basename, '.');
+    const char *basename=findBasename(inFilename), *suffix=uprv_strrchr(basename, '\x2e');
 
     /* copy path */
     if(destdir!=NULL && *destdir!=0) {
@@ -618,9 +622,9 @@ getOutFilename(const char *inFilename, const char *destdir, char *outFilename, c
         char *saveOutFilename = outFilename;
         /* copy basename */
         while(inFilename<suffix) {
-            if(*inFilename=='-') {
+            if(*inFilename=='\x2d') {
                 /* iSeries cannot have '-' in the .o objects. */
-                *outFilename++=*entryName++='_';
+                *outFilename++=*entryName++='\x5f';
                 inFilename++;
             }
             else {
@@ -629,7 +633,7 @@ getOutFilename(const char *inFilename, const char *destdir, char *outFilename, c
         }
 
         /* replace '.' by '_' */
-        *outFilename++=*entryName++='_';
+        *outFilename++=*entryName++='\x5f';
         ++inFilename;
 
         /* copy suffix */
@@ -671,7 +675,7 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
 #elif U_PLATFORM_HAS_WIN32_API
     const IMAGE_FILE_HEADER *pHeader;
 #else
-#   error "Unknown platform for CAN_GENERATE_OBJECTS."
+#   error u8"Unknown platform for CAN_GENERATE_OBJECTS."
 #endif
 
     if(optMatchArch != NULL) {
@@ -702,21 +706,21 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
 #   endif
         *pIsBigEndian=FALSE;
 #else
-#   error "Unknown platform for CAN_GENERATE_OBJECTS."
+#   error u8"Unknown platform for CAN_GENERATE_OBJECTS."
 #endif
         return;
     }
 
     in=T_FileStream_open(filename, "rb");
     if(in==NULL) {
-        fprintf(stderr, "genccode: unable to open match-arch file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: unable to open match-arch file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
     length=T_FileStream_read(in, buffer.bytes, sizeof(buffer.bytes));
 
 #ifdef U_ELF
     if(length<(int32_t)sizeof(Elf32_Ehdr)) {
-        fprintf(stderr, "genccode: match-arch file %s is too short\n", filename);
+        __fprintf_a(stderr, u8"genccode: match-arch file %s is too short\n", filename);
         exit(U_UNSUPPORTED_ERROR);
     }
     if(
@@ -726,26 +730,26 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
         buffer.header32.e_ident[3]!=ELFMAG3 ||
         buffer.header32.e_ident[EI_CLASS]<ELFCLASS32 || buffer.header32.e_ident[EI_CLASS]>ELFCLASS64
     ) {
-        fprintf(stderr, "genccode: match-arch file %s is not an ELF object file, or not supported\n", filename);
+        __fprintf_a(stderr, u8"genccode: match-arch file %s is not an ELF object file, or not supported\n", filename);
         exit(U_UNSUPPORTED_ERROR);
     }
 
     *pBits= buffer.header32.e_ident[EI_CLASS]==ELFCLASS32 ? 32 : 64; /* only 32 or 64: see check above */
 #ifdef U_ELF64
     if(*pBits!=32 && *pBits!=64) {
-        fprintf(stderr, "genccode: currently only supports 32-bit and 64-bit ELF format\n");
+        __fprintf_a(stderr, u8"genccode: currently only supports 32-bit and 64-bit ELF format\n");
         exit(U_UNSUPPORTED_ERROR);
     }
 #else
     if(*pBits!=32) {
-        fprintf(stderr, "genccode: built with elf.h missing 64-bit definitions\n");
+        __fprintf_a(stderr, u8"genccode: built with elf.h missing 64-bit definitions\n");
         exit(U_UNSUPPORTED_ERROR);
     }
 #endif
 
     *pIsBigEndian=(UBool)(buffer.header32.e_ident[EI_DATA]==ELFDATA2MSB);
     if(*pIsBigEndian!=U_IS_BIG_ENDIAN) {
-        fprintf(stderr, "genccode: currently only same-endianness ELF formats are supported\n");
+        __fprintf_a(stderr, u8"genccode: currently only same-endianness ELF formats are supported\n");
         exit(U_UNSUPPORTED_ERROR);
     }
     /* TODO: Support byte swapping */
@@ -753,7 +757,7 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
     *pCPU=buffer.header32.e_machine;
 #elif U_PLATFORM_HAS_WIN32_API
     if(length<sizeof(IMAGE_FILE_HEADER)) {
-        fprintf(stderr, "genccode: match-arch file %s is too short\n", filename);
+        __fprintf_a(stderr, u8"genccode: match-arch file %s is too short\n", filename);
         exit(U_UNSUPPORTED_ERROR);
     }
     /* TODO: Use buffer.header.  Keep aliasing legal.  */
@@ -767,7 +771,7 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
     /* Windows always runs on little-endian CPUs. */
     *pIsBigEndian=FALSE;
 #else
-#   error "Unknown platform for CAN_GENERATE_OBJECTS."
+#   error u8"Unknown platform for CAN_GENERATE_OBJECTS."
 #endif
 
     T_FileStream_close(in);
@@ -884,11 +888,11 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
     /* section header string table, with decimal string offsets */
     static const char sectionStrings[40]=
         /*  0 */ "\0"
-        /*  1 */ ".symtab\0"
-        /*  9 */ ".shstrtab\0"
-        /* 19 */ ".strtab\0"
-        /* 27 */ ".rodata\0"
-        /* 35 */ "\0\0\0\0"; /* contains terminating NUL */
+        /*  1 */ u8".symtab\0"
+        /*  9 */ u8".shstrtab\0"
+        /* 19 */ u8".strtab\0"
+        /* 27 */ u8".rodata\0"
+        /* 35 */ u8"\0\0\0\0"; /* contains terminating NUL */
         /* 40: padded to multiple of 8 bytes */
 
     /*
@@ -1009,7 +1013,7 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
     /* in the common code, count entryLength from after the NUL */
     entryLengthOffset=1;
 
-    newSuffix=".o";
+    newSuffix=u8".o";
 
 #elif U_PLATFORM_HAS_WIN32_API
     struct {
@@ -1028,22 +1032,22 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
      * overwritten if entryOffset==0 depending on the target platform
      * see check for cpu below
      */
-    entry[0]='_';
+    entry[0]='\x5f';
 
-    newSuffix=".obj";
+    newSuffix=u8".obj";
 #else
-#   error "Unknown platform for CAN_GENERATE_OBJECTS."
+#   error u8"Unknown platform for CAN_GENERATE_OBJECTS."
 #endif
 
     /* deal with options, files and the entry point name */
     getArchitecture(&cpu, &bits, &makeBigEndian, optMatchArch);
     if (optMatchArch)
     {
-        printf("genccode: --match-arch cpu=%hu bits=%hu big-endian=%d\n", cpu, bits, makeBigEndian);
+        printf(u8"genccode: --match-arch cpu=%hu bits=%hu big-endian=%d\n", cpu, bits, makeBigEndian);
     }
     else
     {
-        printf("genccode: using architecture cpu=%hu bits=%hu big-endian=%d\n", cpu, bits, makeBigEndian);
+        printf(u8"genccode: using architecture cpu=%hu bits=%hu big-endian=%d\n", cpu, bits, makeBigEndian);
     }
 #if U_PLATFORM_HAS_WIN32_API
     if(cpu==IMAGE_FILE_MACHINE_I386) {
@@ -1053,7 +1057,7 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
 
     in=T_FileStream_open(filename, "rb");
     if(in==NULL) {
-        fprintf(stderr, "genccode: unable to open input file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: unable to open input file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
     size=T_FileStream_size(in);
@@ -1065,20 +1069,20 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
 
     if(optEntryPoint != NULL) {
         uprv_strcpy(entry+entryOffset, optEntryPoint);
-        uprv_strcat(entry+entryOffset, "_dat");
+        uprv_strcat(entry+entryOffset, u8"_dat");
     }
     /* turn dashes in the entry name into underscores */
     entryLength=(int32_t)uprv_strlen(entry+entryLengthOffset);
     for(i=0; i<entryLength; ++i) {
-        if(entry[entryLengthOffset+i]=='-') {
-            entry[entryLengthOffset+i]='_';
+        if(entry[entryLengthOffset+i]=='\x2d') {
+            entry[entryLengthOffset+i]='\x5f';
         }
     }
 
     /* open the output file */
     out=T_FileStream_open(buffer, "wb");
     if(out==NULL) {
-        fprintf(stderr, "genccode: unable to open output file %s\n", buffer);
+        __fprintf_a(stderr, u8"genccode: unable to open output file %s\n", buffer);
         exit(U_FILE_ACCESS_ERROR);
     }
 
@@ -1137,11 +1141,11 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
     uprv_memset(&symbolNames, 0, sizeof(symbolNames));
 
     /* write the linker export directive */
-    uprv_strcpy(objHeader.linkerOptions, "-export:");
+    uprv_strcpy(objHeader.linkerOptions, u8"-export:");
     length=8;
     uprv_strcpy(objHeader.linkerOptions+length, entry);
     length+=entryLength;
-    uprv_strcpy(objHeader.linkerOptions+length, ",data ");
+    uprv_strcpy(objHeader.linkerOptions+length, u8",data ");
     length+=6;
 
     /* set the file header */
@@ -1152,13 +1156,13 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
     objHeader.fileHeader.NumberOfSymbols=1;
 
     /* set the section for the linker options */
-    uprv_strncpy((char *)objHeader.sections[0].Name, ".drectve", 8);
+    uprv_strncpy((char *)objHeader.sections[0].Name, u8".drectve", 8);
     objHeader.sections[0].SizeOfRawData=length;
     objHeader.sections[0].PointerToRawData=IMAGE_SIZEOF_FILE_HEADER+2*IMAGE_SIZEOF_SECTION_HEADER;
     objHeader.sections[0].Characteristics=IMAGE_SCN_LNK_INFO|IMAGE_SCN_LNK_REMOVE|IMAGE_SCN_ALIGN_1BYTES;
 
     /* set the data section */
-    uprv_strncpy((char *)objHeader.sections[1].Name, ".rdata", 6);
+    uprv_strncpy((char *)objHeader.sections[1].Name, u8".rdata", 6);
     objHeader.sections[1].SizeOfRawData=size;
     objHeader.sections[1].PointerToRawData=IMAGE_SIZEOF_FILE_HEADER+2*IMAGE_SIZEOF_SECTION_HEADER+length;
     objHeader.sections[1].Characteristics=IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_ALIGN_16BYTES|IMAGE_SCN_MEM_READ;
@@ -1179,7 +1183,7 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
     /* write the file header and the linker options section */
     T_FileStream_write(out, &objHeader, objHeader.sections[1].PointerToRawData);
 #else
-#   error "Unknown platform for CAN_GENERATE_OBJECTS."
+#   error u8"Unknown platform for CAN_GENERATE_OBJECTS."
 #endif
 
     /* copy the data file into section 2 */
@@ -1198,12 +1202,12 @@ writeObjectCode(const char *filename, const char *destdir, const char *optEntryP
 #endif
 
     if(T_FileStream_error(in)) {
-        fprintf(stderr, "genccode: file read error while generating from file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: file read error while generating from file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 
     if(T_FileStream_error(out)) {
-        fprintf(stderr, "genccode: file write error while generating from file %s\n", filename);
+        __fprintf_a(stderr, u8"genccode: file write error while generating from file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 

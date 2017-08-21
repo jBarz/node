@@ -35,13 +35,13 @@ static UMutex gCompactDecimalMetaLock = U_MUTEX_INITIALIZER;
 U_NAMESPACE_BEGIN
 
 static const int32_t MAX_DIGITS = 15;
-static const char gOther[] = "other";
-static const char gLatnTag[] = "latn";
-static const char gNumberElementsTag[] = "NumberElements";
-static const char gDecimalFormatTag[] = "decimalFormat";
-static const char gPatternsShort[] = "patternsShort";
-static const char gPatternsLong[] = "patternsLong";
-static const char gLatnPath[] = "NumberElements/latn";
+static const char gOther[] = u8"other";
+static const char gLatnTag[] = u8"latn";
+static const char gNumberElementsTag[] = u8"NumberElements";
+static const char gDecimalFormatTag[] = u8"decimalFormat";
+static const char gPatternsShort[] = u8"patternsShort";
+static const char gPatternsLong[] = u8"patternsLong";
+static const char gLatnPath[] = u8"NumberElements/latn";
 
 static const UChar u_0 = 0x30;
 static const UChar u_apos = 0x27;
@@ -717,7 +717,7 @@ static void load(const Locale& inLocale, CDFLocaleData* result, UErrorCode& stat
     sink.isLatin = FALSE;
     CharString path;
     path.append(gNumberElementsTag, status)
-        .append('/', status)
+        .append('\x2f', status)
         .append(nsName, status);
     ures_getAllItemsWithFallback(resource.getAlias(), path.data(), sink, status);
     if (status == U_MISSING_RESOURCE_ERROR) {
@@ -774,7 +774,7 @@ static int32_t populatePrefixSuffix(
 
   // ICU 59 HACK: Ignore negative part of format string, mimicking ICU 58 behavior.
   // TODO(sffc): Make sure this is fixed during the overhaul port in ICU 60.
-  int32_t semiPos = formatStr.indexOf(';', 0);
+  int32_t semiPos = formatStr.indexOf('\x3b', 0);
   if (semiPos == -1) {
     semiPos = formatStr.length();
   }

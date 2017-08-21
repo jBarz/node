@@ -625,7 +625,7 @@ namespace std {
 #ifdef U_CHARSET_FAMILY
     /* Use the predefined value. */
 #elif U_PLATFORM == U_PF_OS390 && (!defined(__CHARSET_LIB) || !__CHARSET_LIB)
-#   define U_CHARSET_FAMILY U_EBCDIC_FAMILY
+#   define U_CHARSET_FAMILY U_ASCII_FAMILY
 #elif U_PLATFORM == U_PF_OS400 && !defined(__UTF32__)
 #   define U_CHARSET_FAMILY U_EBCDIC_FAMILY
 #else
@@ -818,7 +818,7 @@ namespace std {
 #elif defined(U_STATIC_IMPLEMENTATION)
 #   define U_EXPORT
 #elif defined(__GNUC__)
-#   define U_EXPORT __attribute__((visibility("default")))
+#   define U_EXPORT __attribute__((visibility(u8"default")))
 #elif (defined(__SUNPRO_CC) && __SUNPRO_CC >= 0x550) \
    || (defined(__SUNPRO_C) && __SUNPRO_C >= 0x550)
 #   define U_EXPORT __global
@@ -865,11 +865,11 @@ namespace std {
  *
  * @stable ICU 2.0
  */
-#if U_PLATFORM == U_PF_OS390 && defined(__cplusplus)
+/*#if U_PLATFORM == U_PF_OS390 && defined(__cplusplus)
 #    define U_CALLCONV __cdecl
-#else
+#else*/
 #    define U_CALLCONV U_EXPORT2
-#endif
+//#endif
 
 /* @} */
 

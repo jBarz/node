@@ -37,7 +37,7 @@ CStr::CStr(const UnicodeString &in) {
         if (uprv_isInvariantUString(in.getBuffer()+i, 1)) {
             u_UCharsToChars(in.getBuffer()+i, buf, 1);
         } else {
-            buf[0] = '?';
+            buf[0] = '\x3f';
         }
         s.append(buf, 1, status);
     }

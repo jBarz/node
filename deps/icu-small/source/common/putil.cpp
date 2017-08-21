@@ -173,7 +173,7 @@ using namespace Microsoft::WRL::Wrappers;
 U_NAMESPACE_USE
 
 /* Define the extension for data files, again... */
-#define DATA_TYPE "dat"
+#define DATA_TYPE u8"dat"
 
 /* Leave this copyright notice here! */
 static const char copyright[] = U_COPYRIGHT_STRING;
@@ -265,17 +265,17 @@ static UDate getUTCtime_fake() {
     umtx_lock(&fakeClockMutex);
     if(!fakeClock_set) {
         UDate real = getUTCtime_real();
-        const char *fake_start = getenv("U_FAKETIME_START");
+        const char *fake_start = getenv(u8"U_FAKETIME_START");
         if((fake_start!=NULL) && (fake_start[0]!=0)) {
-            sscanf(fake_start,"%lf",&fakeClock_t0);
+            sscanf(fake_start,u8"%lf",&fakeClock_t0);
             fakeClock_dt = fakeClock_t0 - real;
-            fprintf(stderr,"U_DEBUG_FAKETIME was set at compile time, so the ICU clock will start at a preset value\n"
-                    "env variable U_FAKETIME_START=%.0f (%s) for an offset of %.0f ms from the current time %.0f\n",
+            fprintf(stderr,u8"U_DEBUG_FAKETIME was set at compile time, so the ICU clock will start at a preset value\n"
+                    u8"env variable U_FAKETIME_START=%.0f (%s) for an offset of %.0f ms from the current time %.0f\n",
                     fakeClock_t0, fake_start, fakeClock_dt, real);
         } else {
           fakeClock_dt = 0;
-            fprintf(stderr,"U_DEBUG_FAKETIME was set at compile time, but U_FAKETIME_START was not set.\n"
-                    "Set U_FAKETIME_START to the number of milliseconds since 1/1/1970 to set the ICU clock.\n");
+            fprintf(stderr,u8"U_DEBUG_FAKETIME was set at compile time, but U_FAKETIME_START was not set.\n"
+                    u8"Set U_FAKETIME_START to the number of milliseconds since 1/1/1970 to set the ICU clock.\n");
         }
         fakeClock_set = TRUE;
     }
@@ -678,22 +678,22 @@ extern U_IMPORT char *U_TZNAME[];
 #define CHECK_LOCALTIME_LINK 1
 #if U_PLATFORM_IS_DARWIN_BASED
 #include <tzfile.h>
-#define TZZONEINFO      (TZDIR "/")
+#define TZZONEINFO      (TZDIR u8"/")
 #elif U_PLATFORM == U_PF_SOLARIS
-#define TZDEFAULT       "/etc/localtime"
-#define TZZONEINFO      "/usr/share/lib/zoneinfo/"
-#define TZZONEINFO2     "../usr/share/lib/zoneinfo/"
-#define TZ_ENV_CHECK    "localtime"
+#define TZDEFAULT       u8"/etc/localtime"
+#define TZZONEINFO      u8"/usr/share/lib/zoneinfo/"
+#define TZZONEINFO2     u8"../usr/share/lib/zoneinfo/"
+#define TZ_ENV_CHECK    u8"localtime"
 #else
-#define TZDEFAULT       "/etc/localtime"
-#define TZZONEINFO      "/usr/share/zoneinfo/"
+#define TZDEFAULT       u8"/etc/localtime"
+#define TZZONEINFO      u8"/usr/share/zoneinfo/"
 #endif
 #if U_HAVE_DIRENT_H
-#define TZFILE_SKIP     "posixrules" /* tz file to skip when searching. */
+#define TZFILE_SKIP     u8"posixrules" /* tz file to skip when searching. */
 /* Some Linux distributions have 'localtime' in /usr/share/zoneinfo
    symlinked to /etc/localtime, which makes searchForTZFile return
    'localtime' when it's the first match. */
-#define TZFILE_SKIP2    "localtime"
+#define TZFILE_SKIP2    u8"localtime"
 #define SEARCH_TZFILE
 #include <dirent.h>  /* Needed to search through system timezone files */
 #endif
@@ -702,13 +702,13 @@ static char *gTimeZoneBufferPtr = NULL;
 #endif
 
 #if !U_PLATFORM_USES_ONLY_WIN32_API
-#define isNonDigit(ch) (ch < '0' || '9' < ch)
+#define isNonDigit(ch) (ch < '\x30' || '\x39' < ch)
 static UBool isValidOlsonID(const char *id) {
     int32_t idx = 0;
 
     /* Determine if this is something like Iceland (Olson ID)
     or AST4ADT (non-Olson ID) */
-    while (id[idx] && isNonDigit(id[idx]) && id[idx] != ',') {
+    while (id[idx] && isNonDigit(id[idx]) && id[idx] != '\x2c') {
         idx++;
     }
 
@@ -717,10 +717,10 @@ static UBool isValidOlsonID(const char *id) {
     "GRNLNDST3GRNLNDDT" or similar, so we cannot use it.
     The rest of the time it could be an Olson ID. George */
     return (UBool)(id[idx] == 0
-        || uprv_strcmp(id, "PST8PDT") == 0
-        || uprv_strcmp(id, "MST7MDT") == 0
-        || uprv_strcmp(id, "CST6CDT") == 0
-        || uprv_strcmp(id, "EST5EDT") == 0);
+        || uprv_strcmp(id, u8"PST8PDT") == 0
+        || uprv_strcmp(id, u8"MST7MDT") == 0
+        || uprv_strcmp(id, u8"CST6CDT") == 0
+        || uprv_strcmp(id, u8"EST5EDT") == 0);
 }
 
 /* On some Unix-like OS, 'posix' subdirectory in
@@ -736,8 +736,8 @@ static UBool isValidOlsonID(const char *id) {
    timezone id ('America/New_York' is). So, we have to skip
    'posix/' and 'right/' at the beginning. */
 static void skipZoneIDPrefix(const char** id) {
-    if (uprv_strncmp(*id, "posix/", 6) == 0
-        || uprv_strncmp(*id, "right/", 6) == 0)
+    if (uprv_strncmp(*id, u8"posix/", 6) == 0
+        || uprv_strncmp(*id, u8"right/", 6) == 0)
     {
         *id += 6;
     }
@@ -767,65 +767,65 @@ This list can be tested with icu/source/test/compat/tzone.pl
 More values could be added to daylightType to increase precision.
 */
 static const struct OffsetZoneMapping OFFSET_ZONE_MAPPINGS[] = {
-    {-45900, 2, "CHAST", "CHADT", "Pacific/Chatham"},
-    {-43200, 1, "PETT", "PETST", "Asia/Kamchatka"},
-    {-43200, 2, "NZST", "NZDT", "Pacific/Auckland"},
-    {-43200, 1, "ANAT", "ANAST", "Asia/Anadyr"},
-    {-39600, 1, "MAGT", "MAGST", "Asia/Magadan"},
-    {-37800, 2, "LHST", "LHST", "Australia/Lord_Howe"},
-    {-36000, 2, "EST", "EST", "Australia/Sydney"},
-    {-36000, 1, "SAKT", "SAKST", "Asia/Sakhalin"},
-    {-36000, 1, "VLAT", "VLAST", "Asia/Vladivostok"},
-    {-34200, 2, "CST", "CST", "Australia/South"},
-    {-32400, 1, "YAKT", "YAKST", "Asia/Yakutsk"},
-    {-32400, 1, "CHOT", "CHOST", "Asia/Choibalsan"},
-    {-31500, 2, "CWST", "CWST", "Australia/Eucla"},
-    {-28800, 1, "IRKT", "IRKST", "Asia/Irkutsk"},
-    {-28800, 1, "ULAT", "ULAST", "Asia/Ulaanbaatar"},
-    {-28800, 2, "WST", "WST", "Australia/West"},
-    {-25200, 1, "HOVT", "HOVST", "Asia/Hovd"},
-    {-25200, 1, "KRAT", "KRAST", "Asia/Krasnoyarsk"},
-    {-21600, 1, "NOVT", "NOVST", "Asia/Novosibirsk"},
-    {-21600, 1, "OMST", "OMSST", "Asia/Omsk"},
-    {-18000, 1, "YEKT", "YEKST", "Asia/Yekaterinburg"},
-    {-14400, 1, "SAMT", "SAMST", "Europe/Samara"},
-    {-14400, 1, "AMT", "AMST", "Asia/Yerevan"},
-    {-14400, 1, "AZT", "AZST", "Asia/Baku"},
-    {-10800, 1, "AST", "ADT", "Asia/Baghdad"},
-    {-10800, 1, "MSK", "MSD", "Europe/Moscow"},
-    {-10800, 1, "VOLT", "VOLST", "Europe/Volgograd"},
-    {-7200, 0, "EET", "CEST", "Africa/Tripoli"},
-    {-7200, 1, "EET", "EEST", "Europe/Athens"}, /* Conflicts with Africa/Cairo */
-    {-7200, 1, "IST", "IDT", "Asia/Jerusalem"},
-    {-3600, 0, "CET", "WEST", "Africa/Algiers"},
-    {-3600, 2, "WAT", "WAST", "Africa/Windhoek"},
-    {0, 1, "GMT", "IST", "Europe/Dublin"},
-    {0, 1, "GMT", "BST", "Europe/London"},
-    {0, 0, "WET", "WEST", "Africa/Casablanca"},
-    {0, 0, "WET", "WET", "Africa/El_Aaiun"},
-    {3600, 1, "AZOT", "AZOST", "Atlantic/Azores"},
-    {3600, 1, "EGT", "EGST", "America/Scoresbysund"},
-    {10800, 1, "PMST", "PMDT", "America/Miquelon"},
-    {10800, 2, "UYT", "UYST", "America/Montevideo"},
-    {10800, 1, "WGT", "WGST", "America/Godthab"},
-    {10800, 2, "BRT", "BRST", "Brazil/East"},
-    {12600, 1, "NST", "NDT", "America/St_Johns"},
-    {14400, 1, "AST", "ADT", "Canada/Atlantic"},
-    {14400, 2, "AMT", "AMST", "America/Cuiaba"},
-    {14400, 2, "CLT", "CLST", "Chile/Continental"},
-    {14400, 2, "FKT", "FKST", "Atlantic/Stanley"},
-    {14400, 2, "PYT", "PYST", "America/Asuncion"},
-    {18000, 1, "CST", "CDT", "America/Havana"},
-    {18000, 1, "EST", "EDT", "US/Eastern"}, /* Conflicts with America/Grand_Turk */
-    {21600, 2, "EAST", "EASST", "Chile/EasterIsland"},
-    {21600, 0, "CST", "MDT", "Canada/Saskatchewan"},
-    {21600, 0, "CST", "CDT", "America/Guatemala"},
-    {21600, 1, "CST", "CDT", "US/Central"}, /* Conflicts with Mexico/General */
-    {25200, 1, "MST", "MDT", "US/Mountain"}, /* Conflicts with Mexico/BajaSur */
-    {28800, 0, "PST", "PST", "Pacific/Pitcairn"},
-    {28800, 1, "PST", "PDT", "US/Pacific"}, /* Conflicts with Mexico/BajaNorte */
-    {32400, 1, "AKST", "AKDT", "US/Alaska"},
-    {36000, 1, "HAST", "HADT", "US/Aleutian"}
+    {-45900, 2, u8"CHAST", u8"CHADT", u8"Pacific/Chatham"},
+    {-43200, 1, u8"PETT", u8"PETST", u8"Asia/Kamchatka"},
+    {-43200, 2, u8"NZST", u8"NZDT", u8"Pacific/Auckland"},
+    {-43200, 1, u8"ANAT", u8"ANAST", u8"Asia/Anadyr"},
+    {-39600, 1, u8"MAGT", u8"MAGST", u8"Asia/Magadan"},
+    {-37800, 2, u8"LHST", u8"LHST", u8"Australia/Lord_Howe"},
+    {-36000, 2, u8"EST", u8"EST", u8"Australia/Sydney"},
+    {-36000, 1, u8"SAKT", u8"SAKST", u8"Asia/Sakhalin"},
+    {-36000, 1, u8"VLAT", u8"VLAST", u8"Asia/Vladivostok"},
+    {-34200, 2, u8"CST", u8"CST", u8"Australia/South"},
+    {-32400, 1, u8"YAKT", u8"YAKST", u8"Asia/Yakutsk"},
+    {-32400, 1, u8"CHOT", u8"CHOST", u8"Asia/Choibalsan"},
+    {-31500, 2, u8"CWST", u8"CWST", u8"Australia/Eucla"},
+    {-28800, 1, u8"IRKT", u8"IRKST", u8"Asia/Irkutsk"},
+    {-28800, 1, u8"ULAT", u8"ULAST", u8"Asia/Ulaanbaatar"},
+    {-28800, 2, u8"WST", u8"WST", u8"Australia/West"},
+    {-25200, 1, u8"HOVT", u8"HOVST", u8"Asia/Hovd"},
+    {-25200, 1, u8"KRAT", u8"KRAST", u8"Asia/Krasnoyarsk"},
+    {-21600, 1, u8"NOVT", u8"NOVST", u8"Asia/Novosibirsk"},
+    {-21600, 1, u8"OMST", u8"OMSST", u8"Asia/Omsk"},
+    {-18000, 1, u8"YEKT", u8"YEKST", u8"Asia/Yekaterinburg"},
+    {-14400, 1, u8"SAMT", u8"SAMST", u8"Europe/Samara"},
+    {-14400, 1, u8"AMT", u8"AMST", u8"Asia/Yerevan"},
+    {-14400, 1, u8"AZT", u8"AZST", u8"Asia/Baku"},
+    {-10800, 1, u8"AST", u8"ADT", u8"Asia/Baghdad"},
+    {-10800, 1, u8"MSK", u8"MSD", u8"Europe/Moscow"},
+    {-10800, 1, u8"VOLT", u8"VOLST", u8"Europe/Volgograd"},
+    {-7200, 0, u8"EET", u8"CEST", u8"Africa/Tripoli"},
+    {-7200, 1, u8"EET", u8"EEST", u8"Europe/Athens"}, /* Conflicts with Africa/Cairo */
+    {-7200, 1, u8"IST", u8"IDT", u8"Asia/Jerusalem"},
+    {-3600, 0, u8"CET", u8"WEST", u8"Africa/Algiers"},
+    {-3600, 2, u8"WAT", u8"WAST", u8"Africa/Windhoek"},
+    {0, 1, u8"GMT", u8"IST", u8"Europe/Dublin"},
+    {0, 1, u8"GMT", u8"BST", u8"Europe/London"},
+    {0, 0, u8"WET", u8"WEST", u8"Africa/Casablanca"},
+    {0, 0, u8"WET", u8"WET", u8"Africa/El_Aaiun"},
+    {3600, 1, u8"AZOT", u8"AZOST", u8"Atlantic/Azores"},
+    {3600, 1, u8"EGT", u8"EGST", u8"America/Scoresbysund"},
+    {10800, 1, u8"PMST", u8"PMDT", u8"America/Miquelon"},
+    {10800, 2, u8"UYT", u8"UYST", u8"America/Montevideo"},
+    {10800, 1, u8"WGT", u8"WGST", u8"America/Godthab"},
+    {10800, 2, u8"BRT", u8"BRST", u8"Brazil/East"},
+    {12600, 1, u8"NST", u8"NDT", u8"America/St_Johns"},
+    {14400, 1, u8"AST", u8"ADT", u8"Canada/Atlantic"},
+    {14400, 2, u8"AMT", u8"AMST", u8"America/Cuiaba"},
+    {14400, 2, u8"CLT", u8"CLST", u8"Chile/Continental"},
+    {14400, 2, u8"FKT", u8"FKST", u8"Atlantic/Stanley"},
+    {14400, 2, u8"PYT", u8"PYST", u8"America/Asuncion"},
+    {18000, 1, u8"CST", u8"CDT", u8"America/Havana"},
+    {18000, 1, u8"EST", u8"EDT", u8"US/Eastern"}, /* Conflicts with America/Grand_Turk */
+    {21600, 2, u8"EAST", u8"EASST", u8"Chile/EasterIsland"},
+    {21600, 0, u8"CST", u8"MDT", u8"Canada/Saskatchewan"},
+    {21600, 0, u8"CST", u8"CDT", u8"America/Guatemala"},
+    {21600, 1, u8"CST", u8"CDT", u8"US/Central"}, /* Conflicts with Mexico/General */
+    {25200, 1, u8"MST", u8"MDT", u8"US/Mountain"}, /* Conflicts with Mexico/BajaSur */
+    {28800, 0, u8"PST", u8"PST", u8"Pacific/Pitcairn"},
+    {28800, 1, u8"PST", u8"PDT", u8"US/Pacific"}, /* Conflicts with Mexico/BajaNorte */
+    {32400, 1, u8"AKST", u8"AKDT", u8"US/Alaska"},
+    {36000, 1, u8"HAST", u8"HADT", u8"US/Aleutian"}
 };
 
 /*#define DEBUG_TZNAME*/
@@ -834,7 +834,7 @@ static const char* remapShortTimeZone(const char *stdID, const char *dstID, int3
 {
     int32_t idx;
 #ifdef DEBUG_TZNAME
-    fprintf(stderr, "TZ=%s std=%s dst=%s daylight=%d offset=%d\n", getenv("TZ"), stdID, dstID, daylightType, offset);
+    fprintf(stderr, u8"TZ=%s std=%s dst=%s daylight=%d offset=%d\n", getenv(u8"TZ"), stdID, dstID, daylightType, offset);
 #endif
     for (idx = 0; idx < UPRV_LENGTHOF(OFFSET_ZONE_MAPPINGS); idx++)
     {
@@ -929,8 +929,8 @@ static UBool compareBinaryFiles(const char* defaultTZFileName, const char* TZFil
 
 
 /* dirent also lists two entries: "." and ".." that we can safely ignore. */
-#define SKIP1 "."
-#define SKIP2 ".."
+#define SKIP1 u8"."
+#define SKIP2 u8".."
 static UBool U_CALLCONV putil_cleanup(void);
 static CharString *gSearchTZFileResult = NULL;
 
@@ -977,7 +977,7 @@ static char* searchForTZFile(const char* path, DefaultTZInfo* tzInfo) {
             if ((subDirp = opendir(newpath.data())) != NULL) {
                 /* If this new path is a directory, make a recursive call with the newpath. */
                 closedir(subDirp);
-                newpath.append('/', status);
+                newpath.append('\x2f', status);
                 if (U_FAILURE(status)) {
                     return NULL;
                 }
@@ -1081,7 +1081,7 @@ uprv_tzname(int n)
     // the other code path returns a pointer to a heap location.
     // If we don't have a name already, then tzname wouldn't be any
     // better, so just fall back.
-    return uprv_strdup("Etc/UTC");
+    return uprv_strdup(u8"Etc/UTC");
 #endif // !U_TZNAME
 
 #else
@@ -1097,7 +1097,7 @@ uprv_tzname(int n)
 
 /* This code can be temporarily disabled to test tzname resolution later on. */
 #ifndef DEBUG_TZNAME
-    tzid = getenv("TZ");
+    tzid = getenv(u8"TZ");
     if (tzid != NULL && isValidOlsonID(tzid)
 #if U_PLATFORM == U_PF_SOLARIS
     /* When TZ equals localtime on Solaris, check the /etc/localtime file. */
@@ -1105,7 +1105,7 @@ uprv_tzname(int n)
 #endif
     ) {
         /* The colon forces tzset() to treat the remainder as zoneinfo path */
-        if (tzid[0] == ':') {
+        if (tzid[0] == '\x3a') {
             tzid++;
         }
         /* This might be a good Olson ID. */
@@ -1215,7 +1215,7 @@ uprv_tzname(int n)
     return U_TZNAME[n];
 #endif
 #else
-    return "";
+    return u8"";
 #endif
 }
 
@@ -1273,7 +1273,7 @@ u_setDataDirectory(const char *directory) {
         shared library is used, and this is a way to make sure that NULL
         is never returned.
         */
-        newDataDir = (char *)"";
+        newDataDir = (char *)u8"";
     }
     else {
         length=(int32_t)uprv_strlen(directory);
@@ -1319,9 +1319,9 @@ uprv_pathIsAbsolute(const char *path)
 #endif
 
 #if U_PLATFORM_USES_ONLY_WIN32_API
-  if( (((path[0] >= 'A') && (path[0] <= 'Z')) ||
-       ((path[0] >= 'a') && (path[0] <= 'z'))) &&
-      path[1] == ':' ) {
+  if( (((path[0] >= '\x41') && (path[0] <= '\x5a')) ||
+       ((path[0] >= '\x61') && (path[0] <= '\x7a'))) &&
+      path[1] == '\x3a' ) {
     return TRUE;
   }
 #endif
@@ -1333,7 +1333,7 @@ uprv_pathIsAbsolute(const char *path)
    until some client wrapper makefiles are updated */
 #if U_PLATFORM_IS_DARWIN_BASED && TARGET_IPHONE_SIMULATOR
 # if !defined(ICU_DATA_DIR_PREFIX_ENV_VAR)
-#  define ICU_DATA_DIR_PREFIX_ENV_VAR "IPHONE_SIMULATOR_ROOT"
+#  define ICU_DATA_DIR_PREFIX_ENV_VAR u8"IPHONE_SIMULATOR_ROOT"
 # endif
 #endif
 
@@ -1366,7 +1366,7 @@ static void U_CALLCONV dataDirectoryInitFn() {
 #   if !defined(ICU_NO_USER_DATA_OVERRIDE) && !UCONFIG_NO_FILE_IO
     /* First try to get the environment variable */
 #       if U_PLATFORM_HAS_WINUWP_API == 0  // Windows UWP does not support getenv
-        path=getenv("ICU_DATA");
+        path=getenv(u8"ICU_DATA");
 #       endif
 #   endif
 
@@ -1389,7 +1389,7 @@ static void U_CALLCONV dataDirectoryInitFn() {
 # endif
 # if defined(ICU_DATA_DIR_PREFIX_ENV_VAR)
         if (prefix != NULL) {
-            snprintf(datadir_path_buffer, PATH_MAX, "%s%s", prefix, path);
+            snprintf(datadir_path_buffer, PATH_MAX, u8"%s%s", prefix, path);
             path=datadir_path_buffer;
         }
 # endif
@@ -1403,10 +1403,10 @@ static void U_CALLCONV dataDirectoryInitFn() {
     UINT length = GetWindowsDirectoryA(datadir_path_buffer, UPRV_LENGTHOF(datadir_path_buffer));
     if (length > 0 && length < (UPRV_LENGTHOF(datadir_path_buffer) - sizeof(ICU_DATA_DIR_WINDOWS) - 1))
     {
-        if (datadir_path_buffer[length - 1] != '\\')
+        if (datadir_path_buffer[length - 1] != '\x5c')
         {
-            datadir_path_buffer[length++] = '\\';
-            datadir_path_buffer[length] = '\0';
+            datadir_path_buffer[length++] = '\x5c';
+            datadir_path_buffer[length] = '\x0';
         }
 
         if ((length + 1 + sizeof(ICU_DATA_DIR_WINDOWS)) < UPRV_LENGTHOF(datadir_path_buffer))
@@ -1423,7 +1423,7 @@ static void U_CALLCONV dataDirectoryInitFn() {
         // Windows UWP will require icudtl.dat file in same directory as icuuc.dll
         path = ".\\";
 #else
-        path = "";
+        path = u8"";
 #endif
     }
 
@@ -1452,7 +1452,7 @@ static void setTimeZoneFilesDir(const char *path, UErrorCode &status) {
 }
 
 #define TO_STRING(x) TO_STRING_2(x)
-#define TO_STRING_2(x) #x
+#define TO_STRING_2(x)  USTR(#x)
 
 static void U_CALLCONV TimeZoneDataDirInitFn(UErrorCode &status) {
     U_ASSERT(gTimeZoneFilesDirectory == NULL);
@@ -1463,10 +1463,10 @@ static void U_CALLCONV TimeZoneDataDirInitFn(UErrorCode &status) {
         return;
     }
 #if U_PLATFORM_HAS_WINUWP_API == 0
-    const char *dir = getenv("ICU_TIMEZONE_FILES_DIR");
+    const char *dir = getenv(u8"ICU_TIMEZONE_FILES_DIR");
 #else
     // TODO: UWP does not support alternate timezone data directories at this time
-    const char *dir = "";
+    const char *dir = u8"";
 #endif // U_PLATFORM_HAS_WINUWP_API
 #if defined(U_TIMEZONE_FILES_DIR)
     if (dir == NULL) {
@@ -1474,7 +1474,7 @@ static void U_CALLCONV TimeZoneDataDirInitFn(UErrorCode &status) {
     }
 #endif
     if (dir == NULL) {
-        dir = "";
+        dir = u8"";
     }
     setTimeZoneFilesDir(dir, status);
 }
@@ -1483,7 +1483,7 @@ static void U_CALLCONV TimeZoneDataDirInitFn(UErrorCode &status) {
 U_CAPI const char * U_EXPORT2
 u_getTimeZoneFilesDirectory(UErrorCode *status) {
     umtx_initOnce(gTimeZoneFilesInitOnce, &TimeZoneDataDirInitFn, *status);
-    return U_SUCCESS(*status) ? gTimeZoneFilesDirectory->data() : "";
+    return U_SUCCESS(*status) ? gTimeZoneFilesDirectory->data() : u8"";
 }
 
 U_CAPI void U_EXPORT2
@@ -1526,34 +1526,34 @@ static const char *uprv_getPOSIXIDForCategory(int category)
         */
         posixID = setlocale(category, NULL);
         if ((posixID == 0)
-            || (uprv_strcmp("C", posixID) == 0)
-            || (uprv_strcmp("POSIX", posixID) == 0))
+            || (uprv_strcmp(u8"C", posixID) == 0)
+            || (uprv_strcmp(u8"POSIX", posixID) == 0))
         {
             /* Maybe we got some garbage.  Try something more reasonable */
-            posixID = getenv("LC_ALL");
+            posixID = getenv(u8"LC_ALL");
             /* Solaris speaks POSIX -  See IEEE Std 1003.1-2008
              * This is needed to properly handle empty env. variables
              */
 #if U_PLATFORM == U_PF_SOLARIS
-            if ((posixID == 0) || (posixID[0] == '\0')) {
-                posixID = getenv(category == LC_MESSAGES ? "LC_MESSAGES" : "LC_CTYPE");
-                if ((posixID == 0) || (posixID[0] == '\0')) {
+            if ((posixID == 0) || (posixID[0] == '\x0')) {
+                posixID = getenv(category == LC_MESSAGES ? u8"LC_MESSAGES" : u8"LC_CTYPE");
+                if ((posixID == 0) || (posixID[0] == '\x0')) {
 #else
             if (posixID == 0) {
-                posixID = getenv(category == LC_MESSAGES ? "LC_MESSAGES" : "LC_CTYPE");
+                posixID = getenv(category == LC_MESSAGES ? u8"LC_MESSAGES" : u8"LC_CTYPE");
                 if (posixID == 0) {
 #endif
-                    posixID = getenv("LANG");
+                    posixID = getenv(u8"LANG");
                 }
             }
         }
     }
     if ((posixID==0)
-        || (uprv_strcmp("C", posixID) == 0)
-        || (uprv_strcmp("POSIX", posixID) == 0))
+        || (uprv_strcmp(u8"C", posixID) == 0)
+        || (uprv_strcmp(u8"POSIX", posixID) == 0))
     {
         /* Nothing worked.  Give it a nice POSIX default value. */
-        posixID = "en_US_POSIX";
+        posixID = u8"en_US_POSIX";
     }
     return posixID;
 }
@@ -1628,7 +1628,7 @@ The leftmost codepage (.xxx) wins.
         return gCorrectedPOSIXLocale;
     }
 
-    if ((p = uprv_strchr(posixID, '.')) != NULL) {
+    if ((p = uprv_strchr(posixID, '\x2e')) != NULL) {
         /* assume new locale can't be larger than old one? */
         correctedPOSIXLocale = static_cast<char *>(uprv_malloc(uprv_strlen(posixID)+1));
         /* Exit on memory allocation error. */
@@ -1639,13 +1639,13 @@ The leftmost codepage (.xxx) wins.
         correctedPOSIXLocale[p-posixID] = 0;
 
         /* do not copy after the @ */
-        if ((p = uprv_strchr(correctedPOSIXLocale, '@')) != NULL) {
+        if ((p = uprv_strchr(correctedPOSIXLocale, '\x40')) != NULL) {
             correctedPOSIXLocale[p-correctedPOSIXLocale] = 0;
         }
     }
 
     /* Note that we scan the *uncorrected* ID. */
-    if ((p = uprv_strrchr(posixID, '@')) != NULL) {
+    if ((p = uprv_strrchr(posixID, '\x40')) != NULL) {
         if (correctedPOSIXLocale == NULL) {
             correctedPOSIXLocale = static_cast<char *>(uprv_malloc(uprv_strlen(posixID)+1));
             /* Exit on memory allocation error. */
@@ -1658,19 +1658,19 @@ The leftmost codepage (.xxx) wins.
         p++;
 
         /* Take care of any special cases here.. */
-        if (!uprv_strcmp(p, "nynorsk")) {
-            p = "NY";
+        if (!uprv_strcmp(p, u8"nynorsk")) {
+            p = u8"NY";
             /* Don't worry about no__NY. In practice, it won't appear. */
         }
 
-        if (uprv_strchr(correctedPOSIXLocale,'_') == NULL) {
-            uprv_strcat(correctedPOSIXLocale, "__"); /* aa@b -> aa__b */
+        if (uprv_strchr(correctedPOSIXLocale,'\x5f') == NULL) {
+            uprv_strcat(correctedPOSIXLocale, u8"__"); /* aa@b -> aa__b */
         }
         else {
-            uprv_strcat(correctedPOSIXLocale, "_"); /* aa_CC@b -> aa_CC_b */
+            uprv_strcat(correctedPOSIXLocale, u8"_"); /* aa_CC@b -> aa_CC_b */
         }
 
-        if ((q = uprv_strchr(p, '.')) != NULL) {
+        if ((q = uprv_strchr(p, '\x2e')) != NULL) {
             /* How big will the resulting string be? */
             len = (int32_t)(uprv_strlen(correctedPOSIXLocale) + (q-p));
             uprv_strncat(correctedPOSIXLocale, p, q-p);
@@ -1768,7 +1768,7 @@ The leftmost codepage (.xxx) wins.
     {
         // Unexpected, use en-US by default
         if (gCorrectedPOSIXLocale == NULL) {
-            gCorrectedPOSIXLocale = "en_US";
+            gCorrectedPOSIXLocale = u8"en_US";
         }
 
         return gCorrectedPOSIXLocale;
@@ -1786,16 +1786,16 @@ The leftmost codepage (.xxx) wins.
         int32_t i;
         for (i = 0; i < UPRV_LENGTHOF(modifiedWindowsLocale); i++)
         {
-            if (windowsLocale[i] == '_')
+            if (windowsLocale[i] == '\x5f')
             {
-                modifiedWindowsLocale[i] = '-';
+                modifiedWindowsLocale[i] = '\x2d';
             }
             else
             {
                 modifiedWindowsLocale[i] = static_cast<char>(windowsLocale[i]);
             }
 
-            if (modifiedWindowsLocale[i] == '\0')
+            if (modifiedWindowsLocale[i] == '\x0')
             {
                 break;
             }
@@ -1805,7 +1805,7 @@ The leftmost codepage (.xxx) wins.
         {
             // Ran out of room, can't really happen, maybe we'll be lucky about a matching
             // locale when tags are dropped
-            modifiedWindowsLocale[UPRV_LENGTHOF(modifiedWindowsLocale) - 1] = '\0';
+            modifiedWindowsLocale[UPRV_LENGTHOF(modifiedWindowsLocale) - 1] = '\x0';
         }
 
         // Now normalize the resulting name
@@ -1828,26 +1828,26 @@ The leftmost codepage (.xxx) wins.
 
     // If unable to find a locale we can agree upon, use en-US by default
     if (gCorrectedPOSIXLocale == NULL) {
-        gCorrectedPOSIXLocale = "en_US";
+        gCorrectedPOSIXLocale = u8"en_US";
     }
     return gCorrectedPOSIXLocale;
 
 #elif U_PLATFORM == U_PF_OS400
     /* locales are process scoped and are by definition thread safe */
     static char correctedLocale[64];
-    const  char *localeID = getenv("LC_ALL");
+    const  char *localeID = getenv(u8"LC_ALL");
            char *p;
 
     if (localeID == NULL)
-        localeID = getenv("LANG");
+        localeID = getenv(u8"LANG");
     if (localeID == NULL)
         localeID = setlocale(LC_ALL, NULL);
     /* Make sure we have something... */
     if (localeID == NULL)
-        return "en_US_POSIX";
+        return u8"en_US_POSIX";
 
     /* Extract the locale name from the path. */
-    if((p = uprv_strrchr(localeID, '/')) != NULL)
+    if((p = uprv_strrchr(localeID, '\x2f')) != NULL)
     {
         /* Increment p to start of locale name. */
         p++;
@@ -1858,7 +1858,7 @@ The leftmost codepage (.xxx) wins.
     uprv_strcpy(correctedLocale, localeID);
 
     /* Strip off the '.locale' extension. */
-    if((p = uprv_strchr(correctedLocale, '.')) != NULL) {
+    if((p = uprv_strchr(correctedLocale, '\x2e')) != NULL) {
         *p = 0;
     }
 
@@ -1872,35 +1872,35 @@ The leftmost codepage (.xxx) wins.
     * QLGPGCMA_4 means UTF-32
     * QLGPGCMA_8 means UTF-8
     */
-    if ((uprv_strcmp("C", correctedLocale) == 0) ||
-        (uprv_strcmp("POSIX", correctedLocale) == 0) ||
-        (uprv_strncmp("QLGPGCMA", correctedLocale, 8) == 0))
+    if ((uprv_strcmp(u8"C", correctedLocale) == 0) ||
+        (uprv_strcmp(u8"POSIX", correctedLocale) == 0) ||
+        (uprv_strncmp(u8"QLGPGCMA", correctedLocale, 8) == 0))
     {
-        uprv_strcpy(correctedLocale, "en_US_POSIX");
+        uprv_strcpy(correctedLocale, u8"en_US_POSIX");
     }
     else
     {
         int16_t LocaleLen;
 
         /* Lower case the lang portion. */
-        for(p = correctedLocale; *p != 0 && *p != '_'; p++)
+        for(p = correctedLocale; *p != 0 && *p != '\x5f'; p++)
         {
             *p = uprv_tolower(*p);
         }
 
         /* Adjust for Euro.  After '_E' add 'URO'. */
         LocaleLen = uprv_strlen(correctedLocale);
-        if (correctedLocale[LocaleLen - 2] == '_' &&
-            correctedLocale[LocaleLen - 1] == 'E')
+        if (correctedLocale[LocaleLen - 2] == '\x5f' &&
+            correctedLocale[LocaleLen - 1] == '\x45')
         {
-            uprv_strcat(correctedLocale, "URO");
+            uprv_strcat(correctedLocale, u8"URO");
         }
 
         /* If using Lotus-based locale then convert to
          * equivalent non Lotus.
          */
-        else if (correctedLocale[LocaleLen - 2] == '_' &&
-            correctedLocale[LocaleLen - 1] == 'L')
+        else if (correctedLocale[LocaleLen - 2] == '\x5f' &&
+            correctedLocale[LocaleLen - 1] == '\x4c')
         {
             correctedLocale[LocaleLen - 2] = 0;
         }
@@ -1908,16 +1908,16 @@ The leftmost codepage (.xxx) wins.
         /* There are separate simplified and traditional
          * locales called zh_HK_S and zh_HK_T.
          */
-        else if (uprv_strncmp(correctedLocale, "zh_HK", 5) == 0)
+        else if (uprv_strncmp(correctedLocale, u8"zh_HK", 5) == 0)
         {
-            uprv_strcpy(correctedLocale, "zh_HK");
+            uprv_strcpy(correctedLocale, u8"zh_HK");
         }
 
         /* A special zh_CN_GBK locale...
         */
-        else if (uprv_strcmp(correctedLocale, "zh_CN_GBK") == 0)
+        else if (uprv_strcmp(correctedLocale, u8"zh_CN_GBK") == 0)
         {
-            uprv_strcpy(correctedLocale, "zh_CN");
+            uprv_strcpy(correctedLocale, u8"zh_CN");
         }
 
     }
@@ -1946,40 +1946,40 @@ remapPlatformDependentCodepage(const char *locale, const char *name) {
         return NULL;
     }
 #if U_PLATFORM == U_PF_AIX
-    if (uprv_strcmp(name, "IBM-943") == 0) {
+    if (uprv_strcmp(name, u8"IBM-943") == 0) {
         /* Use the ASCII compatible ibm-943 */
-        name = "Shift-JIS";
+        name = u8"Shift-JIS";
     }
-    else if (uprv_strcmp(name, "IBM-1252") == 0) {
+    else if (uprv_strcmp(name, u8"IBM-1252") == 0) {
         /* Use the windows-1252 that contains the Euro */
-        name = "IBM-5348";
+        name = u8"IBM-5348";
     }
 #elif U_PLATFORM == U_PF_SOLARIS
-    if (locale != NULL && uprv_strcmp(name, "EUC") == 0) {
+    if (locale != NULL && uprv_strcmp(name, u8"EUC") == 0) {
         /* Solaris underspecifies the "EUC" name. */
-        if (uprv_strcmp(locale, "zh_CN") == 0) {
-            name = "EUC-CN";
+        if (uprv_strcmp(locale, u8"zh_CN") == 0) {
+            name = u8"EUC-CN";
         }
-        else if (uprv_strcmp(locale, "zh_TW") == 0) {
-            name = "EUC-TW";
+        else if (uprv_strcmp(locale, u8"zh_TW") == 0) {
+            name = u8"EUC-TW";
         }
-        else if (uprv_strcmp(locale, "ko_KR") == 0) {
-            name = "EUC-KR";
+        else if (uprv_strcmp(locale, u8"ko_KR") == 0) {
+            name = u8"EUC-KR";
         }
     }
-    else if (uprv_strcmp(name, "eucJP") == 0) {
+    else if (uprv_strcmp(name, u8"eucJP") == 0) {
         /*
         ibm-954 is the best match.
         ibm-33722 is the default for eucJP (similar to Windows).
         */
-        name = "eucjis";
+        name = u8"eucjis";
     }
-    else if (uprv_strcmp(name, "646") == 0) {
+    else if (uprv_strcmp(name, u8"646") == 0) {
         /*
          * The default codepage given by Solaris is 646 but the C library routines treat it as if it was
          * ISO-8859-1 instead of US-ASCII(646).
          */
-        name = "ISO-8859-1";
+        name = u8"ISO-8859-1";
     }
 #elif U_PLATFORM_IS_DARWIN_BASED
     if (locale == NULL && *name == 0) {
@@ -1988,62 +1988,62 @@ remapPlatformDependentCodepage(const char *locale, const char *name) {
         This usually indicates that nl_langinfo didn't return valid information.
         Mac OS X uses UTF-8 by default (especially the locale data and console).
         */
-        name = "UTF-8";
+        name = u8"UTF-8";
     }
-    else if (uprv_strcmp(name, "CP949") == 0) {
+    else if (uprv_strcmp(name, u8"CP949") == 0) {
         /* Remap CP949 to a similar codepage to avoid issues with backslash and won symbol. */
-        name = "EUC-KR";
+        name = u8"EUC-KR";
     }
-    else if (locale != NULL && uprv_strcmp(locale, "en_US_POSIX") != 0 && uprv_strcmp(name, "US-ASCII") == 0) {
+    else if (locale != NULL && uprv_strcmp(locale, u8"en_US_POSIX") != 0 && uprv_strcmp(name, u8"US-ASCII") == 0) {
         /*
          * For non C/POSIX locale, default the code page to UTF-8 instead of US-ASCII.
          */
-        name = "UTF-8";
+        name = u8"UTF-8";
     }
 #elif U_PLATFORM == U_PF_BSD
-    if (uprv_strcmp(name, "CP949") == 0) {
+    if (uprv_strcmp(name, u8"CP949") == 0) {
         /* Remap CP949 to a similar codepage to avoid issues with backslash and won symbol. */
-        name = "EUC-KR";
+        name = u8"EUC-KR";
     }
 #elif U_PLATFORM == U_PF_HPUX
-    if (locale != NULL && uprv_strcmp(locale, "zh_HK") == 0 && uprv_strcmp(name, "big5") == 0) {
+    if (locale != NULL && uprv_strcmp(locale, u8"zh_HK") == 0 && uprv_strcmp(name, u8"big5") == 0) {
         /* HP decided to extend big5 as hkbig5 even though it's not compatible :-( */
         /* zh_TW.big5 is not the same charset as zh_HK.big5! */
-        name = "hkbig5";
+        name = u8"hkbig5";
     }
-    else if (uprv_strcmp(name, "eucJP") == 0) {
+    else if (uprv_strcmp(name, u8"eucJP") == 0) {
         /*
         ibm-1350 is the best match, but unavailable.
         ibm-954 is mostly a superset of ibm-1350.
         ibm-33722 is the default for eucJP (similar to Windows).
         */
-        name = "eucjis";
+        name = u8"eucjis";
     }
 #elif U_PLATFORM == U_PF_LINUX
-    if (locale != NULL && uprv_strcmp(name, "euc") == 0) {
+    if (locale != NULL && uprv_strcmp(name, u8"euc") == 0) {
         /* Linux underspecifies the "EUC" name. */
-        if (uprv_strcmp(locale, "korean") == 0) {
-            name = "EUC-KR";
+        if (uprv_strcmp(locale, u8"korean") == 0) {
+            name = u8"EUC-KR";
         }
-        else if (uprv_strcmp(locale, "japanese") == 0) {
+        else if (uprv_strcmp(locale, u8"japanese") == 0) {
             /* See comment below about eucJP */
-            name = "eucjis";
+            name = u8"eucjis";
         }
     }
-    else if (uprv_strcmp(name, "eucjp") == 0) {
+    else if (uprv_strcmp(name, u8"eucjp") == 0) {
         /*
         ibm-1350 is the best match, but unavailable.
         ibm-954 is mostly a superset of ibm-1350.
         ibm-33722 is the default for eucJP (similar to Windows).
         */
-        name = "eucjis";
+        name = u8"eucjis";
     }
-    else if (locale != NULL && uprv_strcmp(locale, "en_US_POSIX") != 0 &&
-            (uprv_strcmp(name, "ANSI_X3.4-1968") == 0 || uprv_strcmp(name, "US-ASCII") == 0)) {
+    else if (locale != NULL && uprv_strcmp(locale, u8"en_US_POSIX") != 0 &&
+            (uprv_strcmp(name, u8"ANSI_X3.4-1968") == 0 || uprv_strcmp(name, u8"US-ASCII") == 0)) {
         /*
          * For non C/POSIX locale, default the code page to UTF-8 instead of US-ASCII.
          */
-        name = "UTF-8";
+        name = u8"UTF-8";
     }
     /*
      * Linux returns ANSI_X3.4-1968 for C/POSIX, but the call site takes care of
@@ -2065,13 +2065,13 @@ getCodepageFromPOSIXID(const char *localeName, char * buffer, int32_t buffCapaci
     const char *name = NULL;
     char *variant = NULL;
 
-    if (localeName != NULL && (name = (uprv_strchr(localeName, '.'))) != NULL) {
+    if (localeName != NULL && (name = (uprv_strchr(localeName, '\x2e'))) != NULL) {
         size_t localeCapacity = uprv_min(sizeof(localeBuf), (name-localeName)+1);
         uprv_strncpy(localeBuf, localeName, localeCapacity);
         localeBuf[localeCapacity-1] = 0; /* ensure NULL termination */
         name = uprv_strncpy(buffer, name+1, buffCapacity);
         buffer[buffCapacity-1] = 0; /* ensure NULL termination */
-        if ((variant = const_cast<char *>(uprv_strchr(name, '@'))) != NULL) {
+        if ((variant = const_cast<char *>(uprv_strchr(name, '\x40'))) != NULL) {
             *variant = 0;
         }
         name = remapPlatformDependentCodepage(localeBuf, name);
@@ -2089,8 +2089,8 @@ int_getDefaultCodepage()
     Qwc_JOBI0400_t jobinfo;
     Qus_EC_t error = { sizeof(Qus_EC_t) }; /* SPI error code */
 
-    EPT_CALL(QUSRJOBI)(&jobinfo, sizeof(jobinfo), "JOBI0400",
-        "*                         ", "                ", &error);
+    EPT_CALL(QUSRJOBI)(&jobinfo, sizeof(jobinfo), u8"JOBI0400",
+        u8"*                         ", u8"                ", &error);
 
     if (error.Bytes_Available == 0) {
         if (jobinfo.Coded_Char_Set_ID != 0xFFFF) {
@@ -2101,10 +2101,11 @@ int_getDefaultCodepage()
         }
         /* else use the default */
     }
-    sprintf(codepage,"ibm-%d", ccsid);
+    sprintf(codepage,u8"ibm-%d", ccsid);
     return codepage;
 
 #elif U_PLATFORM == U_PF_OS390
+#define UCNV_SWAP_LFNL_OPTION_STRING u8",swaplfnl"
     static char codepage[64];
 
     strncpy(codepage, nl_langinfo(CODESET),63-strlen(UCNV_SWAP_LFNL_OPTION_STRING));
@@ -2131,18 +2132,18 @@ int_getDefaultCodepage()
     // Special case for UTF-8
     if (codepageNumber == 65001)
     {
-        return "UTF-8";
+        return u8"UTF-8";
     }
     // Windows codepages can look like windows-1252, so format the found number
     // the numbers are eclectic, however all valid system code pages, besides UTF-8
     // are between 3 and 19999
     if (codepageNumber > 0 && codepageNumber < 20000)
     {
-        sprintf(codepage, "windows-%ld", codepageNumber);
+        sprintf(codepage, u8"windows-%ld", codepageNumber);
         return codepage;
     }
     // If the codepage number call failed then return UTF-8
-    return "UTF-8";
+    return u8"UTF-8";
 
 #elif U_POSIX_LOCALE
     static char codesetName[100];
@@ -2165,7 +2166,7 @@ int_getDefaultCodepage()
          * On Linux and MacOSX, ensure that default codepage for non C/POSIX locale is UTF-8
          * instead of ASCII.
          */
-        if (uprv_strcmp(localeName, "en_US_POSIX") != 0) {
+        if (uprv_strcmp(localeName, u8"en_US_POSIX") != 0) {
             codeset = remapPlatformDependentCodepage(localeName, codeset);
         } else
 #endif
@@ -2194,11 +2195,11 @@ int_getDefaultCodepage()
     if (*codesetName == 0)
     {
         /* Everything failed. Return US ASCII (ISO 646). */
-        (void)uprv_strcpy(codesetName, "US-ASCII");
+        (void)uprv_strcpy(codesetName, u8"US-ASCII");
     }
     return codesetName;
 #else
-    return "US-ASCII";
+    return u8"US-ASCII";
 #endif
 }
 
@@ -2285,14 +2286,14 @@ u_versionToString(const UVersionInfo versionArray, char *versionString) {
     /* write the decimal field value */
     field=versionArray[0];
     if(field>=100) {
-        *versionString++=(char)('0'+field/100);
+        *versionString++=(char)('\x30'+field/100);
         field%=100;
     }
     if(field>=10) {
-        *versionString++=(char)('0'+field/10);
+        *versionString++=(char)('\x30'+field/10);
         field%=10;
     }
-    *versionString++=(char)('0'+field);
+    *versionString++=(char)('\x30'+field);
 
     /* write the following parts */
     for(part=1; part<count; ++part) {
@@ -2302,14 +2303,14 @@ u_versionToString(const UVersionInfo versionArray, char *versionString) {
         /* write the decimal field value */
         field=versionArray[part];
         if(field>=100) {
-            *versionString++=(char)('0'+field/100);
+            *versionString++=(char)('\x30'+field/100);
             field%=100;
         }
         if(field>=10) {
-            *versionString++=(char)('0'+field/10);
+            *versionString++=(char)('\x30'+field/10);
             field%=10;
         }
-        *versionString++=(char)('0'+field);
+        *versionString++=(char)('\x30'+field);
     }
 
     /* NUL-terminate */
@@ -2347,7 +2348,7 @@ uprv_dl_open(const char *libName, UErrorCode *status) {
   ret =  dlopen(libName, RTLD_NOW|RTLD_GLOBAL);
   if(ret==NULL) {
 #ifdef U_TRACE_DYLOAD
-    printf("dlerror on dlopen(%s): %s\n", libName, dlerror());
+    printf(u8"dlerror on dlopen(%s): %s\n", libName, dlerror());
 #endif
     *status = U_MISSING_RESOURCE_ERROR;
   }
@@ -2371,7 +2372,7 @@ uprv_dlsym_func(void *lib, const char* sym, UErrorCode *status) {
   uret.vp = dlsym(lib, sym);
   if(uret.vp == NULL) {
 #ifdef U_TRACE_DYLOAD
-    printf("dlerror on dlsym(%p,%s): %s\n", lib,sym, dlerror());
+    printf(u8"dlerror on dlsym(%p,%s): %s\n", lib,sym, dlerror());
 #endif
     *status = U_MISSING_RESOURCE_ERROR;
   }

@@ -80,12 +80,12 @@ U_NAMESPACE_BEGIN
 #include <stdio.h>
 static void _debugout(const char *f, int l, const UnicodeString& s) {
     char buf[2000];
-    s.extract((int32_t) 0, s.length(), buf, "utf-8");
-    printf("%s:%d: %s\n", f,l, buf);
+    s.extract((int32_t) 0, s.length(), buf, u8"utf-8");
+    printf(u8"%s:%d: %s\n", f,l, buf);
 }
 #define debugout(x) _debugout(__FILE__,__LINE__,x)
-#define debug(x) printf("%s:%d: %s\n", __FILE__,__LINE__, x);
-static const UnicodeString dbg_null("<NULL>","");
+#define debug(x) printf(u8"%s:%d: %s\n", __FILE__,__LINE__, x);
+static const UnicodeString dbg_null(u8"<NULL>",u8"");
 #define DEREFSTR(x)   ((x!=NULL)?(*x):(dbg_null))
 #else
 #define debugout(x)
@@ -123,11 +123,11 @@ struct AffixPatternsForCurrency : public UMemory {
 	}
 #ifdef FMT_DEBUG
   void dump() const  {
-    debugout( UnicodeString("AffixPatternsForCurrency( -=\"") +
-              negPrefixPatternForCurrency + (UnicodeString)"\"/\"" +
-              negSuffixPatternForCurrency + (UnicodeString)"\" +=\"" +
-              posPrefixPatternForCurrency + (UnicodeString)"\"/\"" +
-              posSuffixPatternForCurrency + (UnicodeString)"\" )");
+    debugout( UnicodeString(u8"AffixPatternsForCurrency( -=\"") +
+              negPrefixPatternForCurrency + (UnicodeString)u8"\"/\"" +
+              negSuffixPatternForCurrency + (UnicodeString)u8"\" +=\"" +
+              posPrefixPatternForCurrency + (UnicodeString)u8"\"/\"" +
+              posSuffixPatternForCurrency + (UnicodeString)u8"\" )");
   }
 #endif
 };
@@ -159,11 +159,11 @@ struct AffixesForCurrency : public UMemory {
 	}
 #ifdef FMT_DEBUG
   void dump() const {
-    debugout( UnicodeString("AffixesForCurrency( -=\"") +
-              negPrefixForCurrency + (UnicodeString)"\"/\"" +
-              negSuffixForCurrency + (UnicodeString)"\" +=\"" +
-              posPrefixForCurrency + (UnicodeString)"\"/\"" +
-              posSuffixForCurrency + (UnicodeString)"\" )");
+    debugout( UnicodeString(u8"AffixesForCurrency( -=\"") +
+              negPrefixForCurrency + (UnicodeString)u8"\"/\"" +
+              negSuffixForCurrency + (UnicodeString)u8"\" +=\"" +
+              posPrefixForCurrency + (UnicodeString)u8"\"/\"" +
+              posSuffixForCurrency + (UnicodeString)u8"\" )");
   }
 #endif
 };
@@ -205,19 +205,19 @@ U_CDECL_END
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(DecimalFormat)
 
 // Constants for characters used in programmatic (unlocalized) patterns.
-#define kPatternZeroDigit            ((UChar)0x0030) /*'0'*/
-#define kPatternSignificantDigit     ((UChar)0x0040) /*'@'*/
-#define kPatternGroupingSeparator    ((UChar)0x002C) /*','*/
-#define kPatternDecimalSeparator     ((UChar)0x002E) /*'.'*/
+#define kPatternZeroDigit            ((UChar)0x0030) /*'\x30'*/
+#define kPatternSignificantDigit     ((UChar)0x0040) /*'\x40'*/
+#define kPatternGroupingSeparator    ((UChar)0x002C) /*'\x2c'*/
+#define kPatternDecimalSeparator     ((UChar)0x002E) /*'\x2e'*/
 #define kPatternPerMill              ((UChar)0x2030)
-#define kPatternPercent              ((UChar)0x0025) /*'%'*/
-#define kPatternDigit                ((UChar)0x0023) /*'#'*/
-#define kPatternSeparator            ((UChar)0x003B) /*';'*/
-#define kPatternExponent             ((UChar)0x0045) /*'E'*/
-#define kPatternPlus                 ((UChar)0x002B) /*'+'*/
-#define kPatternMinus                ((UChar)0x002D) /*'-'*/
-#define kPatternPadEscape            ((UChar)0x002A) /*'*'*/
-#define kQuote                       ((UChar)0x0027) /*'\''*/
+#define kPatternPercent              ((UChar)0x0025) /*'\x25'*/
+#define kPatternDigit                ((UChar)0x0023) /*'\x23'*/
+#define kPatternSeparator            ((UChar)0x003B) /*'\x3b'*/
+#define kPatternExponent             ((UChar)0x0045) /*'\x45'*/
+#define kPatternPlus                 ((UChar)0x002B) /*'\x2b'*/
+#define kPatternMinus                ((UChar)0x002D) /*'\x2d'*/
+#define kPatternPadEscape            ((UChar)0x002A) /*'\x2a'*/
+#define kQuote                       ((UChar)0x0027) /*'\x27'*/
 /**
  * The CURRENCY_SIGN is the standard Unicode symbol for currency.  It
  * is used in patterns and substitued with either the currency symbol,
@@ -237,12 +237,12 @@ const int32_t DecimalFormat::kMaxScientificIntegerDigits = 8;
  * These are the tags we expect to see in normal resource bundle files associated
  * with a locale.
  */
-const char DecimalFormat::fgNumberPatterns[]="NumberPatterns"; // Deprecated - not used
-static const char fgNumberElements[]="NumberElements";
-static const char fgLatn[]="latn";
-static const char fgPatterns[]="patterns";
-static const char fgDecimalFormat[]="decimalFormat";
-static const char fgCurrencyFormat[]="currencyFormat";
+const char DecimalFormat::fgNumberPatterns[]=u8"NumberPatterns"; // Deprecated - not used
+static const char fgNumberElements[]=u8"NumberElements";
+static const char fgLatn[]=u8"latn";
+static const char fgPatterns[]=u8"patterns";
+static const char fgDecimalFormat[]=u8"decimalFormat";
+static const char fgCurrencyFormat[]=u8"currencyFormat";
 
 inline int32_t _min(int32_t a, int32_t b) { return (a<b) ? a : b; }
 inline int32_t _max(int32_t a, int32_t b) { return (a<b) ? b : a; }
@@ -1003,7 +1003,7 @@ void DecimalFormat::parse(const UnicodeString& text,
                       &fImpl->fAffixes.fPositiveSuffix.getOtherVariant().toString(),
                       FALSE, UCURR_SYMBOL_NAME,
                       parsePosition, *digits, status, currency)) {
-            debug("!subparse(...) - rewind");
+            debug(u8"!subparse(...) - rewind");
             parsePosition.setIndex(startIdx);
             return;
         }
@@ -1113,7 +1113,7 @@ DecimalFormat::parseForCurrency(const UnicodeString& text,
         DigitList tmpDigitList;
 
 #ifdef FMT_DEBUG
-        debug("trying affix for currency..");
+        debug(u8"trying affix for currency..");
         affixPtn->dump();
 #endif
 
@@ -1243,8 +1243,8 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
 #ifdef FMT_DEBUG
     UChar dbgbuf[300];
     UnicodeString s(dbgbuf,0,300);;
-    s.append((UnicodeString)"PARSE \"").append(text.tempSubString(position)).append((UnicodeString)"\" " );
-#define DBGAPPD(x) if(x) { s.append(UnicodeString(#x "="));  if(x->isEmpty()) { s.append(UnicodeString("<empty>")); } else { s.append(*x); } s.append(UnicodeString(" ")); } else { s.append(UnicodeString(#x "=NULL ")); }
+    s.append((UnicodeString)u8"PARSE \"").append(text.tempSubString(position)).append((UnicodeString)u8"\" " );
+#define DBGAPPD(x) if(x) { s.append(UnicodeString( USTR(#x) u8"="));  if(x->isEmpty()) { s.append(UnicodeString(u8"<empty>")); } else { s.append(*x); } s.append(UnicodeString(u8" ")); } else { s.append(UnicodeString( USTR(#x) u8"=NULL ")); }
     DBGAPPD(negPrefix);
     DBGAPPD(negSuffix);
     DBGAPPD(posPrefix);
@@ -1284,12 +1284,12 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
       }
 
 #ifdef FMT_DEBUG
-      printf("Preparing to do fastpath parse: decimalChar=U+%04X, groupingChar=U+%04X, first ch=U+%04X intOnly=%c strictParse=%c\n",
+      printf(u8"Preparing to do fastpath parse: decimalChar=U+%04X, groupingChar=U+%04X, first ch=U+%04X intOnly=%c strictParse=%c\n",
         decimalChar, groupingChar, ch,
-        (intOnly)?'y':'n',
-        (strictParse)?'y':'n');
+        (intOnly)?'\x79':'\x6e',
+        (strictParse)?'\x79':'\x6e');
 #endif
-      if(ch==0x002D) { // '-'
+      if(ch==0x002D) { // '\x2d'
         j=l+1;//=break - negative number.
 
         /*
@@ -1298,12 +1298,12 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
           if(j<l) ch = text.char32At(j);
         */
       } else {
-        parsedNum.append('+',err);
+        parsedNum.append('\x2b',err);
       }
       while(j<l) {
         int32_t digit = ch - zero;
         if(digit >=0 && digit <= 9) {
-          parsedNum.append((char)(digit + '0'), err);
+          parsedNum.append((char)(digit + '\x30'), err);
           if((digitCount>0) || digit!=0 || j==(l-1)) {
             digitCount++;
           }
@@ -1311,7 +1311,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
           digitCount=-1;
           break;
         } else if(ch == decimalChar) {
-          parsedNum.append((char)('.'), err);
+          parsedNum.append((char)('\x2e'), err);
           decimalChar=0; // no more decimals.
           // fastParseHadDecimal=TRUE;
         } else if(ch == lookForGroup) {
@@ -1331,7 +1331,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
         fastParseOk=true; // Fast parse OK!
 
 #ifdef SKIP_OPT
-        debug("SKIP_OPT");
+        debug(u8"SKIP_OPT");
         /* for testing, try it the slow way. also */
         fastParseOk=false;
         parsedNum.clear();
@@ -1342,17 +1342,17 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
       } else {
         // was not OK. reset, retry
 #ifdef FMT_DEBUG
-        printf("Fall through: j=%d, l=%d, digitCount=%d\n", j, l, digitCount);
+        printf(u8"Fall through: j=%d, l=%d, digitCount=%d\n", j, l, digitCount);
 #endif
         parsedNum.clear();
       }
     } else {
 #ifdef FMT_DEBUG
-      printf("Could not fastpath parse. ");
-      printf("text.length()=%d ", text.length());
-      printf("posPrefix=%p posSuffix=%p ", posPrefix, posSuffix);
+      printf(u8"Could not fastpath parse. ");
+      printf(u8"text.length()=%d ", text.length());
+      printf(u8"posPrefix=%p posSuffix=%p ", posPrefix, posSuffix);
 
-      printf("\n");
+      printf(u8"\n");
 #endif
     }
 
@@ -1383,16 +1383,16 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
     }
     if (posMatch >= 0) {
         position += posMatch;
-        parsedNum.append('+', err);
+        parsedNum.append('\x2b', err);
     } else if (negMatch >= 0) {
         position += negMatch;
-        parsedNum.append('-', err);
+        parsedNum.append('\x2d', err);
     } else if (strictParse){
         parsePosition.setErrorIndex(position);
         return FALSE;
     } else {
         // Temporary set positive. This might be changed after checking suffix
-        parsedNum.append('+', err);
+        parsedNum.append('\x2b', err);
     }
 
     // Match padding before prefix
@@ -1412,7 +1412,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
     status[fgStatusInfinite] = infLen != 0;
 
     if (infLen != 0) {
-        parsedNum.append("Infinity", err);
+        parsedNum.append(u8"Infinity", err);
     } else {
         // We now have a string of digits, possibly with grouping symbols,
         // and decimal points.  We want to process these into a DigitList.
@@ -1527,7 +1527,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
                 sawDigit = TRUE;
 
                 // Note: this will append leading zeros
-                parsedNum.append((char)(digit + '0'), err);
+                parsedNum.append((char)(digit + '\x30'), err);
 
                 // count any digit that's not a leading zero
                 if (digit > 0 || digitCount > 0 || sawDecimal) {
@@ -1583,7 +1583,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
                     break;
                 }
 
-                parsedNum.append('.', err);
+                parsedNum.append('\x2e', err);
                 position += decimalStringLength;
                 sawDecimal = TRUE;
                 // Once we see a decimal character, we only accept that decimal character from then on.
@@ -1601,7 +1601,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
                     {
                         // Parse sign, if present
                         int32_t pos = position + tmp->length();
-                        char exponentSign = '+';
+                        char exponentSign = '\x2b';
 
                         if (pos < textLength)
                         {
@@ -1614,7 +1614,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
                                 tmp = &fImpl->getConstSymbol(DecimalFormatSymbols::kMinusSignSymbol);
                                 if (!text.compare(pos, tmp->length(), *tmp))
                                 {
-                                    exponentSign = '-';
+                                    exponentSign = '\x2d';
                                     pos += tmp->length();
                                 }
                             }
@@ -1630,12 +1630,12 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
                             }
                             if (0 <= digit && digit <= 9) {
                                 if (!sawExponentDigit) {
-                                    parsedNum.append('E', err);
+                                    parsedNum.append('\x45', err);
                                     parsedNum.append(exponentSign, err);
                                     sawExponentDigit = TRUE;
                                 }
                                 ++pos;
-                                parsedNum.append((char)(digit + '0'), err);
+                                parsedNum.append((char)(digit + '\x30'), err);
                             } else {
                                 break;
                             }
@@ -1662,7 +1662,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
             {
                 parsePosition.setIndex(oldStart);
                 parsePosition.setErrorIndex(position);
-                debug("decimal point match required fail!");
+                debug(u8"decimal point match required fail!");
                 return FALSE;
             }
         }
@@ -1683,7 +1683,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
 
             parsePosition.setIndex(oldStart);
             parsePosition.setErrorIndex(position);
-            debug("strictFail!");
+            debug(u8"strictFail!");
             return FALSE;
         }
 
@@ -1695,8 +1695,8 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
         // 1).
         if (!sawDigit && digitCount == 0) {
 #ifdef FMT_DEBUG
-            debug("none of text rec");
-            printf("position=%d\n",position);
+            debug(u8"none of text rec");
+            printf(u8"position=%d\n",position);
 #endif
             parsePosition.setIndex(oldStart);
             parsePosition.setErrorIndex(oldStart);
@@ -1729,7 +1729,7 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
     // Fail if neither or both
     if (strictParse && ((posSuffixMatch >= 0) == (negSuffixMatch >= 0))) {
         parsePosition.setErrorIndex(position);
-        debug("neither or both");
+        debug(u8"neither or both");
         return FALSE;
     }
 
@@ -1742,15 +1742,15 @@ UBool DecimalFormat::subparse(const UnicodeString& text,
 
     parsePosition.setIndex(position);
 
-    parsedNum.data()[0] = (posSuffixMatch >= 0 || (!strictParse && negMatch < 0 && negSuffixMatch < 0)) ? '+' : '-';
+    parsedNum.data()[0] = (posSuffixMatch >= 0 || (!strictParse && negMatch < 0 && negSuffixMatch < 0)) ? '\x2b' : '\x2d';
 #ifdef FMT_DEBUG
-printf("PP -> %d, SLOW = [%s]!    pp=%d, os=%d, err=%s\n", position, parsedNum.data(), parsePosition.getIndex(),oldStart,u_errorName(err));
+printf(u8"PP -> %d, SLOW = [%s]!    pp=%d, os=%d, err=%s\n", position, parsedNum.data(), parsePosition.getIndex(),oldStart,u_errorName(err));
 #endif
   } /* end SLOW parse */
   if(parsePosition.getIndex() == oldStart)
     {
 #ifdef FMT_DEBUG
-      printf(" PP didnt move, err\n");
+      printf(u8" PP didnt move, err\n");
 #endif
         parsePosition.setErrorIndex(position);
         return FALSE;
@@ -1759,7 +1759,7 @@ printf("PP -> %d, SLOW = [%s]!    pp=%d, os=%d, err=%s\n", position, parsedNum.d
   else if (fParseAllInput==UNUM_YES&&parsePosition.getIndex()!=textLength)
     {
 #ifdef FMT_DEBUG
-      printf(" PP didnt consume all (UNUM_YES), err\n");
+      printf(u8" PP didnt consume all (UNUM_YES), err\n");
 #endif
         parsePosition.setErrorIndex(position);
         return FALSE;
@@ -1775,7 +1775,7 @@ printf("PP -> %d, SLOW = [%s]!    pp=%d, os=%d, err=%s\n", position, parsedNum.d
 
     if (U_FAILURE(err)) {
 #ifdef FMT_DEBUG
-      printf(" err setting %s\n", u_errorName(err));
+      printf(u8" err setting %s\n", u_errorName(err));
 #endif
         parsePosition.setErrorIndex(position);
         return FALSE;
@@ -1788,7 +1788,7 @@ printf("PP -> %d, SLOW = [%s]!    pp=%d, os=%d, err=%s\n", position, parsedNum.d
         {
             parsePosition.setIndex(oldStart);
             parsePosition.setErrorIndex(position);
-            debug("decimal point match required fail!");
+            debug(u8"decimal point match required fail!");
             return FALSE;
         }
     }

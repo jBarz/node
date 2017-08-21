@@ -292,44 +292,44 @@ static int32_t serial(const RBBINode *node) {
 
 void RBBINode::printNode(const RBBINode *node) {
     static const char * const nodeTypeNames[] = {
-                "setRef",
-                "uset",
-                "varRef",
-                "leafChar",
-                "lookAhead",
-                "tag",
-                "endMark",
-                "opStart",
-                "opCat",
-                "opOr",
-                "opStar",
-                "opPlus",
-                "opQuestion",
-                "opBreak",
-                "opReverse",
-                "opLParen"
+                u8"setRef",
+                u8"uset",
+                u8"varRef",
+                u8"leafChar",
+                u8"lookAhead",
+                u8"tag",
+                u8"endMark",
+                u8"opStart",
+                u8"opCat",
+                u8"opOr",
+                u8"opStar",
+                u8"opPlus",
+                u8"opQuestion",
+                u8"opBreak",
+                u8"opReverse",
+                u8"opLParen"
     };
 
     if (node==NULL) {
-        RBBIDebugPrintf("%10p", (void *)node);
+        RBBIDebugPrintf(u8"%10p", (void *)node);
     } else {
-        RBBIDebugPrintf("%10p %5d %12s %c%c  %5d       %5d     %5d       %6d     %d ",
+        RBBIDebugPrintf(u8"%10p %5d %12s %c%c  %5d       %5d     %5d       %6d     %d ",
             (void *)node, node->fSerialNum, nodeTypeNames[node->fType],
-            node->fRuleRoot?'R':' ', node->fChainIn?'C':' ',
+            node->fRuleRoot?'\x52':'\x20', node->fChainIn?'\x43':'\x20',
             serial(node->fLeftChild), serial(node->fRightChild), serial(node->fParent),
             node->fFirstPos, node->fVal);
         if (node->fType == varRef) {
             RBBI_DEBUG_printUnicodeString(node->fText);
         }
     }
-    RBBIDebugPrintf("\n");
+    RBBIDebugPrintf(u8"\n");
 }
 #endif
 
 
 #ifdef RBBI_DEBUG
 U_CFUNC void RBBI_DEBUG_printUnicodeString(const UnicodeString &s, int minWidth) {
-    RBBIDebugPrintf("%*s", minWidth, CStr(s)());
+    RBBIDebugPrintf(u8"%*s", minWidth, CStr(s)());
 }
 #endif
 
@@ -341,7 +341,7 @@ U_CFUNC void RBBI_DEBUG_printUnicodeString(const UnicodeString &s, int minWidth)
 //-------------------------------------------------------------------------
 #ifdef RBBI_DEBUG
 void RBBINode::printNodeHeader() {
-    RBBIDebugPrintf(" Address   serial        type     LeftChild  RightChild   Parent   position value\n");
+    RBBIDebugPrintf(u8" Address   serial        type     LeftChild  RightChild   Parent   position value\n");
 }
 
 void RBBINode::printTree(const RBBINode *node, UBool printHeading) {

@@ -26,14 +26,14 @@
 U_NAMESPACE_BEGIN
 
 DigitFormatter::DigitFormatter()
-        : fGroupingSeparator(",", -1, US_INV), fDecimal(".", -1, US_INV),
-          fNegativeSign("-", -1, US_INV), fPositiveSign("+", -1, US_INV),
-          fIsStandardDigits(TRUE), fExponent("E", -1, US_INV) {
+        : fGroupingSeparator(u8",", -1, US_INV), fDecimal(u8".", -1, US_INV),
+          fNegativeSign(u8"-", -1, US_INV), fPositiveSign(u8"+", -1, US_INV),
+          fIsStandardDigits(TRUE), fExponent(u8"E", -1, US_INV) {
     for (int32_t i = 0; i < 10; ++i) {
         fLocalizedDigits[i] = (UChar32) (0x30 + i);
     }
-    fInfinity.setTo(UnicodeString("Inf", -1, US_INV), UNUM_INTEGER_FIELD);
-    fNan.setTo(UnicodeString("Nan", -1, US_INV), UNUM_INTEGER_FIELD);
+    fInfinity.setTo(UnicodeString(u8"Inf", -1, US_INV), UNUM_INTEGER_FIELD);
+    fNan.setTo(UnicodeString(u8"Nan", -1, US_INV), UNUM_INTEGER_FIELD);
 }
 
 DigitFormatter::DigitFormatter(const DecimalFormatSymbols &symbols) {

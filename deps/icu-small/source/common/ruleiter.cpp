@@ -70,7 +70,7 @@ UChar32 RuleCharacterIterator::next(int32_t options, UBool& isEscaped, UErrorCod
             continue;
         }
 
-        if (c == 0x5C /*'\\'*/ && (options & PARSE_ESCAPES) != 0) {
+        if (c == 0x5C /*'\x5c'*/ && (options & PARSE_ESCAPES) != 0) {
             UnicodeString tempEscape;
             int32_t offset = 0;
             c = lookahead(tempEscape, MAX_U_NOTATION_LEN).unescapeAt(offset);

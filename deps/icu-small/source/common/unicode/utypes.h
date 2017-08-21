@@ -77,7 +77,7 @@
  */
 /**
  * \def U_HIDE_INTERNAL_API
- * Define this to 1 to request that internal API be "hidden"
+ * Define this to 1 to request that internal API be u8"hidden"
  * @internal
  */
 #if !U_DEFAULT_SHOW_DRAFT && !defined(U_SHOW_DRAFT_API)
@@ -112,21 +112,21 @@
 #if U_CHARSET_FAMILY
 #   if U_IS_BIG_ENDIAN
    /* EBCDIC - should always be BE */
-#     define U_ICUDATA_TYPE_LETTER "e"
+#     define U_ICUDATA_TYPE_LETTER u8"e"
 #     define U_ICUDATA_TYPE_LITLETTER e
 #   else
-#     error "Don't know what to do with little endian EBCDIC!"
-#     define U_ICUDATA_TYPE_LETTER "x"
+#     error u8"Don't know what to do with little endian EBCDIC!"
+#     define U_ICUDATA_TYPE_LETTER u8"x"
 #     define U_ICUDATA_TYPE_LITLETTER x
 #   endif
 #else
 #   if U_IS_BIG_ENDIAN
       /* Big-endian ASCII */
-#     define U_ICUDATA_TYPE_LETTER "b"
+#     define U_ICUDATA_TYPE_LETTER u8"b"
 #     define U_ICUDATA_TYPE_LITLETTER b
 #   else
       /* Little-endian ASCII */
-#     define U_ICUDATA_TYPE_LETTER "l"
+#     define U_ICUDATA_TYPE_LETTER u8"l"
 #     define U_ICUDATA_TYPE_LITLETTER l
 #   endif
 #endif
@@ -136,9 +136,9 @@
  * ICU 1.8.x on EBCDIC, etc..
  * @stable ICU 2.0
  */
-#define U_ICUDATA_NAME    "icudt" U_ICU_VERSION_SHORT U_ICUDATA_TYPE_LETTER
+#define U_ICUDATA_NAME    u8"icudt" U_ICU_VERSION_SHORT U_ICUDATA_TYPE_LETTER
 #ifndef U_HIDE_INTERNAL_API
-#define U_USRDATA_NAME    "usrdt" U_ICU_VERSION_SHORT U_ICUDATA_TYPE_LETTER  /**< @internal */
+#define U_USRDATA_NAME    u8"usrdt" U_ICU_VERSION_SHORT U_ICUDATA_TYPE_LETTER  /**< @internal */
 #define U_USE_USRDATA     0  /**< @internal */
 #endif  /* U_HIDE_INTERNAL_API */
 
@@ -472,7 +472,7 @@ typedef enum UErrorCode {
     /*
      * Error codes in the range 0x10000 0x10100 are reserved for Transliterator.
      */
-    U_BAD_VARIABLE_DEFINITION=0x10000,/**< Missing '$' or duplicate variable name */
+    U_BAD_VARIABLE_DEFINITION=0x10000,/**< Missing '\x24' or duplicate variable name */
     U_PARSE_ERROR_START = 0x10000,    /**< Start of Transliterator errors */
     U_MALFORMED_RULE,                 /**< Elements of a rule are misplaced */
     U_MALFORMED_SET,                  /**< A UnicodeSet pattern is invalid*/
@@ -497,17 +497,17 @@ typedef enum UErrorCode {
     U_RULE_MASK_ERROR,                /**< A rule is hidden by an earlier more general rule */
     U_MISPLACED_COMPOUND_FILTER,      /**< A compound filter is in an invalid location */
     U_MULTIPLE_COMPOUND_FILTERS,      /**< More than one compound filter */
-    U_INVALID_RBT_SYNTAX,             /**< A "::id" rule was passed to the RuleBasedTransliterator parser */
+    U_INVALID_RBT_SYNTAX,             /**< A u8"::id" rule was passed to the RuleBasedTransliterator parser */
     U_INVALID_PROPERTY_PATTERN,       /**< UNUSED as of ICU 2.4 */
     U_MALFORMED_PRAGMA,               /**< A 'use' pragma is invlalid */
-    U_UNCLOSED_SEGMENT,               /**< A closing ')' is missing */
+    U_UNCLOSED_SEGMENT,               /**< A closing '\x29' is missing */
     U_ILLEGAL_CHAR_IN_SEGMENT,        /**< UNUSED as of ICU 2.4 */
     U_VARIABLE_RANGE_EXHAUSTED,       /**< Too many stand-ins generated for the given variable range */
     U_VARIABLE_RANGE_OVERLAP,         /**< The variable range overlaps characters used in rules */
     U_ILLEGAL_CHARACTER,              /**< A special character is outside its allowed context */
     U_INTERNAL_TRANSLITERATOR_ERROR,  /**< Internal transliterator system error */
-    U_INVALID_ID,                     /**< A "::id" rule specifies an unknown transliterator */
-    U_INVALID_FUNCTION,               /**< A "&fn()" rule specifies an unknown transliterator */
+    U_INVALID_ID,                     /**< A u8"::id" rule specifies an unknown transliterator */
+    U_INVALID_FUNCTION,               /**< A u8"&fn()" rule specifies an unknown transliterator */
 #ifndef U_HIDE_DEPRECATED_API
     /**
      * One more than the highest normal Transliterator error code.
@@ -553,9 +553,9 @@ typedef enum UErrorCode {
     U_BRK_INTERNAL_ERROR=0x10200,          /**< An internal error (bug) was detected.             */
     U_BRK_ERROR_START=0x10200,             /**< Start of codes indicating Break Iterator failures */
     U_BRK_HEX_DIGITS_EXPECTED,             /**< Hex digits expected as part of a escaped char in a rule. */
-    U_BRK_SEMICOLON_EXPECTED,              /**< Missing ';' at the end of a RBBI rule.            */
+    U_BRK_SEMICOLON_EXPECTED,              /**< Missing '\x3b' at the end of a RBBI rule.            */
     U_BRK_RULE_SYNTAX,                     /**< Syntax error in RBBI rule.                        */
-    U_BRK_UNCLOSED_SET,                    /**< UnicodeSet witing an RBBI rule missing a closing ']'.  */
+    U_BRK_UNCLOSED_SET,                    /**< UnicodeSet witing an RBBI rule missing a closing '\x5d'.  */
     U_BRK_ASSIGN_ERROR,                    /**< Syntax error in RBBI rule assignment statement.   */
     U_BRK_VARIABLE_REDFINITION,            /**< RBBI rule $Variable redefined.                    */
     U_BRK_MISMATCHED_PAREN,                /**< Mis-matched parentheses in an RBBI rule.          */

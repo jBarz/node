@@ -53,66 +53,66 @@ typedef struct ULanguageTag {
 } ULanguageTag;
 
 #define MINLEN 2
-#define SEP '-'
-#define PRIVATEUSE 'x'
-#define LDMLEXT 'u'
+#define SEP '\x2d'
+#define PRIVATEUSE '\x78'
+#define LDMLEXT '\x75'
 
-#define LOCALE_SEP '_'
-#define LOCALE_EXT_SEP '@'
-#define LOCALE_KEYWORD_SEP ';'
-#define LOCALE_KEY_TYPE_SEP '='
+#define LOCALE_SEP '\x5f'
+#define LOCALE_EXT_SEP '\x40'
+#define LOCALE_KEYWORD_SEP '\x3b'
+#define LOCALE_KEY_TYPE_SEP '\x3d'
 
 #define ISALPHA(c) uprv_isASCIILetter(c)
-#define ISNUMERIC(c) ((c)>='0' && (c)<='9')
+#define ISNUMERIC(c) ((c)>='\x30' && (c)<='\x39')
 
-static const char EMPTY[] = "";
-static const char LANG_UND[] = "und";
-static const char PRIVATEUSE_KEY[] = "x";
-static const char _POSIX[] = "_POSIX";
-static const char POSIX_KEY[] = "va";
-static const char POSIX_VALUE[] = "posix";
-static const char LOCALE_ATTRIBUTE_KEY[] = "attribute";
-static const char PRIVUSE_VARIANT_PREFIX[] = "lvariant";
-static const char LOCALE_TYPE_YES[] = "yes";
+static const char EMPTY[] = u8"";
+static const char LANG_UND[] = u8"und";
+static const char PRIVATEUSE_KEY[] = u8"x";
+static const char _POSIX[] = u8"_POSIX";
+static const char POSIX_KEY[] = u8"va";
+static const char POSIX_VALUE[] = u8"posix";
+static const char LOCALE_ATTRIBUTE_KEY[] = u8"attribute";
+static const char PRIVUSE_VARIANT_PREFIX[] = u8"lvariant";
+static const char LOCALE_TYPE_YES[] = u8"yes";
 
 #define LANG_UND_LEN 3
 
 static const char* const GRANDFATHERED[] = {
 /*  grandfathered   preferred */
-    "art-lojban",   "jbo",
-    "cel-gaulish",  "xtg-x-cel-gaulish",
-    "en-GB-oed",    "en-GB-x-oed",
-    "i-ami",        "ami",
-    "i-bnn",        "bnn",
-    "i-default",    "en-x-i-default",
-    "i-enochian",   "und-x-i-enochian",
-    "i-hak",        "hak",
-    "i-klingon",    "tlh",
-    "i-lux",        "lb",
-    "i-mingo",      "see-x-i-mingo",
-    "i-navajo",     "nv",
-    "i-pwn",        "pwn",
-    "i-tao",        "tao",
-    "i-tay",        "tay",
-    "i-tsu",        "tsu",
-    "no-bok",       "nb",
-    "no-nyn",       "nn",
-    "sgn-be-fr",    "sfb",
-    "sgn-be-nl",    "vgt",
-    "sgn-ch-de",    "sgg",
-    "zh-guoyu",     "cmn",
-    "zh-hakka",     "hak",
-    "zh-min",       "nan-x-zh-min",
-    "zh-min-nan",   "nan",
-    "zh-xiang",     "hsn",
+    u8"art-lojban",   u8"jbo",
+    u8"cel-gaulish",  u8"xtg-x-cel-gaulish",
+    u8"en-GB-oed",    u8"en-GB-x-oed",
+    u8"i-ami",        u8"ami",
+    u8"i-bnn",        u8"bnn",
+    u8"i-default",    u8"en-x-i-default",
+    u8"i-enochian",   u8"und-x-i-enochian",
+    u8"i-hak",        u8"hak",
+    u8"i-klingon",    u8"tlh",
+    u8"i-lux",        u8"lb",
+    u8"i-mingo",      u8"see-x-i-mingo",
+    u8"i-navajo",     u8"nv",
+    u8"i-pwn",        u8"pwn",
+    u8"i-tao",        u8"tao",
+    u8"i-tay",        u8"tay",
+    u8"i-tsu",        u8"tsu",
+    u8"no-bok",       u8"nb",
+    u8"no-nyn",       u8"nn",
+    u8"sgn-be-fr",    u8"sfb",
+    u8"sgn-be-nl",    u8"vgt",
+    u8"sgn-ch-de",    u8"sgg",
+    u8"zh-guoyu",     u8"cmn",
+    u8"zh-hakka",     u8"hak",
+    u8"zh-min",       u8"nan-x-zh-min",
+    u8"zh-min-nan",   u8"nan",
+    u8"zh-xiang",     u8"hsn",
     NULL,           NULL
 };
 
 static const char DEPRECATEDLANGS[][4] = {
 /*  deprecated  new */
-    "iw",       "he",
-    "ji",       "yi",
-    "in",       "id"
+    u8"iw",       u8"he",
+    u8"ji",       u8"yi",
+    u8"in",       u8"id"
 };
 
 /*
@@ -955,7 +955,7 @@ _appendKeywordsToLanguageTag(const char* localeID, char* appendAt, int32_t capac
                     while (TRUE) {
                         attrBufLength = 0;
                         for (; i < len; i++) {
-                            if (buf[i] != '-') {
+                            if (buf[i] != '\x2d') {
                                 attrBuf[attrBufLength++] = buf[i];
                             } else {
                                 i++;

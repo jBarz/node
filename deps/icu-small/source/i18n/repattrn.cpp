@@ -697,7 +697,7 @@ void   RegexPattern::dumpOp(int32_t index) const {
         pinnedType = 0;
     }
 
-    printf("%4d   %08x    %-15s  ", index, op, opNames[pinnedType]);
+    printf(u8"%4d   %08x    %-15s  ", index, op, opNames[pinnedType]);
     switch (type) {
     case URX_NOP:
     case URX_DOTANY:
@@ -749,15 +749,15 @@ void   RegexPattern::dumpOp(int32_t index) const {
     case URX_BACKSLASH_R:
     case URX_BACKSLASH_V:
         // types with an integer operand field.
-        printf("%d", val);
+        printf(u8"%d", val);
         break;
 
     case URX_ONECHAR:
     case URX_ONECHAR_I:
         if (val < 0x20) {
-            printf("%#x", val);
+            printf(u8"%#x", val);
         } else {
-            printf("'%s'", CStr(UnicodeString(val))());
+            printf(u8"'%s'", CStr(UnicodeString(val))());
         }
         break;
 
@@ -768,7 +768,7 @@ void   RegexPattern::dumpOp(int32_t index) const {
             U_ASSERT(URX_TYPE(lengthOp) == URX_STRING_LEN);
             int32_t length = URX_VAL(lengthOp);
             UnicodeString str(fLiteralText, val, length);
-            printf("%s", CStr(str)());
+            printf(u8"%s", CStr(str)());
         }
         break;
 
@@ -778,7 +778,7 @@ void   RegexPattern::dumpOp(int32_t index) const {
             UnicodeString s;
             UnicodeSet *set = (UnicodeSet *)fSets->elementAt(val);
             set->toPattern(s, TRUE);
-            printf("%s", CStr(s)());
+            printf(u8"%s", CStr(s)());
         }
         break;
 
@@ -787,21 +787,21 @@ void   RegexPattern::dumpOp(int32_t index) const {
         {
             UnicodeString s;
             if (val & URX_NEG_SET) {
-                printf("NOT ");
+                printf(u8"NOT ");
                 val &= ~URX_NEG_SET;
             }
             UnicodeSet *set = fStaticSets[val];
             set->toPattern(s, TRUE);
-            printf("%s", CStr(s)());
+            printf(u8"%s", CStr(s)());
         }
         break;
 
 
     default:
-        printf("??????");
+        printf(u8"??????");
         break;
     }
-    printf("\n");
+    printf(u8"\n");
 #endif
 }
 
@@ -814,45 +814,45 @@ void RegexPattern::dumpPattern() const {
     for (UChar32 c = utext_next32From(fPattern, 0); c != U_SENTINEL; c = utext_next32(fPattern)) {
         patStr.append(c);
     }
-    printf("Original Pattern:  \"%s\"\n", CStr(patStr)());
-    printf("   Min Match Length:  %d\n", fMinMatchLen);
-    printf("   Match Start Type:  %s\n", START_OF_MATCH_STR(fStartType));
+    printf(u8"Original Pattern:  \"%s\"\n", CStr(patStr)());
+    printf(u8"   Min Match Length:  %d\n", fMinMatchLen);
+    printf(u8"   Match Start Type:  %s\n", START_OF_MATCH_STR(fStartType));
     if (fStartType == START_STRING) {
         UnicodeString initialString(fLiteralText,fInitialStringIdx, fInitialStringLen);
-        printf("   Initial match string: \"%s\"\n", CStr(initialString)());
+        printf(u8"   Initial match string: \"%s\"\n", CStr(initialString)());
     } else if (fStartType == START_SET) {
         UnicodeString s;
         fInitialChars->toPattern(s, TRUE);
-        printf("    Match First Chars: %s\n", CStr(s)());
+        printf(u8"    Match First Chars: %s\n", CStr(s)());
 
     } else if (fStartType == START_CHAR) {
-        printf("    First char of Match: ");
+        printf(u8"    First char of Match: ");
         if (fInitialChar > 0x20) {
-                printf("'%s'\n", CStr(UnicodeString(fInitialChar))());
+                printf(u8"'%s'\n", CStr(UnicodeString(fInitialChar))());
             } else {
-                printf("%#x\n", fInitialChar);
+                printf(u8"%#x\n", fInitialChar);
             }
     }
 
-    printf("Named Capture Groups:\n");
+    printf(u8"Named Capture Groups:\n");
     if (uhash_count(fNamedCaptureMap) == 0) {
-        printf("   None\n");
+        printf(u8"   None\n");
     } else {
         int32_t pos = UHASH_FIRST;
         const UHashElement *el = NULL;
         while ((el = uhash_nextElement(fNamedCaptureMap, &pos))) {
             const UnicodeString *name = (const UnicodeString *)el->key.pointer;
             int32_t number = el->value.integer;
-            printf("   %d\t%s\n", number, CStr(*name)());
+            printf(u8"   %d\t%s\n", number, CStr(*name)());
         }
     }
 
-    printf("\nIndex   Binary     Type             Operand\n" \
-           "-------------------------------------------\n");
+    printf(u8"\nIndex   Binary     Type             Operand\n" \
+           u8"-------------------------------------------\n");
     for (index = 0; index<fCompiledPat->size(); index++) {
         dumpOp(index);
     }
-    printf("\n\n");
+    printf(u8"\n\n");
 #endif
 }
 

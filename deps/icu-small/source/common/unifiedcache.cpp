@@ -168,7 +168,7 @@ void UnifiedCache::dump() {
     UErrorCode status = U_ZERO_ERROR;
     const UnifiedCache *cache = getInstance(status);
     if (U_FAILURE(status)) {
-        fprintf(stderr, "Unified Cache: Error fetching cache.\n");
+        fprintf(stderr, u8"Unified Cache: Error fetching cache.\n");
         return;
     }
     cache->dumpContents();
@@ -196,7 +196,7 @@ void UnifiedCache::_dumpContents() const {
             ++cnt;
             fprintf(
                     stderr,
-                    "Unified Cache: Key '%s', error %d, value %p, total refcount %d, soft refcount %d\n",
+                    u8"Unified Cache: Key '%s', error %d, value %p, total refcount %d, soft refcount %d\n",
                     key->writeDescription(buffer, 256),
                     key->creationStatus,
                     sharedObject == gNoValue ? NULL :sharedObject,
@@ -204,7 +204,7 @@ void UnifiedCache::_dumpContents() const {
                     sharedObject->getSoftRefCount());
         }
     }
-    fprintf(stderr, "Unified Cache: %d out of a total of %d still have hard references\n", cnt, uhash_count(fHashtable));
+    fprintf(stderr, u8"Unified Cache: %d out of a total of %d still have hard references\n", cnt, uhash_count(fHashtable));
 }
 #endif
 

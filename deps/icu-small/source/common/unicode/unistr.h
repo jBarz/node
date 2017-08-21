@@ -3053,7 +3053,7 @@ public:
    * nullptr_t constructor.
    * Effectively the same as the default constructor, makes an empty string object.
    *
-   * It is recommended to mark this constructor "explicit" by
+   * It is recommended to mark this constructor u8"explicit" by
    * <code>-DUNISTR_FROM_STRING_EXPLICIT=explicit</code>
    * on the compiler command line or similar.
    * @param text nullptr
@@ -3775,7 +3775,7 @@ private:
     kUsingStackBuffer=2,// using fUnion.fStackFields instead of fUnion.fFields
     kRefCounted=4,      // there is a refCount field before the characters in fArray
     kBufferIsReadonly=8,// do not write to this buffer
-    kOpenGetBuffer=16,  // getBuffer(minCapacity) was called (is "open"),
+    kOpenGetBuffer=16,  // getBuffer(minCapacity) was called (is u8"open"),
                         // and releaseBuffer(newLength) must be called
     kAllStorageFlags=0x1f,
 

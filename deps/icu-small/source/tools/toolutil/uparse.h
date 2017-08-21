@@ -29,7 +29,7 @@
  * Is c an invariant-character whitespace?
  * @param c invariant character
  */
-#define U_IS_INV_WHITESPACE(c) ((c)==' ' || (c)=='\t' || (c)=='\r' || (c)=='\n')
+#define U_IS_INV_WHITESPACE(c) ((c)=='\x20' || (c)=='\x9' || (c)=='\xd' || (c)=='\xa')
 
 U_CDECL_BEGIN
 

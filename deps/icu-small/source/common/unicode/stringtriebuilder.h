@@ -353,7 +353,7 @@ protected:
             hash=(hash*37+c)*37+hashCode(node);
         }
     protected:
-        Node *equal[kMaxBranchLinearSubNodeLength];  // NULL means "has final value".
+        Node *equal[kMaxBranchLinearSubNodeLength];  // NULL means u8"has final value".
         int32_t length;
         int32_t values[kMaxBranchLinearSubNodeLength];
         char16_t units[kMaxBranchLinearSubNodeLength];

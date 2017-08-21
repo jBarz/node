@@ -95,7 +95,7 @@ static UDataInfo dataInfo= {
     sizeof(UChar),
     0,
 
-    {0x52, 0x65, 0x73, 0x42},     /* dataFormat="ResB" */
+    {0x52, 0x65, 0x73, 0x42},     /* dataFormat=u8"ResB" */
     {1, 3, 0, 0},                 /* formatVersion */
     {1, 4, 0, 0}                  /* dataVersion take a look at version inside parsed resb*/
 };
@@ -226,7 +226,7 @@ void TableResource::add(SResource *res, int linenumber, UErrorCode &errorCode) {
             return;
         } else {
             /* Key already exists! ERROR! */
-            error(linenumber, "duplicate key '%s' in table, first appeared at line %d", currentKeyString, current->line);
+            error(linenumber, u8"duplicate key '%s' in table, first appeared at line %d", currentKeyString, current->line);
             errorCode = U_UNSUPPORTED_ERROR;
             return;
         }
@@ -953,7 +953,7 @@ void SRBRoot::write(const char *outputDir, const char *outputPkg,
                {
                    uprv_strcpy(writtenFilename+off, outputPkg);
                    off += (int32_t)uprv_strlen(outputPkg);
-                   writtenFilename[off] = '_';
+                   writtenFilename[off] = '\x5f';
                    ++off;
                }
 
@@ -968,7 +968,7 @@ void SRBRoot::write(const char *outputDir, const char *outputPkg,
                    if (len > writtenFilenameLen) {
                        len = writtenFilenameLen;
                    }
-                   uprv_strncpy(writtenFilename +  off, ".res", len);
+                   uprv_strncpy(writtenFilename +  off, u8".res", len);
                }
            }
        }
@@ -977,7 +977,7 @@ void SRBRoot::write(const char *outputDir, const char *outputPkg,
     if(outputPkg)
     {
         uprv_strcpy(dataName, outputPkg);
-        uprv_strcat(dataName, "_");
+        uprv_strcat(dataName, u8"_");
         uprv_strcat(dataName, fLocale);
     }
     else
@@ -987,7 +987,7 @@ void SRBRoot::write(const char *outputDir, const char *outputPkg,
 
     uprv_memcpy(dataInfo.formatVersion, gFormatVersions + formatVersion, sizeof(UVersionInfo));
 
-    mem = udata_create(outputDir, "res", dataName,
+    mem = udata_create(outputDir, u8"res", dataName,
                        &dataInfo, (gIncludeCopyright==TRUE)? U_COPYRIGHT_STRING:NULL, &errorCode);
     if(U_FAILURE(errorCode)){
         return;
@@ -1076,7 +1076,7 @@ void SRBRoot::write(const char *outputDir, const char *outputPkg,
 
     size = udata_finish(mem, &errorCode);
     if(top != size) {
-        fprintf(stderr, "genrb error: wrote %u bytes but counted %u\n",
+        fprintf(stderr, u8"genrb error: wrote %u bytes but counted %u\n",
                 (int)size, (int)top);
         errorCode = U_INTERNAL_PROGRAM_ERROR;
     }
@@ -1630,12 +1630,12 @@ SRBRoot::compactStringsV2(UHashtable *stringSet, UErrorCode &errorCode) {
             errorCode = U_MEMORY_ALLOCATION_ERROR;
         }
         if (getShowWarning()) {  // not quiet
-            printf("number of shared strings: %d\n", (int)numStringsWritten);
-            printf("16-bit units for strings: %6d = %6d bytes\n",
+            printf(u8"number of shared strings: %d\n", (int)numStringsWritten);
+            printf(u8"16-bit units for strings: %6d = %6d bytes\n",
                    (int)f16BitUnits.length(), (int)f16BitUnits.length() * 2);
-            printf("16-bit units saved:       %6d = %6d bytes\n",
+            printf(u8"16-bit units saved:       %6d = %6d bytes\n",
                    (int)numUnitsSaved, (int)numUnitsSaved * 2);
-            printf("16-bit units not saved:   %6d = %6d bytes\n",
+            printf(u8"16-bit units not saved:   %6d = %6d bytes\n",
                    (int)numUnitsNotSaved, (int)numUnitsNotSaved * 2);
         }
     } else {

@@ -467,7 +467,7 @@ public:
         getWithFallback(const char* key, UErrorCode& status);
 #endif  /* U_HIDE_INTERNAL_API */
     /**
-     * ICU "poor man's RTTI", returns a UClassID for the actual class.
+     * ICU u8"poor man's RTTI", returns a UClassID for the actual class.
      *
      * @stable ICU 2.2
      */

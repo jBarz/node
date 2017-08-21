@@ -132,7 +132,7 @@ void RBBISetBuilder::build() {
     RBBINode        *usetNode;
     RangeDescriptor *rlRange;
 
-    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, "usets")) {printSets();}
+    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, u8"usets")) {printSets();}
 
     //
     //  Initialize the process by creating a single range encompassing all characters
@@ -221,7 +221,7 @@ void RBBISetBuilder::build() {
         }
     }
 
-    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, "range")) { printRanges();}
+    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, u8"range")) { printRanges();}
 
     //
     //  Group the above ranges, with each group consisting of one or more
@@ -280,8 +280,8 @@ void RBBISetBuilder::build() {
     }
 
 
-    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, "rgroup")) {printRangeGroups();}
-    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, "esets")) {printSets();}
+    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, u8"rgroup")) {printRangeGroups();}
+    if (fRB->fDebugEnv && uprv_strstr(fRB->fDebugEnv, u8"esets")) {printSets();}
 
     //
     // Build the Trie table for mapping UChar32 values to the corresponding
@@ -438,9 +438,9 @@ void RBBISetBuilder::printRanges() {
     RangeDescriptor       *rlRange;
     int                    i;
 
-    RBBIDebugPrintf("\n\n Nonoverlapping Ranges ...\n");
+    RBBIDebugPrintf(u8"\n\n Nonoverlapping Ranges ...\n");
     for (rlRange = fRangeList; rlRange!=0; rlRange=rlRange->fNext) {
-        RBBIDebugPrintf("%2i  %4x-%4x  ", rlRange->fNum, rlRange->fStartChar, rlRange->fEndChar);
+        RBBIDebugPrintf(u8"%2i  %4x-%4x  ", rlRange->fNum, rlRange->fStartChar, rlRange->fEndChar);
 
         for (i=0; i<rlRange->fIncludesSets->size(); i++) {
             RBBINode       *usetNode    = (RBBINode *)rlRange->fIncludesSets->elementAt(i);
@@ -452,9 +452,9 @@ void RBBISetBuilder::printRanges() {
                     setName = varRef->fText;
                 }
             }
-            RBBI_DEBUG_printUnicodeString(setName); RBBIDebugPrintf("  ");
+            RBBI_DEBUG_printUnicodeString(setName); RBBIDebugPrintf(u8"  ");
         }
-        RBBIDebugPrintf("\n");
+        RBBIDebugPrintf(u8"\n");
     }
 }
 #endif
@@ -473,14 +473,14 @@ void RBBISetBuilder::printRangeGroups() {
     int                    i;
     int                    lastPrintedGroupNum = 0;
 
-    RBBIDebugPrintf("\nRanges grouped by Unicode Set Membership...\n");
+    RBBIDebugPrintf(u8"\nRanges grouped by Unicode Set Membership...\n");
     for (rlRange = fRangeList; rlRange!=0; rlRange=rlRange->fNext) {
         int groupNum = rlRange->fNum & 0xbfff;
         if (groupNum > lastPrintedGroupNum) {
             lastPrintedGroupNum = groupNum;
-            RBBIDebugPrintf("%2i  ", groupNum);
+            RBBIDebugPrintf(u8"%2i  ", groupNum);
 
-            if (rlRange->fNum & 0x4000) { RBBIDebugPrintf(" <DICT> ");}
+            if (rlRange->fNum & 0x4000) { RBBIDebugPrintf(u8" <DICT> ");}
 
             for (i=0; i<rlRange->fIncludesSets->size(); i++) {
                 RBBINode       *usetNode    = (RBBINode *)rlRange->fIncludesSets->elementAt(i);
@@ -492,22 +492,22 @@ void RBBISetBuilder::printRangeGroups() {
                         setName = varRef->fText;
                     }
                 }
-                RBBI_DEBUG_printUnicodeString(setName); RBBIDebugPrintf(" ");
+                RBBI_DEBUG_printUnicodeString(setName); RBBIDebugPrintf(u8" ");
             }
 
             i = 0;
             for (tRange = rlRange; tRange != 0; tRange = tRange->fNext) {
                 if (tRange->fNum == rlRange->fNum) {
                     if (i++ % 5 == 0) {
-                        RBBIDebugPrintf("\n    ");
+                        RBBIDebugPrintf(u8"\n    ");
                     }
-                    RBBIDebugPrintf("  %05x-%05x", tRange->fStartChar, tRange->fEndChar);
+                    RBBIDebugPrintf(u8"  %05x-%05x", tRange->fStartChar, tRange->fEndChar);
                 }
             }
-            RBBIDebugPrintf("\n");
+            RBBIDebugPrintf(u8"\n");
         }
     }
-    RBBIDebugPrintf("\n");
+    RBBIDebugPrintf(u8"\n");
 }
 #endif
 
@@ -522,7 +522,7 @@ void RBBISetBuilder::printRangeGroups() {
 void RBBISetBuilder::printSets() {
     int                   i;
 
-    RBBIDebugPrintf("\n\nUnicode Sets List\n------------------\n");
+    RBBIDebugPrintf(u8"\n\nUnicode Sets List\n------------------\n");
     for (i=0; ; i++) {
         RBBINode        *usetNode;
         RBBINode        *setRef;
@@ -534,7 +534,7 @@ void RBBISetBuilder::printSets() {
             break;
         }
 
-        RBBIDebugPrintf("%3d    ", i);
+        RBBIDebugPrintf(u8"%3d    ", i);
         setName = UNICODE_STRING("anonymous", 9);
         setRef = usetNode->fParent;
         if (setRef != NULL) {
@@ -544,14 +544,14 @@ void RBBISetBuilder::printSets() {
             }
         }
         RBBI_DEBUG_printUnicodeString(setName);
-        RBBIDebugPrintf("   ");
+        RBBIDebugPrintf(u8"   ");
         RBBI_DEBUG_printUnicodeString(usetNode->fText);
-        RBBIDebugPrintf("\n");
+        RBBIDebugPrintf(u8"\n");
         if (usetNode->fLeftChild != NULL) {
             RBBINode::printTree(usetNode->fLeftChild, TRUE);
         }
     }
-    RBBIDebugPrintf("\n");
+    RBBIDebugPrintf(u8"\n");
 }
 #endif
 

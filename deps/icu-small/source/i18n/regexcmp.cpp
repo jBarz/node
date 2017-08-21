@@ -80,8 +80,8 @@ RegexCompile::RegexCompile(RegexPattern *rxp, UErrorCode &status) :
     }
 }
 
-static const UChar      chAmp       = 0x26;      // '&'
-static const UChar      chDash      = 0x2d;      // '-'
+static const UChar      chAmp       = 0x26;      // '\x26'
+static const UChar      chDash      = 0x2d;      // '\x2d'
 
 
 //------------------------------------------------------------------------------
@@ -189,12 +189,12 @@ void    RegexCompile::compile(
         //    the search will stop there, if not before.
         //
         tableEl = &gRuleParseStateTable[state];
-        REGEX_SCAN_DEBUG_PRINTF(("char, line, col = (\'%c\', %d, %d)    state=%s ",
+        REGEX_SCAN_DEBUG_PRINTF((u8"char, line, col = (\'%c\', %d, %d)    state=%s ",
             fC.fChar, fLineNum, fCharNum, RegexStateNames[state]));
 
         for (;;) {    // loop through table rows belonging to this state, looking for one
                       //   that matches the current input char.
-            REGEX_SCAN_DEBUG_PRINTF(("."));
+            REGEX_SCAN_DEBUG_PRINTF((u8"."));
             if (tableEl->fCharClass < 127 && fC.fQuoted == FALSE &&   tableEl->fCharClass == fC.fChar) {
                 // Table row specified an individual character, not a set, and
                 //   the input character is not quoted, and
@@ -228,7 +228,7 @@ void    RegexCompile::compile(
             // No match on this row, advance to the next  row for this state,
             tableEl++;
         }
-        REGEX_SCAN_DEBUG_PRINTF(("\n"));
+        REGEX_SCAN_DEBUG_PRINTF((u8"\n"));
 
         //
         // We've found the row of the state table that matches the current input
@@ -245,7 +245,7 @@ void    RegexCompile::compile(
             fStackPtr++;
             if (fStackPtr >= kStackSize) {
                 error(U_REGEX_INTERNAL_ERROR);
-                REGEX_SCAN_DEBUG_PRINTF(("RegexCompile::parse() - state stack overflow.\n"));
+                REGEX_SCAN_DEBUG_PRINTF((u8"RegexCompile::parse() - state stack overflow.\n"));
                 fStackPtr--;
             }
             fStack[fStackPtr] = tableEl->fPushState;
@@ -776,7 +776,7 @@ UBool RegexCompile::doParseActions(int32_t action)
         //     2.   LOOP_SR_I    set number  (assuming repeated item is a set ref)
         //     3.   LOOP_C       stack location
         {
-            int32_t  topLoc = blockTopLoc(FALSE);        // location of item #1
+            int32_t  topLoc = blockTopLoc(FALSE);        // location of item  USTR(#1)
             int32_t  frameLoc;
 
             // Check for simple constructs, which may get special optimized code.
@@ -1306,7 +1306,7 @@ UBool RegexCompile::doParseActions(int32_t action)
             // Because capture groups can be forward-referenced by back-references,
             //  we fill the operand with the capture group number.  At the end
             //  of compilation, it will be changed to the variable's location.
-            U_ASSERT(groupNum > 0);  // Shouldn't happen.  '\0' begins an octal escape sequence,
+            U_ASSERT(groupNum > 0);  // Shouldn't happen.  '\x0' begins an octal escape sequence,
                                      //    and shouldn't enter this code path at all.
             fixLiterals(FALSE);
             if (fModeFlags & UREGEX_CASE_INSENSITIVE) {
@@ -1455,14 +1455,14 @@ UBool RegexCompile::doParseActions(int32_t action)
         {
             int32_t  bit = 0;
             switch (fC.fChar) {
-            case 0x69: /* 'i' */   bit = UREGEX_CASE_INSENSITIVE; break;
-            case 0x64: /* 'd' */   bit = UREGEX_UNIX_LINES;       break;
-            case 0x6d: /* 'm' */   bit = UREGEX_MULTILINE;        break;
-            case 0x73: /* 's' */   bit = UREGEX_DOTALL;           break;
-            case 0x75: /* 'u' */   bit = 0; /* Unicode casing */  break;
-            case 0x77: /* 'w' */   bit = UREGEX_UWORD;            break;
-            case 0x78: /* 'x' */   bit = UREGEX_COMMENTS;         break;
-            case 0x2d: /* '-' */   fSetModeFlag = FALSE;          break;
+            case 0x69: /* '\x69' */   bit = UREGEX_CASE_INSENSITIVE; break;
+            case 0x64: /* '\x64' */   bit = UREGEX_UNIX_LINES;       break;
+            case 0x6d: /* '\x6d' */   bit = UREGEX_MULTILINE;        break;
+            case 0x73: /* '\x73' */   bit = UREGEX_DOTALL;           break;
+            case 0x75: /* '\x75' */   bit = 0; /* Unicode casing */  break;
+            case 0x77: /* '\x77' */   bit = UREGEX_UWORD;            break;
+            case 0x78: /* '\x78' */   bit = UREGEX_COMMENTS;         break;
+            case 0x2d: /* '\x2d' */   fSetModeFlag = FALSE;          break;
             default:
                 U_ASSERT(FALSE);   // Should never happen.  Other chars are filtered out
                                    // by the scanner.
@@ -3928,21 +3928,21 @@ void RegexCompile::error(UErrorCode e) {
 //
 static const UChar      chCR        = 0x0d;      // New lines, for terminating comments.
 static const UChar      chLF        = 0x0a;      // Line Feed
-static const UChar      chPound     = 0x23;      // '#', introduces a comment.
-static const UChar      chDigit0    = 0x30;      // '0'
-static const UChar      chDigit7    = 0x37;      // '9'
-static const UChar      chColon     = 0x3A;      // ':'
-static const UChar      chE         = 0x45;      // 'E'
-static const UChar      chQ         = 0x51;      // 'Q'
+static const UChar      chPound     = 0x23;      // '\x23', introduces a comment.
+static const UChar      chDigit0    = 0x30;      // '\x30'
+static const UChar      chDigit7    = 0x37;      // '\x39'
+static const UChar      chColon     = 0x3A;      // '\x3a'
+static const UChar      chE         = 0x45;      // '\x45'
+static const UChar      chQ         = 0x51;      // '\x51'
 //static const UChar      chN         = 0x4E;      // 'N'
-static const UChar      chP         = 0x50;      // 'P'
-static const UChar      chBackSlash = 0x5c;      // '\'  introduces a char escape
+static const UChar      chP         = 0x50;      // '\x50'
+static const UChar      chBackSlash = 0x5c;      // '\x5c'  introduces a char escape
 //static const UChar      chLBracket  = 0x5b;      // '['
-static const UChar      chRBracket  = 0x5d;      // ']'
-static const UChar      chUp        = 0x5e;      // '^'
+static const UChar      chRBracket  = 0x5d;      // '\x5d'
+static const UChar      chUp        = 0x5e;      // '\x5e'
 static const UChar      chLowerP    = 0x70;
-static const UChar      chLBrace    = 0x7b;      // '{'
-static const UChar      chRBrace    = 0x7d;      // '}'
+static const UChar      chLBrace    = 0x7b;      // '\x7b'
+static const UChar      chRBrace    = 0x7d;      // '\x7d'
 static const UChar      chNEL       = 0x85;      //    NEL newline variant
 static const UChar      chLS        = 0x2028;    //    Unicode Line Separator
 
@@ -4140,7 +4140,7 @@ void RegexCompile::nextChar(RegexPatternChar &c) {
             else if (peekCharLL() == chQ) {
                 //  "\Q"  enter quote mode, which will continue until "\E"
                 fQuoteMode = TRUE;
-                nextCharLL();       // discard the 'Q'.
+                nextCharLL();       // discard the '\x51'.
                 nextChar(c);        // recurse to get the real next char.
             }
             else
@@ -4214,7 +4214,7 @@ UChar32  RegexCompile::scanNamedChar() {
         error(U_REGEX_PROPERTY_SYNTAX);
     }
 
-    nextChar(fC);      // Continue overall regex pattern processing with char after the '}'
+    nextChar(fC);      // Continue overall regex pattern processing with char after the '\x7d'
     return theChar;
 }
 
@@ -4259,7 +4259,7 @@ UnicodeSet *RegexCompile::scanProp() {
         propertyName.append(fC.fChar);
     }
     uset = createSetForProperty(propertyName, negated);
-    nextChar(fC);    // Move input scan to position following the closing '}'
+    nextChar(fC);    // Move input scan to position following the closing '\x7d'
     return uset;
 }
 
@@ -4370,8 +4370,8 @@ static inline void addIdentifierIgnorable(UnicodeSet *set, UErrorCode& ec) {
 //     Includes trying the Java "properties" that aren't supported as
 //     normal ICU UnicodeSet properties
 //
-static const UChar posSetPrefix[] = {0x5b, 0x5c, 0x70, 0x7b, 0}; // "[\p{"
-static const UChar negSetPrefix[] = {0x5b, 0x5c, 0x50, 0x7b, 0}; // "[\P{"
+static const UChar posSetPrefix[] = {0x5b, 0x5c, 0x70, 0x7b, 0}; // u8"[\p{"
+static const UChar negSetPrefix[] = {0x5b, 0x5c, 0x50, 0x7b, 0}; // u8"[\P{"
 UnicodeSet *RegexCompile::createSetForProperty(const UnicodeString &propName, UBool negated) {
     UnicodeString   setExpr;
     UnicodeSet      *set;
@@ -4450,12 +4450,12 @@ UnicodeSet *RegexCompile::createSetForProperty(const UnicodeString &propName, UB
     //    See if the property looks like a Java "InBlockName", which
     //    we will recast as "Block=BlockName"
     //
-    static const UChar IN[] = {0x49, 0x6E, 0};  // "In"
-    static const UChar BLOCK[] = {0x42, 0x6C, 0x6f, 0x63, 0x6b, 0x3d, 00};  // "Block="
+    static const UChar IN[] = {0x49, 0x6E, 0};  // u8"In"
+    static const UChar BLOCK[] = {0x42, 0x6C, 0x6f, 0x63, 0x6b, 0x3d, 00};  // u8"Block="
     if (mPropName.startsWith(IN, 2) && propName.length()>=3) {
-        setExpr.truncate(4);   // Leaves "[\p{", or "[\P{"
+        setExpr.truncate(4);   // Leaves u8"[\p{", or u8"[\P{"
         setExpr.append(BLOCK, -1);
-        setExpr.append(UnicodeString(mPropName, 2));  // Property with the leading "In" removed.
+        setExpr.append(UnicodeString(mPropName, 2));  // Property with the leading u8"In" removed.
         setExpr.append(chRBrace);
         setExpr.append(chRBracket);
         *fStatus = U_ZERO_ERROR;

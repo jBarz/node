@@ -69,10 +69,10 @@ U_CAPI void * U_EXPORT2
 uprv_malloc(size_t s) {
 #if U_DEBUG && defined(UPRV_MALLOC_COUNT)
 #if 1
-  putchar('>');
+  putchar('\x3e');
   fflush(stdout);
 #else
-  fprintf(stderr,"MALLOC\t#%d\t%ul bytes\t%ul total\n", ++n,s,(b+=s)); fflush(stderr);
+  fprintf(stderr,u8"MALLOC\t#%d\t%ul bytes\t%ul total\n", ++n,s,(b+=s)); fflush(stderr);
 #endif
 #endif
     if (s > 0) {
@@ -89,7 +89,7 @@ uprv_malloc(size_t s) {
 U_CAPI void * U_EXPORT2
 uprv_realloc(void * buffer, size_t size) {
 #if U_DEBUG && defined(UPRV_MALLOC_COUNT)
-  putchar('~');
+  putchar('\x7e');
   fflush(stdout);
 #endif
     if (buffer == zeroMem) {
@@ -113,7 +113,7 @@ uprv_realloc(void * buffer, size_t size) {
 U_CAPI void U_EXPORT2
 uprv_free(void *buffer) {
 #if U_DEBUG && defined(UPRV_MALLOC_COUNT)
-  putchar('<');
+  putchar('\x3c');
   fflush(stdout);
 #endif
     if (buffer != zeroMem) {

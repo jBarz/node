@@ -20,8 +20,8 @@
 static const UChar BACKSLASH  = 0x005C; /*\*/
 static const UChar UPPER_U    = 0x0055; /*U*/
 static const UChar LOWER_U    = 0x0075; /*u*/
-static const UChar APOSTROPHE = 0x0027; // '\''
-static const UChar SPACE      = 0x0020; // ' '
+static const UChar APOSTROPHE = 0x0027; // '\x27'
+static const UChar SPACE      = 0x0020; // '\x20'
 
 // "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 static const UChar DIGITS[] = {
@@ -366,9 +366,9 @@ void ICU_Utility::appendToRule(UnicodeString& rule,
     // building up a quoted substring already.
     else if (quoteBuf.length() > 0 ||
              (c >= 0x0021 && c <= 0x007E &&
-              !((c >= 0x0030/*'0'*/ && c <= 0x0039/*'9'*/) ||
-                (c >= 0x0041/*'A'*/ && c <= 0x005A/*'Z'*/) ||
-                (c >= 0x0061/*'a'*/ && c <= 0x007A/*'z'*/))) ||
+              !((c >= 0x0030/*'\x30'*/ && c <= 0x0039/*'\x39'*/) ||
+                (c >= 0x0041/*'\x41'*/ && c <= 0x005A/*'\x5a'*/) ||
+                (c >= 0x0061/*'\x61'*/ && c <= 0x007A/*'\x7a'*/))) ||
              PatternProps::isWhiteSpace(c)) {
         quoteBuf.append(c);
         // Double ' within a quote

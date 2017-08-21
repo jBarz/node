@@ -30,7 +30,7 @@
 
 static void debug_astro_loc(const char *f, int32_t l)
 {
-  fprintf(stderr, "%s:%d: ", f, l);
+  fprintf(stderr, u8"%s:%d: ", f, l);
 }
 
 static void debug_astro_msg(const char *pat, ...)
@@ -301,7 +301,7 @@ CalendarAstronomer::~CalendarAstronomer()
  */
 void CalendarAstronomer::setTime(UDate aTime) {
     fTime = aTime;
-    U_DEBUG_ASTRO_MSG(("setTime(%.1lf, %sL)\n", aTime, debug_astro_date(aTime+fGmtOffset)));
+    U_DEBUG_ASTRO_MSG((u8"setTime(%.1lf, %sL)\n", aTime, debug_astro_date(aTime+fGmtOffset)));
     clearCache();
 }
 
@@ -755,9 +755,9 @@ UDate CalendarAstronomer::getSunRiseSet(UBool rise)
     // Make a rough guess: 6am or 6pm local time on the current day
     double noon = ClockMath::floorDivide(fTime + fGmtOffset, (double)DAY_MS)*DAY_MS - fGmtOffset + (12*HOUR_MS);
 
-    U_DEBUG_ASTRO_MSG(("Noon=%.2lf, %sL, gmtoff %.2lf\n", noon, debug_astro_date(noon+fGmtOffset), fGmtOffset));
+    U_DEBUG_ASTRO_MSG((u8"Noon=%.2lf, %sL, gmtoff %.2lf\n", noon, debug_astro_date(noon+fGmtOffset), fGmtOffset));
     setTime(noon +  ((rise ? -6 : 6) * HOUR_MS));
-    U_DEBUG_ASTRO_MSG(("added %.2lf ms as a guess,\n", ((rise ? -6. : 6.) * HOUR_MS)));
+    U_DEBUG_ASTRO_MSG((u8"added %.2lf ms as a guess,\n", ((rise ? -6. : 6.) * HOUR_MS)));
 
     RiseSetCoordFunc func;
     double t = riseOrSet(func,
@@ -1378,8 +1378,8 @@ UDate CalendarAstronomer::riseOrSet(CoordFunc& func, UBool rise,
     // position to calculate the time of rising or setting.  The position
     // will be different at that time, so iterate until the error is allowable.
     //
-    U_DEBUG_ASTRO_MSG(("setup rise=%s, dia=%.3lf, ref=%.3lf, eps=%.3lf\n",
-        rise?"T":"F", diameter, refraction, epsilon));
+    U_DEBUG_ASTRO_MSG((u8"setup rise=%s, dia=%.3lf, ref=%.3lf, eps=%.3lf\n",
+        rise?u8"T":u8"F", diameter, refraction, epsilon));
     do {
         // See "Practical Astronomy With Your Calculator, section 33.
         func.eval(pos, *this);
@@ -1391,7 +1391,7 @@ UDate CalendarAstronomer::riseOrSet(CoordFunc& func, UBool rise,
 
         deltaT = newTime - fTime;
         setTime(newTime);
-        U_DEBUG_ASTRO_MSG(("%d] dT=%.3lf, angle=%.3lf, lst=%.3lf,   A=%.3lf/D=%.3lf\n",
+        U_DEBUG_ASTRO_MSG((u8"%d] dT=%.3lf, angle=%.3lf, lst=%.3lf,   A=%.3lf/D=%.3lf\n",
             count, deltaT, angle, lst, pos.ascension, pos.declination));
     }
     while (++ count < 5 && uprv_fabs(deltaT) > epsilon);
@@ -1481,8 +1481,8 @@ UnicodeString CalendarAstronomer::Ecliptic::toString() const
 {
 #ifdef U_DEBUG_ASTRO
     char tmp[800];
-    sprintf(tmp, "[%.5f,%.5f]", longitude*RAD_DEG, latitude*RAD_DEG);
-    return UnicodeString(tmp, "");
+    sprintf(tmp, u8"[%.5f,%.5f]", longitude*RAD_DEG, latitude*RAD_DEG);
+    return UnicodeString(tmp, u8"");
 #else
     return UnicodeString();
 #endif
@@ -1492,9 +1492,9 @@ UnicodeString CalendarAstronomer::Equatorial::toString() const
 {
 #ifdef U_DEBUG_ASTRO
     char tmp[400];
-    sprintf(tmp, "%f,%f",
+    sprintf(tmp, u8"%f,%f",
         (ascension*RAD_DEG), (declination*RAD_DEG));
-    return UnicodeString(tmp, "");
+    return UnicodeString(tmp, u8"");
 #else
     return UnicodeString();
 #endif
@@ -1504,8 +1504,8 @@ UnicodeString CalendarAstronomer::Horizon::toString() const
 {
 #ifdef U_DEBUG_ASTRO
     char tmp[800];
-    sprintf(tmp, "[%.5f,%.5f]", altitude*RAD_DEG, azimuth*RAD_DEG);
-    return UnicodeString(tmp, "");
+    sprintf(tmp, u8"[%.5f,%.5f]", altitude*RAD_DEG, azimuth*RAD_DEG);
+    return UnicodeString(tmp, u8"");
 #else
     return UnicodeString();
 #endif
@@ -1560,7 +1560,7 @@ int32_t CalendarCache::get(CalendarCache** cache, int32_t key, UErrorCode &statu
     }
 
     res = uhash_igeti((*cache)->fTable, key);
-    U_DEBUG_ASTRO_MSG(("%p: GET: [%d] == %d\n", (*cache)->fTable, key, res));
+    U_DEBUG_ASTRO_MSG((u8"%p: GET: [%d] == %d\n", (*cache)->fTable, key, res));
 
     umtx_unlock(&ccLock);
     return res;
@@ -1581,19 +1581,19 @@ void CalendarCache::put(CalendarCache** cache, int32_t key, int32_t value, UErro
     }
 
     uhash_iputi((*cache)->fTable, key, value, &status);
-    U_DEBUG_ASTRO_MSG(("%p: PUT: [%d] := %d\n", (*cache)->fTable, key, value));
+    U_DEBUG_ASTRO_MSG((u8"%p: PUT: [%d] := %d\n", (*cache)->fTable, key, value));
 
     umtx_unlock(&ccLock);
 }
 
 CalendarCache::CalendarCache(int32_t size, UErrorCode &status) {
     fTable = uhash_openSize(uhash_hashLong, uhash_compareLong, NULL, size, &status);
-    U_DEBUG_ASTRO_MSG(("%p: Opening.\n", fTable));
+    U_DEBUG_ASTRO_MSG((u8"%p: Opening.\n", fTable));
 }
 
 CalendarCache::~CalendarCache() {
     if(fTable != NULL) {
-        U_DEBUG_ASTRO_MSG(("%p: Closing.\n", fTable));
+        U_DEBUG_ASTRO_MSG((u8"%p: Closing.\n", fTable));
         uhash_close(fTable);
     }
 }

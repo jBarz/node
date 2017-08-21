@@ -65,15 +65,15 @@ static UINT getGrouping(const wchar_t *grouping)
     UINT g = 0;
     const wchar_t *s;
 
-    for (s = grouping; *s != L'\0'; s += 1) {
-        if (*s > L'0' && *s < L'9') {
-            g = g * 10 + (*s - L'0');
-        } else if (*s != L';') {
+    for (s = grouping; *s != L'\x0'; s += 1) {
+        if (*s > L'\x30' && *s < L'\x39') {
+            g = g * 10 + (*s - L'\x30');
+        } else if (*s != L'\x3b') {
             break;
         }
     }
 
-    if (*s != L'0') {
+    if (*s != L'\x30') {
         g *= 10;
     }
 
@@ -157,7 +157,7 @@ static UErrorCode GetEquivalentWindowsLocaleName(const Locale& locale, UnicodeSt
         int32_t i;
         for (i = 0; i < UPRV_LENGTHOF(bcp47Tag); i++)
         {
-            if (asciiBCP47Tag[i] == '\0')
+            if (asciiBCP47Tag[i] == '\x0')
             {
                 break;
             }
@@ -171,12 +171,12 @@ static UErrorCode GetEquivalentWindowsLocaleName(const Locale& locale, UnicodeSt
         // Ensure it's null terminated
         if (i < (UPRV_LENGTHOF(bcp47Tag) - 1))
         {
-            bcp47Tag[i] = L'\0';
+            bcp47Tag[i] = L'\x0';
         }
         else
         {
             // Ran out of room.
-            bcp47Tag[UPRV_LENGTHOF(bcp47Tag) - 1] = L'\0';
+            bcp47Tag[UPRV_LENGTHOF(bcp47Tag) - 1] = L'\x0';
         }
 
 
@@ -301,17 +301,17 @@ Format *Win32NumberFormat::clone(void) const
 
 UnicodeString& Win32NumberFormat::format(double number, UnicodeString& appendTo, FieldPosition& pos) const
 {
-    return format(getMaximumFractionDigits(), appendTo, L"%.16f", number);
+    return format(getMaximumFractionDigits(), appendTo, Lu8"%.16f", number);
 }
 
 UnicodeString& Win32NumberFormat::format(int32_t number, UnicodeString& appendTo, FieldPosition& pos) const
 {
-    return format(getMinimumFractionDigits(), appendTo, L"%I32d", number);
+    return format(getMinimumFractionDigits(), appendTo, Lu8"%I32d", number);
 }
 
 UnicodeString& Win32NumberFormat::format(int64_t number, UnicodeString& appendTo, FieldPosition& pos) const
 {
-    return format(getMinimumFractionDigits(), appendTo, L"%I64d", number);
+    return format(getMinimumFractionDigits(), appendTo, Lu8"%I64d", number);
 }
 
 void Win32NumberFormat::parse(const UnicodeString& text, Formattable& result, ParsePosition& parsePosition) const
@@ -375,9 +375,9 @@ UnicodeString &Win32NumberFormat::format(int32_t numDigits, UnicodeString &appen
     //
     // Note: (nBuffer[0] == L'-') will evaluate to 1 if there is a leading '-' in the
     // number, and 0 otherwise.
-    for (wchar_t *p = &nBuffer[nBuffer[0] == L'-']; *p != L'\0'; p += 1) {
-        if (*p < L'0' || *p > L'9') {
-            *p = L'.';
+    for (wchar_t *p = &nBuffer[nBuffer[0] == L'\x2d']; *p != L'\x0'; p += 1) {
+        if (*p < L'\x30' || *p > L'\x39') {
+            *p = L'\x2e';
             break;
         }
     }

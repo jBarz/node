@@ -25,8 +25,8 @@
 #include "ureslocs.h"
 #include "ulocimp.h"
 
-#define MEASUREMENT_SYSTEM  "MeasurementSystem"
-#define PAPER_SIZE          "PaperSize"
+#define MEASUREMENT_SYSTEM  u8"MeasurementSystem"
+#define PAPER_SIZE          u8"PaperSize"
 
 /** A locale data object.
  *  For usage in C programs.
@@ -104,10 +104,10 @@ U_CAPI USet* U_EXPORT2
 ulocdata_getExemplarSet(ULocaleData *uld, USet *fillIn,
                         uint32_t options, ULocaleDataExemplarSetType extype, UErrorCode *status){
 
-    static const char* const exemplarSetTypes[] = { "ExemplarCharacters",
-                                                    "AuxExemplarCharacters",
-                                                    "ExemplarCharactersIndex",
-                                                    "ExemplarCharactersPunctuation"};
+    static const char* const exemplarSetTypes[] = { u8"ExemplarCharacters",
+                                                    u8"AuxExemplarCharacters",
+                                                    u8"ExemplarCharactersIndex",
+                                                    u8"ExemplarCharactersPunctuation"};
     const UChar *exemplarChars = NULL;
     int32_t len = 0;
     UErrorCode localStatus = U_ZERO_ERROR;
@@ -143,10 +143,10 @@ ulocdata_getDelimiter(ULocaleData *uld, ULocaleDataDelimiterType type,
                       UChar *result, int32_t resultLength, UErrorCode *status){
 
     static const char* const delimiterKeys[] =  {
-        "quotationStart",
-        "quotationEnd",
-        "alternateQuotationStart",
-        "alternateQuotationEnd"
+        u8"quotationStart",
+        u8"quotationEnd",
+        u8"alternateQuotationStart",
+        u8"alternateQuotationEnd"
     };
 
     UResourceBundle *delimiterBundle;
@@ -157,7 +157,7 @@ ulocdata_getDelimiter(ULocaleData *uld, ULocaleDataDelimiterType type,
     if (U_FAILURE(*status))
         return 0;
 
-    delimiterBundle = ures_getByKey(uld->bundle, "delimiters", NULL, &localStatus);
+    delimiterBundle = ures_getByKey(uld->bundle, u8"delimiters", NULL, &localStatus);
 
     if ( (localStatus == U_USING_DEFAULT_WARNING) && uld->noSubstitute ) {
         localStatus = U_MISSING_RESOURCE_ERROR;
@@ -198,8 +198,8 @@ static UResourceBundle * measurementTypeBundleForLocale(const char *localeID, co
 
     ulocimp_getRegionForSupplementalData(localeID, TRUE, region, ULOC_COUNTRY_CAPACITY, status);
 
-    rb = ures_openDirect(NULL, "supplementalData", status);
-    ures_getByKey(rb, "measurementData", rb, status);
+    rb = ures_openDirect(NULL, u8"supplementalData", status);
+    ures_getByKey(rb, u8"measurementData", rb, status);
     if (rb != NULL) {
         UResourceBundle *measDataBundle = ures_getByKey(rb, region, NULL, status);
         if (U_SUCCESS(*status)) {
@@ -210,7 +210,7 @@ static UResourceBundle * measurementTypeBundleForLocale(const char *localeID, co
             if (measDataBundle != NULL) {
                 ures_close(measDataBundle);
             }
-            measDataBundle = ures_getByKey(rb, "001", NULL, status);
+            measDataBundle = ures_getByKey(rb, u8"001", NULL, status);
             measTypeBundle = ures_getByKey(measDataBundle, measurementType, NULL, status);
         }
         ures_close(measDataBundle);
@@ -267,8 +267,8 @@ ulocdata_getPaperSize(const char* localeID, int32_t *height, int32_t *width, UEr
 U_CAPI void U_EXPORT2
 ulocdata_getCLDRVersion(UVersionInfo versionArray, UErrorCode *status) {
     UResourceBundle *rb = NULL;
-    rb = ures_openDirect(NULL, "supplementalData", status);
-    ures_getVersionByKey(rb, "cldrVersion", versionArray, status);
+    rb = ures_openDirect(NULL, u8"supplementalData", status);
+    ures_getVersionByKey(rb, u8"cldrVersion", versionArray, status);
     ures_close(rb);
 }
 
@@ -285,7 +285,7 @@ ulocdata_getLocaleDisplayPattern(ULocaleData *uld,
     if (U_FAILURE(*status))
         return 0;
 
-    patternBundle = ures_getByKey(uld->langBundle, "localeDisplayPattern", NULL, &localStatus);
+    patternBundle = ures_getByKey(uld->langBundle, u8"localeDisplayPattern", NULL, &localStatus);
 
     if ( (localStatus == U_USING_DEFAULT_WARNING) && uld->noSubstitute ) {
         localStatus = U_MISSING_RESOURCE_ERROR;
@@ -300,7 +300,7 @@ ulocdata_getLocaleDisplayPattern(ULocaleData *uld,
         return 0;
     }
 
-    pattern = ures_getStringByKey(patternBundle, "pattern", &len, &localStatus);
+    pattern = ures_getStringByKey(patternBundle, u8"pattern", &len, &localStatus);
     ures_close(patternBundle);
 
     if ( (localStatus == U_USING_DEFAULT_WARNING) && uld->noSubstitute ) {
@@ -337,7 +337,7 @@ ulocdata_getLocaleSeparator(ULocaleData *uld,
     if (U_FAILURE(*status))
         return 0;
 
-    separatorBundle = ures_getByKey(uld->langBundle, "localeDisplayPattern", NULL, &localStatus);
+    separatorBundle = ures_getByKey(uld->langBundle, u8"localeDisplayPattern", NULL, &localStatus);
 
     if ( (localStatus == U_USING_DEFAULT_WARNING) && uld->noSubstitute ) {
         localStatus = U_MISSING_RESOURCE_ERROR;
@@ -352,7 +352,7 @@ ulocdata_getLocaleSeparator(ULocaleData *uld,
         return 0;
     }
 
-    separator = ures_getStringByKey(separatorBundle, "separator", &len, &localStatus);
+    separator = ures_getStringByKey(separatorBundle, u8"separator", &len, &localStatus);
     ures_close(separatorBundle);
 
     if ( (localStatus == U_USING_DEFAULT_WARNING) && uld->noSubstitute ) {

@@ -105,7 +105,7 @@ U_CAPI void U_EXPORT2
 ucol_close(UCollator *coll)
 {
     UTRACE_ENTRY_OC(UTRACE_UCOL_CLOSE);
-    UTRACE_DATA1(UTRACE_INFO, "coll = %p", coll);
+    UTRACE_DATA1(UTRACE_INFO, u8"coll = %p", coll);
     if(coll != NULL) {
         delete Collator::fromUCollator(coll);
     }
@@ -196,14 +196,14 @@ ucol_getSortKey(const    UCollator    *coll,
 {
     UTRACE_ENTRY(UTRACE_UCOL_GET_SORTKEY);
     if (UTRACE_LEVEL(UTRACE_VERBOSE)) {
-        UTRACE_DATA3(UTRACE_VERBOSE, "coll=%p, source string = %vh ", coll, source,
+        UTRACE_DATA3(UTRACE_VERBOSE, u8"coll=%p, source string = %vh ", coll, source,
             ((sourceLength==-1 && source!=NULL) ? u_strlen(source) : sourceLength));
     }
 
     int32_t keySize = Collator::fromUCollator(coll)->
             getSortKey(source, sourceLength, result, resultLength);
 
-    UTRACE_DATA2(UTRACE_VERBOSE, "Sort Key = %vb", result, keySize);
+    UTRACE_DATA2(UTRACE_VERBOSE, u8"Sort Key = %vb", result, keySize);
     UTRACE_EXIT_VALUE(keySize);
     return keySize;
 }
@@ -220,14 +220,14 @@ ucol_nextSortKeyPart(const UCollator *coll,
         return 0;
     }
     UTRACE_ENTRY(UTRACE_UCOL_NEXTSORTKEYPART);
-    UTRACE_DATA6(UTRACE_VERBOSE, "coll=%p, iter=%p, state=%d %d, dest=%p, count=%d",
+    UTRACE_DATA6(UTRACE_VERBOSE, u8"coll=%p, iter=%p, state=%d %d, dest=%p, count=%d",
                   coll, iter, state[0], state[1], dest, count);
 
     int32_t i = Collator::fromUCollator(coll)->
             internalNextSortKeyPart(iter, state, dest, count, *status);
 
     // Return number of meaningful sortkey bytes.
-    UTRACE_DATA4(UTRACE_VERBOSE, "dest = %vb, state=%d %d",
+    UTRACE_DATA4(UTRACE_VERBOSE, u8"dest = %vb, state=%d %d",
                   dest,i, state[0], state[1]);
     UTRACE_EXIT_VALUE_STATUS(i, *status);
     return i;
@@ -418,7 +418,7 @@ ucol_strcollIter( const UCollator    *coll,
     }
 
     UTRACE_ENTRY(UTRACE_UCOL_STRCOLLITER);
-    UTRACE_DATA3(UTRACE_VERBOSE, "coll=%p, sIter=%p, tIter=%p", coll, sIter, tIter);
+    UTRACE_DATA3(UTRACE_VERBOSE, u8"coll=%p, sIter=%p, tIter=%p", coll, sIter, tIter);
 
     if(sIter == NULL || tIter == NULL || coll == NULL) {
         *status = U_ILLEGAL_ARGUMENT_ERROR;
@@ -445,9 +445,9 @@ ucol_strcoll( const UCollator    *coll,
 {
     UTRACE_ENTRY(UTRACE_UCOL_STRCOLL);
     if (UTRACE_LEVEL(UTRACE_VERBOSE)) {
-        UTRACE_DATA3(UTRACE_VERBOSE, "coll=%p, source=%p, target=%p", coll, source, target);
-        UTRACE_DATA2(UTRACE_VERBOSE, "source string = %vh ", source, sourceLength);
-        UTRACE_DATA2(UTRACE_VERBOSE, "target string = %vh ", target, targetLength);
+        UTRACE_DATA3(UTRACE_VERBOSE, u8"coll=%p, source=%p, target=%p", coll, source, target);
+        UTRACE_DATA2(UTRACE_VERBOSE, u8"source string = %vh ", source, sourceLength);
+        UTRACE_DATA2(UTRACE_VERBOSE, u8"target string = %vh ", target, targetLength);
     }
 
     UErrorCode status = U_ZERO_ERROR;
@@ -468,9 +468,9 @@ ucol_strcollUTF8(
 {
     UTRACE_ENTRY(UTRACE_UCOL_STRCOLLUTF8);
     if (UTRACE_LEVEL(UTRACE_VERBOSE)) {
-        UTRACE_DATA3(UTRACE_VERBOSE, "coll=%p, source=%p, target=%p", coll, source, target);
-        UTRACE_DATA2(UTRACE_VERBOSE, "source string = %vb ", source, sourceLength);
-        UTRACE_DATA2(UTRACE_VERBOSE, "target string = %vb ", target, targetLength);
+        UTRACE_DATA3(UTRACE_VERBOSE, u8"coll=%p, source=%p, target=%p", coll, source, target);
+        UTRACE_DATA2(UTRACE_VERBOSE, u8"source string = %vb ", source, sourceLength);
+        UTRACE_DATA2(UTRACE_VERBOSE, u8"target string = %vb ", target, targetLength);
     }
 
     if (U_FAILURE(*status)) {
@@ -582,7 +582,7 @@ ucol_getLocaleByType(const UCollator *coll, ULocDataLocaleType type, UErrorCode 
         return NULL;
     }
     UTRACE_ENTRY(UTRACE_UCOL_GETLOCALE);
-    UTRACE_DATA1(UTRACE_INFO, "coll=%p", coll);
+    UTRACE_DATA1(UTRACE_INFO, u8"coll=%p", coll);
 
     const char *result;
     const RuleBasedCollator *rbc = RuleBasedCollator::rbcFromUCollator(coll);
@@ -593,7 +593,7 @@ ucol_getLocaleByType(const UCollator *coll, ULocDataLocaleType type, UErrorCode 
         result = rbc->internalGetLocaleID(type, *status);
     }
 
-    UTRACE_DATA1(UTRACE_INFO, "result = %s", result);
+    UTRACE_DATA1(UTRACE_INFO, u8"result = %s", result);
     UTRACE_EXIT_STATUS(*status);
     return result;
 }

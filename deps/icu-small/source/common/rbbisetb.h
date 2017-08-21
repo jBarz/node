@@ -49,7 +49,7 @@ public:
     RangeDescriptor(UErrorCode &status);
     RangeDescriptor(const RangeDescriptor &other, UErrorCode &status);
     ~RangeDescriptor();
-    void split(UChar32 where, UErrorCode &status);   // Spit this range in two at "where", with
+    void split(UChar32 where, UErrorCode &status);   // Spit this range in two at u8"where", with
                                         //   where appearing in the second (higher) part.
     void setDictionaryFlag();           // Check whether this range appears as part of
                                         //   the Unicode set named "dictionary"

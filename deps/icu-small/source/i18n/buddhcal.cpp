@@ -60,7 +60,7 @@ Calendar* BuddhistCalendar::clone(void) const
 
 const char *BuddhistCalendar::getType() const
 {
-    return "buddhist";
+    return u8"buddhist";
 }
 
 int32_t BuddhistCalendar::handleGetExtendedYear()
@@ -148,7 +148,7 @@ initializeSystemDefaultCentury()
     // on the current time.  They'll be set to 80 years before
     // the current time.
     UErrorCode status = U_ZERO_ERROR;
-    BuddhistCalendar calendar(Locale("@calendar=buddhist"),status);
+    BuddhistCalendar calendar(Locale(u8"@calendar=buddhist"),status);
     if (U_SUCCESS(status)) {
         calendar.setTime(Calendar::getNow(), status);
         calendar.add(UCAL_YEAR, -80, status);

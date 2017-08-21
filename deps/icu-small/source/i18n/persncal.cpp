@@ -71,7 +71,7 @@ static const int32_t PERSIAN_EPOCH = 1948320;
 //-------------------------------------------------------------------------
 
 const char *PersianCalendar::getType() const {
-    return "persian";
+    return u8"persian";
 }
 
 Calendar* PersianCalendar::clone() const {
@@ -262,7 +262,7 @@ static void U_CALLCONV initializeSystemDefaultCentury() {
     // on the current time.  They'll be set to 80 years before
     // the current time.
     UErrorCode status = U_ZERO_ERROR;
-    PersianCalendar calendar(Locale("@calendar=persian"),status);
+    PersianCalendar calendar(Locale(u8"@calendar=persian"),status);
     if (U_SUCCESS(status))
     {
         calendar.setTime(Calendar::getNow(), status);

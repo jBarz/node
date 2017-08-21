@@ -28,7 +28,7 @@ CharsetRecog_UTF_16_BE::~CharsetRecog_UTF_16_BE()
 
 const char *CharsetRecog_UTF_16_BE::getName() const
 {
-    return "UTF-16BE";
+    return u8"UTF-16BE";
 }
 
 // UTF-16 confidence calculation. Very simple minded, but better than nothing.
@@ -84,7 +84,7 @@ CharsetRecog_UTF_16_LE::~CharsetRecog_UTF_16_LE()
 
 const char *CharsetRecog_UTF_16_LE::getName() const
 {
-    return "UTF-16LE";
+    return u8"UTF-16LE";
 }
 
 UBool CharsetRecog_UTF_16_LE::match(InputText* textIn, CharsetMatch *results) const
@@ -170,7 +170,7 @@ CharsetRecog_UTF_32_BE::~CharsetRecog_UTF_32_BE()
 
 const char *CharsetRecog_UTF_32_BE::getName() const
 {
-    return "UTF-32BE";
+    return u8"UTF-32BE";
 }
 
 int32_t CharsetRecog_UTF_32_BE::getChar(const uint8_t *input, int32_t index) const
@@ -186,7 +186,7 @@ CharsetRecog_UTF_32_LE::~CharsetRecog_UTF_32_LE()
 
 const char *CharsetRecog_UTF_32_LE::getName() const
 {
-    return "UTF-32LE";
+    return u8"UTF-32LE";
 }
 
 int32_t CharsetRecog_UTF_32_LE::getChar(const uint8_t *input, int32_t index) const

@@ -277,12 +277,12 @@ UBool CharsetRecog_sjis::match(InputText* det, CharsetMatch *results) const {
 
 const char *CharsetRecog_sjis::getName() const
 {
-    return "Shift_JIS";
+    return u8"Shift_JIS";
 }
 
 const char *CharsetRecog_sjis::getLanguage() const
 {
-    return "ja";
+    return u8"ja";
 }
 
 CharsetRecog_euc::~CharsetRecog_euc()
@@ -361,12 +361,12 @@ CharsetRecog_euc_jp::~CharsetRecog_euc_jp()
 
 const char *CharsetRecog_euc_jp::getName() const
 {
-    return "EUC-JP";
+    return u8"EUC-JP";
 }
 
 const char *CharsetRecog_euc_jp::getLanguage() const
 {
-    return "ja";
+    return u8"ja";
 }
 
 UBool CharsetRecog_euc_jp::match(InputText *det, CharsetMatch *results) const
@@ -383,12 +383,12 @@ CharsetRecog_euc_kr::~CharsetRecog_euc_kr()
 
 const char *CharsetRecog_euc_kr::getName() const
 {
-    return "EUC-KR";
+    return u8"EUC-KR";
 }
 
 const char *CharsetRecog_euc_kr::getLanguage() const
 {
-    return "ko";
+    return u8"ko";
 }
 
 UBool CharsetRecog_euc_kr::match(InputText *det, CharsetMatch *results) const
@@ -435,12 +435,12 @@ UBool CharsetRecog_big5::nextChar(IteratedChar* it, InputText* det) const
 
 const char *CharsetRecog_big5::getName() const
 {
-    return "Big5";
+    return u8"Big5";
 }
 
 const char *CharsetRecog_big5::getLanguage() const
 {
-    return "zh";
+    return u8"zh";
 }
 
 UBool CharsetRecog_big5::match(InputText *det, CharsetMatch *results) const
@@ -511,12 +511,12 @@ UBool CharsetRecog_gb_18030::nextChar(IteratedChar* it, InputText* det) const {
 
 const char *CharsetRecog_gb_18030::getName() const
 {
-    return "GB18030";
+    return u8"GB18030";
 }
 
 const char *CharsetRecog_gb_18030::getLanguage() const
 {
-    return "zh";
+    return u8"zh";
 }
 
 UBool CharsetRecog_gb_18030::match(InputText *det, CharsetMatch *results) const

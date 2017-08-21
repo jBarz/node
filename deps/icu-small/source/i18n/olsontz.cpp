@@ -35,7 +35,7 @@
 
 static void debug_tz_loc(const char *f, int32_t l)
 {
-  fprintf(stderr, "%s:%d: ", f, l);
+  fprintf(stderr, u8"%s:%d: ", f, l);
 }
 
 static void debug_tz_msg(const char *pat, ...)
@@ -67,15 +67,15 @@ static UBool arrayEqual(const void *a1, const void *a2, int32_t size) {
 
 U_NAMESPACE_BEGIN
 
-#define kTRANS          "trans"
-#define kTRANSPRE32     "transPre32"
-#define kTRANSPOST32    "transPost32"
-#define kTYPEOFFSETS    "typeOffsets"
-#define kTYPEMAP        "typeMap"
-#define kLINKS          "links"
-#define kFINALRULE      "finalRule"
-#define kFINALRAW       "finalRaw"
-#define kFINALYEAR      "finalYear"
+#define kTRANS          u8"trans"
+#define kTRANSPRE32     u8"transPre32"
+#define kTRANSPOST32    u8"transPost32"
+#define kTYPEOFFSETS    u8"typeOffsets"
+#define kTYPEMAP        u8"typeMap"
+#define kLINKS          u8"links"
+#define kFINALRULE      u8"finalRule"
+#define kFINALRAW       u8"finalRaw"
+#define kFINALYEAR      u8"finalYear"
 
 #define SECONDS_PER_DAY (24*60*60)
 
@@ -124,7 +124,7 @@ OlsonTimeZone::OlsonTimeZone(const UResourceBundle* top,
   BasicTimeZone(tzid), finalZone(NULL)
 {
     clearTransitionRules();
-    U_DEBUG_TZ_MSG(("OlsonTimeZone(%s)\n", ures_getKey((UResourceBundle*)res)));
+    U_DEBUG_TZ_MSG((u8"OlsonTimeZone(%s)\n", ures_getKey((UResourceBundle*)res)));
     if ((top == NULL || res == NULL) && U_SUCCESS(ec)) {
         ec = U_ILLEGAL_ARGUMENT_ERROR;
     }
@@ -442,7 +442,7 @@ void printTime(double ms) {
             double days = ClockMath::floorDivide(((double)ms), (double)U_MILLIS_PER_DAY, millis);
 
             Grego::dayToFields(days, year, month, dom, dow);
-            U_DEBUG_TZ_MSG(("   getHistoricalOffset:  time %.1f (%04d.%02d.%02d+%.1fh)\n", ms,
+            U_DEBUG_TZ_MSG((u8"   getHistoricalOffset:  time %.1f (%04d.%02d.%02d+%.1fh)\n", ms,
                             year, month+1, dom, (millis/kOneHour)));
     }
 #endif
@@ -475,8 +475,8 @@ void
 OlsonTimeZone::getHistoricalOffset(UDate date, UBool local,
                                    int32_t NonExistingTimeOpt, int32_t DuplicatedTimeOpt,
                                    int32_t& rawoff, int32_t& dstoff) const {
-    U_DEBUG_TZ_MSG(("getHistoricalOffset(%.1f, %s, %d, %d, raw, dst)\n",
-        date, local?"T":"F", NonExistingTimeOpt, DuplicatedTimeOpt));
+    U_DEBUG_TZ_MSG((u8"getHistoricalOffset(%.1f, %s, %d, %d, raw, dst)\n",
+        date, local?u8"T":u8"F", NonExistingTimeOpt, DuplicatedTimeOpt));
 #if defined U_DEBUG_TZ
         printTime(date*1000.0);
 #endif
@@ -550,8 +550,8 @@ OlsonTimeZone::getHistoricalOffset(UDate date, UBool local,
         rawoff = initialRawOffset() * U_MILLIS_PER_SECOND;
         dstoff = initialDstOffset() * U_MILLIS_PER_SECOND;
     }
-    U_DEBUG_TZ_MSG(("getHistoricalOffset(%.1f, %s, %d, %d, raw, dst) - raw=%d, dst=%d\n",
-        date, local?"T":"F", NonExistingTimeOpt, DuplicatedTimeOpt, rawoff, dstoff));
+    U_DEBUG_TZ_MSG((u8"getHistoricalOffset(%.1f, %s, %d, %d, raw, dst) - raw=%d, dst=%d\n",
+        date, local?u8"T":u8"F", NonExistingTimeOpt, DuplicatedTimeOpt, rawoff, dstoff));
 }
 
 /**

@@ -45,7 +45,7 @@
 /** In a string, ICU version fields are delimited by dots.
  *  @stable ICU 2.4
  */
-#define U_VERSION_DELIMITER '.'
+#define U_VERSION_DELIMITER '\x2e'
 
 /** The maximum length of an ICU version string.
  *  @stable ICU 2.4

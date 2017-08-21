@@ -38,7 +38,7 @@ uloc_getTableStringWithFallback(
     UErrorCode *pErrorCode);
 
 /*returns TRUE if a is an ID separator FALSE otherwise*/
-#define _isIDSeparator(a) (a == '_' || a == '-')
+#define _isIDSeparator(a) (a == '\x5f' || a == '\x2d')
 
 U_CFUNC const char*
 uloc_getCurrentCountryID(const char* oldID);

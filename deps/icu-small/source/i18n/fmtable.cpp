@@ -698,7 +698,7 @@ Formattable::getBogus() const
 // --------------------------------------
 StringPiece Formattable::getDecimalNumber(UErrorCode &status) {
     if (U_FAILURE(status)) {
-        return "";
+        return u8"";
     }
     if (fDecimalStr != NULL) {
       return fDecimalStr->toStringPiece();
@@ -706,7 +706,7 @@ StringPiece Formattable::getDecimalNumber(UErrorCode &status) {
 
     CharString *decimalStr = internalGetCharString(status);
     if(decimalStr == NULL) {
-      return ""; // getDecimalNumber returns "" for error cases
+      return u8""; // getDecimalNumber returns u8"" for error cases
     } else {
       return decimalStr->toStringPiece();
     }
@@ -865,32 +865,32 @@ FormattableStreamer::streamOut(ostream& stream, const Formattable& obj)
             break;
         case Formattable::kDouble :
             // Output the double as is.
-            stream << obj.getDouble() << 'D';
+            stream << obj.getDouble() << '\x44';
             break;
         case Formattable::kLong :
             // Output the double as is.
-            stream << obj.getLong() << 'L';
+            stream << obj.getLong() << '\x4c';
             break;
         case Formattable::kString:
             // Output the double as is.  Please see UnicodeString console
             // I/O routine for more details.
-            stream << '"' << obj.getString(buffer) << '"';
+            stream << '\x22' << obj.getString(buffer) << '\x22';
             break;
         case Formattable::kArray:
             int32_t i, count;
             const Formattable* array;
             array = obj.getArray(count);
-            stream << '[';
+            stream << '\x5b';
             // Recursively calling the console I/O routine for each element in the array.
             for (i=0; i<count; ++i) {
                 FormattableStreamer::streamOut(stream, array[i]);
-                stream << ( (i==(count-1)) ? "" : ", " );
+                stream << ( (i==(count-1)) ? u8"" : u8", " );
             }
-            stream << ']';
+            stream << '\x5d';
             break;
         default:
             // Not a recognizable Formattable object.
-            stream << "INVALID_Formattable";
+            stream << u8"INVALID_Formattable";
     }
     stream.flush();
 }
@@ -1022,16 +1022,16 @@ ufmt_getArrayItemByIndex(UFormattable* fmt, int32_t n, UErrorCode *status) {
 U_DRAFT const char * U_EXPORT2
 ufmt_getDecNumChars(UFormattable *fmt, int32_t *len, UErrorCode *status) {
   if(U_FAILURE(*status)) {
-    return "";
+    return u8"";
   }
   Formattable *obj = Formattable::fromUFormattable(fmt);
   CharString *charString = obj->internalGetCharString(*status);
   if(U_FAILURE(*status)) {
-    return "";
+    return u8"";
   }
   if(charString == NULL) {
     *status = U_MEMORY_ALLOCATION_ERROR;
-    return "";
+    return u8"";
   } else {
     if(len!=NULL) {
       *len = charString->length();

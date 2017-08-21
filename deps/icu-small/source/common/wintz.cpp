@@ -50,9 +50,9 @@ typedef struct
  * Various registry keys and key fragments.
  */
 static const char CURRENT_ZONE_REGKEY[] = "SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation\\";
-static const char STANDARD_TIME_REGKEY[] = " Standard Time";
-static const char TZI_REGKEY[] = "TZI";
-static const char STD_REGKEY[] = "Std";
+static const char STANDARD_TIME_REGKEY[] = u8" Standard Time";
+static const char TZI_REGKEY[] = u8"TZI";
+static const char STD_REGKEY[] = u8"Std";
 
 /**
  * The time zone root keys (under HKLM) for Win7+
@@ -136,7 +136,7 @@ static LONG getTZKeyName(char* tzKeyName, int32_t length)
     {
          result = RegQueryValueExA(
              hkey,
-             "TimeZoneKeyName",
+             u8"TimeZoneKeyName",
              NULL,
              NULL,
              (LPBYTE)tzKeyName,
@@ -244,8 +244,8 @@ uprv_detectWindowsTimeZone()
     errorCode = GetGeoInfoW(id, GEO_ISO2, ISOcodeW, 3, 0);
     u_strToUTF8(ISOcodeA, 3, NULL, (const UChar *)ISOcodeW, 3, &status);
 
-    bundle = ures_openDirect(NULL, "windowsZones", &status);
-    ures_getByKey(bundle, "mapTimezones", bundle, &status);
+    bundle = ures_openDirect(NULL, u8"windowsZones", &status);
+    ures_getByKey(bundle, u8"mapTimezones", bundle, &status);
 
     /*
         Windows Vista+ provides us with a "TimeZoneKeyName" that is not localized
@@ -270,17 +270,17 @@ uprv_detectWindowsTimeZone()
             {
                 /* fallback to default "001" and reset status */
                 status = U_ZERO_ERROR;
-                icuTZ = ures_getStringByKey(winTZ, "001", &len, &status);
+                icuTZ = ures_getStringByKey(winTZ, u8"001", &len, &status);
             }
 
             if(U_SUCCESS(status))
             {
                 int index=0;
-                while (! (*icuTZ == '\0' || *icuTZ ==' '))
+                while (! (*icuTZ == '\x0' || *icuTZ =='\x20'))
                 {
                     tmpid[index++]=(char)(*icuTZ++);  /* safe to assume 'char' is ASCII compatible on windows */
                 }
-                tmpid[index]='\0';
+                tmpid[index]='\x0';
                 tryPreVistaFallback = FALSE;
             }
         }
@@ -321,7 +321,7 @@ uprv_detectWindowsTimeZone()
                     {
                         /* fallback to default "001" and reset status */
                         status = U_ZERO_ERROR;
-                        icuTZ = ures_getStringByKey(winTZ, "001", &len, &status);
+                        icuTZ = ures_getStringByKey(winTZ, u8"001", &len, &status);
                     }
 
                     if (U_SUCCESS(status))
@@ -346,11 +346,11 @@ uprv_detectWindowsTimeZone()
                         {
                             /* if icuTZ has more than one city, take only the first (i.e. terminate icuTZ at first space) */
                             int index=0;
-                            while (! (*icuTZ == '\0' || *icuTZ ==' '))
+                            while (! (*icuTZ == '\x0' || *icuTZ =='\x20'))
                             {
                                 tmpid[index++]=(char)(*icuTZ++);  /* safe to assume 'char' is ASCII compatible on windows */
                             }
-                            tmpid[index]='\0';
+                            tmpid[index]='\x0';
                         }
                     }
                 }

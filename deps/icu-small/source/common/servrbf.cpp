@@ -75,14 +75,14 @@ UnicodeString&
 ICUResourceBundleFactory::debug(UnicodeString& result) const
 {
     LocaleKeyFactory::debug(result);
-    result.append((UnicodeString)", bundle: ");
+    result.append((UnicodeString)u8", bundle: ");
     return result.append(_bundleName);
 }
 
 UnicodeString&
 ICUResourceBundleFactory::debugClass(UnicodeString& result) const
 {
-    return result.append((UnicodeString)"ICUResourceBundleFactory");
+    return result.append((UnicodeString)u8"ICUResourceBundleFactory");
 }
 #endif
 

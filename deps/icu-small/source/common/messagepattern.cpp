@@ -77,11 +77,11 @@ static const UChar u_pipe=0x7C;
 static const UChar u_rightCurlyBrace=0x7D;
 static const UChar u_lessOrEqual=0x2264;  // U+2264 is <=
 
-static const UChar kOffsetColon[]={  // "offset:"
+static const UChar kOffsetColon[]={  // u8"offset:"
     u_o, u_f, u_f, u_s, u_e, u_t, u_colon
 };
 
-static const UChar kOther[]={  // "other"
+static const UChar kOther[]={  // u8"other"
     u_o, u_t, u_h, u_e, u_r
 };
 
@@ -527,7 +527,7 @@ MessagePattern::parseMessage(int32_t index, int32_t msgStartLength,
         }  // else: c is part of literal text
     }
     if(nestingLevel>0 && !inTopLevelChoiceMessage(nestingLevel, parentType)) {
-        setParseError(parseError, 0);  // Unmatched '{' braces in message.
+        setParseError(parseError, 0);  // Unmatched '\x7b' braces in message.
         errorCode=U_UNMATCHED_BRACES;
         return 0;
     }
@@ -546,7 +546,7 @@ MessagePattern::parseArg(int32_t index, int32_t argStartLength, int32_t nestingL
     }
     int32_t nameIndex=index=skipWhiteSpace(index+argStartLength);
     if(index==msg.length()) {
-        setParseError(parseError, 0);  // Unmatched '{' braces in message.
+        setParseError(parseError, 0);  // Unmatched '\x7b' braces in message.
         errorCode=U_UNMATCHED_BRACES;
         return 0;
     }
@@ -578,7 +578,7 @@ MessagePattern::parseArg(int32_t index, int32_t argStartLength, int32_t nestingL
     }
     index=skipWhiteSpace(index);
     if(index==msg.length()) {
-        setParseError(parseError, 0);  // Unmatched '{' braces in message.
+        setParseError(parseError, 0);  // Unmatched '\x7b' braces in message.
         errorCode=U_UNMATCHED_BRACES;
         return 0;
     }
@@ -589,7 +589,7 @@ MessagePattern::parseArg(int32_t index, int32_t argStartLength, int32_t nestingL
         setParseError(parseError, nameIndex);  // Bad argument syntax.
         errorCode=U_PATTERN_SYNTAX_ERROR;
         return 0;
-    } else /* ',' */ {
+    } else /* '\x2c' */ {
         // parse argument type: case-sensitive a-zA-Z
         int32_t typeIndex=index=skipWhiteSpace(index+1);
         while(index<msg.length() && isArgTypeChar(msg.charAt(index))) {
@@ -598,7 +598,7 @@ MessagePattern::parseArg(int32_t index, int32_t argStartLength, int32_t nestingL
         int32_t length=index-typeIndex;
         index=skipWhiteSpace(index);
         if(index==msg.length()) {
-            setParseError(parseError, 0);  // Unmatched '{' braces in message.
+            setParseError(parseError, 0);  // Unmatched '\x7b' braces in message.
             errorCode=U_UNMATCHED_BRACES;
             return 0;
         }
@@ -639,7 +639,7 @@ MessagePattern::parseArg(int32_t index, int32_t argStartLength, int32_t nestingL
                 errorCode=U_PATTERN_SYNTAX_ERROR;
                 return 0;
             }
-        } else /* ',' */ {
+        } else /* '\x2c' */ {
             ++index;
             if(argType==UMSGPAT_ARG_TYPE_SIMPLE) {
                 index=parseSimpleStyle(index, parseError, errorCode);
@@ -693,7 +693,7 @@ MessagePattern::parseSimpleStyle(int32_t index, UParseError *parseError, UErrorC
             }
         }  // c is part of literal text
     }
-    setParseError(parseError, 0);  // Unmatched '{' braces in message.
+    setParseError(parseError, 0);  // Unmatched '\x7b' braces in message.
     errorCode=U_UNMATCHED_BRACES;
     return 0;
 }
@@ -761,7 +761,7 @@ MessagePattern::parseChoiceStyle(int32_t index, int32_t nestingLevel,
                 return 0;
             }
             return index;
-        }  // else the terminator is '|'
+        }  // else the terminator is '\x7c'
         index=skipWhiteSpace(index+1);
     }
 }
@@ -833,7 +833,7 @@ MessagePattern::parsePluralOrSelectStyle(UMessagePatternArgType argType,
                     return 0;
                 }
                 // allow whitespace between offset: and its value
-                int32_t valueIndex=skipWhiteSpace(index+1);  // The ':' is at index.
+                int32_t valueIndex=skipWhiteSpace(index+1);  // The '\x3a' is at index.
                 index=skipDouble(valueIndex);
                 if(index==valueIndex) {
                     setParseError(parseError, start);  // Missing value for plural 'offset:'.
@@ -966,8 +966,8 @@ MessagePattern::parseDouble(int32_t start, int32_t limit, UBool allowInfinity,
             }
         }
         // try to parse the number as a small integer but fall back to a double
-        while('0'<=c && c<='9') {
-            value=value*10+(c-'0');
+        while('\x30'<=c && c<='\x39') {
+            value=value*10+(c-'\x30');
             if(value>(Part::MAX_VALUE+isNegative)) {
                 break;  // not a small-enough integer
             }

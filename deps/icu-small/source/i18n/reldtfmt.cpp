@@ -449,7 +449,7 @@ RelativeDateFormat::initCapitalizationContextInfo(const Locale& thelocale)
     UErrorCode status = U_ZERO_ERROR;
     LocalUResourceBundlePointer rb(ures_open(NULL, localeID, &status));
     ures_getByKeyWithFallback(rb.getAlias(),
-                              "contextTransforms/relative",
+                              u8"contextTransforms/relative",
                                rb.getAlias(), &status);
     if (U_SUCCESS(status) && rb != NULL) {
         int32_t len = 0;
@@ -512,14 +512,14 @@ RelDateFmtDataSink::~RelDateFmtDataSink() {}
 }  // Namespace
 
 
-static const UChar patItem1[] = {0x7B,0x31,0x7D}; // "{1}"
+static const UChar patItem1[] = {0x7B,0x31,0x7D}; // u8"{1}"
 static const int32_t patItem1Len = 3;
 
 void RelativeDateFormat::loadDates(UErrorCode &status) {
     UResourceBundle *rb = ures_open(NULL, fLocale.getBaseName(), &status);
     LocalUResourceBundlePointer dateTimePatterns(
         ures_getByKeyWithFallback(rb,
-                                  "calendar/gregorian/DateTimePatterns",
+                                  u8"calendar/gregorian/DateTimePatterns",
                                   (UResourceBundle*)NULL, &status));
     if(U_SUCCESS(status)) {
         int32_t patternsSize = ures_getSize(dateTimePatterns.getAlias());
@@ -547,7 +547,7 @@ void RelativeDateFormat::loadDates(UErrorCode &status) {
     fDates = (URelativeString*) uprv_malloc(sizeof(fDates[0])*fDatesLen);
 
     RelDateFmtDataSink sink(fDates, fDatesLen);
-    ures_getAllItemsWithFallback(rb, "fields/day/relative", sink, status);
+    ures_getAllItemsWithFallback(rb, u8"fields/day/relative", sink, status);
 
     ures_close(rb);
 

@@ -12,8 +12,8 @@
 
 #include "unicode/utypes.h"
 
-#define COLLUNSAFE_ICU_VERSION "56.0.1"
-#define COLLUNSAFE_COLL_VERSION "9.64"
+#define COLLUNSAFE_ICU_VERSION u8"56.0.1"
+#define COLLUNSAFE_COLL_VERSION u8"9.64"
 #define COLLUNSAFE_SERIALIZE 1
 static const int32_t unsafe_serializedCount = 850;
 static const uint16_t unsafe_serializedData[850] = {

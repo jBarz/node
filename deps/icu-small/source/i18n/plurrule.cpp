@@ -656,17 +656,17 @@ PluralRules::getRuleFromResource(const Locale& locale, UPluralType type, UErrorC
     if (U_FAILURE(errCode)) {
         return emptyStr;
     }
-    LocalUResourceBundlePointer rb(ures_openDirect(NULL, "plurals", &errCode));
+    LocalUResourceBundlePointer rb(ures_openDirect(NULL, u8"plurals", &errCode));
     if(U_FAILURE(errCode)) {
         return emptyStr;
     }
     const char *typeKey;
     switch (type) {
     case UPLURAL_TYPE_CARDINAL:
-        typeKey = "locales";
+        typeKey = u8"locales";
         break;
     case UPLURAL_TYPE_ORDINAL:
-        typeKey = "locales_ordinals";
+        typeKey = u8"locales_ordinals";
         break;
     default:
         // Must not occur: The caller should have checked for valid types.
@@ -707,7 +707,7 @@ PluralRules::getRuleFromResource(const Locale& locale, UPluralType type, UErrorC
     u_UCharsToChars(s, setKey, resLen + 1);
     // printf("\n PluralRule: %s\n", setKey);
 
-    LocalUResourceBundlePointer ruleRes(ures_getByKey(rb.getAlias(), "rules", NULL, &errCode));
+    LocalUResourceBundlePointer ruleRes(ures_getByKey(rb.getAlias(), u8"rules", NULL, &errCode));
     if(U_FAILURE(errCode)) {
         return emptyStr;
     }
@@ -803,10 +803,10 @@ AndConstraint::isFulfilled(const FixedDecimal &number) {
         }
         if (rangeList == NULL) {
             result = value == -1 ||    // empty rule
-                     n == value;       //  'is' rule
+                     n == value;       //  '\x69\x73' rule
             break;
         }
-        result = FALSE;                // 'in' or 'within' rule
+        result = FALSE;                // '\x69\x6e' or 'within' rule
         for (int32_t r=0; r<rangeList->size(); r+=2) {
             if (rangeList->elementAti(r) <= n && n <= rangeList->elementAti(r+1)) {
                 result = TRUE;
@@ -1082,7 +1082,7 @@ PluralRuleParser::getNumberValue(const UnicodeString& token) {
     char digits[128];
 
     i = token.extract(0, token.length(), digits, UPRV_LENGTHOF(digits), US_INV);
-    digits[i]='\0';
+    digits[i]='\x0';
 
     return((int32_t)atoi(digits));
 }
@@ -1221,15 +1221,15 @@ PluralRuleParser::getNextToken(UErrorCode &status)
       case tSemiColon:
       case tComma:
       case tEllipsis:
-      case tTilde:   // scanned '~'
-      case tAt:      // scanned '@'
-      case tEqual:   // scanned '='
-      case tMod:     // scanned '%'
+      case tTilde:   // scanned '\x7e'
+      case tAt:      // scanned '\x40'
+      case tEqual:   // scanned '\x3d'
+      case tMod:     // scanned '\x25'
         // Single character tokens.
         ++curIndex;
         break;
 
-      case tNotEqual:  // scanned '!'
+      case tNotEqual:  // scanned '\x21'
         if (ruleSrc->charAt(curIndex+1) == EQUALS) {
             curIndex += 2;
         } else {
@@ -1551,12 +1551,12 @@ int32_t FixedDecimal::decimals(double n) {
 
     // Slow path, convert with sprintf, parse converted output.
     char  buf[30] = {0};
-    sprintf(buf, "%1.15e", n);
+    sprintf(buf, u8"%1.15e", n);
     // formatted number looks like this: 1.234567890123457e-01
     int exponent = atoi(buf+18);
     int numFractionDigits = 15;
     for (int i=16; ; --i) {
-        if (buf[i] != '0') {
+        if (buf[i] != '\x30') {
             break;
         }
         --numFractionDigits;
@@ -1637,8 +1637,8 @@ PluralAvailableLocalesEnumeration::PluralAvailableLocalesEnumeration(UErrorCode 
         return;
     }
     fOpenStatus = U_ZERO_ERROR;
-    LocalUResourceBundlePointer rb(ures_openDirect(NULL, "plurals", &fOpenStatus));
-    fLocales = ures_getByKey(rb.getAlias(), "locales", NULL, &fOpenStatus);
+    LocalUResourceBundlePointer rb(ures_openDirect(NULL, u8"plurals", &fOpenStatus));
+    fLocales = ures_getByKey(rb.getAlias(), u8"locales", NULL, &fOpenStatus);
 }
 
 PluralAvailableLocalesEnumeration::~PluralAvailableLocalesEnumeration() {

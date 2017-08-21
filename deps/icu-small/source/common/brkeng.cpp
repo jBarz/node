@@ -246,8 +246,8 @@ DictionaryMatcher *
 ICULanguageBreakFactory::loadDictionaryMatcherFor(UScriptCode script, int32_t /* brkType */) {
     UErrorCode status = U_ZERO_ERROR;
     // open root from brkitr tree.
-    UResourceBundle *b = ures_open(U_ICUDATA_BRKITR, "", &status);
-    b = ures_getByKeyWithFallback(b, "dictionaries", b, &status);
+    UResourceBundle *b = ures_open(U_ICUDATA_BRKITR, u8"", &status);
+    b = ures_getByKeyWithFallback(b, u8"dictionaries", b, &status);
     int32_t dictnlength = 0;
     const UChar *dictfname =
         ures_getStringByKeyWithFallback(b, uscript_getShortName(script), &dictnlength, &status);

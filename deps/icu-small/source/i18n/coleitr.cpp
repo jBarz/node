@@ -404,7 +404,7 @@ public:
             // We do not need to add single CEs into the map.
             return;
         }
-        int32_t count = 0;  // number of CE "halves"
+        int32_t count = 0;  // number of CE u8"halves"
         for (int32_t i = 0; i < length; ++i) {
             count += ceNeedsTwoParts(ces[i]) ? 2 : 1;
         }

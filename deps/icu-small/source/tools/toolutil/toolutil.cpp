@@ -15,11 +15,11 @@
 *   created on: 1999nov19
 *   created by: Markus W. Scherer
 *
-*	6/25/08 - Added Cygwin specific code in uprv_mkdir - Brian Rower
+*	6/25/08 - Added Cygwin specific code in uprv___mkdir_a - Brian Rower
 *
 *   This file contains utility functions for ICU tools like genccode.
 */
-
+#define _AE_BIMODAL
 #include "unicode/platform.h"
 #if U_PLATFORM == U_PF_MINGW
 // *cough* - for struct stat
@@ -53,7 +53,7 @@
 #   include <sys/types.h>
 #endif
 
-/* In MinGW environment, io.h needs to be included for _mkdir() */
+/* In MinGW environment, io.h needs to be included for ___mkdir_a() */
 #if U_PLATFORM == U_PF_MINGW
 #include <io.h>
 #endif
@@ -75,7 +75,7 @@ IcuToolErrorCode::~IcuToolErrorCode() {
 }
 
 void IcuToolErrorCode::handleFailure() const {
-    fprintf(stderr, "error at %s: %s\n", location, errorName());
+    __fprintf_a(stderr, u8"error at %s: %s\n", location, errorName());
     exit(errorCode);
 }
 
@@ -139,13 +139,13 @@ findDirname(const char *path, char *buffer, int32_t bufLen, UErrorCode* status) 
 #endif
   if(!basename) {
     /* no basename - return ''. */
-    resultPtr = "";
+    resultPtr = u8"";
     resultLen = 0;
   } else {
     resultPtr = path;
     resultLen = basename - path;
     if(resultLen<1) {
-      resultLen = 1; /* '/' or '/a' -> '/' */
+      resultLen = 1; /* '\x2f' or '\x2f\x61' -> '\x2f' */
     }
   }
 
@@ -187,13 +187,13 @@ uprv_mkdir(const char *pathname, UErrorCode *status) {
 
     int retVal = 0;
 #if U_PLATFORM_USES_ONLY_WIN32_API
-    retVal = _mkdir(pathname);
+    retVal = ___mkdir_a(pathname);
 #else
-    retVal = mkdir(pathname, S_IRWXU | (S_IROTH | S_IXOTH) | (S_IROTH | S_IXOTH));
+    retVal = __mkdir_a(pathname, S_IRWXU | (S_IROTH | S_IXOTH) | (S_IROTH | S_IXOTH));
 #endif
     if (retVal && errno != EEXIST) {
 #if U_PF_MINGW <= U_PLATFORM && U_PLATFORM <= U_PF_CYGWIN
-        /*if using Cygwin and the mkdir says it failed...check if the directory already exists..*/
+        /*if using Cygwin and the __mkdir_a says it failed...check if the directory already exists..*/
         /* if it does...don't give the error, if it does not...give the error - Brian Rower - 6/25/08 */
         struct stat st;
 
@@ -256,7 +256,7 @@ utm_open(const char *name, int32_t initialCapacity, int32_t maxCapacity, int32_t
 
     mem=(UToolMemory *)uprv_malloc(sizeof(UToolMemory)+initialCapacity*size);
     if(mem==NULL) {
-        fprintf(stderr, "error: %s - out of memory\n", name);
+        __fprintf_a(stderr, u8"error: %s - out of memory\n", name);
         exit(U_MEMORY_ALLOCATION_ERROR);
     }
     mem->array=mem->staticArray;
@@ -297,7 +297,7 @@ utm_hasCapacity(UToolMemory *mem, int32_t capacity) {
         int32_t newCapacity;
 
         if(mem->maxCapacity<capacity) {
-            fprintf(stderr, "error: %s - trying to use more than maxCapacity=%ld units\n",
+            __fprintf_a(stderr, u8"error: %s - trying to use more than maxCapacity=%ld units\n",
                     mem->name, (long)mem->maxCapacity);
             exit(U_MEMORY_ALLOCATION_ERROR);
         }
@@ -321,7 +321,7 @@ utm_hasCapacity(UToolMemory *mem, int32_t capacity) {
         }
 
         if(mem->array==NULL) {
-            fprintf(stderr, "error: %s - out of memory\n", mem->name);
+            __fprintf_a(stderr, u8"error: %s - out of memory\n", mem->name);
             exit(U_MEMORY_ALLOCATION_ERROR);
         }
         mem->capacity=newCapacity;

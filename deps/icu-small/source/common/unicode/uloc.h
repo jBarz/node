@@ -200,48 +200,48 @@
  */
 
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_CHINESE            "zh"
+#define ULOC_CHINESE            u8"zh"
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_ENGLISH            "en"
+#define ULOC_ENGLISH            u8"en"
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_FRENCH             "fr"
+#define ULOC_FRENCH             u8"fr"
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_GERMAN             "de"
+#define ULOC_GERMAN             u8"de"
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_ITALIAN            "it"
+#define ULOC_ITALIAN            u8"it"
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_JAPANESE           "ja"
+#define ULOC_JAPANESE           u8"ja"
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_KOREAN             "ko"
+#define ULOC_KOREAN             u8"ko"
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_SIMPLIFIED_CHINESE "zh_CN"
+#define ULOC_SIMPLIFIED_CHINESE u8"zh_CN"
 /** Useful constant for this language. @stable ICU 2.0 */
-#define ULOC_TRADITIONAL_CHINESE "zh_TW"
+#define ULOC_TRADITIONAL_CHINESE u8"zh_TW"
 
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_CANADA         "en_CA"
+#define ULOC_CANADA         u8"en_CA"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_CANADA_FRENCH  "fr_CA"
+#define ULOC_CANADA_FRENCH  u8"fr_CA"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_CHINA          "zh_CN"
+#define ULOC_CHINA          u8"zh_CN"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_PRC            "zh_CN"
+#define ULOC_PRC            u8"zh_CN"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_FRANCE         "fr_FR"
+#define ULOC_FRANCE         u8"fr_FR"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_GERMANY        "de_DE"
+#define ULOC_GERMANY        u8"de_DE"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_ITALY          "it_IT"
+#define ULOC_ITALY          u8"it_IT"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_JAPAN          "ja_JP"
+#define ULOC_JAPAN          u8"ja_JP"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_KOREA          "ko_KR"
+#define ULOC_KOREA          u8"ko_KR"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_TAIWAN         "zh_TW"
+#define ULOC_TAIWAN         u8"zh_TW"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_UK             "en_GB"
+#define ULOC_UK             u8"en_GB"
 /** Useful constant for this country/region. @stable ICU 2.0 */
-#define ULOC_US             "en_US"
+#define ULOC_US             u8"en_US"
 
 /**
  * Useful constant for the maximum size of the language part of a locale ID.
@@ -286,7 +286,7 @@
  * Invariant character separating keywords from the locale string
  * @stable ICU 2.8
  */
-#define ULOC_KEYWORD_SEPARATOR '@'
+#define ULOC_KEYWORD_SEPARATOR '\x40'
 
 /**
   * Unicode code point for '@' separating keywords from the locale string.
@@ -299,7 +299,7 @@
  * Invariant character for assigning value to a keyword
  * @stable ICU 2.8
  */
-#define ULOC_KEYWORD_ASSIGN '='
+#define ULOC_KEYWORD_ASSIGN '\x3d'
 
 /**
   * Unicode code point for '=' for assigning value to a keyword.
@@ -312,7 +312,7 @@
  * Invariant character separating keywords
  * @stable ICU 2.8
  */
-#define ULOC_KEYWORD_ITEM_SEPARATOR ';'
+#define ULOC_KEYWORD_ITEM_SEPARATOR '\x3b'
 
 /**
   * Unicode code point for ';' separating keywords
@@ -972,7 +972,7 @@ typedef enum {
   ULOC_ACCEPT_VALID    = 1,  /* An exact match was found. */
   ULOC_ACCEPT_FALLBACK = 2   /* A fallback was found, for example,
                                 Accept list contained 'ja_JP'
-                                which matched available locale 'ja'. */
+                                which matched available locale '\x6a\x61'. */
 } UAcceptResult;
 
 

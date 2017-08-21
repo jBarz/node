@@ -29,10 +29,10 @@ U_NAMESPACE_BEGIN
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(NameUnicodeTransliterator)
 
-static const UChar OPEN[] = {92,78,126,123,126,0}; // "\N~{~"
-static const UChar OPEN_DELIM  = 92;  // '\\' first char of OPEN
-static const UChar CLOSE_DELIM = 125; // '}'
-static const UChar SPACE       = 32;  // ' '
+static const UChar OPEN[] = {92,78,126,123,126,0}; // u8"\N~{~"
+static const UChar OPEN_DELIM  = 92;  // '\x5c' first char of OPEN
+static const UChar CLOSE_DELIM = 125; // '\x7d'
+static const UChar SPACE       = 32;  // '\x20'
 
 U_CDECL_BEGIN
 

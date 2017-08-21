@@ -72,19 +72,19 @@ U_NAMESPACE_USE
 #define EQUALS          ((UChar)0x003D) /*=*/
 
 //static const UChar POSIX_OPEN[]  = { SET_OPEN,COLON,0 };  // "[:"
-static const UChar POSIX_CLOSE[] = { COLON,SET_CLOSE,0 };  // ":]"
+static const UChar POSIX_CLOSE[] = { COLON,SET_CLOSE,0 };  // u8":]"
 //static const UChar PERL_OPEN[]   = { BACKSLASH,LOWER_P,0 }; // "\\p"
 //static const UChar PERL_CLOSE[]  = { CLOSE_BRACE,0 };    // "}"
 //static const UChar NAME_OPEN[]   = { BACKSLASH,UPPER_N,0 };  // "\\N"
 static const UChar HYPHEN_RIGHT_BRACE[] = {HYPHEN,SET_CLOSE,0}; /*-]*/
 
 // Special property set IDs
-static const char ANY[]   = "ANY";   // [\u0000-\U0010FFFF]
-static const char ASCII[] = "ASCII"; // [\u0000-\u007F]
-static const char ASSIGNED[] = "Assigned"; // [:^Cn:]
+static const char ANY[]   = u8"ANY";   // [\u0000-\U0010FFFF]
+static const char ASCII[] = u8"ASCII"; // [\u0000-\u007F]
+static const char ASSIGNED[] = u8"Assigned"; // [:^Cn:]
 
 // Unicode name property alias
-#define NAME_PROP "na"
+#define NAME_PROP u8"na"
 #define NAME_PROP_LENGTH 2
 
 /**
@@ -473,9 +473,9 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
 
     while (mode != 2 && !chars.atEnd()) {
         U_ASSERT((lastItem == 0 && op == 0) ||
-                 (lastItem == 1 && (op == 0 || op == HYPHEN /*'-'*/)) ||
-                 (lastItem == 2 && (op == 0 || op == HYPHEN /*'-'*/ ||
-                                    op == INTERSECTION /*'&'*/)));
+                 (lastItem == 1 && (op == 0 || op == HYPHEN /*'\x2d'*/)) ||
+                 (lastItem == 2 && (op == 0 || op == HYPHEN /*'\x2d'*/ ||
+                                    op == INTERSECTION /*'\x26'*/)));
 
         UChar32 c = 0;
         UBool literal = FALSE;
@@ -503,27 +503,27 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
             c = chars.next(opts, literal, ec);
             if (U_FAILURE(ec)) return;
 
-            if (c == 0x5B /*'['*/ && !literal) {
+            if (c == 0x5B /*'\x5b'*/ && !literal) {
                 if (mode == 1) {
                     chars.setPos(backup); // backup
                     setMode = 1;
                 } else {
                     // Handle opening '[' delimiter
                     mode = 1;
-                    patLocal.append((UChar) 0x5B /*'['*/);
+                    patLocal.append((UChar) 0x5B /*'\x5b'*/);
                     chars.getPos(backup); // prepare to backup
                     c = chars.next(opts, literal, ec);
                     if (U_FAILURE(ec)) return;
-                    if (c == 0x5E /*'^'*/ && !literal) {
+                    if (c == 0x5E /*'\x5e'*/ && !literal) {
                         invert = TRUE;
-                        patLocal.append((UChar) 0x5E /*'^'*/);
+                        patLocal.append((UChar) 0x5E /*'\x5e'*/);
                         chars.getPos(backup); // prepare to backup
                         c = chars.next(opts, literal, ec);
                         if (U_FAILURE(ec)) return;
                     }
                     // Fall through to handle special leading '-';
                     // otherwise restart loop for nested [], \p{}, etc.
-                    if (c == HYPHEN /*'-'*/) {
+                    if (c == HYPHEN /*'\x2d'*/) {
                         literal = TRUE;
                         // Fall through to handle literal '-' below
                     } else {
@@ -565,7 +565,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                 op = 0;
             }
 
-            if (op == HYPHEN /*'-'*/ || op == INTERSECTION /*'&'*/) {
+            if (op == HYPHEN /*'\x2d'*/ || op == INTERSECTION /*'\x26'*/) {
                 patLocal.append(op);
             }
 
@@ -601,10 +601,10 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
             }
 
             switch (op) {
-            case HYPHEN: /*'-'*/
+            case HYPHEN: /*'\x2d'*/
                 removeAll(*nested);
                 break;
-            case INTERSECTION: /*'&'*/
+            case INTERSECTION: /*'\x26'*/
                 retainAll(*nested);
                 break;
             case 0:
@@ -630,24 +630,24 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
 
         if (!literal) {
             switch (c) {
-            case 0x5D /*']'*/:
+            case 0x5D /*'\x5d'*/:
                 if (lastItem == 1) {
                     add(lastChar, lastChar);
                     _appendToPat(patLocal, lastChar, FALSE);
                 }
                 // Treat final trailing '-' as a literal
-                if (op == HYPHEN /*'-'*/) {
+                if (op == HYPHEN /*'\x2d'*/) {
                     add(op, op);
                     patLocal.append(op);
-                } else if (op == INTERSECTION /*'&'*/) {
+                } else if (op == INTERSECTION /*'\x26'*/) {
                     // syntaxError(chars, "Trailing '&'");
                     ec = U_MALFORMED_SET;
                     return;
                 }
-                patLocal.append((UChar) 0x5D /*']'*/);
+                patLocal.append((UChar) 0x5D /*'\x5d'*/);
                 mode = 2;
                 continue;
-            case HYPHEN /*'-'*/:
+            case HYPHEN /*'\x2d'*/:
                 if (op == 0) {
                     if (lastItem != 0) {
                         op = (UChar) c;
@@ -657,7 +657,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                         add(c, c);
                         c = chars.next(opts, literal, ec);
                         if (U_FAILURE(ec)) return;
-                        if (c == 0x5D /*']'*/ && !literal) {
+                        if (c == 0x5D /*'\x5d'*/ && !literal) {
                             patLocal.append(HYPHEN_RIGHT_BRACE, 2);
                             mode = 2;
                             continue;
@@ -667,7 +667,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                 // syntaxError(chars, "'-' not after char or set");
                 ec = U_MALFORMED_SET;
                 return;
-            case INTERSECTION /*'&'*/:
+            case INTERSECTION /*'\x26'*/:
                 if (lastItem == 2 && op == 0) {
                     op = (UChar) c;
                     continue;
@@ -675,11 +675,11 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                 // syntaxError(chars, "'&' not after set");
                 ec = U_MALFORMED_SET;
                 return;
-            case 0x5E /*'^'*/:
+            case 0x5E /*'\x5e'*/:
                 // syntaxError(chars, "'^' not after '['");
                 ec = U_MALFORMED_SET;
                 return;
-            case 0x7B /*'{'*/:
+            case 0x7B /*'\x7b'*/:
                 if (op != 0) {
                     // syntaxError(chars, "Missing operand after operator");
                     ec = U_MALFORMED_SET;
@@ -696,7 +696,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                     while (!chars.atEnd()) {
                         c = chars.next(opts, literal, ec);
                         if (U_FAILURE(ec)) return;
-                        if (c == 0x7D /*'}'*/ && !literal) {
+                        if (c == 0x7D /*'\x7d'*/ && !literal) {
                             ok = TRUE;
                             break;
                         }
@@ -712,9 +712,9 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                 // we don't need to drop through to the further
                 // processing
                 add(buf);
-                patLocal.append((UChar) 0x7B /*'{'*/);
+                patLocal.append((UChar) 0x7B /*'\x7b'*/);
                 _appendToPat(patLocal, buf, FALSE);
-                patLocal.append((UChar) 0x7D /*'}'*/);
+                patLocal.append((UChar) 0x7D /*'\x7d'*/);
                 continue;
             case SymbolTable::SYMBOL_REF:
                 //         symbols  nosymbols
@@ -727,11 +727,11 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                     chars.getPos(backup);
                     c = chars.next(opts, literal, ec);
                     if (U_FAILURE(ec)) return;
-                    UBool anchor = (c == 0x5D /*']'*/ && !literal);
+                    UBool anchor = (c == 0x5D /*'\x5d'*/ && !literal);
                     if (symbols == 0 && !anchor) {
                         c = SymbolTable::SYMBOL_REF;
                         chars.setPos(backup);
-                        break; // literal '$'
+                        break; // literal '\x24'
                     }
                     if (anchor && op == 0) {
                         if (lastItem == 1) {
@@ -741,7 +741,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                         add(U_ETHER);
                         usePat = TRUE;
                         patLocal.append((UChar) SymbolTable::SYMBOL_REF);
-                        patLocal.append((UChar) 0x5D /*']'*/);
+                        patLocal.append((UChar) 0x5D /*'\x5d'*/);
                         mode = 2;
                         continue;
                     }
@@ -764,7 +764,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
             lastChar = c;
             break;
         case 1:
-            if (op == HYPHEN /*'-'*/) {
+            if (op == HYPHEN /*'\x2d'*/) {
                 if (lastChar >= c) {
                     // Don't allow redundant (a-a) or empty (b-a) ranges;
                     // these are most likely typos.
@@ -930,13 +930,13 @@ static UBool mungeCharName(char* dst, const char* src, int32_t dstCapacity) {
     char ch;
     --dstCapacity; /* make room for term. zero */
     while ((ch = *src++) != 0) {
-        if (ch == ' ' && (j==0 || (j>0 && dst[j-1]==' '))) {
+        if (ch == '\x20' && (j==0 || (j>0 && dst[j-1]=='\x20'))) {
             continue;
         }
         if (j >= dstCapacity) return FALSE;
         dst[j++] = ch;
     }
-    if (j > 0 && dst[j-1] == ' ') --j;
+    if (j > 0 && dst[j-1] == '\x20') --j;
     dst[j] = 0;
     return TRUE;
 }
@@ -1164,11 +1164,11 @@ UBool UnicodeSet::resemblesPropertyPattern(RuleCharacterIterator& chars,
     RuleCharacterIterator::Pos pos;
     chars.getPos(pos);
     UChar32 c = chars.next(iterOpts, literal, ec);
-    if (c == 0x5B /*'['*/ || c == 0x5C /*'\\'*/) {
+    if (c == 0x5B /*'\x5b'*/ || c == 0x5C /*'\x5c'*/) {
         UChar32 d = chars.next(iterOpts & ~RuleCharacterIterator::SKIP_WHITESPACE,
                                literal, ec);
-        result = (c == 0x5B /*'['*/) ? (d == 0x3A /*':'*/) :
-                 (d == 0x4E /*'N'*/ || d == 0x70 /*'p'*/ || d == 0x50 /*'P'*/);
+        result = (c == 0x5B /*'\x5b'*/) ? (d == 0x3A /*'\x3a'*/) :
+                 (d == 0x4E /*'\x4e'*/ || d == 0x70 /*'\x70'*/ || d == 0x50 /*'\x50'*/);
     }
     chars.setPos(pos);
     return result && U_SUCCESS(ec);

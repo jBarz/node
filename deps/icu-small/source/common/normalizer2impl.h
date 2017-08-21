@@ -39,11 +39,11 @@ class U_COMMON_API Hangul {
 public:
     /* Korean Hangul and Jamo constants */
     enum {
-        JAMO_L_BASE=0x1100,     /* "lead" jamo */
+        JAMO_L_BASE=0x1100,     /* u8"lead" jamo */
         JAMO_L_END=0x1112,
-        JAMO_V_BASE=0x1161,     /* "vowel" jamo */
+        JAMO_V_BASE=0x1161,     /* u8"vowel" jamo */
         JAMO_V_END=0x1175,
-        JAMO_T_BASE=0x11a7,     /* "trail" jamo */
+        JAMO_T_BASE=0x11a7,     /* u8"trail" jamo */
         JAMO_T_END=0x11c2,
 
         HANGUL_BASE=0xac00,
@@ -417,7 +417,7 @@ public:
         COMP_1_TRIPLE=1,
         COMP_1_TRAIL_LIMIT=0x3400,
         COMP_1_TRAIL_MASK=0x7ffe,
-        COMP_1_TRAIL_SHIFT=9,  // 10-1 for the "triple" bit
+        COMP_1_TRAIL_SHIFT=9,  // 10-1 for the u8"triple" bit
         COMP_2_TRAIL_SHIFT=6,
         COMP_2_TRAIL_MASK=0xffc0
     };

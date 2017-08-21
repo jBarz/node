@@ -49,7 +49,7 @@ CopticCalendar::clone() const
 const char*
 CopticCalendar::getType() const
 {
-    return "coptic";
+    return u8"coptic";
 }
 
 //-------------------------------------------------------------------------
@@ -108,7 +108,7 @@ static icu::UInitOnce  gSystemDefaultCenturyInit        = U_INITONCE_INITIALIZER
 
 static void U_CALLCONV initializeSystemDefaultCentury() {
     UErrorCode status = U_ZERO_ERROR;
-    CopticCalendar calendar(Locale("@calendar=coptic"), status);
+    CopticCalendar calendar(Locale(u8"@calendar=coptic"), status);
     if (U_SUCCESS(status)) {
         calendar.setTime(Calendar::getNow(), status);
         calendar.add(UCAL_YEAR, -80, status);

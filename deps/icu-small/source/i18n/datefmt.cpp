@@ -366,7 +366,7 @@ DateFormat::parse(const UnicodeString& text,
     UDate result = parse(text, pos);
     if (pos.getIndex() == 0) {
 #if defined (U_DEBUG_CAL)
-      fprintf(stderr, "%s:%d - - failed to parse  - err index %d\n"
+      fprintf(stderr, u8"%s:%d - - failed to parse  - err index %d\n"
               , __FILE__, __LINE__, pos.getErrorIndex() );
 #endif
       status = U_ILLEGAL_ARGUMENT_ERROR;
@@ -500,10 +500,10 @@ DateFormat::create(EStyle timeStyle, EStyle dateStyle, const Locale& locale)
     UErrorCode status = U_ZERO_ERROR;
 #if U_PLATFORM_USES_ONLY_WIN32_API
     char buffer[8];
-    int32_t count = locale.getKeywordValue("compat", buffer, sizeof(buffer), status);
+    int32_t count = locale.getKeywordValue(u8"compat", buffer, sizeof(buffer), status);
 
     // if the locale has "@compat=host", create a host-specific DateFormat...
-    if (count > 0 && uprv_strcmp(buffer, "host") == 0) {
+    if (count > 0 && uprv_strcmp(buffer, u8"host") == 0) {
         Win32DateFormat *f = new Win32DateFormat(timeStyle, dateStyle, locale, status);
 
         if (U_SUCCESS(status)) {

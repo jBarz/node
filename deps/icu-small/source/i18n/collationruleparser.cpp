@@ -40,7 +40,7 @@ U_NAMESPACE_BEGIN
 
 namespace {
 
-static const UChar BEFORE[] = { 0x5b, 0x62, 0x65, 0x66, 0x6f, 0x72, 0x65, 0 };  // "[before"
+static const UChar BEFORE[] = { 0x5b, 0x62, 0x65, 0x66, 0x6f, 0x72, 0x65, 0 };  // u8"[before"
 const int32_t BEFORE_LENGTH = 7;
 
 }  // namespace
@@ -98,27 +98,27 @@ CollationRuleParser::parse(const UnicodeString &ruleString, UErrorCode &errorCod
             continue;
         }
         switch(c) {
-        case 0x26:  // '&'
+        case 0x26:  // '\x26'
             parseRuleChain(errorCode);
             break;
-        case 0x5b:  // '['
+        case 0x5b:  // '\x5b'
             parseSetting(errorCode);
             break;
-        case 0x23:  // '#' starts a comment, until the end of the line
+        case 0x23:  // '\x23' starts a comment, until the end of the line
             ruleIndex = skipComment(ruleIndex + 1);
             break;
-        case 0x40:  // '@' is equivalent to [backwards 2]
+        case 0x40:  // '\x40' is equivalent to [backwards 2]
             settings->setFlag(CollationSettings::BACKWARD_SECONDARY,
                               UCOL_ON, 0, errorCode);
             ++ruleIndex;
             break;
-        case 0x21:  // '!' used to turn on Thai/Lao character reversal
+        case 0x21:  // '\x21' used to turn on Thai/Lao character reversal
             // Accept but ignore. The root collator has contractions
             // that are equivalent to the character reversal, where appropriate.
             ++ruleIndex;
             break;
         default:
-            setParseError("expected a reset or setting or comment", errorCode);
+            setParseError(u8"expected a reset or setting or comment", errorCode);
             break;
         }
         if(U_FAILURE(errorCode)) { return; }
@@ -139,7 +139,7 @@ CollationRuleParser::parseRuleChain(UErrorCode &errorCode) {
                 continue;
             }
             if(isFirstRelation) {
-                setParseError("reset not followed by a relation", errorCode);
+                setParseError(u8"reset not followed by a relation", errorCode);
             }
             return;
         }
@@ -148,12 +148,12 @@ CollationRuleParser::parseRuleChain(UErrorCode &errorCode) {
             // reset-before rule chain
             if(isFirstRelation) {
                 if(strength != resetStrength) {
-                    setParseError("reset-before strength differs from its first relation", errorCode);
+                    setParseError(u8"reset-before strength differs from its first relation", errorCode);
                     return;
                 }
             } else {
                 if(strength < resetStrength) {
-                    setParseError("reset-before strength followed by a stronger relation", errorCode);
+                    setParseError(u8"reset-before strength followed by a stronger relation", errorCode);
                     return;
                 }
             }
@@ -189,11 +189,11 @@ CollationRuleParser::parseResetAndPosition(UErrorCode &errorCode) {
         resetStrength = UCOL_IDENTICAL;
     }
     if(i >= rules->length()) {
-        setParseError("reset without position", errorCode);
+        setParseError(u8"reset without position", errorCode);
         return UCOL_DEFAULT;
     }
     UnicodeString str;
-    if(rules->charAt(i) == 0x5b) {  // '['
+    if(rules->charAt(i) == 0x5b) {  // '\x5b'
         i = parseSpecialPosition(i, str, errorCode);
     } else {
         i = parseTailoringString(i, str, errorCode);
@@ -213,7 +213,7 @@ CollationRuleParser::parseRelationOperator(UErrorCode &errorCode) {
     int32_t i = ruleIndex;
     UChar c = rules->charAt(i++);
     switch(c) {
-    case 0x3c:  // '<'
+    case 0x3c:  // '\x3c'
         if(i < rules->length() && rules->charAt(i) == 0x3c) {  // <<
             ++i;
             if(i < rules->length() && rules->charAt(i) == 0x3c) {  // <<<
@@ -230,20 +230,20 @@ CollationRuleParser::parseRelationOperator(UErrorCode &errorCode) {
         } else {
             strength = UCOL_PRIMARY;
         }
-        if(i < rules->length() && rules->charAt(i) == 0x2a) {  // '*'
+        if(i < rules->length() && rules->charAt(i) == 0x2a) {  // '\x2a'
             ++i;
             strength |= STARRED_FLAG;
         }
         break;
-    case 0x3b:  // ';' same as <<
+    case 0x3b:  // '\x3b' same as <<
         strength = UCOL_SECONDARY;
         break;
-    case 0x2c:  // ',' same as <<<
+    case 0x2c:  // '\x2c' same as <<<
         strength = UCOL_TERTIARY;
         break;
-    case 0x3d:  // '='
+    case 0x3d:  // '\x3d'
         strength = UCOL_IDENTICAL;
-        if(i < rules->length() && rules->charAt(i) == 0x2a) {  // '*'
+        if(i < rules->length() && rules->charAt(i) == 0x2a) {  // '\x2a'
             ++i;
             strength |= STARRED_FLAG;
         }
@@ -263,20 +263,20 @@ CollationRuleParser::parseRelationStrings(int32_t strength, int32_t i, UErrorCod
     i = parseTailoringString(i, str, errorCode);
     if(U_FAILURE(errorCode)) { return; }
     UChar next = (i < rules->length()) ? rules->charAt(i) : 0;
-    if(next == 0x7c) {  // '|' separates the context prefix from the string.
+    if(next == 0x7c) {  // '\x7c' separates the context prefix from the string.
         prefix = str;
         i = parseTailoringString(i + 1, str, errorCode);
         if(U_FAILURE(errorCode)) { return; }
         next = (i < rules->length()) ? rules->charAt(i) : 0;
     }
-    if(next == 0x2f) {  // '/' separates the string from the extension.
+    if(next == 0x2f) {  // '\x2f' separates the string from the extension.
         i = parseTailoringString(i + 1, extension, errorCode);
     }
     if(!prefix.isEmpty()) {
         UChar32 prefix0 = prefix.char32At(0);
         UChar32 c = str.char32At(0);
         if(!nfc.hasBoundaryBefore(prefix0) || !nfc.hasBoundaryBefore(c)) {
-            setParseError("in 'prefix|str', prefix and str must each start with an NFC boundary",
+            setParseError(u8"in 'prefix|str', prefix and str must each start with an NFC boundary",
                           errorCode);
             return;
         }
@@ -292,7 +292,7 @@ CollationRuleParser::parseStarredCharacters(int32_t strength, int32_t i, UErrorC
     i = parseString(skipWhiteSpace(i), raw, errorCode);
     if(U_FAILURE(errorCode)) { return; }
     if(raw.isEmpty()) {
-        setParseError("missing starred-relation string", errorCode);
+        setParseError(u8"missing starred-relation string", errorCode);
         return;
     }
     UChar32 prev = -1;
@@ -301,7 +301,7 @@ CollationRuleParser::parseStarredCharacters(int32_t strength, int32_t i, UErrorC
         while(j < raw.length()) {
             UChar32 c = raw.char32At(j);
             if(!nfd.isInert(c)) {
-                setParseError("starred-relation string is not all NFD-inert", errorCode);
+                setParseError(u8"starred-relation string is not all NFD-inert", errorCode);
                 return;
             }
             sink->addRelation(strength, empty, UnicodeString(c), empty, errorReason, errorCode);
@@ -312,37 +312,37 @@ CollationRuleParser::parseStarredCharacters(int32_t strength, int32_t i, UErrorC
             j += U16_LENGTH(c);
             prev = c;
         }
-        if(i >= rules->length() || rules->charAt(i) != 0x2d) {  // '-'
+        if(i >= rules->length() || rules->charAt(i) != 0x2d) {  // '\x2d'
             break;
         }
         if(prev < 0) {
-            setParseError("range without start in starred-relation string", errorCode);
+            setParseError(u8"range without start in starred-relation string", errorCode);
             return;
         }
         i = parseString(i + 1, raw, errorCode);
         if(U_FAILURE(errorCode)) { return; }
         if(raw.isEmpty()) {
-            setParseError("range without end in starred-relation string", errorCode);
+            setParseError(u8"range without end in starred-relation string", errorCode);
             return;
         }
         UChar32 c = raw.char32At(0);
         if(c < prev) {
-            setParseError("range start greater than end in starred-relation string", errorCode);
+            setParseError(u8"range start greater than end in starred-relation string", errorCode);
             return;
         }
         // range prev-c
         UnicodeString s;
         while(++prev <= c) {
             if(!nfd.isInert(prev)) {
-                setParseError("starred-relation string range is not all NFD-inert", errorCode);
+                setParseError(u8"starred-relation string range is not all NFD-inert", errorCode);
                 return;
             }
             if(U_IS_SURROGATE(prev)) {
-                setParseError("starred-relation string range contains a surrogate", errorCode);
+                setParseError(u8"starred-relation string range contains a surrogate", errorCode);
                 return;
             }
             if(0xfffd <= prev && prev <= 0xffff) {
-                setParseError("starred-relation string range contains U+FFFD, U+FFFE or U+FFFF", errorCode);
+                setParseError(u8"starred-relation string range contains U+FFFD, U+FFFE or U+FFFF", errorCode);
                 return;
             }
             s.setTo(prev);
@@ -362,7 +362,7 @@ int32_t
 CollationRuleParser::parseTailoringString(int32_t i, UnicodeString &raw, UErrorCode &errorCode) {
     i = parseString(skipWhiteSpace(i), raw, errorCode);
     if(U_SUCCESS(errorCode) && raw.isEmpty()) {
-        setParseError("missing relation string", errorCode);
+        setParseError(u8"missing relation string", errorCode);
     }
     return skipWhiteSpace(i);
 }
@@ -384,7 +384,7 @@ CollationRuleParser::parseString(int32_t i, UnicodeString &raw, UErrorCode &erro
                 // Quote literal text until the next single apostrophe.
                 for(;;) {
                     if(i == rules->length()) {
-                        setParseError("quoted literal text missing terminating apostrophe", errorCode);
+                        setParseError(u8"quoted literal text missing terminating apostrophe", errorCode);
                         return i;
                     }
                     c = rules->charAt(i++);
@@ -401,7 +401,7 @@ CollationRuleParser::parseString(int32_t i, UnicodeString &raw, UErrorCode &erro
                 }
             } else if(c == 0x5c) {  // backslash
                 if(i == rules->length()) {
-                    setParseError("backslash escape at the end of the rule string", errorCode);
+                    setParseError(u8"backslash escape at the end of the rule string", errorCode);
                     return i;
                 }
                 c = rules->char32At(i);
@@ -423,11 +423,11 @@ CollationRuleParser::parseString(int32_t i, UnicodeString &raw, UErrorCode &erro
     for(int32_t j = 0; j < raw.length();) {
         UChar32 c = raw.char32At(j);
         if(U_IS_SURROGATE(c)) {
-            setParseError("string contains an unpaired surrogate", errorCode);
+            setParseError(u8"string contains an unpaired surrogate", errorCode);
             return i;
         }
         if(0xfffd <= c && c <= 0xffff) {
-            setParseError("string contains U+FFFD, U+FFFE or U+FFFF", errorCode);
+            setParseError(u8"string contains U+FFFD, U+FFFE or U+FFFF", errorCode);
             return i;
         }
         j += U16_LENGTH(c);
@@ -438,20 +438,20 @@ CollationRuleParser::parseString(int32_t i, UnicodeString &raw, UErrorCode &erro
 namespace {
 
 static const char *const positions[] = {
-    "first tertiary ignorable",
-    "last tertiary ignorable",
-    "first secondary ignorable",
-    "last secondary ignorable",
-    "first primary ignorable",
-    "last primary ignorable",
-    "first variable",
-    "last variable",
-    "first regular",
-    "last regular",
-    "first implicit",
-    "last implicit",
-    "first trailing",
-    "last trailing"
+    u8"first tertiary ignorable",
+    u8"last tertiary ignorable",
+    u8"first secondary ignorable",
+    u8"last secondary ignorable",
+    u8"first primary ignorable",
+    u8"last primary ignorable",
+    u8"first variable",
+    u8"last variable",
+    u8"first regular",
+    u8"last regular",
+    u8"first implicit",
+    u8"last implicit",
+    u8"first trailing",
+    u8"last trailing"
 };
 
 }  // namespace
@@ -478,7 +478,7 @@ CollationRuleParser::parseSpecialPosition(int32_t i, UnicodeString &str, UErrorC
             return j;
         }
     }
-    setParseError("not a valid special reset position", errorCode);
+    setParseError(u8"not a valid special reset position", errorCode);
     return i;
 }
 
@@ -489,7 +489,7 @@ CollationRuleParser::parseSetting(UErrorCode &errorCode) {
     int32_t i = ruleIndex + 1;
     int32_t j = readWords(i, raw);
     if(j <= i || raw.isEmpty()) {
-        setParseError("expected a setting/option at '['", errorCode);
+        setParseError(u8"expected a setting/option at '['", errorCode);
     }
     if(rules->charAt(j) == 0x5d) {  // words end with ]
         ++j;
@@ -516,7 +516,7 @@ CollationRuleParser::parseSetting(UErrorCode &errorCode) {
             UChar c = v.charAt(0);
             if(0x31 <= c && c <= 0x34) {  // 1..4
                 value = UCOL_PRIMARY + (c - 0x31);
-            } else if(c == 0x49) {  // 'I'
+            } else if(c == 0x49) {  // '\x49'
                 value = UCOL_IDENTICAL;
             }
             if(value != UCOL_DEFAULT) {
@@ -594,7 +594,7 @@ CollationRuleParser::parseSetting(UErrorCode &errorCode) {
             UColAttributeValue value = getOnOffValue(v);
             if(value != UCOL_DEFAULT) {
                 if(value == UCOL_ON) {
-                    setParseError("[hiraganaQ on] is not supported", errorCode);
+                    setParseError(u8"[hiraganaQ on] is not supported", errorCode);
                 }
                 ruleIndex = j;
                 return;
@@ -611,7 +611,7 @@ CollationRuleParser::parseSetting(UErrorCode &errorCode) {
             if(U_FAILURE(errorCode) ||
                     parsedLength != lang.length() || length >= ULOC_FULLNAME_CAPACITY) {
                 errorCode = U_ZERO_ERROR;
-                setParseError("expected language tag in [import langTag]", errorCode);
+                setParseError(u8"expected language tag in [import langTag]", errorCode);
                 return;
             }
             // localeID minus all keywords
@@ -619,31 +619,31 @@ CollationRuleParser::parseSetting(UErrorCode &errorCode) {
             length = uloc_getBaseName(localeID, baseID, ULOC_FULLNAME_CAPACITY, &errorCode);
             if(U_FAILURE(errorCode) || length >= ULOC_KEYWORDS_CAPACITY) {
                 errorCode = U_ZERO_ERROR;
-                setParseError("expected language tag in [import langTag]", errorCode);
+                setParseError(u8"expected language tag in [import langTag]", errorCode);
                 return;
             }
-            if(length == 3 && uprv_memcmp(baseID, "und", 3) == 0) {
-                uprv_strcpy(baseID, "root");
+            if(length == 3 && uprv_memcmp(baseID, u8"und", 3) == 0) {
+                uprv_strcpy(baseID, u8"root");
             }
             // @collation=type, or length=0 if not specified
             char collationType[ULOC_KEYWORDS_CAPACITY];
-            length = uloc_getKeywordValue(localeID, "collation",
+            length = uloc_getKeywordValue(localeID, u8"collation",
                                           collationType, ULOC_KEYWORDS_CAPACITY,
                                           &errorCode);
             if(U_FAILURE(errorCode) || length >= ULOC_KEYWORDS_CAPACITY) {
                 errorCode = U_ZERO_ERROR;
-                setParseError("expected language tag in [import langTag]", errorCode);
+                setParseError(u8"expected language tag in [import langTag]", errorCode);
                 return;
             }
             if(importer == NULL) {
-                setParseError("[import langTag] is not supported", errorCode);
+                setParseError(u8"[import langTag] is not supported", errorCode);
             } else {
                 UnicodeString importedRules;
-                importer->getRules(baseID, length > 0 ? collationType : "standard",
+                importer->getRules(baseID, length > 0 ? collationType : u8"standard",
                                    importedRules, errorReason, errorCode);
                 if(U_FAILURE(errorCode)) {
                     if(errorReason == NULL) {
-                        errorReason = "[import langTag] failed";
+                        errorReason = u8"[import langTag] failed";
                     }
                     setErrorContext();
                     return;
@@ -677,13 +677,13 @@ CollationRuleParser::parseSetting(UErrorCode &errorCode) {
             return;
         }
     }
-    setParseError("not a valid setting/option", errorCode);
+    setParseError(u8"not a valid setting/option", errorCode);
 }
 
 void
 CollationRuleParser::parseReordering(const UnicodeString &raw, UErrorCode &errorCode) {
     if(U_FAILURE(errorCode)) { return; }
-    int32_t i = 7;  // after "reorder"
+    int32_t i = 7;  // after u8"reorder"
     if(i == raw.length()) {
         // empty [reorder] with no codes
         settings->resetReordering();
@@ -701,7 +701,7 @@ CollationRuleParser::parseReordering(const UnicodeString &raw, UErrorCode &error
         if(U_FAILURE(errorCode)) { return; }
         int32_t code = getReorderCode(word.data());
         if(code < 0) {
-            setParseError("unknown script or reorder code", errorCode);
+            setParseError(u8"unknown script or reorder code", errorCode);
             return;
         }
         reorderCodes.addElement(code, errorCode);
@@ -712,7 +712,7 @@ CollationRuleParser::parseReordering(const UnicodeString &raw, UErrorCode &error
 }
 
 static const char *const gSpecialReorderCodes[] = {
-    "space", "punct", "symbol", "currency", "digit"
+    u8"space", u8"punct", u8"symbol", u8"currency", u8"digit"
 };
 
 int32_t
@@ -726,7 +726,7 @@ CollationRuleParser::getReorderCode(const char *word) {
     if(script >= 0) {
         return script;
     }
-    if(uprv_stricmp(word, "others") == 0) {
+    if(uprv_stricmp(word, u8"others") == 0) {
         return UCOL_REORDER_CODE_OTHERS;  // same as Zzzz = USCRIPT_UNKNOWN
     }
     return -1;
@@ -750,25 +750,25 @@ CollationRuleParser::parseUnicodeSet(int32_t i, UnicodeSet &set, UErrorCode &err
     int32_t j = i;
     for(;;) {
         if(j == rules->length()) {
-            setParseError("unbalanced UnicodeSet pattern brackets", errorCode);
+            setParseError(u8"unbalanced UnicodeSet pattern brackets", errorCode);
             return j;
         }
         UChar c = rules->charAt(j++);
-        if(c == 0x5b) {  // '['
+        if(c == 0x5b) {  // '\x5b'
             ++level;
-        } else if(c == 0x5d) {  // ']'
+        } else if(c == 0x5d) {  // '\x5d'
             if(--level == 0) { break; }
         }
     }
     set.applyPattern(rules->tempSubStringBetween(i, j), errorCode);
     if(U_FAILURE(errorCode)) {
         errorCode = U_ZERO_ERROR;
-        setParseError("not a valid UnicodeSet pattern", errorCode);
+        setParseError(u8"not a valid UnicodeSet pattern", errorCode);
         return j;
     }
     j = skipWhiteSpace(j);
     if(j == rules->length() || rules->charAt(j) != 0x5d) {
-        setParseError("missing option-terminating ']' after UnicodeSet pattern", errorCode);
+        setParseError(u8"missing option-terminating ']' after UnicodeSet pattern", errorCode);
         return j;
     }
     return ++j;

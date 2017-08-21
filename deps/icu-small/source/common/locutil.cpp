@@ -180,7 +180,7 @@ LocaleUtility::initLocaleFromName(const UnicodeString& id, Locale& result)
                 // normal invariant-character conversion for text between @s
                 id.extract(prev, i - prev, buffer + prev, BUFLEN - prev, US_INV);
                 // manually "convert" U+0040 at id[i] into '@' at buffer[i]
-                buffer[i] = '@';
+                buffer[i] = '\x40';
                 prev = i + 1;
             }
         }

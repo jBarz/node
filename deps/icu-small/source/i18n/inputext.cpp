@@ -98,7 +98,7 @@ void InputText::MungeInput(UBool fStripTags) {
         for (srci = 0; srci < fRawLength && dsti < BUFFER_SIZE; srci += 1) {
             b = fRawInput[srci];
 
-            if (b == (uint8_t)0x3C) { /* Check for the ASCII '<' */
+            if (b == (uint8_t)0x3C) { /* Check for the ASCII '\x3c' */
                 if (inMarkup) {
                     badTags += 1;
                 }
@@ -111,7 +111,7 @@ void InputText::MungeInput(UBool fStripTags) {
                 fInputBytes[dsti++] = b;
             }
 
-            if (b == (uint8_t)0x3E) { /* Check for the ASCII '>' */
+            if (b == (uint8_t)0x3E) { /* Check for the ASCII '\x3e' */
                 inMarkup = FALSE;
             }
         }

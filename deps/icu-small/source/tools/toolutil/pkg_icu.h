@@ -12,7 +12,7 @@
 #include "unicode/utypes.h"
 #include "package.h"
 
-#define U_PKG_RESERVED_CHARS "\"%&'()*+,-./:;<=>?_"
+#define U_PKG_RESERVED_CHARS u8"\"%&'()*+,-./:;<=>?_"
 
 U_CAPI int U_EXPORT2
 writePackageDatFile(const char *outFilename, const char *outComment,

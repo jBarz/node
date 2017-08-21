@@ -161,7 +161,7 @@ typedef enum {
     UPLUG_REASON_UNLOAD = 2,   /**< The plugin is being unloaded. **/
     /**
      * Number of known reasons.
-     * @internal The numeric value may change over time, see ICU ticket #12420.
+     * @internal The numeric value may change over time, see ICU ticket  USTR(#12420).
      */
     UPLUG_REASON_COUNT
 } UPlugReason;
@@ -181,7 +181,7 @@ typedef enum {
     UPLUG_LEVEL_HIGH    = 3,     /**< The plugin can run at any time. **/
     /**
      * Number of known levels.
-     * @internal The numeric value may change over time, see ICU ticket #12420.
+     * @internal The numeric value may change over time, see ICU ticket  USTR(#12420).
      */
     UPLUG_LEVEL_COUNT
 } UPlugLevel;

@@ -738,9 +738,9 @@ static const char * U_CALLCONV
 _UTF7GetName(const UConverter *cnv) {
     switch(cnv->fromUnicodeStatus>>28) {
     case 1:
-        return "UTF-7,version=1";
+        return u8"UTF-7,version=1";
     default:
-        return "UTF-7";
+        return u8"UTF-7";
     }
 }
 U_CDECL_END
@@ -773,7 +773,7 @@ static const UConverterImpl _UTF7Impl={
 
 static const UConverterStaticData _UTF7StaticData={
     sizeof(UConverterStaticData),
-    "UTF-7",
+    u8"UTF-7",
     0, /* TODO CCSID for UTF-7 */
     UCNV_IBM, UCNV_UTF7,
     1, 4,
@@ -1474,7 +1474,7 @@ static const UConverterImpl _IMAPImpl={
 
 static const UConverterStaticData _IMAPStaticData={
     sizeof(UConverterStaticData),
-    "IMAP-mailbox-name",
+    u8"IMAP-mailbox-name",
     0, /* TODO CCSID for IMAP-mailbox-name */
     UCNV_IBM, UCNV_IMAP_MAILBOX,
     1, 4,

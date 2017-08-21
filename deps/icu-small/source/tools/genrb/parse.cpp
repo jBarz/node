@@ -19,7 +19,7 @@
 *   06/10/2001  Dominic Ludlam <dom@recoil.org> Rewritten
 *******************************************************************************
 */
-
+#define _AE_BIMODAL
 // Safer use of UnicodeString.
 #ifndef UNISTR_FROM_CHAR_EXPLICIT
 #   define UNISTR_FROM_CHAR_EXPLICIT explicit
@@ -94,14 +94,14 @@ struct Lookahead
 /* keep in sync with token defines in read.h */
 const char *tokenNames[TOK_TOKEN_COUNT] =
 {
-     "string",             /* A string token, such as "MonthNames" */
-     "'{'",                 /* An opening brace character */
-     "'}'",                 /* A closing brace character */
-     "','",                 /* A comma */
-     "':'",                 /* A colon */
+     u8"string",             /* A string token, such as u8"MonthNames" */
+     u8"'{'",                 /* An opening brace character */
+     u8"'}'",                 /* A closing brace character */
+     u8"','",                 /* A comma */
+     u8"':'",                 /* A colon */
 
-     "<end of file>",     /* End of the file has been reached successfully */
-     "<end of line>"
+     u8"<end of file>",     /* End of the file has been reached successfully */
+     u8"<end of line>"
 };
 
 /* Just to store "TRUE" */
@@ -208,7 +208,7 @@ getToken(ParseState* state, struct UString **tokenValue, struct UString* comment
     ustr_setlen(&state->lookahead[i].value, 0, status);
     state->lookahead[i].type = getNextToken(state->buffer, &state->lookahead[i].value, &state->lookahead[i].line, &state->lookahead[i].comment, status);
 
-    /* printf("getToken, returning %s\n", tokenNames[result]); */
+    /*__printf_a("getToken, returning %s\n", tokenNames[result]); */
 
     return result;
 }
@@ -266,7 +266,7 @@ expect(ParseState* state, enum ETokenType expectedToken, struct UString **tokenV
     if (token != expectedToken)
     {
         *status = U_INVALID_FORMAT_ERROR;
-        error(line, "expecting %s, got %s", tokenNames[expectedToken], tokenNames[token]);
+        error(line, u8"expecting %s, got %s", tokenNames[expectedToken], tokenNames[token]);
     }
     else
     {
@@ -290,7 +290,7 @@ static char *getInvariantString(ParseState* state, uint32_t *line, struct UStrin
     count = u_strlen(tokenValue->fChars);
     if(!uprv_isInvariantUString(tokenValue->fChars, count)) {
         *status = U_INVALID_FORMAT_ERROR;
-        error(*line, "invariant characters required for table keys, binary data, etc.");
+        error(*line, u8"invariant characters required for table keys, binary data, etc.");
         return NULL;
     }
 
@@ -312,8 +312,8 @@ parseUCARules(ParseState* state, char *tag, uint32_t startline, const struct USt
     struct SResource *result = NULL;
     struct UString   *tokenValue;
     FileStream       *file          = NULL;
-    char              filename[256] = { '\0' };
-    char              cs[128]       = { '\0' };
+    char              filename[256] = { '\x0' };
+    char              cs[128]       = { '\x0' };
     uint32_t          line;
     UBool quoted = FALSE;
     UCHARBUF *ucbuf=NULL;
@@ -327,7 +327,7 @@ parseUCARules(ParseState* state, char *tag, uint32_t startline, const struct USt
     expect(state, TOK_STRING, &tokenValue, NULL, &line, status);
 
     if(isVerbose()){
-        printf(" %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+      __printf_a(u8" %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     if (U_FAILURE(*status))
@@ -362,7 +362,7 @@ parseUCARules(ParseState* state, char *tag, uint32_t startline, const struct USt
     ucbuf = ucbuf_open(filename, &cp, getShowWarning(),FALSE, status);
 
     if (U_FAILURE(*status)) {
-        error(line, "An error occured while opening the input file %s\n", filename);
+        error(line, u8"An error occured while opening the input file %s\n", filename);
         return NULL;
     }
 
@@ -456,8 +456,8 @@ parseTransliterator(ParseState* state, char *tag, uint32_t startline, const stru
     struct SResource *result = NULL;
     struct UString   *tokenValue;
     FileStream       *file          = NULL;
-    char              filename[256] = { '\0' };
-    char              cs[128]       = { '\0' };
+    char              filename[256] = { '\x0' };
+    char              cs[128]       = { '\x0' };
     uint32_t          line;
     UCHARBUF *ucbuf=NULL;
     const char* cp  = NULL;
@@ -468,7 +468,7 @@ parseTransliterator(ParseState* state, char *tag, uint32_t startline, const stru
     expect(state, TOK_STRING, &tokenValue, NULL, &line, status);
 
     if(isVerbose()){
-        printf(" %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+       __printf_a(u8" %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     if (U_FAILURE(*status))
@@ -500,7 +500,7 @@ parseTransliterator(ParseState* state, char *tag, uint32_t startline, const stru
     ucbuf = ucbuf_open(filename, &cp, getShowWarning(),FALSE, status);
 
     if (U_FAILURE(*status)) {
-        error(line, "An error occured while opening the input file %s\n", filename);
+        error(line, u8"An error occured while opening the input file %s\n", filename);
         return NULL;
     }
 
@@ -516,7 +516,7 @@ parseTransliterator(ParseState* state, char *tag, uint32_t startline, const stru
     size = utrans_stripRules(pSource, size, pTarget, status);
 #else
     size = 0;
-    fprintf(stderr, " Warning: writing empty transliteration data ( UCONFIG_NO_TRANSLITERATION ) \n");
+    __fprintf_a(stderr, u8" Warning: writing empty transliteration data ( UCONFIG_NO_TRANSLITERATION ) \n");
 #endif
     result = string_open(state->bundle, tag, pTarget, size, NULL, status);
 
@@ -535,13 +535,13 @@ parseDependency(ParseState* state, char *tag, uint32_t startline, const struct U
     struct SResource *elem = NULL;
     struct UString   *tokenValue;
     uint32_t          line;
-    char              filename[256] = { '\0' };
-    char              cs[128]       = { '\0' };
+    char              filename[256] = { '\x0' };
+    char              cs[128]       = { '\x0' };
 
     expect(state, TOK_STRING, &tokenValue, NULL, &line, status);
 
     if(isVerbose()){
-        printf(" %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+__printf_a(u8" %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     if (U_FAILURE(*status))
@@ -568,13 +568,13 @@ parseDependency(ParseState* state, char *tag, uint32_t startline, const struct U
     uprv_strcat(filename, cs);
     if(!T_FileStream_file_exists(filename)){
         if(isStrict()){
-            error(line, "The dependency file %s does not exist. Please make sure it exists.\n",filename);
+            error(line, u8"The dependency file %s does not exist. Please make sure it exists.\n",filename);
         }else{
-            warning(line, "The dependency file %s does not exist. Please make sure it exists.\n",filename);
+            warning(line, u8"The dependency file %s does not exist. Please make sure it exists.\n",filename);
         }
     }
     if(dependencyArray==NULL){
-        dependencyArray = array_open(state->bundle, "%%DEPENDENCY", NULL, status);
+        dependencyArray = array_open(state->bundle, u8"%%DEPENDENCY", NULL, status);
     }
     if(tag!=NULL){
         result = string_open(state->bundle, tag, tokenValue->fChars, tokenValue->fLength, comment, status);
@@ -601,7 +601,7 @@ parseString(ParseState* state, char *tag, uint32_t startline, const struct UStri
         return parseUCARules(tag, startline, status);
     }*/
     if(isVerbose()){
-        printf(" string %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+      __printf_a(u8" string %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
     expect(state, TOK_STRING, &tokenValue, NULL, NULL, status);
 
@@ -634,7 +634,7 @@ parseAlias(ParseState* state, char *tag, uint32_t startline, const struct UStrin
     expect(state, TOK_STRING, &tokenValue, NULL, NULL, status);
 
     if(isVerbose()){
-        printf(" alias %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+        __printf_a(u8" alias %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     if (U_SUCCESS(*status))
@@ -699,11 +699,11 @@ GenrbImporter::getRules(
         const char *& /*errorReason*/, UErrorCode &errorCode) {
     CharString filename(localeID, errorCode);
     for(int32_t i = 0; i < filename.length(); i++){
-        if(filename[i] == '-'){
-            filename.data()[i] = '_';
+        if(filename[i] == '\x2d'){
+            filename.data()[i] = '\x5f';
         }
     }
-    filename.append(".txt", errorCode);
+    filename.append(u8".txt", errorCode);
     if (U_FAILURE(errorCode)) {
         return;
     }
@@ -727,7 +727,7 @@ GenrbImporter::getRules(
     }else{
         int32_t dirlen  = (int32_t)uprv_strlen(inputDir);
 
-        if((filename[0] != U_FILE_SEP_CHAR) && (inputDir[dirlen-1] !='.')) {
+        if((filename[0] != U_FILE_SEP_CHAR) && (inputDir[dirlen-1] !='\x2e')) {
             /*
              * append the input dir to openFileName if the first char in
              * filename is not file separator char and the last char input directory is  not '.'.
@@ -749,16 +749,16 @@ GenrbImporter::getRules(
     if(U_FAILURE(errorCode)) {
         return;
     }
-    // printf("GenrbImporter::getRules(%s, %s) reads %s\n", localeID, collationType, openFileName.data());
-    const char* cp = "";
+    //__printf_a("GenrbImporter::getRules(%s, %s) reads %s\n", localeID, collationType, openFileName.data());
+    const char* cp = u8"";
     LocalUCHARBUFPointer ucbuf(
             ucbuf_open(openFileName.data(), &cp, getShowWarning(), TRUE, &errorCode));
     if(errorCode == U_FILE_ACCESS_ERROR) {
-        fprintf(stderr, "couldn't open file %s\n", openFileName.data());
+        __fprintf_a(stderr, u8"couldn't open file %s\n", openFileName.data());
         return;
     }
     if (ucbuf.isNull() || U_FAILURE(errorCode)) {
-        fprintf(stderr, "An error occured processing file %s. Error: %s\n", openFileName.data(), u_errorName(errorCode));
+        __fprintf_a(stderr, u8"An error occured processing file %s. Error: %s\n", openFileName.data(), u_errorName(errorCode));
         return;
     }
 
@@ -770,11 +770,11 @@ GenrbImporter::getRules(
     }
 
     struct SResource *root = data->fRoot;
-    struct SResource *collations = resLookup(root, "collations");
+    struct SResource *collations = resLookup(root, u8"collations");
     if (collations != NULL) {
       struct SResource *collation = resLookup(collations, collationType);
       if (collation != NULL) {
-        struct SResource *sequence = resLookup(collation, "Sequence");
+        struct SResource *sequence = resLookup(collation, u8"Sequence");
         if (sequence != NULL && sequence->isString()) {
           // No string pointer aliasing so that we need not hold onto the resource bundle.
           StringResource *sr = static_cast<StringResource *>(sequence);
@@ -800,7 +800,7 @@ escape(const UChar *s, char *buffer) {
             // printable ASCII
             *buffer++ = (char)c;  // assumes ASCII-based platform
         } else {
-            buffer += sprintf(buffer, "\\u%04X", (int)c);
+            buffer += __sprintf_a(buffer, u8"\\u%04X", (int)c);
         }
     }
 }
@@ -844,11 +844,11 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
 
             if (token == TOK_EOF)
             {
-                error(startline, "unterminated table");
+                error(startline, u8"unterminated table");
             }
             else
             {
-                error(line, "Unexpected token %s", tokenNames[token]);
+                error(line, u8"Unexpected token %s", tokenNames[token]);
             }
 
             return NULL;
@@ -873,7 +873,7 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
         {
             // Ignore the parsed resources, continue parsing.
         }
-        else if (uprv_strcmp(subtag, "Version") == 0 && member->isString())
+        else if (uprv_strcmp(subtag, u8"Version") == 0 && member->isString())
         {
             StringResource *sr = static_cast<StringResource *>(member);
             char     ver[40];
@@ -890,11 +890,11 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
             result->add(member, line, *status);
             member = NULL;
         }
-        else if(uprv_strcmp(subtag, "%%CollationBin")==0)
+        else if(uprv_strcmp(subtag, u8"%%CollationBin")==0)
         {
             /* discard duplicate %%CollationBin if any*/
         }
-        else if (uprv_strcmp(subtag, "Sequence") == 0 && member->isString())
+        else if (uprv_strcmp(subtag, u8"Sequence") == 0 && member->isString())
         {
             StringResource *sr = static_cast<StringResource *>(member);
             rules = sr->fString;
@@ -924,21 +924,21 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
     if (!haveRules) { return result; }
 
 #if UCONFIG_NO_COLLATION || UCONFIG_NO_FILE_IO
-    warning(line, "Not building collation elements because of UCONFIG_NO_COLLATION and/or UCONFIG_NO_FILE_IO, see uconfig.h");
+    warning(line, u8"Not building collation elements because of UCONFIG_NO_COLLATION and/or UCONFIG_NO_FILE_IO, see uconfig.h");
     (void)collationType;
 #else
     // CLDR ticket #3949, ICU ticket #8082:
     // Do not build collation binary data for for-import-only "private" collation rule strings.
-    if (uprv_strncmp(collationType, "private-", 8) == 0) {
+    if (uprv_strncmp(collationType, u8"private-", 8) == 0) {
         if(isVerbose()) {
-            printf("Not building %s~%s collation binary\n", state->filename, collationType);
+           __printf_a(u8"Not building %s~%s collation binary\n", state->filename, collationType);
         }
         return result;
     }
 
     if(!state->makeBinaryCollation) {
         if(isVerbose()) {
-            printf("Not building %s~%s collation binary\n", state->filename, collationType);
+           __printf_a(u8"Not building %s~%s collation binary\n", state->filename, collationType);
         }
         return result;
     }
@@ -948,20 +948,20 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
     GenrbImporter importer(state->inputdir, state->outputdir);
     const icu::CollationTailoring *base = icu::CollationRoot::getRoot(intStatus);
     if(U_FAILURE(intStatus)) {
-        error(line, "failed to load root collator (ucadata.icu) - %s", u_errorName(intStatus));
+        error(line, u8"failed to load root collator (ucadata.icu) - %s", u_errorName(intStatus));
         res_close(result);
         return NULL;  // TODO: use LocalUResourceBundlePointer for result
     }
     icu::CollationBuilder builder(base, intStatus);
-    if(uprv_strncmp(collationType, "search", 6) == 0) {
+    if(uprv_strncmp(collationType, u8"search", 6) == 0) {
         builder.disableFastLatin();  // build fast-Latin table unless search collator
     }
     LocalPointer<icu::CollationTailoring> t(
             builder.parseAndBuild(rules, version, &importer, &parseError, intStatus));
     if(U_FAILURE(intStatus)) {
         const char *reason = builder.getErrorReason();
-        if(reason == NULL) { reason = ""; }
-        error(line, "CollationBuilder failed at %s~%s/Sequence rule offset %ld: %s  %s",
+        if(reason == NULL) { reason = u8""; }
+        error(line, u8"CollationBuilder failed at %s~%s/Sequence rule offset %ld: %s  %s",
                 state->filename, collationType,
                 (long)parseError.offset, u_errorName(intStatus), reason);
         if(parseError.preContext[0] != 0 || parseError.postContext[0] != 0) {
@@ -969,7 +969,7 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
             char preBuffer[100], postBuffer[100];
             escape(parseError.preContext, preBuffer);
             escape(parseError.postContext, postBuffer);
-            error(line, "  error context: \"...%s\" ! \"%s...\"", preBuffer, postBuffer);
+            error(line, u8"  error context: \"...%s\" ! \"%s...\"", preBuffer, postBuffer);
         }
         if(isStrict() || t.isNull()) {
             *status = intStatus;
@@ -981,7 +981,7 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
     int32_t capacity = 100000;
     uint8_t *dest = buffer.allocateInsteadAndCopy(capacity);
     if(dest == NULL) {
-        fprintf(stderr, "memory allocation (%ld bytes) for file contents failed\n",
+        __fprintf_a(stderr, u8"memory allocation (%ld bytes) for file contents failed\n",
                 (long)capacity);
         *status = U_MEMORY_ALLOCATION_ERROR;
         res_close(result);
@@ -995,7 +995,7 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
         capacity = totalSize;
         dest = buffer.allocateInsteadAndCopy(capacity);
         if(dest == NULL) {
-            fprintf(stderr, "memory allocation (%ld bytes) for file contents failed\n",
+            __fprintf_a(stderr, u8"memory allocation (%ld bytes) for file contents failed\n",
                     (long)capacity);
             *status = U_MEMORY_ALLOCATION_ERROR;
             res_close(result);
@@ -1005,21 +1005,21 @@ addCollation(ParseState* state, TableResource  *result, const char *collationTyp
                 *t, *t->settings, indexes, dest, capacity, intStatus);
     }
     if(U_FAILURE(intStatus)) {
-        fprintf(stderr, "CollationDataWriter::writeTailoring() failed: %s\n",
+        __fprintf_a(stderr, u8"CollationDataWriter::writeTailoring() failed: %s\n",
                 u_errorName(intStatus));
         res_close(result);
         return NULL;
     }
     if(isVerbose()) {
-        printf("%s~%s collation tailoring part sizes:\n", state->filename, collationType);
+       __printf_a(u8"%s~%s collation tailoring part sizes:\n", state->filename, collationType);
         icu::CollationInfo::printSizes(totalSize, indexes);
         if(t->settings->hasReordering()) {
-            printf("%s~%s collation reordering ranges:\n", state->filename, collationType);
+           __printf_a(u8"%s~%s collation reordering ranges:\n", state->filename, collationType);
             icu::CollationInfo::printReorderRanges(
                     *t->data, t->settings->reorderCodes, t->settings->reorderCodesLength);
         }
     }
-    struct SResource *collationBin = bin_open(state->bundle, "%%CollationBin", totalSize, dest, NULL, NULL, status);
+    struct SResource *collationBin = bin_open(state->bundle, u8"%%CollationBin", totalSize, dest, NULL, NULL, status);
     result->add(collationBin, line, *status);
     if (U_FAILURE(*status)) {
         res_close(result);
@@ -1052,10 +1052,10 @@ parseCollationElements(ParseState* state, char *tag, uint32_t startline, UBool n
         return NULL;
     }
     if(isVerbose()){
-        printf(" collation elements %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+       __printf_a(u8" collation elements %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
     if(!newCollation) {
-        return addCollation(state, result, "(no type)", startline, status);
+        return addCollation(state, result, u8"(no type)", startline, status);
     }
     else {
         for(;;) {
@@ -1074,11 +1074,11 @@ parseCollationElements(ParseState* state, char *tag, uint32_t startline, UBool n
 
                 if (token == TOK_EOF)
                 {
-                    error(startline, "unterminated table");
+                    error(startline, u8"unterminated table");
                 }
                 else
                 {
-                    error(line, "Unexpected token %s", tokenNames[token]);
+                    error(line, u8"Unexpected token %s", tokenNames[token]);
                 }
 
                 return NULL;
@@ -1092,7 +1092,7 @@ parseCollationElements(ParseState* state, char *tag, uint32_t startline, UBool n
                 return NULL;
             }
 
-            if (uprv_strcmp(subtag, "default") == 0)
+            if (uprv_strcmp(subtag, u8"default") == 0)
             {
                 member = parseResource(state, subtag, NULL, status);
 
@@ -1127,7 +1127,7 @@ parseCollationElements(ParseState* state, char *tag, uint32_t startline, UBool n
                     /* we could have a table too */
                     token = peekToken(state, 1, &tokenValue, &line, &comment, status);
                     u_UCharsToChars(tokenValue->fChars, typeKeyword, u_strlen(tokenValue->fChars) + 1);
-                    if(uprv_strcmp(typeKeyword, "alias") == 0) {
+                    if(uprv_strcmp(typeKeyword, u8"alias") == 0) {
                         member = parseResource(state, subtag, NULL, status);
                         if (U_FAILURE(*status))
                         {
@@ -1177,7 +1177,7 @@ realParseTable(ParseState* state, TableResource *table, char *tag, uint32_t star
     /* '{' . (name resource)* '}' */
 
     if(isVerbose()){
-        printf(" parsing table %s at line %i \n", (tag == NULL) ? "(null)" : tag, (int)startline);
+       __printf_a(u8" parsing table %s at line %i \n", (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
     for (;;)
     {
@@ -1187,7 +1187,7 @@ realParseTable(ParseState* state, TableResource *table, char *tag, uint32_t star
         if (token == TOK_CLOSE_BRACE)
         {
             if (!readToken) {
-                warning(startline, "Encountered empty table");
+                warning(startline, u8"Encountered empty table");
             }
             return table;
         }
@@ -1198,11 +1198,11 @@ realParseTable(ParseState* state, TableResource *table, char *tag, uint32_t star
 
             if (token == TOK_EOF)
             {
-                error(startline, "unterminated table");
+                error(startline, u8"unterminated table");
             }
             else
             {
-                error(line, "unexpected token %s", tokenNames[token]);
+                error(line, u8"unexpected token %s", tokenNames[token]);
             }
 
             return NULL;
@@ -1212,13 +1212,13 @@ realParseTable(ParseState* state, TableResource *table, char *tag, uint32_t star
             u_UCharsToChars(tokenValue->fChars, subtag, u_strlen(tokenValue->fChars) + 1);
         } else {
             *status = U_INVALID_FORMAT_ERROR;
-            error(line, "invariant characters required for table keys");
+            error(line, u8"invariant characters required for table keys");
             return NULL;
         }
 
         if (U_FAILURE(*status))
         {
-            error(line, "parse error. Stopped parsing tokens with %s", u_errorName(*status));
+            error(line, u8"parse error. Stopped parsing tokens with %s", u_errorName(*status));
             return NULL;
         }
 
@@ -1226,7 +1226,7 @@ realParseTable(ParseState* state, TableResource *table, char *tag, uint32_t star
 
         if (member == NULL || U_FAILURE(*status))
         {
-            error(line, "parse error. Stopped parsing resource with %s", u_errorName(*status));
+            error(line, u8"parse error. Stopped parsing resource with %s", u_errorName(*status));
             return NULL;
         }
 
@@ -1234,7 +1234,7 @@ realParseTable(ParseState* state, TableResource *table, char *tag, uint32_t star
 
         if (U_FAILURE(*status))
         {
-            error(line, "parse error. Stopped parsing table with %s", u_errorName(*status));
+            error(line, u8"parse error. Stopped parsing table with %s", u_errorName(*status));
             return NULL;
         }
         readToken = TRUE;
@@ -1250,16 +1250,16 @@ realParseTable(ParseState* state, TableResource *table, char *tag, uint32_t star
 static struct SResource *
 parseTable(ParseState* state, char *tag, uint32_t startline, const struct UString *comment, UErrorCode *status)
 {
-    if (tag != NULL && uprv_strcmp(tag, "CollationElements") == 0)
+    if (tag != NULL && uprv_strcmp(tag, u8"CollationElements") == 0)
     {
         return parseCollationElements(state, tag, startline, FALSE, status);
     }
-    if (tag != NULL && uprv_strcmp(tag, "collations") == 0)
+    if (tag != NULL && uprv_strcmp(tag, u8"collations") == 0)
     {
         return parseCollationElements(state, tag, startline, TRUE, status);
     }
     if(isVerbose()){
-        printf(" table %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+       __printf_a(u8" table %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     TableResource *result = table_open(state->bundle, tag, comment, status);
@@ -1287,7 +1287,7 @@ parseArray(ParseState* state, char *tag, uint32_t startline, const struct UStrin
         return NULL;
     }
     if(isVerbose()){
-        printf(" array %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+       __printf_a(u8" array %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     ustr_init(&memberComments);
@@ -1306,7 +1306,7 @@ parseArray(ParseState* state, char *tag, uint32_t startline, const struct UStrin
         {
             getToken(state, NULL, NULL, NULL, status);
             if (!readToken) {
-                warning(startline, "Encountered empty array");
+                warning(startline, u8"Encountered empty array");
             }
             break;
         }
@@ -1315,7 +1315,7 @@ parseArray(ParseState* state, char *tag, uint32_t startline, const struct UStrin
         {
             res_close(result);
             *status = U_INVALID_FORMAT_ERROR;
-            error(startline, "unterminated array");
+            error(startline, u8"unterminated array");
             return NULL;
         }
 
@@ -1377,7 +1377,7 @@ parseIntVector(ParseState* state, char *tag, uint32_t startline, const struct US
     }
 
     if(isVerbose()){
-        printf(" vector %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+       __printf_a(u8" vector %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
     ustr_init(&memberComments);
     /* '{' . string [','] '}' */
@@ -1393,7 +1393,7 @@ parseIntVector(ParseState* state, char *tag, uint32_t startline, const struct US
             /* it's the end, consume the close brace */
             getToken(state, NULL, NULL, NULL, status);
             if (!readToken) {
-                warning(startline, "Encountered empty int vector");
+                warning(startline, u8"Encountered empty int vector");
             }
             ustr_deinit(&memberComments);
             return result;
@@ -1462,7 +1462,7 @@ parseBinary(ParseState* state, char *tag, uint32_t startline, const struct UStri
     }
 
     if(isVerbose()){
-        printf(" binary %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+       __printf_a(u8" binary %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     uint32_t count = (uint32_t)uprv_strlen(string.getAlias());
@@ -1475,7 +1475,7 @@ parseBinary(ParseState* state, char *tag, uint32_t startline, const struct UStri
                 return NULL;
             }
 
-            char toConv[3] = {'\0', '\0', '\0'};
+            char toConv[3] = {'\x0', '\x0', '\x0'};
             for (uint32_t i = 0; i < count; i += 2)
             {
                 toConv[0] = string[i];
@@ -1497,14 +1497,14 @@ parseBinary(ParseState* state, char *tag, uint32_t startline, const struct UStri
         else
         {
             *status = U_INVALID_CHAR_FOUND;
-            error(line, "Encountered invalid binary value (length is odd)");
+            error(line, u8"Encountered invalid binary value (length is odd)");
             return NULL;
         }
     }
     else
     {
-        warning(startline, "Encountered empty binary value");
-        return bin_open(state->bundle, tag, 0, NULL, "", comment, status);
+        warning(startline, u8"Encountered empty binary value");
+        return bin_open(state->bundle, tag, 0, NULL, u8"", comment, status);
     }
 }
 
@@ -1533,12 +1533,12 @@ parseInteger(ParseState* state, char *tag, uint32_t startline, const struct UStr
     }
 
     if(isVerbose()){
-        printf(" integer %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+__printf_a(u8" integer %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     if (uprv_strlen(string) <= 0)
     {
-        warning(startline, "Encountered empty integer. Default value is 0.");
+        warning(startline, u8"Encountered empty integer. Default value is 0.");
     }
 
     /* Allow integer support for hexdecimal, octal digit and decimal*/
@@ -1576,7 +1576,7 @@ parseImport(ParseState* state, char *tag, uint32_t startline, const struct UStri
     }
 
     if(isVerbose()){
-        printf(" import %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+__printf_a(u8" import %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     /* Open the input file for reading */
@@ -1589,10 +1589,10 @@ parseImport(ParseState* state, char *tag, uint32_t startline, const struct UStri
         return NULL;
     }
 
-    FileStream *file = T_FileStream_open(fullname.data(), "rb");
+    FileStream *file = T_FileStream_open(fullname.data(), u8"rb");
     if (file == NULL)
     {
-        error(line, "couldn't open input file %s", filename.getAlias());
+        error(line, u8"couldn't open input file %s", filename.getAlias());
         *status = U_FILE_ACCESS_ERROR;
         return NULL;
     }
@@ -1644,7 +1644,7 @@ parseInclude(ParseState* state, char *tag, uint32_t startline, const struct UStr
     }
 
     if(isVerbose()){
-        printf(" include %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+__printf_a(u8" include %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     fullname = (char *) uprv_malloc(state->inputdirLength + count + 2);
@@ -1663,7 +1663,7 @@ parseInclude(ParseState* state, char *tag, uint32_t startline, const struct UStr
             uprv_strcpy(fullname, state->inputdir);
 
             fullname[state->inputdirLength]      = U_FILE_SEP_CHAR;
-            fullname[state->inputdirLength + 1] = '\0';
+            fullname[state->inputdirLength + 1] = '\x0';
 
             uprv_strcat(fullname, filename);
         }
@@ -1679,7 +1679,7 @@ parseInclude(ParseState* state, char *tag, uint32_t startline, const struct UStr
     ucbuf = ucbuf_open(fullname, &cp,getShowWarning(),FALSE,status);
 
     if (U_FAILURE(*status)) {
-        error(line, "couldn't open input file %s\n", filename);
+        error(line, u8"couldn't open input file %s\n", filename);
         return NULL;
     }
 
@@ -1744,43 +1744,43 @@ static struct {
     const UChar *nameUChars;
     ParseResourceFunction *parseFunction;
 } gResourceTypes[] = {
-    {"Unknown", NULL, NULL},
-    {"string", k_type_string, parseString},
-    {"binary", k_type_binary, parseBinary},
-    {"table", k_type_table, parseTable},
-    {"table(nofallback)", k_type_table_no_fallback, NULL}, /* parseFunction will never be called */
-    {"integer", k_type_integer, parseInteger},
-    {"array", k_type_array, parseArray},
-    {"alias", k_type_alias, parseAlias},
-    {"intvector", k_type_intvector, parseIntVector},
-    {"import", k_type_import, parseImport},
-    {"include", k_type_include, parseInclude},
-    {"process(uca_rules)", k_type_plugin_uca_rules, parseUCARules},
-    {"process(collation)", k_type_plugin_collation, NULL /* not implemented yet */},
-    {"process(transliterator)", k_type_plugin_transliterator, parseTransliterator},
-    {"process(dependency)", k_type_plugin_dependency, parseDependency},
-    {"reserved", NULL, NULL}
+    {u8"Unknown", NULL, NULL},
+    {u8"string", k_type_string, parseString},
+    {u8"binary", k_type_binary, parseBinary},
+    {u8"table", k_type_table, parseTable},
+    {u8"table(nofallback)", k_type_table_no_fallback, NULL}, /* parseFunction will never be called */
+    {u8"integer", k_type_integer, parseInteger},
+    {u8"array", k_type_array, parseArray},
+    {u8"alias", k_type_alias, parseAlias},
+    {u8"intvector", k_type_intvector, parseIntVector},
+    {u8"import", k_type_import, parseImport},
+    {u8"include", k_type_include, parseInclude},
+    {u8"process(uca_rules)", k_type_plugin_uca_rules, parseUCARules},
+    {u8"process(collation)", k_type_plugin_collation, NULL /* not implemented yet */},
+    {u8"process(transliterator)", k_type_plugin_transliterator, parseTransliterator},
+    {u8"process(dependency)", k_type_plugin_dependency, parseDependency},
+    {u8"reserved", NULL, NULL}
 };
 
 void initParser()
 {
-    U_STRING_INIT(k_type_string,    "string",    6);
-    U_STRING_INIT(k_type_binary,    "binary",    6);
-    U_STRING_INIT(k_type_bin,       "bin",       3);
-    U_STRING_INIT(k_type_table,     "table",     5);
-    U_STRING_INIT(k_type_table_no_fallback,     "table(nofallback)",         17);
-    U_STRING_INIT(k_type_int,       "int",       3);
-    U_STRING_INIT(k_type_integer,   "integer",   7);
-    U_STRING_INIT(k_type_array,     "array",     5);
-    U_STRING_INIT(k_type_alias,     "alias",     5);
-    U_STRING_INIT(k_type_intvector, "intvector", 9);
-    U_STRING_INIT(k_type_import,    "import",    6);
-    U_STRING_INIT(k_type_include,   "include",   7);
+    U_STRING_INIT(k_type_string,    u8"string",    6);
+    U_STRING_INIT(k_type_binary,    u8"binary",    6);
+    U_STRING_INIT(k_type_bin,       u8"bin",       3);
+    U_STRING_INIT(k_type_table,     u8"table",     5);
+    U_STRING_INIT(k_type_table_no_fallback,     u8"table(nofallback)",         17);
+    U_STRING_INIT(k_type_int,       u8"int",       3);
+    U_STRING_INIT(k_type_integer,   u8"integer",   7);
+    U_STRING_INIT(k_type_array,     u8"array",     5);
+    U_STRING_INIT(k_type_alias,     u8"alias",     5);
+    U_STRING_INIT(k_type_intvector, u8"intvector", 9);
+    U_STRING_INIT(k_type_import,    u8"import",    6);
+    U_STRING_INIT(k_type_include,   u8"include",   7);
 
-    U_STRING_INIT(k_type_plugin_uca_rules,      "process(uca_rules)",        18);
-    U_STRING_INIT(k_type_plugin_collation,      "process(collation)",        18);
-    U_STRING_INIT(k_type_plugin_transliterator, "process(transliterator)",   23);
-    U_STRING_INIT(k_type_plugin_dependency,     "process(dependency)",       19);
+    U_STRING_INIT(k_type_plugin_uca_rules,      u8"process(uca_rules)",        18);
+    U_STRING_INIT(k_type_plugin_collation,      u8"process(collation)",        18);
+    U_STRING_INIT(k_type_plugin_transliterator, u8"process(transliterator)",   23);
+    U_STRING_INIT(k_type_plugin_dependency,     u8"process(dependency)",       19);
 }
 
 static inline UBool isTable(enum EResourceType type) {
@@ -1823,7 +1823,7 @@ parseResourceType(ParseState* state, UErrorCode *status)
         u_austrncpy(tokenBuffer, tokenValue->fChars, sizeof(tokenBuffer));
         tokenBuffer[sizeof(tokenBuffer) - 1] = 0;
         *status = U_INVALID_FORMAT_ERROR;
-        error(line, "unknown resource type '%s'", tokenBuffer);
+        error(line, u8"unknown resource type '%s'", tokenBuffer);
     }
 
     return result;
@@ -1844,7 +1844,7 @@ parseResource(ParseState* state, char *tag, const struct UString *comment, UErro
     token = getToken(state, &tokenValue, NULL, &startline, status);
 
     if(isVerbose()){
-        printf(" resource %s at line %i \n",  (tag == NULL) ? "(null)" : tag, (int)startline);
+__printf_a(u8" resource %s at line %i \n",  (tag == NULL) ? u8"(null)" : tag, (int)startline);
     }
 
     /* name . [ ':' type ] '{' resource '}' */
@@ -1855,7 +1855,7 @@ parseResource(ParseState* state, char *tag, const struct UString *comment, UErro
     {
     case TOK_EOF:
         *status = U_INVALID_FORMAT_ERROR;
-        error(startline, "Unexpected EOF encountered");
+        error(startline, u8"Unexpected EOF encountered");
         return NULL;
 
     case TOK_ERROR:
@@ -1878,7 +1878,7 @@ parseResource(ParseState* state, char *tag, const struct UString *comment, UErro
 
     default:
         *status = U_INVALID_FORMAT_ERROR;
-        error(startline, "syntax error while reading a resource, expected '{' or ':'");
+        error(startline, u8"syntax error while reading a resource, expected '{' or ':'");
         return NULL;
     }
 
@@ -1925,21 +1925,21 @@ parseResource(ParseState* state, char *tag, const struct UString *comment, UErro
             case TOK_COLON:         resType = RESTYPE_TABLE;  break;
             default:
                 *status = U_INVALID_FORMAT_ERROR;
-                error(line, "Unexpected token after string, expected ',', '{' or '}'");
+                error(line, u8"Unexpected token after string, expected ',', '{' or '}'");
                 return NULL;
             }
         }
         else
         {
             *status = U_INVALID_FORMAT_ERROR;
-            error(line, "Unexpected token after '{'");
+            error(line, u8"Unexpected token after '{'");
             return NULL;
         }
 
-        /* printf("Type guessed as %s\n", resourceNames[resType]); */
+        /*__printf_a("Type guessed as %s\n", resourceNames[resType]); */
     } else if(resType == RESTYPE_TABLE_NO_FALLBACK) {
         *status = U_INVALID_FORMAT_ERROR;
-        error(startline, "error: %s resource type not valid except on top bundle level", gResourceTypes[resType].nameChars);
+        error(startline, u8"error: %s resource type not valid except on top bundle level", gResourceTypes[resType].nameChars);
         return NULL;
     }
 
@@ -1952,7 +1952,7 @@ parseResource(ParseState* state, char *tag, const struct UString *comment, UErro
     }
     else {
         *status = U_INTERNAL_PROGRAM_ERROR;
-        error(startline, "internal error: %s resource type found and not handled", gResourceTypes[resType].nameChars);
+        error(startline, u8"internal error: %s resource type found and not handled", gResourceTypes[resType].nameChars);
     }
 
     return NULL;
@@ -2014,7 +2014,7 @@ parse(UCHARBUF *buf, const char *inputDir, const char *outputDir, const char *fi
         else
         {
             *status=U_PARSE_ERROR;
-             error(line, "parse error. Stopped parsing with %s", u_errorName(*status));
+             error(line, u8"parse error. Stopped parsing with %s", u_errorName(*status));
         }
     }
     else
@@ -2030,7 +2030,7 @@ parse(UCHARBUF *buf, const char *inputDir, const char *outputDir, const char *fi
             /* neither colon nor open brace */
             *status=U_PARSE_ERROR;
             bundleType=RESTYPE_UNKNOWN;
-            error(line, "parse error, did not find open-brace '{' or colon ':', stopped with %s", u_errorName(*status));
+            error(line, u8"parse error, did not find open-brace '{' or colon ':', stopped with %s", u_errorName(*status));
         }
     }
 
@@ -2066,7 +2066,7 @@ parse(UCHARBUF *buf, const char *inputDir, const char *outputDir, const char *fi
 
     if (getToken(&state, NULL, NULL, &line, status) != TOK_EOF)
     {
-        warning(line, "extraneous text after resource bundle (perhaps unmatched braces)");
+        warning(line, u8"extraneous text after resource bundle (perhaps unmatched braces)");
         if(isStrict()){
             *status = U_INVALID_FORMAT_ERROR;
             return NULL;

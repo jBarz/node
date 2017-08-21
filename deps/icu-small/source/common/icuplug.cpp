@@ -41,7 +41,7 @@ using namespace icu;
 
 #if UPLUG_TRACE
 #include <stdio.h>
-#define DBG(x) fprintf(stderr, "%s:%d: ",__FILE__,__LINE__); fprintf x
+#define DBG(x) fprintf(stderr, u8"%s:%d: ",__FILE__,__LINE__); fprintf x
 #endif
 
 /**
@@ -175,7 +175,7 @@ uplug_openLibrary(const char *libName, UErrorCode *status) {
       /* Ran out of library slots. Statically allocated because we can't depend on allocating memory.. */
       *status = U_MEMORY_ALLOCATION_ERROR;
 #if UPLUG_TRACE
-      DBG((stderr, "uplug_openLibrary() - out of library slots (max %d)\n", libraryMax));
+      DBG((stderr, u8"uplug_openLibrary() - out of library slots (max %d)\n", libraryMax));
 #endif
       return NULL;
     }
@@ -183,7 +183,7 @@ uplug_openLibrary(const char *libName, UErrorCode *status) {
        DL operations from multiple threads. */
     libraryList[libEntry].lib = uprv_dl_open(libName, status);
 #if UPLUG_TRACE
-    DBG((stderr, "uplug_openLibrary(%s,%s) libEntry %d, lib %p\n", libName, u_errorName(*status), libEntry, lib));
+    DBG((stderr, u8"uplug_openLibrary(%s,%s) libEntry %d, lib %p\n", libName, u_errorName(*status), libEntry, lib));
 #endif
 
     if(libraryList[libEntry].lib == NULL || U_FAILURE(*status)) {
@@ -191,7 +191,7 @@ uplug_openLibrary(const char *libName, UErrorCode *status) {
       libraryList[libEntry].lib = NULL; /* failure with open */
       libraryList[libEntry].name[0] = 0;
 #if UPLUG_TRACE
-      DBG((stderr, "uplug_openLibrary(%s,%s) libEntry %d, lib %p\n", libName, u_errorName(*status), libEntry, lib));
+      DBG((stderr, u8"uplug_openLibrary(%s,%s) libEntry %d, lib %p\n", libName, u_errorName(*status), libEntry, lib));
 #endif
       /* no need to free - just won't increase the count. */
       libraryCount--;
@@ -214,7 +214,7 @@ uplug_closeLibrary(void *lib, UErrorCode *status) {
   int32_t i;
 
 #if UPLUG_TRACE
-  DBG((stderr, "uplug_closeLibrary(%p,%s) list %p\n", lib, u_errorName(*status), (void*)libraryList));
+  DBG((stderr, u8"uplug_closeLibrary(%p,%s) list %p\n", lib, u_errorName(*status), (void*)libraryList));
 #endif
   if(U_FAILURE(*status)) return;
 
@@ -601,7 +601,7 @@ uplug_initPlugFromLibrary(const char *libName, const char *sym, const char *conf
       }
     } else {
       UErrorCode subStatus = U_ZERO_ERROR;
-      plug = uplug_initErrorPlug(libName,sym,config,"ERROR: Could not load entrypoint",(lib==NULL)?U_MISSING_RESOURCE_ERROR:*status,&subStatus);
+      plug = uplug_initErrorPlug(libName,sym,config,u8"ERROR: Could not load entrypoint",(lib==NULL)?U_MISSING_RESOURCE_ERROR:*status,&subStatus);
     }
     if(lib!=NULL) { /* still need to close the lib */
       UErrorCode subStatus = U_ZERO_ERROR;
@@ -609,7 +609,7 @@ uplug_initPlugFromLibrary(const char *libName, const char *sym, const char *conf
     }
   } else {
     UErrorCode subStatus = U_ZERO_ERROR;
-    plug = uplug_initErrorPlug(libName,sym,config,"ERROR: could not load library",(lib==NULL)?U_MISSING_RESOURCE_ERROR:*status,&subStatus);
+    plug = uplug_initErrorPlug(libName,sym,config,u8"ERROR: could not load library",(lib==NULL)?U_MISSING_RESOURCE_ERROR:*status,&subStatus);
   }
   return plug;
 }
@@ -659,7 +659,7 @@ static void uplug_loadWaitingPlugs(UErrorCode *status) {
     return;
   }
 #if UPLUG_TRACE
-  DBG((stderr,  "uplug_loadWaitingPlugs() Level: %d\n", currentLevel));
+  DBG((stderr,  u8"uplug_loadWaitingPlugs() Level: %d\n", currentLevel));
 #endif
   /* pass #1: low level plugs */
   for(i=0;i<pluginCount;i++) {
@@ -699,12 +699,12 @@ static void uplug_loadWaitingPlugs(UErrorCode *status) {
   }
 
 #if UPLUG_TRACE
-  DBG((stderr,  " Done Loading Plugs. Level: %d\n", (int32_t)uplug_getCurrentLevel()));
+  DBG((stderr,  u8" Done Loading Plugs. Level: %d\n", (int32_t)uplug_getCurrentLevel()));
 #endif
 }
 
 /* Name of the plugin config file */
-static char plugin_file[2048] = "";
+static char plugin_file[2048] = u8"";
 #endif
 
 U_INTERNAL const char* U_EXPORT2
@@ -725,7 +725,7 @@ uplug_init(UErrorCode *status) {
   (void)status; /* unused */
 #elif !UCONFIG_NO_FILE_IO
   CharString plugin_dir;
-  const char *env = getenv("ICU_PLUGINS");
+  const char *env = getenv(u8"ICU_PLUGINS");
 
   if(U_FAILURE(*status)) return;
   if(env != NULL) {
@@ -740,7 +740,7 @@ uplug_init(UErrorCode *status) {
 #endif
 
 #if UPLUG_TRACE
-  DBG((stderr, "ICU_PLUGINS=%s\n", plugin_dir.data()));
+  DBG((stderr, u8"ICU_PLUGINS=%s\n", plugin_dir.data()));
 #endif
 
   if(!plugin_dir.isEmpty()) {
@@ -752,20 +752,20 @@ uplug_init(UErrorCode *status) {
 /* Keeping in mind that unauthorized file access is logged, monitored, and enforced  */
 /* I've chosen to open a DDNAME if BATCH and leave it alone for (presumably) UNIX    */
 /* System Services.  Alternative techniques might be allocating a member in          */
-/* SYS1.PARMLIB or setting an environment variable "ICU_PLUGIN_PATH" (?).  The       */
+/* SYS1.PARMLIB or setting an environment variable u8"ICU_PLUGIN_PATH" (?).  The       */
 /* DDNAME can be connected to a file in the HFS if need be.                          */
 
-    pluginFile.append("//DD:ICUPLUG", -1, *status);        /* JAM 20 Oct 2011 */
+    pluginFile.append(u8"//DD:ICUPLUG", -1, *status);        /* JAM 20 Oct 2011 */
 #else
     pluginFile.append(plugin_dir, *status);
     pluginFile.append(U_FILE_SEP_STRING, -1, *status);
-    pluginFile.append("icuplugins", -1, *status);
+    pluginFile.append(u8"icuplugins", -1, *status);
     pluginFile.append(U_ICU_VERSION_SHORT, -1, *status);
-    pluginFile.append(".txt", -1, *status);
+    pluginFile.append(u8".txt", -1, *status);
 #endif
 
 #if UPLUG_TRACE
-    DBG((stderr, "status=%s\n", u_errorName(*status)));
+    DBG((stderr, u8"status=%s\n", u_errorName(*status)));
 #endif
 
     if(U_FAILURE(*status)) {
@@ -774,7 +774,7 @@ uplug_init(UErrorCode *status) {
     if((size_t)pluginFile.length() > (sizeof(plugin_file)-1)) {
       *status = U_BUFFER_OVERFLOW_ERROR;
 #if UPLUG_TRACE
-      DBG((stderr, "status=%s\n", u_errorName(*status)));
+      DBG((stderr, u8"status=%s\n", u_errorName(*status)));
 #endif
       return;
     }
@@ -785,7 +785,7 @@ uplug_init(UErrorCode *status) {
     uprv_strncpy(plugin_file, pluginFile.data(), sizeof(plugin_file));
 
 #if UPLUG_TRACE
-    DBG((stderr, "pluginfile= %s len %d/%d\n", plugin_file, (int)strlen(plugin_file), (int)sizeof(plugin_file)));
+    DBG((stderr, u8"pluginfile= %s len %d/%d\n", plugin_file, (int)strlen(plugin_file), (int)sizeof(plugin_file)));
 #endif
 
 #ifdef __MVS__
@@ -808,24 +808,24 @@ uplug_init(UErrorCode *status) {
       while(fgets(linebuf,1023,f)) {
         line++;
 
-        if(!*linebuf || *linebuf=='#') {
+        if(!*linebuf || *linebuf=='\x23') {
           continue;
         } else {
           p = linebuf;
           while(*p&&isspace((int)*p))
             p++;
-          if(!*p || *p=='#') continue;
+          if(!*p || *p=='\x23') continue;
           libName = p;
           while(*p&&!isspace((int)*p)) {
             p++;
           }
-          if(!*p || *p=='#') continue; /* no tab after libname */
+          if(!*p || *p=='\x23') continue; /* no tab after libname */
           *p=0; /* end of libname */
           p++;
           while(*p&&isspace((int)*p)) {
             p++;
           }
-          if(!*p||*p=='#') continue; /* no symname after libname +tab */
+          if(!*p||*p=='\x23') continue; /* no symname after libname +tab */
           symName = p;
           while(*p&&!isspace((int)*p)) {
             p++;
@@ -858,8 +858,8 @@ uplug_init(UErrorCode *status) {
               *status = subStatus;
             }
 #if UPLUG_TRACE
-            DBG((stderr, "PLUGIN libName=[%s], sym=[%s], config=[%s]\n", libName, symName, config));
-            DBG((stderr, " -> %p, %s\n", (void*)plug, u_errorName(subStatus)));
+            DBG((stderr, u8"PLUGIN libName=[%s], sym=[%s], config=[%s]\n", libName, symName, config));
+            DBG((stderr, u8" -> %p, %s\n", (void*)plug, u_errorName(subStatus)));
 #else
             (void)plug; /* unused */
 #endif
@@ -869,7 +869,7 @@ uplug_init(UErrorCode *status) {
       fclose(f);
     } else {
 #if UPLUG_TRACE
-      DBG((stderr, "Can't open plugin file %s\n", plugin_file));
+      DBG((stderr, u8"Can't open plugin file %s\n", plugin_file));
 #endif
     }
   }

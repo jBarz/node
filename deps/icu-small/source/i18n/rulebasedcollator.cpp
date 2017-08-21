@@ -156,7 +156,7 @@ RuleBasedCollator::RuleBasedCollator(const uint8_t *bin, int32_t length,
           settings(NULL),
           tailoring(NULL),
           cacheEntry(NULL),
-          validLocale(""),
+          validLocale(u8""),
           explicitlySetAttributes(0),
           actualLocaleIsSameAsValid(FALSE) {
     if(U_FAILURE(errorCode)) { return; }
@@ -298,7 +298,7 @@ RuleBasedCollator::setLocales(const Locale &requested, const Locale &valid,
     // Do not modify tailoring.actualLocale:
     // We cannot be sure that that would be thread-safe.
     validLocale = valid;
-    (void)requested;  // Ignore, see also ticket #10477.
+    (void)requested;  // Ignore, see also ticket  USTR(#10477).
 }
 
 Locale
@@ -338,7 +338,7 @@ RuleBasedCollator::internalGetLocaleID(ULocDataLocaleType type, UErrorCode &erro
     }
     if(result->isBogus()) { return NULL; }
     const char *id = result->getName();
-    return id[0] == 0 ? "root" : id;
+    return id[0] == 0 ? u8"root" : id;
 }
 
 const UnicodeString&
@@ -897,14 +897,14 @@ protected:
 class FCDUTF8NFDIterator : public NFDIterator {
 public:
     FCDUTF8NFDIterator(const CollationData *data, const uint8_t *text, int32_t textLength)
-            : u8ci(data, FALSE, text, 0, textLength) {}
+            : ci(data, FALSE, text, 0, textLength) {}
 protected:
     virtual UChar32 nextRawCodePoint() {
         UErrorCode errorCode = U_ZERO_ERROR;
-        return u8ci.nextCodePoint(errorCode);
+        return ci.nextCodePoint(errorCode);
     }
 private:
-    FCDUTF8CollationIterator u8ci;
+    FCDUTF8CollationIterator ci;
 };
 
 class UIterNFDIterator : public NFDIterator {
@@ -1291,7 +1291,7 @@ RuleBasedCollator::getCollationKey(const UChar *s, int32_t length, CollationKey&
         errorCode = U_ILLEGAL_ARGUMENT_ERROR;
         return key.setToBogus();
     }
-    key.reset();  // resets the "bogus" state
+    key.reset();  // resets the u8"bogus" state
     CollationKeyByteSink sink(key);
     writeSortKey(s, length, sink, errorCode);
     if(U_FAILURE(errorCode)) {
@@ -1515,7 +1515,7 @@ void appendSubtag(CharString &s, char letter, const char *subtag, int32_t length
                   UErrorCode &errorCode) {
     if(U_FAILURE(errorCode) || length == 0) { return; }
     if(!s.isEmpty()) {
-        s.append('_', errorCode);
+        s.append('\x5f', errorCode);
     }
     s.append(letter, errorCode);
     for(int32_t i = 0; i < length; ++i) {
@@ -1527,9 +1527,9 @@ void appendAttribute(CharString &s, char letter, UColAttributeValue value,
                      UErrorCode &errorCode) {
     if(U_FAILURE(errorCode)) { return; }
     if(!s.isEmpty()) {
-        s.append('_', errorCode);
+        s.append('\x5f', errorCode);
     }
-    static const char *valueChars = "1234...........IXO..SN..LU......";
+    static const char *valueChars = u8"1234...........IXO..SN..LU......";
     s.append(letter, errorCode);
     s.append(valueChars[value], errorCode);
 }
@@ -1551,11 +1551,11 @@ RuleBasedCollator::internalGetShortDefinitionString(const char *locale,
 
     char resultLocale[ULOC_FULLNAME_CAPACITY + 1];
     int32_t length = ucol_getFunctionalEquivalent(resultLocale, ULOC_FULLNAME_CAPACITY,
-                                                  "collation", locale,
+                                                  u8"collation", locale,
                                                   NULL, &errorCode);
     if(U_FAILURE(errorCode)) { return 0; }
     if(length == 0) {
-        uprv_strcpy(resultLocale, "root");
+        uprv_strcpy(resultLocale, u8"root");
     } else {
         resultLocale[length] = 0;
     }
@@ -1565,39 +1565,39 @@ RuleBasedCollator::internalGetShortDefinitionString(const char *locale,
     char subtag[ULOC_KEYWORD_AND_VALUES_CAPACITY];
 
     if(attributeHasBeenSetExplicitly(UCOL_ALTERNATE_HANDLING)) {
-        appendAttribute(result, 'A', getAttribute(UCOL_ALTERNATE_HANDLING, errorCode), errorCode);
+        appendAttribute(result, '\x41', getAttribute(UCOL_ALTERNATE_HANDLING, errorCode), errorCode);
     }
     // ATTR_VARIABLE_TOP not supported because 'B' was broken.
     // See ICU tickets #10372 and #10386.
     if(attributeHasBeenSetExplicitly(UCOL_CASE_FIRST)) {
-        appendAttribute(result, 'C', getAttribute(UCOL_CASE_FIRST, errorCode), errorCode);
+        appendAttribute(result, '\x43', getAttribute(UCOL_CASE_FIRST, errorCode), errorCode);
     }
     if(attributeHasBeenSetExplicitly(UCOL_NUMERIC_COLLATION)) {
-        appendAttribute(result, 'D', getAttribute(UCOL_NUMERIC_COLLATION, errorCode), errorCode);
+        appendAttribute(result, '\x44', getAttribute(UCOL_NUMERIC_COLLATION, errorCode), errorCode);
     }
     if(attributeHasBeenSetExplicitly(UCOL_CASE_LEVEL)) {
-        appendAttribute(result, 'E', getAttribute(UCOL_CASE_LEVEL, errorCode), errorCode);
+        appendAttribute(result, '\x45', getAttribute(UCOL_CASE_LEVEL, errorCode), errorCode);
     }
     if(attributeHasBeenSetExplicitly(UCOL_FRENCH_COLLATION)) {
-        appendAttribute(result, 'F', getAttribute(UCOL_FRENCH_COLLATION, errorCode), errorCode);
+        appendAttribute(result, '\x46', getAttribute(UCOL_FRENCH_COLLATION, errorCode), errorCode);
     }
     // Note: UCOL_HIRAGANA_QUATERNARY_MODE is deprecated and never changes away from default.
-    length = uloc_getKeywordValue(resultLocale, "collation", subtag, UPRV_LENGTHOF(subtag), &errorCode);
-    appendSubtag(result, 'K', subtag, length, errorCode);
+    length = uloc_getKeywordValue(resultLocale, u8"collation", subtag, UPRV_LENGTHOF(subtag), &errorCode);
+    appendSubtag(result, '\x4b', subtag, length, errorCode);
     length = uloc_getLanguage(resultLocale, subtag, UPRV_LENGTHOF(subtag), &errorCode);
-    appendSubtag(result, 'L', subtag, length, errorCode);
+    appendSubtag(result, '\x4c', subtag, length, errorCode);
     if(attributeHasBeenSetExplicitly(UCOL_NORMALIZATION_MODE)) {
-        appendAttribute(result, 'N', getAttribute(UCOL_NORMALIZATION_MODE, errorCode), errorCode);
+        appendAttribute(result, '\x4e', getAttribute(UCOL_NORMALIZATION_MODE, errorCode), errorCode);
     }
     length = uloc_getCountry(resultLocale, subtag, UPRV_LENGTHOF(subtag), &errorCode);
-    appendSubtag(result, 'R', subtag, length, errorCode);
+    appendSubtag(result, '\x52', subtag, length, errorCode);
     if(attributeHasBeenSetExplicitly(UCOL_STRENGTH)) {
-        appendAttribute(result, 'S', getAttribute(UCOL_STRENGTH, errorCode), errorCode);
+        appendAttribute(result, '\x53', getAttribute(UCOL_STRENGTH, errorCode), errorCode);
     }
     length = uloc_getVariant(resultLocale, subtag, UPRV_LENGTHOF(subtag), &errorCode);
-    appendSubtag(result, 'V', subtag, length, errorCode);
+    appendSubtag(result, '\x56', subtag, length, errorCode);
     length = uloc_getScript(resultLocale, subtag, UPRV_LENGTHOF(subtag), &errorCode);
-    appendSubtag(result, 'Z', subtag, length, errorCode);
+    appendSubtag(result, '\x5a', subtag, length, errorCode);
 
     if(U_FAILURE(errorCode)) { return 0; }
     if(result.length() <= capacity) {

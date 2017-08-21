@@ -34,9 +34,9 @@ get_dirname(char *dirname,
 
   if(lastSlash>filename) {
     uprv_strncpy(dirname, filename, (lastSlash - filename));
-    *(dirname + (lastSlash - filename)) = '\0';
+    *(dirname + (lastSlash - filename)) = '\x0';
   } else {
-    *dirname = '\0';
+    *dirname = '\x0';
   }
 }
 
@@ -56,10 +56,10 @@ get_basename(char *basename,
   }
 
   /* strip off any suffix */
-  lastDot = uprv_strrchr(basename, '.');
+  lastDot = uprv_strrchr(basename, '\x2e');
 
   if(lastDot != NULL) {
-    *lastDot = '\0';
+    *lastDot = '\x0';
   }
 }
 
@@ -67,7 +67,7 @@ get_basename(char *basename,
 int32_t
 itostr(char * buffer, int32_t i, uint32_t radix, int32_t pad)
 {
-    const char digits[16] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+    const char digits[16] = {'\x30','\x31','\x32','\x33','\x34','\x35','\x36','\x37','\x38','\x39','\x61','\x62','\x63','\x64','\x65','\x66'};
     int32_t length = 0;
     int32_t num = 0;
     int32_t save = i;
@@ -87,12 +87,12 @@ itostr(char * buffer, int32_t i, uint32_t radix, int32_t pad)
     } while(i);
 
     while (length < pad){
-        buffer[length++] = '0';/*zero padding */
+        buffer[length++] = '\x30';/*zero padding */
     }
 
     /* if i is negative add the negative sign */
     if(save < 0){
-        buffer[length++]='-';
+        buffer[length++]='\x2d';
     }
 
     /* null terminate the buffer */

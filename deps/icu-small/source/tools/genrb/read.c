@@ -123,7 +123,7 @@ static enum ETokenType getStringToken(UCHARBUF* buf,
                                       UErrorCode *status) {
     UBool    lastStringWasQuoted;
     UChar32  c;
-    UChar    target[3] = { '\0' };
+    UChar    target[3] = { '\x0' };
     UChar    *pTarget   = target;
     int      len=0;
     UBool    isFollowingCharEscaped=FALSE;
@@ -221,7 +221,7 @@ static enum ETokenType getStringToken(UCHARBUF* buf,
 
             if(lastStringWasQuoted){
                 if(getShowWarning()){
-                    warning(lineCount, "Mixing quoted and unquoted strings");
+                    warning(lineCount, u8"Mixing quoted and unquoted strings");
                 }
                 if(isStrict()){
                     return TOK_ERROR;
@@ -344,30 +344,30 @@ static UChar32 getNextChar(UCHARBUF* buf,
             return c;
         }
 
-        c = ucbuf_getc(buf,status); /* "/c" */
+        c = ucbuf_getc(buf,status); /* u8"/c" */
 
         if (c == U_EOF) {
             return U_EOF;
         }
 
         switch (c) {
-        case SLASH:  /* "//" */
+        case SLASH:  /* u8"//" */
             seekUntilNewline(buf, NULL, status);
             break;
 
-        case ASTERISK:  /* " / * " */
-            c2 = ucbuf_getc(buf, status); /* "/ * c" */
-            if(c2 == ASTERISK){  /* "/ * *" */
+        case ASTERISK:  /* u8" / * " */
+            c2 = ucbuf_getc(buf, status); /* u8"/ * c" */
+            if(c2 == ASTERISK){  /* u8"/ * *" */
                 /* parse multi-line comment and store it in token*/
                 seekUntilEndOfComment(buf, token, status);
             } else {
-                ucbuf_ungetc(c2, buf); /* c2 is the non-asterisk following "/ *".  Include c2  back in buffer.  */
+                ucbuf_ungetc(c2, buf); /* c2 is the non-asterisk following u8"/ *".  Include c2  back in buffer.  */
                 seekUntilEndOfComment(buf, NULL, status);
             }
             break;
 
         default:
-            ucbuf_ungetc(c, buf); /* "/c" - put back the c */
+            ucbuf_ungetc(c, buf); /* u8"/c" - put back the c */
             /* If get() failed this is a NOP */
             return SLASH;
         }
@@ -428,7 +428,7 @@ static void seekUntilEndOfComment(UCHARBUF *buf,
 
     if (c == U_EOF) {
         *status = U_INVALID_FORMAT_ERROR;
-        error(line, "unterminated comment detected");
+        error(line, u8"unterminated comment detected");
     }
 }
 

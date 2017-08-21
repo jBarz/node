@@ -97,34 +97,34 @@ ucbuf_autodetect_fs(FileStream* in, const char** cp, UConverter** conv, int32_t*
     return TRUE;
 }
 static UBool ucbuf_isCPKnown(const char* cp){
-    if(ucnv_compareNames("UTF-8",cp)==0){
+    if(ucnv_compareNames(u8"UTF-8",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("UTF-16BE",cp)==0){
+    if(ucnv_compareNames(u8"UTF-16BE",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("UTF-16LE",cp)==0){
+    if(ucnv_compareNames(u8"UTF-16LE",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("UTF-16",cp)==0){
+    if(ucnv_compareNames(u8"UTF-16",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("UTF-32",cp)==0){
+    if(ucnv_compareNames(u8"UTF-32",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("UTF-32BE",cp)==0){
+    if(ucnv_compareNames(u8"UTF-32BE",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("UTF-32LE",cp)==0){
+    if(ucnv_compareNames(u8"UTF-32LE",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("SCSU",cp)==0){
+    if(ucnv_compareNames(u8"SCSU",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("BOCU-1",cp)==0){
+    if(ucnv_compareNames(u8"BOCU-1",cp)==0){
         return TRUE;
     }
-    if(ucnv_compareNames("UTF-7",cp)==0){
+    if(ucnv_compareNames(u8"UTF-7",cp)==0){
         return TRUE;
     }
     return FALSE;
@@ -164,7 +164,7 @@ ucbuf_fillucbuf( UCHARBUF* buf,UErrorCode* error){
     UChar* pTarget=NULL;
     UChar* target=NULL;
     const char* source=NULL;
-    char  carr[MAX_IN_BUF] = {'\0'};
+    char  carr[MAX_IN_BUF] = {'\x0'};
     char* cbuf =  carr;
     int32_t inputRead=0;
     int32_t outputWritten=0;
@@ -235,8 +235,8 @@ ucbuf_fillucbuf( UCHARBUF* buf,UErrorCode* error){
             UErrorCode error1 =U_ZERO_ERROR;
 
             if( buf->showWarning==TRUE){
-                fprintf(stderr,"\n###WARNING: Encountered abnormal bytes while"
-                               " converting input stream to target encoding: %s\n",
+                fprintf(stderr,u8"\n###WARNING: Encountered abnormal bytes while"
+                               u8" converting input stream to target encoding: %s\n",
                                u_errorName(*error));
             }
 
@@ -265,9 +265,9 @@ ucbuf_fillucbuf( UCHARBUF* buf,UErrorCode* error){
 
             if(buf->showWarning ==TRUE){
                 /* print out the context */
-                fprintf(stderr,"\tPre-context: %s\n",preContext);
-                fprintf(stderr,"\tContext: %s\n",context);
-                fprintf(stderr,"\tPost-context: %s\n", postContext);
+                fprintf(stderr,u8"\tPre-context: %s\n",preContext);
+                fprintf(stderr,u8"\tContext: %s\n",context);
+                fprintf(stderr,u8"\tPost-context: %s\n", postContext);
             }
 
             /* reset the converter */
@@ -426,7 +426,7 @@ ucbuf_getcx32(UCHARBUF* buf,UErrorCode* error) {
             }
             context[len]= 0 ; /* null terminate the buffer */
             u_UCharsToChars( buf->currentPos, context, len);
-            fprintf(stderr,"Bad escape: [%c%s]...\n", (int)c1, context);
+            fprintf(stderr,u8"Bad escape: [%c%s]...\n", (int)c1, context);
         }
         *error= U_ILLEGAL_ESCAPE_SEQUENCE;
         return c1;
@@ -459,7 +459,7 @@ ucbuf_open(const char* fileName,const char** cp,UBool showWarning, UBool buffere
         *error = U_ILLEGAL_ARGUMENT_ERROR;
         return FALSE;
     }
-    if (!uprv_strcmp(fileName, "-")) {
+    if (!uprv_strcmp(fileName, u8"-")) {
         in = T_FileStream_stdin();
     }else{
         in = T_FileStream_open(fileName, "rb");
@@ -478,7 +478,7 @@ ucbuf_open(const char* fileName,const char** cp,UBool showWarning, UBool buffere
         buf->showWarning = showWarning;
         buf->isBuffered = buffered;
         buf->signatureLength=0;
-        if(*cp==NULL || **cp=='\0'){
+        if(*cp==NULL || **cp=='\x0'){
             /* don't have code page name... try to autodetect */
             ucbuf_autodetect_fs(in,cp,&buf->conv,&buf->signatureLength,error);
         }else if(ucbuf_isCPKnown(*cp)){
@@ -496,7 +496,7 @@ ucbuf_open(const char* fileName,const char** cp,UBool showWarning, UBool buffere
         }
 
         if((buf->conv==NULL) && (buf->showWarning==TRUE)){
-            fprintf(stderr,"###WARNING: No converter defined. Using codepage of system.\n");
+            fprintf(stderr,u8"###WARNING: No converter defined. Using codepage of system.\n");
         }
         buf->remaining=fileSize-buf->signatureLength;
         if(buf->isBuffered){
@@ -513,7 +513,7 @@ ucbuf_open(const char* fileName,const char** cp,UBool showWarning, UBool buffere
         buf->currentPos=buf->buffer;
         buf->bufLimit=buf->buffer;
         if(U_FAILURE(*error)){
-            fprintf(stderr, "Could not open codepage [%s]: %s\n", *cp, u_errorName(*error));
+            fprintf(stderr, u8"Could not open codepage [%s]: %s\n", *cp, u_errorName(*error));
             ucbuf_close(buf);
             return NULL;
         }
@@ -661,7 +661,7 @@ ucbuf_resolveFileName(const char* inputDir, const char* fileName, char* target, 
             return NULL;
         }
 
-        target[0] = '\0';
+        target[0] = '\x0';
         /*
          * append the input dir to openFileName if the first char in
          * filename is not file seperation char and the last char input directory is  not '.'.
@@ -673,11 +673,11 @@ ucbuf_resolveFileName(const char* inputDir, const char* fileName, char* target, 
          * user should use
          * genrb -s. icu/data  --- start from CWD and look in icu/data dir
          */
-        if( (fileName[0] != U_FILE_SEP_CHAR) && (inputDir[dirlen-1] !='.')){
+        if( (fileName[0] != U_FILE_SEP_CHAR) && (inputDir[dirlen-1] !='\x2e')){
             uprv_strcpy(target, inputDir);
             target[dirlen]     = U_FILE_SEP_CHAR;
         }
-        target[dirlen + 1] = '\0';
+        target[dirlen + 1] = '\x0';
     } else {
         requiredLen = dirlen + filelen + 1;
         if((*len < requiredLen) || target==NULL){

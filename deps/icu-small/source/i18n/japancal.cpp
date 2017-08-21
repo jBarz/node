@@ -321,7 +321,7 @@ Calendar* JapaneseCalendar::clone(void) const
 
 const char *JapaneseCalendar::getType() const
 {
-    return "japanese";
+    return u8"japanese";
 }
 
 int32_t JapaneseCalendar::getDefaultMonthInYear(int32_t eyear)
@@ -391,27 +391,27 @@ void JapaneseCalendar::handleComputeFields(int32_t julianDay, UErrorCode& status
     // Note that if the year is == the current era year, then we use
     // the binary search to handle the month/dom comparison.
 #ifdef U_DEBUG_JCAL
-    fprintf(stderr, "==  %d \n", year);
+    fprintf(stderr, u8"==  %d \n", year);
 #endif
 
     if (year > kEraInfo[kCurrentEra].year) {
         low = kCurrentEra;
 #ifdef U_DEBUG_JCAL
-        fprintf(stderr, " low=%d (special)\n", low);
+        fprintf(stderr, u8" low=%d (special)\n", low);
 #endif
     } else {
         // Binary search
         int32_t high = kEraCount;
 
 #ifdef U_DEBUG_JCAL
-        fprintf(stderr, " high=%d\n", high);
+        fprintf(stderr, u8" high=%d\n", high);
 #endif
         while (low < high - 1) {
             int32_t i = (low + high) / 2;
             int32_t diff = year - kEraInfo[i].year;
 
 #ifdef U_DEBUG_JCAL
-            fprintf(stderr, "  d=%d   low=%d, high=%d. Considering %d:M%d D%d Y%d. { we are ?:M%d D%d Y%d }\n",
+            fprintf(stderr, u8"  d=%d   low=%d, high=%d. Considering %d:M%d D%d Y%d. { we are ?:M%d D%d Y%d }\n",
                 diff,low, high, i, kEraInfo[i].month-1, kEraInfo[i].day,  kEraInfo[i].year, internalGet(UCAL_MONTH), internalGet(UCAL_DATE),year);
 #endif
 
@@ -421,12 +421,12 @@ void JapaneseCalendar::handleComputeFields(int32_t julianDay, UErrorCode& status
             if (diff == 0) {
                 diff = internalGet(UCAL_MONTH) - (kEraInfo[i].month - 1);
 #ifdef U_DEBUG_JCAL
-                fprintf(stderr, "diff now %d (M)  = %d - %d - 1\n", diff, internalGet(UCAL_MONTH), kEraInfo[i].month);
+                fprintf(stderr, u8"diff now %d (M)  = %d - %d - 1\n", diff, internalGet(UCAL_MONTH), kEraInfo[i].month);
 #endif
                 if (diff == 0) {
                     diff = internalGet(UCAL_DATE) - kEraInfo[i].day;
 #ifdef U_DEBUG_JCAL
-                    fprintf(stderr, "diff now %d (D)\n", diff);
+                    fprintf(stderr, u8"diff now %d (D)\n", diff);
 #endif
                 }
             }
@@ -436,14 +436,14 @@ void JapaneseCalendar::handleComputeFields(int32_t julianDay, UErrorCode& status
                 high = i;
             }
 #ifdef U_DEBUG_JCAL
-            fprintf(stderr, ". low=%d, high=%d, i=%d, diff=%d.. %d\n", low, high, i, diff, year);
+            fprintf(stderr, u8". low=%d, high=%d, i=%d, diff=%d.. %d\n", low, high, i, diff, year);
 #endif
 
         }
     }
 
 #ifdef U_DEBUG_JCAL
-    fprintf(stderr, "  low[era]=%d,.. %d\n", low, year);
+    fprintf(stderr, u8"  low[era]=%d,.. %d\n", low, year);
 #endif
     // Now we've found the last era that starts before this date, so
     // adjust the year to count from the start of that era.  Note that
@@ -453,7 +453,7 @@ void JapaneseCalendar::handleComputeFields(int32_t julianDay, UErrorCode& status
     internalSet(UCAL_ERA, low);
     internalSet(UCAL_YEAR, year - kEraInfo[low].year + 1);
 #ifdef U_DEBUG_JCAL
-    fprintf(stderr, "  Set ERA=%d, year=%d\n", low, year-kEraInfo[low].year+1);
+    fprintf(stderr, u8"  Set ERA=%d, year=%d\n", low, year-kEraInfo[low].year+1);
 #endif
 
 }

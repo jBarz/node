@@ -47,7 +47,7 @@ public:
     UBool             fOwnsText;
 };
 
-static const int32_t REXP_MAGIC = 0x72657870; // "rexp" in ASCII
+static const int32_t REXP_MAGIC = 0x72657870; // u8"rexp" in ASCII
 
 RegularExpression::RegularExpression() {
     fMagic        = REXP_MAGIC;

@@ -236,28 +236,28 @@ U_CDECL_END
  * @see ucnv_open
  * @stable ICU 2.0
  */
-#define UCNV_OPTION_SEP_CHAR ','
+#define UCNV_OPTION_SEP_CHAR '\x2c'
 
 /**
  * String version of UCNV_OPTION_SEP_CHAR.
  * @see ucnv_open
  * @stable ICU 2.0
  */
-#define UCNV_OPTION_SEP_STRING ","
+#define UCNV_OPTION_SEP_STRING u8","
 
 /**
  * Character that separates a converter option from its value.
  * @see ucnv_open
  * @stable ICU 2.0
  */
-#define UCNV_VALUE_SEP_CHAR '='
+#define UCNV_VALUE_SEP_CHAR '\x3d'
 
 /**
  * String version of UCNV_VALUE_SEP_CHAR.
  * @see ucnv_open
  * @stable ICU 2.0
  */
-#define UCNV_VALUE_SEP_STRING "="
+#define UCNV_VALUE_SEP_STRING u8"="
 
 /**
  * Converter option for specifying a locale.
@@ -267,7 +267,7 @@ U_CDECL_END
  * @see ucnv_open
  * @stable ICU 2.0
  */
-#define UCNV_LOCALE_OPTION_STRING ",locale="
+#define UCNV_LOCALE_OPTION_STRING u8",locale="
 
 /**
  * Converter option for specifying a version selector (0..9) for some converters.
@@ -280,7 +280,7 @@ U_CDECL_END
  * @see ucnv_open
  * @stable ICU 2.4
  */
-#define UCNV_VERSION_OPTION_STRING ",version="
+#define UCNV_VERSION_OPTION_STRING u8",version="
 
 /**
  * Converter option for EBCDIC SBCS or mixed-SBCS/DBCS (stateful) codepages.
@@ -292,7 +292,7 @@ U_CDECL_END
  * @see ucnv_open
  * @stable ICU 2.4
  */
-#define UCNV_SWAP_LFNL_OPTION_STRING ",swaplfnl"
+#define UCNV_SWAP_LFNL_OPTION_STRING u8",swaplfnl"
 
 /**
  * Do a fuzzy compare of two converter/alias names.

@@ -64,7 +64,7 @@ private:
     // These next two fields are part of the mechanism for passing references to
     //   already-constructed UnicodeSets back to the UnicodeSet constructor
     //   when the pattern includes $variable references.
-    const UnicodeString      ffffString;      // = "/uffff"
+    const UnicodeString      ffffString;      // = u8"/uffff"
     UnicodeSet              *fCachedSetLookup;
 
 public:

@@ -1934,18 +1934,18 @@ ucnv_MBCSOpen(UConverter *cnv,
         }
     }
 
-    if(uprv_strstr(pArgs->name, "18030")!=NULL) {
-        if(uprv_strstr(pArgs->name, "gb18030")!=NULL || uprv_strstr(pArgs->name, "GB18030")!=NULL) {
+    if(uprv_strstr(pArgs->name, u8"18030")!=NULL) {
+        if(uprv_strstr(pArgs->name, u8"gb18030")!=NULL || uprv_strstr(pArgs->name, u8"GB18030")!=NULL) {
             /* set a flag for GB 18030 mode, which changes the callback behavior */
             cnv->options|=_MBCS_OPTION_GB18030;
         }
-    } else if((uprv_strstr(pArgs->name, "KEIS")!=NULL) || (uprv_strstr(pArgs->name, "keis")!=NULL)) {
+    } else if((uprv_strstr(pArgs->name, u8"KEIS")!=NULL) || (uprv_strstr(pArgs->name, u8"keis")!=NULL)) {
         /* set a flag for KEIS converter, which changes the SI/SO character sequence */
         cnv->options|=_MBCS_OPTION_KEIS;
-    } else if((uprv_strstr(pArgs->name, "JEF")!=NULL) || (uprv_strstr(pArgs->name, "jef")!=NULL)) {
+    } else if((uprv_strstr(pArgs->name, u8"JEF")!=NULL) || (uprv_strstr(pArgs->name, u8"jef")!=NULL)) {
         /* set a flag for JEF converter, which changes the SI/SO character sequence */
         cnv->options|=_MBCS_OPTION_JEF;
-    } else if((uprv_strstr(pArgs->name, "JIPS")!=NULL) || (uprv_strstr(pArgs->name, "jips")!=NULL)) {
+    } else if((uprv_strstr(pArgs->name, u8"JIPS")!=NULL) || (uprv_strstr(pArgs->name, u8"jips")!=NULL)) {
         /* set a flag for JIPS converter, which changes the SI/SO character sequence */
         cnv->options|=_MBCS_OPTION_JIPS;
     }

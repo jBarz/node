@@ -14,17 +14,17 @@
 
 #include "uresdata.h"
 
-#define kRootLocaleName         "root"
-#define kPoolBundleName         "pool"
+#define kRootLocaleName         u8"root"
+#define kPoolBundleName         u8"pool"
 
 /*
  The default minor version and the version separator must be exactly one
  character long.
 */
 
-#define kDefaultMinorVersion    "0"
-#define kVersionSeparator       "."
-#define kVersionTag             "Version"
+#define kDefaultMinorVersion    u8"0"
+#define kVersionSeparator       u8"."
+#define kVersionTag             u8"Version"
 
 #define MAGIC1 19700503
 #define MAGIC2 19641227
@@ -57,15 +57,15 @@ struct UResourceDataEntry {
 };
 
 #define RES_BUFSIZE 64
-#define RES_PATH_SEPARATOR   '/'
-#define RES_PATH_SEPARATOR_S   "/"
+#define RES_PATH_SEPARATOR   '\x2f'
+#define RES_PATH_SEPARATOR_S   u8"/"
 
 struct UResourceBundle {
     const char *fKey; /*tag*/
     UResourceDataEntry *fData; /*for low-level access*/
     char *fVersion;
     UResourceDataEntry *fTopLevelData; /* for getting the valid locale */
-    char *fResPath; /* full path to the resource: "zh_TW/CollationElements/Sequence" */
+    char *fResPath; /* full path to the resource: u8"zh_TW/CollationElements/Sequence" */
     ResourceData fResData;
     char fResBuf[RES_BUFSIZE];
     int32_t fResPathLen;

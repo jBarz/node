@@ -201,7 +201,7 @@ _SCSUOpen(UConverter *cnv,
     }
     cnv->extraInfo=uprv_malloc(sizeof(SCSUData));
     if(cnv->extraInfo!=NULL) {
-        if(locale!=NULL && locale[0]=='j' && locale[1]=='a' && (locale[2]==0 || locale[2]=='_')) {
+        if(locale!=NULL && locale[0]=='\x6a' && locale[1]=='\x61' && (locale[2]==0 || locale[2]=='\x5f')) {
             ((SCSUData *)cnv->extraInfo)->locale=l_ja;
         } else {
             ((SCSUData *)cnv->extraInfo)->locale=lGeneric;
@@ -1955,9 +1955,9 @@ _SCSUGetName(const UConverter *cnv) {
 
     switch(scsu->locale) {
     case l_ja:
-        return "SCSU,locale=ja";
+        return u8"SCSU,locale=ja";
     default:
-        return "SCSU";
+        return u8"SCSU";
     }
 }
 
@@ -2024,7 +2024,7 @@ static const UConverterImpl _SCSUImpl={
 
 static const UConverterStaticData _SCSUStaticData={
     sizeof(UConverterStaticData),
-    "SCSU",
+    u8"SCSU",
     1212, /* CCSID for SCSU */
     UCNV_IBM, UCNV_SCSU,
     1, 3, /* one UChar generates at least 1 byte and at most 3 bytes */

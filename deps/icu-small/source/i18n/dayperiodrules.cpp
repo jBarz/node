@@ -55,7 +55,7 @@ struct DayPeriodRulesDataSink : public ResourceSink {
         if (U_FAILURE(errorCode)) { return; }
 
         for (int32_t i = 0; dayPeriodData.getKeyAndValue(i, key, value); ++i) {
-            if (uprv_strcmp(key, "locales") == 0) {
+            if (uprv_strcmp(key, u8"locales") == 0) {
                 ResourceTable locales = value.getTable(errorCode);
                 if (U_FAILURE(errorCode)) { return; }
 
@@ -64,7 +64,7 @@ struct DayPeriodRulesDataSink : public ResourceSink {
                     int32_t setNum = parseSetNum(setNum_str, errorCode);
                     uhash_puti(data->localeToRuleSetNumMap, const_cast<char *>(key), setNum, &errorCode);
                 }
-            } else if (uprv_strcmp(key, "rules") == 0) {
+            } else if (uprv_strcmp(key, u8"rules") == 0) {
                 // Allocate one more than needed to skip [0]. See comment in parseSetNum().
                 data->rules = new DayPeriodRules[data->maxRuleSetNum + 1];
                 if (data->rules == NULL) {
@@ -130,7 +130,7 @@ struct DayPeriodRulesDataSink : public ResourceSink {
     }
 
     // Members.
-    int32_t cutoffs[25];  // [0] thru [24]: 24 is allowed in "before 24".
+    int32_t cutoffs[25];  // [0] thru [24]: 24 is allowed in u8"before 24".
 
     // "Path" to data.
     int32_t ruleSetNum;
@@ -147,7 +147,7 @@ struct DayPeriodRulesDataSink : public ResourceSink {
     static int32_t parseSetNum(const char *setNumStr, UErrorCode &errorCode) {
         if (U_FAILURE(errorCode)) { return -1; }
 
-        if (uprv_strncmp(setNumStr, "set", 3) != 0) {
+        if (uprv_strncmp(setNumStr, u8"set", 3) != 0) {
             errorCode = U_INVALID_FORMAT_ERROR;
             return -1;
         }
@@ -155,7 +155,7 @@ struct DayPeriodRulesDataSink : public ResourceSink {
         int32_t i = 3;
         int32_t setNum = 0;
         while (setNumStr[i] != 0) {
-            int32_t digit = setNumStr[i] - '0';
+            int32_t digit = setNumStr[i] - '\x30';
             if (digit < 0 || 9 < digit) {
                 errorCode = U_INVALID_FORMAT_ERROR;
                 return -1;
@@ -226,13 +226,13 @@ struct DayPeriodRulesDataSink : public ResourceSink {
 
     // Translate "before" to CUTOFF_TYPE_BEFORE, for example.
     static CutoffType getCutoffTypeFromString(const char *type_str) {
-        if (uprv_strcmp(type_str, "from") == 0) {
+        if (uprv_strcmp(type_str, u8"from") == 0) {
             return CUTOFF_TYPE_FROM;
-        } else if (uprv_strcmp(type_str, "before") == 0) {
+        } else if (uprv_strcmp(type_str, u8"before") == 0) {
             return CUTOFF_TYPE_BEFORE;
-        } else if (uprv_strcmp(type_str, "after") == 0) {
+        } else if (uprv_strcmp(type_str, u8"after") == 0) {
             return CUTOFF_TYPE_AFTER;
-        } else if (uprv_strcmp(type_str, "at") == 0) {
+        } else if (uprv_strcmp(type_str, u8"at") == 0) {
             return CUTOFF_TYPE_AT;
         } else {
             return CUTOFF_TYPE_UNKNOWN;
@@ -320,15 +320,15 @@ void U_CALLCONV DayPeriodRules::load(UErrorCode &errorCode) {
 
     data = new DayPeriodRulesData();
     data->localeToRuleSetNumMap = uhash_open(uhash_hashChars, uhash_compareChars, NULL, &errorCode);
-    LocalUResourceBundlePointer rb_dayPeriods(ures_openDirect(NULL, "dayPeriods", &errorCode));
+    LocalUResourceBundlePointer rb_dayPeriods(ures_openDirect(NULL, u8"dayPeriods", &errorCode));
 
     // Get the largest rule set number (so we allocate enough objects).
     DayPeriodRulesCountSink countSink;
-    ures_getAllItemsWithFallback(rb_dayPeriods.getAlias(), "rules", countSink, errorCode);
+    ures_getAllItemsWithFallback(rb_dayPeriods.getAlias(), u8"rules", countSink, errorCode);
 
     // Populate rules.
     DayPeriodRulesDataSink sink;
-    ures_getAllItemsWithFallback(rb_dayPeriods.getAlias(), "", sink, errorCode);
+    ures_getAllItemsWithFallback(rb_dayPeriods.getAlias(), u8"", sink, errorCode);
 
     ucln_i18n_registerCleanup(UCLN_I18N_DAYPERIODRULES, dayPeriodRulesCleanup);
 }
@@ -348,8 +348,8 @@ const DayPeriodRules *DayPeriodRules::getInstance(const Locale &locale, UErrorCo
         uprv_strcpy(name, localeCode);
 
         // Treat empty string as root.
-        if (*name == '\0') {
-            uprv_strcpy(name, "root");
+        if (*name == '\x0') {
+            uprv_strcpy(name, u8"root");
         }
     } else {
         errorCode = U_BUFFER_OVERFLOW_ERROR;
@@ -357,12 +357,12 @@ const DayPeriodRules *DayPeriodRules::getInstance(const Locale &locale, UErrorCo
     }
 
     int32_t ruleSetNum = 0;  // NB there is no rule set 0 and 0 is returned upon lookup failure.
-    while (*name != '\0') {
+    while (*name != '\x0') {
         ruleSetNum = uhash_geti(data->localeToRuleSetNumMap, name);
         if (ruleSetNum == 0) {
             // name and parentName can't be the same pointer, so fill in parent then copy to child.
             uloc_getParent(name, parentName, ULOC_FULLNAME_CAPACITY, &errorCode);
-            if (*parentName == '\0') {
+            if (*parentName == '\x0') {
                 // Saves a lookup in the hash table.
                 break;
             }
@@ -466,29 +466,29 @@ int32_t DayPeriodRules::getEndHourForDayPeriod(
 }
 
 DayPeriodRules::DayPeriod DayPeriodRules::getDayPeriodFromString(const char *type_str) {
-    if (uprv_strcmp(type_str, "midnight") == 0) {
+    if (uprv_strcmp(type_str, u8"midnight") == 0) {
         return DAYPERIOD_MIDNIGHT;
-    } else if (uprv_strcmp(type_str, "noon") == 0) {
+    } else if (uprv_strcmp(type_str, u8"noon") == 0) {
         return DAYPERIOD_NOON;
-    } else if (uprv_strcmp(type_str, "morning1") == 0) {
+    } else if (uprv_strcmp(type_str, u8"morning1") == 0) {
         return DAYPERIOD_MORNING1;
-    } else if (uprv_strcmp(type_str, "afternoon1") == 0) {
+    } else if (uprv_strcmp(type_str, u8"afternoon1") == 0) {
         return DAYPERIOD_AFTERNOON1;
-    } else if (uprv_strcmp(type_str, "evening1") == 0) {
+    } else if (uprv_strcmp(type_str, u8"evening1") == 0) {
         return DAYPERIOD_EVENING1;
-    } else if (uprv_strcmp(type_str, "night1") == 0) {
+    } else if (uprv_strcmp(type_str, u8"night1") == 0) {
         return DAYPERIOD_NIGHT1;
-    } else if (uprv_strcmp(type_str, "morning2") == 0) {
+    } else if (uprv_strcmp(type_str, u8"morning2") == 0) {
         return DAYPERIOD_MORNING2;
-    } else if (uprv_strcmp(type_str, "afternoon2") == 0) {
+    } else if (uprv_strcmp(type_str, u8"afternoon2") == 0) {
         return DAYPERIOD_AFTERNOON2;
-    } else if (uprv_strcmp(type_str, "evening2") == 0) {
+    } else if (uprv_strcmp(type_str, u8"evening2") == 0) {
         return DAYPERIOD_EVENING2;
-    } else if (uprv_strcmp(type_str, "night2") == 0) {
+    } else if (uprv_strcmp(type_str, u8"night2") == 0) {
         return DAYPERIOD_NIGHT2;
-    } else if (uprv_strcmp(type_str, "am") == 0) {
+    } else if (uprv_strcmp(type_str, u8"am") == 0) {
         return DAYPERIOD_AM;
-    } else if (uprv_strcmp(type_str, "pm") == 0) {
+    } else if (uprv_strcmp(type_str, u8"pm") == 0) {
         return DAYPERIOD_PM;
     } else {
         return DAYPERIOD_UNKNOWN;

@@ -279,8 +279,8 @@ U_CDECL_END
 
 /* file definitions --------------------------------------------------------- */
 
-#define UCASE_DATA_NAME "ucase"
-#define UCASE_DATA_TYPE "icu"
+#define UCASE_DATA_NAME u8"ucase"
+#define UCASE_DATA_TYPE u8"icu"
 
 /* format "cAsE" */
 #define UCASE_FMT_0 0x63
@@ -322,7 +322,7 @@ enum {
 enum {
     UCASE_NO_DOT=0,         /* normal characters with cc=0 */
     UCASE_SOFT_DOTTED=0x20, /* soft-dotted characters with cc=0 */
-    UCASE_ABOVE=0x40,       /* "above" accents with cc=230 */
+    UCASE_ABOVE=0x40,       /* u8"above" accents with cc=230 */
     UCASE_OTHER_ACCENT=0x60 /* other accent character (0<cc!=230) */
 };
 
@@ -371,7 +371,7 @@ enum {
 enum {
     UCASE_EXC_NO_DOT=0,
     UCASE_EXC_SOFT_DOTTED=0x1000,
-    UCASE_EXC_ABOVE=0x2000,         /* "above" accents with cc=230 */
+    UCASE_EXC_ABOVE=0x2000,         /* u8"above" accents with cc=230 */
     UCASE_EXC_OTHER_ACCENT=0x3000   /* other character (0<cc!=230) */
 };
 

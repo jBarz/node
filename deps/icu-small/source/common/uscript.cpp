@@ -65,17 +65,17 @@ getCodesFromLocale(const char *locale,
     if(U_FAILURE(internalErrorCode) || internalErrorCode == U_STRING_NOT_TERMINATED_WARNING) {
         return 0;
     }
-    if(0 == uprv_strcmp(lang, "ja")) {
+    if(0 == uprv_strcmp(lang, u8"ja")) {
         return setCodes(JAPANESE, UPRV_LENGTHOF(JAPANESE), scripts, capacity, err);
     }
-    if(0 == uprv_strcmp(lang, "ko")) {
+    if(0 == uprv_strcmp(lang, u8"ko")) {
         return setCodes(KOREAN, UPRV_LENGTHOF(KOREAN), scripts, capacity, err);
     }
     scriptLength = uloc_getScript(locale, script, UPRV_LENGTHOF(script), &internalErrorCode);
     if(U_FAILURE(internalErrorCode) || internalErrorCode == U_STRING_NOT_TERMINATED_WARNING) {
         return 0;
     }
-    if(0 == uprv_strcmp(lang, "zh") && 0 == uprv_strcmp(script, "Hant")) {
+    if(0 == uprv_strcmp(lang, u8"zh") && 0 == uprv_strcmp(script, u8"Hant")) {
         return setCodes(HAN_BOPO, UPRV_LENGTHOF(HAN_BOPO), scripts, capacity, err);
     }
     // Explicit script code.
@@ -112,7 +112,7 @@ uscript_getCode(const char* nameOrAbbrOrLocale,
     }
 
     triedCode = FALSE;
-    if(uprv_strchr(nameOrAbbrOrLocale, '-')==NULL && uprv_strchr(nameOrAbbrOrLocale, '_')==NULL ){
+    if(uprv_strchr(nameOrAbbrOrLocale, '\x2d')==NULL && uprv_strchr(nameOrAbbrOrLocale, '\x5f')==NULL ){
         /* try long and abbreviated script names first */
         UScriptCode code = (UScriptCode) u_getPropertyValueEnum(UCHAR_SCRIPT, nameOrAbbrOrLocale);
         if(code!=USCRIPT_INVALID_CODE) {

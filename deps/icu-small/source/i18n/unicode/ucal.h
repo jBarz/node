@@ -146,7 +146,7 @@
  * The time zone ID reserved for unknown time zone.
  * @stable ICU 4.8
  */
-#define UCAL_UNKNOWN_ZONE_ID "Etc/Unknown"
+#define UCAL_UNKNOWN_ZONE_ID u8"Etc/Unknown"
 
 /** A calendar.
  *  For usage in C programs.
@@ -429,7 +429,7 @@ enum UCalendarDateFields {
      * it is needed for layout of Calendar, DateFormat, and other objects */
     /**
      * One more than the highest normal UCalendarDateFields value.
-     * @deprecated ICU 58 The numeric value may change over time, see ICU ticket #12420.
+     * @deprecated ICU 58 The numeric value may change over time, see ICU ticket  USTR(#12420).
      */
   UCAL_FIELD_COUNT,
 

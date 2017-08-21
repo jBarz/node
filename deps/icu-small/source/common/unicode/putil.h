@@ -120,19 +120,19 @@ U_INTERNAL void U_EXPORT2 u_setTimeZoneFilesDirectory(const char *path, UErrorCo
  * @stable ICU 2.0
  */
 #if U_PLATFORM_USES_ONLY_WIN32_API
-#   define U_FILE_SEP_CHAR '\\'
-#   define U_FILE_ALT_SEP_CHAR '/'
-#   define U_PATH_SEP_CHAR ';'
+#   define U_FILE_SEP_CHAR '\x5c'
+#   define U_FILE_ALT_SEP_CHAR '\x2f'
+#   define U_PATH_SEP_CHAR '\x3b'
 #   define U_FILE_SEP_STRING "\\"
-#   define U_FILE_ALT_SEP_STRING "/"
-#   define U_PATH_SEP_STRING ";"
+#   define U_FILE_ALT_SEP_STRING u8"/"
+#   define U_PATH_SEP_STRING u8";"
 #else
-#   define U_FILE_SEP_CHAR '/'
-#   define U_FILE_ALT_SEP_CHAR '/'
-#   define U_PATH_SEP_CHAR ':'
-#   define U_FILE_SEP_STRING "/"
-#   define U_FILE_ALT_SEP_STRING "/"
-#   define U_PATH_SEP_STRING ":"
+#   define U_FILE_SEP_CHAR '\x2f'
+#   define U_FILE_ALT_SEP_CHAR '\x2f'
+#   define U_PATH_SEP_CHAR '\x3a'
+#   define U_FILE_SEP_STRING u8"/"
+#   define U_FILE_ALT_SEP_STRING u8"/"
+#   define U_PATH_SEP_STRING u8":"
 #endif
 
 /** @} */

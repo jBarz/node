@@ -116,7 +116,7 @@ typedef enum {
     ZERO =0x00
 }MaskEnum;
 
-#define ISCII_CNV_PREFIX "ISCII,version="
+#define ISCII_CNV_PREFIX u8"ISCII,version="
 
 typedef struct {
     UChar contextCharToUnicode;         /* previous Unicode codepoint for contextual analysis */
@@ -217,7 +217,7 @@ _ISCIIOpen(UConverter *cnv, UConverterLoadArgs *pArgs, UErrorCode *errorCode) {
             converterData->isFirstBuffer=TRUE;
             (void)uprv_strcpy(converterData->name, ISCII_CNV_PREFIX);
             len = (int32_t)uprv_strlen(converterData->name);
-            converterData->name[len]= (char)((pArgs->options & UCNV_OPTIONS_VERSION_MASK) + '0');
+            converterData->name[len]= (char)((pArgs->options & UCNV_OPTIONS_VERSION_MASK) + '\x30');
             converterData->name[len+1]=0;
 
             converterData->prevToUnicodeStatus = 0x0000;
@@ -1613,7 +1613,7 @@ static const UConverterImpl _ISCIIImpl={
 
 static const UConverterStaticData _ISCIIStaticData={
     sizeof(UConverterStaticData),
-        "ISCII",
+        u8"ISCII",
          0,
          UCNV_IBM,
          UCNV_ISCII,

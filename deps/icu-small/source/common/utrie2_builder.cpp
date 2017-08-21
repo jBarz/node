@@ -348,7 +348,7 @@ utrie_printLengths(const UTrie *trie) {
     long indexLength=trie->indexLength;
     long dataLength=(long)trie->dataLength;
     long totalLength=(long)sizeof(UTrieHeader)+indexLength*2+dataLength*(trie->data32!=NULL ? 4 : 2);
-    printf("**UTrieLengths** index:%6ld  data:%6ld  serialized:%6ld\n",
+    printf(u8"**UTrieLengths** index:%6ld  data:%6ld  serialized:%6ld\n",
            indexLength, dataLength, totalLength);
 }
 
@@ -357,7 +357,7 @@ utrie2_printLengths(const UTrie2 *trie, const char *which) {
     long indexLength=trie->indexLength;
     long dataLength=(long)trie->dataLength;
     long totalLength=(long)sizeof(UTrie2Header)+indexLength*2+dataLength*(trie->data32!=NULL ? 4 : 2);
-    printf("**UTrie2Lengths(%s)** index:%6ld  data:%6ld  serialized:%6ld\n",
+    printf(u8"**UTrie2Lengths(%s)** index:%6ld  data:%6ld  serialized:%6ld\n",
            which, indexLength, dataLength, totalLength);
 }
 #endif
@@ -445,7 +445,7 @@ utrie2_fromUTrie(const UTrie *trie1, uint32_t errorValue, UErrorCode *pErrorCode
 #ifdef UTRIE2_DEBUG
     if(U_SUCCESS(*pErrorCode)) {
         utrie_printLengths(trie1);
-        utrie2_printLengths(context.trie, "fromUTrie");
+        utrie2_printLengths(context.trie, u8"fromUTrie");
     }
 #endif
     if(U_FAILURE(*pErrorCode)) {
@@ -1081,7 +1081,7 @@ compactData(UNewTrie2 *trie) {
 
 #ifdef UTRIE2_DEBUG
     /* we saved some space */
-    printf("compacting UTrie2: count of 32-bit data words %lu->%lu\n",
+    printf(u8"compacting UTrie2: count of 32-bit data words %lu->%lu\n",
             (long)trie->dataLength, (long)newStart);
 #endif
 
@@ -1163,7 +1163,7 @@ compactIndex2(UNewTrie2 *trie) {
 
 #ifdef UTRIE2_DEBUG
     /* we saved some space */
-    printf("compacting UTrie2: count of 16-bit index-2 words %lu->%lu\n",
+    printf(u8"compacting UTrie2: count of 16-bit index-2 words %lu->%lu\n",
             (long)trie->index2Length, (long)newStart);
 #endif
 
@@ -1193,7 +1193,7 @@ compactTrie(UTrie2 *trie, UErrorCode *pErrorCode) {
     trie->highStart=newTrie->highStart=highStart;
 
 #ifdef UTRIE2_DEBUG
-    printf("UTrie2: highStart U+%04lx  highValue 0x%lx  initialValue 0x%lx\n",
+    printf(u8"UTrie2: highStart U+%04lx  highValue 0x%lx  initialValue 0x%lx\n",
             (long)highStart, (long)highValue, (long)trie->initialValue);
 #endif
 
@@ -1211,7 +1211,7 @@ compactTrie(UTrie2 *trie, UErrorCode *pErrorCode) {
         compactIndex2(newTrie);
 #ifdef UTRIE2_DEBUG
     } else {
-        printf("UTrie2: highStart U+%04lx  count of 16-bit index-2 words %lu->%lu\n",
+        printf(u8"UTrie2: highStart U+%04lx  count of 16-bit index-2 words %lu->%lu\n",
                 (long)highStart, (long)trie->newTrie->index2Length, (long)UTRIE2_INDEX_1_OFFSET);
 #endif
     }
@@ -1342,7 +1342,7 @@ utrie2_freeze(UTrie2 *trie, UTrie2ValueBits valueBits, UErrorCode *pErrorCode) {
     /* set the header fields */
     header=(UTrie2Header *)trie->memory;
 
-    header->signature=UTRIE2_SIG; /* "Tri2" */
+    header->signature=UTRIE2_SIG; /* u8"Tri2" */
     header->options=(uint16_t)valueBits;
 
     header->indexLength=(uint16_t)trie->indexLength;

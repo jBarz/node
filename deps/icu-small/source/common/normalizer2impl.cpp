@@ -558,7 +558,7 @@ Normalizer2Impl::decompose(const UChar *src, const UChar *limit,
                     continue;
                 }
             }
-            return prevBoundary;  // "no" or cc out of order
+            return prevBoundary;  // u8"no" or cc out of order
         }
     }
     return src;
@@ -1026,7 +1026,7 @@ void Normalizer2Impl::recompose(ReorderingBuffer &buffer, int32_t recomposeStart
 
 UChar32
 Normalizer2Impl::composePair(UChar32 a, UChar32 b) const {
-    uint16_t norm16=getNorm16(a);  // maps an out-of-range 'a' to inert norm16=0
+    uint16_t norm16=getNorm16(a);  // maps an out-of-range '\x61' to inert norm16=0
     const uint16_t *list;
     if(isInert(norm16)) {
         return U_SENTINEL;
@@ -1051,7 +1051,7 @@ Normalizer2Impl::composePair(UChar32 a, UChar32 b) const {
         } else {
             // 'a' has a compositions list in extraData
             list=extraData+norm16;
-            if(norm16>minYesNo) {  // composite 'a' has both mapping & compositions list
+            if(norm16>minYesNo) {  // composite '\x61' has both mapping & compositions list
                 list+=  // mapping pointer
                     1+  // +1 to skip the first unit with the mapping lenth
                     (*list&MAPPING_LENGTH_MASK);  // + mapping length
@@ -1731,7 +1731,7 @@ Normalizer2Impl::makeFCD(const UChar *src, const UChar *limit,
             prevFCD16=fcd16;
             continue;
         } else if(buffer==NULL) {
-            return prevBoundary;  // quick check "no"
+            return prevBoundary;  // quick check u8"no"
         } else {
             /*
              * Back out the part of the source that we copied or appended
@@ -2030,13 +2030,13 @@ unorm2_swap(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x4e &&   /* dataFormat="Nrm2" */
+        pInfo->dataFormat[0]==0x4e &&   /* dataFormat=u8"Nrm2" */
         pInfo->dataFormat[1]==0x72 &&
         pInfo->dataFormat[2]==0x6d &&
         pInfo->dataFormat[3]==0x32 &&
         (pInfo->formatVersion[0]==1 || pInfo->formatVersion[0]==2)
     )) {
-        udata_printError(ds, "unorm2_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as Normalizer2 data\n",
+        udata_printError(ds, u8"unorm2_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as Normalizer2 data\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -2052,7 +2052,7 @@ unorm2_swap(const UDataSwapper *ds,
     if(length>=0) {
         length-=headerSize;
         if(length<(int32_t)sizeof(indexes)) {
-            udata_printError(ds, "unorm2_swap(): too few bytes (%d after header) for Normalizer2 data\n",
+            udata_printError(ds, u8"unorm2_swap(): too few bytes (%d after header) for Normalizer2 data\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -2069,7 +2069,7 @@ unorm2_swap(const UDataSwapper *ds,
 
     if(length>=0) {
         if(length<size) {
-            udata_printError(ds, "unorm2_swap(): too few bytes (%d after header) for all of Normalizer2 data\n",
+            udata_printError(ds, u8"unorm2_swap(): too few bytes (%d after header) for all of Normalizer2 data\n",
                              length);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;

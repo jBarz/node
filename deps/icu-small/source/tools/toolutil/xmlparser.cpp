@@ -35,19 +35,19 @@ enum {
     x_l=0x6c
 };
 
-#define  XML_SPACES "[ \\u0009\\u000d\\u000a]"
+#define  XML_SPACES u8"[ \\u0009\\u000d\\u000a]"
 
 // XML #4
-#define  XML_NAMESTARTCHAR "[[A-Z]:_[a-z][\\u00c0-\\u00d6][\\u00d8-\\u00f6]" \
-                    "[\\u00f8-\\u02ff][\\u0370-\\u037d][\\u037F-\\u1FFF][\\u200C-\\u200D]" \
-                    "[\\u2070-\\u218F][\\u2C00-\\u2FEF][\\u3001-\\uD7FF][\\uF900-\\uFDCF]" \
-                    "[\\uFDF0-\\uFFFD][\\U00010000-\\U000EFFFF]]"
+#define  XML_NAMESTARTCHAR u8"[[A-Z]:_[a-z][\\u00c0-\\u00d6][\\u00d8-\\u00f6]" \
+                    u8"[\\u00f8-\\u02ff][\\u0370-\\u037d][\\u037F-\\u1FFF][\\u200C-\\u200D]" \
+                    u8"[\\u2070-\\u218F][\\u2C00-\\u2FEF][\\u3001-\\uD7FF][\\uF900-\\uFDCF]" \
+                    u8"[\\uFDF0-\\uFFFD][\\U00010000-\\U000EFFFF]]"
 
 //  XML #5
-#define  XML_NAMECHAR "[" XML_NAMESTARTCHAR "\\-.[0-9]\\u00b7[\\u0300-\\u036f][\\u203f-\\u2040]]"
+#define  XML_NAMECHAR u8"[" XML_NAMESTARTCHAR u8"\\-.[0-9]\\u00b7[\\u0300-\\u036f][\\u203f-\\u2040]]"
 
 //  XML #6
-#define  XML_NAME    XML_NAMESTARTCHAR "(?:" XML_NAMECHAR ")*"
+#define  XML_NAME    XML_NAMESTARTCHAR u8"(?:" XML_NAMECHAR u8")*"
 
 U_NAMESPACE_BEGIN
 
@@ -63,16 +63,16 @@ UXMLParser::UXMLParser(UErrorCode &status) :
       //      example:  "<?xml version=1.0 encoding="utf-16" ?>
       //      This is a sloppy implementation - just look for the leading <?xml and the closing ?>
       //            allow for a possible leading BOM.
-      mXMLDecl(UnicodeString("(?s)\\uFEFF?<\\?xml.+?\\?>", -1, US_INV), 0, status),
+      mXMLDecl(UnicodeString(u8"(?s)\\uFEFF?<\\?xml.+?\\?>", -1, US_INV), 0, status),
 
       //  XML Comment   production #15
       //     example:  "<!-- whatever -->
       //       note, does not detect an illegal "--" within comments
-      mXMLComment(UnicodeString("(?s)<!--.+?-->", -1, US_INV), 0, status),
+      mXMLComment(UnicodeString(u8"(?s)<!--.+?-->", -1, US_INV), 0, status),
 
       //  XML Spaces
       //      production [3]
-      mXMLSP(UnicodeString(XML_SPACES "+", -1, US_INV), 0, status),
+      mXMLSP(UnicodeString(XML_SPACES u8"+", -1, US_INV), 0, status),
 
       //  XML Doctype decl  production #28
       //     example   "<!DOCTYPE foo SYSTEM "somewhere" >
@@ -83,40 +83,40 @@ UXMLParser::UXMLParser(UErrorCode &status) :
       //           of closeing square brackets.  These could appear in comments,
       //           or in parameter entity declarations, for example.
       mXMLDoctype(UnicodeString(
-           "(?s)<!DOCTYPE.*?(>|\\[.*?\\].*?>)", -1, US_INV
+           u8"(?s)<!DOCTYPE.*?(>|\\[.*?\\].*?>)", -1, US_INV
            ), 0, status),
 
       //  XML PI     production #16
       //     example   "<?target stuff?>
-      mXMLPI(UnicodeString("(?s)<\\?.+?\\?>", -1, US_INV), 0, status),
+      mXMLPI(UnicodeString(u8"(?s)<\\?.+?\\?>", -1, US_INV), 0, status),
 
       //  XML Element Start   Productions #40, #41
       //          example   <foo att1='abc'  att2="d e f" >
       //      capture #1:  the tag name
       //
-      mXMLElemStart (UnicodeString("(?s)<(" XML_NAME ")"                                 // match  "<tag_name"
-          "(?:"
-                XML_SPACES "+" XML_NAME XML_SPACES "*=" XML_SPACES "*"     // match  "ATTR_NAME = "
-                "(?:(?:\\\'[^<\\\']*?\\\')|(?:\\\"[^<\\\"]*?\\\"))"        // match  '"attribute value"'
-          ")*"                                                             //   * for zero or more attributes.
-          XML_SPACES "*?>", -1, US_INV), 0, status),                               // match " >"
+      mXMLElemStart (UnicodeString(u8"(?s)<(" XML_NAME u8")"                                 // match  u8"<tag_name"
+          u8"(?:"
+                XML_SPACES u8"+" XML_NAME XML_SPACES u8"*=" XML_SPACES u8"*"     // match  u8"ATTR_NAME = "
+                u8"(?:(?:\\\'[^<\\\']*?\\\')|(?:\\\"[^<\\\"]*?\\\"))"        // match  'u8"attribute value"'
+          u8")*"                                                             //   * for zero or more attributes.
+          XML_SPACES u8"*?>", -1, US_INV), 0, status),                               // match u8" >"
 
       //  XML Element End     production #42
       //     example   </foo>
-      mXMLElemEnd (UnicodeString("</(" XML_NAME ")" XML_SPACES "*>", -1, US_INV), 0, status),
+      mXMLElemEnd (UnicodeString(u8"</(" XML_NAME u8")" XML_SPACES u8"*>", -1, US_INV), 0, status),
 
       // XML Element Empty    production #44
       //     example   <foo att1="abc"   att2="d e f" />
-      mXMLElemEmpty (UnicodeString("(?s)<(" XML_NAME ")"                                 // match  "<tag_name"
-          "(?:"
-                XML_SPACES "+" XML_NAME XML_SPACES "*=" XML_SPACES "*"     // match  "ATTR_NAME = "
-                "(?:(?:\\\'[^<\\\']*?\\\')|(?:\\\"[^<\\\"]*?\\\"))"        // match  '"attribute value"'
-          ")*"                                                             //   * for zero or more attributes.
-          XML_SPACES "*?/>", -1, US_INV), 0, status),                              // match " />"
+      mXMLElemEmpty (UnicodeString(u8"(?s)<(" XML_NAME u8")"                                 // match  u8"<tag_name"
+          u8"(?:"
+                XML_SPACES u8"+" XML_NAME XML_SPACES u8"*=" XML_SPACES u8"*"     // match  u8"ATTR_NAME = "
+                u8"(?:(?:\\\'[^<\\\']*?\\\')|(?:\\\"[^<\\\"]*?\\\"))"        // match  'u8"attribute value"'
+          u8")*"                                                             //   * for zero or more attributes.
+          XML_SPACES u8"*?/>", -1, US_INV), 0, status),                              // match u8" />"
 
 
       // XMLCharData.  Everything but '<'.  Note that & will be dealt with later.
-      mXMLCharData(UnicodeString("(?s)[^<]*", -1, US_INV), 0, status),
+      mXMLCharData(UnicodeString(u8"(?s)[^<]*", -1, US_INV), 0, status),
 
       // Attribute name = "value".  XML Productions 10, 40/41
       //  Capture group 1 is name,
@@ -127,21 +127,21 @@ UXMLParser::UXMLParser(UErrorCode &status) :
       //        are checked syntactically, but not separted out one by one.
       //        Here, we match a single attribute, and make its name and
       //        attribute value available to the parser code.
-      mAttrValue(UnicodeString(XML_SPACES "+("  XML_NAME ")"  XML_SPACES "*=" XML_SPACES "*"
-         "((?:\\\'[^<\\\']*?\\\')|(?:\\\"[^<\\\"]*?\\\"))", -1, US_INV), 0, status),
+      mAttrValue(UnicodeString(XML_SPACES u8"+("  XML_NAME u8")"  XML_SPACES u8"*=" XML_SPACES u8"*"
+         u8"((?:\\\'[^<\\\']*?\\\')|(?:\\\"[^<\\\"]*?\\\"))", -1, US_INV), 0, status),
 
 
       mAttrNormalizer(UnicodeString(XML_SPACES, -1, US_INV), 0, status),
 
       // Match any of the new-line sequences in content.
       //   All are changed to \u000a.
-      mNewLineNormalizer(UnicodeString("\\u000d\\u000a|\\u000d\\u0085|\\u000a|\\u000d|\\u0085|\\u2028", -1, US_INV), 0, status),
+      mNewLineNormalizer(UnicodeString(u8"\\u000d\\u000a|\\u000d\\u0085|\\u000a|\\u000d|\\u0085|\\u2028", -1, US_INV), 0, status),
 
       // & char references
       //   We will figure out what we've got based on which capture group has content.
       //   The last one is a catchall for unrecognized entity references..
       //             1     2     3      4      5           6                    7          8
-      mAmps(UnicodeString("&(?:(amp;)|(lt;)|(gt;)|(apos;)|(quot;)|#x([0-9A-Fa-f]{1,8});|#([0-9]{1,8});|(.))"),
+      mAmps(UnicodeString(u8"&(?:(amp;)|(lt;)|(gt;)|(apos;)|(quot;)|#x([0-9A-Fa-f]{1,8});|#([0-9]{1,8});|(.))"),
                 0, status),
 
       fNames(status),
@@ -176,7 +176,7 @@ UXMLParser::parseFile(const char *filename, UErrorCode &errorCode) {
         return NULL;
     }
 
-    f=T_FileStream_open(filename, "rb");
+    f=T_FileStream_open(filename,"rb");
     if(f==NULL) {
         errorCode=U_FILE_ACCESS_ERROR;
         return NULL;
@@ -203,7 +203,7 @@ UXMLParser::parseFile(const char *filename, UErrorCode &errorCode) {
         cnv=ucnv_open(charset, &errorCode);
     } else {
         // read as Latin-1 and parse the XML declaration and encoding
-        cnv=ucnv_open("ISO-8859-1", &errorCode);
+        cnv=ucnv_open(u8"ISO-8859-1", &errorCode);
         if(U_FAILURE(errorCode)) {
             // unexpected error opening Latin-1 converter
             goto exit;
@@ -247,7 +247,7 @@ UXMLParser::parseFile(const char *filename, UErrorCode &errorCode) {
                 attValue.remove(0,1);                    // one char from the beginning
                 attValue.truncate(attValue.length()-1);  // and one from the end.
 
-                if(attName==UNICODE_STRING("encoding", 8)) {
+                if(attName==UNICODE_STRING(u8"encoding", 8)) {
                     length=attValue.extract(0, 0x7fffffff, charsetBuffer, (int32_t)sizeof(charsetBuffer));
                     charset=charsetBuffer;
                     break;
@@ -257,7 +257,7 @@ UXMLParser::parseFile(const char *filename, UErrorCode &errorCode) {
 
             if(charset==NULL) {
                 // default to UTF-8
-                charset="UTF-8";
+                charset=u8"UTF-8";
             }
             cnv=ucnv_open(charset, &errorCode);
         }
@@ -374,7 +374,7 @@ UXMLParser::parse(const UnicodeString &src, UErrorCode &status) {
         fPos = mXMLElemEmpty.end(status);
     } else {
         if (mXMLElemStart.lookingAt(fPos, status) == FALSE) {
-            error("Root Element expected", status);
+            error(u8"Root Element expected", status);
             goto errorExit;
         }
         root = createElement(mXMLElemStart, status);
@@ -430,7 +430,7 @@ UXMLParser::parse(const UnicodeString &src, UErrorCode &status) {
                 fPos = mXMLElemEnd.end(0, status);
                 const UnicodeString name = mXMLElemEnd.group(1, status);
                 if (name != *el->fName) {
-                    error("Element start / end tag mismatch", status);
+                    error(u8"Element start / end tag mismatch", status);
                     goto errorExit;
                 }
                 if (fElementStack.empty()) {
@@ -451,13 +451,13 @@ UXMLParser::parse(const UnicodeString &src, UErrorCode &status) {
 
             // Hit something within the document that doesn't match anything.
             //   It's an error.
-            error("Unrecognized markup", status);
+            error(u8"Unrecognized markup", status);
             break;
         }
 
         if (el != NULL || !fElementStack.empty()) {
             // We bailed out early, for some reason.
-            error("Root element not closed.", status);
+            error(u8"Root element not closed.", status);
             goto errorExit;
         }
     }
@@ -468,7 +468,7 @@ UXMLParser::parse(const UnicodeString &src, UErrorCode &status) {
 
     // We should have reached the end of the input
     if (fPos != src.length()) {
-        error("Extra content at the end of the document", status);
+        error(u8"Extra content at the end of the document", status);
         goto errorExit;
     }
 
@@ -642,7 +642,7 @@ UXMLParser::error(const char *message, UErrorCode &status) {
         ci = src.indexOf((UChar)0x0a, ci+1);
         line++;
     }
-    fprintf(stderr, "Error: %s at line %d\n", message, line);
+    fprintf(stderr, u8"Error: %s at line %d\n", message, line);
     if (U_SUCCESS(status)) {
         status = U_PARSE_ERROR;
     }

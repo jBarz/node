@@ -32,9 +32,9 @@
 #define UCNV_TILDE 0x7E          /* ~ */
 #define UCNV_OPEN_BRACE 0x7B     /* { */
 #define UCNV_CLOSE_BRACE 0x7D   /* } */
-#define SB_ESCAPE    "\x7E\x7D"
-#define DB_ESCAPE    "\x7E\x7B"
-#define TILDE_ESCAPE "\x7E\x7E"
+#define SB_ESCAPE    u8"\x7E\x7D"
+#define DB_ESCAPE    u8"\x7E\x7B"
+#define TILDE_ESCAPE u8"\x7E\x7E"
 #define ESC_LEN       2
 
 
@@ -72,10 +72,10 @@ static void  U_CALLCONV
 _HZOpen(UConverter *cnv, UConverterLoadArgs *pArgs, UErrorCode *errorCode){
     UConverter *gbConverter;
     if(pArgs->onlyTestIsLoadable) {
-        ucnv_canCreateConverter("GBK", errorCode);  /* errorCode carries result */
+        ucnv_canCreateConverter(u8"GBK", errorCode);  /* errorCode carries result */
         return;
     }
-    gbConverter = ucnv_open("GBK", errorCode);
+    gbConverter = ucnv_open(u8"GBK", errorCode);
     if(U_FAILURE(*errorCode)) {
         return;
     }
@@ -611,7 +611,7 @@ static const UConverterImpl _HZImpl={
 
 static const UConverterStaticData _HZStaticData={
     sizeof(UConverterStaticData),
-        "HZ",
+        u8"HZ",
          0,
          UCNV_IBM,
          UCNV_HZ,

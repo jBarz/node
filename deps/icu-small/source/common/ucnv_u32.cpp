@@ -491,7 +491,7 @@ static const UConverterImpl _UTF32BEImpl = {
 /* The 1232 CCSID refers to any version of Unicode with any endianess of UTF-32 */
 static const UConverterStaticData _UTF32BEStaticData = {
     sizeof(UConverterStaticData),
-    "UTF-32BE",
+    u8"UTF-32BE",
     1232,
     UCNV_IBM, UCNV_UTF32_BigEndian, 4, 4,
     { 0, 0, 0xff, 0xfd }, 4, FALSE, FALSE,
@@ -986,7 +986,7 @@ static const UConverterImpl _UTF32LEImpl = {
 /* The 1232 CCSID refers to any version of Unicode with any endianess of UTF-32 */
 static const UConverterStaticData _UTF32LEStaticData = {
     sizeof(UConverterStaticData),
-    "UTF-32LE",
+    u8"UTF-32LE",
     1234,
     UCNV_IBM, UCNV_UTF32_LittleEndian, 4, 4,
     { 0xfd, 0xff, 0, 0 }, 4, FALSE, FALSE,
@@ -1233,7 +1233,7 @@ static const UConverterImpl _UTF32Impl = {
 /* The 1236 CCSID refers to any version of Unicode with a BOM sensitive endianess of UTF-32 */
 static const UConverterStaticData _UTF32StaticData = {
     sizeof(UConverterStaticData),
-    "UTF-32",
+    u8"UTF-32",
     1236,
     UCNV_IBM, UCNV_UTF32, 4, 4,
 #if U_IS_BIG_ENDIAN

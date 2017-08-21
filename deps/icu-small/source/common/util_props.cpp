@@ -94,7 +94,7 @@ int32_t ICU_Utility::parsePattern(const UnicodeString& rule, int32_t pos, int32_
         UChar cpat = pattern.charAt(i);
         UChar c;
         switch (cpat) {
-        case 32 /*' '*/:
+        case 32 /*'\x20'*/:
             if (pos >= limit) {
                 return -1;
             }
@@ -104,10 +104,10 @@ int32_t ICU_Utility::parsePattern(const UnicodeString& rule, int32_t pos, int32_
             }
             // FALL THROUGH to skipWhitespace
             U_FALLTHROUGH;
-        case 126 /*'~'*/:
+        case 126 /*'\x7e'*/:
             pos = skipWhitespace(rule, pos);
             break;
-        case 35 /*'#'*/:
+        case 35 /*'\x23'*/:
             p = pos;
             parsedInts[intCount++] = parseInteger(rule, p, limit);
             if (p == pos) {

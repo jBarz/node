@@ -72,7 +72,7 @@ DangiCalendar::clone() const
 }
 
 const char *DangiCalendar::getType() const {
-    return "dangi";
+    return u8"dangi";
 }
 
 /**

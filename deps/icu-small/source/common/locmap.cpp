@@ -26,7 +26,7 @@
  * 09/18/00     george      Removed the memory leaks.
  * 08/23/01     george      Convert to C
  */
-
+#define USTR(x) u8##x
 #include "locmap.h"
 #include "cstring.h"
 #include "cmemory.h"
@@ -94,8 +94,8 @@ typedef struct ILcidPosixMap
  */
 #define ILCID_POSIX_ELEMENT_ARRAY(hostID, languageID, posixID) \
 static const ILcidPosixElement locmap_ ## languageID [] = { \
-    {LANGUAGE_LCID(hostID), #languageID},     /* parent locale */ \
-    {hostID, #posixID}, \
+    {LANGUAGE_LCID(hostID),  USTR(#languageID)},     /* parent locale */ \
+    {hostID,  USTR(#posixID)}, \
 };
 
 /**
@@ -144,24 +144,24 @@ static const ILcidPosixElement locmap_ ## id [] =
 ILCID_POSIX_ELEMENT_ARRAY(0x0436, af, af_ZA)
 
 ILCID_POSIX_SUBTABLE(ar) {
-    {0x01,   "ar"},
-    {0x3801, "ar_AE"},
-    {0x3c01, "ar_BH"},
-    {0x1401, "ar_DZ"},
-    {0x0c01, "ar_EG"},
-    {0x0801, "ar_IQ"},
-    {0x2c01, "ar_JO"},
-    {0x3401, "ar_KW"},
-    {0x3001, "ar_LB"},
-    {0x1001, "ar_LY"},
-    {0x1801, "ar_MA"},
-    {0x1801, "ar_MO"},
-    {0x2001, "ar_OM"},
-    {0x4001, "ar_QA"},
-    {0x0401, "ar_SA"},
-    {0x2801, "ar_SY"},
-    {0x1c01, "ar_TN"},
-    {0x2401, "ar_YE"}
+    {0x01,   u8"ar"},
+    {0x3801, u8"ar_AE"},
+    {0x3c01, u8"ar_BH"},
+    {0x1401, u8"ar_DZ"},
+    {0x0c01, u8"ar_EG"},
+    {0x0801, u8"ar_IQ"},
+    {0x2c01, u8"ar_JO"},
+    {0x3401, u8"ar_KW"},
+    {0x3001, u8"ar_LB"},
+    {0x1001, u8"ar_LY"},
+    {0x1801, u8"ar_MA"},
+    {0x1801, u8"ar_MO"},
+    {0x2001, u8"ar_OM"},
+    {0x4001, u8"ar_QA"},
+    {0x0401, u8"ar_SA"},
+    {0x2801, u8"ar_SY"},
+    {0x1c01, u8"ar_TN"},
+    {0x2401, u8"ar_YE"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x044d, as, as_IN)
@@ -169,12 +169,12 @@ ILCID_POSIX_ELEMENT_ARRAY(0x045e, am, am_ET)
 ILCID_POSIX_ELEMENT_ARRAY(0x047a, arn,arn_CL)
 
 ILCID_POSIX_SUBTABLE(az) {
-    {0x2c,   "az"},
-    {0x082c, "az_Cyrl_AZ"},  /* Cyrillic based */
-    {0x742c, "az_Cyrl"},  /* Cyrillic based */
-    {0x042c, "az_Latn_AZ"}, /* Latin based */
-    {0x782c, "az_Latn"}, /* Latin based */
-    {0x042c, "az_AZ"} /* Latin based */
+    {0x2c,   u8"az"},
+    {0x082c, u8"az_Cyrl_AZ"},  /* Cyrillic based */
+    {0x742c, u8"az_Cyrl"},  /* Cyrillic based */
+    {0x042c, u8"az_Latn_AZ"}, /* Latin based */
+    {0x782c, u8"az_Latn"}, /* Latin based */
+    {0x042c, u8"az_AZ"} /* Latin based */
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x046d, ba, ba_RU)
@@ -193,24 +193,24 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0402, bg, bg_BG)
 ILCID_POSIX_ELEMENT_ARRAY(0x0466, bin, bin_NG)
 
 ILCID_POSIX_SUBTABLE(bn) {
-    {0x45,   "bn"},
-    {0x0845, "bn_BD"},
-    {0x0445, "bn_IN"}
+    {0x45,   u8"bn"},
+    {0x0845, u8"bn_BD"},
+    {0x0445, u8"bn_IN"}
 };
 
 ILCID_POSIX_SUBTABLE(bo) {
-    {0x51,   "bo"},
-    {0x0851, "bo_BT"},
-    {0x0451, "bo_CN"},
-    {0x0c51, "dz_BT"}
+    {0x51,   u8"bo"},
+    {0x0851, u8"bo_BT"},
+    {0x0451, u8"bo_CN"},
+    {0x0c51, u8"dz_BT"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x047e, br, br_FR)
 
 ILCID_POSIX_SUBTABLE(ca) {
-    {0x03,   "ca"},
-    {0x0403, "ca_ES"},
-    {0x0803, "ca_ES_VALENCIA"}
+    {0x03,   u8"ca"},
+    {0x0403, u8"ca_ES"},
+    {0x0803, u8"ca_ES_VALENCIA"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0483, co, co_FR)
@@ -218,9 +218,9 @@ ILCID_POSIX_ELEMENT_ARRAY(0x045c, chr,chr_US)
 
 // ICU has chosen different names for these.
 ILCID_POSIX_SUBTABLE(ckb) {
-    {0x92,   "ckb"},
-    {0x7c92, "ckb_Arab"},
-    {0x0492, "ckb_Arab_IQ"}
+    {0x92,   u8"ckb"},
+    {0x7c92, u8"ckb_Arab"},
+    {0x0492, u8"ckb_Arab_IQ"}
 };
 
 /* Declared as cs_CZ to get around compiler errors on z/OS, which defines cs as a function */
@@ -231,14 +231,14 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0406, da, da_DK)
 
 // Windows doesn't know POSIX or BCP47 Unicode phonebook sort names
 ILCID_POSIX_SUBTABLE(de) {
-    {0x07,   "de"},
-    {0x0c07, "de_AT"},
-    {0x0807, "de_CH"},
-    {0x0407, "de_DE"},
-    {0x1407, "de_LI"},
-    {0x1007, "de_LU"},
-    {0x10407,"de_DE@collation=phonebook"},  /*This is really de_DE_PHONEBOOK on Windows*/
-    {0x10407,"de@collation=phonebook"}  /*This is really de_DE_PHONEBOOK on Windows*/
+    {0x07,   u8"de"},
+    {0x0c07, u8"de_AT"},
+    {0x0807, u8"de_CH"},
+    {0x0407, u8"de_DE"},
+    {0x1407, u8"de_LI"},
+    {0x1007, u8"de_LU"},
+    {0x10407,u8"de_DE@collation=phonebook"},  /*This is really de_DE_PHONEBOOK on Windows*/
+    {0x10407,u8"de@collation=phonebook"}  /*This is really de_DE_PHONEBOOK on Windows*/
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0465, dv, dv_MV)
@@ -246,65 +246,65 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0408, el, el_GR)
 
 // Windows uses an empty string for 'invariant'
 ILCID_POSIX_SUBTABLE(en) {
-    {0x09,   "en"},
-    {0x0c09, "en_AU"},
-    {0x2809, "en_BZ"},
-    {0x1009, "en_CA"},
-    {0x0809, "en_GB"},
-    {0x3c09, "en_HK"},
-    {0x3809, "en_ID"},
-    {0x1809, "en_IE"},
-    {0x4009, "en_IN"},
-    {0x2009, "en_JM"},
-    {0x4409, "en_MY"},
-    {0x1409, "en_NZ"},
-    {0x3409, "en_PH"},
-    {0x4809, "en_SG"},
-    {0x2C09, "en_TT"},
-    {0x0409, "en_US"},
-    {0x007f, "en_US_POSIX"}, /* duplicate for round-tripping */
-    {0x2409, "en_VI"},  /* Virgin Islands AKA Caribbean Islands (en_CB). On Windows8+ This is 0x1000 or dynamically assigned */
-    {0x1c09, "en_ZA"},
-    {0x3009, "en_ZW"},
-    {0x2409, "en_029"},
-    {0x0409, "en_AS"},  /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
-    {0x0409, "en_GU"},  /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
-    {0x0409, "en_MH"},  /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
-    {0x0409, "en_MP"},  /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
-    {0x0409, "en_UM"}   /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
+    {0x09,   u8"en"},
+    {0x0c09, u8"en_AU"},
+    {0x2809, u8"en_BZ"},
+    {0x1009, u8"en_CA"},
+    {0x0809, u8"en_GB"},
+    {0x3c09, u8"en_HK"},
+    {0x3809, u8"en_ID"},
+    {0x1809, u8"en_IE"},
+    {0x4009, u8"en_IN"},
+    {0x2009, u8"en_JM"},
+    {0x4409, u8"en_MY"},
+    {0x1409, u8"en_NZ"},
+    {0x3409, u8"en_PH"},
+    {0x4809, u8"en_SG"},
+    {0x2C09, u8"en_TT"},
+    {0x0409, u8"en_US"},
+    {0x007f, u8"en_US_POSIX"}, /* duplicate for round-tripping */
+    {0x2409, u8"en_VI"},  /* Virgin Islands AKA Caribbean Islands (en_CB). On Windows8+ This is 0x1000 or dynamically assigned */
+    {0x1c09, u8"en_ZA"},
+    {0x3009, u8"en_ZW"},
+    {0x2409, u8"en_029"},
+    {0x0409, u8"en_AS"},  /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
+    {0x0409, u8"en_GU"},  /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
+    {0x0409, u8"en_MH"},  /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
+    {0x0409, u8"en_MP"},  /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
+    {0x0409, u8"en_UM"}   /* Alias for en_US. Leave last.  On Windows8+ This is 0x1000 or dynamically assigned */
 };
 
 ILCID_POSIX_SUBTABLE(en_US_POSIX) {
-    {0x007f, "en_US_POSIX"} /* duplicate for roundtripping */
+    {0x007f, u8"en_US_POSIX"} /* duplicate for roundtripping */
 };
 
 // Windows doesn't know POSIX or BCP47 Unicode traditional sort names
 ILCID_POSIX_SUBTABLE(es) {
-    {0x0a,   "es"},
-    {0x2c0a, "es_AR"},
-    {0x400a, "es_BO"},
-    {0x340a, "es_CL"},
-    {0x240a, "es_CO"},
-    {0x140a, "es_CR"},
-    {0x5c0a, "es_CU"},
-    {0x1c0a, "es_DO"},
-    {0x300a, "es_EC"},
-    {0x0c0a, "es_ES"},      /*Modern sort.*/
-    {0x100a, "es_GT"},
-    {0x480a, "es_HN"},
-    {0x080a, "es_MX"},
-    {0x4c0a, "es_NI"},
-    {0x180a, "es_PA"},
-    {0x280a, "es_PE"},
-    {0x500a, "es_PR"},
-    {0x3c0a, "es_PY"},
-    {0x440a, "es_SV"},
-    {0x540a, "es_US"},
-    {0x380a, "es_UY"},
-    {0x200a, "es_VE"},
-    {0x580a, "es_419"},
-    {0x040a, "es_ES@collation=traditional"},
-    {0x040a, "es@collation=traditional"}        // Windows will treat this as es-ES@collation=traditional
+    {0x0a,   u8"es"},
+    {0x2c0a, u8"es_AR"},
+    {0x400a, u8"es_BO"},
+    {0x340a, u8"es_CL"},
+    {0x240a, u8"es_CO"},
+    {0x140a, u8"es_CR"},
+    {0x5c0a, u8"es_CU"},
+    {0x1c0a, u8"es_DO"},
+    {0x300a, u8"es_EC"},
+    {0x0c0a, u8"es_ES"},      /*Modern sort.*/
+    {0x100a, u8"es_GT"},
+    {0x480a, u8"es_HN"},
+    {0x080a, u8"es_MX"},
+    {0x4c0a, u8"es_NI"},
+    {0x180a, u8"es_PA"},
+    {0x280a, u8"es_PE"},
+    {0x500a, u8"es_PR"},
+    {0x3c0a, u8"es_PY"},
+    {0x440a, u8"es_SV"},
+    {0x540a, u8"es_US"},
+    {0x380a, u8"es_UY"},
+    {0x200a, u8"es_VE"},
+    {0x580a, u8"es_419"},
+    {0x040a, u8"es_ES@collation=traditional"},
+    {0x040a, u8"es@collation=traditional"}        // Windows will treat this as es-ES@collation=traditional
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0425, et, et_EE)
@@ -312,23 +312,23 @@ ILCID_POSIX_ELEMENT_ARRAY(0x042d, eu, eu_ES)
 
 /* ISO-639 doesn't distinguish between Persian and Dari.*/
 ILCID_POSIX_SUBTABLE(fa) {
-    {0x29,   "fa"},
-    {0x0429, "fa_IR"},  /* Persian/Farsi (Iran) */
-    {0x048c, "fa_AF"}   /* Persian/Dari (Afghanistan) */
+    {0x29,   u8"fa"},
+    {0x0429, u8"fa_IR"},  /* Persian/Farsi (Iran) */
+    {0x048c, u8"fa_AF"}   /* Persian/Dari (Afghanistan) */
 };
 
 
 /* duplicate for roundtripping */
 ILCID_POSIX_SUBTABLE(fa_AF) {
-    {0x8c,   "fa_AF"},  /* Persian/Dari (Afghanistan) */
-    {0x048c, "fa_AF"}   /* Persian/Dari (Afghanistan) */
+    {0x8c,   u8"fa_AF"},  /* Persian/Dari (Afghanistan) */
+    {0x048c, u8"fa_AF"}   /* Persian/Dari (Afghanistan) */
 };
 
 ILCID_POSIX_SUBTABLE(ff) {
-    {0x67,   "ff"},
-    {0x7c67, "ff_Latn"},
-    {0x0867, "ff_Latn_SN"},
-    {0x0467, "ff_NG"}
+    {0x67,   u8"ff"},
+    {0x7c67, u8"ff_Latn"},
+    {0x0867, u8"ff_Latn_SN"},
+    {0x0467, u8"ff_NG"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x040b, fi, fi_FI)
@@ -336,24 +336,24 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0464, fil,fil_PH)
 ILCID_POSIX_ELEMENT_ARRAY(0x0438, fo, fo_FO)
 
 ILCID_POSIX_SUBTABLE(fr) {
-    {0x0c,   "fr"},
-    {0x080c, "fr_BE"},
-    {0x0c0c, "fr_CA"},
-    {0x240c, "fr_CD"},
-    {0x240c, "fr_CG"},
-    {0x100c, "fr_CH"},
-    {0x300c, "fr_CI"},
-    {0x2c0c, "fr_CM"},
-    {0x040c, "fr_FR"},
-    {0x3c0c, "fr_HT"},
-    {0x140c, "fr_LU"},
-    {0x380c, "fr_MA"},
-    {0x180c, "fr_MC"},
-    {0x340c, "fr_ML"},
-    {0x200c, "fr_RE"},
-    {0x280c, "fr_SN"},
-    {0xe40c, "fr_015"},
-    {0x1c0c, "fr_029"}
+    {0x0c,   u8"fr"},
+    {0x080c, u8"fr_BE"},
+    {0x0c0c, u8"fr_CA"},
+    {0x240c, u8"fr_CD"},
+    {0x240c, u8"fr_CG"},
+    {0x100c, u8"fr_CH"},
+    {0x300c, u8"fr_CI"},
+    {0x2c0c, u8"fr_CM"},
+    {0x040c, u8"fr_FR"},
+    {0x3c0c, u8"fr_HT"},
+    {0x140c, u8"fr_LU"},
+    {0x380c, u8"fr_MA"},
+    {0x180c, u8"fr_MC"},
+    {0x340c, u8"fr_ML"},
+    {0x200c, u8"fr_RE"},
+    {0x280c, u8"fr_SN"},
+    {0xe40c, u8"fr_015"},
+    {0x1c0c, u8"fr_029"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0467, fuv, fuv_NG)
@@ -361,14 +361,14 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0467, fuv, fuv_NG)
 ILCID_POSIX_ELEMENT_ARRAY(0x0462, fy, fy_NL)
 
 ILCID_POSIX_SUBTABLE(ga) { /* Gaelic (Ireland) */
-    {0x3c,   "ga"},
-    {0x083c, "ga_IE"},
-    {0x043c, "gd_GB"}
+    {0x3c,   u8"ga"},
+    {0x083c, u8"ga_IE"},
+    {0x043c, u8"gd_GB"}
 };
 
 ILCID_POSIX_SUBTABLE(gd) { /* Gaelic (Scotland) */
-    {0x91,   "gd"},
-    {0x0491, "gd_GB"}
+    {0x91,   u8"gd"},
+    {0x0491, u8"gd_GB"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0456, gl, gl_ES)
@@ -377,9 +377,9 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0474, gn, gn_PY)
 ILCID_POSIX_ELEMENT_ARRAY(0x0484, gsw,gsw_FR)
 
 ILCID_POSIX_SUBTABLE(ha) {
-    {0x68,   "ha"},
-    {0x7c68, "ha_Latn"},
-    {0x0468, "ha_Latn_NG"},
+    {0x68,   u8"ha"},
+    {0x7c68, u8"ha_Latn"},
+    {0x0468, u8"ha_Latn_NG"},
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0475, haw,haw_US)
@@ -388,33 +388,33 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0439, hi, hi_IN)
 
 /* This LCID is really four different locales.*/
 ILCID_POSIX_SUBTABLE(hr) {
-    {0x1a,   "hr"},
-    {0x141a, "bs_Latn_BA"},  /* Bosnian, Bosnia and Herzegovina */
-    {0x681a, "bs_Latn"},  /* Bosnian, Bosnia and Herzegovina */
-    {0x141a, "bs_BA"},  /* Bosnian, Bosnia and Herzegovina */
-    {0x781a, "bs"},     /* Bosnian */
-    {0x201a, "bs_Cyrl_BA"},  /* Bosnian, Bosnia and Herzegovina */
-    {0x641a, "bs_Cyrl"},  /* Bosnian, Bosnia and Herzegovina */
-    {0x101a, "hr_BA"},  /* Croatian in Bosnia */
-    {0x041a, "hr_HR"},  /* Croatian*/
-    {0x2c1a, "sr_Latn_ME"},
-    {0x241a, "sr_Latn_RS"},
-    {0x181a, "sr_Latn_BA"}, /* Serbo-Croatian in Bosnia */
-    {0x081a, "sr_Latn_CS"}, /* Serbo-Croatian*/
-    {0x701a, "sr_Latn"},    /* It's 0x1a or 0x081a, pick one to make the test program happy. */
-    {0x1c1a, "sr_Cyrl_BA"}, /* Serbo-Croatian in Bosnia */
-    {0x0c1a, "sr_Cyrl_CS"}, /* Serbian*/
-    {0x301a, "sr_Cyrl_ME"},
-    {0x281a, "sr_Cyrl_RS"},
-    {0x6c1a, "sr_Cyrl"},    /* It's 0x1a or 0x0c1a, pick one to make the test program happy. */
-    {0x7c1a, "sr"}          /* In CLDR sr is sr_Cyrl. */
+    {0x1a,   u8"hr"},
+    {0x141a, u8"bs_Latn_BA"},  /* Bosnian, Bosnia and Herzegovina */
+    {0x681a, u8"bs_Latn"},  /* Bosnian, Bosnia and Herzegovina */
+    {0x141a, u8"bs_BA"},  /* Bosnian, Bosnia and Herzegovina */
+    {0x781a, u8"bs"},     /* Bosnian */
+    {0x201a, u8"bs_Cyrl_BA"},  /* Bosnian, Bosnia and Herzegovina */
+    {0x641a, u8"bs_Cyrl"},  /* Bosnian, Bosnia and Herzegovina */
+    {0x101a, u8"hr_BA"},  /* Croatian in Bosnia */
+    {0x041a, u8"hr_HR"},  /* Croatian*/
+    {0x2c1a, u8"sr_Latn_ME"},
+    {0x241a, u8"sr_Latn_RS"},
+    {0x181a, u8"sr_Latn_BA"}, /* Serbo-Croatian in Bosnia */
+    {0x081a, u8"sr_Latn_CS"}, /* Serbo-Croatian*/
+    {0x701a, u8"sr_Latn"},    /* It's 0x1a or 0x081a, pick one to make the test program happy. */
+    {0x1c1a, u8"sr_Cyrl_BA"}, /* Serbo-Croatian in Bosnia */
+    {0x0c1a, u8"sr_Cyrl_CS"}, /* Serbian*/
+    {0x301a, u8"sr_Cyrl_ME"},
+    {0x281a, u8"sr_Cyrl_RS"},
+    {0x6c1a, u8"sr_Cyrl"},    /* It's 0x1a or 0x0c1a, pick one to make the test program happy. */
+    {0x7c1a, u8"sr"}          /* In CLDR sr is sr_Cyrl. */
 };
 
 ILCID_POSIX_SUBTABLE(hsb) {
-    {0x2E,   "hsb"},
-    {0x042E, "hsb_DE"},
-    {0x082E, "dsb_DE"},
-    {0x7C2E, "dsb"},
+    {0x2E,   u8"hsb"},
+    {0x042E, u8"hsb_DE"},
+    {0x082E, u8"dsb_DE"},
+    {0x7C2E, u8"dsb"},
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x040e, hu, hu_HU)
@@ -426,17 +426,17 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0478, ii, ii_CN)
 ILCID_POSIX_ELEMENT_ARRAY(0x040f, is, is_IS)
 
 ILCID_POSIX_SUBTABLE(it) {
-    {0x10,   "it"},
-    {0x0810, "it_CH"},
-    {0x0410, "it_IT"}
+    {0x10,   u8"it"},
+    {0x0810, u8"it_CH"},
+    {0x0410, u8"it_IT"}
 };
 
 ILCID_POSIX_SUBTABLE(iu) {
-    {0x5d,   "iu"},
-    {0x045d, "iu_Cans_CA"},
-    {0x785d, "iu_Cans"},
-    {0x085d, "iu_Latn_CA"},
-    {0x7c5d, "iu_Latn"}
+    {0x5d,   u8"iu"},
+    {0x045d, u8"iu_Cans_CA"},
+    {0x785d, u8"iu_Cans"},
+    {0x085d, u8"iu_Latn_CA"},
+    {0x7c5d, u8"iu_Latn"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x040d, iw, iw_IL)    /*Left in for compatibility*/
@@ -448,19 +448,19 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0453, km, km_KH)
 ILCID_POSIX_ELEMENT_ARRAY(0x044b, kn, kn_IN)
 
 ILCID_POSIX_SUBTABLE(ko) {
-    {0x12,   "ko"},
-    {0x0812, "ko_KP"},
-    {0x0412, "ko_KR"}
+    {0x12,   u8"ko"},
+    {0x0812, u8"ko_KP"},
+    {0x0412, u8"ko_KR"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0457, kok, kok_IN)
 ILCID_POSIX_ELEMENT_ARRAY(0x0471, kr,  kr_NG)
 
 ILCID_POSIX_SUBTABLE(ks) {         /* We could add PK and CN too */
-    {0x60,   "ks"},
-    {0x0860, "ks_IN"},              /* Documentation doesn't mention script */
-    {0x0460, "ks_Arab_IN"},
-    {0x0860, "ks_Deva_IN"}
+    {0x60,   u8"ks"},
+    {0x0860, u8"ks_IN"},              /* Documentation doesn't mention script */
+    {0x0460, u8"ks_Arab_IN"},
+    {0x0860, u8"ks_Deva_IN"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0440, ky, ky_KG)   /* Kyrgyz is spoken in Kyrgyzstan */
@@ -474,13 +474,13 @@ ILCID_POSIX_ELEMENT_ARRAY(0x042f, mk, mk_MK)
 ILCID_POSIX_ELEMENT_ARRAY(0x044c, ml, ml_IN)
 
 ILCID_POSIX_SUBTABLE(mn) {
-    {0x50,   "mn"},
-    {0x0450, "mn_MN"},
-    {0x7c50, "mn_Mong"},
-    {0x0850, "mn_Mong_CN"},
-    {0x0850, "mn_CN"},
-    {0x7850, "mn_Cyrl"},
-    {0x0c50, "mn_Mong_MN"}
+    {0x50,   u8"mn"},
+    {0x0450, u8"mn_MN"},
+    {0x7c50, u8"mn_Mong"},
+    {0x0850, u8"mn_Mong_CN"},
+    {0x0850, u8"mn_CN"},
+    {0x7850, u8"mn_Cyrl"},
+    {0x0c50, u8"mn_Mong_MN"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0458, mni,mni_IN)
@@ -488,59 +488,59 @@ ILCID_POSIX_ELEMENT_ARRAY(0x047c, moh,moh_CA)
 ILCID_POSIX_ELEMENT_ARRAY(0x044e, mr, mr_IN)
 
 ILCID_POSIX_SUBTABLE(ms) {
-    {0x3e,   "ms"},
-    {0x083e, "ms_BN"},   /* Brunei Darussalam*/
-    {0x043e, "ms_MY"}    /* Malaysia*/
+    {0x3e,   u8"ms"},
+    {0x083e, u8"ms_BN"},   /* Brunei Darussalam*/
+    {0x043e, u8"ms_MY"}    /* Malaysia*/
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x043a, mt, mt_MT)
 ILCID_POSIX_ELEMENT_ARRAY(0x0455, my, my_MM)
 
 ILCID_POSIX_SUBTABLE(ne) {
-    {0x61,   "ne"},
-    {0x0861, "ne_IN"},   /* India*/
-    {0x0461, "ne_NP"}    /* Nepal*/
+    {0x61,   u8"ne"},
+    {0x0861, u8"ne_IN"},   /* India*/
+    {0x0461, u8"ne_NP"}    /* Nepal*/
 };
 
 ILCID_POSIX_SUBTABLE(nl) {
-    {0x13,   "nl"},
-    {0x0813, "nl_BE"},
-    {0x0413, "nl_NL"}
+    {0x13,   u8"nl"},
+    {0x0813, u8"nl_BE"},
+    {0x0413, u8"nl_NL"}
 };
 
 /* The "no" locale split into nb and nn.  By default in ICU, "no" is nb.*/
 // TODO: Not all of these are needed on Windows, but I don't know how ICU treats preferred ones here.
 ILCID_POSIX_SUBTABLE(no) {
-    {0x14,   "no"},     /* really nb_NO - actually Windows differentiates between neutral (no region) and specific (with region) */
-    {0x7c14, "nb"},     /* really nb */
-    {0x0414, "nb_NO"},  /* really nb_NO. Keep first in the 414 list. */
-    {0x0414, "no_NO"},  /* really nb_NO */
-    {0x0814, "nn_NO"},  /* really nn_NO. Keep first in the 814 list.  */
-    {0x7814, "nn"},     /* It's 0x14 or 0x814, pick one to make the test program happy. */
-    {0x0814, "no_NO_NY"}/* really nn_NO */
+    {0x14,   u8"no"},     /* really nb_NO - actually Windows differentiates between neutral (no region) and specific (with region) */
+    {0x7c14, u8"nb"},     /* really nb */
+    {0x0414, u8"nb_NO"},  /* really nb_NO. Keep first in the 414 list. */
+    {0x0414, u8"no_NO"},  /* really nb_NO */
+    {0x0814, u8"nn_NO"},  /* really nn_NO. Keep first in the 814 list.  */
+    {0x7814, u8"nn"},     /* It's 0x14 or 0x814, pick one to make the test program happy. */
+    {0x0814, u8"no_NO_NY"}/* really nn_NO */
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x046c, nso,nso_ZA)   /* TODO: Verify the ISO-639 code */
 ILCID_POSIX_ELEMENT_ARRAY(0x0482, oc, oc_FR)
 
 ILCID_POSIX_SUBTABLE(om) { /* TODO: Verify the country */
-    {0x72,   "om"},
-    {0x0472, "om_ET"},
-    {0x0472, "gaz_ET"}
+    {0x72,   u8"om"},
+    {0x0472, u8"om_ET"},
+    {0x0472, u8"gaz_ET"}
 };
 
 /* Declared as or_IN to get around compiler errors*/
 ILCID_POSIX_SUBTABLE(or_IN) {
-    {0x48,   "or"},
-    {0x0448, "or_IN"},
+    {0x48,   u8"or"},
+    {0x0448, u8"or_IN"},
 };
 
 
 ILCID_POSIX_SUBTABLE(pa) {
-    {0x46,   "pa"},
-    {0x0446, "pa_IN"},
-    {0x0846, "pa_PK"},
-    {0x0846, "pa_Arab_PK"}
+    {0x46,   u8"pa"},
+    {0x0446, u8"pa_IN"},
+    {0x0846, u8"pa_PK"},
+    {0x0846, u8"pa_Arab_PK"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0479, pap, pap_AN)
@@ -548,24 +548,24 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0415, pl, pl_PL)
 ILCID_POSIX_ELEMENT_ARRAY(0x0463, ps, ps_AF)
 
 ILCID_POSIX_SUBTABLE(pt) {
-    {0x16,   "pt"},
-    {0x0416, "pt_BR"},
-    {0x0816, "pt_PT"}
+    {0x16,   u8"pt"},
+    {0x0416, u8"pt_BR"},
+    {0x0816, u8"pt_PT"}
 };
 
 ILCID_POSIX_SUBTABLE(qu) {
-    {0x6b,   "qu"},
-    {0x046b, "qu_BO"},
-    {0x086b, "qu_EC"},
-    {0x0C6b, "qu_PE"},
-    {0x046b, "quz_BO"},
-    {0x086b, "quz_EC"},
-    {0x0C6b, "quz_PE"}
+    {0x6b,   u8"qu"},
+    {0x046b, u8"qu_BO"},
+    {0x086b, u8"qu_EC"},
+    {0x0C6b, u8"qu_PE"},
+    {0x046b, u8"quz_BO"},
+    {0x086b, u8"quz_EC"},
+    {0x0C6b, u8"quz_PE"}
 };
 
 ILCID_POSIX_SUBTABLE(quc) {
-    {0x93,   "quc"},
-    {0x0493, "quc_CO"},
+    {0x93,   u8"quc"},
+    {0x0493, u8"quc_CO"},
     /*
         "quc_Latn_GT" is an exceptional case. Language ID of "quc"
         is 0x93, but LCID of "quc_Latn_GT" is 0x486, which should be
@@ -580,37 +580,37 @@ ILCID_POSIX_SUBTABLE(quc) {
         by alphabetic locale ID (POSIX) will fail. The same entry is found
         under "qut" below, which is required for reverse look up.
     */
-    {0x0486, "quc_Latn_GT"}
+    {0x0486, u8"quc_Latn_GT"}
 };
 
 ILCID_POSIX_SUBTABLE(qut) {
-    {0x86,   "qut"},
-    {0x0486, "qut_GT"},
+    {0x86,   u8"qut"},
+    {0x0486, u8"qut_GT"},
     /*
         See the note in "quc" above.
     */
-    {0x0486, "quc_Latn_GT"}
+    {0x0486, u8"quc_Latn_GT"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0417, rm, rm_CH)
 
 ILCID_POSIX_SUBTABLE(ro) {
-    {0x18,   "ro"},
-    {0x0418, "ro_RO"},
-    {0x0818, "ro_MD"}
+    {0x18,   u8"ro"},
+    {0x0418, u8"ro_RO"},
+    {0x0818, u8"ro_MD"}
 };
 
 // TODO: This is almost certainly 'wrong'.  0 in Windows is a synonym for LOCALE_USER_DEFAULT.
 // More likely this is a similar concept to the Windows 0x7f Invariant locale ""
 // (Except that it's not invariant in ICU)
 ILCID_POSIX_SUBTABLE(root) {
-    {0x00,   "root"}
+    {0x00,   u8"root"}
 };
 
 ILCID_POSIX_SUBTABLE(ru) {
-    {0x19,   "ru"},
-    {0x0419, "ru_RU"},
-    {0x0819, "ru_MD"}
+    {0x19,   u8"ru"},
+    {0x0419, u8"ru_RU"},
+    {0x0819, u8"ru_MD"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0487, rw, rw_RW)
@@ -618,27 +618,27 @@ ILCID_POSIX_ELEMENT_ARRAY(0x044f, sa, sa_IN)
 ILCID_POSIX_ELEMENT_ARRAY(0x0485, sah,sah_RU)
 
 ILCID_POSIX_SUBTABLE(sd) {
-    {0x59,   "sd"},
-    {0x0459, "sd_IN"},
-    {0x0459, "sd_Deva_IN"},
-    {0x0859, "sd_PK"}
+    {0x59,   u8"sd"},
+    {0x0459, u8"sd_IN"},
+    {0x0459, u8"sd_Deva_IN"},
+    {0x0859, u8"sd_PK"}
 };
 
 ILCID_POSIX_SUBTABLE(se) {
-    {0x3b,   "se"},
-    {0x0c3b, "se_FI"},
-    {0x043b, "se_NO"},
-    {0x083b, "se_SE"},
-    {0x783b, "sma"},
-    {0x183b, "sma_NO"},
-    {0x1c3b, "sma_SE"},
-    {0x7c3b, "smj"},
-    {0x703b, "smn"},
-    {0x743b, "sms"},
-    {0x103b, "smj_NO"},
-    {0x143b, "smj_SE"},
-    {0x243b, "smn_FI"},
-    {0x203b, "sms_FI"},
+    {0x3b,   u8"se"},
+    {0x0c3b, u8"se_FI"},
+    {0x043b, u8"se_NO"},
+    {0x083b, u8"se_SE"},
+    {0x783b, u8"sma"},
+    {0x183b, u8"sma_NO"},
+    {0x1c3b, u8"sma_SE"},
+    {0x7c3b, u8"smj"},
+    {0x703b, u8"smn"},
+    {0x743b, u8"sms"},
+    {0x103b, u8"smj_NO"},
+    {0x143b, u8"smj_SE"},
+    {0x243b, u8"smn_FI"},
+    {0x203b, u8"sms_FI"},
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x045b, si, si_LK)
@@ -646,52 +646,52 @@ ILCID_POSIX_ELEMENT_ARRAY(0x041b, sk, sk_SK)
 ILCID_POSIX_ELEMENT_ARRAY(0x0424, sl, sl_SI)
 
 ILCID_POSIX_SUBTABLE(so) { /* TODO: Verify the country */
-    {0x77,   "so"},
-    {0x0477, "so_ET"},
-    {0x0477, "so_SO"}
+    {0x77,   u8"so"},
+    {0x0477, u8"so_ET"},
+    {0x0477, u8"so_SO"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x041c, sq, sq_AL)
 ILCID_POSIX_ELEMENT_ARRAY(0x0430, st, st_ZA)
 
 ILCID_POSIX_SUBTABLE(sv) {
-    {0x1d,   "sv"},
-    {0x081d, "sv_FI"},
-    {0x041d, "sv_SE"}
+    {0x1d,   u8"sv"},
+    {0x081d, u8"sv_FI"},
+    {0x041d, u8"sv_SE"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0441, sw, sw_KE)
 ILCID_POSIX_ELEMENT_ARRAY(0x045A, syr, syr_SY)
 
 ILCID_POSIX_SUBTABLE(ta) {
-    {0x49,   "ta"},
-    {0x0449, "ta_IN"},
-    {0x0849, "ta_LK"}
+    {0x49,   u8"ta"},
+    {0x0449, u8"ta_IN"},
+    {0x0849, u8"ta_LK"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x044a, te, te_IN)
 
 /* Cyrillic based by default */
 ILCID_POSIX_SUBTABLE(tg) {
-    {0x28,   "tg"},
-    {0x7c28, "tg_Cyrl"},
-    {0x0428, "tg_Cyrl_TJ"}
+    {0x28,   u8"tg"},
+    {0x7c28, u8"tg_Cyrl"},
+    {0x0428, u8"tg_Cyrl_TJ"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x041e, th, th_TH)
 
 ILCID_POSIX_SUBTABLE(ti) {
-    {0x73,   "ti"},
-    {0x0873, "ti_ER"},
-    {0x0473, "ti_ET"}
+    {0x73,   u8"ti"},
+    {0x0873, u8"ti_ER"},
+    {0x0473, u8"ti_ET"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0442, tk, tk_TM)
 
 ILCID_POSIX_SUBTABLE(tn) {
-    {0x32,   "tn"},
-    {0x0832, "tn_BW"},
-    {0x0432, "tn_ZA"}
+    {0x32,   u8"tn"},
+    {0x0832, u8"tn_BW"},
+    {0x0432, u8"tn_ZA"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x041f, tr, tr_TR)
@@ -699,41 +699,41 @@ ILCID_POSIX_ELEMENT_ARRAY(0x0431, ts, ts_ZA)
 ILCID_POSIX_ELEMENT_ARRAY(0x0444, tt, tt_RU)
 
 ILCID_POSIX_SUBTABLE(tzm) {
-    {0x5f,   "tzm"},
-    {0x7c5f, "tzm_Latn"},
-    {0x085f, "tzm_Latn_DZ"},
-    {0x105f, "tzm_Tfng_MA"},
-    {0x045f, "tzm_Arab_MA"},
-    {0x045f, "tmz"}
+    {0x5f,   u8"tzm"},
+    {0x7c5f, u8"tzm_Latn"},
+    {0x085f, u8"tzm_Latn_DZ"},
+    {0x105f, u8"tzm_Tfng_MA"},
+    {0x045f, u8"tzm_Arab_MA"},
+    {0x045f, u8"tmz"}
 };
 
 ILCID_POSIX_SUBTABLE(ug) {
-    {0x80,   "ug"},
-    {0x0480, "ug_CN"},
-    {0x0480, "ug_Arab_CN"}
+    {0x80,   u8"ug"},
+    {0x0480, u8"ug_CN"},
+    {0x0480, u8"ug_Arab_CN"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x0422, uk, uk_UA)
 
 ILCID_POSIX_SUBTABLE(ur) {
-    {0x20,   "ur"},
-    {0x0820, "ur_IN"},
-    {0x0420, "ur_PK"}
+    {0x20,   u8"ur"},
+    {0x0820, u8"ur_IN"},
+    {0x0420, u8"ur_PK"}
 };
 
 ILCID_POSIX_SUBTABLE(uz) {
-    {0x43,   "uz"},
-    {0x0843, "uz_Cyrl_UZ"},  /* Cyrillic based */
-    {0x7843, "uz_Cyrl"},  /* Cyrillic based */
-    {0x0843, "uz_UZ"},  /* Cyrillic based */
-    {0x0443, "uz_Latn_UZ"}, /* Latin based */
-    {0x7c43, "uz_Latn"} /* Latin based */
+    {0x43,   u8"uz"},
+    {0x0843, u8"uz_Cyrl_UZ"},  /* Cyrillic based */
+    {0x7843, u8"uz_Cyrl"},  /* Cyrillic based */
+    {0x0843, u8"uz_UZ"},  /* Cyrillic based */
+    {0x0443, u8"uz_Latn_UZ"}, /* Latin based */
+    {0x7c43, u8"uz_Latn"} /* Latin based */
 };
 
 ILCID_POSIX_SUBTABLE(ve) { /* TODO: Verify the country */
-    {0x33,   "ve"},
-    {0x0433, "ve_ZA"},
-    {0x0433, "ven_ZA"}
+    {0x33,   u8"ve"},
+    {0x0433, u8"ve_ZA"},
+    {0x0433, u8"ven_ZA"}
 };
 
 ILCID_POSIX_ELEMENT_ARRAY(0x042a, vi, vi_VN)
@@ -745,28 +745,28 @@ ILCID_POSIX_ELEMENT_ARRAY(0x046a, yo, yo_NG)
 // Windows & ICU tend to different names for some of these
 // TODO: Windows probably does not need all of these entries, but I don't know how the precedence works.
 ILCID_POSIX_SUBTABLE(zh) {
-    {0x0004, "zh_Hans"},
-    {0x7804, "zh"},
-    {0x0804, "zh_CN"},
-    {0x0804, "zh_Hans_CN"},
-    {0x0c04, "zh_Hant_HK"},
-    {0x0c04, "zh_HK"},
-    {0x1404, "zh_Hant_MO"},
-    {0x1404, "zh_MO"},
-    {0x1004, "zh_Hans_SG"},
-    {0x1004, "zh_SG"},
-    {0x0404, "zh_Hant_TW"},
-    {0x7c04, "zh_Hant"},
-    {0x0404, "zh_TW"},
-    {0x30404,"zh_Hant_TW"},     /* Bopomofo order */
-    {0x30404,"zh_TW"},          /* Bopomofo order */
-    {0x20004,"zh@collation=stroke"},
-    {0x20404,"zh_Hant@collation=stroke"},
-    {0x20404,"zh_Hant_TW@collation=stroke"},
-    {0x20404,"zh_TW@collation=stroke"},
-    {0x20804,"zh_Hans@collation=stroke"},
-    {0x20804,"zh_Hans_CN@collation=stroke"},
-    {0x20804,"zh_CN@collation=stroke"}
+    {0x0004, u8"zh_Hans"},
+    {0x7804, u8"zh"},
+    {0x0804, u8"zh_CN"},
+    {0x0804, u8"zh_Hans_CN"},
+    {0x0c04, u8"zh_Hant_HK"},
+    {0x0c04, u8"zh_HK"},
+    {0x1404, u8"zh_Hant_MO"},
+    {0x1404, u8"zh_MO"},
+    {0x1004, u8"zh_Hans_SG"},
+    {0x1004, u8"zh_SG"},
+    {0x0404, u8"zh_Hant_TW"},
+    {0x7c04, u8"zh_Hant"},
+    {0x0404, u8"zh_TW"},
+    {0x30404,u8"zh_Hant_TW"},     /* Bopomofo order */
+    {0x30404,u8"zh_TW"},          /* Bopomofo order */
+    {0x20004,u8"zh@collation=stroke"},
+    {0x20404,u8"zh_Hant@collation=stroke"},
+    {0x20404,u8"zh_Hant_TW@collation=stroke"},
+    {0x20404,u8"zh_TW@collation=stroke"},
+    {0x20804,u8"zh_Hans@collation=stroke"},
+    {0x20804,u8"zh_Hans_CN@collation=stroke"},
+    {0x20804,u8"zh_CN@collation=stroke"}
     // TODO: Alternate collations for other LCIDs are missing, eg: 0x50804
 };
 
@@ -970,7 +970,7 @@ getHostID(const ILcidPosixMap *this_0, const char* posixID, UErrorCode* status)
     }
     /* We asked for something unusual, like en_ZZ, and we try to return the number for the same language. */
     /* We also have to make sure that sid and si and similar string subsets don't match. */
-    if ((posixID[bestIdxDiff] == '_' || posixID[bestIdxDiff] == '@')
+    if ((posixID[bestIdxDiff] == '\x5f' || posixID[bestIdxDiff] == '\x40')
         && this_0->regionMaps[bestIdx].posixID[bestIdxDiff] == 0)
     {
         *status = U_USING_FALLBACK_WARNING;
@@ -1014,11 +1014,11 @@ getPosixID(const ILcidPosixMap *this_0, uint32_t hostID)
  */
 #define FIX_LANGUAGE_ID_TAG(buffer, len) \
     if (len >= 3) { \
-        if (buffer[0] == 'q' && buffer[1] == 'u' && buffer[2] == 'z') {\
+        if (buffer[0] == '\x71' && buffer[1] == '\x75' && buffer[2] == '\x7a') {\
             buffer[2] = 0; \
             uprv_strcat(buffer, buffer+3); \
-        } else if (buffer[0] == 'p' && buffer[1] == 'r' && buffer[2] == 's') {\
-            buffer[0] = 'f'; buffer[1] = 'a'; buffer[2] = 0; \
+        } else if (buffer[0] == '\x70' && buffer[1] == '\x72' && buffer[2] == '\x73') {\
+            buffer[0] = '\x66'; buffer[1] = '\x61'; buffer[2] = 0; \
             uprv_strcat(buffer, buffer+3); \
         } \
     }
@@ -1055,21 +1055,21 @@ uprv_convertToPosix(uint32_t hostid, char *posixID, int32_t posixIDCapacity, UEr
                 // Windows locale name may contain sorting variant, such as "es-ES_tradnl".
                 // In such cases, we need special mapping data found in the hardcoded table
                 // in this source file.
-                if (windowsLocaleName[i] == L'_')
+                if (windowsLocaleName[i] == L'\x5f')
                 {
                     // Keep the base locale, without variant
                     // TODO: Should these be mapped from _phoneb to @collation=phonebook, etc.?
-                    locName[i] = '\0';
+                    locName[i] = '\x0';
                     tmpLen = i;
                     bLookup = TRUE;
                     break;
                 }
-                else if (windowsLocaleName[i] == L'-')
+                else if (windowsLocaleName[i] == L'\x2d')
                 {
                     // Windows names use -, ICU uses _
-                    locName[i] = '_';
+                    locName[i] = '\x5f';
                 }
-                else if (windowsLocaleName[i] == L'\0')
+                else if (windowsLocaleName[i] == L'\x0')
                 {
                     // No point in doing more work than necessary
                     break;
@@ -1153,9 +1153,9 @@ uprv_convertToLCIDPlatform(const char* localeID)
     const char * mylocaleID = localeID;
 
     // Check any for keywords.
-    if (uprv_strchr(localeID, '@'))
+    if (uprv_strchr(localeID, '\x40'))
     {
-        len = uloc_getKeywordValue(localeID, "collation", collVal, UPRV_LENGTHOF(collVal) - 1, &myStatus);
+        len = uloc_getKeywordValue(localeID, u8"collation", collVal, UPRV_LENGTHOF(collVal) - 1, &myStatus);
         if (U_SUCCESS(myStatus) && len > 0)
         {
             // If it contains the keyword collation, return 0 so that the LCID lookup table will be used.
@@ -1185,7 +1185,7 @@ uprv_convertToLCIDPlatform(const char* localeID)
         int32_t i;
         for (i = 0; i < UPRV_LENGTHOF(bcp47Tag); i++)
         {
-            if (asciiBCP47Tag[i] == '\0')
+            if (asciiBCP47Tag[i] == '\x0')
             {
                 break;
             }
@@ -1199,7 +1199,7 @@ uprv_convertToLCIDPlatform(const char* localeID)
         if (i < (UPRV_LENGTHOF(bcp47Tag) - 1))
         {
             // Ensure it's null terminated
-            bcp47Tag[i] = L'\0';
+            bcp47Tag[i] = L'\x0';
             LCID lcid = LocaleNameToLCID(bcp47Tag, nameLCIDFlags);
             if (lcid > 0)
             {
@@ -1286,3 +1286,4 @@ uprv_convertToLCID(const char *langID, const char* posixID, UErrorCode* status)
     *status = U_ILLEGAL_ARGUMENT_ERROR;
     return 0;   /* return international (root) */
 }
+#undef USTR

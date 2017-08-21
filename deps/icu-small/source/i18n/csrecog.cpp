@@ -22,7 +22,7 @@ CharsetRecognizer::~CharsetRecognizer()
 
 const char *CharsetRecognizer::getLanguage() const
 {
-    return "";
+    return u8"";
 }
 
 U_NAMESPACE_END

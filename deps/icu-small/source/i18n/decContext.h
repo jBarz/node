@@ -8,7 +8,7 @@
 /* This software is made available under the terms of the             */
 /* ICU License -- ICU 1.8.1 and later.                                */
 /*                                                                    */
-/* The description and User's Guide ("The decNumber C Library") for   */
+/* The description and User's Guide (u8"The decNumber C Library") for   */
 /* this software is called decNumber.pdf.  This document is           */
 /* available, together with arithmetic and format specifications,     */
 /* testcases, and Web links, on the General Decimal Arithmetic page.  */
@@ -53,15 +53,15 @@
 
 #if !defined(DECCONTEXT)
   #define DECCONTEXT
-  #define DECCNAME     "decContext"                     /* Short name */
-  #define DECCFULLNAME "Decimal Context Descriptor"   /* Verbose name */
-  #define DECCAUTHOR   "Mike Cowlishaw"               /* Who to blame */
+  #define DECCNAME     u8"decContext"                     /* Short name */
+  #define DECCFULLNAME u8"Decimal Context Descriptor"   /* Verbose name */
+  #define DECCAUTHOR   u8"Mike Cowlishaw"               /* Who to blame */
 
   #if !defined(int32_t)
 /* #include <stdint.h>   */         /* C99 standard integers           */
   #endif
-  #include <stdio.h>               /* for printf, etc.                */
-  #include <signal.h>              /* for traps                       */
+   #include <stdio.h>               /* for printf, etc.                */
+   #include <signal.h>              /* for traps                       */
 
   /* Extended flags setting -- set this to 0 to use only IEEE flags   */
   #if !defined(DECEXTFLAG)
@@ -125,17 +125,17 @@
     DEC_CLASS_POS_INF
     };
   /* Strings for the decClasses */
-  #define DEC_ClassString_SN  "sNaN"
-  #define DEC_ClassString_QN  "NaN"
-  #define DEC_ClassString_NI  "-Infinity"
-  #define DEC_ClassString_NN  "-Normal"
-  #define DEC_ClassString_NS  "-Subnormal"
-  #define DEC_ClassString_NZ  "-Zero"
-  #define DEC_ClassString_PZ  "+Zero"
-  #define DEC_ClassString_PS  "+Subnormal"
-  #define DEC_ClassString_PN  "+Normal"
-  #define DEC_ClassString_PI  "+Infinity"
-  #define DEC_ClassString_UN  "Invalid"
+  #define DEC_ClassString_SN  u8"sNaN"
+  #define DEC_ClassString_QN  u8"NaN"
+  #define DEC_ClassString_NI  u8"-Infinity"
+  #define DEC_ClassString_NN  u8"-Normal"
+  #define DEC_ClassString_NS  u8"-Subnormal"
+  #define DEC_ClassString_NZ  u8"-Zero"
+  #define DEC_ClassString_PZ  u8"+Zero"
+  #define DEC_ClassString_PS  u8"+Subnormal"
+  #define DEC_ClassString_PN  u8"+Normal"
+  #define DEC_ClassString_PI  u8"+Infinity"
+  #define DEC_ClassString_UN  u8"Invalid"
 
   /* Trap-enabler and Status flags (exceptional conditions), and      */
   /* their names.  The top byte is reserved for internal use          */
@@ -218,24 +218,24 @@
   #define DEC_IEEE_854_Underflow         DEC_IEEE_754_Underflow
 
   /* Name strings for the exceptional conditions                      */
-  #define DEC_Condition_CS "Conversion syntax"
-  #define DEC_Condition_DZ "Division by zero"
-  #define DEC_Condition_DI "Division impossible"
-  #define DEC_Condition_DU "Division undefined"
-  #define DEC_Condition_IE "Inexact"
-  #define DEC_Condition_IS "Insufficient storage"
-  #define DEC_Condition_IC "Invalid context"
-  #define DEC_Condition_IO "Invalid operation"
+  #define DEC_Condition_CS u8"Conversion syntax"
+  #define DEC_Condition_DZ u8"Division by zero"
+  #define DEC_Condition_DI u8"Division impossible"
+  #define DEC_Condition_DU u8"Division undefined"
+  #define DEC_Condition_IE u8"Inexact"
+  #define DEC_Condition_IS u8"Insufficient storage"
+  #define DEC_Condition_IC u8"Invalid context"
+  #define DEC_Condition_IO u8"Invalid operation"
   #if DECSUBSET
-  #define DEC_Condition_LD "Lost digits"
+  #define DEC_Condition_LD u8"Lost digits"
   #endif
-  #define DEC_Condition_OV "Overflow"
-  #define DEC_Condition_PA "Clamped"
-  #define DEC_Condition_RO "Rounded"
-  #define DEC_Condition_SU "Subnormal"
-  #define DEC_Condition_UN "Underflow"
-  #define DEC_Condition_ZE "No status"
-  #define DEC_Condition_MU "Multiple status"
+  #define DEC_Condition_OV u8"Overflow"
+  #define DEC_Condition_PA u8"Clamped"
+  #define DEC_Condition_RO u8"Rounded"
+  #define DEC_Condition_SU u8"Subnormal"
+  #define DEC_Condition_UN u8"Underflow"
+  #define DEC_Condition_ZE u8"No status"
+  #define DEC_Condition_MU u8"Multiple status"
   #define DEC_Condition_Length 21  /* length of the longest string,   */
                                    /* including terminator            */
 

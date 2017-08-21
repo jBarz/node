@@ -74,8 +74,8 @@ ubidi_getPairedBracket(const UBiDiProps *bdp, UChar32 c);
 
 /* file definitions --------------------------------------------------------- */
 
-#define UBIDI_DATA_NAME "ubidi"
-#define UBIDI_DATA_TYPE "icu"
+#define UBIDI_DATA_NAME u8"ubidi"
+#define UBIDI_DATA_TYPE u8"icu"
 
 /* format "BiDi" */
 #define UBIDI_FMT_0 0x42

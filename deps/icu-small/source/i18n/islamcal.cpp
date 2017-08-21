@@ -35,7 +35,7 @@ static const UDate HIJRA_MILLIS = -42521587200000.0;    // 7/16/622 AD 00:00
 # include <stdarg.h>
 static void debug_islamcal_loc(const char *f, int32_t l)
 {
-    fprintf(stderr, "%s:%d: ", f, l);
+    fprintf(stderr, u8"%s:%d: ", f, l);
 }
 
 static void debug_islamcal_msg(const char *pat, ...)
@@ -211,20 +211,20 @@ const char *IslamicCalendar::getType() const {
 
     switch (cType) {
     case CIVIL:
-        sType = "islamic-civil";
+        sType = u8"islamic-civil";
         break;
     case ASTRONOMICAL:
-        sType = "islamic";
+        sType = u8"islamic";
         break;
     case TBLA:
-        sType = "islamic-tbla";
+        sType = u8"islamic-tbla";
         break;
     case UMALQURA:
-        sType = "islamic-umalqura";
+        sType = u8"islamic-umalqura";
         break;
     default:
         U_ASSERT(false); // out of range
-        sType = "islamic";  // "islamic" is used as the generic type
+        sType = u8"islamic";  // u8"islamic" is used as the generic type
         break;
     }
     return sType;
@@ -743,7 +743,7 @@ IslamicCalendar::initializeSystemDefaultCentury()
     // on the current time.  They'll be set to 80 years before
     // the current time.
     UErrorCode status = U_ZERO_ERROR;
-    IslamicCalendar calendar(Locale("@calendar=islamic-civil"),status);
+    IslamicCalendar calendar(Locale(u8"@calendar=islamic-civil"),status);
     if (U_SUCCESS(status)) {
         calendar.setTime(Calendar::getNow(), status);
         calendar.add(UCAL_YEAR, -80, status);

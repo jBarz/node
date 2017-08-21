@@ -37,9 +37,9 @@ struct DecimalFormatInternal {
   }
 #ifdef FMT_DEBUG
   void dump() const {
-    printf("DecimalFormatInternal: fFastFormatStatus=%c, fFastParseStatus=%c\n",
-           "NY?"[(int)fFastFormatStatus&3],
-           "NY?"[(int)fFastParseStatus&3]
+    printf(u8"DecimalFormatInternal: fFastFormatStatus=%c, fFastParseStatus=%c\n",
+           u8"NY?"[(int)fFastFormatStatus&3],
+           u8"NY?"[(int)fFastParseStatus&3]
            );
   }
 #endif

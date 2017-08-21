@@ -144,7 +144,7 @@ isAcceptable(void *context,
         pInfo->isBigEndian==U_IS_BIG_ENDIAN &&
         pInfo->charsetFamily==U_CHARSET_FAMILY &&
         pInfo->sizeofUChar==U_SIZEOF_UCHAR &&
-        pInfo->dataFormat[0]==0x52 &&   /* dataFormat="ResB" */
+        pInfo->dataFormat[0]==0x52 &&   /* dataFormat=u8"ResB" */
         pInfo->dataFormat[1]==0x65 &&
         pInfo->dataFormat[2]==0x73 &&
         pInfo->dataFormat[3]==0x42 &&
@@ -262,7 +262,7 @@ res_load(ResourceData *pResData,
     uprv_memset(pResData, 0, sizeof(ResourceData));
 
     /* load the ResourceBundle file */
-    pResData->data=udata_openChoice(path, "res", name, isAcceptable, formatVersion, errorCode);
+    pResData->data=udata_openChoice(path, u8"res", name, isAcceptable, formatVersion, errorCode);
     if(U_FAILURE(*errorCode)) {
         return;
     }
@@ -1010,7 +1010,7 @@ enum {
 };
 
 /* The table item key string is not locally available. */
-static const char *const gUnknownKey="";
+static const char *const gUnknownKey=u8"";
 
 /* resource table key for collation binaries: "%%CollationBin" */
 static const UChar gCollationBinKey[]={
@@ -1155,7 +1155,7 @@ ures_swapResource(const UDataSwapper *ds,
                 item=ds->readUInt32(p[i]);
                 ures_swapResource(ds, inBundle, outBundle, item, itemKey, pTempTable, pErrorCode);
                 if(U_FAILURE(*pErrorCode)) {
-                    udata_printError(ds, "ures_swapResource(table res=%08x)[%d].recurse(%08x) failed\n",
+                    udata_printError(ds, u8"ures_swapResource(table res=%08x)[%d].recurse(%08x) failed\n",
                                      res, i, item);
                     return;
                 }
@@ -1196,7 +1196,7 @@ ures_swapResource(const UDataSwapper *ds,
                            ures_compareRows, pTempTable->keyChars,
                            FALSE, pErrorCode);
             if(U_FAILURE(*pErrorCode)) {
-                udata_printError(ds, "ures_swapResource(table res=%08x).uprv_sortArray(%d items) failed\n",
+                udata_printError(ds, u8"ures_swapResource(table res=%08x).uprv_sortArray(%d items) failed\n",
                                  res, count);
                 return;
             }
@@ -1275,7 +1275,7 @@ ures_swapResource(const UDataSwapper *ds,
                 item=ds->readUInt32(p[i]);
                 ures_swapResource(ds, inBundle, outBundle, item, NULL, pTempTable, pErrorCode);
                 if(U_FAILURE(*pErrorCode)) {
-                    udata_printError(ds, "ures_swapResource(array res=%08x)[%d].recurse(%08x) failed\n",
+                    udata_printError(ds, u8"ures_swapResource(array res=%08x)[%d].recurse(%08x) failed\n",
                                      res, i, item);
                     return;
                 }
@@ -1324,7 +1324,7 @@ ures_swap(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x52 &&   /* dataFormat="ResB" */
+        pInfo->dataFormat[0]==0x52 &&   /* dataFormat=u8"ResB" */
         pInfo->dataFormat[1]==0x65 &&
         pInfo->dataFormat[2]==0x73 &&
         pInfo->dataFormat[3]==0x42 &&
@@ -1332,7 +1332,7 @@ ures_swap(const UDataSwapper *ds,
         ((pInfo->formatVersion[0]==1 && pInfo->formatVersion[1]>=1) ||
             pInfo->formatVersion[0]==2 || pInfo->formatVersion[0]==3)
     )) {
-        udata_printError(ds, "ures_swap(): data format %02x.%02x.%02x.%02x (format version %02x.%02x) is not a resource bundle\n",
+        udata_printError(ds, u8"ures_swap(): data format %02x.%02x.%02x.%02x (format version %02x.%02x) is not a resource bundle\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0], pInfo->formatVersion[1]);
@@ -1349,7 +1349,7 @@ ures_swap(const UDataSwapper *ds,
 
         /* formatVersion 1.1 must have a root item and at least 5 indexes */
         if(bundleLength<(1+5)) {
-            udata_printError(ds, "ures_swap(): too few bytes (%d after header) for a resource bundle\n",
+            udata_printError(ds, u8"ures_swap(): too few bytes (%d after header) for a resource bundle\n",
                              length-headerSize);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -1364,7 +1364,7 @@ ures_swap(const UDataSwapper *ds,
 
     indexLength=udata_readInt32(ds, inIndexes[URES_INDEX_LENGTH])&0xff;
     if(indexLength<=URES_INDEX_MAX_TABLE_LENGTH) {
-        udata_printError(ds, "ures_swap(): too few indexes for a 1.1+ resource bundle\n");
+        udata_printError(ds, u8"ures_swap(): too few indexes for a 1.1+ resource bundle\n");
         *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;
     }
@@ -1379,7 +1379,7 @@ ures_swap(const UDataSwapper *ds,
     maxTableLength=udata_readInt32(ds, inIndexes[URES_INDEX_MAX_TABLE_LENGTH]);
 
     if(0<=bundleLength && bundleLength<top) {
-        udata_printError(ds, "ures_swap(): resource top %d exceeds bundle length %d\n",
+        udata_printError(ds, u8"ures_swap(): resource top %d exceeds bundle length %d\n",
                          top, bundleLength);
         *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;
@@ -1412,7 +1412,7 @@ ures_swap(const UDataSwapper *ds,
         } else {
             tempTable.resFlags=(uint32_t *)uprv_malloc(resFlagsLength);
             if(tempTable.resFlags==NULL) {
-                udata_printError(ds, "ures_swap(): unable to allocate memory for tracking resources\n");
+                udata_printError(ds, u8"ures_swap(): unable to allocate memory for tracking resources\n");
                 *pErrorCode=U_MEMORY_ALLOCATION_ERROR;
                 return 0;
             }
@@ -1428,7 +1428,7 @@ ures_swap(const UDataSwapper *ds,
         udata_swapInvStringBlock(ds, inBundle+keysBottom, 4*(keysTop-keysBottom),
                                     outBundle+keysBottom, pErrorCode);
         if(U_FAILURE(*pErrorCode)) {
-            udata_printError(ds, "ures_swap().udata_swapInvStringBlock(keys[%d]) failed\n", 4*(keysTop-keysBottom));
+            udata_printError(ds, u8"ures_swap().udata_swapInvStringBlock(keys[%d]) failed\n", 4*(keysTop-keysBottom));
             return 0;
         }
 
@@ -1436,7 +1436,7 @@ ures_swap(const UDataSwapper *ds,
         if(keysTop<resBottom) {
             ds->swapArray16(ds, inBundle+keysTop, (resBottom-keysTop)*4, outBundle+keysTop, pErrorCode);
             if(U_FAILURE(*pErrorCode)) {
-                udata_printError(ds, "ures_swap().swapArray16(16-bit units[%d]) failed\n", 2*(resBottom-keysTop));
+                udata_printError(ds, u8"ures_swap().swapArray16(16-bit units[%d]) failed\n", 2*(resBottom-keysTop));
                 return 0;
             }
         }
@@ -1449,7 +1449,7 @@ ures_swap(const UDataSwapper *ds,
         } else {
             tempTable.rows=(Row *)uprv_malloc(maxTableLength*sizeof(Row)+maxTableLength*4);
             if(tempTable.rows==NULL) {
-                udata_printError(ds, "ures_swap(): unable to allocate memory for sorting tables (max length: %d)\n",
+                udata_printError(ds, u8"ures_swap(): unable to allocate memory for sorting tables (max length: %d)\n",
                                  maxTableLength);
                 *pErrorCode=U_MEMORY_ALLOCATION_ERROR;
                 if(tempTable.resFlags!=stackResFlags) {
@@ -1463,7 +1463,7 @@ ures_swap(const UDataSwapper *ds,
         /* swap the resources */
         ures_swapResource(ds, inBundle, outBundle, rootRes, NULL, &tempTable, pErrorCode);
         if(U_FAILURE(*pErrorCode)) {
-            udata_printError(ds, "ures_swapResource(root res=%08x) failed\n",
+            udata_printError(ds, u8"ures_swapResource(root res=%08x) failed\n",
                              rootRes);
         }
 

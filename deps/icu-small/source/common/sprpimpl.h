@@ -31,7 +31,7 @@
 #include "udataswp.h"
 #include "ubidi_props.h"
 
-#define _SPREP_DATA_TYPE "spp"
+#define _SPREP_DATA_TYPE u8"spp"
 
 enum UStringPrepType{
     USPREP_UNASSIGNED           = 0x0000 ,
@@ -45,11 +45,11 @@ typedef enum UStringPrepType UStringPrepType;
 
 #ifdef USPREP_TYPE_NAMES_ARRAY
 static const char* usprepTypeNames[] ={
-    "UNASSIGNED" ,
-    "MAP" ,
-    "PROHIBITED" ,
-    "DELETE",
-    "TYPE_LIMIT"
+    u8"UNASSIGNED" ,
+    u8"MAP" ,
+    u8"PROHIBITED" ,
+    u8"DELETE",
+    u8"TYPE_LIMIT"
 };
 #endif
 

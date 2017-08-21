@@ -132,7 +132,7 @@ enum UDisplayContext {
     /**
      * A possible setting for DISPLAY_LENGTH:
      * use full names when generating a locale name,
-     * e.g. "United States" for US.
+     * e.g. u8"United States" for US.
      * @stable ICU 54
      */
     UDISPCTX_LENGTH_FULL = (UDISPCTX_TYPE_DISPLAY_LENGTH<<8) + 0,

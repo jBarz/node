@@ -95,13 +95,13 @@ enum {
                                //    3rd   Operand:  Minimum count.
                                //    4th   Operand:  Max count, -1 for unbounded.
 
-     URX_DOTANY_UNIX   = 27,   // '.' operator in UNIX_LINES mode, only \n marks end of line.
+     URX_DOTANY_UNIX   = 27,   // '\x2e' operator in UNIX_LINES mode, only \n marks end of line.
 
      URX_CTR_LOOP      = 28,   // Loop Ops for {interval} loops.
      URX_CTR_LOOP_NG   = 29,   //   Also in three flavors.
                                //   Operand is loc of corresponding CTR_INIT.
 
-     URX_CARET_M_UNIX  = 30,   // '^' operator, test for start of line in multi-line
+     URX_CARET_M_UNIX  = 30,   // '\x5e' operator, test for start of line in multi-line
                                //      plus UNIX_LINES mode.
 
      URX_RELOC_OPRND   = 31,   // Operand value in multi-operand ops that refers
@@ -185,65 +185,65 @@ enum {
 // Keep this list of opcode names in sync with the above enum
 //   Used for debug printing only.
 #define URX_OPCODE_NAMES       \
-        "               ",     \
-        "BACKTRACK",           \
-        "END",                 \
-        "ONECHAR",             \
-        "STRING",              \
-        "STRING_LEN",          \
-        "STATE_SAVE",          \
-        "NOP",                 \
-        "START_CAPTURE",       \
-        "END_CAPTURE",         \
-        "URX_STATIC_SETREF",   \
-        "SETREF",              \
-        "DOTANY",              \
-        "JMP",                 \
-        "FAIL",                \
-        "JMP_SAV",             \
-        "BACKSLASH_B",         \
-        "BACKSLASH_G",         \
-        "JMP_SAV_X",           \
-        "BACKSLASH_X",         \
-        "BACKSLASH_Z",         \
-        "DOTANY_ALL",          \
-        "BACKSLASH_D",         \
-        "CARET",               \
-        "DOLLAR",              \
-        "CTR_INIT",            \
-        "CTR_INIT_NG",         \
-        "DOTANY_UNIX",         \
-        "CTR_LOOP",            \
-        "CTR_LOOP_NG",         \
-        "URX_CARET_M_UNIX",    \
-        "RELOC_OPRND",         \
-        "STO_SP",              \
-        "LD_SP",               \
-        "BACKREF",             \
-        "STO_INP_LOC",         \
-        "JMPX",                \
-        "LA_START",            \
-        "LA_END",              \
-        "ONECHAR_I",           \
-        "STRING_I",            \
-        "BACKREF_I",           \
-        "DOLLAR_M",            \
-        "CARET_M",             \
-        "LB_START",            \
-        "LB_CONT",             \
-        "LB_END",              \
-        "LBN_CONT",            \
-        "LBN_END",             \
-        "STAT_SETREF_N",       \
-        "LOOP_SR_I",           \
-        "LOOP_C",              \
-        "LOOP_DOT_I",          \
-        "BACKSLASH_BU",        \
-        "DOLLAR_D",            \
-        "DOLLAR_MD",           \
-        "URX_BACKSLASH_H",     \
-        "URX_BACKSLASH_R",     \
-        "URX_BACKSLASH_V"
+        u8"               ",     \
+        u8"BACKTRACK",           \
+        u8"END",                 \
+        u8"ONECHAR",             \
+        u8"STRING",              \
+        u8"STRING_LEN",          \
+        u8"STATE_SAVE",          \
+        u8"NOP",                 \
+        u8"START_CAPTURE",       \
+        u8"END_CAPTURE",         \
+        u8"URX_STATIC_SETREF",   \
+        u8"SETREF",              \
+        u8"DOTANY",              \
+        u8"JMP",                 \
+        u8"FAIL",                \
+        u8"JMP_SAV",             \
+        u8"BACKSLASH_B",         \
+        u8"BACKSLASH_G",         \
+        u8"JMP_SAV_X",           \
+        u8"BACKSLASH_X",         \
+        u8"BACKSLASH_Z",         \
+        u8"DOTANY_ALL",          \
+        u8"BACKSLASH_D",         \
+        u8"CARET",               \
+        u8"DOLLAR",              \
+        u8"CTR_INIT",            \
+        u8"CTR_INIT_NG",         \
+        u8"DOTANY_UNIX",         \
+        u8"CTR_LOOP",            \
+        u8"CTR_LOOP_NG",         \
+        u8"URX_CARET_M_UNIX",    \
+        u8"RELOC_OPRND",         \
+        u8"STO_SP",              \
+        u8"LD_SP",               \
+        u8"BACKREF",             \
+        u8"STO_INP_LOC",         \
+        u8"JMPX",                \
+        u8"LA_START",            \
+        u8"LA_END",              \
+        u8"ONECHAR_I",           \
+        u8"STRING_I",            \
+        u8"BACKREF_I",           \
+        u8"DOLLAR_M",            \
+        u8"CARET_M",             \
+        u8"LB_START",            \
+        u8"LB_CONT",             \
+        u8"LB_END",              \
+        u8"LBN_CONT",            \
+        u8"LBN_END",             \
+        u8"STAT_SETREF_N",       \
+        u8"LOOP_SR_I",           \
+        u8"LOOP_C",              \
+        u8"LOOP_DOT_I",          \
+        u8"BACKSLASH_BU",        \
+        u8"DOLLAR_D",            \
+        u8"DOLLAR_MD",           \
+        u8"URX_BACKSLASH_H",     \
+        u8"URX_BACKSLASH_R",     \
+        u8"URX_BACKSLASH_V"
 
 
 //
@@ -309,13 +309,13 @@ enum StartOfMatch {
     START_STRING               // Match starts with a literal string.
 };
 
-#define START_OF_MATCH_STR(v) ((v)==START_NO_INFO? "START_NO_INFO" : \
-                               (v)==START_CHAR?    "START_CHAR"    : \
-                               (v)==START_SET?     "START_SET"     : \
-                               (v)==START_START?   "START_START"   : \
-                               (v)==START_LINE?    "START_LINE"    : \
-                               (v)==START_STRING?  "START_STRING"  : \
-                                                   "ILLEGAL")
+#define START_OF_MATCH_STR(v) ((v)==START_NO_INFO? u8"START_NO_INFO" : \
+                               (v)==START_CHAR?    u8"START_CHAR"    : \
+                               (v)==START_SET?     u8"START_SET"     : \
+                               (v)==START_START?   u8"START_START"   : \
+                               (v)==START_LINE?    u8"START_LINE"    : \
+                               (v)==START_STRING?  u8"START_STRING"  : \
+                                                   u8"ILLEGAL")
 
 //
 //  8 bit set, to fast-path latin-1 set membership tests.

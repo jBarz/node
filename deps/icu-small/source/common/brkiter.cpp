@@ -55,7 +55,7 @@ BreakIterator*
 BreakIterator::buildInstance(const Locale& loc, const char *type, int32_t kind, UErrorCode &status)
 {
     char fnbuff[256];
-    char ext[4]={'\0'};
+    char ext[4]={'\x0'};
     CharString actualLocale;
     int32_t size;
     const UChar* brkfname = NULL;
@@ -76,7 +76,7 @@ BreakIterator::buildInstance(const Locale& loc, const char *type, int32_t kind, 
 
     // Get the "boundaries" array.
     if (U_SUCCESS(status)) {
-        brkRules = ures_getByKeyWithFallback(b, "boundaries", brkRules, &status);
+        brkRules = ures_getByKeyWithFallback(b, u8"boundaries", brkRules, &status);
         // Get the string object naming the rules file
         brkName = ures_getByKeyWithFallback(brkRules, type, brkName, &status);
         // Get the actual string
@@ -233,7 +233,7 @@ ICUBreakIteratorFactory::~ICUBreakIteratorFactory() {}
 class ICUBreakIteratorService : public ICULocaleService {
 public:
     ICUBreakIteratorService()
-        : ICULocaleService(UNICODE_STRING("Break Iterator", 14))
+        : ICULocaleService(UNICODE_STRING(u8"Break Iterator", 14))
     {
         UErrorCode status = U_ZERO_ERROR;
         registerFactory(new ICUBreakIteratorFactory(), status);
@@ -360,7 +360,7 @@ BreakIterator::createInstance(const Locale& loc, int32_t kind, UErrorCode& statu
 
 #if !UCONFIG_NO_SERVICE
     if (hasService()) {
-        Locale actualLoc("");
+        Locale actualLoc(u8"");
         BreakIterator *result = (BreakIterator*)gService->get(loc, kind, &actualLoc, status);
         // TODO: The way the service code works in ICU 2.8 is that if
         // there is a real registered break iterator, the actualLoc
@@ -400,32 +400,32 @@ BreakIterator::makeInstance(const Locale& loc, int32_t kind, UErrorCode& status)
     BreakIterator *result = NULL;
     switch (kind) {
     case UBRK_CHARACTER:
-        result = BreakIterator::buildInstance(loc, "grapheme", kind, status);
+        result = BreakIterator::buildInstance(loc, u8"grapheme", kind, status);
         break;
     case UBRK_WORD:
-        result = BreakIterator::buildInstance(loc, "word", kind, status);
+        result = BreakIterator::buildInstance(loc, u8"word", kind, status);
         break;
     case UBRK_LINE:
-        uprv_strcpy(lbType, "line");
+        uprv_strcpy(lbType, u8"line");
         {
             char lbKeyValue[kKeyValueLenMax] = {0};
             UErrorCode kvStatus = U_ZERO_ERROR;
-            int32_t kLen = loc.getKeywordValue("lb", lbKeyValue, kKeyValueLenMax, kvStatus);
-            if (U_SUCCESS(kvStatus) && kLen > 0 && (uprv_strcmp(lbKeyValue,"strict")==0 || uprv_strcmp(lbKeyValue,"normal")==0 || uprv_strcmp(lbKeyValue,"loose")==0)) {
-                uprv_strcat(lbType, "_");
+            int32_t kLen = loc.getKeywordValue(u8"lb", lbKeyValue, kKeyValueLenMax, kvStatus);
+            if (U_SUCCESS(kvStatus) && kLen > 0 && (uprv_strcmp(lbKeyValue,u8"strict")==0 || uprv_strcmp(lbKeyValue,u8"normal")==0 || uprv_strcmp(lbKeyValue,u8"loose")==0)) {
+                uprv_strcat(lbType, u8"_");
                 uprv_strcat(lbType, lbKeyValue);
             }
         }
         result = BreakIterator::buildInstance(loc, lbType, kind, status);
         break;
     case UBRK_SENTENCE:
-        result = BreakIterator::buildInstance(loc, "sentence", kind, status);
+        result = BreakIterator::buildInstance(loc, u8"sentence", kind, status);
 #if !UCONFIG_NO_FILTERED_BREAK_ITERATION
         {
             char ssKeyValue[kKeyValueLenMax] = {0};
             UErrorCode kvStatus = U_ZERO_ERROR;
-            int32_t kLen = loc.getKeywordValue("ss", ssKeyValue, kKeyValueLenMax, kvStatus);
-            if (U_SUCCESS(kvStatus) && kLen > 0 && uprv_strcmp(ssKeyValue,"standard")==0) {
+            int32_t kLen = loc.getKeywordValue(u8"ss", ssKeyValue, kKeyValueLenMax, kvStatus);
+            if (U_SUCCESS(kvStatus) && kLen > 0 && uprv_strcmp(ssKeyValue,u8"standard")==0) {
                 FilteredBreakIteratorBuilder* fbiBuilder = FilteredBreakIteratorBuilder::createInstance(loc, kvStatus);
                 if (U_SUCCESS(kvStatus)) {
                     result = fbiBuilder->build(result, status);
@@ -436,7 +436,7 @@ BreakIterator::makeInstance(const Locale& loc, int32_t kind, UErrorCode& status)
 #endif
         break;
     case UBRK_TITLE:
-        result = BreakIterator::buildInstance(loc, "title", kind, status);
+        result = BreakIterator::buildInstance(loc, u8"title", kind, status);
         break;
     default:
         status = U_ILLEGAL_ARGUMENT_ERROR;

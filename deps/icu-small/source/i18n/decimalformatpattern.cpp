@@ -19,7 +19,7 @@
 
 
 #ifdef FMT_DEBUG
-#define debug(x) printf("%s:%d: %s\n", __FILE__,__LINE__, x);
+#define debug(x) printf(u8"%s:%d: %s\n", __FILE__,__LINE__, x);
 #else
 #define debug(x)
 #endif
@@ -221,7 +221,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                            ch == fSigDigit) {
                     if (digitRightCount > 0) {
                         // Unexpected '0'
-                        debug("Unexpected '0'")
+                        debug(u8"Unexpected '0'")
                         status = U_UNEXPECTED_TOKEN;
                         syntaxError(pattern,pos,parseError);
                         return;
@@ -233,7 +233,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                             roundingPos = digitLeftCount + zeroDigitCount;
                         }
                         if (roundingPos >= 0) {
-                            roundingInc.append((char)(ch - fZeroDigit + '0'));
+                            roundingInc.append((char)(ch - fZeroDigit + '\x30'));
                         }
                         ++zeroDigitCount;
                     }
@@ -244,7 +244,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                 } else if (pattern.compare(pos, groupSepLen, fGroupingSeparator) == 0) {
                     if (decimalPos >= 0) {
                         // Grouping separator after decimal
-                        debug("Grouping separator after decimal")
+                        debug(u8"Grouping separator after decimal")
                         status = U_UNEXPECTED_TOKEN;
                         syntaxError(pattern,pos,parseError);
                         return;
@@ -255,7 +255,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                 } else if (pattern.compare(pos, decimalSepLen, fDecimalSeparator) == 0) {
                     if (decimalPos >= 0) {
                         // Multiple decimal separators
-                        debug("Multiple decimal separators")
+                        debug(u8"Multiple decimal separators")
                         status = U_MULTIPLE_DECIMAL_SEPARATORS;
                         syntaxError(pattern,pos,parseError);
                         return;
@@ -269,14 +269,14 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                     if (pattern.compare(pos, fExponent.length(), fExponent) == 0) {
                         if (expDigits >= 0) {
                             // Multiple exponential symbols
-                            debug("Multiple exponential symbols")
+                            debug(u8"Multiple exponential symbols")
                             status = U_MULTIPLE_EXPONENTIAL_SYMBOLS;
                             syntaxError(pattern,pos,parseError);
                             return;
                         }
                         if (groupingCount >= 0) {
                             // Grouping separator in exponential pattern
-                            debug("Grouping separator in exponential pattern")
+                            debug(u8"Grouping separator in exponential pattern")
                             status = U_MALFORMED_EXPONENTIAL_PATTERN;
                             syntaxError(pattern,pos,parseError);
                             return;
@@ -305,7 +305,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                             (sigDigitCount > 0 && digitLeftCount > 0) ||
                             expDigits < 1) {
                             // Malformed exponential pattern
-                            debug("Malformed exponential pattern")
+                            debug(u8"Malformed exponential pattern")
                             status = U_MALFORMED_EXPONENTIAL_PATTERN;
                             syntaxError(pattern,pos,parseError);
                             return;
@@ -379,7 +379,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                     // separators in the second pattern (part == 1).
                     if (subpart == 1 || part == 1) {
                         // Unexpected separator
-                        debug("Unexpected separator")
+                        debug(u8"Unexpected separator")
                         status = U_UNEXPECTED_TOKEN;
                         syntaxError(pattern,pos,parseError);
                         return;
@@ -392,7 +392,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                     // Next handle characters which are appended directly.
                     if (multiplier != 1) {
                         // Too many percent/perMill characters
-                        debug("Too many percent characters")
+                        debug(u8"Too many percent characters")
                         status = U_MULTIPLE_PERCENT_SYMBOLS;
                         syntaxError(pattern,pos,parseError);
                         return;
@@ -406,7 +406,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                     // Next handle characters which are appended directly.
                     if (multiplier != 1) {
                         // Too many percent/perMill characters
-                        debug("Too many perMill characters")
+                        debug(u8"Too many perMill characters")
                         status = U_MULTIPLE_PERMILL_SYMBOLS;
                         syntaxError(pattern,pos,parseError);
                         return;
@@ -419,7 +419,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                 } else if (pattern.compare(pos, fPadEscape.length(), fPadEscape) == 0) {
                     if (padPos >= 0 ||               // Multiple pad specifiers
                         (pos+1) == pattern.length()) { // Nothing after padEscape
-                        debug("Multiple pad specifiers")
+                        debug(u8"Multiple pad specifiers")
                         status = U_MULTIPLE_PAD_SPECIFIERS;
                         syntaxError(pattern,pos,parseError);
                         return;
@@ -493,7 +493,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
             // Handle "###.###" and "###." and ".###"
             int n = decimalPos;
             if (n == 0)
-                ++n; // Handle ".###"
+                ++n; // Handle u8".###"
             digitRightCount = digitLeftCount - n;
             digitLeftCount = n - 1;
             zeroDigitCount = 1;
@@ -509,7 +509,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
             (sigDigitCount > 0 && zeroDigitCount > 0) ||
             subpart > 2)
         { // subpart > 2 == unmatched quote
-            debug("Syntax error")
+            debug(u8"Syntax error")
             status = U_PATTERN_SYNTAX_ERROR;
             syntaxError(pattern,pos,parseError);
             return;
@@ -527,7 +527,7 @@ DecimalFormatPatternParser::applyPatternWithoutExpandAffix(
                 padPos = DecimalFormatPattern::kPadAfterSuffix;
             } else {
                 // Illegal pad position
-                debug("Illegal pad position")
+                debug(u8"Illegal pad position")
                 status = U_ILLEGAL_PAD_POSITION;
                 syntaxError(pattern,pos,parseError);
                 return;

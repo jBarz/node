@@ -276,7 +276,7 @@ CollationData::makeReorderRanges(const int32_t *reorder, int32_t length,
     }
 
     // Reorder according to the input scripts, continuing from the bottom of the primary range.
-    int32_t originalLength = length;  // length will be decremented if "others" is in the list.
+    int32_t originalLength = length;  // length will be decremented if u8"others" is in the list.
     UBool hasReorderToEnd = FALSE;
     for(int32_t i = 0; i < length;) {
         int32_t script = reorder[i++];

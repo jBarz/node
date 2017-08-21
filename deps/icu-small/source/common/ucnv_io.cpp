@@ -171,8 +171,8 @@ typedef struct UAliasContext {
     uint32_t listIdx;
 } UAliasContext;
 
-static const char DATA_NAME[] = "cnvalias";
-static const char DATA_TYPE[] = "icu";
+static const char DATA_NAME[] = u8"cnvalias";
+static const char DATA_TYPE[] = u8"icu";
 
 static UDataMemory *gAliasData=NULL;
 static icu::UInitOnce gAliasDataInitOnce = U_INITONCE_INITIALIZER;
@@ -209,7 +209,7 @@ isAcceptable(void * /*context*/,
         pInfo->size>=20 &&
         pInfo->isBigEndian==U_IS_BIG_ENDIAN &&
         pInfo->charsetFamily==U_CHARSET_FAMILY &&
-        pInfo->dataFormat[0]==0x43 &&   /* dataFormat="CvAl" */
+        pInfo->dataFormat[0]==0x43 &&   /* dataFormat=u8"CvAl" */
         pInfo->dataFormat[1]==0x76 &&
         pInfo->dataFormat[2]==0x41 &&
         pInfo->dataFormat[3]==0x6c &&
@@ -745,7 +745,7 @@ ucnv_io_getConverterName(const char *alias, UBool *containsOption, UErrorCode *p
              * the name begins with 'x-'. If it does, strip it off and try
              * again.  This behaviour is similar to how ICU4J does it.
              */
-            if (aliasTmp[0] == 'x' && aliasTmp[1] == '-') {
+            if (aliasTmp[0] == '\x78' && aliasTmp[1] == '\x2d') {
                 aliasTmp = aliasTmp+2;
             } else {
                 break;
@@ -1160,13 +1160,13 @@ ucnv_swapAliases(const UDataSwapper *ds,
     /* check data format and format version */
     pInfo=(const UDataInfo *)((const char *)inData+4);
     if(!(
-        pInfo->dataFormat[0]==0x43 &&   /* dataFormat="CvAl" */
+        pInfo->dataFormat[0]==0x43 &&   /* dataFormat=u8"CvAl" */
         pInfo->dataFormat[1]==0x76 &&
         pInfo->dataFormat[2]==0x41 &&
         pInfo->dataFormat[3]==0x6c &&
         pInfo->formatVersion[0]==3
     )) {
-        udata_printError(ds, "ucnv_swapAliases(): data format %02x.%02x.%02x.%02x (format version %02x) is not an alias table\n",
+        udata_printError(ds, u8"ucnv_swapAliases(): data format %02x.%02x.%02x.%02x (format version %02x) is not an alias table\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
                          pInfo->dataFormat[2], pInfo->dataFormat[3],
                          pInfo->formatVersion[0]);
@@ -1176,7 +1176,7 @@ ucnv_swapAliases(const UDataSwapper *ds,
 
     /* an alias table must contain at least the table of contents array */
     if(length>=0 && (length-headerSize)<4*(1+minTocLength)) {
-        udata_printError(ds, "ucnv_swapAliases(): too few bytes (%d after header) for an alias table\n",
+        udata_printError(ds, u8"ucnv_swapAliases(): too few bytes (%d after header) for an alias table\n",
                          length-headerSize);
         *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
         return 0;
@@ -1187,7 +1187,7 @@ ucnv_swapAliases(const UDataSwapper *ds,
     uprv_memset(toc, 0, sizeof(toc));
     toc[tocLengthIndex]=tocLength=ds->readUInt32(inSectionSizes[tocLengthIndex]);
     if(tocLength<minTocLength || offsetsCount<=tocLength) {
-        udata_printError(ds, "ucnv_swapAliases(): table of contents contains unsupported number of sections (%u sections)\n", tocLength);
+        udata_printError(ds, u8"ucnv_swapAliases(): table of contents contains unsupported number of sections (%u sections)\n", tocLength);
         *pErrorCode=U_INVALID_FORMAT_ERROR;
         return 0;
     }
@@ -1214,7 +1214,7 @@ ucnv_swapAliases(const UDataSwapper *ds,
         uint16_t oldIndex;
 
         if((length-headerSize)<(2*(int32_t)topOffset)) {
-            udata_printError(ds, "ucnv_swapAliases(): too few bytes (%d after header) for an alias table\n",
+            udata_printError(ds, u8"ucnv_swapAliases(): too few bytes (%d after header) for an alias table\n",
                              length-headerSize);
             *pErrorCode=U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
@@ -1229,7 +1229,7 @@ ucnv_swapAliases(const UDataSwapper *ds,
         ds->swapInvChars(ds, inTable+offsets[stringTableIndex], 2*(int32_t)(toc[stringTableIndex]+toc[normalizedStringTableIndex]),
                              outTable+offsets[stringTableIndex], pErrorCode);
         if(U_FAILURE(*pErrorCode)) {
-            udata_printError(ds, "ucnv_swapAliases().swapInvChars(charset names) failed\n");
+            udata_printError(ds, u8"ucnv_swapAliases().swapInvChars(charset names) failed\n");
             return 0;
         }
 
@@ -1252,7 +1252,7 @@ ucnv_swapAliases(const UDataSwapper *ds,
             } else {
                 tempTable.rows=(TempRow *)uprv_malloc(count*sizeof(TempRow)+count*2);
                 if(tempTable.rows==NULL) {
-                    udata_printError(ds, "ucnv_swapAliases(): unable to allocate memory for sorting tables (max length: %u)\n",
+                    udata_printError(ds, u8"ucnv_swapAliases(): unable to allocate memory for sorting tables (max length: %u)\n",
                                      count);
                     *pErrorCode=U_MEMORY_ALLOCATION_ERROR;
                     return 0;
@@ -1325,7 +1325,7 @@ ucnv_swapAliases(const UDataSwapper *ds,
             }
 
             if(U_FAILURE(*pErrorCode)) {
-                udata_printError(ds, "ucnv_swapAliases().uprv_sortArray(%u items) failed\n",
+                udata_printError(ds, u8"ucnv_swapAliases().uprv_sortArray(%u items) failed\n",
                                  count);
                 return 0;
             }

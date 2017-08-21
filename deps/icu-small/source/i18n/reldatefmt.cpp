@@ -273,19 +273,19 @@ struct RelDateTimeFmtDataSink : public ResourceSink {
     }
 
     static int32_t keyToDirection(const char* key) {
-        if (uprv_strcmp(key, "-2") == 0) {
+        if (uprv_strcmp(key, u8"-2") == 0) {
             return UDAT_DIRECTION_LAST_2;
         }
-        if (uprv_strcmp(key, "-1") == 0) {
+        if (uprv_strcmp(key, u8"-1") == 0) {
             return UDAT_DIRECTION_LAST;
         }
-        if (uprv_strcmp(key, "0") == 0) {
+        if (uprv_strcmp(key, u8"0") == 0) {
             return UDAT_DIRECTION_THIS;
         }
-        if (uprv_strcmp(key, "1") == 0) {
+        if (uprv_strcmp(key, u8"1") == 0) {
             return UDAT_DIRECTION_NEXT;
         }
-        if (uprv_strcmp(key, "2") == 0) {
+        if (uprv_strcmp(key, u8"2") == 0) {
             return UDAT_DIRECTION_NEXT_2;
         }
         return -1;
@@ -312,10 +312,10 @@ struct RelDateTimeFmtDataSink : public ResourceSink {
     // Utility functions
     static UDateRelativeDateTimeFormatterStyle styleFromString(const char *s) {
         int32_t len = uprv_strlen(s);
-        if (len >= 7 && uprv_strcmp(s + len - 7, "-narrow") == 0) {
+        if (len >= 7 && uprv_strcmp(s + len - 7, u8"-narrow") == 0) {
             return UDAT_STYLE_NARROW;
         }
-        if (len >= 6 && uprv_strcmp(s + len - 6, "-short") == 0) {
+        if (len >= 6 && uprv_strcmp(s + len - 6, u8"-short") == 0) {
             return UDAT_STYLE_SHORT;
         }
         return UDAT_STYLE_LONG;
@@ -349,47 +349,47 @@ struct RelDateTimeFmtDataSink : public ResourceSink {
         // Quick check from string to enum.
         switch (length) {
             case 3:
-                if (uprv_strncmp(keyword, "day", length) == 0) {
+                if (uprv_strncmp(keyword, u8"day", length) == 0) {
                     return DAY;
-                } else if (uprv_strncmp(keyword, "sun", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"sun", length) == 0) {
                     return SUNDAY;
-                } else if (uprv_strncmp(keyword, "mon", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"mon", length) == 0) {
                     return MONDAY;
-                } else if (uprv_strncmp(keyword, "tue", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"tue", length) == 0) {
                     return TUESDAY;
-                } else if (uprv_strncmp(keyword, "wed", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"wed", length) == 0) {
                     return WEDNESDAY;
-                } else if (uprv_strncmp(keyword, "thu", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"thu", length) == 0) {
                     return THURSDAY;
-                } else if (uprv_strncmp(keyword, "fri", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"fri", length) == 0) {
                     return FRIDAY;
-                } else if (uprv_strncmp(keyword, "sat", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"sat", length) == 0) {
                     return SATURDAY;
                 }
                 break;
             case 4:
-                if (uprv_strncmp(keyword, "hour", length) == 0) {
+                if (uprv_strncmp(keyword, u8"hour", length) == 0) {
                     return HOUR;
-                } else if (uprv_strncmp(keyword, "week", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"week", length) == 0) {
                     return WEEK;
-                } else if (uprv_strncmp(keyword, "year", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"year", length) == 0) {
                     return YEAR;
                 }
                 break;
             case 5:
-                if (uprv_strncmp(keyword, "month", length) == 0) {
+                if (uprv_strncmp(keyword, u8"month", length) == 0) {
                     return MONTH;
                 }
                 break;
             case 6:
-                if (uprv_strncmp(keyword, "minute", length) == 0) {
+                if (uprv_strncmp(keyword, u8"minute", length) == 0) {
                     return MINUTE;
-                } else if (uprv_strncmp(keyword, "second", length) == 0) {
+                } else if (uprv_strncmp(keyword, u8"second", length) == 0) {
                     return SECOND;
                 }
                 break;
             case 7:
-                if (uprv_strncmp(keyword, "quarter", length) == 0) {
+                if (uprv_strncmp(keyword, u8"quarter", length) == 0) {
                     return QUARTER;  // TODO: Check @provisional
                   }
                 break;
@@ -429,7 +429,7 @@ struct RelDateTimeFmtDataSink : public ResourceSink {
                 }
 
                 int32_t relUnitIndex = relUnitFromGeneric(genericUnit);
-                if (relUnitIndex == UDAT_RELATIVE_SECONDS && uprv_strcmp(key, "0") == 0 &&
+                if (relUnitIndex == UDAT_RELATIVE_SECONDS && uprv_strcmp(key, u8"0") == 0 &&
                     outputData.absoluteUnits[style][UDAT_ABSOLUTE_NOW][UDAT_DIRECTION_PLAIN].isEmpty()) {
                     // Handle "NOW"
                     outputData.absoluteUnits[style][UDAT_ABSOLUTE_NOW]
@@ -483,9 +483,9 @@ struct RelDateTimeFmtDataSink : public ResourceSink {
             return;
         }
         for (int32_t i = 0; relativeTimeTable.getKeyAndValue(i, key, value); ++i) {
-            if (uprv_strcmp(key, "past") == 0) {
+            if (uprv_strcmp(key, u8"past") == 0) {
                 pastFutureIndex = 0;
-            } else if (uprv_strcmp(key, "future") == 0) {
+            } else if (uprv_strcmp(key, u8"future") == 0) {
                 pastFutureIndex = 1;
             } else {
                 // Unknown key.
@@ -522,13 +522,13 @@ struct RelDateTimeFmtDataSink : public ResourceSink {
 
         for (int32_t i = 0; unitTypesTable.getKeyAndValue(i, key, value); ++i) {
             // Handle display name.
-            if (uprv_strcmp(key, "dn") == 0 && value.getType() == URES_STRING) {
+            if (uprv_strcmp(key, u8"dn") == 0 && value.getType() == URES_STRING) {
                 handlePlainDirection(value, errorCode);
             }
             if (value.getType() == URES_TABLE) {
-                if (uprv_strcmp(key, "relative") == 0) {
+                if (uprv_strcmp(key, u8"relative") == 0) {
                     consumeTableRelative(key, value, errorCode);
-                } else if (uprv_strcmp(key, "relativeTime") == 0) {
+                } else if (uprv_strcmp(key, u8"relativeTime") == 0) {
                     consumeTableRelativeTime(key, value, errorCode);
                 }
             }
@@ -593,7 +593,7 @@ static UBool loadUnitData(
 
     RelDateTimeFmtDataSink sink(cacheData);
 
-    ures_getAllItemsWithFallback(resource, "fields", sink, status);
+    ures_getAllItemsWithFallback(resource, u8"fields", sink, status);
 
     // Get the weekday names from DateFormatSymbols.
     loadWeekdayNames(cacheData.absoluteUnits, localeId, status);
@@ -607,15 +607,15 @@ static UBool getDateTimePattern(
     UnicodeString defaultCalendarName;
     if (!getStringWithFallback(
             resource,
-            "calendar/default",
+            u8"calendar/default",
             defaultCalendarName,
             status)) {
         return FALSE;
     }
     CharString pathBuffer;
-    pathBuffer.append("calendar/", status)
+    pathBuffer.append(u8"calendar/", status)
             .appendInvariantChars(defaultCalendarName, status)
-            .append("/DateTimePatterns", status);
+            .append(u8"/DateTimePatterns", status);
     LocalUResourceBundlePointer topLevel(
             ures_getByKeyWithFallback(
                     resource, pathBuffer.data(), NULL, &status));

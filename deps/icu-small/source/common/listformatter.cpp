@@ -63,7 +63,7 @@ ListFormatInternal(const ListFormatInternal &other) :
 
 static Hashtable* listPatternHash = NULL;
 static UMutex listFormatterMutex = U_MUTEX_INITIALIZER;
-static const char *STANDARD_STYLE = "standard";
+static const char *STANDARD_STYLE = u8"standard";
 
 U_CDECL_BEGIN
 static UBool U_CALLCONV uprv_listformatter_cleanup() {
@@ -124,7 +124,7 @@ const ListFormatInternal* ListFormatter::getListFormatInternal(
         return NULL;
     }
     CharString keyBuffer(locale.getName(), errorCode);
-    keyBuffer.append(':', errorCode).append(style, errorCode);
+    keyBuffer.append('\x3a', errorCode).append(style, errorCode);
     UnicodeString key(keyBuffer.data(), -1, US_INV);
     ListFormatInternal* result = NULL;
     {
@@ -162,7 +162,7 @@ const ListFormatInternal* ListFormatter::getListFormatInternal(
 }
 
 static const UChar solidus = 0x2F;
-static const UChar aliasPrefix[] = { 0x6C,0x69,0x73,0x74,0x50,0x61,0x74,0x74,0x65,0x72,0x6E,0x2F }; // "listPattern/"
+static const UChar aliasPrefix[] = { 0x6C,0x69,0x73,0x74,0x50,0x61,0x74,0x74,0x65,0x72,0x6E,0x2F }; // u8"listPattern/"
 enum {
     kAliasPrefixLen = UPRV_LENGTHOF(aliasPrefix),
     kStyleLenMax = 24 // longest currently is 14
@@ -217,13 +217,13 @@ struct ListFormatter::ListPatternsSink : public ResourceSink {
         }
         ResourceTable listPatterns = value.getTable(errorCode);
         for (int i = 0; U_SUCCESS(errorCode) && listPatterns.getKeyAndValue(i, key, value); ++i) {
-            if (uprv_strcmp(key, "2") == 0) {
+            if (uprv_strcmp(key, u8"2") == 0) {
                 handleValueForPattern(value, two, errorCode);
-            } else if (uprv_strcmp(key, "end") == 0) {
+            } else if (uprv_strcmp(key, u8"end") == 0) {
                 handleValueForPattern(value, end, errorCode);
-            } else if (uprv_strcmp(key, "middle") == 0) {
+            } else if (uprv_strcmp(key, u8"middle") == 0) {
                 handleValueForPattern(value, middle, errorCode);
-            } else if (uprv_strcmp(key, "start") == 0) {
+            } else if (uprv_strcmp(key, u8"start") == 0) {
                 handleValueForPattern(value, start, errorCode);
             }
         }
@@ -236,7 +236,7 @@ ListFormatter::ListPatternsSink::~ListPatternsSink() {}
 ListFormatInternal* ListFormatter::loadListFormatInternal(
         const Locale& locale, const char * style, UErrorCode& errorCode) {
     UResourceBundle* rb = ures_open(NULL, locale.getName(), &errorCode);
-    rb = ures_getByKeyWithFallback(rb, "listPattern", rb, &errorCode);
+    rb = ures_getByKeyWithFallback(rb, u8"listPattern", rb, &errorCode);
     if (U_FAILURE(errorCode)) {
         ures_close(rb);
         return NULL;

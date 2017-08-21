@@ -177,7 +177,7 @@ udict_swap(const UDataSwapper *ds, const void *inData, int32_t length,
           pInfo->dataFormat[2] == 0x63 &&
           pInfo->dataFormat[3] == 0x74 &&
           pInfo->formatVersion[0] == 1)) {
-        udata_printError(ds, "udict_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as dictionary data\n",
+        udata_printError(ds, u8"udict_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as dictionary data\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1], pInfo->dataFormat[2], pInfo->dataFormat[3], pInfo->formatVersion[0]);
         *pErrorCode = U_UNSUPPORTED_ERROR;
         return 0;
@@ -190,7 +190,7 @@ udict_swap(const UDataSwapper *ds, const void *inData, int32_t length,
     if (length >= 0) {
         length -= headerSize;
         if (length < (int32_t)(sizeof(indexes))) {
-            udata_printError(ds, "udict_swap(): too few bytes (%d after header) for dictionary data\n", length);
+            udata_printError(ds, u8"udict_swap(): too few bytes (%d after header) for dictionary data\n", length);
             *pErrorCode = U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
         }
@@ -204,7 +204,7 @@ udict_swap(const UDataSwapper *ds, const void *inData, int32_t length,
 
     if (length >= 0) {
         if (length < size) {
-            udata_printError(ds, "udict_swap(): too few bytes (%d after header) for all of dictionary data\n", length);
+            udata_printError(ds, u8"udict_swap(): too few bytes (%d after header) for all of dictionary data\n", length);
             *pErrorCode = U_INDEX_OUTOFBOUNDS_ERROR;
             return 0;
         }
@@ -224,7 +224,7 @@ udict_swap(const UDataSwapper *ds, const void *inData, int32_t length,
         } else if (trieType == DictionaryData::TRIE_TYPE_BYTES) {
             // nothing to do
         } else {
-            udata_printError(ds, "udict_swap(): unknown trie type!\n");
+            udata_printError(ds, u8"udict_swap(): unknown trie type!\n");
             *pErrorCode = U_UNSUPPORTED_ERROR;
             return 0;
         }

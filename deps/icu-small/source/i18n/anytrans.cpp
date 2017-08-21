@@ -29,11 +29,11 @@
 //------------------------------------------------------------
 // Constants
 
-static const UChar TARGET_SEP = 45; // '-'
-static const UChar VARIANT_SEP = 47; // '/'
-static const UChar ANY[] = {65,110,121,0}; // "Any"
-static const UChar NULL_ID[] = {78,117,108,108,0}; // "Null"
-static const UChar LATIN_PIVOT[] = {45,76,97,116,105,110,59,76,97,116,105,110,45,0}; // "-Latin;Latin-"
+static const UChar TARGET_SEP = 45; // '\x2d'
+static const UChar VARIANT_SEP = 47; // '\x2f'
+static const UChar ANY[] = {65,110,121,0}; // u8"Any"
+static const UChar NULL_ID[] = {78,117,108,108,0}; // u8"Null"
+static const UChar LATIN_PIVOT[] = {45,76,97,116,105,110,59,76,97,116,105,110,45,0}; // u8"-Latin;Latin-"
 
 //------------------------------------------------------------
 

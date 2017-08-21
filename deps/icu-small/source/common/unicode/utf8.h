@@ -205,9 +205,9 @@ utf8_back1SafeBody(const uint8_t *s, int32_t start, int32_t i);
  * @stable ICU 2.4
  */
 #define U8_GET_UNSAFE(s, i, c) { \
-    int32_t _u8_get_unsafe_index=(int32_t)(i); \
-    U8_SET_CP_START_UNSAFE(s, _u8_get_unsafe_index); \
-    U8_NEXT_UNSAFE(s, _u8_get_unsafe_index, c); \
+    int32_t __get_unsafe_index=(int32_t)(i); \
+    U8_SET_CP_START_UNSAFE(s, __get_unsafe_index); \
+    U8_NEXT_UNSAFE(s, __get_unsafe_index, c); \
 }
 
 /**
@@ -232,9 +232,9 @@ utf8_back1SafeBody(const uint8_t *s, int32_t start, int32_t i);
  * @stable ICU 2.4
  */
 #define U8_GET(s, start, i, length, c) { \
-    int32_t _u8_get_index=(i); \
-    U8_SET_CP_START(s, start, _u8_get_index); \
-    U8_NEXT(s, _u8_get_index, length, c); \
+    int32_t __get_index=(i); \
+    U8_SET_CP_START(s, start, __get_index); \
+    U8_NEXT(s, __get_index, length, c); \
 }
 
 /**
@@ -263,9 +263,9 @@ utf8_back1SafeBody(const uint8_t *s, int32_t start, int32_t i);
  * @stable ICU 51
  */
 #define U8_GET_OR_FFFD(s, start, i, length, c) { \
-    int32_t _u8_get_index=(i); \
-    U8_SET_CP_START(s, start, _u8_get_index); \
-    U8_NEXT_OR_FFFD(s, _u8_get_index, length, c); \
+    int32_t __get_index=(i); \
+    U8_SET_CP_START(s, start, __get_index); \
+    U8_NEXT_OR_FFFD(s, __get_index, length, c); \
 }
 
 /* definitions with forward iteration --------------------------------------- */

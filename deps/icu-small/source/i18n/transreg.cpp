@@ -41,7 +41,7 @@
 #endif
 
 // UChar constants
-static const UChar LOCALE_SEP  = 95; // '_'
+static const UChar LOCALE_SEP  = 95; // '\x5f'
 //static const UChar ID_SEP      = 0x002D; /*-*/
 //static const UChar VARIANT_SEP = 0x002F; // '/'
 
@@ -243,7 +243,7 @@ TransliteratorSpec::TransliteratorSpec(const UnicodeString& theSpec)
   res(0)
 {
     UErrorCode status = U_ZERO_ERROR;
-    Locale topLoc("");
+    Locale topLoc(u8"");
     LocaleUtility::initLocaleFromName(theSpec, topLoc);
     if (!topLoc.isBogus()) {
         res = new ResourceBundle(U_ICUDATA_TRANSLIT, topLoc, status);
@@ -372,7 +372,7 @@ static void DEBUG_newEntry(TransliteratorEntry* e) {
     DEBUG_setup();
     if (DEBUG_findEntry(e) >= 0) {
         // This should really never happen unless the heap is broken
-        printf("ERROR DEBUG_newEntry duplicate new pointer %08X\n", e);
+        printf(u8"ERROR DEBUG_newEntry duplicate new pointer %08X\n", e);
         return;
     }
     UErrorCode ec = U_ZERO_ERROR;
@@ -384,7 +384,7 @@ static void DEBUG_delEntry(TransliteratorEntry* e) {
     DEBUG_setup();
     int i = DEBUG_findEntry(e);
     if (i < 0) {
-        printf("ERROR DEBUG_delEntry possible double deletion %08X\n", e);
+        printf(u8"ERROR DEBUG_delEntry possible double deletion %08X\n", e);
         return;
     }
     DEBUG_entries->removeElementAt(i);
@@ -396,7 +396,7 @@ static void DEBUG_useEntry(TransliteratorEntry* e) {
     DEBUG_setup();
     int i = DEBUG_findEntry(e);
     if (i < 0) {
-        printf("ERROR DEBUG_useEntry possible dangling pointer %08X\n", e);
+        printf(u8"ERROR DEBUG_useEntry possible dangling pointer %08X\n", e);
     }
 }
 
@@ -1044,11 +1044,11 @@ TransliteratorEntry* TransliteratorRegistry::findInStaticStore(const Translitera
 }
 
 // As of 2.0, resource bundle keys cannot contain '_'
-static const UChar TRANSLITERATE_TO[] = {84,114,97,110,115,108,105,116,101,114,97,116,101,84,111,0}; // "TransliterateTo"
+static const UChar TRANSLITERATE_TO[] = {84,114,97,110,115,108,105,116,101,114,97,116,101,84,111,0}; // u8"TransliterateTo"
 
-static const UChar TRANSLITERATE_FROM[] = {84,114,97,110,115,108,105,116,101,114,97,116,101,70,114,111,109,0}; // "TransliterateFrom"
+static const UChar TRANSLITERATE_FROM[] = {84,114,97,110,115,108,105,116,101,114,97,116,101,70,114,111,109,0}; // u8"TransliterateFrom"
 
-static const UChar TRANSLITERATE[] = {84,114,97,110,115,108,105,116,101,114,97,116,101,0}; // "Transliterate"
+static const UChar TRANSLITERATE[] = {84,114,97,110,115,108,105,116,101,114,97,116,101,0}; // u8"Transliterate"
 
 /**
  * Attempt to find an entry in a single resource bundle.  This is
@@ -1082,7 +1082,7 @@ TransliteratorEntry* TransliteratorRegistry::findInBundle(const TransliteratorSp
             utag.append(TRANSLITERATE, -1);
         }
         UnicodeString s(specToFind.get());
-        utag.append(s.toUpper(""));
+        utag.append(s.toUpper(u8""));
         UErrorCode status = U_ZERO_ERROR;
         ResourceBundle subres(specToOpen.getBundle().get(
             CharString().appendInvariantChars(utag, status).data(), status));

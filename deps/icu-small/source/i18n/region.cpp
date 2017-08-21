@@ -66,10 +66,10 @@ static UHashtable *regionIDMap = NULL;
 static UHashtable *numericCodeMap = NULL;
 static UVector *allRegions = NULL;
 
-static const UChar UNKNOWN_REGION_ID [] = { 0x5A, 0x5A, 0 };  /* "ZZ" */
-static const UChar OUTLYING_OCEANIA_REGION_ID [] = { 0x51, 0x4F, 0 };  /* "QO" */
-static const UChar WORLD_ID [] = { 0x30, 0x30, 0x31, 0 };  /* "001" */
-static const UChar RANGE_MARKER = 0x7E; /* '~' */
+static const UChar UNKNOWN_REGION_ID [] = { 0x5A, 0x5A, 0 };  /* u8"ZZ" */
+static const UChar OUTLYING_OCEANIA_REGION_ID [] = { 0x51, 0x4F, 0 };  /* u8"QO" */
+static const UChar WORLD_ID [] = { 0x30, 0x30, 0x31, 0 };  /* u8"001" */
+static const UChar RANGE_MARKER = 0x7E; /* '\x7e' */
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(RegionNameEnumeration)
 
@@ -93,22 +93,22 @@ void U_CALLCONV Region::loadRegionData(UErrorCode &status) {
     LocalPointer<UVector> groupings(new UVector(uprv_deleteUObject, uhash_compareUnicodeString, status), status);
     allRegions = new UVector(uprv_deleteUObject, uhash_compareUnicodeString, status);
 
-    LocalUResourceBundlePointer metadata(ures_openDirect(NULL,"metadata",&status));
-    LocalUResourceBundlePointer metadataAlias(ures_getByKey(metadata.getAlias(),"alias",NULL,&status));
-    LocalUResourceBundlePointer territoryAlias(ures_getByKey(metadataAlias.getAlias(),"territory",NULL,&status));
+    LocalUResourceBundlePointer metadata(ures_openDirect(NULL,u8"metadata",&status));
+    LocalUResourceBundlePointer metadataAlias(ures_getByKey(metadata.getAlias(),u8"alias",NULL,&status));
+    LocalUResourceBundlePointer territoryAlias(ures_getByKey(metadataAlias.getAlias(),u8"territory",NULL,&status));
 
-    LocalUResourceBundlePointer supplementalData(ures_openDirect(NULL,"supplementalData",&status));
-    LocalUResourceBundlePointer codeMappings(ures_getByKey(supplementalData.getAlias(),"codeMappings",NULL,&status));
+    LocalUResourceBundlePointer supplementalData(ures_openDirect(NULL,u8"supplementalData",&status));
+    LocalUResourceBundlePointer codeMappings(ures_getByKey(supplementalData.getAlias(),u8"codeMappings",NULL,&status));
 
-    LocalUResourceBundlePointer idValidity(ures_getByKey(supplementalData.getAlias(),"idValidity",NULL,&status));
-    LocalUResourceBundlePointer regionList(ures_getByKey(idValidity.getAlias(),"region",NULL,&status));
-    LocalUResourceBundlePointer regionRegular(ures_getByKey(regionList.getAlias(),"regular",NULL,&status));
-    LocalUResourceBundlePointer regionMacro(ures_getByKey(regionList.getAlias(),"macroregion",NULL,&status));
-    LocalUResourceBundlePointer regionUnknown(ures_getByKey(regionList.getAlias(),"unknown",NULL,&status));
+    LocalUResourceBundlePointer idValidity(ures_getByKey(supplementalData.getAlias(),u8"idValidity",NULL,&status));
+    LocalUResourceBundlePointer regionList(ures_getByKey(idValidity.getAlias(),u8"region",NULL,&status));
+    LocalUResourceBundlePointer regionRegular(ures_getByKey(regionList.getAlias(),u8"regular",NULL,&status));
+    LocalUResourceBundlePointer regionMacro(ures_getByKey(regionList.getAlias(),u8"macroregion",NULL,&status));
+    LocalUResourceBundlePointer regionUnknown(ures_getByKey(regionList.getAlias(),u8"unknown",NULL,&status));
 
-    LocalUResourceBundlePointer territoryContainment(ures_getByKey(supplementalData.getAlias(),"territoryContainment",NULL,&status));
-    LocalUResourceBundlePointer worldContainment(ures_getByKey(territoryContainment.getAlias(),"001",NULL,&status));
-    LocalUResourceBundlePointer groupingContainment(ures_getByKey(territoryContainment.getAlias(),"grouping",NULL,&status));
+    LocalUResourceBundlePointer territoryContainment(ures_getByKey(supplementalData.getAlias(),u8"territoryContainment",NULL,&status));
+    LocalUResourceBundlePointer worldContainment(ures_getByKey(territoryContainment.getAlias(),u8"001",NULL,&status));
+    LocalUResourceBundlePointer groupingContainment(ures_getByKey(territoryContainment.getAlias(),u8"grouping",NULL,&status));
 
     if (U_FAILURE(status)) {
         return;
@@ -194,7 +194,7 @@ void U_CALLCONV Region::loadRegionData(UErrorCode &status) {
         } else {
             r->code = -1;
         }
-        void* idStrAlias = (void*)&(r->idStr); // about to orphan 'r'. Save this off.
+        void* idStrAlias = (void*)&(r->idStr); // about to orphan '\x72'. Save this off.
         uhash_put(newRegionIDMap.getAlias(),idStrAlias,(void *)(r.orphan()),&status); // regionIDMap takes ownership
     }
 
@@ -203,7 +203,7 @@ void U_CALLCONV Region::loadRegionData(UErrorCode &status) {
         LocalUResourceBundlePointer res(ures_getNextResource(territoryAlias.getAlias(),NULL,&status));
         const char *aliasFrom = ures_getKey(res.getAlias());
         LocalPointer<UnicodeString> aliasFromStr(new UnicodeString(aliasFrom, -1, US_INV), status);
-        UnicodeString aliasTo = ures_getUnicodeStringByKey(res.getAlias(),"replacement",&status);
+        UnicodeString aliasTo = ures_getUnicodeStringByKey(res.getAlias(),u8"replacement",&status);
         res.adoptInstead(NULL);
 
         const Region *aliasToRegion = (Region *) uhash_get(newRegionIDMap.getAlias(),&aliasTo);
@@ -329,7 +329,7 @@ void U_CALLCONV Region::loadRegionData(UErrorCode &status) {
             return;  // error out
         }
         const char *parent = ures_getKey(mapping.getAlias());
-        if (uprv_strcmp(parent, "containedGroupings") == 0 || uprv_strcmp(parent, "deprecated") == 0) {
+        if (uprv_strcmp(parent, u8"containedGroupings") == 0 || uprv_strcmp(parent, u8"deprecated") == 0) {
             continue; // handle new pseudo-parent types added in ICU data per cldrbug 7808; for now just skip.
             // #11232 is to do something useful with these.
         }

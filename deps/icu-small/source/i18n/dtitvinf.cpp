@@ -42,15 +42,15 @@ U_NAMESPACE_BEGIN
 
 
 #ifdef DTITVINF_DEBUG
-#define PRINTMESG(msg) { std::cout << "(" << __FILE__ << ":" << __LINE__ << ") " << msg << "\n"; }
+#define PRINTMESG(msg) { std::cout << u8"(" << __FILE__ << u8":" << __LINE__ << u8") " << msg << u8"\n"; }
 #endif
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(DateIntervalInfo)
 
-static const char gCalendarTag[]="calendar";
-static const char gGregorianTag[]="gregorian";
-static const char gIntervalDateTimePatternTag[]="intervalFormats";
-static const char gFallbackPatternTag[]="fallback";
+static const char gCalendarTag[]=u8"calendar";
+static const char gGregorianTag[]=u8"gregorian";
+static const char gIntervalDateTimePatternTag[]=u8"intervalFormats";
+static const char gFallbackPatternTag[]=u8"fallback";
 
 // {0}
 static const UChar gFirstPattern[] = {LEFT_CURLY_BRACKET, DIGIT_ZERO, RIGHT_CURLY_BRACKET};
@@ -326,19 +326,19 @@ struct DateIntervalInfo::DateIntervalSink : public ResourceSink {
         char c0;
         if ((c0 = patternLetter[0]) != 0 && patternLetter[1] == 0) {
             // Check that the pattern letter is accepted
-            if (c0 == 'y') {
+            if (c0 == '\x79') {
                 return UCAL_YEAR;
-            } else if (c0 == 'M') {
+            } else if (c0 == '\x4d') {
                 return UCAL_MONTH;
-            } else if (c0 == 'd') {
+            } else if (c0 == '\x64') {
                 return UCAL_DATE;
-            } else if (c0 == 'a') {
+            } else if (c0 == '\x61') {
                 return UCAL_AM_PM;
-            } else if (c0 == 'h' || c0 == 'H') {
+            } else if (c0 == '\x68' || c0 == '\x48') {
                 return UCAL_HOUR;
-            } else if (c0 == 'm') {
+            } else if (c0 == '\x6d') {
                 return UCAL_MINUTE;
-            }// TODO(ticket:12190): Why icu4c doesn't accept the calendar field "s" but icu4j does?
+            }// TODO(ticket:12190): Why icu4c doesn't accept the calendar field u8"s" but icu4j does?
         }
         return UCAL_FIELD_COUNT;
     }
@@ -394,10 +394,10 @@ DateIntervalInfo::initializeData(const Locale& locale, UErrorCode& status)
     char         localeWithCalendarKey[ULOC_LOCALE_IDENTIFIER_CAPACITY];
     // obtain a locale that always has the calendar key value that should be used
     (void)ures_getFunctionalEquivalent(localeWithCalendarKey, ULOC_LOCALE_IDENTIFIER_CAPACITY, NULL,
-                                     "calendar", "calendar", locName, NULL, FALSE, &status);
+                                     u8"calendar", u8"calendar", locName, NULL, FALSE, &status);
     localeWithCalendarKey[ULOC_LOCALE_IDENTIFIER_CAPACITY-1] = 0; // ensure null termination
     // now get the calendar key value from that locale
-    int32_t calendarTypeLen = uloc_getKeywordValue(localeWithCalendarKey, "calendar", calendarType,
+    int32_t calendarTypeLen = uloc_getKeywordValue(localeWithCalendarKey, u8"calendar", calendarType,
                                                    ULOC_KEYWORDS_CAPACITY, &status);
     if (U_SUCCESS(status) && calendarTypeLen < ULOC_KEYWORDS_CAPACITY) {
         calendarTypeToUse = calendarType;
@@ -512,7 +512,7 @@ DateIntervalInfo::parseSkeleton(const UnicodeString& skeleton,
 UBool
 DateIntervalInfo::stringNumeric(int32_t fieldWidth, int32_t anotherFieldWidth,
                                 char patternLetter) {
-    if ( patternLetter == 'M' ) {
+    if ( patternLetter == '\x4d' ) {
         if ( (fieldWidth <= 2 && anotherFieldWidth > 2) ||
              (fieldWidth > 2 && anotherFieldWidth <= 2 )) {
             return true;
@@ -530,8 +530,8 @@ DateIntervalInfo::getBestSkeleton(const UnicodeString& skeleton,
     char result[1000];
     char result_1[1000];
     char mesg[2000];
-    skeleton.extract(0,  skeleton.length(), result, "UTF-8");
-    sprintf(mesg, "in getBestSkeleton: skeleton: %s; \n", result);
+    skeleton.extract(0,  skeleton.length(), result, u8"UTF-8");
+    sprintf(mesg, u8"in getBestSkeleton: skeleton: %s; \n", result);
     PRINTMESG(mesg)
 #endif
 
@@ -596,8 +596,8 @@ DateIntervalInfo::getBestSkeleton(const UnicodeString& skeleton,
         const UHashTok keyTok = elem->key;
         UnicodeString* skeleton = (UnicodeString*)keyTok.pointer;
 #ifdef DTITVINF_DEBUG
-    skeleton->extract(0,  skeleton->length(), result, "UTF-8");
-    sprintf(mesg, "available skeletons: skeleton: %s; \n", result);
+    skeleton->extract(0,  skeleton->length(), result, u8"UTF-8");
+    sprintf(mesg, u8"available skeletons: skeleton: %s; \n", result);
     PRINTMESG(mesg)
 #endif
 

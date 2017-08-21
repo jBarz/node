@@ -73,25 +73,25 @@ TimeUnit::TimeUnit(TimeUnit::UTimeUnitFields timeUnitField) {
     fTimeUnitField = timeUnitField;
     switch (fTimeUnitField) {
     case UTIMEUNIT_YEAR:
-        initTime("year");
+        initTime(u8"year");
         break;
     case UTIMEUNIT_MONTH:
-        initTime("month");
+        initTime(u8"month");
         break;
     case UTIMEUNIT_DAY:
-        initTime("day");
+        initTime(u8"day");
         break;
     case UTIMEUNIT_WEEK:
-        initTime("week");
+        initTime(u8"week");
         break;
     case UTIMEUNIT_HOUR:
-        initTime("hour");
+        initTime(u8"hour");
         break;
     case UTIMEUNIT_MINUTE:
-        initTime("minute");
+        initTime(u8"minute");
         break;
     case UTIMEUNIT_SECOND:
-        initTime("second");
+        initTime(u8"second");
         break;
     default:
         U_ASSERT(false);

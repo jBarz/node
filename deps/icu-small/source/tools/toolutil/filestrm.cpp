@@ -28,12 +28,14 @@
 #include "cmemory.h"
 
 #include <stdio.h>
-
+#include <unistd.h>
 U_CAPI FileStream* U_EXPORT2
 T_FileStream_open(const char* filename, const char* mode)
 {
     if(filename != NULL && *filename != 0 && mode != NULL && *mode != 0) {
+        __a2e_s((char *)filename);
         FILE *file = fopen(filename, mode);
+        __e2a_s((char *)filename);
         return (FileStream*)file;
     } else {
         return NULL;
@@ -81,7 +83,10 @@ T_FileStream_close(FileStream* fileStream)
 U_CAPI UBool U_EXPORT2
 T_FileStream_file_exists(const char* filename)
 {
+    __a2e_s((char *)filename);
     FILE* temp = fopen(filename, "r");
+    __e2a_s((char *)filename);
+
     if (temp) {
         fclose(temp);
         return TRUE;

@@ -58,7 +58,7 @@ getWeightByte(uint32_t weight, int32_t idx) {
 
 static inline uint32_t
 setWeightByte(uint32_t weight, int32_t idx, uint32_t byte) {
-    uint32_t mask; /* 0xffffffff except a 00 "hole" for the index-th byte */
+    uint32_t mask; /* 0xffffffff except a 00 u8"hole" for the index-th byte */
 
     idx*=8;
     if(idx<32) {
@@ -217,15 +217,15 @@ CollationWeights::getWeightRanges(uint32_t lowerLimit, uint32_t upperLimit) {
     int32_t upperLength=lengthOfWeight(upperLimit);
 
 #ifdef UCOL_DEBUG
-    printf("length of lower limit 0x%08lx is %ld\n", lowerLimit, lowerLength);
-    printf("length of upper limit 0x%08lx is %ld\n", upperLimit, upperLength);
+    printf(u8"length of lower limit 0x%08lx is %ld\n", lowerLimit, lowerLength);
+    printf(u8"length of upper limit 0x%08lx is %ld\n", upperLimit, upperLength);
 #endif
     U_ASSERT(lowerLength>=middleLength);
     // Permit upperLength<middleLength: The upper limit for secondaries is 0x10000.
 
     if(lowerLimit>=upperLimit) {
 #ifdef UCOL_DEBUG
-        printf("error: no space between lower & upper limits\n");
+        printf(u8"error: no space between lower & upper limits\n");
 #endif
         return FALSE;
     }
@@ -234,7 +234,7 @@ CollationWeights::getWeightRanges(uint32_t lowerLimit, uint32_t upperLimit) {
     if(lowerLength<upperLength) {
         if(lowerLimit==truncateWeight(upperLimit, lowerLength)) {
 #ifdef UCOL_DEBUG
-            printf("error: lower limit 0x%08lx is a prefix of upper limit 0x%08lx\n", lowerLimit, upperLimit);
+            printf(u8"error: lower limit 0x%08lx is a prefix of upper limit 0x%08lx\n", lowerLimit, upperLimit);
 #endif
             return FALSE;
         }
@@ -355,15 +355,15 @@ CollationWeights::getWeightRanges(uint32_t lowerLimit, uint32_t upperLimit) {
     /* print ranges */
     for(int32_t length=4; length>=2; --length) {
         if(lower[length].count>0) {
-            printf("lower[%ld] .start=0x%08lx .end=0x%08lx .count=%ld\n", length, lower[length].start, lower[length].end, lower[length].count);
+            printf(u8"lower[%ld] .start=0x%08lx .end=0x%08lx .count=%ld\n", length, lower[length].start, lower[length].end, lower[length].count);
         }
     }
     if(middle.count>0) {
-        printf("middle   .start=0x%08lx .end=0x%08lx .count=%ld\n", middle.start, middle.end, middle.count);
+        printf(u8"middle   .start=0x%08lx .end=0x%08lx .count=%ld\n", middle.start, middle.end, middle.count);
     }
     for(int32_t length=2; length<=4; ++length) {
         if(upper[length].count>0) {
-            printf("upper[%ld] .start=0x%08lx .end=0x%08lx .count=%ld\n", length, upper[length].start, upper[length].end, upper[length].count);
+            printf(u8"upper[%ld] .start=0x%08lx .end=0x%08lx .count=%ld\n", length, upper[length].start, upper[length].end, upper[length].count);
         }
     }
 #endif
@@ -402,7 +402,7 @@ CollationWeights::allocWeightsInShortRanges(int32_t n, int32_t minLength) {
             }
             rangeCount = i + 1;
 #ifdef UCOL_DEBUG
-            printf("take first %ld ranges\n", rangeCount);
+            printf(u8"take first %ld ranges\n", rangeCount);
 #endif
 
             if(rangeCount>1) {
@@ -470,7 +470,7 @@ CollationWeights::allocWeightsInMinLengthRanges(int32_t n, int32_t minLength) {
     } else {
         // Split the range, lengthen the second part.
 #ifdef UCOL_DEBUG
-        printf("split the range number %ld (out of %ld minLength ranges) by %ld:%ld\n",
+        printf(u8"split the range number %ld (out of %ld minLength ranges) by %ld:%ld\n",
                splitRange, rangeCount, count1, count2);
 #endif
 
@@ -496,12 +496,12 @@ CollationWeights::allocWeightsInMinLengthRanges(int32_t n, int32_t minLength) {
 UBool
 CollationWeights::allocWeights(uint32_t lowerLimit, uint32_t upperLimit, int32_t n) {
 #ifdef UCOL_DEBUG
-    puts("");
+    puts(u8"");
 #endif
 
     if(!getWeightRanges(lowerLimit, upperLimit)) {
 #ifdef UCOL_DEBUG
-        printf("error: unable to get Weight ranges\n");
+        printf(u8"error: unable to get Weight ranges\n");
 #endif
         return FALSE;
     }
@@ -515,7 +515,7 @@ CollationWeights::allocWeights(uint32_t lowerLimit, uint32_t upperLimit, int32_t
 
         if(minLength == 4) {
 #ifdef UCOL_DEBUG
-            printf("error: the maximum number of %ld weights is insufficient for n=%ld\n",
+            printf(u8"error: the maximum number of %ld weights is insufficient for n=%ld\n",
                    minLengthCount, n);
 #endif
             return FALSE;
@@ -525,7 +525,7 @@ CollationWeights::allocWeights(uint32_t lowerLimit, uint32_t upperLimit, int32_t
 
         /* no good match, lengthen all minLength ranges and iterate */
 #ifdef UCOL_DEBUG
-        printf("lengthen the short ranges from %ld bytes to %ld and iterate\n", minLength, minLength+1);
+        printf(u8"lengthen the short ranges from %ld bytes to %ld and iterate\n", minLength, minLength+1);
 #endif
         for(int32_t i=0; ranges[i].length==minLength; ++i) {
             lengthenRange(ranges[i]);
@@ -533,9 +533,9 @@ CollationWeights::allocWeights(uint32_t lowerLimit, uint32_t upperLimit, int32_t
     }
 
 #ifdef UCOL_DEBUG
-    puts("final ranges:");
+    puts(u8"final ranges:");
     for(int32_t i=0; i<rangeCount; ++i) {
-        printf("ranges[%ld] .start=0x%08lx .end=0x%08lx .length=%ld .count=%ld\n",
+        printf(u8"ranges[%ld] .start=0x%08lx .end=0x%08lx .length=%ld .count=%ld\n",
                i, ranges[i].start, ranges[i].end, ranges[i].length, ranges[i].count);
     }
 #endif

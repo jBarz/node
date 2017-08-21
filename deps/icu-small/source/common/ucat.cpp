@@ -16,7 +16,7 @@
 #include "uassert.h"
 
 /* Separator between set_num and msg_num */
-static const char SEPARATOR = '%';
+static const char SEPARATOR = '\x25';
 
 /* Maximum length of a set_num/msg_num key, incl. terminating zero.
  * Longest possible key is "-2147483648%-2147483648" */

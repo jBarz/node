@@ -37,12 +37,12 @@
  * @return
  */
 #define UCNV_FAST_IS_UTF8(name) \
-    (((name[0]=='U' ? \
-      (                name[1]=='T' && name[2]=='F') : \
-      (name[0]=='u' && name[1]=='t' && name[2]=='f'))) \
-  && (name[3]=='-' ? \
-     (name[4]=='8' && name[5]==0) : \
-     (name[3]=='8' && name[4]==0)))
+    (((name[0]=='\x55' ? \
+      (                name[1]=='\x54' && name[2]=='\x46') : \
+      (name[0]=='\x75' && name[1]=='\x74' && name[2]=='\x66'))) \
+  && (name[3]=='\x2d' ? \
+     (name[4]=='\x38' && name[5]==0) : \
+     (name[3]=='\x38' && name[4]==0)))
 
 typedef struct {
     char cnvName[UCNV_MAX_CONVERTER_NAME_LENGTH];
