@@ -282,11 +282,6 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
                                    enc);
     buf = uv_buf_init(stack_storage, data_size);
 
-#ifdef __MVS__
-    if (IsTTY())
-      __a2e_l(buf.base, buf.len);
-#endif
-
     uv_buf_t* bufs = &buf;
     size_t count = 1;
     err = DoTryWrite(&bufs, &count);
@@ -323,11 +318,6 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
   CHECK_LE(data_size, storage_size);
 
   buf = uv_buf_init(data, data_size);
-
-#ifdef __MVS__
-  if (IsTTY())
-    __a2e_l(buf.base, buf.len);
-#endif
 
   if (!IsIPCPipe()) {
     err = DoWrite(req_wrap, &buf, 1, nullptr);
