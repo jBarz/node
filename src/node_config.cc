@@ -44,6 +44,9 @@ void InitConfig(Local<Object> target,
 
   if (config_preserve_symlinks)
     READONLY_BOOLEAN_PROPERTY("\x70\x72\x65\x73\x65\x72\x76\x65\x53\x79\x6d\x6c\x69\x6e\x6b\x73");
+
+  if (config_expose_internals)
+    READONLY_BOOLEAN_PROPERTY("\x65\x78\x70\x6f\x73\x65\x49\x6e\x74\x65\x72\x6e\x61\x6c\x73");
 }  // InitConfig
 
 }  // namespace node

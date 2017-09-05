@@ -213,6 +213,12 @@ bool trace_warnings = false;
 // that is used by lib/module.js
 bool config_preserve_symlinks = false;
 
+// Set in node.cc by ParseArgs when --expose-internals or --expose_internals is
+// used.
+// Used in node_config.cc to set a constant on process.binding('config')
+// that is used by lib/internal/bootstrap_node.js
+bool config_expose_internals = false;
+
 // process-relative uptime base, initialized at start-up
 static double prog_start_time;
 static bool debugger_running;
@@ -2799,9 +2805,9 @@ void FatalException(Isolate* isolate,
 
 void FatalException(Isolate* isolate, const TryCatch& try_catch) {
   HandleScope scope(isolate);
-  // TODO(bajtos) do not call FatalException if try_catch is verbose
-  // (requires V8 API to expose getter for try_catch.is_verbose_)
-  FatalException(isolate, try_catch.Exception(), try_catch.Message());
+  if (!try_catch.IsVerbose()) {
+    FatalException(isolate, try_catch.Exception(), try_catch.Message());
+  }
 }
 
 
@@ -3571,6 +3577,7 @@ void SetupProcessObject(Environment* env,
     READONLY_PROPERTY(process, "\x5f\x66\x6f\x72\x63\x65\x52\x65\x70\x6c", True(env->isolate()));
   }
 
+  // -r, --require
   if (preload_module_count) {
     CHECK(preload_modules);
     Local<Array> array = Array::New(env->isolate());
@@ -3593,10 +3600,12 @@ void SetupProcessObject(Environment* env,
     READONLY_PROPERTY(process, "\x6e\x6f\x44\x65\x70\x72\x65\x63\x61\x74\x69\x6f\x6e", True(env->isolate()));
   }
 
+  // --no-warnings
   if (no_process_warnings) {
     READONLY_PROPERTY(process, "\x6e\x6f\x50\x72\x6f\x63\x65\x73\x73\x57\x61\x72\x6e\x69\x6e\x67\x73", True(env->isolate()));
   }
 
+  // --trace-warnings
   if (trace_warnings) {
     READONLY_PROPERTY(process, "\x74\x72\x61\x63\x65\x50\x72\x6f\x63\x65\x73\x73\x57\x61\x72\x6e\x69\x6e\x67\x73", True(env->isolate()));
   }
@@ -4169,7 +4178,7 @@ static void ParseArgs(int* argc,
 #endif
     } else if (strcmp(arg, "\x2d\x2d\x65\x78\x70\x6f\x73\x65\x2d\x69\x6e\x74\x65\x72\x6e\x61\x6c\x73") == 0 ||
                strcmp(arg, "\x2d\x2d\x65\x78\x70\x6f\x73\x65\x5f\x69\x6e\x74\x65\x72\x6e\x61\x6c\x73") == 0) {
-      // consumed in js
+      config_expose_internals = true;
     } else if (strcmp(arg, u8"--") == 0) {
       index += 1;
       break;
@@ -4734,7 +4743,7 @@ void Init(int* argc,
   // If icu_data_dir is empty here, it will load the 'minimal' data.
   if (!i18n::InitializeICUDirectory(icu_data_dir)) {
     FatalError(nullptr, "\x43\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x20\x49\x43\x55\x20"
-                     "\x28\x63\x68\x65\x63\x6b\x20\x4e\x4f\x44\x45\x5f\x49\x43\x55\x5f\x44\x41\x54\x41\x20\x6f\x72\x20\x2d\x2d\x69\x63\x75\x2d\x64\x61\x74\x61\x2d\x64\x69\x72\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x29");
+                     "\x28\x63\x68\x65\x63\x6b\x20\x4e\x4f\x44\x45\x5f\x49\x43\x55\x5f\x44\x41\x54\x41\x20\x6f\x72\x20\x2d\x2d\x69\x63\x75\x2d\x64\x61\x74\x61\x2d\x64\x69\x72\x20\x70\x61\x72\x61\x6d\x65\x74\x65\x72\x73\x29\x0a");
   }
 #endif
   // The const_cast doesn't violate conceptual const-ness.  V8 doesn't modify

@@ -56,13 +56,9 @@ void TCPWrap::Initialize(Local<Object> target,
   // Init properties
   t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "\x72\x65\x61\x64\x69\x6e\x67"),
                              Boolean::New(env->isolate(), false));
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "\x6f\x77\x6e\x65\x72"),
-                             Null(env->isolate()));
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(), "\x6f\x6e\x72\x65\x61\x64"),
-                             Null(env->isolate()));
-  t->InstanceTemplate()->Set(String::NewFromUtf8(env->isolate(),
-                                                 "\x6f\x6e\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e"),
-                             Null(env->isolate()));
+  t->InstanceTemplate()->Set(env->owner_string(), Null(env->isolate()));
+  t->InstanceTemplate()->Set(env->onread_string(), Null(env->isolate()));
+  t->InstanceTemplate()->Set(env->onconnection_string(), Null(env->isolate()));
 
 
   env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);

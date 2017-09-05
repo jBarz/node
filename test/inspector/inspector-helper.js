@@ -43,8 +43,8 @@ function send(socket, message, id, callback) {
   for (let i = 0; i < messageBuf.length; i++)
     messageBuf[i] = messageBuf[i] ^ (1 << (i % 4));
   socket.write(
-      Buffer.concat([wsHeaderBuf.slice(0, maskOffset + 4), messageBuf]),
-      callback);
+    Buffer.concat([wsHeaderBuf.slice(0, maskOffset + 4), messageBuf]),
+    callback);
 }
 
 function parseWSFrame(buffer, handler) {
@@ -64,8 +64,15 @@ function parseWSFrame(buffer, handler) {
   }
   if (buffer.length < bodyOffset + dataLen)
     return 0;
-  const message = JSON.parse(
-      buffer.slice(bodyOffset, bodyOffset + dataLen).toString('utf8'));
+  const jsonPayload =
+    buffer.slice(bodyOffset, bodyOffset + dataLen).toString('utf8');
+  let message;
+  try {
+    message = JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error(`JSON.parse() failed for: ${jsonPayload}`);
+    throw e;
+  }
   if (DEBUG)
     console.log('[received]', JSON.stringify(message));
   handler(message);
@@ -214,7 +221,7 @@ TestSession.prototype.sendInspectorCommands = function(commands) {
     this.sendAll_(commands, () => {
       timeoutId = setTimeout(() => {
         common.fail(`Messages without response: ${
-                    Object.keys(this.messages_).join(', ')}`);
+          Object.keys(this.messages_).join(', ')}`);
       }, TIMEOUT);
     });
   });
@@ -237,7 +244,7 @@ TestSession.prototype.expectMessages = function(expects) {
   if (!(expects instanceof Array)) expects = [ expects ];
 
   const callback = this.createCallbackWithTimeout_(
-      `Matching response was not received:\n${expects[0]}`);
+    `Matching response was not received:\n${expects[0]}`);
   this.messagefilter_ = (message) => {
     if (expects[0](message))
       expects.shift();
@@ -251,8 +258,8 @@ TestSession.prototype.expectMessages = function(expects) {
 
 TestSession.prototype.expectStderrOutput = function(regexp) {
   this.harness_.addStderrFilter(
-      regexp,
-      this.createCallbackWithTimeout_(`Timed out waiting for ${regexp}`));
+    regexp,
+    this.createCallbackWithTimeout_(`Timed out waiting for ${regexp}`));
   return this;
 };
 
@@ -293,10 +300,10 @@ TestSession.prototype.disconnect = function(childDone) {
 
 TestSession.prototype.testHttpResponse = function(path, check) {
   return this.enqueue((callback) =>
-      checkHttpResponse(this.harness_.port, path, (err, response) => {
-        check.call(this, err, response);
-        callback();
-      }));
+    checkHttpResponse(this.harness_.port, path, (err, response) => {
+      check.call(this, err, response);
+      callback();
+    }));
 };
 
 
@@ -310,7 +317,7 @@ function Harness(port, childProcess) {
   this.running_ = true;
 
   childProcess.stdout.on('data', makeBufferingDataCallback(
-      (line) => console.log('[out]', line)));
+    (line) => console.log('[out]', line)));
 
 
   childProcess.stderr.on('data', makeBufferingDataCallback((message) => {
@@ -427,7 +434,7 @@ Harness.prototype.expectShutDown = function(errorCode) {
 
 exports.startNodeForInspectorTest = function(callback) {
   const child = spawn(process.execPath,
-      [ '--inspect', '--debug-brk', mainScript ]);
+                      [ '--inspect', '--debug-brk', mainScript ]);
 
   const timeoutId = timeout('Child process did not start properly', 4);
 

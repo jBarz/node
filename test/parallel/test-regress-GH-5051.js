@@ -5,7 +5,7 @@ const agent = require('http').globalAgent;
 
 // small stub just so we can call addRequest directly
 const req = {
-  getHeader: function() {}
+  getHeader: () => {}
 };
 
 agent.maxSockets = 0;

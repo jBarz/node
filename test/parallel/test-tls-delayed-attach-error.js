@@ -1,10 +1,9 @@
 'use strict';
 const common = require('../common');
 
-if (!common.hasCrypto) {
+if (!common.hasCrypto)
   common.skip('missing crypto');
-  return;
-}
+
 const tls = require('tls');
 const fs = require('fs');
 const net = require('net');
@@ -23,7 +22,7 @@ const server = net.createServer(common.mustCall(function(c) {
       secureContext: tls.createSecureContext(options)
     });
 
-    s.on('_tlsError', common.mustCall(function() {}));
+    s.on('_tlsError', common.mustCall());
 
     s.on('close', function() {
       server.close();

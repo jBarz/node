@@ -137,7 +137,7 @@ support. If `filename` is provided, it will be provided as a `Buffer` if
 fs.watch('./tmp', {encoding: 'buffer'}, (eventType, filename) => {
   if (filename)
     console.log(filename);
-    // Prints: <Buffer ...>
+  // Prints: <Buffer ...>
 });
 ```
 
@@ -979,6 +979,9 @@ added: v0.4.2
 Change the file timestamps of a file referenced by the supplied file
 descriptor.
 
+*Note*: This function does not work on AIX versions before 7.1, it will return
+the error `UV_ENOSYS`.
+
 ## fs.futimesSync(fd, atime, mtime)
 <!-- YAML
 added: v0.4.2
@@ -1265,6 +1268,14 @@ fs.open('<directory>', 'a+', (err, fd) => {
 });
 ```
 
+Some characters (`< > : " / \ | ? *`) are reserved under Windows as documented
+by [Naming Files, Paths, and Namespaces][]. Under NTFS, if the filename contains
+a colon, Node.js will open a file system stream, as described by
+[this MSDN page][MSDN-Using-Streams].
+
+Functions based on `fs.open()` exhibit this behavior as well. eg.
+`fs.writeFile()`, `fs.readFile()`, etc.
+
 ## fs.openSync(path, flags[, mode])
 <!-- YAML
 added: v0.1.21
@@ -1535,6 +1546,9 @@ added: v0.0.2
 Asynchronous rmdir(2). No arguments other than a possible exception are given
 to the completion callback.
 
+*Note*: Using `fs.rmdir()` on a file (not a directory) results in an `ENOENT`
+error on Windows and an `ENOTDIR` error on POSIX.
+
 ## fs.rmdirSync(path)
 <!-- YAML
 added: v0.1.21
@@ -1543,6 +1557,9 @@ added: v0.1.21
 * `path` {string|Buffer}
 
 Synchronous rmdir(2). Returns `undefined`.
+
+*Note*: Using `fs.rmdirSync()` on a file (not a directory) results in an `ENOENT`
+error on Windows and an `ENOTDIR` error on POSIX.
 
 ## fs.stat(path, callback)
 <!-- YAML
@@ -2261,3 +2278,5 @@ The following constants are meant for use with the [`fs.Stats`][] object's
 [`ReadDirectoryChangesW`]: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365465%28v=vs.85%29.aspx
 [`AHAFS`]: https://www.ibm.com/developerworks/aix/library/au-aix_event_infrastructure/
 [Common System Errors]: errors.html#errors_common_system_errors
+[Naming Files, Paths, and Namespaces]: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
+[MSDN-Using-Streams]: https://msdn.microsoft.com/en-us/library/windows/desktop/bb540537.aspx

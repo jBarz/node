@@ -2,12 +2,10 @@
 const common = require('../common');
 const assert = require('assert');
 
-if (!common.hasCrypto) {
+if (!common.hasCrypto)
   common.skip('missing crypto');
-  return;
-}
-const tls = require('tls');
 
+const tls = require('tls');
 const fs = require('fs');
 const path = require('path');
 
@@ -20,7 +18,7 @@ const path = require('path');
   const options = {cert: cert, key: key, port: common.PORT};
   const conn = tls.connect(options, common.fail);
 
-  conn.on('error', common.mustCall(function() {}));
+  conn.on('error', common.mustCall());
 }
 
 // SSL_accept/SSL_connect error handling
@@ -37,5 +35,5 @@ const path = require('path');
     assert.ok(false); // callback should never be executed
   });
 
-  conn.on('error', common.mustCall(function() {}));
+  conn.on('error', common.mustCall());
 }

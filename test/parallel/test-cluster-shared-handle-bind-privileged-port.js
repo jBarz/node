@@ -1,23 +1,19 @@
 'use strict';
 const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
-
 if (common.isZos) {
   common.skip('Skipping test, no privileged port on zOS.');
   return;
 }
 
-if (common.isWindows) {
+if (common.isWindows)
   common.skip('not reliable on Windows');
-  return;
-}
 
-if (process.getuid() === 0) {
+if (process.getuid() === 0)
   common.skip('as this test should not be run as `root`');
-  return;
-}
+
+const assert = require('assert');
+const cluster = require('cluster');
+const net = require('net');
 
 if (cluster.isMaster) {
   // Master opens and binds the socket and shares it with the worker.

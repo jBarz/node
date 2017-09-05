@@ -320,11 +320,11 @@ custom or application specific warnings.
 ```js
 // Emit a warning using a string...
 process.emitWarning('Something happened!');
-  // Prints: (node 12345) Warning: Something happened!
+// Prints: (node 12345) Warning: Something happened!
 
 // Emit a warning using an object...
 process.emitWarning('Something Happened!', 'CustomWarning');
-  // Prints: (node 12345) CustomWarning: Something happened!
+// Prints: (node 12345) CustomWarning: Something happened!
 
 // Emit a warning using a custom Error object...
 class CustomWarning extends Error {
@@ -336,7 +336,7 @@ class CustomWarning extends Error {
 }
 const myWarning = new CustomWarning('Something happened!');
 process.emitWarning(myWarning);
-  // Prints: (node 12345) CustomWarning: Something happened!
+// Prints: (node 12345) CustomWarning: Something happened!
 ```
 
 #### Emitting custom deprecation warnings
@@ -1654,9 +1654,9 @@ added: v0.1.19
 * `mask` {number}
 
 The `process.umask()` method sets or returns the Node.js process's file mode
-creation mask. Child processes inherit the mask from the parent process. The old
-mask is return if the `mask` argument is given, otherwise returns the current
-mask.
+creation mask. Child processes inherit the mask from the parent process. Invoked
+without an argument, the current mask is returned, otherwise the umask is set to
+the argument value and the previous mask is returned.
 
 ```js
 const newmask = 0o022;

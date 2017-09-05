@@ -8,7 +8,7 @@ let https;
 if (common.hasCrypto) {
   https = require('https');
 } else {
-  common.skip('missing crypto');
+  common.printSkipMessage('missing crypto');
 }
 
 var code = 'ENOTFOUND';
@@ -41,7 +41,7 @@ function test(mod) {
 if (common.hasCrypto) {
   test(https);
 } else {
-  common.skip('missing crypto');
+  common.printSkipMessage('missing crypto');
 }
 
 test(http);

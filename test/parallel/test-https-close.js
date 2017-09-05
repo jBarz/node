@@ -1,11 +1,9 @@
 'use strict';
 const common = require('../common');
-const fs = require('fs');
-
-if (!common.hasCrypto) {
+if (!common.hasCrypto)
   common.skip('missing crypto');
-  return;
-}
+
+const fs = require('fs');
 const https = require('https');
 
 const options = {
@@ -31,7 +29,7 @@ server.on('connection', function(connection) {
 });
 
 function shutdown() {
-  server.close(common.mustCall(function() {}));
+  server.close(common.mustCall());
 
   for (const key in connections) {
     connections[key].destroy();
@@ -49,7 +47,7 @@ server.listen(0, function() {
   };
 
   const req = https.request(requestOptions, function(res) {
-    res.on('data', function(d) {});
+    res.on('data', () => {});
     setImmediate(shutdown);
   });
   req.end();

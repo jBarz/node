@@ -62,6 +62,9 @@ rules:
   no-delete-var: 2
   no-undef: 2
   no-unused-vars: [2, {args: none}]
+  no-use-before-define: [2, {classes: true,
+                             functions: false,
+                             variables: false}]
 
   # Node.js and CommonJS
   # http://eslint.org/docs/rules/#nodejs-and-commonjs
@@ -96,18 +99,13 @@ rules:
   func-call-spacing: 2
   func-name-matching: 2
   func-style: [2, declaration, {allowArrowFunctions: true}]
-  # indent: [2, 2, {ArrayExpression: first,
-  #                 CallExpression: {arguments: first},
-  #                 FunctionDeclaration: {parameters: first},
-  #                 FunctionExpression: {parameters: first},
-  #                 MemberExpression: off,
-  #                 ObjectExpression: first,
-  #                 SwitchCase: 1}]
-  indent-legacy: [2, 2, {ArrayExpression: first,
-                         CallExpression: {arguments: first},
-                         MemberExpression: 1,
-                         ObjectExpression: first,
-                         SwitchCase: 1}]
+  indent: [2, 2, {ArrayExpression: first,
+                  CallExpression: {arguments: first},
+                  FunctionDeclaration: {parameters: first},
+                  FunctionExpression: {parameters: first},
+                  MemberExpression: off,
+                  ObjectExpression: first,
+                  SwitchCase: 1}]
   key-spacing: [2, {mode: minimum}]
   keyword-spacing: 2
   linebreak-style: [2, unix]
@@ -163,7 +161,6 @@ rules:
   template-curly-spacing: 2
 
   # Custom rules in tools/eslint-rules
-  align-multiline-assignment: 2
   assert-throws-arguments: [2, { requireTwo: true }]
 
 # Global scoped method and vars

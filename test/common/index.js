@@ -12,6 +12,8 @@ const Timer = process.binding('timer_wrap').Timer;
 const testRoot = process.env.NODE_TEST_DIR ?
   fs.realpathSync(process.env.NODE_TEST_DIR) : path.resolve(__dirname, '..');
 
+const noop = () => {};
+
 exports.fixturesDir = path.join(__dirname, '..', 'fixtures');
 exports.tmpDirName = 'tmp';
 // PORT should match the definition in test/testpy/__init__.py.
@@ -410,13 +412,19 @@ function runCallChecks(exitCode) {
   if (exitCode !== 0) return;
 
   const failed = mustCallChecks.filter(function(context) {
-    return context.actual !== context.expected;
+    if ('minimum' in context) {
+      context.messageSegment = `at least ${context.minimum}`;
+      return context.actual < context.minimum;
+    } else {
+      context.messageSegment = `exactly ${context.exact}`;
+      return context.actual !== context.exact;
+    }
   });
 
   failed.forEach(function(context) {
-    console.log('Mismatched %s function calls. Expected %d, actual %d.',
+    console.log('Mismatched %s function calls. Expected %s, actual %d.',
                 context.name,
-                context.expected,
+                context.messageSegment,
                 context.actual);
     console.log(context.stack.split('\n').slice(2).join('\n'));
   });
@@ -424,15 +432,29 @@ function runCallChecks(exitCode) {
   if (failed.length) process.exit(1);
 }
 
+exports.mustCall = function(fn, exact) {
+  return _mustCallInner(fn, exact, 'exact');
+};
 
-exports.mustCall = function(fn, expected) {
-  if (expected === undefined)
-    expected = 1;
-  else if (typeof expected !== 'number')
-    throw new TypeError(`Invalid expected value: ${expected}`);
+exports.mustCallAtLeast = function(fn, minimum) {
+  return _mustCallInner(fn, minimum, 'minimum');
+};
+
+function _mustCallInner(fn, criteria, field) {
+  if (typeof fn === 'number') {
+    criteria = fn;
+    fn = noop;
+  } else if (fn === undefined) {
+    fn = noop;
+  }
+
+  if (criteria === undefined)
+    criteria = 1;
+  else if (typeof criteria !== 'number')
+    throw new TypeError(`Invalid ${field} value: ${criteria}`);
 
   const context = {
-    expected: expected,
+    [field]: criteria,
     actual: 0,
     stack: (new Error()).stack,
     name: fn.name || '<anonymous>'
@@ -447,7 +469,7 @@ exports.mustCall = function(fn, expected) {
     context.actual++;
     return fn.apply(this, arguments);
   };
-};
+}
 
 exports.hasMultiLocalhost = function hasMultiLocalhost() {
   const TCP = process.binding('tcp_wrap').TCP;
@@ -477,8 +499,13 @@ exports.mustNotCall = function(msg) {
   };
 };
 
-exports.skip = function(msg) {
+exports.printSkipMessage = function(msg) {
   console.log(`1..0 # Skipped: ${msg}`);
+};
+
+exports.skip = function(msg) {
+  exports.printSkipMessage(msg);
+  process.exit(0);
 };
 
 // A stream to push an array into a REPL
@@ -494,9 +521,9 @@ util.inherits(ArrayStream, stream.Stream);
 exports.ArrayStream = ArrayStream;
 ArrayStream.prototype.readable = true;
 ArrayStream.prototype.writable = true;
-ArrayStream.prototype.pause = function() {};
-ArrayStream.prototype.resume = function() {};
-ArrayStream.prototype.write = function() {};
+ArrayStream.prototype.pause = noop;
+ArrayStream.prototype.resume = noop;
+ArrayStream.prototype.write = noop;
 
 // Returns true if the exit code "exitCode" and/or signal name "signal"
 // represent the exit code and/or signal name of a node process that aborted,

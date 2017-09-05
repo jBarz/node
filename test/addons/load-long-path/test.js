@@ -1,13 +1,11 @@
 'use strict';
 const common = require('../../common');
+if (common.isWOW64 || common.isZos) {
+  common.skip('doesn\'t work on this platform');
+
 const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
-
-if (common.isWOW64 || common.isZos) {
-  common.skip('doesn\'t work on this platform');
-  return;
-}
 
 common.refreshTmpDir();
 

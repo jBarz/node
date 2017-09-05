@@ -541,6 +541,7 @@ class ZCtx : public AsyncWrap {
         delete[] dictionary;
         ctx->dictionary_ = nullptr;
       }
+      ctx->mode_ = NONE;
       ctx->env()->ThrowError("\x49\x6e\x69\x74\x20\x65\x72\x72\x6f\x72");
     }
   }

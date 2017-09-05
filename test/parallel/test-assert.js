@@ -399,10 +399,10 @@ assert.throws(() => {
 threw = false;
 try {
   assert.throws(
-      function() {
-        throw ({});
-      },
-      Array
+    function() {
+      throw ({});
+    },
+    Array
   );
 } catch (e) {
   threw = true;
@@ -515,6 +515,7 @@ testAssertionMessage(/a/, '/a/');
 testAssertionMessage(/abc/gim, '/abc/gim');
 testAssertionMessage(function f() {}, '[Function: f]');
 testAssertionMessage(function() {}, '[Function]');
+testAssertionMessage(() => {}, '[Function]');
 testAssertionMessage({}, '{}');
 testAssertionMessage(circular, '{ y: 1, x: [Circular] }');
 testAssertionMessage({a: undefined, b: null}, '{ a: undefined, b: null }');

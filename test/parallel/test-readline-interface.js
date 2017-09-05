@@ -11,10 +11,10 @@ function FakeInput() {
   EventEmitter.call(this);
 }
 inherits(FakeInput, EventEmitter);
-FakeInput.prototype.resume = function() {};
-FakeInput.prototype.pause = function() {};
-FakeInput.prototype.write = function() {};
-FakeInput.prototype.end = function() {};
+FakeInput.prototype.resume = () => {};
+FakeInput.prototype.pause = () => {};
+FakeInput.prototype.write = () => {};
+FakeInput.prototype.end = () => {};
 
 function isWarned(emitter) {
   for (const name in emitter) {
@@ -541,7 +541,7 @@ function isWarned(emitter) {
     });
 
     const rl = readline.createInterface({
-      input: new Readable({ read: () => {} }),
+      input: new Readable({ read: common.mustCall() }),
       output: output,
       prompt: '$ ',
       terminal: terminal

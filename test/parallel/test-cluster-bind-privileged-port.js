@@ -1,23 +1,19 @@
 'use strict';
 const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
-
 if (common.isZos) {
   common.skip('Skipping test, no privileged port on zOS.');
   return;
 }
 
-if (common.isWindows) {
+if (common.isWindows)
   common.skip('not reliable on Windows.');
-  return;
-}
 
-if (process.getuid() === 0) {
+if (process.getuid() === 0)
   common.skip('Test is not supposed to be run as root.');
-  return;
-}
+
+const assert = require('assert');
+const cluster = require('cluster');
+const net = require('net');
 
 if (cluster.isMaster) {
   cluster.fork().on('exit', common.mustCall((exitCode) => {
