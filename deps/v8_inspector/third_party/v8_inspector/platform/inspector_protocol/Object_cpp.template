@@ -9,7 +9,7 @@ std::unique_ptr<Object> Object::parse(protocol::Value* value, ErrorSupport* erro
 {
     protocol::DictionaryValue* object = DictionaryValue::cast(value);
     if (!object) {
-        errors->addError("object expected");
+        errors->addError(u8"object expected");
         return nullptr;
     }
     return wrapUnique(new Object(wrapUnique(static_cast<DictionaryValue*>(object->clone().release()))));

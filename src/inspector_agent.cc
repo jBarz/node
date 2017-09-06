@@ -25,6 +25,9 @@
 #include <string.h>
 #include <utility>
 #include <vector>
+#ifdef __MVS__
+#include <unistd.h>
+#endif
 
 
 namespace node {
@@ -46,27 +49,27 @@ std::string GetWsUrl(int port, const std::string& id) {
 
 void PrintDebuggerReadyMessage(int port, const std::string& id) {
   fprintf(stderr, "Debugger listening on port %d.\n"
-    "\x57\x61\x72\x6e\x69\x6e\x67\x3a\x20\x54\x68\x69\x73\x20\x69\x73\x20\x61\x6e\x20\x65\x78\x70\x65\x72\x69\x6d\x65\x6e\x74\x61\x6c\x20\x66\x65\x61\x74\x75\x72\x65\x20\x61\x6e\x64\x20\x63\x6f\x75\x6c\x64\x20\x63\x68\x61\x6e\x67\x65\x20\x61\x74\x20\x61\x6e\x79\x20\x74\x69\x6d\x65\x2e\xa"
-    "\x54\x6f\x20\x73\x74\x61\x72\x74\x20\x64\x65\x62\x75\x67\x67\x69\x6e\x67\x2c\x20\x6f\x70\x65\x6e\x20\x74\x68\x65\x20\x66\x6f\x6c\x6c\x6f\x77\x69\x6e\x67\x20\x55\x52\x4c\x20\x69\x6e\x20\x43\x68\x72\x6f\x6d\x65\x3a\xa"
-    "\x20\x20\x20\x20\x63\x68\x72\x6f\x6d\x65\x2d\x64\x65\x76\x74\x6f\x6f\x6c\x73\x3a\x2f\x2f\x64\x65\x76\x74\x6f\x6f\x6c\x73\x2f\x72\x65\x6d\x6f\x74\x65\x2f\x73\x65\x72\x76\x65\x5f\x66\x69\x6c\x65\x2f"
-    "\x40\x75\x38" V8_INSPECTOR_REVISION "\x2f\x69\x6e\x73\x70\x65\x63\x74\x6f\x72\x2e\x68\x74\x6d\x6c\x3f"
-    "\x65\x78\x70\x65\x72\x69\x6d\x65\x6e\x74\x73\x3d\x74\x72\x75\x65\x26\x76\x38\x6f\x6e\x6c\x79\x3d\x74\x72\x75\x65\x26\x77\x73\x3d\x6c\xa2\xa",
+    "Warning: This is an experimental feature and could change at any time.\n"
+    "To start debugging, open the following URL in Chrome:\n"
+    "    chrome-devtools://devtools/remote/serve_file/"
+    "@" V8_INSPECTOR_REVISION "/inspector.html?"
+    "experiments=true&v8only=true&ws=%s\n",
       port, GetWsUrl(port, id).c_str());
   fflush(stderr);
 }
 
 std::string MapToString(const std::map<std::string, std::string> object) {
   std::ostringstream json;
-  json << "[ {\n";
+  json << u8"[ {\n";
   bool first = true;
   for (const auto& name_value : object) {
     if (!first)
-      json << ",\n";
-    json << "  \u8"" << name_value.first << u8"\": \u8"";
-    json << name_value.second << "\x5c\x75\x38"";
+      json << u8",\n";
+    json << u8"  \"" << name_value.first << u8"\": \"";
+    json << name_value.second << u8"\"";
     first = false;
   }
-  json << "\n} ]\n\n";
+  json << u8"\n} ]\n\n";
   return json.str();
 }
 
@@ -93,13 +96,14 @@ void OnBufferAlloc(uv_handle_t* handle, size_t len, uv_buf_t* buf) {
 
 void SendHttpResponse(InspectorSocket* socket, const char* response,
                       size_t size) {
-  const char HEADERS[] = "\x48\x54\x54\x50\x2f\x31\x2e\x30\x20\x32\x30\x30\x20\x4f\x4b\xd\xa"
-                         "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x79\x70\x65\x3a\x20\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x6a\x73\x6f\x6e\x3b\x20\x63\x68\x61\x72\x73\x65\x74\x3d\x55\x54\x46\x2d\x38\xd\xa"
-                         "\x43\x61\x63\x68\x65\x2d\x43\x6f\x6e\x74\x72\x6f\x6c\x3a\x20\x6e\x6f\x2d\x63\x61\x63\x68\x65\xd\xa"
-                         "\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x4c\x65\x6e\x67\x74\x68\x3a\x20\x6c\xa9\xa4\xd\xa"
-                         "\xd\xa";
+  const char HEADERS[] = "HTTP/1.0 200 OK\r\n"
+                         "Content-Type: application/json; charset=UTF-8\r\n"
+                         "Cache-Control: no-cache\r\n"
+                         "Content-Length: %zu\r\n"
+                         "\r\n";
   char header[sizeof(HEADERS) + 20];
   int header_len = snprintf(header, sizeof(header), HEADERS, size);
+  __e2a_l(header, header_len);
   inspector_write(socket, header, header_len);
   inspector_write(socket, response, size);
 }
@@ -110,10 +114,10 @@ void SendHttpResponse(InspectorSocket* socket, const std::string& response) {
 
 void SendVersionResponse(InspectorSocket* socket) {
   static const char response[] =
-      "\x7b\xa"
-      "\x20\x20\x5c\x75\x38"Browser\"\x3a\x20\x22\x6e\x6f\x64\x65\x2e\x6a\x73\x2f" NODE_VERSION "\x5c\x75\x38",\n"
-      "\x20\x20\x5c\x75\x38"Protocol-Version\"\x3a\x20\x22\x31\x2e\x31\x22\xa"
-      "\x7d\xa";
+      u8"{\n"
+      u8"  \"Browser\": \"node.js/" NODE_VERSION "\",\n"
+      u8"  \"Protocol-Version\": \"1.1\"\n"
+      u8"}\n";
   SendHttpResponse(socket, response, sizeof(response) - 1);
 }
 
@@ -601,12 +605,24 @@ bool AgentImpl::OnInspectorHandshakeIO(InspectorSocket* socket,
                                        enum inspector_handshake_event state,
                                        const std::string& path) {
   AgentImpl* agent = static_cast<AgentImpl*>(socket->data);
+#ifdef __MVS__
+  std::string ebcdicpath;
+  transform(path.begin(), path.end(), back_inserter(ebcdicpath), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
+#endif
   switch (state) {
   case kInspectorHandshakeHttpGet:
     return agent->RespondToGet(socket, path);
   case kInspectorHandshakeUpgrading:
+#ifdef __MVS__
+    return ebcdicpath.length() == agent->id_.length() + 1 &&
+           ebcdicpath.find(agent->id_) == 1;
+#else
     return path.length() == agent->id_.length() + 1 &&
            path.find(agent->id_) == 1;
+#endif
   case kInspectorHandshakeUpgraded:
     agent->OnInspectorConnectionIO(socket);
     return true;
@@ -628,7 +644,7 @@ void AgentImpl::OnRemoteDataIO(InspectorSocket* socket,
     // engages, node should wait for the run callback from the remote client
     // and initiate its startup. This is a change to node.cc that should be
     // upstreamed separately.
-    if (wait_&& str.find("\x5c\x75\x38"Runtime.runIfWaitingForDebugger\"")
+    if (wait_&& str.find(u8"\"Runtime.runIfWaitingForDebugger\"")
         != std::string::npos) {
       wait_ = false;
       uv_sem_post(&start_sem_);
@@ -650,28 +666,34 @@ void AgentImpl::OnRemoteDataIO(InspectorSocket* socket,
 
 void AgentImpl::SendListResponse(InspectorSocket* socket) {
   std::map<std::string, std::string> response;
-  response["\x64\x65\x73\x63\x72\x69\x70\x74\x69\x6f\x6e\x75\x38"] = "\x6e\x6f\x64\x65\x2e\x6a\x73\x20\x69\x6e\x73\x74\x61\x6e\x63\x65";
-  response["\x66\x61\x76\x69\x63\x6f\x6e\x55\x72\x6c\x75\x38"] = "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x6e\x6f\x64\x65\x6a\x73\x2e\x6f\x72\x67\x2f\x73\x74\x61\x74\x69\x63\x2f\x66\x61\x76\x69\x63\x6f\x6e\x2e\x69\x63\x6f";
-  response["\x69\x64"] = id_;
-  response["\x74\x69\x74\x6c\x65"] = script_name_.empty() ? GetProcessTitle() : script_name_;
-  Escape(&response["\x74\x69\x74\x6c\x65"]);
-  response["\x74\x79\x70\x65\x75\x38"] = "\x6e\x6f\x64\x65";
+  response[u8"description"] = u8"node.js instance";
+  response[u8"faviconUrl"] = u8"https://nodejs.org/static/favicon.ico";
+  response[u8"id"] = id_;
+  response[u8"title"] = script_name_.empty() ? GetProcessTitle() : script_name_;
+  Escape(&response[u8"title"]);
+  response[u8"type"] = u8"node";
   // This attribute value is a "best effort" URL that is passed as a JSON
   // string. It is not guaranteed to resolve to a valid resource.
-  response["\x75\x72\x6c\x75\x38"] = "\x66\x69\x6c\x65\x3a\x2f\x2f" + script_path_;
-  Escape(&response["\x75\x72\x6c"]);
+  response[u8"url"] = u8"file://" + script_path_;
+  Escape(&response[u8"url"]);
 
   if (!client_socket_) {
     std::string address = GetWsUrl(port_, id_);
+#ifdef __MVS__
+    transform(address.begin(), address.end(), address.begin(), [](char c) -> char {
+      __e2a_l(&c, 1);
+      return c;
+    });
+#endif
 
     std::ostringstream frontend_url;
-    frontend_url << "https://chrome-devtools-frontend.appspot.com/serve_file/@";
-    frontend_url << V8_INSPECTOR_REVISION;
-    frontend_url << "/inspector.html?experiments=true&v8only=true&ws=";
+    frontend_url << u8"https://chrome-devtools-frontend.appspot.com/serve_file/@";
+    frontend_url << u8"" V8_INSPECTOR_REVISION;
+    frontend_url << u8"/inspector.html?experiments=true&v8only=true&ws=";
     frontend_url << address;
 
-    response["\x64\x65\x76\x74\x6f\x6f\x6c\x73\x46\x72\x6f\x6e\x74\x65\x6e\x64\x55\x72\x6c"] += frontend_url.str();
-    response["\x77\x65\x62\x53\x6f\x63\x6b\x65\x74\x44\x65\x62\x75\x67\x67\x65\x72\x55\x72\x6c\x75\x38"] = "\x77\x73\x3a\x2f\x2f" + address;
+    response[u8"devtoolsFrontendUrl"] += frontend_url.str();
+    response[u8"webSocketDebuggerUrl"] = u8"ws://" + address;
   }
   SendHttpResponse(socket, MapToString(response));
 }
@@ -718,9 +740,10 @@ void AgentImpl::WriteCbIO(uv_async_t* async) {
 void AgentImpl::WorkerRunIO() {
   sockaddr_in addr;
   uv_tcp_t server;
-  int err = uv_loop_init(&child_loop_);
-  CHECK_EQ(err, 0);
-  err = uv_async_init(&child_loop_, &io_thread_req_, AgentImpl::WriteCbIO);
+  //TODO: investigate whether we need to loop init a second time here
+  //int err = uv_loop_init(&child_loop_);
+  //CHECK_EQ(err, 0);
+  int err = uv_async_init(&child_loop_, &io_thread_req_, AgentImpl::WriteCbIO);
   CHECK_EQ(err, 0);
   io_thread_req_.data = this;
   if (!script_name_.empty()) {
@@ -730,7 +753,7 @@ void AgentImpl::WorkerRunIO() {
     uv_fs_req_cleanup(&req);
   }
   uv_tcp_init(&child_loop_, &server);
-  uv_ip4_addr("\x30\x2e\x30\x2e\x30\x2e\x30", port_, &addr);
+  uv_ip4_addr("0.0.0.0", port_, &addr);
   server.data = this;
   err = uv_tcp_bind(&server,
                     reinterpret_cast<const struct sockaddr*>(&addr), 0);

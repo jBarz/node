@@ -33,7 +33,7 @@ public:
 
     static bool isSpaceOrNewLine(C c)
     {
-        return isASCII(c) && c <= ' ' && (c == ' ' || (c <= 0xD && c >= 0x9));
+        return isASCII(c) && c <= '\x20' && (c == '\x20' || (c <= 0xD && c >= 0x9));
     }
 
     static T fromInteger(int number)

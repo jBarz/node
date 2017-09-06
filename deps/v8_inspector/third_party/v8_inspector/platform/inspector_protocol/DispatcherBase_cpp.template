@@ -6,7 +6,7 @@ namespace blink {
 namespace protocol {
 
 // static
-const char DispatcherBase::kInvalidRequest[] = "Invalid request";
+const char DispatcherBase::kInvalidRequest[] = u8"Invalid request";
 
 DispatcherBase::WeakPtr::WeakPtr(DispatcherBase* dispatcher) : m_dispatcher(dispatcher) { }
 
@@ -54,7 +54,7 @@ bool DispatcherBase::getCommandName(const String16& message, String16* result)
     if (!object)
         return false;
 
-    if (!object->getString("method", result))
+    if (!object->getString(u8"method", result))
         return false;
 
     return true;
@@ -68,8 +68,8 @@ void DispatcherBase::sendResponse(int callId, const ErrorString& invocationError
     }
 
     std::unique_ptr<protocol::DictionaryValue> responseMessage = DictionaryValue::create();
-    responseMessage->setInteger("id", callId);
-    responseMessage->setObject("result", std::move(result));
+    responseMessage->setInteger(u8"id", callId);
+    responseMessage->setObject(u8"result", std::move(result));
     if (m_frontendChannel)
         m_frontendChannel->sendProtocolResponse(callId, responseMessage->toJSONString());
 }
@@ -87,14 +87,14 @@ void DispatcherBase::sendResponse(int callId, const ErrorString& invocationError
 static void reportProtocolError(FrontendChannel* frontendChannel, int callId, DispatcherBase::CommonErrorCode code, const String16& errorMessage, ErrorSupport* errors)
 {
     std::unique_ptr<protocol::DictionaryValue> error = DictionaryValue::create();
-    error->setInteger("code", code);
-    error->setString("message", errorMessage);
+    error->setInteger(u8"code", code);
+    error->setString(u8"message", errorMessage);
     DCHECK(error);
     if (errors && errors->hasErrors())
-        error->setString("data", errors->errors());
+        error->setString(u8"data", errors->errors());
     std::unique_ptr<protocol::DictionaryValue> message = DictionaryValue::create();
-    message->setObject("error", std::move(error));
-    message->setInteger("id", callId);
+    message->setObject(u8"error", std::move(error));
+    message->setInteger(u8"id", callId);
     frontendChannel->sendProtocolResponse(callId, message->toJSONString());
 }
 
@@ -137,26 +137,26 @@ void UberDispatcher::dispatch(const String16& message)
         return;
 
     int callId = 0;
-    protocol::Value* callIdValue = messageObject->get("id");
+    protocol::Value* callIdValue = messageObject->get(u8"id");
     bool success = callIdValue->asInteger(&callId);
     if (!success)
         return;
 
-    protocol::Value* methodValue = messageObject->get("method");
+    protocol::Value* methodValue = messageObject->get(u8"method");
     String16 method;
     success = methodValue && methodValue->asString(&method);
     if (!success)
         return;
 
-    size_t dotIndex = method.find(".");
+    size_t dotIndex = method.find(u8".");
     if (dotIndex == String16::kNotFound) {
-        reportProtocolError(m_frontendChannel, callId, DispatcherBase::MethodNotFound, "'" + method + "' wasn't found", nullptr);
+        reportProtocolError(m_frontendChannel, callId, DispatcherBase::MethodNotFound, u8"'" + method + u8"' wasn't found", nullptr);
         return;
     }
     String16 domain = method.substring(0, dotIndex);
     auto it = m_dispatchers.find(domain);
     if (it == m_dispatchers.end()) {
-        reportProtocolError(m_frontendChannel, callId, DispatcherBase::MethodNotFound, "'" + method + "' wasn't found", nullptr);
+        reportProtocolError(m_frontendChannel, callId, DispatcherBase::MethodNotFound, u8"'" + method + u8"' wasn't found", nullptr);
         return;
     }
     it->second->dispatch(callId, method, std::move(messageObject));

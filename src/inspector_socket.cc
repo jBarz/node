@@ -9,6 +9,9 @@
 
 #include <string.h>
 #include <vector>
+#ifdef __MVS__
+#include <unistd.h>
+#endif
 
 #define ACCEPT_KEY_LENGTH base64_encoded_size(20)
 #define BUFFER_GROWTH_CHUNK_SIZE 1024
@@ -19,7 +22,7 @@
 namespace node {
 namespace inspector {
 
-static const char CLOSE_FRAME[] = {'\x88'\x2c\x20'\x00'};
+static const char CLOSE_FRAME[] = {'\x88', '\x00'};
 
 enum ws_decode_result {
   FRAME_OK, FRAME_INCOMPLETE, FRAME_CLOSE, FRAME_ERROR
@@ -43,7 +46,10 @@ static void dump_hex(const char* buf, size_t len) {
     }
     for (i = 0; i < 16 && cptr < end; i++) {
       c = *(cptr++);
-      printf("%c", (c > 0x19) ? c : '\x2e');
+      char t = c;
+      __a2e_l(&t, 1);
+      t = isprint(t) ? t : '.';
+      printf("%c", t);
     }
     printf("\n");
   }

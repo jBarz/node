@@ -55,9 +55,9 @@ void toFramesVector(v8::Local<v8::StackTrace> stackTrace, std::vector<V8StackTra
 } //  namespace
 
 V8StackTraceImpl::Frame::Frame()
-    : m_functionName("undefined")
+    : m_functionName(u8"undefined")
     , m_scriptId("")
-    , m_scriptName("undefined")
+    , m_scriptName(u8"undefined")
     , m_lineNumber(0)
     , m_columnNumber(0)
 {
@@ -250,14 +250,14 @@ String16 V8StackTraceImpl::toString() const
     String16Builder stackTrace;
     for (size_t i = 0; i < m_frames.size(); ++i) {
         const Frame& frame = m_frames[i];
-        stackTrace.append("\n    at " + (frame.functionName().length() ? frame.functionName() : "(anonymous function)"));
-        stackTrace.append(" (");
+        stackTrace.append(u8"\n    at " + (frame.functionName().length() ? frame.functionName() : u8"(anonymous function)"));
+        stackTrace.append(u8" (");
         stackTrace.append(frame.sourceURL());
-        stackTrace.append(':');
+        stackTrace.append('\x3a');
         stackTrace.append(String16::fromInteger(frame.lineNumber()));
-        stackTrace.append(':');
+        stackTrace.append('\x3a');
         stackTrace.append(String16::fromInteger(frame.columnNumber()));
-        stackTrace.append(')');
+        stackTrace.append('\x29');
     }
     return stackTrace.toString();
 }

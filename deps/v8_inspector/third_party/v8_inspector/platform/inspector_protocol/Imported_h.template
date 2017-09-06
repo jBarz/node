@@ -20,12 +20,12 @@ struct ValueConversions<{{domain.domain}}::API::{{type.id}}> {
     static std::unique_ptr<{{domain.domain}}::API::{{type.id}}> parse(protocol::Value* value, ErrorSupport* errors)
     {
         if (!value) {
-            errors->addError("value expected");
+            errors->addError(u8"value expected");
             return nullptr;
         }
         std::unique_ptr<{{domain.domain}}::API::{{type.id}}> result = {{domain.domain}}::API::{{type.id}}::fromJSONString(value->toJSONString());
         if (!result)
-            errors->addError("cannot parse");
+            errors->addError(u8"cannot parse");
         return result;
     }
 

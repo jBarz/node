@@ -28,7 +28,7 @@ public:
     {
         protocol::ListValue* array = ListValue::cast(value);
         if (!array) {
-            errors->addError("array expected");
+            errors->addError(u8"array expected");
             return nullptr;
         }
         std::unique_ptr<Array<T>> result(new Array<T>());
@@ -83,7 +83,7 @@ public:
     {
         protocol::ListValue* array = ListValue::cast(value);
         if (!array) {
-            errors->addError("array expected");
+            errors->addError(u8"array expected");
             return nullptr;
         }
         errors->push();

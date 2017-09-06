@@ -12,7 +12,7 @@ InjectedScriptNative::InjectedScriptNative(v8::Isolate* isolate)
 {
 }
 
-static const char privateKeyName[] = "v8-inspector#injectedScript";
+static const char privateKeyName[] = u8"v8-inspector#injectedScript";
 
 InjectedScriptNative::~InjectedScriptNative() { }
 

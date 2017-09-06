@@ -24,9 +24,9 @@ enum Token {
     InvalidToken,
 };
 
-const char* const nullString = "null";
-const char* const trueString = "true";
-const char* const falseString = "false";
+const char* const nullString = u8"null";
+const char* const trueString = u8"true";
+const char* const falseString = u8"false";
 
 bool parseConstToken(const UChar* start, const UChar* end, const UChar** tokenEnd, const char* token)
 {
@@ -41,9 +41,9 @@ bool readInt(const UChar* start, const UChar* end, const UChar** tokenEnd, bool 
 {
     if (start == end)
         return false;
-    bool haveLeadingZero = '0' == *start;
+    bool haveLeadingZero = '\x30' == *start;
     int length = 0;
-    while (start < end && '0' <= *start && *start <= '9') {
+    while (start < end && '\x30' <= *start && *start <= '\x39') {
         ++start;
         ++length;
     }
@@ -62,7 +62,7 @@ bool parseNumberToken(const UChar* start, const UChar* end, const UChar** tokenE
     if (start == end)
         return false;
     UChar c = *start;
-    if ('-' == c)
+    if ('\x2d' == c)
         ++start;
 
     if (!readInt(start, end, &start, false))
@@ -74,7 +74,7 @@ bool parseNumberToken(const UChar* start, const UChar* end, const UChar** tokenE
 
     // Optional fraction part
     c = *start;
-    if ('.' == c) {
+    if ('\x2e' == c) {
         ++start;
         if (!readInt(start, end, &start, true))
             return false;
@@ -86,12 +86,12 @@ bool parseNumberToken(const UChar* start, const UChar* end, const UChar** tokenE
     }
 
     // Optional exponent part
-    if ('e' == c || 'E' == c) {
+    if ('\x65' == c || '\x45' == c) {
         ++start;
         if (start == end)
             return false;
         c = *start;
-        if ('-' == c || '+' == c) {
+        if ('\x2d' == c || '\x2b' == c) {
             ++start;
             if (start == end)
                 return false;
@@ -110,7 +110,7 @@ bool readHexDigits(const UChar* start, const UChar* end, const UChar** tokenEnd,
         return false;
     for (int i = 0; i < digits; ++i) {
         UChar c = *start++;
-        if (!(('0' <= c && c <= '9') || ('a' <= c && c <= 'f') || ('A' <= c && c <= 'F')))
+        if (!(('\x30' <= c && c <= '\x39') || ('\x61' <= c && c <= '\x66') || ('\x41' <= c && c <= '\x46')))
             return false;
     }
     *tokenEnd = start;
@@ -121,32 +121,32 @@ bool parseStringToken(const UChar* start, const UChar* end, const UChar** tokenE
 {
     while (start < end) {
         UChar c = *start++;
-        if ('\\' == c) {
+        if ('\x5c' == c) {
             c = *start++;
             // Make sure the escaped char is valid.
             switch (c) {
-            case 'x':
+            case '\x78':
                 if (!readHexDigits(start, end, &start, 2))
                     return false;
                 break;
-            case 'u':
+            case '\x75':
                 if (!readHexDigits(start, end, &start, 4))
                     return false;
                 break;
-            case '\\':
-            case '/':
-            case 'b':
-            case 'f':
-            case 'n':
-            case 'r':
-            case 't':
-            case 'v':
-            case '"':
+            case '\x5c':
+            case '\x2f':
+            case '\x62':
+            case '\x66':
+            case '\x6e':
+            case '\x72':
+            case '\x74':
+            case '\x76':
+            case '\x22':
                 break;
             default:
                 return false;
             }
-        } else if ('"' == c) {
+        } else if ('\x22' == c) {
             *tokenEnd = start;
             return true;
         }
@@ -159,14 +159,14 @@ bool skipComment(const UChar* start, const UChar* end, const UChar** commentEnd)
     if (start == end)
         return false;
 
-    if (*start != '/' || start + 1 >= end)
+    if (*start != '\x2f' || start + 1 >= end)
         return false;
     ++start;
 
-    if (*start == '/') {
+    if (*start == '\x2f') {
         // Single line comment, read to newline.
         for (++start; start < end; ++start) {
-            if (*start == '\n' || *start == '\r') {
+            if (*start == '\x0a' || *start == '\x0d') {
                 *commentEnd = start + 1;
                 return true;
             }
@@ -176,11 +176,11 @@ bool skipComment(const UChar* start, const UChar* end, const UChar** commentEnd)
         return true;
     }
 
-    if (*start == '*') {
+    if (*start == '\x2a') {
         UChar previous = '\0';
         // Block comment, read until end marker.
         for (++start; start < end; previous = *start++) {
-            if (previous == '*' && *start == '/') {
+            if (previous == '\x2a' && *start == '\x2f') {
                 *commentEnd = start + 1;
                 return true;
             }
@@ -197,7 +197,7 @@ void skipWhitespaceAndComments(const UChar* start, const UChar* end, const UChar
     while (start < end) {
         if (String16::isSpaceOrNewLine(*start)) {
             ++start;
-        } else if (*start == '/') {
+        } else if (*start == '\x2f') {
             const UChar* commentEnd;
             if (!skipComment(start, end, &commentEnd))
                 break;
@@ -218,51 +218,51 @@ Token parseToken(const UChar* start, const UChar* end, const UChar** tokenStart,
         return InvalidToken;
 
     switch (*start) {
-    case 'n':
+    case '\x6e':
         if (parseConstToken(start, end, tokenEnd, nullString))
             return NullToken;
         break;
-    case 't':
+    case '\x74':
         if (parseConstToken(start, end, tokenEnd, trueString))
             return BoolTrue;
         break;
-    case 'f':
+    case '\x66':
         if (parseConstToken(start, end, tokenEnd, falseString))
             return BoolFalse;
         break;
-    case '[':
+    case '\x5b':
         *tokenEnd = start + 1;
         return ArrayBegin;
-    case ']':
+    case '\x5d':
         *tokenEnd = start + 1;
         return ArrayEnd;
-    case ',':
+    case '\x2c':
         *tokenEnd = start + 1;
         return ListSeparator;
-    case '{':
+    case '\x7b':
         *tokenEnd = start + 1;
         return ObjectBegin;
-    case '}':
+    case '\x7d':
         *tokenEnd = start + 1;
         return ObjectEnd;
-    case ':':
+    case '\x3a':
         *tokenEnd = start + 1;
         return ObjectPairSeparator;
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-    case '-':
+    case '\x30':
+    case '\x31':
+    case '\x32':
+    case '\x33':
+    case '\x34':
+    case '\x35':
+    case '\x36':
+    case '\x37':
+    case '\x38':
+    case '\x39':
+    case '\x2d':
         if (parseNumberToken(start, end, tokenEnd))
             return Number;
         break;
-    case '"':
+    case '\x22':
         if (parseStringToken(start + 1, end, tokenEnd))
             return StringLiteral;
         break;
@@ -272,12 +272,12 @@ Token parseToken(const UChar* start, const UChar* end, const UChar** tokenStart,
 
 inline int hexToInt(UChar c)
 {
-    if ('0' <= c && c <= '9')
-        return c - '0';
-    if ('A' <= c && c <= 'F')
-        return c - 'A' + 10;
-    if ('a' <= c && c <= 'f')
-        return c - 'a' + 10;
+    if ('\x30' <= c && c <= '\x39')
+        return c - '\x30';
+    if ('\x41' <= c && c <= '\x46')
+        return c - '\x41' + 10;
+    if ('\x61' <= c && c <= '\x66')
+        return c - '\x61' + 10;
     NOTREACHED();
     return 0;
 }
@@ -286,41 +286,41 @@ bool decodeString(const UChar* start, const UChar* end, String16Builder* output)
 {
     while (start < end) {
         UChar c = *start++;
-        if ('\\' != c) {
+        if ('\x5c' != c) {
             output->append(c);
             continue;
         }
         c = *start++;
 
-        if (c == 'x') {
+        if (c == '\x78') {
             // \x is not supported.
             return false;
         }
 
         switch (c) {
-        case '"':
-        case '/':
-        case '\\':
+        case '\x22':
+        case '\x2f':
+        case '\x5c':
             break;
-        case 'b':
-            c = '\b';
+        case '\x62':
+            c = '\x08';
             break;
-        case 'f':
-            c = '\f';
+        case '\x66':
+            c = '\x0c';
             break;
-        case 'n':
-            c = '\n';
+        case '\x6e':
+            c = '\x0a';
             break;
-        case 'r':
-            c = '\r';
+        case '\x72':
+            c = '\x0d';
             break;
-        case 't':
-            c = '\t';
+        case '\x74':
+            c = '\x09';
             break;
-        case 'v':
-            c = '\v';
+        case '\x76':
+            c = '\x0b';
             break;
-        case 'u':
+        case '\x75':
             c = (hexToInt(*start) << 12) +
                 (hexToInt(*(start + 1)) << 8) +
                 (hexToInt(*(start + 2)) << 4) +

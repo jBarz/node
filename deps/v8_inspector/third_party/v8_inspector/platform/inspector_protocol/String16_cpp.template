@@ -5,6 +5,9 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#ifdef __MVS__
+#include <unistd.h>
+#endif
 
 namespace blink {
 namespace protocol {
@@ -14,27 +17,47 @@ namespace internal {
 void intToStr(int number, char* buffer, size_t length)
 {
     std::snprintf(buffer, length, "%d", number);
+#ifdef __MVS__
+    __e2a_s(buffer);
+#endif
 }
 
 void doubleToStr(double number, char* buffer, size_t length)
 {
     std::snprintf(buffer, length, "%f", number);
+#ifdef __MVS__
+    __e2a_s(buffer);
+#endif
 }
 
 void doubleToStr3(double number, char* buffer, size_t length)
 {
     std::snprintf(buffer, length, "%.3g", number);
+#ifdef __MVS__
+    __e2a_s(buffer);
+#endif
 }
 
 void doubleToStr6(double number, char* buffer, size_t length)
 {
     std::snprintf(buffer, length, "%.6g", number);
+#ifdef __MVS__
+    __e2a_s(buffer);
+#endif
 }
 
 double strToDouble(const char* buffer, bool* ok)
 {
     char* endptr;
+#ifdef __MVS__
+    int len = strlen(buffer) + 1;
+    char ebcbuffer[len];
+    memcpy(ebcbuffer, buffer, len); 
+    __a2e_l(ebcbuffer, len);
+    double result = std::strtod(ebcbuffer, &endptr);
+#else
     double result = std::strtod(buffer, &endptr);
+#endif
     if (ok)
         *ok = !(*endptr);
     return result;
@@ -43,7 +66,15 @@ double strToDouble(const char* buffer, bool* ok)
 int strToInt(const char* buffer, bool* ok)
 {
     char* endptr;
+#ifdef __MVS__
+    int len = strlen(buffer) + 1;
+    char ebcbuffer[len];
+    memcpy(ebcbuffer, buffer, len); 
+    __a2e_l(ebcbuffer, len);
+    int result = std::strtol(ebcbuffer, &endptr, 10);
+#else
     int result = std::strtol(buffer, &endptr, 10);
+#endif
     if (ok)
         *ok = !(*endptr);
     return result;

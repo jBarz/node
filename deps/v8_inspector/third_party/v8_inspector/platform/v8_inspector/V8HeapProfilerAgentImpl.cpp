@@ -18,12 +18,12 @@ namespace v8_inspector {
 namespace {
 
 namespace HeapProfilerAgentState {
-static const char heapProfilerEnabled[] = "heapProfilerEnabled";
-static const char heapObjectsTrackingEnabled[] = "heapObjectsTrackingEnabled";
-static const char allocationTrackingEnabled[] = "allocationTrackingEnabled";
+static const char heapProfilerEnabled[] = u8"heapProfilerEnabled";
+static const char heapObjectsTrackingEnabled[] = u8"heapObjectsTrackingEnabled";
+static const char allocationTrackingEnabled[] = u8"allocationTrackingEnabled";
 #if V8_MAJOR_VERSION >= 5
-static const char samplingHeapProfilerEnabled[] = "samplingHeapProfilerEnabled";
-static const char samplingHeapProfilerInterval[] = "samplingHeapProfilerInterval";
+static const char samplingHeapProfilerEnabled[] = u8"samplingHeapProfilerEnabled";
+static const char samplingHeapProfilerInterval[] = u8"samplingHeapProfilerInterval";
 #endif
 }
 
@@ -216,7 +216,7 @@ void V8HeapProfilerAgentImpl::takeHeapSnapshot(ErrorString* errorString, const p
 {
     v8::HeapProfiler* profiler = m_isolate->GetHeapProfiler();
     if (!profiler) {
-        *errorString = "Cannot access v8 heap profiler";
+        *errorString = u8"Cannot access v8 heap profiler";
         return;
     }
     std::unique_ptr<HeapSnapshotProgress> progress;
@@ -226,7 +226,7 @@ void V8HeapProfilerAgentImpl::takeHeapSnapshot(ErrorString* errorString, const p
     GlobalObjectNameResolver resolver(m_session);
     const v8::HeapSnapshot* snapshot = profiler->TakeHeapSnapshot(progress.get(), &resolver);
     if (!snapshot) {
-        *errorString = "Failed to take heap snapshot";
+        *errorString = u8"Failed to take heap snapshot";
         return;
     }
     HeapSnapshotOutputStream stream(&m_frontend);
@@ -239,25 +239,25 @@ void V8HeapProfilerAgentImpl::getObjectByHeapObjectId(ErrorString* error, const 
     bool ok;
     int id = heapSnapshotObjectId.toInteger(&ok);
     if (!ok) {
-        *error = "Invalid heap snapshot object id";
+        *error = u8"Invalid heap snapshot object id";
         return;
     }
 
     v8::HandleScope handles(m_isolate);
     v8::Local<v8::Object> heapObject = objectByHeapObjectId(m_isolate, id);
     if (heapObject.IsEmpty()) {
-        *error = "Object is not available";
+        *error = u8"Object is not available";
         return;
     }
 
     if (!m_session->inspector()->client()->isInspectableHeapObject(heapObject)) {
-        *error = "Object is not available";
+        *error = u8"Object is not available";
         return;
     }
 
     *result = m_session->wrapObject(heapObject->CreationContext(), heapObject, objectGroup.fromMaybe(""), false);
     if (!result)
-        *error = "Object is not available";
+        *error = u8"Object is not available";
 }
 
 void V8HeapProfilerAgentImpl::addInspectedHeapObject(ErrorString* errorString, const String16& inspectedHeapObjectId)
@@ -265,19 +265,19 @@ void V8HeapProfilerAgentImpl::addInspectedHeapObject(ErrorString* errorString, c
     bool ok;
     int id = inspectedHeapObjectId.toInteger(&ok);
     if (!ok) {
-        *errorString = "Invalid heap snapshot object id";
+        *errorString = u8"Invalid heap snapshot object id";
         return;
     }
 
     v8::HandleScope handles(m_isolate);
     v8::Local<v8::Object> heapObject = objectByHeapObjectId(m_isolate, id);
     if (heapObject.IsEmpty()) {
-        *errorString = "Object is not available";
+        *errorString = u8"Object is not available";
         return;
     }
 
     if (!m_session->inspector()->client()->isInspectableHeapObject(heapObject)) {
-        *errorString = "Object is not available";
+        *errorString = u8"Object is not available";
         return;
     }
 
@@ -335,7 +335,7 @@ void V8HeapProfilerAgentImpl::startSampling(ErrorString* errorString, const Mayb
 #if V8_MAJOR_VERSION >= 5
     v8::HeapProfiler* profiler = m_isolate->GetHeapProfiler();
     if (!profiler) {
-        *errorString = "Cannot access v8 heap profiler";
+        *errorString = u8"Cannot access v8 heap profiler";
         return;
     }
     const unsigned defaultSamplingInterval = 1 << 15;
@@ -381,7 +381,7 @@ void V8HeapProfilerAgentImpl::stopSampling(ErrorString* errorString, std::unique
 #if V8_MAJOR_VERSION >= 5
     v8::HeapProfiler* profiler = m_isolate->GetHeapProfiler();
     if (!profiler) {
-        *errorString = "Cannot access v8 heap profiler";
+        *errorString = u8"Cannot access v8 heap profiler";
         return;
     }
     v8::HandleScope scope(m_isolate); // Allocation profile contains Local handles.
@@ -389,7 +389,7 @@ void V8HeapProfilerAgentImpl::stopSampling(ErrorString* errorString, std::unique
     profiler->StopSamplingHeapProfiler();
     m_state->setBoolean(HeapProfilerAgentState::samplingHeapProfilerEnabled, false);
     if (!v8Profile) {
-        *errorString = "Cannot access v8 sampled heap profile.";
+        *errorString = u8"Cannot access v8 sampled heap profile.";
         return;
     }
     v8::AllocationProfile::Node* root = v8Profile->GetRootNode();

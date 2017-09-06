@@ -230,8 +230,8 @@
       ],
       'include_dirs': [
         '../..',
-        '../../../../../v8/include',
-        '../../../../../v8',
+        '../../../../../v8z/include',
+        '../../../../../v8z',
         '<(SHARED_INTERMEDIATE_DIR)/blink',
       ],
       'sources': [

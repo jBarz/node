@@ -56,7 +56,7 @@ namespace v8_inspector {
 static bool hasInternalError(ErrorString* errorString, bool hasError)
 {
     if (hasError)
-        *errorString = "Internal error";
+        *errorString = u8"Internal error";
     return hasError;
 }
 
@@ -107,7 +107,7 @@ InjectedScript::~InjectedScript()
 void InjectedScript::getProperties(ErrorString* errorString, v8::Local<v8::Object> object, const String16& groupName, bool ownProperties, bool accessorPropertiesOnly, bool generatePreview, std::unique_ptr<Array<PropertyDescriptor>>* properties, Maybe<protocol::Runtime::ExceptionDetails>* exceptionDetails)
 {
     v8::HandleScope handles(m_context->isolate());
-    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), "getProperties");
+    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), u8"getProperties");
     function.appendArgument(object);
     function.appendArgument(groupName);
     function.appendArgument(ownProperties);
@@ -141,7 +141,7 @@ void InjectedScript::releaseObject(const String16& objectId)
     if (!object)
         return;
     int boundId = 0;
-    if (!object->getInteger("id", &boundId))
+    if (!object->getInteger(u8"id", &boundId))
         return;
     m_native->unbind(boundId);
 }
@@ -155,7 +155,7 @@ std::unique_ptr<protocol::Runtime::RemoteObject> InjectedScript::wrapObject(Erro
     protocol::ErrorSupport errors;
     std::unique_ptr<protocol::Runtime::RemoteObject> remoteObject = protocol::Runtime::RemoteObject::parse(toProtocolValue(m_context->context(), wrappedObject).get(), &errors);
     if (!remoteObject)
-        *errorString = "Object has too long reference chain";
+        *errorString = u8"Object has too long reference chain";
     return remoteObject;
 }
 
@@ -175,7 +175,7 @@ bool InjectedScript::wrapObjectProperty(ErrorString* errorString, v8::Local<v8::
 
 bool InjectedScript::wrapPropertyInArray(ErrorString* errorString, v8::Local<v8::Array> array, v8::Local<v8::String> property, const String16& groupName, bool forceValueType, bool generatePreview) const
 {
-    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), "wrapPropertyInArray");
+    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), u8"wrapPropertyInArray");
     function.appendArgument(array);
     function.appendArgument(property);
     function.appendArgument(groupName);
@@ -188,7 +188,7 @@ bool InjectedScript::wrapPropertyInArray(ErrorString* errorString, v8::Local<v8:
 
 bool InjectedScript::wrapObjectsInArray(ErrorString* errorString, v8::Local<v8::Array> array, const String16& groupName, bool forceValueType, bool generatePreview) const
 {
-    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), "wrapObjectsInArray");
+    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), u8"wrapObjectsInArray");
     function.appendArgument(array);
     function.appendArgument(groupName);
     function.appendArgument(forceValueType);
@@ -200,7 +200,7 @@ bool InjectedScript::wrapObjectsInArray(ErrorString* errorString, v8::Local<v8::
 
 v8::MaybeLocal<v8::Value> InjectedScript::wrapValue(ErrorString* errorString, v8::Local<v8::Value> value, const String16& groupName, bool forceValueType, bool generatePreview) const
 {
-    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), "wrapObject");
+    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), u8"wrapObject");
     function.appendArgument(value);
     function.appendArgument(groupName);
     function.appendArgument(forceValueType);
@@ -215,7 +215,7 @@ v8::MaybeLocal<v8::Value> InjectedScript::wrapValue(ErrorString* errorString, v8
 std::unique_ptr<protocol::Runtime::RemoteObject> InjectedScript::wrapTable(v8::Local<v8::Value> table, v8::Local<v8::Value> columns) const
 {
     v8::HandleScope handles(m_context->isolate());
-    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), "wrapTable");
+    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), u8"wrapTable");
     function.appendArgument(table);
     if (columns.IsEmpty())
         function.appendArgument(false);
@@ -233,7 +233,7 @@ bool InjectedScript::findObject(ErrorString* errorString, const RemoteObjectId& 
 {
     *outObject = m_native->objectForId(objectId.id());
     if (outObject->IsEmpty())
-        *errorString = "Could not find object with given id";
+        *errorString = u8"Could not find object with given id";
     return !outObject->IsEmpty();
 }
 
@@ -245,14 +245,14 @@ String16 InjectedScript::objectGroupName(const RemoteObjectId& objectId) const
 void InjectedScript::releaseObjectGroup(const String16& objectGroup)
 {
     m_native->releaseObjectGroup(objectGroup);
-    if (objectGroup == "console")
+    if (objectGroup == u8"console")
         m_lastEvaluationResult.Reset();
 }
 
 void InjectedScript::setCustomObjectFormatterEnabled(bool enabled)
 {
     v8::HandleScope handles(m_context->isolate());
-    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), "setCustomObjectFormatterEnabled");
+    V8FunctionCall function(m_context->inspector(), m_context->context(), v8Value(), u8"setCustomObjectFormatterEnabled");
     function.appendArgument(enabled);
     bool hadException = false;
     function.call(hadException);
@@ -278,7 +278,7 @@ v8::MaybeLocal<v8::Value> InjectedScript::resolveCallArgument(ErrorString* error
         if (!remoteObjectId)
             return v8::MaybeLocal<v8::Value>();
         if (remoteObjectId->contextId() != m_context->contextId()) {
-            *errorString = "Argument should belong to the same JavaScript world as target object";
+            *errorString = u8"Argument should belong to the same JavaScript world as target object";
             return v8::MaybeLocal<v8::Value>();
         }
         v8::Local<v8::Value> object;
@@ -289,10 +289,10 @@ v8::MaybeLocal<v8::Value> InjectedScript::resolveCallArgument(ErrorString* error
     if (callArgument->hasValue() || callArgument->hasUnserializableValue()) {
         String16 value = callArgument->hasValue() ?
             callArgument->getValue(nullptr)->toJSONString() :
-            "Number(\"" + callArgument->getUnserializableValue("") + "\")";
+            u8"Number(\"" + callArgument->getUnserializableValue("") + u8"\")";
         v8::Local<v8::Value> object;
         if (!m_context->inspector()->compileAndRunInternalScript(m_context->context(), toV8String(m_context->isolate(), value)).ToLocal(&object)) {
-            *errorString = "Couldn't parse value object in call argument";
+            *errorString = u8"Couldn't parse value object in call argument";
             return v8::MaybeLocal<v8::Value>();
         }
         return object;
@@ -309,7 +309,7 @@ std::unique_ptr<protocol::Runtime::ExceptionDetails> InjectedScript::createExcep
     String16 messageText = message.IsEmpty() ? String16() : toProtocolString(message->Get());
     std::unique_ptr<protocol::Runtime::ExceptionDetails> exceptionDetails = protocol::Runtime::ExceptionDetails::create()
         .setExceptionId(m_context->inspector()->nextExceptionId())
-        .setText(exception.IsEmpty() ? messageText : String16("Uncaught"))
+        .setText(exception.IsEmpty() ? messageText : String16(u8"Uncaught"))
         .setLineNumber(message.IsEmpty() ? 0 : message->GetLineNumber(m_context->context()).FromMaybe(1) - 1)
         .setColumnNumber(message.IsEmpty() ? 0 : message->GetStartColumn(m_context->context()).FromMaybe(0))
         .build();
@@ -337,7 +337,7 @@ void InjectedScript::wrapEvaluateResult(ErrorString* errorString, v8::MaybeLocal
         std::unique_ptr<RemoteObject> remoteObject = wrapObject(errorString, resultValue, objectGroup, returnByValue, generatePreview);
         if (!remoteObject)
             return;
-        if (objectGroup == "console")
+        if (objectGroup == u8"console")
             m_lastEvaluationResult.Reset(m_context->isolate(), resultValue);
         *result = std::move(remoteObject);
     } else {
@@ -377,7 +377,7 @@ bool InjectedScript::Scope::initialize()
     // TODO(dgozman): what if we reattach to the same context group during evaluate? Introduce a session id?
     V8InspectorSessionImpl* session = m_inspector->sessionForContextGroup(m_contextGroupId);
     if (!session) {
-        *m_errorString = "Internal error";
+        *m_errorString = u8"Internal error";
         return false;
     }
     findInjectedScript(session);

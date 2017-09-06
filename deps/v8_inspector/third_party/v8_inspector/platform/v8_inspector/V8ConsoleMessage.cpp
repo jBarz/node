@@ -88,13 +88,13 @@ private:
             return true;
         }
         if (value->IsBooleanObject()) {
-            m_builder.append(v8::Local<v8::BooleanObject>::Cast(value)->ValueOf() ? "true" : "false");
+            m_builder.append(v8::Local<v8::BooleanObject>::Cast(value)->ValueOf() ? u8"true" : u8"false");
             return true;
         }
         if (value->IsArray())
             return append(v8::Local<v8::Array>::Cast(value));
         if (value->IsProxy()) {
-            m_builder.append("[object Proxy]");
+            m_builder.append(u8"[object Proxy]");
             return true;
         }
         if (value->IsObject()
@@ -142,7 +142,7 @@ private:
 
     bool append(v8::Local<v8::Symbol> symbol)
     {
-        m_builder.append("Symbol(");
+        m_builder.append(u8"Symbol(");
         bool result = append(symbol->Name(), IgnoreUndefined);
         m_builder.append(')');
         return result;
@@ -247,7 +247,7 @@ std::unique_ptr<protocol::Array<protocol::Runtime::RemoteObject>> V8ConsoleMessa
             args = nullptr;
     } else {
         for (size_t i = 0; i < m_arguments.size(); ++i) {
-            std::unique_ptr<protocol::Runtime::RemoteObject> wrapped = session->wrapObject(context, m_arguments[i]->Get(isolate), "console", generatePreview);
+            std::unique_ptr<protocol::Runtime::RemoteObject> wrapped = session->wrapObject(context, m_arguments[i]->Get(isolate), u8"console", generatePreview);
             if (!wrapped) {
                 args = nullptr;
                 break;
@@ -313,7 +313,7 @@ std::unique_ptr<protocol::Runtime::RemoteObject> V8ConsoleMessage::wrapException
     v8::Isolate* isolate = inspectedContext->isolate();
     v8::HandleScope handles(isolate);
     // TODO(dgozman): should we use different object group?
-    return session->wrapObject(inspectedContext->context(), m_arguments[0]->Get(isolate), "console", generatePreview);
+    return session->wrapObject(inspectedContext->context(), m_arguments[0]->Get(isolate), u8"console", generatePreview);
 }
 
 V8MessageOrigin V8ConsoleMessage::origin() const
@@ -387,7 +387,7 @@ void V8ConsoleMessage::contextDestroyed(int contextId)
         return;
     m_contextId = 0;
     if (m_message.isEmpty())
-        m_message = "<message collected>";
+        m_message = u8"<message collected>";
     Arguments empty;
     m_arguments.swap(empty);
 }
@@ -431,7 +431,7 @@ void V8ConsoleMessageStorage::clear()
     m_messages.clear();
     m_expiredCount = 0;
     if (V8InspectorSessionImpl* session = m_inspector->sessionForContextGroup(m_contextGroupId))
-        session->releaseObjectGroup("console");
+        session->releaseObjectGroup(u8"console");
 }
 
 void V8ConsoleMessageStorage::contextDestroyed(int contextId)

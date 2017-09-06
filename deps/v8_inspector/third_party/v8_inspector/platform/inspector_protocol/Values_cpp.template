@@ -10,31 +10,31 @@ namespace protocol {
 
 namespace {
 
-const char* const nullValueString = "null";
-const char* const trueValueString = "true";
-const char* const falseValueString = "false";
+const char* const nullValueString = u8"null";
+const char* const trueValueString = u8"true";
+const char* const falseValueString = u8"false";
 
 inline bool escapeChar(UChar c, String16Builder* dst)
 {
     switch (c) {
-    case '\b': dst->append("\\b"); break;
-    case '\f': dst->append("\\f"); break;
-    case '\n': dst->append("\\n"); break;
-    case '\r': dst->append("\\r"); break;
-    case '\t': dst->append("\\t"); break;
-    case '\\': dst->append("\\\\"); break;
-    case '"': dst->append("\\\""); break;
+    case '\x08': dst->append(u8"\\b"); break;
+    case '\x0c': dst->append(u8"\\f"); break;
+    case '\x0a': dst->append(u8"\\n"); break;
+    case '\x0d': dst->append(u8"\\r"); break;
+    case '\x09': dst->append(u8"\\t"); break;
+    case '\x5c': dst->append(u8"\\\\"); break;
+    case '\x22': dst->append(u8"\\\""); break;
     default:
         return false;
     }
     return true;
 }
 
-const char hexDigits[17] = "0123456789ABCDEF";
+const char hexDigits[17] = u8"0123456789ABCDEF";
 
 void appendUnsignedAsHex(UChar number, String16Builder* dst)
 {
-    dst->append("\\u");
+    dst->append(u8"\\u");
     for (size_t i = 0; i < 4; ++i) {
         UChar c = hexDigits[(number & 0xF000) >> 12];
         dst->append(c);
@@ -47,7 +47,7 @@ void escapeStringForJSON(const String16& str, String16Builder* dst)
     for (unsigned i = 0; i < str.length(); ++i) {
         UChar c = str[i];
         if (!escapeChar(c, dst)) {
-            if (c < 32 || c > 126 || c == '<' || c == '>') {
+            if (c < 32 || c > 126 || c == '\x3c' || c == '\x3e') {
                 // 1. Escaping <, > to prevent script execution.
                 // 2. Technically, we could also pass through c > 126 as UTF8, but this
                 //    is also optional. It would also be a pain to implement here.
@@ -61,9 +61,9 @@ void escapeStringForJSON(const String16& str, String16Builder* dst)
 
 void doubleQuoteStringForJSON(const String16& str, String16Builder* dst)
 {
-    dst->append('"');
+    dst->append('\x22');
     escapeStringForJSON(str, dst);
-    dst->append('"');
+    dst->append('\x22');
 }
 
 } // anonymous namespace
@@ -330,17 +330,17 @@ void DictionaryValue::remove(const String16& name)
 
 void DictionaryValue::writeJSON(String16Builder* output) const
 {
-    output->append('{');
+    output->append('\x7b');
     for (size_t i = 0; i < m_order.size(); ++i) {
         Dictionary::const_iterator it = m_data.find(m_order[i]);
         CHECK(it != m_data.end());
         if (i)
-            output->append(',');
+            output->append('\x2c');
         doubleQuoteStringForJSON(it->first, output);
-        output->append(':');
+        output->append('\x3a');
         it->second->writeJSON(output);
     }
-    output->append('}');
+    output->append('\x7d');
 }
 
 std::unique_ptr<Value> DictionaryValue::clone() const
@@ -366,15 +366,15 @@ ListValue::~ListValue()
 
 void ListValue::writeJSON(String16Builder* output) const
 {
-    output->append('[');
+    output->append('\x5b');
     bool first = true;
     for (const std::unique_ptr<protocol::Value>& value : m_data) {
         if (!first)
-            output->append(',');
+            output->append('\x2c');
         value->writeJSON(output);
         first = false;
     }
-    output->append(']');
+    output->append('\x5d');
 }
 
 std::unique_ptr<Value> ListValue::clone() const

@@ -142,19 +142,19 @@ void V8InspectorSessionImpl::discardInjectedScripts()
 InjectedScript* V8InspectorSessionImpl::findInjectedScript(ErrorString* errorString, int contextId)
 {
     if (!contextId) {
-        *errorString = "Cannot find context with specified id";
+        *errorString = u8"Cannot find context with specified id";
         return nullptr;
     }
 
     const V8InspectorImpl::ContextByIdMap* contexts = m_inspector->contextGroup(m_contextGroupId);
     if (!contexts) {
-        *errorString = "Cannot find context with specified id";
+        *errorString = u8"Cannot find context with specified id";
         return nullptr;
     }
 
     auto contextsIt = contexts->find(contextId);
     if (contextsIt == contexts->end()) {
-        *errorString = "Cannot find context with specified id";
+        *errorString = u8"Cannot find context with specified id";
         return nullptr;
     }
 
@@ -162,7 +162,7 @@ InjectedScript* V8InspectorSessionImpl::findInjectedScript(ErrorString* errorStr
     if (!context->getInjectedScript()) {
         context->createInjectedScript();
         if (!context->getInjectedScript()) {
-            *errorString = "Cannot access specified execution context";
+            *errorString = u8"Cannot access specified execution context";
             return nullptr;
         }
         if (m_customObjectFormatterEnabled)

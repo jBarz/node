@@ -12,7 +12,7 @@
 namespace v8_inspector {
 
 namespace ConsoleAgentState {
-static const char consoleEnabled[] = "consoleEnabled";
+static const char consoleEnabled[] = u8"consoleEnabled";
 }
 
 V8ConsoleAgentImpl::V8ConsoleAgentImpl(V8InspectorSessionImpl* session, protocol::FrontendChannel* frontendChannel, protocol::DictionaryValue* state)

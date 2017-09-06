@@ -11,7 +11,7 @@ ErrorSupport::~ErrorSupport()
 {
     if (m_errorString && hasErrors()) {
         String16Builder builder;
-        builder.append("Internal error(s): ");
+        builder.append(u8"Internal error(s): ");
         builder.append(errors());
         *m_errorString = builder.toString();
     }
@@ -41,7 +41,7 @@ void ErrorSupport::addError(const String16& error)
             builder.append('.');
         builder.append(m_path[i]);
     }
-    builder.append(": ");
+    builder.append(u8": ");
     builder.append(error);
     m_errors.push_back(builder.toString());
 }
@@ -56,7 +56,7 @@ String16 ErrorSupport::errors()
     String16Builder builder;
     for (size_t i = 0; i < m_errors.size(); ++i) {
         if (i)
-            builder.append("; ");
+            builder.append(u8"; ");
         builder.append(m_errors[i]);
     }
     return builder.toString();

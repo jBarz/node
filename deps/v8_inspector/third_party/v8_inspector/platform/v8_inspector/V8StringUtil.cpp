@@ -14,7 +14,7 @@ namespace {
 
 String16 findMagicComment(const String16& content, const String16& name, bool multiline)
 {
-    DCHECK(name.find("=") == String16::kNotFound);
+    DCHECK(name.find(u8"=") == String16::kNotFound);
     unsigned length = content.length();
     unsigned nameLength = name.length();
 
@@ -30,20 +30,20 @@ String16 findMagicComment(const String16& content, const String16& name, bool mu
         if (pos < 4)
             return String16();
         pos -= 4;
-        if (content[pos] != '/')
+        if (content[pos] != '\x2f')
             continue;
-        if ((content[pos + 1] != '/' || multiline)
-            && (content[pos + 1] != '*' || !multiline))
+        if ((content[pos + 1] != '\x2f' || multiline)
+            && (content[pos + 1] != '\x2a' || !multiline))
             continue;
-        if (content[pos + 2] != '#' && content[pos + 2] != '@')
+        if (content[pos + 2] != '\x23' && content[pos + 2] != '\x40')
             continue;
-        if (content[pos + 3] != ' ' && content[pos + 3] != '\t')
+        if (content[pos + 3] != '\x20' && content[pos + 3] != '\x09')
             continue;
         equalSignPos = pos + 4 + nameLength;
-        if (equalSignPos < length && content[equalSignPos] != '=')
+        if (equalSignPos < length && content[equalSignPos] != '\x3d')
             continue;
         if (multiline) {
-            closingCommentPos = content.find("*/", equalSignPos + 1);
+            closingCommentPos = content.find(u8"*/", equalSignPos + 1);
             if (closingCommentPos == String16::kNotFound)
                 return String16();
         }
@@ -58,14 +58,14 @@ String16 findMagicComment(const String16& content, const String16& name, bool mu
         ? content.substring(urlPos, closingCommentPos - urlPos)
         : content.substring(urlPos);
 
-    size_t newLine = match.find("\n");
+    size_t newLine = match.find(u8"\n");
     if (newLine != String16::kNotFound)
         match = match.substring(0, newLine);
     match = match.stripWhiteSpace();
 
     for (unsigned i = 0; i < match.length(); ++i) {
         UChar c = match[i];
-        if (c == '"' || c == '\'' || c == ' ' || c == '\t')
+        if (c == '\x22' || c == '\x27' || c == '\x20' || c == '\x09')
             return "";
     }
 
@@ -78,10 +78,10 @@ String16 createSearchRegexSource(const String16& text)
 
     for (unsigned i = 0; i < text.length(); i++) {
         UChar c = text[i];
-        if (c == '[' || c == ']' || c == '(' || c == ')' || c == '{' || c == '}'
-            || c == '+' || c == '-' || c == '*' || c == '.' || c == ',' || c == '?'
-            || c == '\\' || c == '^' || c == '$' || c == '|') {
-            result.append('\\');
+        if (c == '\x5b' || c == '\x5d' || c == '\x28' || c == '\x29' || c == '\x7b' || c == '\x7d'
+            || c == '\x2b' || c == '\x2d' || c == '\x2a' || c == '\x2e' || c == '\x2c' || c == '\x3f'
+            || c == '\x5c' || c == '\x5e' || c == '\x24' || c == '\x7c') {
+            result.append('\x5c');
         }
         result.append(text[i]);
     }
@@ -93,7 +93,7 @@ std::unique_ptr<std::vector<unsigned>> lineEndings(const String16& text)
 {
     std::unique_ptr<std::vector<unsigned>> result(new std::vector<unsigned>());
 
-    const String16 lineEndString = "\n";
+    const String16 lineEndString = u8"\n";
     unsigned start = 0;
     while (start < text.length()) {
         size_t lineEnd = text.find(lineEndString, start);
@@ -196,12 +196,12 @@ std::vector<std::unique_ptr<protocol::Debugger::SearchMatch>> searchInTextByLine
 
 String16 findSourceURL(const String16& content, bool multiline)
 {
-    return findMagicComment(content, "sourceURL", multiline);
+    return findMagicComment(content, u8"sourceURL", multiline);
 }
 
 String16 findSourceMapURL(const String16& content, bool multiline)
 {
-    return findMagicComment(content, "sourceMappingURL", multiline);
+    return findMagicComment(content, u8"sourceMappingURL", multiline);
 }
 
 std::unique_ptr<protocol::Value> toProtocolValue(v8::Local<v8::Context> context, v8::Local<v8::Value> value, int maxDepth)

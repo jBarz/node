@@ -12,15 +12,15 @@ namespace {{domain.domain}} {
 
 // ------------- Enum values from types.
 
-const char Metainfo::domainName[] = "{{domain.domain}}";
-const char Metainfo::commandPrefix[] = "{{domain.domain}}.";
-const char Metainfo::version[] = "{{domain.version}}";
+const char Metainfo::domainName[] = u8"{{domain.domain}}";
+const char Metainfo::commandPrefix[] = u8"{{domain.domain}}.";
+const char Metainfo::version[] = u8"{{domain.version}}";
   {% for type in domain.types %}
     {% if "enum" in type %}
 
 namespace {{type.id}}Enum {
       {% for literal in type.enum %}
-const char* {{ literal | dash_to_camelcase}} = "{{literal}}";
+const char* {{ literal | dash_to_camelcase}} = u8"{{literal}}";
       {% endfor %}
 } // namespace {{type.id}}Enum
       {% if type.exported %}
@@ -28,7 +28,7 @@ const char* {{ literal | dash_to_camelcase}} = "{{literal}}";
 namespace API {
 namespace {{type.id}}Enum {
         {% for literal in type.enum %}
-const char* {{ literal | dash_to_camelcase}} = "{{literal}}";
+const char* {{ literal | dash_to_camelcase}} = u8"{{literal}}";
         {% endfor %}
 } // namespace {{type.id}}Enum
 } // namespace API
@@ -38,7 +38,7 @@ const char* {{ literal | dash_to_camelcase}} = "{{literal}}";
       {% if "enum" in property %}
 
         {% for literal in property.enum %}
-const char* {{type.id}}::{{property.name | to_title_case}}Enum::{{literal | dash_to_camelcase}} = "{{literal}}";
+const char* {{type.id}}::{{property.name | to_title_case}}Enum::{{literal | dash_to_camelcase}} = u8"{{literal}}";
         {% endfor %}
       {% endif %}
     {% endfor %}
@@ -55,14 +55,14 @@ std::unique_ptr<{{type.id}}> {{type.id}}::parse(protocol::Value* value, ErrorSup
     protocol::DictionaryValue* object = DictionaryValue::cast(value);
     errors->push();
     {% for property in type.properties %}
-    protocol::Value* {{property.name}}Value = object->get("{{property.name}}");
+    protocol::Value* {{property.name}}Value = object->get(u8"{{property.name}}");
       {% if property.optional %}
     if ({{property.name}}Value) {
-        errors->setName("{{property.name}}");
+        errors->setName(u8"{{property.name}}");
         result->m_{{property.name}} = ValueConversions<{{resolve_type(property).raw_type}}>::parse({{property.name}}Value, errors);
     }
       {% else %}
-    errors->setName("{{property.name}}");
+    errors->setName(u8"{{property.name}}");
     result->m_{{property.name}} = ValueConversions<{{resolve_type(property).raw_type}}>::parse({{property.name}}Value, errors);
       {% endif %}
     {% endfor %}
@@ -78,9 +78,9 @@ std::unique_ptr<protocol::DictionaryValue> {{type.id}}::serialize() const
     {% for property in type.properties %}
       {% if property.optional %}
     if (m_{{property.name}}.isJust())
-        result->setValue("{{property.name}}", ValueConversions<{{resolve_type(property).raw_type}}>::serialize(m_{{property.name}}.fromJust()));
+        result->setValue(u8"{{property.name}}", ValueConversions<{{resolve_type(property).raw_type}}>::serialize(m_{{property.name}}.fromJust()));
       {% else %}
-    result->setValue("{{property.name}}", ValueConversions<{{resolve_type(property).raw_type}}>::serialize({{resolve_type(property).to_raw_type % ("m_" + property.name)}}));
+    result->setValue(u8"{{property.name}}", ValueConversions<{{resolve_type(property).raw_type}}>::serialize({{resolve_type(property).to_raw_type % ("m_" + property.name)}}));
       {% endif %}
     {% endfor %}
     return result;
@@ -119,7 +119,7 @@ std::unique_ptr<API::{{type.id}}> API::{{type.id}}::fromJSONString(const String1
 namespace {{command.name | to_title_case}} {
 namespace {{param.name | to_title_case}}Enum {
         {% for literal in param.enum %}
-const char* {{ literal | to_title_case}} = "{{literal}}";
+const char* {{ literal | to_title_case}} = u8"{{literal}}";
         {% endfor %}
 } // namespace {{param.name | to_title_case}}Enum
 } // namespace {{command.name | to_title_case }}
@@ -129,7 +129,7 @@ namespace API {
 namespace {{command.name | to_title_case}} {
 namespace {{param.name | to_title_case}}Enum {
         {% for literal in param.enum %}
-const char* {{ literal | to_title_case}} = "{{literal}}";
+const char* {{ literal | to_title_case}} = u8"{{literal}}";
         {% endfor %}
 } // namespace {{param.name | to_title_case}}Enum
 } // namespace {{command.name | to_title_case }}
@@ -153,17 +153,17 @@ void Frontend::{{event.name}}(
     {% endfor -%})
 {
     std::unique_ptr<protocol::DictionaryValue> jsonMessage = DictionaryValue::create();
-    jsonMessage->setString("method", "{{domain.domain}}.{{event.name}}");
+    jsonMessage->setString(u8"method", u8"{{domain.domain}}.{{event.name}}");
     std::unique_ptr<protocol::DictionaryValue> paramsObject = DictionaryValue::create();
     {% for parameter in event.parameters %}
       {% if "optional" in parameter %}
     if ({{parameter.name}}.isJust())
-        paramsObject->setValue("{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{parameter.name}}.fromJust()));
+        paramsObject->setValue(u8"{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{parameter.name}}.fromJust()));
       {% else %}
-    paramsObject->setValue("{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{resolve_type(parameter).to_raw_type % parameter.name}}));
+    paramsObject->setValue(u8"{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{resolve_type(parameter).to_raw_type % parameter.name}}));
       {% endif %}
     {% endfor %}
-    jsonMessage->setObject("params", std::move(paramsObject));
+    jsonMessage->setObject(u8"params", std::move(paramsObject));
     if (m_frontendChannel)
         m_frontendChannel->sendProtocolNotification(jsonMessage->toJSONString());
 }
@@ -179,7 +179,7 @@ public:
   {% for command in domain.commands %}
     {% if "redirect" in command %}{% continue %}{% endif %}
     {% if "handlers" in command and not ("renderer" in command["handlers"]) %}{% continue %}{% endif %}
-        m_dispatchMap["{{domain.domain}}.{{command.name}}"] = &DispatcherImpl::{{command.name}};
+        m_dispatchMap[u8"{{domain.domain}}.{{command.name}}"] = &DispatcherImpl::{{command.name}};
   {% endfor %}
     }
     ~DispatcherImpl() override { }
@@ -203,7 +203,7 @@ void DispatcherImpl::dispatch(int callId, const String16& method, std::unique_pt
 {
     protocol::HashMap<String16, CallHandler>::iterator it = m_dispatchMap.find(method);
     if (it == m_dispatchMap.end()) {
-        reportProtocolError(callId, MethodNotFound, "'" + method + "' wasn't found", nullptr);
+        reportProtocolError(callId, MethodNotFound, u8"'" + method + u8"' wasn't found", nullptr);
         return;
     }
 
@@ -235,9 +235,9 @@ public:
           {% for parameter in command.returns %}
             {% if "optional" in parameter %}
         if ({{parameter.name}}.isJust())
-            resultObject->setValue("{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{parameter.name}}.fromJust()));
+            resultObject->setValue(u8"{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{parameter.name}}.fromJust()));
            {% else %}
-        resultObject->setValue("{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{resolve_type(parameter).to_raw_type % parameter.name}}));
+        resultObject->setValue(u8"{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{resolve_type(parameter).to_raw_type % parameter.name}}));
             {% endif %}
           {% endfor %}
         sendIfActive(std::move(resultObject), ErrorString());
@@ -256,18 +256,18 @@ void DispatcherImpl::{{command.name}}(int callId, std::unique_ptr<DictionaryValu
 {
     {% if "parameters" in command %}
     // Prepare input parameters.
-    protocol::DictionaryValue* object = DictionaryValue::cast(requestMessageObject->get("params"));
+    protocol::DictionaryValue* object = DictionaryValue::cast(requestMessageObject->get(u8"params"));
     errors->push();
       {% for property in command.parameters %}
-    protocol::Value* {{property.name}}Value = object ? object->get("{{property.name}}") : nullptr;
+    protocol::Value* {{property.name}}Value = object ? object->get(u8"{{property.name}}") : nullptr;
         {% if property.optional %}
     Maybe<{{resolve_type(property).raw_type}}> in_{{property.name}};
     if ({{property.name}}Value) {
-        errors->setName("{{property.name}}");
+        errors->setName(u8"{{property.name}}");
         in_{{property.name}} = ValueConversions<{{resolve_type(property).raw_type}}>::parse({{property.name}}Value, errors);
     }
         {% else %}
-    errors->setName("{{property.name}}");
+    errors->setName(u8"{{property.name}}");
     {{resolve_type(property).type}} in_{{property.name}} = ValueConversions<{{resolve_type(property).raw_type}}>::parse({{property.name}}Value, errors);
         {% endif %}
       {% endfor %}
@@ -312,9 +312,9 @@ void DispatcherImpl::{{command.name}}(int callId, std::unique_ptr<DictionaryValu
         {% for parameter in command.returns %}
           {% if "optional" in parameter %}
         if (out_{{parameter.name}}.isJust())
-            result->setValue("{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize(out_{{parameter.name}}.fromJust()));
+            result->setValue(u8"{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize(out_{{parameter.name}}.fromJust()));
           {% else %}
-        result->setValue("{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{resolve_type(parameter).to_raw_type % ("out_" + parameter.name)}}));
+        result->setValue(u8"{{parameter.name}}", ValueConversions<{{resolve_type(parameter).raw_type}}>::serialize({{resolve_type(parameter).to_raw_type % ("out_" + parameter.name)}}));
           {% endif %}
         {% endfor %}
     }
@@ -341,7 +341,7 @@ void DispatcherImpl::{{command.name}}(int callId, std::unique_ptr<DictionaryValu
 // static
 void Dispatcher::wire(UberDispatcher* dispatcher, Backend* backend)
 {
-    dispatcher->registerBackend("{{domain.domain}}", wrapUnique(new DispatcherImpl(dispatcher->channel(), backend)));
+    dispatcher->registerBackend(u8"{{domain.domain}}", wrapUnique(new DispatcherImpl(dispatcher->channel(), backend)));
 }
 
 } // {{domain.domain}}

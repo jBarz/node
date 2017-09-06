@@ -38,7 +38,7 @@ struct ValueConversions<bool> {
         bool result = false;
         bool success = value ? value->asBoolean(&result) : false;
         if (!success)
-            errors->addError("boolean value expected");
+            errors->addError(u8"boolean value expected");
         return result;
     }
 
@@ -55,7 +55,7 @@ struct ValueConversions<int> {
         int result = 0;
         bool success = value ? value->asInteger(&result) : false;
         if (!success)
-            errors->addError("integer value expected");
+            errors->addError(u8"integer value expected");
         return result;
     }
 
@@ -72,7 +72,7 @@ struct ValueConversions<double> {
         double result = 0;
         bool success = value ? value->asDouble(&result) : false;
         if (!success)
-            errors->addError("double value expected");
+            errors->addError(u8"double value expected");
         return result;
     }
 
@@ -89,7 +89,7 @@ struct ValueConversions<InspectorProtocolConvenienceStringType> {
         String16 result;
         bool success = value ? value->asString(&result) : false;
         if (!success)
-            errors->addError("string value expected");
+            errors->addError(u8"string value expected");
         return result;
     }
 
@@ -106,7 +106,7 @@ struct ValueConversions<String16> {
         String16 result;
         bool success = value ? value->asString(&result) : false;
         if (!success)
-            errors->addError("string value expected");
+            errors->addError(u8"string value expected");
         return result;
     }
 
@@ -122,7 +122,7 @@ struct ValueConversions<Value> {
     {
         bool success = !!value;
         if (!success) {
-            errors->addError("value expected");
+            errors->addError(u8"value expected");
             return nullptr;
         }
         return value->clone();
@@ -145,7 +145,7 @@ struct ValueConversions<DictionaryValue> {
     {
         bool success = value && value->type() == protocol::Value::TypeObject;
         if (!success)
-            errors->addError("object expected");
+            errors->addError(u8"object expected");
         return DictionaryValue::cast(value->clone());
     }
 
@@ -166,7 +166,7 @@ struct ValueConversions<ListValue> {
     {
         bool success = value && value->type() == protocol::Value::TypeArray;
         if (!success)
-            errors->addError("list expected");
+            errors->addError(u8"list expected");
         return ListValue::cast(value->clone());
     }
 

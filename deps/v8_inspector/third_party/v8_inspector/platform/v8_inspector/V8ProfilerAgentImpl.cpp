@@ -19,9 +19,9 @@
 namespace v8_inspector {
 
 namespace ProfilerAgentState {
-static const char samplingInterval[] = "samplingInterval";
-static const char userInitiatedProfiling[] = "userInitiatedProfiling";
-static const char profilerEnabled[] = "profilerEnabled";
+static const char samplingInterval[] = u8"samplingInterval";
+static const char userInitiatedProfiling[] = u8"userInitiatedProfiling";
+static const char profilerEnabled[] = u8"profilerEnabled";
 }
 
 namespace {
@@ -68,7 +68,7 @@ std::unique_ptr<protocol::Profiler::CPUProfileNode> buildInspectorObjectFor(v8::
     }
 
     const char* deoptReason = node->GetBailoutReason();
-    if (deoptReason && deoptReason[0] && strcmp(deoptReason, "no reason"))
+    if (deoptReason && deoptReason[0] && strcmp(deoptReason, u8"no reason"))
         result->setDeoptReason(deoptReason);
 
     auto positionTicks = buildInspectorObjectForPositionTicks(node);
@@ -237,7 +237,7 @@ void V8ProfilerAgentImpl::disable(ErrorString* errorString)
 void V8ProfilerAgentImpl::setSamplingInterval(ErrorString* error, int interval)
 {
     if (m_recordingCPUProfile) {
-        *error = "Cannot change sampling interval when profiling.";
+        *error = u8"Cannot change sampling interval when profiling.";
         return;
     }
     m_state->setInteger(ProfilerAgentState::samplingInterval, interval);
@@ -269,7 +269,7 @@ void V8ProfilerAgentImpl::start(ErrorString* error)
     if (m_recordingCPUProfile)
         return;
     if (!m_enabled) {
-        *error = "Profiler is not enabled";
+        *error = u8"Profiler is not enabled";
         return;
     }
     m_recordingCPUProfile = true;
@@ -282,7 +282,7 @@ void V8ProfilerAgentImpl::stop(ErrorString* errorString, std::unique_ptr<protoco
 {
     if (!m_recordingCPUProfile) {
         if (errorString)
-            *errorString = "No recording profiles found";
+            *errorString = u8"No recording profiles found";
         return;
     }
     m_recordingCPUProfile = false;
@@ -290,7 +290,7 @@ void V8ProfilerAgentImpl::stop(ErrorString* errorString, std::unique_ptr<protoco
     if (profile) {
         *profile = std::move(cpuProfile);
         if (!profile->get() && errorString)
-            *errorString = "Profile is not found";
+            *errorString = u8"Profile is not found";
     }
     m_frontendInitiatedProfileId = String16();
     m_state->setBoolean(ProfilerAgentState::userInitiatedProfiling, false);

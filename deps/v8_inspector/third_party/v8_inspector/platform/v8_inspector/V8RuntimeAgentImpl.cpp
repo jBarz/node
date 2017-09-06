@@ -46,8 +46,8 @@
 namespace v8_inspector {
 
 namespace V8RuntimeAgentImplState {
-static const char customObjectFormatterEnabled[] = "customObjectFormatterEnabled";
-static const char runtimeEnabled[] = "runtimeEnabled";
+static const char customObjectFormatterEnabled[] = u8"customObjectFormatterEnabled";
+static const char runtimeEnabled[] = u8"runtimeEnabled";
 };
 
 using protocol::Runtime::RemoteObject;
@@ -55,7 +55,7 @@ using protocol::Runtime::RemoteObject;
 static bool hasInternalError(ErrorString* errorString, bool hasError)
 {
     if (hasError)
-        *errorString = "Internal error";
+        *errorString = u8"Internal error";
     return hasError;
 }
 
@@ -67,7 +67,7 @@ public:
     static void add(V8InspectorImpl* inspector, v8::Local<v8::Context> context, v8::MaybeLocal<v8::Value> value, const String16& notPromiseError, int contextGroupId, int executionContextId, const String16& objectGroup, bool returnByValue, bool generatePreview, std::unique_ptr<Callback> callback)
     {
         if (value.IsEmpty()) {
-            callback->sendFailure("Internal error");
+            callback->sendFailure(u8"Internal error");
             return;
         }
         if (!value.ToLocalChecked()->IsPromise()) {
@@ -81,12 +81,12 @@ public:
 
         v8::Local<v8::Function> thenCallbackFunction = V8_FUNCTION_NEW_REMOVE_PROTOTYPE(context, thenCallback, wrapper, 0).ToLocalChecked();
         if (promise->Then(context, thenCallbackFunction).IsEmpty()) {
-            rawCallback->sendFailure("Internal error");
+            rawCallback->sendFailure(u8"Internal error");
             return;
         }
         v8::Local<v8::Function> catchCallbackFunction = V8_FUNCTION_NEW_REMOVE_PROTOTYPE(context, catchCallback, wrapper, 0).ToLocalChecked();
         if (promise->Catch(context, catchCallbackFunction).IsEmpty()) {
-            rawCallback->sendFailure("Internal error");
+            rawCallback->sendFailure(u8"Internal error");
             return;
         }
     }
@@ -108,7 +108,7 @@ private:
         std::unique_ptr<V8StackTraceImpl> stack = handler->m_inspector->debugger()->captureStackTrace(true);
         std::unique_ptr<protocol::Runtime::ExceptionDetails> exceptionDetails = protocol::Runtime::ExceptionDetails::create()
             .setExceptionId(handler->m_inspector->nextExceptionId())
-            .setText("Uncaught (in promise)")
+            .setText(u8"Uncaught (in promise)")
             .setLineNumber(stack && !stack->isEmpty() ? stack->topLineNumber() : 0)
             .setColumnNumber(stack && !stack->isEmpty() ? stack->topColumnNumber() : 0)
             .setException(handler->wrapObject(value))
@@ -139,7 +139,7 @@ private:
             data.GetParameter()->m_wrapper.Reset();
             data.SetSecondPassCallback(cleanup);
         } else {
-            data.GetParameter()->m_callback->sendFailure("Promise was collected");
+            data.GetParameter()->m_callback->sendFailure(u8"Promise was collected");
             delete data.GetParameter();
         }
     }
@@ -202,7 +202,7 @@ int ensureContext(ErrorString* errorString, V8InspectorImpl* inspector, int cont
         v8::HandleScope handles(inspector->isolate());
         v8::Local<v8::Context> defaultContext = inspector->client()->ensureDefaultContextInGroup(contextGroupId);
         if (defaultContext.IsEmpty()) {
-            *errorString = "Cannot find default execution context";
+            *errorString = u8"Cannot find default execution context";
             return 0;
         }
         contextId = V8Debugger::contextId(defaultContext);
@@ -287,7 +287,7 @@ void V8RuntimeAgentImpl::evaluate(
         m_inspector,
         scope.context(),
         maybeResultValue,
-        "Result of the evaluation is not a promise",
+        u8"Result of the evaluation is not a promise",
         m_session->contextGroupId(),
         scope.injectedScript()->context()->contextId(),
         objectGroup.fromMaybe(""),
@@ -312,7 +312,7 @@ void V8RuntimeAgentImpl::awaitPromise(
         m_inspector,
         scope.context(),
         scope.object(),
-        "Could not find promise with given id",
+        u8"Could not find promise with given id",
         m_session->contextGroupId(),
         scope.injectedScript()->context()->contextId(),
         scope.objectGroupName(),
@@ -360,7 +360,7 @@ void V8RuntimeAgentImpl::callFunctionOn(
     if (userGesture.fromMaybe(false))
         scope.pretendUserGesture();
 
-    v8::MaybeLocal<v8::Value> maybeFunctionValue = m_inspector->compileAndRunInternalScript(scope.context(), toV8String(m_inspector->isolate(), "(" + expression + ")"));
+    v8::MaybeLocal<v8::Value> maybeFunctionValue = m_inspector->compileAndRunInternalScript(scope.context(), toV8String(m_inspector->isolate(), u8"(" + expression + u8")"));
     // Re-initialize after running client's code, as it could have destroyed context or session.
     if (!scope.initialize()) {
         callback->sendFailure(errorString);
@@ -374,7 +374,7 @@ void V8RuntimeAgentImpl::callFunctionOn(
 
     v8::Local<v8::Value> functionValue;
     if (!maybeFunctionValue.ToLocal(&functionValue) || !functionValue->IsFunction()) {
-        callback->sendFailure("Given expression does not evaluate to a function");
+        callback->sendFailure(u8"Given expression does not evaluate to a function");
         return;
     }
 
@@ -394,7 +394,7 @@ void V8RuntimeAgentImpl::callFunctionOn(
         m_inspector,
         scope.context(),
         maybeResultValue,
-        "Result of the function call is not a promise",
+        u8"Result of the function call is not a promise",
         m_session->contextGroupId(),
         scope.injectedScript()->context()->contextId(),
         scope.objectGroupName(),
@@ -421,7 +421,7 @@ void V8RuntimeAgentImpl::getProperties(
 
     scope.ignoreExceptionsAndMuteConsole();
     if (!scope.object()->IsObject()) {
-        *errorString = "Value with given id is not an object";
+        *errorString = u8"Value with given id is not an object";
         return;
     }
 
@@ -491,7 +491,7 @@ void V8RuntimeAgentImpl::compileScript(ErrorString* errorString,
     Maybe<protocol::Runtime::ExceptionDetails>* exceptionDetails)
 {
     if (!m_enabled) {
-        *errorString = "Runtime agent is not enabled";
+        *errorString = u8"Runtime agent is not enabled";
         return;
     }
     int contextId = ensureContext(errorString, m_inspector, m_session->contextGroupId(), executionContextId);
@@ -510,7 +510,7 @@ void V8RuntimeAgentImpl::compileScript(ErrorString* errorString,
         if (scope.tryCatch().HasCaught())
             *exceptionDetails = scope.injectedScript()->createExceptionDetails(errorString, scope.tryCatch(), String16(), false);
         else
-            *errorString = "Script compilation failed";
+            *errorString = u8"Script compilation failed";
         return;
     }
 
@@ -535,13 +535,13 @@ void V8RuntimeAgentImpl::runScript(
     std::unique_ptr<RunScriptCallback> callback)
 {
     if (!m_enabled) {
-        callback->sendFailure("Runtime agent is not enabled");
+        callback->sendFailure(u8"Runtime agent is not enabled");
         return;
     }
 
     auto it = m_compiledScripts.find(scriptId);
     if (it == m_compiledScripts.end()) {
-        callback->sendFailure("No script with given id");
+        callback->sendFailure(u8"No script with given id");
         return;
     }
 
@@ -565,7 +565,7 @@ void V8RuntimeAgentImpl::runScript(
     m_compiledScripts.erase(it);
     v8::Local<v8::Script> script = scriptWrapper->Get(m_inspector->isolate());
     if (script.IsEmpty()) {
-        callback->sendFailure("Script execution failed");
+        callback->sendFailure(u8"Script execution failed");
         return;
     }
 
@@ -586,7 +586,7 @@ void V8RuntimeAgentImpl::runScript(
         m_inspector,
         scope.context(),
         maybeResultValue.ToLocalChecked(),
-        "Result of the script execution is not a promise",
+        u8"Result of the script execution is not a promise",
         m_session->contextGroupId(),
         scope.injectedScript()->context()->contextId(),
         objectGroup.fromMaybe(""),
