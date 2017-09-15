@@ -63,7 +63,7 @@
 static inline void debugout(UnicodeString s) {
     char buf[2000];
     s.extract((int32_t) 0, s.length(), buf);
-    printf(u8"%s", buf);
+    printf("%s", buf);
 }
 #define debug(x) printf(u8"%s", x);
 #else

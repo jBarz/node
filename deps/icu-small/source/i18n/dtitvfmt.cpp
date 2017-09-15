@@ -91,7 +91,11 @@ DateIntervalFormat::createInstance(const UnicodeString& skeleton,
     UnicodeString pat;
     ((SimpleDateFormat*)dtfmt)->toPattern(pat);
     pat.extract(0,  pat.length(), result_1, u8"UTF-8");
-    sprintf(mesg, u8"skeleton: %s; pattern: %s\n", result, result_1);
+#ifdef __MVS__
+    __a2e_s(result);
+    __a2e_s(result_1);
+#endif
+    sprintf(mesg, "skeleton: %s; pattern: %s\n", result, result_1);
     PRINTMESG(mesg)
 #endif
 
@@ -599,7 +603,10 @@ DateIntervalFormat::initializePattern(UErrorCode& status) {
     char result_1[1000];
     char mesg[2000];
     fSkeleton.extract(0,  fSkeleton.length(), result, u8"UTF-8");
-    sprintf(mesg, u8"in getBestSkeleton: fSkeleton: %s; \n", result);
+#ifdef __MVS__
+    __a2e_s(result);
+#endif
+    sprintf(mesg, "in getBestSkeleton: fSkeleton: %s; \n", result);
     PRINTMESG(mesg)
 #endif
         // fSkeleton is already set by createDateIntervalInstance()
@@ -645,7 +652,10 @@ DateIntervalFormat::initializePattern(UErrorCode& status) {
     char result_1[1000];
     char mesg[2000];
     fSkeleton.extract(0,  fSkeleton.length(), result, u8"UTF-8");
-    sprintf(mesg, u8"in getBestSkeleton: fSkeleton: %s; \n", result);
+#ifdef __MVS__
+    __a2e_s(result);
+#endif
+    sprintf(mesg, "in getBestSkeleton: fSkeleton: %s; \n", result);
     PRINTMESG(mesg)
 #endif
 

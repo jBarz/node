@@ -109,7 +109,10 @@ inline const char *skipws(const char *p, const char *e) {
 void appendByte(std::string &outstr,
                 uint8_t byte) {
     char tmp2[5];
-    sprintf(tmp2, u8"\\x%02X", 0xFF & (int)(byte));
+    sprintf(tmp2, "\\x%02X", 0xFF & (int)(byte));
+#ifdef __MVS__
+    __e2a_s(tmp2);
+#endif
     outstr += tmp2;
 }
 
@@ -284,10 +287,13 @@ bool fixAt(std::string &linestr, size_t pos) {
 
       char newSeq[20];
       if( c <= 0xFFFF) {
-        sprintf(newSeq, u8"\\u%04X", c);
+        sprintf(newSeq, "\\u%04X", c);
       } else {
-        sprintf(newSeq, u8"\\U%08X", c);
+        sprintf(newSeq, "\\U%08X", c);
       }
+#ifdef __MVS__
+        __e2a_s(newSeq);
+#endif
       linestr.replace(pos, seqLen, newSeq);
       pos += strlen(newSeq) - 1;
     }

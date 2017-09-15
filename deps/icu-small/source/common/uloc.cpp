@@ -47,6 +47,9 @@
 #include "charstr.h"
 
 #include <stdio.h> /* for sprintf */
+#ifdef __MVS__
+ #include <unistd.h>
+#endif
 
 U_NAMESPACE_USE
 
@@ -2292,7 +2295,10 @@ _uloc_strtod(const char *start, char **end) {
         /* For machines that decide to change the decimal on you,
         and try to be too smart with localization.
         This normally should be just a '.'. */
-        sprintf(rep, u8"%+1.1f", 1.0);
+        sprintf(rep, "%+1.1f", 1.0);
+#ifdef __MVS__
+        __e2a_s(rep);
+#endif
         gDecimal = rep[2];
     }
 

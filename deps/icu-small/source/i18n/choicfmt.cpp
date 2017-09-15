@@ -39,6 +39,9 @@
 #include "uassert.h"
 #include <stdio.h>
 #include <float.h>
+#ifdef __MVS__
+ #include <unistd.h>
+#endif
 
 // *****************************************************************************
 // class ChoiceFormat
@@ -175,7 +178,10 @@ ChoiceFormat::dtos(double value,
     char *itrPtr = temp;
     char *expPtr;
 
-    sprintf(temp, u8"%.*g", DBL_DIG, value);
+    sprintf(temp, "%.*g", DBL_DIG, value);
+#ifdef __MVS__
+    __e2a_s(temp);
+#endif
 
     /* Find and convert the decimal point.
        Using setlocale on some machines will cause sprintf to use a comma for certain locales.

@@ -1481,7 +1481,10 @@ UnicodeString CalendarAstronomer::Ecliptic::toString() const
 {
 #ifdef U_DEBUG_ASTRO
     char tmp[800];
-    sprintf(tmp, u8"[%.5f,%.5f]", longitude*RAD_DEG, latitude*RAD_DEG);
+    sprintf(tmp, "[%.5f,%.5f]", longitude*RAD_DEG, latitude*RAD_DEG);
+#ifdef __MVS__
+    __e2a_s(tmp);
+#endif
     return UnicodeString(tmp, u8"");
 #else
     return UnicodeString();
@@ -1492,8 +1495,11 @@ UnicodeString CalendarAstronomer::Equatorial::toString() const
 {
 #ifdef U_DEBUG_ASTRO
     char tmp[400];
-    sprintf(tmp, u8"%f,%f",
+    sprintf(tmp, "%f,%f",
         (ascension*RAD_DEG), (declination*RAD_DEG));
+#ifdef __MVS__
+    __e2a_s(tmp);
+#endif
     return UnicodeString(tmp, u8"");
 #else
     return UnicodeString();
@@ -1504,7 +1510,10 @@ UnicodeString CalendarAstronomer::Horizon::toString() const
 {
 #ifdef U_DEBUG_ASTRO
     char tmp[800];
-    sprintf(tmp, u8"[%.5f,%.5f]", altitude*RAD_DEG, azimuth*RAD_DEG);
+    sprintf(tmp, "[%.5f,%.5f]", altitude*RAD_DEG, azimuth*RAD_DEG);
+#ifdef __MVS__
+    __e2a_s(tmp);
+#endif
     return UnicodeString(tmp, u8"");
 #else
     return UnicodeString();

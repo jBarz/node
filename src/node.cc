@@ -4737,7 +4737,10 @@ void Init(int* argc,
   if (icu_data_dir.empty())
     SafeGetenv("NODE_ICU_DATA", &icu_data_dir);
 #ifdef __MVS__
-  __e2a_s(icu_data_dir.c_str());
+  transform(icu_data_dir.begin(), icu_data_dir.end(), back_inserter(icu_data_dir), [](char c) -> char {
+    __a2e_l(&c, 1);
+    return c;
+  });
 #endif
   // Initialize ICU.
   // If icu_data_dir is empty here, it will load the 'minimal' data.

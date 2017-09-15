@@ -2101,7 +2101,10 @@ int_getDefaultCodepage()
         }
         /* else use the default */
     }
-    sprintf(codepage,u8"ibm-%d", ccsid);
+    sprintf(codepage,"ibm-%d", ccsid);
+#ifdef __MVS__
+    __e2a_s(codepage);
+#endif
     return codepage;
 
 #elif U_PLATFORM == U_PF_OS390

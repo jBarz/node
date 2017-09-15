@@ -49,6 +49,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <limits>
+#ifdef __MVS__
+ #include <unistd.h>
+#endif
 
 #if !defined(U_USE_STRTOD_L)
 # if U_PLATFORM_USES_ONLY_WIN32_API
@@ -534,7 +537,10 @@ DigitList::decimalStrToDouble(char *decstr, char **end) {
         // Depends on the C runtime global locale.
         // Most commonly is '.'
         char rep[MAX_DIGITS];
-        sprintf(rep, u8"%+1.1f", 1.0);
+        sprintf(rep, "%+1.1f", 1.0);
+#ifdef __MVS__
+        __e2a_s(rep);
+#endif
         *decimalPt = rep[2];
     }
     return uprv_strtod(decstr, end);
@@ -850,7 +856,10 @@ DigitList::set(double source)
             uprv_strcpy(rep,u8"inf");
         }
     } else {
-        sprintf(rep, u8"%+1.*e", MAX_DBL_DIGITS - 1, source);
+        sprintf(rep, "%+1.*e", MAX_DBL_DIGITS - 1, source);
+#ifdef __MVS__
+        __e2a_s(rep);
+#endif
     }
     U_ASSERT(uprv_strlen(rep) < sizeof(rep));
 

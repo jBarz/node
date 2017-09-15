@@ -20,6 +20,9 @@
 */
 
 #include <assert.h>
+#ifdef __MVS__
+ #include <unistd.h>
+#endif
 #include "unicode/unistr.h"
 #include "reslist.h"
 #include "unewdata.h"
@@ -433,7 +436,7 @@ int_write_java(const IntResource *res, UErrorCode * /*status*/) {
 static void
 bytes_write_java(const BinaryResource *res, UErrorCode * /*status*/) {
 	const char* type  = u8"new byte[] {";
-	const char* byteDecl = u8"%i, ";
+	const char* byteDecl = "%i, ";
     char byteBuffer[100] = { 0 };
 	uint8_t*  byteArray = NULL;
     int byteIterator = 0;
@@ -464,6 +467,9 @@ bytes_write_java(const BinaryResource *res, UErrorCode * /*status*/) {
 			{
                 sprintf(byteBuffer, byteDecl, (byteArray[byteIterator]-256));
 			}
+#ifdef __MVS__
+                __e2a_s(byteBuffer);
+#endif
 
             T_FileStream_write(out, byteBuffer, (int32_t)uprv_strlen(byteBuffer));
 
