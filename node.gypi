@@ -52,17 +52,6 @@
         'NODE_RELEASE_URLBASE="<(node_release_urlbase)"',
       ]
     }],
-    [ 'v8_enable_i18n_support==1', {
-      'defines': [ 'NODE_HAVE_I18N_SUPPORT=1' ],
-      'dependencies': [
-        '<(icu_gyp_path):icui18n',
-        '<(icu_gyp_path):icuuc',
-      ],
-      'conditions': [
-        [ 'icu_small=="true"', {
-          'defines': [ 'NODE_HAVE_SMALL_ICU=1' ],
-      }]],
-    }],
     [ 'node_use_bundled_v8=="true" and \
        node_enable_v8_vtunejit=="true" and (target_arch=="x64" or \
        target_arch=="ia32" or target_arch=="x32")', {
@@ -253,6 +242,18 @@
       'dependencies': [ 'deps/uv/uv.gyp:libuv' ],
     }],
 
+    [ 'v8_enable_i18n_support==1', {
+      'defines': [ 'NODE_HAVE_I18N_SUPPORT=1' ],
+      'dependencies': [
+        '<(icu_gyp_path):icui18n',
+        '<(icu_gyp_path):icuuc',
+      ],
+      'conditions': [
+        [ 'icu_small=="true"', {
+          'defines': [ 'NODE_HAVE_SMALL_ICU=1' ],
+      }]],
+    }],
+
     [ 'OS=="win"', {
       'sources': [
         'src/backtrace_win32.cc',
@@ -349,6 +350,12 @@
       'ldflags': [
         '-Wl,DLL',
       ],
+      'libraries': [
+        '<(OBJ_DIR)/tools/icu/libicui18n.a',
+        '<(OBJ_DIR)/tools/icu/libicuucx.a',
+        '<(OBJ_DIR)/tools/icu/libicudata.a'
+      ]
+
     }],
   ],
 }
