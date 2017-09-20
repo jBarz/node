@@ -350,12 +350,14 @@
       'ldflags': [
         '-Wl,DLL',
       ],
-      'libraries': [
-        '<(OBJ_DIR)/tools/icu/libicui18n.a',
-        '<(OBJ_DIR)/tools/icu/libicuucx.a',
-        '<(OBJ_DIR)/tools/icu/libicudata.a'
-      ]
-
+      'conditions': [
+        [ 'v8_enable_i18n_support==1', {
+          'libraries': [
+            '<(OBJ_DIR)/tools/icu/libicui18n.a',
+            '<(OBJ_DIR)/tools/icu/libicuucx.a',
+            '<(OBJ_DIR)/tools/icu/libicudata.a'
+          ]
+      }]],
     }],
   ],
 }
