@@ -330,7 +330,7 @@
     [ 'OS=="sunos"', {
       'ldflags': [ '-Wl,-M,/usr/lib/ld/map.noexstk' ],
     }],
-    [ 'OS=="os390"', {
+    [ 'OS=="zos"', {
       'defines': [
         '_XOPEN_SOURCE_EXTENDED',
         '_UNIX03_THREADS',

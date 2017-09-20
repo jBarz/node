@@ -466,7 +466,7 @@
               'libraries': [ '-lAdvAPI32.lib', '-lUser32.lib' ],
             },
           }],
-          [ 'OS!="os390"', {
+          [ 'OS!="zos"', {
             'cflags_c': ['-std=c99'],
           }],
         ],

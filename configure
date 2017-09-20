@@ -612,7 +612,7 @@ def get_gas_version(cc):
 # check involves checking the build number against a whitelist.  I'm not
 # quite prepared to go that far yet.
 def check_compiler(o):
-  if sys.platform == 'win32' or sys.platform == 'os390':
+  if sys.platform == 'win32' or sys.platform == 'zos':
     return
 
   ok, is_clang, clang_version, gcc_version = try_check_compiler(CXX, 'c++')
@@ -703,7 +703,7 @@ def host_arch_cc():
     # we only support gcc at this point and the default on AIX
     # would be xlc so hard code gcc
     k = cc_macros('gcc')
-  elif sys.platform.startswith('os390'):
+  elif sys.platform.startswith('zos'):
     # we only support gcc at this point and the default on AIX
     # would be xlc so hard code gcc
     return 's390x';

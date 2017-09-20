@@ -44,7 +44,7 @@
           'WIN32'
         ],
       }],
-      ['OS == "os390"', {
+      ['OS == "zos"', {
         'cflags!': [ '-Wall', '-Wextra', '-ftrapv', '-O0' ],
       }],
     ],

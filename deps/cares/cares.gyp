@@ -1,7 +1,7 @@
 {
   'target_defaults': {
     'conditions': [
-      ['OS not in "win os390"', {
+      ['OS not in "win zos"', {
         'defines': [
           '_DARWIN_USE_64_BIT_INODE=1',
           '_LARGEFILE_SOURCE',
@@ -23,7 +23,7 @@
           '_XOPEN_SOURCE=500'
         ]
       }],
-      [ 'OS=="os390"', {
+      [ 'OS=="zos"', {
         'include_dirs': [ 'config/os390' ],
         'sources': [ 'config/os390/ares_config.h' ],
       }]
@@ -128,7 +128,7 @@
             '-liphlpapi.lib'
           ],
         }],
-        [ 'OS not in "win os390"', {
+        [ 'OS not in "win zos"', {
           # Not Windows i.e. POSIX
           'cflags': [
             '-pedantic',
@@ -137,7 +137,7 @@
             '-Wno-unused-parameter'
           ],
         }],
-        [ 'OS not in "win android os390"', {
+        [ 'OS not in "win android zos"', {
           'cflags': [
             '--std=gnu89'
           ],

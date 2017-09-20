@@ -158,7 +158,7 @@
       }, {
         'defines': ['<@(openssl_default_defines_not_win)'],
         'conditions': [
-          ['OS=="os390"', {
+          ['OS=="zos"', {
             'cflags': [
               '-q64',
               '-qlonglong',

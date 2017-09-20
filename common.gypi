@@ -40,7 +40,7 @@
       }, {
         'os_posix': 1,
       }],
-      ['OS != "win" and OS != "os390"', {
+      ['OS != "win" and OS != "zos"', {
         'v8_postmortem_support': 'true'
       }, {
         'v8_postmortem_support': 'false'
@@ -89,7 +89,7 @@
             'cflags': [ '-gxcoff' ],
             'ldflags': [ '-Wl,-bbigtoc' ],
           }],
-          ['OS!="os390"', {
+          ['OS!="zos"', {
             'cflags': [ '-O0' ],
           }],
           ['OS == "android"', {
@@ -139,7 +139,7 @@
             # pull in V8's postmortem metadata
             'ldflags': [ '-Wl,-z,allextract' ]
           }],
-          ['OS!="mac" and OS!="win" and OS!="os390"', {
+          ['OS!="mac" and OS!="win" and OS!="zos"', {
             'cflags': [ '-fno-omit-frame-pointer' ],
           }],
           ['OS == "android"', {
@@ -239,7 +239,7 @@
     },
     'msvs_disabled_warnings': [4351, 4355, 4800],
     'conditions': [
-      ['asan == 1 and OS != "mac" and OS != "os390"', {
+      ['asan == 1 and OS != "mac" and OS != "zos"', {
         'cflags+': [
           '-fno-omit-frame-pointer',
           '-fsanitize=address',
@@ -417,7 +417,7 @@
           '-Wl,--export-dynamic',
         ],
       }],
-      ['OS=="os390"', {
+      ['OS=="zos"', {
         'cflags': [
           '-qxplink',
           '-q64',
