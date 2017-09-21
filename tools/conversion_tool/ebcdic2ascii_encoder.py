@@ -120,15 +120,15 @@ def ConvertMacroArgs(token):
 
 def ConvertTokens(tokens):
    if not HEX_RE.search(tokens):
-      return EncodeInASCII(tokens)
+      return EncodeInEBCDIC(tokens)
    else:
       return tokens
 
 def EncodeEscapeSeq(literal):
-   return EncodeInASCII(ESCAPE_LIT[literal.group(0)])
+   return EncodeInEBCDIC(ESCAPE_LIT[literal.group(0)])
 
 def EncodeChars(literal):
-   return EncodeInASCII(literal.group(0))
+   return EncodeInEBCDIC(literal.group(0))
 
 def EncodePrintF(literal):
    return EncodeInEBCDIC(literal.group(0))
