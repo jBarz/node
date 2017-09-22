@@ -164,7 +164,7 @@ def runcmd(tool, cmd, doContinue=False):
     return rc
 
 ## STEP 0 - read in json config
-fi= open(options.filterfile, "rb")
+fi= open(options.filterfile, "r")
 config=json.load(fi)
 fi.close()
 
