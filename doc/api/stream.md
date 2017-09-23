@@ -66,8 +66,8 @@ buffer that can be retrieved using `writable._writableState.getBuffer()` or
 
 The amount of data potentially buffered depends on the `highWaterMark` option
 passed into the streams constructor. For normal streams, the `highWaterMark`
-option specifies a total number of bytes. For streams operating in object mode,
-the `highWaterMark` specifies a total number of objects.
+option specifies a [total number of bytes][hwm-gotcha]. For streams operating
+in object mode, the `highWaterMark` specifies a total number of objects.
 
 Data is buffered in Readable streams when the implementation calls
 [`stream.push(chunk)`][stream-push]. If the consumer of the Stream does not
@@ -863,7 +863,7 @@ in object mode.
 The optional `size` argument specifies a specific number of bytes to read. If
 `size` bytes are not available to be read, `null` will be returned *unless*
 the stream has ended, in which case all of the data remaining in the internal
-buffer will be returned (*even if it exceeds `size` bytes*).
+buffer will be returned.
 
 If the `size` argument is not specified, all of the data contained in the
 internal buffer will be returned.
@@ -1415,9 +1415,9 @@ constructor and implement the `readable._read()` method.
 #### new stream.Readable([options])
 
 * `options` {Object}
-  * `highWaterMark` {number} The maximum number of bytes to store in
-    the internal buffer before ceasing to read from the underlying
-    resource. Defaults to `16384` (16kb), or `16` for `objectMode` streams
+  * `highWaterMark` {number} The maximum [number of bytes][hwm-gotcha] to store
+    in the internal buffer before ceasing to read from the underlying resource.
+    Defaults to `16384` (16kb), or `16` for `objectMode` streams
   * `encoding` {string} If specified, then buffers will be decoded to
     strings using the specified encoding. Defaults to `null`
   * `objectMode` {boolean} Whether this stream should behave
@@ -1922,7 +1922,7 @@ user programs.
 
 `transform._transform()` is never called in  parallel; streams implement a
 queue mechanism, and to receive the next chunk, `callback` must be
-called, either synchronously or asychronously.
+called, either synchronously or asynchronously.
 
 #### Class: stream.PassThrough
 
@@ -2031,6 +2031,19 @@ has an interesting side effect. Because it *is* a call to
 However, because the argument is an empty string, no data is added to the
 readable buffer so there is nothing for a user to consume.
 
+### `highWaterMark` discrepency after calling `readable.setEncoding()`
+
+The use of `readable.setEncoding()` will change the behavior of how the
+`highWaterMark` operates in non-object mode.
+
+Typically, the size of the current buffer is measured against the
+`highWaterMark` in _bytes_. However, after `setEncoding()` is called, the
+comparison function will begin to measure the buffer's size in _characters_.
+
+This is not a problem in common cases with `latin1` or `ascii`. But it is
+advised to be mindful about this behavior when working with strings that could
+contain multi-byte characters.
+
 [`'data'`]: #stream_event_data
 [`'drain'`]: #stream_event_drain
 [`'end'`]: #stream_event_end
@@ -2065,6 +2078,8 @@ readable buffer so there is nothing for a user to consume.
 [http-incoming-message]: http.html#http_class_http_incomingmessage
 [Readable]: #stream_class_stream_readable
 [zlib]: zlib.html
+[hwm-gotcha]: #stream_highWaterMark_discrepency_after_calling_readable_setencoding
+[Readable]: #stream_class_stream_readable
 [stream-_flush]: #stream_transform_flush_callback
 [stream-_read]: #stream_readable_read_size_1
 [stream-_transform]: #stream_transform_transform_chunk_encoding_callback

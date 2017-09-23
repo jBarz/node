@@ -611,8 +611,8 @@ the `SIGTERM` signal and does not exit, the parent process will still wait
 until the child process has exited.*
 
 If the process times out, or has a non-zero exit code, this method ***will***
-throw.  The [`Error`][] object will contain the entire result from
-[`child_process.spawnSync()`][]
+throw an [`Error`][] that will include the full result of the underlying
+[`child_process.spawnSync()`][].
 
 ### child_process.execSync(command[, options])
 <!-- YAML
@@ -1046,8 +1046,9 @@ socket to the child process. The example below spawns two children that each
 handle connections with "normal" or "special" priority:
 
 ```js
-const normal = require('child_process').fork('subprocess.js', ['normal']);
-const special = require('child_process').fork('subprocess.js', ['special']);
+const { fork } = require('child_process');
+const normal = fork('subprocess.js', ['normal']);
+const special = fork('subprocess.js', ['special']);
 
 // Open up the server and send sockets to child
 const server = require('net').createServer();

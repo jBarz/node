@@ -94,6 +94,8 @@ More Developer Tools...`. This step will install `clang`, `clang++`, and
 * You may want to setup [firewall rules](tools/macosx-firewall.sh)
 to avoid popups asking to accept incoming network connections when running tests:
 
+If the path to your build directory contains a space, the build will likely fail.
+
 ```console
 $ sudo ./tools/macosx-firewall.sh
 ```
@@ -127,6 +129,25 @@ To run the tests:
 $ make test
 ```
 
+To run the tests and generate code coverage reports:
+
+```console
+$ ./configure --coverage
+$ make coverage
+```
+
+This will generate coverage reports for both JavaScript and C++ tests (if you
+only want to run the JavaScript tests then you do not need to run the first
+command `./configure --coverage`).
+
+The `make coverage` command downloads some tools to the project root directory
+and overwrites the `lib/` directory. To clean up after generating the coverage
+reports:
+
+```console
+make coverage-clean
+```
+
 To build the documentation:
 
 This will build Node.js first (if necessary) and then use it to build the docs:
@@ -135,7 +156,7 @@ This will build Node.js first (if necessary) and then use it to build the docs:
 $ make doc
 ```
 
-If you have an existing Node.js you can build just the docs with:
+If you have an existing Node.js build, you can build just the docs with:
 
 ```console
 $ NODE=/path/to/node make doc-only
@@ -173,6 +194,8 @@ Prerequisites:
 * Basic Unix tools required for some tests,
   [Git for Windows](http://git-scm.com/download/win) includes Git Bash
   and tools which can be included in the global `PATH`.
+
+If the path to your build directory contains a space, the build will likely fail.
 
 ```console
 > .\vcbuild nosign

@@ -1365,7 +1365,7 @@ void SetupPromises(const FunctionCallbackInfo<Value>& args) {
 
   env->process_object()->Delete(
       env->context(),
-      FIXED_ONE_BYTE_STRING(args.GetIsolate(), "\x5f\x73\x65\x74\x75\x70\x50\x72\x6f\x6d\x69\x73\x65\x73")).FromJust();
+      FIXED_ONE_BYTE_STRING(isolate, "\x5f\x73\x65\x74\x75\x70\x50\x72\x6f\x6d\x69\x73\x65\x73")).FromJust();
 }
 
 

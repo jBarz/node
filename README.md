@@ -35,7 +35,7 @@ If you need help using or installing Node.js, please use the
 * [Building Node.js](#building-nodejs)
   * [Security](#security)
   * [Current Project Team Members](#current-project-team-members)
-    * [CTC (Core Technical Committee)](#ctc-core-technical-committee)
+    * [TSC (Technical Steering Committee)](#tsc-technical-steering-committee)
     * [Collaborators](#collaborators)
     * [Release Team](#release-team)
 
@@ -55,9 +55,9 @@ If you need help using or installing Node.js, please use the
 channel.
 
 _Please note that unofficial resources are neither managed by (nor necessarily
-endorsed by) the Node.js TSC/CTC. Specifically, such resources are not
+endorsed by) the Node.js TSC. Specifically, such resources are not
 currently covered by the [Node.js Moderation Policy][] and the selection and
-actions of resource operators/moderators are not subject to TSC/CTC oversight._
+actions of resource operators/moderators are not subject to TSC oversight._
 
 ## Release Types
 
@@ -114,11 +114,11 @@ documentation of the latest stable version.
 
 ### Verifying Binaries
 
-Current, LTS and Nightly download directories all contain a _SHASUM256.txt_
+Current, LTS and Nightly download directories all contain a _SHASUMS256.txt_
 file that lists the SHA checksums for each file available for
 download.
 
-The _SHASUM256.txt_ can be downloaded using curl.
+The _SHASUMS256.txt_ can be downloaded using curl.
 
 ```console
 $ curl -O https://nodejs.org/dist/vx.y.z/SHASUMS256.txt
@@ -135,10 +135,10 @@ _(Where "node-vx.y.z.tar.gz" is the name of the file you have
 downloaded)_
 
 Additionally, Current and LTS releases (not Nightlies) have GPG signed
-copies of SHASUM256.txt files available as SHASUM256.txt.asc. You can use
+copies of SHASUMS256.txt files available as SHASUMS256.txt.asc. You can use
 `gpg` to verify that the file has not been tampered with.
 
-To verify a SHASUM256.txt.asc, you will first need to import all of
+To verify a SHASUMS256.txt.asc, you will first need to import all of
 the GPG keys of individuals authorized to create releases. They are
 listed at the bottom of this README under [Release Team](#release-team).
 Use a command such as this to import the keys:
@@ -172,14 +172,59 @@ Your email will be acknowledged within 24 hours, and you’ll receive a more
 detailed response to your email within 48 hours indicating the next steps in
 handling your report.
 
+There are no hard and fast rules to determine if a bug is worth reporting as
+a security issue. The general rule is any issue worth reporting
+must allow an attacker to compromise the confidentiality, integrity
+or availability of the Node.js application or its system for which the attacker
+does not already have the capability.
+
+To illustrate the point, here are some examples of past issues and what the
+Security Reponse Team thinks of them. When in doubt, however, please do send
+us a report nonetheless.
+
+
+### Public disclosure preferred
+
+- [#14519](https://github.com/nodejs/node/issues/14519): _Internal domain
+  function can be used to cause segfaults_. Causing program termination using
+  either the public Javascript APIs or the private bindings layer APIs requires
+  the ability to execute arbitrary Javascript code, which is already the highest
+  level of privilege possible.
+
+- [#12141](https://github.com/nodejs/node/pull/12141): _buffer: zero fill
+  Buffer(num) by default_. The buffer constructor behaviour was documented,
+  but found to be prone to [mis-use](https://snyk.io/blog/exploiting-buffer/).
+  It has since been changed, but despite much debate, was not considered misuse
+  prone enough to justify fixing in older release lines and breaking our
+  API stability contract.
+
+### Private disclosure preferred
+
+- [CVE-2016-7099](https://nodejs.org/en/blog/vulnerability/september-2016-security-releases/):
+  _Fix invalid wildcard certificate validation check_. This is a high severity
+  defect that would allow a malicious TLS server to serve an invalid wildcard
+  certificate for its hostname and be improperly validated by a Node.js client.
+
+- [#5507](https://github.com/nodejs/node/pull/5507): _Fix a defect that makes
+  the CacheBleed Attack possible_. Many, though not all, OpenSSL vulnerabilities
+  in the TLS/SSL protocols also effect Node.js.
+
+- [CVE-2016-2216](https://nodejs.org/en/blog/vulnerability/february-2016-security-releases/):
+  _Fix defects in HTTP header parsing for requests and responses that can allow
+  response splitting_. While the impact of this vulnerability is application and
+  network dependent, it is remotely exploitable in the HTTP protocol.
+
+When in doubt, please do send us a report.
+
+
 ## Current Project Team Members
 
 The Node.js project team comprises a group of core collaborators and a sub-group
-that forms the _Core Technical Committee_ (CTC) which governs the project. For
-more information about the governance of the Node.js project, see
+that forms the _Technical Steering Committee_ (TSC) which governs the project.
+For more information about the governance of the Node.js project, see
 [GOVERNANCE.md](./GOVERNANCE.md).
 
-### CTC (Core Technical Committee)
+### TSC (Technical Steering Committee)
 
 * [addaleax](https://github.com/addaleax) -
 **Anna Henningsen** &lt;anna@addaleax.net&gt; (she/her)
@@ -199,14 +244,14 @@ more information about the governance of the Node.js project, see
 **Fedor Indutny** &lt;fedor.indutny@gmail.com&gt;
 * [jasnell](https://github.com/jasnell) -
 **James M Snell** &lt;jasnell@gmail.com&gt; (he/him)
+* [joshgav](https://github.com/joshgav) -
+**Josh Gavant** &lt;josh.gavant@outlook.com&gt;
 * [joyeecheung](https://github.com/joyeecheung) -
 **Joyee Cheung** &lt;joyeec9h3@gmail.com&gt; (she/her)
 * [mcollina](https://github.com/mcollina) -
 **Matteo Collina** &lt;matteo.collina@gmail.com&gt; (he/him)
 * [mhdawson](https://github.com/mhdawson) -
 **Michael Dawson** &lt;michael_dawson@ca.ibm.com&gt; (he/him)
-* [misterdjules](https://github.com/misterdjules) -
-**Julien Gilli** &lt;jgilli@nodejs.org&gt;
 * [mscdex](https://github.com/mscdex) -
 **Brian White** &lt;mscdex@mscdex.net&gt;
 * [MylesBorins](https://github.com/MylesBorins) -
@@ -226,7 +271,7 @@ more information about the governance of the Node.js project, see
 * [Trott](https://github.com/Trott) -
 **Rich Trott** &lt;rtrott@gmail.com&gt; (he/him)
 
-### CTC Emeriti
+### TSC Emeriti
 
 * [chrisdickinson](https://github.com/chrisdickinson) -
 **Chris Dickinson** &lt;christopher.s.dickinson@gmail.com&gt;
@@ -236,6 +281,8 @@ more information about the governance of the Node.js project, see
 **Alexis Campailla** &lt;orangemocha@nodejs.org&gt;
 * [piscisaureus](https://github.com/piscisaureus) -
 **Bert Belder** &lt;bertbelder@gmail.com&gt;
+* [nebrius](https://github.com/nebrius) -
+**Bryan Hughes** &lt;bryan@nebri.us&gt;
 
 ### Collaborators
 
@@ -263,6 +310,8 @@ more information about the governance of the Node.js project, see
 **Ben Noordhuis** &lt;info@bnoordhuis.nl&gt;
 * [brendanashworth](https://github.com/brendanashworth) -
 **Brendan Ashworth** &lt;brendan.ashworth@me.com&gt;
+* [BridgeAR](https://github.com/BridgeAR) -
+**Ruben Bridgewater** &lt;ruben@bridgewater.de&gt;
 * [bzoz](https://github.com/bzoz) -
 **Bartosz Sosnowski** &lt;bartosz@janeasystems.com&gt;
 * [calvinmetcalf](https://github.com/calvinmetcalf) -
@@ -509,7 +558,7 @@ Previous releases may also have been signed with one of the following GPG keys:
 ### Working Groups
 
 Information on the current Node.js Working Groups can be found in the
-[CTC repository](https://github.com/nodejs/CTC/blob/master/WORKING_GROUPS.md).
+[TSC repository](https://github.com/nodejs/TSC/blob/master/WORKING_GROUPS.md).
 
 [npm]: https://www.npmjs.com
 [Website]: https://nodejs.org/en/
