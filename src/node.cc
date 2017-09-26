@@ -3412,7 +3412,7 @@ void SetupProcessObject(Environment* env,
 #if defined(NODE_HAVE_I18N_SUPPORT) && defined(U_ICU_VERSION)
   READONLY_PROPERTY(versions,
                     "\x69\x63\x75",
-                    OneByteString(env->isolate(), U_ICU_VERSION));
+                    OneByteString(env->isolate(), u8"" U_ICU_VERSION));
 
   if (!icu_data_dir.empty()) {
     // Did the user attempt (via env var or parameter) to set an ICU path?
