@@ -277,6 +277,13 @@ static const unsigned kMaxSignal = 32;
 
 #ifdef __MVS__
 static uv_thread_t signalHandlerThread;
+class ThreadPoolObject {
+public:
+  ~ThreadPoolObject()
+  {
+    int rc = uv_queue_work(NULL, NULL, NULL, NULL);
+  }
+};
 #endif
 
 static void PrintString(FILE* out, const char* format, va_list ap) {
@@ -2695,6 +2702,8 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
 }
 
 
+#ifdef __MVS__
+
 static void ReleaseResourcesOnExit() {
   /* TODO: This might make all other ReleaseSystem... functions redundant */
   IPCQPROC bufptr;
@@ -2729,7 +2738,6 @@ static void ReleaseResourcesOnExit() {
 }
 
 
-#ifdef __MVS__
 void on_sigabrt (int signum)
 {
   V8::ReleaseSystemResources();
@@ -5218,6 +5226,7 @@ static void StartNodeInstance(void* arg) {
 }
 
 int Start(int argc, char** argv) {
+  ThreadPoolObject threadPoolObj;
   PlatformInit();
 
   CHECK_GT(argc, 0);
