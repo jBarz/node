@@ -56,9 +56,13 @@ will be supported actively until April 2018 and maintained until April 2019.
 <a id="6.11.4"></a>
 ## 2017-10-03, Version 6.11.4 'Boron' (LTS), @MylesBorins
 
+This LTS release comes with 91 commits. This includes 29 which are test related,
+28 which are doc related, 11 which are build / tool related and 3 commits which are updates to dependencies.
+
 ### Notable Changes
 
-Coming Soon
+* **net**: 
+  - support passing undefined to listen() to match behavior in v4.x and v8.x (Sam Roberts) [#14234](https://github.com/nodejs/node/pull/14234)
 
 ### Commits
 
@@ -73,6 +77,8 @@ Coming Soon
 * [[`25be2a3be3`](https://github.com/nodejs/node/commit/25be2a3be3)] - **crypto**: naming anonymous functions. (solebox) [#8993](https://github.com/nodejs/node/pull/8993)
 * [[`4e1a50a079`](https://github.com/nodejs/node/commit/4e1a50a079)] - **deps**: backport 0353a1e from V8 upstream (jBarz) [#15287](https://github.com/nodejs/node/pull/15287)
 * [[`921876dcd1`](https://github.com/nodejs/node/commit/921876dcd1)] - **deps**: backport 071b655 from V8 upstream (Michaël Zasso) [#15215](https://github.com/nodejs/node/pull/15215)
+* [[`a13ac69ff9`](https://github.com/nodejs/node/commit/a13ac69ff9)] - **doc**: prevent displaying empty version picker (Chris Young) [#15420](https://github.com/nodejs/node/pull/15420)
+* [[`ecea33b277`](https://github.com/nodejs/node/commit/ecea33b277)] - **doc**: add links to alternative versions of doc (Chris Young) [#10958](https://github.com/nodejs/node/pull/10958)
 * [[`feb6863a5c`](https://github.com/nodejs/node/commit/feb6863a5c)] - **doc**: document bytes to chars after setEncoding (Jessica Quynh Tran) [#13442](https://github.com/nodejs/node/pull/13442)
 * [[`33fdbb5417`](https://github.com/nodejs/node/commit/33fdbb5417)] - **doc**: describe what security issues are (Sam Roberts) [#14485](https://github.com/nodejs/node/pull/14485)
 * [[`a260190717`](https://github.com/nodejs/node/commit/a260190717)] - **doc**: instructions for generating coverage reports (Simon Brewster) [#15190](https://github.com/nodejs/node/pull/15190)
@@ -141,9 +147,10 @@ Coming Soon
 * [[`c88f99f1f3`](https://github.com/nodejs/node/commit/c88f99f1f3)] - **test**: improvements to various http tests (James M Snell) [#14315](https://github.com/nodejs/node/pull/14315)
 * [[`860c6198c0`](https://github.com/nodejs/node/commit/860c6198c0)] - **test**: use ciphers supported by shared OpenSSL (Jérémy Lal) [#14566](https://github.com/nodejs/node/pull/14566)
 * [[`8b9a05c04b`](https://github.com/nodejs/node/commit/8b9a05c04b)] - **test**: read proper inspector message size (Bartosz Sosnowski) [#14596](https://github.com/nodejs/node/pull/14596)
-* [[`86497f1acc`](https://github.com/nodejs/node/commit/86497f1acc)] - **test**: mark inspector-port-zero-cluster as flaky (Refael Ackermann)
+* [[`86497f1acc`](https://github.com/nodejs/node/commit/86497f1acc)] - **test**: mark inspector-port-zero-cluster as flaky (Refael Ackermann) 
 * [[`8dfc2838c8`](https://github.com/nodejs/node/commit/8dfc2838c8)] - **test**: fix test-readline-interface (Azard) [#14677](https://github.com/nodejs/node/pull/14677)
 * [[`3a6392b283`](https://github.com/nodejs/node/commit/3a6392b283)] - **tls**: fix empty issuer/subject/infoAccess parsing (Ben Noordhuis) [#14473](https://github.com/nodejs/node/pull/14473)
+* [[`37dd2adbac`](https://github.com/nodejs/node/commit/37dd2adbac)] - **tools**: fix linter error in html.js (Michaël Zasso) [#15063](https://github.com/nodejs/node/pull/15063)
 * [[`8b3ac4b2a2`](https://github.com/nodejs/node/commit/8b3ac4b2a2)] - **tools**: add custom private key option (Ruslan Bekenev) [#14401](https://github.com/nodejs/node/pull/14401)
 * [[`cac4beb764`](https://github.com/nodejs/node/commit/cac4beb764)] - **tools**: fix update-eslint.sh (Myles Borins) [#14850](https://github.com/nodejs/node/pull/14850)
 * [[`debea1c531`](https://github.com/nodejs/node/commit/debea1c531)] - **tools**: delete an unused argument (phisixersai) [#14251](https://github.com/nodejs/node/pull/14251)
