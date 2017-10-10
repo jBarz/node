@@ -257,6 +257,7 @@ void SyncProcessStdioPipe::OnAlloc(size_t suggested_size, uv_buf_t* buf) {
 
 
 void SyncProcessStdioPipe::OnRead(const uv_buf_t* buf, ssize_t nread) {
+printf("JBAR read size=%d\n", nread);
   if (nread == UV_EOF) {
     // Libuv implicitly stops reading on EOF.
 
@@ -307,6 +308,7 @@ void SyncProcessStdioPipe::AllocCallback(uv_handle_t* handle,
 void SyncProcessStdioPipe::ReadCallback(uv_stream_t* stream,
                                         ssize_t nread,
                                         const uv_buf_t* buf) {
+printf("JBAR read size=%d\n", nread);
   SyncProcessStdioPipe* self =
         reinterpret_cast<SyncProcessStdioPipe*>(stream->data);
   self->OnRead(buf, nread);
