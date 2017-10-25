@@ -197,7 +197,6 @@ void StreamWrap::OnReadImpl(ssize_t nread,
                             const uv_buf_t* buf,
                             uv_handle_type pending,
                             void* ctx) {
-fprintf(stderr, "JBAR read size=%d\n", nread);
   StreamWrap* wrap = static_cast<StreamWrap*>(ctx);
   Environment* env = wrap->env();
   HandleScope handle_scope(env->isolate());

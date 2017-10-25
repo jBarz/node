@@ -851,7 +851,7 @@ start:
 #endif
   }
 
-#if defined(__MVSA__)
+#if defined(__MVS__)
   if (stream->type == UV_NAMED_PIPE)
     for (int j = 0; j < iovcnt; ++j)
       __e2a_l(iov[j].iov_base, iov[j].iov_len);
@@ -1208,12 +1208,6 @@ static void uv__read(uv_stream_t* stream) {
       }
 
 #if defined(__MVS__)
-      struct f_cnvrt jbar;
-      jbar.pccsid = 0;
-      jbar.fccsid = 0;
-      jbar.cvtcmd = QUERYCVT;
-      fcntl(uv__stream_fd(stream), F_CONTROL_CVT, &jbar);
-      fprintf(stderr, "JBAR pccsid=%hd fccsid=%hd cvtcmd=%d\n",  jbar.pccsid, jbar.fccsid, jbar.cvtcmd);
       if (stream->type == UV_NAMED_PIPE)
         __e2a_l(buf.base, nread);
 
