@@ -1683,6 +1683,8 @@ int MAIN(int argc, char **argv)
             if (strstr(mbuf, "\x2f\x73\x74\x72\x65\x61\x6d\x3a\x66\x65\x61\x74\x75\x72\x65\x73\x3e"))
                 goto shut;
             seen = BIO_read(sbio, mbuf, BUFSIZZ);
+            if (seen <= 0)
+                goto shut;
             mbuf[seen] = 0;
         }
         BIO_printf(sbio,
