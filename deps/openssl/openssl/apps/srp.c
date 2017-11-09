@@ -321,7 +321,7 @@ int MAIN(int argc, char **argv)
     argc--;
     argv++;
     while (argc >= 1 && badops == 0) {
-        if (strcmp(*argv, "\x2d\x76\x65\x72\x62\x6f\x73\x65") == 0)
+        if (strcmp(*argv, "\x2d\x76\x65\x72\x62\x6f\x73\x65") == 0) {
             verbose++;
         } else if (strcmp(*argv, "\x2d\x63\x6f\x6e\x66\x69\x67") == 0) {
             if (--argc < 1)

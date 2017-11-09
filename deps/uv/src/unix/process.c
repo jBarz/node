@@ -290,7 +290,6 @@ static void uv__process_child_init(const uv_process_options_t* options,
     setsid();
 
 #ifdef __MVS__
-  sigset_t set;
   sigfillset(&set);
   sigprocmask(SIG_UNBLOCK, &set, NULL);
 #endif
