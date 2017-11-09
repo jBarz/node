@@ -4067,37 +4067,37 @@ static void CheckIfAllowedInEnv(const char* exe, bool is_env,
     return;
 
   // Find the arg prefix when its --some_arg=val
-  const char* eq = strchr(arg, '=');
+  const char* eq = strchr(arg, '\x3d');
   size_t arglen = eq ? eq - arg : strlen(arg);
 
   static const char* whitelist[] = {
     // Node options, sorted in `node --help` order for ease of comparison.
-    "--require", "-r",
-    "--debug",
-    "--debug-brk",
-    "--debug-port",
-    "--no-deprecation",
-    "--trace-deprecation",
-    "--throw-deprecation",
-    "--no-warnings",
-    "--napi-modules",
-    "--trace-warnings",
-    "--redirect-warnings",
-    "--trace-sync-io",
-    "--track-heap-objects",
-    "--zero-fill-buffers",
-    "--v8-pool-size",
-    "--tls-cipher-list",
-    "--use-bundled-ca",
-    "--use-openssl-ca",
-    "--enable-fips",
-    "--force-fips",
-    "--openssl-config",
-    "--icu-data-dir",
+    u8"--require", u8"-r",
+    u8"--debug",
+    u8"--debug-brk",
+    u8"--debug-port",
+    u8"--no-deprecation",
+    u8"--trace-deprecation",
+    u8"--throw-deprecation",
+    u8"--no-warnings",
+    u8"--napi-modules",
+    u8"--trace-warnings",
+    u8"--redirect-warnings",
+    u8"--trace-sync-io",
+    u8"--track-heap-objects",
+    u8"--zero-fill-buffers",
+    u8"--v8-pool-size",
+    u8"--tls-cipher-list",
+    u8"--use-bundled-ca",
+    u8"--use-openssl-ca",
+    u8"--enable-fips",
+    u8"--force-fips",
+    u8"--openssl-config",
+    u8"--icu-data-dir",
 
     // V8 options
-    "--abort-on-uncaught-exception",
-    "--max_old_space_size",
+    u8"--abort-on-uncaught-exception",
+    u8"--max_old_space_size",
   };
 
   for (unsigned i = 0; i < arraysize(whitelist); i++) {
@@ -4106,7 +4106,7 @@ static void CheckIfAllowedInEnv(const char* exe, bool is_env,
       return;
   }
 
-  fprintf(stderr, "%s: %s is not allowed in NODE_OPTIONS\n", exe, arg);
+  PrintErrorString(u8"%s: %s is not allowed in NODE_OPTIONS\n", exe, arg);
   exit(9);
 }
 
@@ -4277,7 +4277,7 @@ static void ParseArgs(int* argc,
   const unsigned int args_left = nargs - index;
 
   if (is_env && args_left) {
-    fprintf(stderr, "%s: %s is not supported in NODE_OPTIONS\n",
+    PrintErrorString(u8"%s: %s is not supported in NODE_OPTIONS\n",
             argv[0], argv[index]);
     exit(9);
   }
@@ -4791,7 +4791,7 @@ void ProcessArgv(int* argc,
 
   // Anything that's still in v8_argv is not a V8 or a node option.
   for (int i = 1; i < v8_argc; i++) {
-    fprintf(stderr, "%s: bad option: %s\n", argv[0], v8_argv[i]);
+    PrintErrorString(u8"%s: bad option: %s\n", argv[0], v8_argv[i]);
   }
   delete[] v8_argv;
   v8_argv = nullptr;
