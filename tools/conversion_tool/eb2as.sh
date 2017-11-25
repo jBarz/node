@@ -83,13 +83,16 @@ done
 # compile using the temp file that has been converted into ascii
 if [ $CFLAG = 1 ]
 then
-    $COMPILER ${COMPILE[*]} ${deleted[*]} 2>&1 | cat
+    $COMPILER ${COMPILE[*]} ${deleted[*]}
 else
-    $COMPILER++ ${COMPILE[*]} ${deleted[*]} 2>&1 | cat
+    $COMPILER++ ${COMPILE[*]} ${deleted[*]}
 fi
+RETVAL=$?
 
 # get rid of all files created
 if [ $CLEAN -eq 1 ]
 then
     $(dirname $0)/cleanup.sh ../
 fi
+
+exit $RETVAL
