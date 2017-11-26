@@ -49,7 +49,7 @@ compiled=0
 for var in $new
 do
     fileend=$(echo $var | sed -E 's/.+(\.[a-zA-Z0-9]+)/\1/')
-    if [ $fileend = ".cc" ] || [ $fileend = ".cpp" ] || [ $fileend = ".c" ] || [ $fileend = ".cxx" ]
+    if [[ "$@" != *-qnoconvlit* ]] && ([ $fileend = ".cc" ] || [ $fileend = ".cpp" ] || [ $fileend = ".c" ] || [ $fileend = ".cxx" ])
     then
         if [ $compiled = 0 ]
         then
