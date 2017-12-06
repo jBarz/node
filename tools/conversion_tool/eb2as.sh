@@ -6,6 +6,7 @@ count=0
 
 CLEAN=0
 TEST=0
+LINK=0
 
 if [ "$1" != "--dev" ]
 then
@@ -40,6 +41,7 @@ then
     deleted[1]=$(echo $first | sed -E 's/.+ (-MF [A-Z0-9a-z/\._-]+) .+/\1/')
 else
     new=$@
+    LINK=1
 fi
 
 #iterate over each .c, .cc, .cpp file that's been given and call the convereter
@@ -81,7 +83,10 @@ do
 done
 
 # compile using the temp file that has been converted into ascii
-if [ $CFLAG = 1 ]
+if [ $LINK = 1 ]
+then
+    (c89 ${COMPILE[*]} ${deleted[*]}) >/dev/tty 2>/dev/tty
+elif [ $CFLAG = 1 ]
 then
     $COMPILER ${COMPILE[*]} ${deleted[*]}
 else
