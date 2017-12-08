@@ -677,7 +677,8 @@ endif
 
 $(BINARYTAR): release-only
 	$(RM) -r $(BINARYNAME)
-	$(RM) -r out/deps out/Release
+	#TODO: Uncomment this once the compiler is fixed for icu
+	#$(RM) -r out/deps out/Release
 	$(PYTHON) ./configure \
 		--prefix=/ \
 		--dest-cpu=$(DESTCPU) \
