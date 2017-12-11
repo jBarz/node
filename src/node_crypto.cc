@@ -6,12 +6,10 @@
 #include "node_crypto_groups.h"
 #include "tls_wrap.h"  // TLSWrap
 
-#include "async-wrap.h"
 #include "async-wrap-inl.h"
 #include "env.h"
 #include "env-inl.h"
 #include "string_bytes.h"
-#include "util.h"
 #include "util-inl.h"
 #include "v8.h"
 // CNNIC Hash WhiteList is taken from
@@ -2392,8 +2390,7 @@ int SSLWrap<Base>::TLSExtStatusCallback(SSL* s, void* arg) {
     size_t len = Buffer::Length(obj);
 
     // OpenSSL takes control of the pointer after accepting it
-    char* data = reinterpret_cast<char*>(node::Malloc(len));
-    CHECK_NE(data, nullptr);
+    char* data = node::Malloc(len);
     memcpy(data, resp, len);
 
     if (!SSL_set_tlsext_status_ocsp_resp(s, data, len))
@@ -3358,10 +3355,18 @@ void CipherBase::Init(const char* cipher_type,
   EVP_CIPHER_CTX_init(&ctx_);
   const bool encrypt = (kind_ == kCipher);
   EVP_CipherInit_ex(&ctx_, cipher_, nullptr, nullptr, nullptr, encrypt);
-  if (!EVP_CIPHER_CTX_set_key_length(&ctx_, key_len)) {
-    EVP_CIPHER_CTX_cleanup(&ctx_);
-    return env()->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x6b\x65\x79\x20\x6c\x65\x6e\x67\x74\x68");
+
+  int mode = EVP_CIPHER_CTX_mode(&ctx_);
+  if (encrypt && (mode == EVP_CIPH_CTR_MODE || mode == EVP_CIPH_GCM_MODE ||
+      mode == EVP_CIPH_CCM_MODE)) {
+    ProcessEmitWarning(env(), u8"Use Cipheriv for counter mode of %s",
+                       cipher_type);
   }
+
+  if (mode == EVP_CIPH_WRAP_MODE)
+    EVP_CIPHER_CTX_set_flags(&ctx_, EVP_CIPHER_CTX_FLAG_WRAP_ALLOW);
+
+  CHECK_EQ(1, EVP_CIPHER_CTX_set_key_length(&ctx_, key_len));
 
   EVP_CipherInit_ex(&ctx_,
                     nullptr,
@@ -3405,13 +3410,18 @@ void CipherBase::InitIv(const char* cipher_type,
   }
 
   const int expected_iv_len = EVP_CIPHER_iv_length(cipher_);
-  const bool is_gcm_mode = (EVP_CIPH_GCM_MODE == EVP_CIPHER_mode(cipher_));
+  const int mode = EVP_CIPHER_mode(cipher_);
+  const bool is_gcm_mode = (EVP_CIPH_GCM_MODE == mode);
 
   if (is_gcm_mode == false && iv_len != expected_iv_len) {
     return env()->ThrowError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x49\x56\x20\x6c\x65\x6e\x67\x74\x68");
   }
 
   EVP_CIPHER_CTX_init(&ctx_);
+
+  if (mode == EVP_CIPH_WRAP_MODE)
+    EVP_CIPHER_CTX_set_flags(&ctx_, EVP_CIPHER_CTX_FLAG_WRAP_ALLOW);
+
   const bool encrypt = (kind_ == kCipher);
   EVP_CipherInit_ex(&ctx_, cipher_, nullptr, nullptr, nullptr, encrypt);
 
@@ -3472,8 +3482,7 @@ bool CipherBase::GetAuthTag(char** out, unsigned int* out_len) const {
   if (initialised_ || kind_ != kCipher || !auth_tag_)
     return false;
   *out_len = auth_tag_len_;
-  *out = static_cast<char*>(node::Malloc(auth_tag_len_));
-  CHECK_NE(*out, nullptr);
+  *out = node::Malloc(auth_tag_len_);
   memcpy(*out, auth_tag_, auth_tag_len_);
   return true;
 }
@@ -5144,8 +5153,7 @@ void ECDH::ComputeSecret(const FunctionCallbackInfo<Value>& args) {
   // NOTE: field_size is in bits
   int field_size = EC_GROUP_get_degree(ecdh->group_);
   size_t out_len = (field_size + 7) / 8;
-  char* out = static_cast<char*>(node::Malloc(out_len));
-  CHECK_NE(out, nullptr);
+  char* out = node::Malloc(out_len);
 
   int r = ECDH_compute_key(out, out_len, pub, ecdh->key_, nullptr);
   EC_POINT_free(pub);
@@ -5180,8 +5188,7 @@ void ECDH::GetPublicKey(const FunctionCallbackInfo<Value>& args) {
   if (size == 0)
     return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x74\x20\x70\x75\x62\x6c\x69\x63\x20\x6b\x65\x79\x20\x6c\x65\x6e\x67\x74\x68");
 
-  unsigned char* out = static_cast<unsigned char*>(node::Malloc(size));
-  CHECK_NE(out, nullptr);
+  unsigned char* out = node::Malloc<unsigned char>(size);
 
   int r = EC_POINT_point2oct(ecdh->group_, pub, form, out, size, nullptr);
   if (r != size) {
@@ -5206,8 +5213,7 @@ void ECDH::GetPrivateKey(const FunctionCallbackInfo<Value>& args) {
     return env->ThrowError("\x46\x61\x69\x6c\x65\x64\x20\x74\x6f\x20\x67\x65\x74\x20\x45\x43\x44\x48\x20\x70\x72\x69\x76\x61\x74\x65\x20\x6b\x65\x79");
 
   int size = BN_num_bytes(b);
-  unsigned char* out = static_cast<unsigned char*>(node::Malloc(size));
-  CHECK_NE(out, nullptr);
+  unsigned char* out = node::Malloc<unsigned char>(size);
 
   if (size != BN_bn2bin(b, out)) {
     free(out);
@@ -5339,10 +5345,8 @@ class PBKDF2Request : public AsyncWrap {
         saltlen_(saltlen),
         salt_(salt),
         keylen_(keylen),
-        key_(static_cast<char*>(node::Malloc(keylen))),
+        key_(node::Malloc(keylen)),
         iter_(iter) {
-    if (key() == nullptr)
-      FatalError("\x6e\x6f\x64\x65\x3a\x3a\x50\x42\x4b\x44\x46\x32\x52\x65\x71\x75\x65\x73\x74\x28\x29\x75\x38", "\x4f\x75\x74\x20\x6f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
     Wrap(object, this);
   }
 
@@ -5502,10 +5506,7 @@ void PBKDF2(const FunctionCallbackInfo<Value>& args) {
 
   THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "\x53\x61\x6c\x74");
 
-  pass = static_cast<char*>(node::Malloc(passlen));
-  if (pass == nullptr) {
-    FatalError("\x6e\x6f\x64\x65\x3a\x3a\x50\x42\x4b\x44\x46\x32\x28\x29\x75\x38", "\x4f\x75\x74\x20\x6f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
-  }
+  pass = node::Malloc(passlen);
   memcpy(pass, Buffer::Data(args[0]), passlen);
 
   saltlen = Buffer::Length(args[1]);
@@ -5514,10 +5515,7 @@ void PBKDF2(const FunctionCallbackInfo<Value>& args) {
     goto err;
   }
 
-  salt = static_cast<char*>(node::Malloc(saltlen));
-  if (salt == nullptr) {
-    FatalError("\x6e\x6f\x64\x65\x3a\x3a\x50\x42\x4b\x44\x46\x32\x28\x29\x75\x38", "\x4f\x75\x74\x20\x6f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
-  }
+  salt = node::Malloc(saltlen);
   memcpy(salt, Buffer::Data(args[1]), saltlen);
 
   if (!args[2]->IsNumber()) {
@@ -5607,9 +5605,7 @@ class RandomBytesRequest : public AsyncWrap {
       : AsyncWrap(env, object, AsyncWrap::PROVIDER_CRYPTO),
         error_(0),
         size_(size),
-        data_(static_cast<char*>(node::Malloc(size))) {
-    if (data() == nullptr)
-      FatalError("\x6e\x6f\x64\x65\x3a\x3a\x52\x61\x6e\x64\x6f\x6d\x42\x79\x74\x65\x73\x52\x65\x71\x75\x65\x73\x74\x28\x29\x75\x38", "\x4f\x75\x74\x20\x6f\x66\x20\x4d\x65\x6d\x6f\x72\x79");
+        data_(node::Malloc(size)) {
     Wrap(object, this);
   }
 
@@ -5832,13 +5828,9 @@ void GetCurves(const FunctionCallbackInfo<Value>& args) {
   const size_t num_curves = EC_get_builtin_curves(nullptr, 0);
   Local<Array> arr = Array::New(env->isolate(), num_curves);
   EC_builtin_curve* curves;
-  size_t alloc_size;
 
   if (num_curves) {
-    alloc_size = sizeof(*curves) * num_curves;
-    curves = static_cast<EC_builtin_curve*>(node::Malloc(alloc_size));
-
-    CHECK_NE(curves, nullptr);
+    curves = node::Malloc<EC_builtin_curve>(num_curves);
 
     if (EC_get_builtin_curves(curves, num_curves)) {
       for (size_t i = 0; i < num_curves; i++) {

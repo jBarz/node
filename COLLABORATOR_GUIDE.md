@@ -24,8 +24,9 @@ understand the project governance model as outlined in
 
 ## Issues and Pull Requests
 
-Courtesy should always be shown to individuals submitting issues and
-pull requests to the Node.js project.
+Courtesy should **always** be shown to individuals submitting issues and pull
+requests to the Node.js project. Be welcoming to first time contributors,
+identified by the GitHub ![badge](./doc/first_timer_badge.png) badge.
 
 Collaborators should feel free to take full responsibility for
 managing issues and pull requests they feel qualified to handle, as
@@ -64,7 +65,12 @@ from other Collaborators. Leave at least 48 hours during the week and
 72 hours over weekends to account for international time differences
 and work schedules. Trivial changes (e.g. those which fix minor bugs
 or improve performance without affecting API or causing other
-wide-reaching impact) may be landed after a shorter delay.
+wide-reaching impact), and focused changes that affect only documentation
+and/or the test suite, may be landed after a shorter delay if they have
+multiple approvals.
+
+For first time contributors, ask the author if they have configured their git
+username and email to their liking as per [this guide][git-username].
 
 For non-breaking changes, if there is no disagreement amongst
 Collaborators, a pull request may be landed given appropriate review.
@@ -354,31 +360,15 @@ The TSC should serve as the final arbiter where required.
   * If you do, please force-push removing the merge.
   * Reasons for not using the web interface button:
     * The merge method will add an unnecessary merge commit.
-    * The rebase & merge method adds metadata to the commit title.
-    * The rebase method changes the author.
     * The squash & merge method has been known to add metadata to the
-    commit title.
+    commit title (the PR #).
     * If more than one author has contributed to the PR, keep the most recent
       author when squashing.
 
-Always modify the original commit message to include additional meta
-information regarding the change process:
-
-- A `PR-URL:` line that references the *full* GitHub URL of the original
-  pull request being merged so it's easy to trace a commit back to the
-  conversation that led up to that change.
-- A `Fixes: X` line, where _X_ either includes the *full* GitHub URL
-  for an issue, and/or the hash and commit message if the commit fixes
-  a bug in a previous commit. Multiple `Fixes:` lines may be added if
-  appropriate.
-- A `Refs:` line referencing a URL for any relevant background.
-- A `Reviewed-By: Name <email>` line for yourself and any
-  other Collaborators who have reviewed the change.
-  - Useful for @mentions / contact list if something goes wrong in the PR.
-  - Protects against the assumption that GitHub will be around forever.
-
 Review the commit message to ensure that it adheres to the guidelines outlined
 in the [contributing](./CONTRIBUTING.md#commit-message-guidelines) guide.
+
+Add all necessary [metadata](#metadata) to commit messages before landing.
 
 See the commit log for examples such as
 [this one](https://github.com/nodejs/node/commit/b636ba8186) if unsure
@@ -387,34 +377,33 @@ exactly how to format your commit messages.
 Additionally:
 - Double check PRs to make sure the person's _full name_ and email
   address are correct before merging.
-- Except when updating dependencies, all commits should be self
-  contained (meaning every commit should pass all tests). This makes
-  it much easier when bisecting to find a breaking change.
+- All commits should be self-contained (meaning every commit should pass all
+  tests). This makes it much easier when bisecting to find a breaking change.
 
 ### Technical HOWTO
 
-Clear any `am`/`rebase` that may already be underway.
+Clear any `am`/`rebase` that may already be underway:
 
 ```text
 $ git am --abort
 $ git rebase --abort
 ```
 
-Checkout proper target branch
+Checkout proper target branch:
 
 ```text
 $ git checkout master
 ```
 
 Update the tree (assumes your repo is set up as detailed in
-[CONTRIBUTING.md](CONTRIBUTING.md#step-1-fork))
+[CONTRIBUTING.md](CONTRIBUTING.md#step-1-fork)):
 
 ```text
 $ git fetch upstream
 $ git merge --ff-only upstream/master
 ```
 
-Apply external patches
+Apply external patches:
 
 ```text
 $ curl -L https://github.com/nodejs/node/pull/xxx.patch | git am --whitespace=fix
@@ -432,21 +421,19 @@ against the original PR carefully and build/test on at least one platform
 before landing. If the 3-way merge fails, then it is most likely that a conflicting
 PR has landed since the CI run and you will have to ask the author to rebase.
 
-Check and re-review the changes
+Check and re-review the changes:
 
 ```text
 $ git diff upstream/master
 ```
 
-Check number of commits and commit messages
+Check number of commits and commit messages:
 
 ```text
 $ git log upstream/master...master
 ```
 
-If there are multiple commits that relate to the same feature or
-one with a feature and separate with a test for that feature,
-you'll need to use `squash` or `fixup`:
+Squash commits and add metadata:
 
 ```text
 $ git rebase -i upstream/master
@@ -502,12 +489,38 @@ Save the file and close the editor. You'll be asked to enter a new
 commit message for that commit. This is a good moment to fix incorrect
 commit logs, ensure that they are properly formatted, and add
 `Reviewed-By` lines.
+
 * The commit message text must conform to the
 [commit message guidelines](./CONTRIBUTING.md#commit-message-guidelines).
+
+<a name="metadata"></a>
+* Modify the original commit message to include additional metadata regarding
+  the change process. ([`node-core-utils`][] fetches the metadata for you.)
+
+  * Required: A `PR-URL:` line that references the *full* GitHub URL of the
+    original pull request being merged so it's easy to trace a commit back to
+    the conversation that led up to that change.
+  * Optional: A `Fixes: X` line, where _X_ either includes the *full* GitHub URL
+    for an issue, and/or the hash and commit message if the commit fixes
+    a bug in a previous commit. Multiple `Fixes:` lines may be added if
+    appropriate.
+  * Optional: One or more `Refs:` lines referencing a URL for any relevant
+    background.
+  * Required: A `Reviewed-By: Name <email>` line for yourself and any
+    other Collaborators who have reviewed the change.
+    * Useful for @mentions / contact list if something goes wrong in the PR.
+    * Protects against the assumption that GitHub will be around forever.
 
 Run tests (`make -j4 test` or `vcbuild test`). Even though there was a
 successful continuous integration run, other changes may have landed on master
 since then, so running the tests one last time locally is a good practice.
+
+Validate that the commit message is properly formatted using
+[core-validate-commit](https://github.com/evanlucas/core-validate-commit).
+
+```text
+$ git rev-list upstream/master...HEAD | xargs core-validate-commit
+```
 
 Time to push it:
 
@@ -660,3 +673,5 @@ LTS working group and the Release team.
 [backporting guide]: doc/guides/backporting-to-release-lines.md
 [Stability Index]: doc/api/documentation.md#stability-index
 [Enhancement Proposal]: https://github.com/nodejs/node-eps
+[git-username]: https://help.github.com/articles/setting-your-username-in-git/
+[`node-core-utils`]: https://github.com/nodejs/node-core-utils

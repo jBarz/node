@@ -33,7 +33,7 @@ exports.isLinux = process.platform === 'linux';
 exports.isOSX = process.platform === 'darwin';
 exports.isZos = process.platform === 'os390';
 
-exports.enoughTestMem = os.totalmem() > 0x40000000; /* 1 Gb */
+exports.enoughTestMem = os.totalmem() > 0x70000000; /* 1.75 Gb */
 
 const cpus = os.cpus();
 exports.enoughTestCpu = Array.isArray(cpus) &&
@@ -283,7 +283,7 @@ exports.spawnSyncPwd = function(options) {
 };
 
 exports.platformTimeout = function(ms) {
-  if (process.config.target_defaults.default_configuration === 'Debug')
+  if (process.features.debug)
     ms = 2 * ms;
 
   if (exports.isAix || exports.isZos)
