@@ -48,7 +48,7 @@ using v8::Value;
 
 inline const char* ToErrorCodeString(int status) {
   switch (status) {
-#define V(code) case ARES_##code: return USTR(#code);
+#define V(code) case ARES_##code: return #code;
     V(EADDRGETNETWORKPARAMS)
     V(EBADFAMILY)
     V(EBADFLAGS)
@@ -76,7 +76,7 @@ inline const char* ToErrorCodeString(int status) {
 #undef V
   }
 
-  return "\x55\x4e\x4b\x4e\x4f\x57\x4e\x5f\x41\x52\x45\x53\x5f\x45\x52\x52\x4f\x52";
+  return "UNKNOWN_ARES_ERROR";
 }
 
 class GetAddrInfoReqWrap : public ReqWrap<uv_getaddrinfo_t> {
@@ -259,9 +259,6 @@ static Local<Array> HostentToAddresses(Environment* env, struct hostent* host) {
   char ip[INET6_ADDRSTRLEN];
   for (uint32_t i = 0; host->h_addr_list[i] != nullptr; ++i) {
     uv_inet_ntop(host->h_addrtype, host->h_addr_list[i], ip, sizeof(ip));
-#ifdef __MVS__
-    __e2a_s(ip);
-#endif
     Local<String> address = OneByteString(env->isolate(), ip);
     addresses->Set(i, address);
   }
@@ -1167,9 +1164,6 @@ void AfterGetAddrInfo(uv_getaddrinfo_t* req, int status, struct addrinfo* res) {
           continue;
 
         // Create JavaScript string
-#ifdef __MVS__        
-        __e2a_s(ip);
-#endif        
         Local<String> s = OneByteString(env->isolate(), ip);
         results->Set(n, s);
         n++;
@@ -1195,9 +1189,6 @@ void AfterGetAddrInfo(uv_getaddrinfo_t* req, int status, struct addrinfo* res) {
                                INET6_ADDRSTRLEN);
         if (err)
           continue;
-#ifdef __MVS__
-        __e2a_s(ip);
-#endif
 
         // Create JavaScript string
         Local<String> s = OneByteString(env->isolate(), ip);
@@ -1388,9 +1379,6 @@ static void GetServers(const FunctionCallbackInfo<Value>& args) {
     int err = uv_inet_ntop(cur->family, caddr, ip, sizeof(ip));
     CHECK_EQ(err, 0);
 
-#ifdef __MVS__
-    __e2a_s(ip);
-#endif
     Local<String> addr = OneByteString(env->isolate(), ip);
     server_array->Set(i, addr);
   }
@@ -1533,39 +1521,39 @@ static void Initialize(Local<Object> target,
   env->SetMethod(target, "\x67\x65\x74\x53\x65\x72\x76\x65\x72\x73", GetServers);
   env->SetMethod(target, "\x73\x65\x74\x53\x65\x72\x76\x65\x72\x73", SetServers);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x46\x5f\x49\x4e\x45\x54"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AF_INET"),
               Integer::New(env->isolate(), AF_INET));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x46\x5f\x49\x4e\x45\x54\x36"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AF_INET6"),
               Integer::New(env->isolate(), AF_INET6));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x46\x5f\x55\x4e\x53\x50\x45\x43"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AF_UNSPEC"),
               Integer::New(env->isolate(), AF_UNSPEC));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x49\x5f\x41\x44\x44\x52\x43\x4f\x4e\x46\x49\x47"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AI_ADDRCONFIG"),
               Integer::New(env->isolate(), AI_ADDRCONFIG));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x41\x49\x5f\x56\x34\x4d\x41\x50\x50\x45\x44"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AI_V4MAPPED"),
               Integer::New(env->isolate(), AI_V4MAPPED));
 
   Local<FunctionTemplate> aiw =
       FunctionTemplate::New(env->isolate(), NewGetAddrInfoReqWrap);
   aiw->InstanceTemplate()->SetInternalFieldCount(1);
   aiw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), "\x47\x65\x74\x41\x64\x64\x72\x49\x6e\x66\x6f\x52\x65\x71\x57\x72\x61\x70"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x47\x65\x74\x41\x64\x64\x72\x49\x6e\x66\x6f\x52\x65\x71\x57\x72\x61\x70"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), "GetAddrInfoReqWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "GetAddrInfoReqWrap"),
               aiw->GetFunction());
 
   Local<FunctionTemplate> niw =
       FunctionTemplate::New(env->isolate(), NewGetNameInfoReqWrap);
   niw->InstanceTemplate()->SetInternalFieldCount(1);
   niw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), "\x47\x65\x74\x4e\x61\x6d\x65\x49\x6e\x66\x6f\x52\x65\x71\x57\x72\x61\x70"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x47\x65\x74\x4e\x61\x6d\x65\x49\x6e\x66\x6f\x52\x65\x71\x57\x72\x61\x70"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), "GetNameInfoReqWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "GetNameInfoReqWrap"),
               niw->GetFunction());
 
   Local<FunctionTemplate> qrw =
       FunctionTemplate::New(env->isolate(), NewQueryReqWrap);
   qrw->InstanceTemplate()->SetInternalFieldCount(1);
   qrw->SetClassName(
-      FIXED_ONE_BYTE_STRING(env->isolate(), "\x51\x75\x65\x72\x79\x52\x65\x71\x57\x72\x61\x70"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x51\x75\x65\x72\x79\x52\x65\x71\x57\x72\x61\x70"),
+      FIXED_ONE_BYTE_STRING(env->isolate(), "QueryReqWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "QueryReqWrap"),
               qrw->GetFunction());
 }
 

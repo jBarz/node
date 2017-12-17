@@ -24,7 +24,7 @@ class SignalWrap : public HandleWrap {
     Environment* env = Environment::GetCurrent(context);
     Local<FunctionTemplate> constructor = env->NewFunctionTemplate(New);
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x69\x67\x6e\x61\x6c"));
+    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Signal"));
 
     env->SetProtoMethod(constructor, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
     env->SetProtoMethod(constructor, "\x72\x65\x66", HandleWrap::Ref);
@@ -33,7 +33,7 @@ class SignalWrap : public HandleWrap {
     env->SetProtoMethod(constructor, "\x73\x74\x61\x72\x74", Start);
     env->SetProtoMethod(constructor, "\x73\x74\x6f\x70", Stop);
 
-    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x69\x67\x6e\x61\x6c"),
+    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Signal"),
                 constructor->GetFunction());
   }
 

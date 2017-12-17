@@ -48,7 +48,7 @@ void TCPWrap::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x43\x50"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TCP"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
   // Init properties
@@ -84,7 +84,7 @@ void TCPWrap::Initialize(Local<Object> target,
   env->SetProtoMethod(t, "\x73\x65\x74\x53\x69\x6d\x75\x6c\x74\x61\x6e\x65\x6f\x75\x73\x41\x63\x63\x65\x70\x74\x73", SetSimultaneousAccepts);
 #endif
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x43\x50"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TCP"), t->GetFunction());
   env->set_tcp_constructor_template(t);
 
   // Create FunctionTemplate for TCPConnectWrap.
@@ -93,8 +93,8 @@ void TCPWrap::Initialize(Local<Object> target,
   };
   auto cwt = FunctionTemplate::New(env->isolate(), constructor);
   cwt->InstanceTemplate()->SetInternalFieldCount(1);
-  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x43\x50\x43\x6f\x6e\x6e\x65\x63\x74\x57\x72\x61\x70"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x43\x50\x43\x6f\x6e\x6e\x65\x63\x74\x57\x72\x61\x70"),
+  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TCPConnectWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TCPConnectWrap"),
               cwt->GetFunction());
 }
 
@@ -318,9 +318,6 @@ Local<Object> AddressToJS(Environment* env,
     a6 = reinterpret_cast<const sockaddr_in6*>(addr);
     uv_inet_ntop(AF_INET6, &a6->sin6_addr, ip, sizeof ip);
     port = ntohs(a6->sin6_port);
-#ifdef __MVS__    
-    __e2a_s(ip);
-#endif
     info->Set(env->address_string(), OneByteString(env->isolate(), ip));
     info->Set(env->family_string(), env->ipv6_string());
     info->Set(env->port_string(), Integer::New(env->isolate(), port));
@@ -330,9 +327,6 @@ Local<Object> AddressToJS(Environment* env,
     a4 = reinterpret_cast<const sockaddr_in*>(addr);
     uv_inet_ntop(AF_INET, &a4->sin_addr, ip, sizeof ip);
     port = ntohs(a4->sin_port);
-#ifdef __MVS__ 
-    __e2a_s(ip);
-#endif
     info->Set(env->address_string(), OneByteString(env->isolate(), ip));
     info->Set(env->family_string(), env->ipv4_string());
     info->Set(env->port_string(), Integer::New(env->isolate(), port));

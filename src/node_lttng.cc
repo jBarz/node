@@ -39,37 +39,37 @@ using v8::Value;
 #define SLURP_STRING(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-        "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20" USTR(#obj) "\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x73\x74\x72\x69\x6e\x67\x20\x6d\x65\x6d\x62\x65\x72\x20" USTR(#member);) \
+        "expected object for " #obj " to contain string member " #member); \
   } \
   node::Utf8Value _##member(env->isolate(), \
-      obj->Get(OneByteString(env->isolate(), USTR(#member)));) \
+      obj->Get(OneByteString(env->isolate(), #member))); \
   if ((*(const char **)valp = *_##member) == nullptr) \
     *(const char **)valp = "\x3c\x75\x6e\x6b\x6e\x6f\x77\x6e\x3e";
 
 #define SLURP_INT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20" USTR(#obj) "\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x69\x6e\x74\x65\x67\x65\x72\x20\x6d\x65\x6d\x62\x65\x72\x20" USTR(#member);) \
+      "expected object for " #obj " to contain integer member " #member); \
   } \
-  *valp = obj->Get(OneByteString(env->isolate(), USTR(#member))) \
+  *valp = obj->Get(OneByteString(env->isolate(), #member)) \
       ->ToInteger(env->isolate())->Value();
 
 #define SLURP_OBJECT(obj, member, valp) \
   if (!(obj)->IsObject()) { \
     return env->ThrowError( \
-      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20" USTR(#obj) "\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x6f\x62\x6a\x65\x63\x74\x20\x6d\x65\x6d\x62\x65\x72\x20" USTR(#member);) \
+      "expected object for " #obj " to contain object member " #member); \
   } \
-  *valp = Local<Object>::Cast(obj->Get(OneByteString(env->isolate(), USTR(#member)));)
+  *valp = Local<Object>::Cast(obj->Get(OneByteString(env->isolate(), #member)));
 
 #define SLURP_CONNECTION(arg, conn) \
   if (!(arg)->IsObject()) { \
     return env->ThrowError( \
-      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20" USTR(#arg) "\x20\x74\x6f\x20\x62\x65\x20\x61\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x6f\x62\x6a\x65\x63\x74"); \
+      "expected argument " #arg " to be a connection object"); \
   } \
   node_lttng_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg); \
   Local<Value> _handle = \
-      (_##conn)->Get(FIXED_ONE_BYTE_STRING(env->isolate(), "\x5f\x68\x61\x6e\x64\x6c\x65")); \
+      (_##conn)->Get(FIXED_ONE_BYTE_STRING(env->isolate(), "_handle")); \
   if (_handle->IsObject()) { \
     SLURP_INT(_handle.As<Object>(), fd, &conn.fd); \
   } else { \
@@ -82,7 +82,7 @@ using v8::Value;
 #define SLURP_CONNECTION_HTTP_CLIENT(arg, conn) \
   if (!(arg)->IsObject()) { \
     return env->ThrowError( \
-      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20" USTR(#arg) "\x20\x74\x6f\x20\x62\x65\x20\x61\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x6f\x62\x6a\x65\x63\x74"); \
+      "expected argument " #arg " to be a connection object"); \
   } \
   node_lttng_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg); \
@@ -94,11 +94,11 @@ using v8::Value;
 #define SLURP_CONNECTION_HTTP_CLIENT_RESPONSE(arg0, arg1, conn) \
   if (!(arg0)->IsObject()) { \
     return env->ThrowError( \
-      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20" USTR(#arg0) "\x20\x74\x6f\x20\x62\x65\x20\x61\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x6f\x62\x6a\x65\x63\x74"); \
+      "expected argument " #arg0 " to be a connection object"); \
   } \
   if (!(arg1)->IsObject()) { \
     return env->ThrowError( \
-      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20" USTR(#arg1) "\x20\x74\x6f\x20\x62\x65\x20\x61\x20\x63\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x6f\x62\x6a\x65\x63\x74"); \
+      "expected argument " #arg1 " to be a connection object"); \
   } \
   node_lttng_connection_t conn; \
   Local<Object> _##conn = Local<Object>::Cast(arg0); \
@@ -148,7 +148,7 @@ void LTTNG_HTTP_SERVER_REQUEST(const FunctionCallbackInfo<Value>& args) {
 
   if (!(headers)->IsObject()) {
     return env->ThrowError(
-      "\x65\x78\x70\x65\x63\x74\x65\x64\x20\x6f\x62\x6a\x65\x63\x74\x20\x66\x6f\x72\x20\x72\x65\x71\x75\x65\x73\x74\x20\x74\x6f\x20\x63\x6f\x6e\x74\x61\x69\x6e\x20\x73\x74\x72\x69\x6e\x67\x20\x6d\x65\x6d\x62\x65\x72\x20\x68\x65\x61\x64\x65\x72\x73");
+      "expected object for request to contain string member headers");
   }
 
   Local<Value> strfwdfor = headers->Get(env->x_forwarded_string());
@@ -237,7 +237,7 @@ void InitLTTNG(Environment* env, Local<Object> target) {
     const char *name;
     void (*func)(const FunctionCallbackInfo<Value>&);
   } tab[] = {
-#define NODE_PROBE(name) USTR(#name,) name
+#define NODE_PROBE(name) #name, name
     { NODE_PROBE(LTTNG_NET_SERVER_CONNECTION) },
     { NODE_PROBE(LTTNG_NET_STREAM_END) },
     { NODE_PROBE(LTTNG_HTTP_SERVER_REQUEST) },

@@ -58,10 +58,10 @@ static void GetHiddenValue(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[0]->IsObject())
-    return env->ThrowTypeError("\x6f\x62\x6a\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
+    return env->ThrowTypeError("obj must be an object");
 
   if (!args[1]->IsString())
-    return env->ThrowTypeError("\x6e\x61\x6d\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67");
+    return env->ThrowTypeError("name must be a string");
 
   Local<Object> obj = args[0].As<Object>();
   Local<String> name = args[1].As<String>();
@@ -75,10 +75,10 @@ static void SetHiddenValue(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[0]->IsObject())
-    return env->ThrowTypeError("\x6f\x62\x6a\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
+    return env->ThrowTypeError("obj must be an object");
 
   if (!args[1]->IsString())
-    return env->ThrowTypeError("\x6e\x61\x6d\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67");
+    return env->ThrowTypeError("name must be a string");
 
   Local<Object> obj = args[0].As<Object>();
   Local<String> name = args[1].As<String>();
@@ -93,7 +93,7 @@ void StartSigintWatchdog(const FunctionCallbackInfo<Value>& args) {
   int ret = SigintWatchdogHelper::GetInstance()->Start();
   if (ret != 0) {
     Environment* env = Environment::GetCurrent(args);
-    env->ThrowErrnoException(ret, "\x53\x74\x61\x72\x74\x53\x69\x67\x69\x6e\x74\x57\x61\x74\x63\x68\x64\x6f\x67");
+    env->ThrowErrnoException(ret, "StartSigintWatchdog");
   }
 }
 

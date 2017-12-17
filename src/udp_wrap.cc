@@ -75,7 +75,7 @@ void UDPWrap::Initialize(Local<Object> target,
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x55\x44\x50"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "UDP"));
 
   enum PropertyAttribute attributes =
       static_cast<PropertyAttribute>(v8::ReadOnly | v8::DontDelete);
@@ -106,15 +106,15 @@ void UDPWrap::Initialize(Local<Object> target,
   env->SetProtoMethod(t, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
   env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x55\x44\x50"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "UDP"), t->GetFunction());
   env->set_udp_constructor_function(t->GetFunction());
 
   // Create FunctionTemplate for SendWrap
   Local<FunctionTemplate> swt =
       FunctionTemplate::New(env->isolate(), NewSendWrap);
   swt->InstanceTemplate()->SetInternalFieldCount(1);
-  swt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x65\x6e\x64\x57\x72\x61\x70"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x65\x6e\x64\x57\x72\x61\x70"),
+  swt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "SendWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "SendWrap"),
               swt->GetFunction());
 }
 

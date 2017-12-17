@@ -148,16 +148,16 @@ class ContextifyContext {
         // that can be done using Object.defineProperty.
         if (clone_property_method.IsEmpty()) {
           Local<String> code = FIXED_ONE_BYTE_STRING(env()->isolate(),
-              "\x28\x66\x75\x6e\x63\x74\x69\x6f\x6e\x20\x63\x6c\x6f\x6e\x65\x50\x72\x6f\x70\x65\x72\x74\x79\x28\x73\x6f\x75\x72\x63\x65\x2c\x20\x6b\x65\x79\x2c\x20\x74\x61\x72\x67\x65\x74\x29\x20\x7b\xa"
-              "\x20\x20\x69\x66\x20\x28\x6b\x65\x79\x20\x3d\x3d\x3d\x20\x27\x50\x72\x6f\x78\x79\x27\x29\x20\x72\x65\x74\x75\x72\x6e\x3b\xa"
-              "\x20\x20\x74\x72\x79\x20\x7b\xa"
-              "\x20\x20\x20\x20\x76\x61\x72\x20\x64\x65\x73\x63\x20\x3d\x20\x4f\x62\x6a\x65\x63\x74\x2e\x67\x65\x74\x4f\x77\x6e\x50\x72\x6f\x70\x65\x72\x74\x79\x44\x65\x73\x63\x72\x69\x70\x74\x6f\x72\x28\x73\x6f\x75\x72\x63\x65\x2c\x20\x6b\x65\x79\x29\x3b\xa"
-              "\x20\x20\x20\x20\x69\x66\x20\x28\x64\x65\x73\x63\x2e\x76\x61\x6c\x75\x65\x20\x3d\x3d\x3d\x20\x73\x6f\x75\x72\x63\x65\x29\x20\x64\x65\x73\x63\x2e\x76\x61\x6c\x75\x65\x20\x3d\x20\x74\x61\x72\x67\x65\x74\x3b\xa"
-              "\x20\x20\x20\x20\x4f\x62\x6a\x65\x63\x74\x2e\x64\x65\x66\x69\x6e\x65\x50\x72\x6f\x70\x65\x72\x74\x79\x28\x74\x61\x72\x67\x65\x74\x2c\x20\x6b\x65\x79\x2c\x20\x64\x65\x73\x63\x29\x3b\xa"
-              "\x20\x20\x7d\x20\x63\x61\x74\x63\x68\x20\x28\x65\x29\x20\x7b\xa"
-              "\x20\x20\x20\x2f\x2f\x20\x43\x61\x74\x63\x68\x20\x73\x65\x61\x6c\x65\x64\x20\x70\x72\x6f\x70\x65\x72\x74\x69\x65\x73\x20\x65\x72\x72\x6f\x72\x73\xa"
-              "\x20\x20\x7d\xa"
-              "\x7d\x29");
+              "(function cloneProperty(source, key, target) {\n"
+              "  if (key === 'Proxy') return;\n"
+              "  try {\n"
+              "    var desc = Object.getOwnPropertyDescriptor(source, key);\n"
+              "    if (desc.value === source) desc.value = target;\n"
+              "    Object.defineProperty(target, key, desc);\n"
+              "  } catch (e) {\n"
+              "   // Catch sealed properties errors\n"
+              "  }\n"
+              "})");
 
           Local<Script> script =
               Script::Compile(context, code).ToLocalChecked();
@@ -211,7 +211,7 @@ class ContextifyContext {
     Local<Context> ctx = Context::New(env->isolate(), nullptr, object_template);
 
     if (ctx.IsEmpty()) {
-      env->ThrowError("\x43\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x69\x6e\x73\x74\x61\x6e\x74\x69\x61\x74\x65\x20\x63\x6f\x6e\x74\x65\x78\x74");
+      env->ThrowError("Could not instantiate context");
       return Local<Context>();
     }
 
@@ -280,7 +280,7 @@ class ContextifyContext {
     Environment* env = Environment::GetCurrent(args);
 
     if (!args[0]->IsObject()) {
-      return env->ThrowTypeError("\x73\x61\x6e\x64\x62\x6f\x78\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74\x2e");
+      return env->ThrowTypeError("sandbox argument must be an object.");
     }
     Local<Object> sandbox = args[0].As<Object>();
 
@@ -312,7 +312,7 @@ class ContextifyContext {
     Environment* env = Environment::GetCurrent(args);
 
     if (!args[0]->IsObject()) {
-      env->ThrowTypeError("\x73\x61\x6e\x64\x62\x6f\x78\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
+      env->ThrowTypeError("sandbox must be an object");
       return;
     }
     Local<Object> sandbox = args[0].As<Object>();
@@ -467,7 +467,7 @@ class ContextifyScript : public BaseObject {
   static void Init(Environment* env, Local<Object> target) {
     HandleScope scope(env->isolate());
     Local<String> class_name =
-        FIXED_ONE_BYTE_STRING(env->isolate(), "\x43\x6f\x6e\x74\x65\x78\x74\x69\x66\x79\x53\x63\x72\x69\x70\x74");
+        FIXED_ONE_BYTE_STRING(env->isolate(), "ContextifyScript");
 
     Local<FunctionTemplate> script_tmpl = env->NewFunctionTemplate(New);
     script_tmpl->InstanceTemplate()->SetInternalFieldCount(1);
@@ -485,7 +485,7 @@ class ContextifyScript : public BaseObject {
     Environment* env = Environment::GetCurrent(args);
 
     if (!args.IsConstructCall()) {
-      return env->ThrowError("\x4d\x75\x73\x74\x20\x63\x61\x6c\x6c\x20\x76\x6d\x2e\x53\x63\x72\x69\x70\x74\x20\x61\x73\x20\x61\x20\x63\x6f\x6e\x73\x74\x72\x75\x63\x74\x6f\x72\x2e");
+      return env->ThrowError("Must call vm.Script as a constructor.");
     }
 
     ContextifyScript* contextify_script =
@@ -605,7 +605,7 @@ class ContextifyScript : public BaseObject {
     // Assemble arguments
     if (!args[0]->IsObject()) {
       return env->ThrowTypeError(
-          "\x63\x6f\x6e\x74\x65\x78\x74\x69\x66\x69\x65\x64\x53\x61\x6e\x64\x62\x6f\x78\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74\x2e");
+          "contextifiedSandbox argument must be an object.");
     }
 
     Local<Object> sandbox = args[0].As<Object>();
@@ -629,7 +629,7 @@ class ContextifyScript : public BaseObject {
         ContextifyContext::ContextFromContextifiedSandbox(env, sandbox);
     if (contextify_context == nullptr) {
       return env->ThrowTypeError(
-          "\x73\x61\x6e\x64\x62\x6f\x78\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x6d\x75\x73\x74\x20\x68\x61\x76\x65\x20\x62\x65\x65\x6e\x20\x63\x6f\x6e\x76\x65\x72\x74\x65\x64\x20\x74\x6f\x20\x61\x20\x63\x6f\x6e\x74\x65\x78\x74\x2e");
+          "sandbox argument must have been converted to a context.");
     }
 
     if (contextify_context->context().IsEmpty())
@@ -684,7 +684,7 @@ class ContextifyScript : public BaseObject {
 
     Local<String> decorated_stack = String::Concat(
         String::Concat(arrow.As<String>(),
-          FIXED_ONE_BYTE_STRING(env->isolate(), u8"\n")),
+          FIXED_ONE_BYTE_STRING(env->isolate(), "\n")),
         stack.As<String>());
     err_obj->Set(env->stack_string(), decorated_stack);
     err_obj->SetPrivate(
@@ -699,11 +699,11 @@ class ContextifyScript : public BaseObject {
       return Just(false);
     }
     if (!options->IsObject()) {
-      env->ThrowTypeError("\x6f\x70\x74\x69\x6f\x6e\x73\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
+      env->ThrowTypeError("options must be an object");
       return Nothing<bool>();
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "\x62\x72\x65\x61\x6b\x4f\x6e\x53\x69\x67\x69\x6e\x74");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "breakOnSigint");
     MaybeLocal<Value> maybe_value =
         options.As<Object>()->Get(env->context(), key);
     if (maybe_value.IsEmpty())
@@ -718,7 +718,7 @@ class ContextifyScript : public BaseObject {
       return Just<int64_t>(-1);
     }
     if (!options->IsObject()) {
-      env->ThrowTypeError("\x6f\x70\x74\x69\x6f\x6e\x73\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
+      env->ThrowTypeError("options must be an object");
       return Nothing<int64_t>();
     }
 
@@ -735,7 +735,7 @@ class ContextifyScript : public BaseObject {
     Maybe<int64_t> timeout = value->IntegerValue(env->context());
 
     if (timeout.IsJust() && timeout.FromJust() <= 0) {
-      env->ThrowRangeError("\x74\x69\x6d\x65\x6f\x75\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x70\x6f\x73\x69\x74\x69\x76\x65\x20\x6e\x75\x6d\x62\x65\x72");
+      env->ThrowRangeError("timeout must be a positive number");
       return Nothing<int64_t>();
     }
 
@@ -749,11 +749,11 @@ class ContextifyScript : public BaseObject {
       return Just(true);
     }
     if (!options->IsObject()) {
-      env->ThrowTypeError("\x6f\x70\x74\x69\x6f\x6e\x73\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
+      env->ThrowTypeError("options must be an object");
       return Nothing<bool>();
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "\x64\x69\x73\x70\x6c\x61\x79\x45\x72\x72\x6f\x72\x73");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "displayErrors");
     MaybeLocal<Value> maybe_value =
         options.As<Object>()->Get(env->context(), key);
     if (maybe_value.IsEmpty())
@@ -770,7 +770,7 @@ class ContextifyScript : public BaseObject {
   static MaybeLocal<String> GetFilenameArg(Environment* env,
                                            Local<Value> options) {
     Local<String> defaultFilename =
-        FIXED_ONE_BYTE_STRING(env->isolate(), "\x65\x76\x61\x6c\x6d\x61\x63\x68\x69\x6e\x65\x2e\x3c\x61\x6e\x6f\x6e\x79\x6d\x6f\x75\x73\x3e");
+        FIXED_ONE_BYTE_STRING(env->isolate(), "evalmachine.<anonymous>");
 
     if (options->IsUndefined()) {
       return defaultFilename;
@@ -779,11 +779,11 @@ class ContextifyScript : public BaseObject {
       return options.As<String>();
     }
     if (!options->IsObject()) {
-      env->ThrowTypeError("\x6f\x70\x74\x69\x6f\x6e\x73\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
+      env->ThrowTypeError("options must be an object");
       return Local<String>();
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "\x66\x69\x6c\x65\x6e\x61\x6d\x65");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "filename");
     MaybeLocal<Value> maybe_value =
         options.As<Object>()->Get(env->context(), key);
     if (maybe_value.IsEmpty())
@@ -813,7 +813,7 @@ class ContextifyScript : public BaseObject {
     }
 
     if (!value->IsUint8Array()) {
-      env->ThrowTypeError("\x6f\x70\x74\x69\x6f\x6e\x73\x2e\x63\x61\x63\x68\x65\x64\x44\x61\x74\x61\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x42\x75\x66\x66\x65\x72\x20\x69\x6e\x73\x74\x61\x6e\x63\x65");
+      env->ThrowTypeError("options.cachedData must be a Buffer instance");
       return MaybeLocal<Uint8Array>();
     }
 
@@ -846,7 +846,7 @@ class ContextifyScript : public BaseObject {
       return defaultLineOffset;
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "\x6c\x69\x6e\x65\x4f\x66\x66\x73\x65\x74");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "lineOffset");
     MaybeLocal<Value> maybe_value =
         options.As<Object>()->Get(env->context(), key);
     if (maybe_value.IsEmpty())
@@ -868,7 +868,7 @@ class ContextifyScript : public BaseObject {
       return defaultColumnOffset;
     }
 
-    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "\x63\x6f\x6c\x75\x6d\x6e\x4f\x66\x66\x73\x65\x74");
+    Local<String> key = FIXED_ONE_BYTE_STRING(env->isolate(), "columnOffset");
     MaybeLocal<Value> maybe_value =
       options.As<Object>()->Get(env->context(), key);
     if (maybe_value.IsEmpty())
@@ -890,7 +890,7 @@ class ContextifyScript : public BaseObject {
                           TryCatch* try_catch) {
     if (!ContextifyScript::InstanceOf(env, args.Holder())) {
       env->ThrowTypeError(
-          "\x53\x63\x72\x69\x70\x74\x20\x6d\x65\x74\x68\x6f\x64\x73\x20\x63\x61\x6e\x20\x6f\x6e\x6c\x79\x20\x62\x65\x20\x63\x61\x6c\x6c\x65\x64\x20\x6f\x6e\x20\x73\x63\x72\x69\x70\x74\x20\x69\x6e\x73\x74\x61\x6e\x63\x65\x73\x2e");
+          "Script methods can only be called on script instances.");
       return false;
     }
 
@@ -922,9 +922,9 @@ class ContextifyScript : public BaseObject {
       // which this timeout is nested, so check whether one of the watchdogs
       // from this invocation is responsible for termination.
       if (timed_out) {
-        env->ThrowError("\x53\x63\x72\x69\x70\x74\x20\x65\x78\x65\x63\x75\x74\x69\x6f\x6e\x20\x74\x69\x6d\x65\x64\x20\x6f\x75\x74\x2e");
+        env->ThrowError("Script execution timed out.");
       } else if (received_signal) {
-        env->ThrowError("\x53\x63\x72\x69\x70\x74\x20\x65\x78\x65\x63\x75\x74\x69\x6f\x6e\x20\x69\x6e\x74\x65\x72\x72\x75\x70\x74\x65\x64\x2e");
+        env->ThrowError("Script execution interrupted.");
       }
       env->isolate()->CancelTerminateExecution();
     }

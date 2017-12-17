@@ -41,15 +41,15 @@ void StreamWrap::Initialize(Local<Object> target,
   Local<FunctionTemplate> sw =
       FunctionTemplate::New(env->isolate(), ShutdownWrap::NewShutdownWrap);
   sw->InstanceTemplate()->SetInternalFieldCount(1);
-  sw->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x68\x75\x74\x64\x6f\x77\x6e\x57\x72\x61\x70"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x68\x75\x74\x64\x6f\x77\x6e\x57\x72\x61\x70"),
+  sw->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "ShutdownWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "ShutdownWrap"),
               sw->GetFunction());
 
   Local<FunctionTemplate> ww =
       FunctionTemplate::New(env->isolate(), WriteWrap::NewWriteWrap);
   ww->InstanceTemplate()->SetInternalFieldCount(1);
-  ww->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x57\x72\x69\x74\x65\x57\x72\x61\x70"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x57\x72\x69\x74\x65\x57\x72\x61\x70"),
+  ww->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "WriteWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "WriteWrap"),
               ww->GetFunction());
   env->set_write_wrap_constructor_function(ww->GetFunction());
 }

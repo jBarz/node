@@ -162,14 +162,14 @@ void TLSWrap::Wrap(const FunctionCallbackInfo<Value>& args) {
 
   if (args.Length() < 1 || !args[0]->IsObject()) {
     return env->ThrowTypeError(
-        "\x46\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x53\x74\x72\x65\x61\x6d\x57\x72\x61\x70\x20\x69\x6e\x73\x74\x61\x6e\x63\x65");
+        "First argument should be a StreamWrap instance");
   }
   if (args.Length() < 2 || !args[1]->IsObject()) {
     return env->ThrowTypeError(
-        "\x53\x65\x63\x6f\x6e\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x53\x65\x63\x75\x72\x65\x43\x6f\x6e\x74\x65\x78\x74\x20\x69\x6e\x73\x74\x61\x6e\x63\x65");
+        "Second argument should be a SecureContext instance");
   }
   if (args.Length() < 3 || !args[2]->IsBoolean())
-    return env->ThrowTypeError("\x54\x68\x69\x72\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x62\x6f\x6f\x6c\x65\x61\x6e");
+    return env->ThrowTypeError("Third argument should be boolean");
 
   Local<External> stream_obj = args[0].As<External>();
   Local<Object> sc = args[1].As<Object>();
@@ -216,7 +216,7 @@ void TLSWrap::Start(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
 
   if (wrap->started_)
-    return env->ThrowError("\x41\x6c\x72\x65\x61\x64\x79\x20\x73\x74\x61\x72\x74\x65\x64\x2e");
+    return env->ThrowError("Already started.");
   wrap->started_ = true;
 
   // Send ClientHello handshake
@@ -370,8 +370,13 @@ Local<Value> TLSWrap::GetSSLError(int status, int* err, std::string* msg) {
         BUF_MEM* mem;
         BIO_get_mem_ptr(bio, &mem);
 
+        std::vector<char> ebcdic(mem->length);
+        std::transform(mem->data, mem->data + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+          __a2e_l(&c, 1);
+          return c;
+        });
         Local<String> message =
-            OneByteString(env()->isolate(), mem->data, mem->length);
+            OneByteString(env()->isolate(), &ebcdic[0], mem->length);
         Local<Value> exception = Exception::Error(message);
 
         if (msg != nullptr)
@@ -748,10 +753,10 @@ void TLSWrap::SetVerifyMode(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
 
   if (args.Length() < 2 || !args[0]->IsBoolean() || !args[1]->IsBoolean())
-    return env->ThrowTypeError("\x42\x61\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x2c\x20\x65\x78\x70\x65\x63\x74\x65\x64\x20\x74\x77\x6f\x20\x62\x6f\x6f\x6c\x65\x61\x6e\x73");
+    return env->ThrowTypeError("Bad arguments, expected two booleans");
 
   if (wrap->ssl_ == nullptr)
-    return env->ThrowTypeError("\x53\x65\x74\x56\x65\x72\x69\x66\x79\x4d\x6f\x64\x65\x20\x61\x66\x74\x65\x72\x20\x64\x65\x73\x74\x72\x6f\x79\x53\x53\x4c");
+    return env->ThrowTypeError("SetVerifyMode after destroySSL");
 
   int verify_mode;
   if (wrap->is_server()) {
@@ -781,7 +786,7 @@ void TLSWrap::EnableSessionCallbacks(
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
   if (wrap->ssl_ == nullptr) {
     return wrap->env()->ThrowTypeError(
-        "\x45\x6e\x61\x62\x6c\x65\x53\x65\x73\x73\x69\x6f\x6e\x43\x61\x6c\x6c\x62\x61\x63\x6b\x73\x20\x61\x66\x74\x65\x72\x20\x64\x65\x73\x74\x72\x6f\x79\x53\x53\x4c");
+        "EnableSessionCallbacks after destroySSL");
   }
   wrap->enable_session_callbacks();
   crypto::NodeBIO::FromBIO(wrap->enc_in_)->set_initial(kMaxHelloLength);
@@ -834,7 +839,12 @@ void TLSWrap::GetServername(const FunctionCallbackInfo<Value>& args) {
   const char* servername = SSL_get_servername(wrap->ssl_,
                                               TLSEXT_NAMETYPE_host_name);
   if (servername != nullptr) {
-    args.GetReturnValue().Set(OneByteString(env->isolate(), servername));
+    std::vector<char> ebcdic(strlen(servername) + 1);
+    std::transform(servername, servername + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
+    args.GetReturnValue().Set(OneByteString(env->isolate(), &ebcdic[0]));
   } else {
     args.GetReturnValue().Set(false);
   }
@@ -848,10 +858,10 @@ void TLSWrap::SetServername(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
 
   if (args.Length() < 1 || !args[0]->IsString())
-    return env->ThrowTypeError("\x46\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67");
+    return env->ThrowTypeError("First argument should be a string");
 
   if (wrap->started_)
-    return env->ThrowError("\x41\x6c\x72\x65\x61\x64\x79\x20\x73\x74\x61\x72\x74\x65\x64\x2e");
+    return env->ThrowError("Already started.");
 
   if (!wrap->is_client())
     return;
@@ -914,7 +924,7 @@ void TLSWrap::Initialize(Local<Object> target,
   };
   auto t = env->NewFunctionTemplate(constructor);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x4c\x53\x57\x72\x61\x70"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TLSWrap"));
 
   env->SetProtoMethod(t, "\x72\x65\x63\x65\x69\x76\x65", Receive);
   env->SetProtoMethod(t, "\x73\x74\x61\x72\x74", Start);
@@ -934,7 +944,7 @@ void TLSWrap::Initialize(Local<Object> target,
   env->set_tls_wrap_constructor_template(t);
   env->set_tls_wrap_constructor_function(t->GetFunction());
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x4c\x53\x57\x72\x61\x70"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TLSWrap"),
               t->GetFunction());
 }
 

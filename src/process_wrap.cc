@@ -31,7 +31,7 @@ class ProcessWrap : public HandleWrap {
     Environment* env = Environment::GetCurrent(context);
     Local<FunctionTemplate> constructor = env->NewFunctionTemplate(New);
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x72\x6f\x63\x65\x73\x73"));
+    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Process"));
 
     env->SetProtoMethod(constructor, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
 
@@ -42,7 +42,7 @@ class ProcessWrap : public HandleWrap {
     env->SetProtoMethod(constructor, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
     env->SetProtoMethod(constructor, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
 
-    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x72\x6f\x63\x65\x73\x73"),
+    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Process"),
                 constructor->GetFunction());
   }
 
@@ -143,7 +143,7 @@ class ProcessWrap : public HandleWrap {
       options.flags |= UV_PROCESS_SETUID;
       options.uid = static_cast<uv_uid_t>(uid);
     } else if (!uid_v->IsUndefined() && !uid_v->IsNull()) {
-      return env->ThrowTypeError("\x6f\x70\x74\x69\x6f\x6e\x73\x2e\x75\x69\x64\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x6e\x75\x6d\x62\x65\x72");
+      return env->ThrowTypeError("options.uid should be a number");
     }
 
     // options.gid
@@ -153,7 +153,7 @@ class ProcessWrap : public HandleWrap {
       options.flags |= UV_PROCESS_SETGID;
       options.gid = static_cast<uv_gid_t>(gid);
     } else if (!gid_v->IsUndefined() && !gid_v->IsNull()) {
-      return env->ThrowTypeError("\x6f\x70\x74\x69\x6f\x6e\x73\x2e\x67\x69\x64\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x6e\x75\x6d\x62\x65\x72");
+      return env->ThrowTypeError("options.gid should be a number");
     }
 
     // TODO(bnoordhuis) is this possible to do without mallocing ?
@@ -165,7 +165,7 @@ class ProcessWrap : public HandleWrap {
     if (file.length() > 0) {
       options.file = *file;
     } else {
-      return env->ThrowTypeError("\x42\x61\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74");
+      return env->ThrowTypeError("Bad argument");
     }
 
     // options.args
@@ -268,9 +268,15 @@ class ProcessWrap : public HandleWrap {
     HandleScope handle_scope(env->isolate());
     Context::Scope context_scope(env->context());
 
+    const char* ascii = signo_string(term_signal);
+    std::vector<char> ebcdic(strlen(ascii) + 1);
+    std::transform(ascii, ascii + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     Local<Value> argv[] = {
       Number::New(env->isolate(), static_cast<double>(exit_status)),
-      OneByteString(env->isolate(), signo_string(term_signal))
+      OneByteString(env->isolate(), &ebcdic[0])
     };
 
     wrap->MakeCallback(env->onexit_string(), arraysize(argv), argv);

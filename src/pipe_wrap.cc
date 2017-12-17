@@ -44,7 +44,7 @@ void PipeWrap::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x69\x70\x65"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Pipe"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
   env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
@@ -67,7 +67,7 @@ void PipeWrap::Initialize(Local<Object> target,
   env->SetProtoMethod(t, "\x73\x65\x74\x50\x65\x6e\x64\x69\x6e\x67\x49\x6e\x73\x74\x61\x6e\x63\x65\x73", SetPendingInstances);
 #endif
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x69\x70\x65"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Pipe"), t->GetFunction());
   env->set_pipe_constructor_template(t);
 
   // Create FunctionTemplate for PipeConnectWrap.
@@ -76,8 +76,8 @@ void PipeWrap::Initialize(Local<Object> target,
   };
   auto cwt = FunctionTemplate::New(env->isolate(), constructor);
   cwt->InstanceTemplate()->SetInternalFieldCount(1);
-  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x69\x70\x65\x43\x6f\x6e\x6e\x65\x63\x74\x57\x72\x61\x70"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x50\x69\x70\x65\x43\x6f\x6e\x6e\x65\x63\x74\x57\x72\x61\x70"),
+  cwt->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "PipeConnectWrap"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "PipeConnectWrap"),
               cwt->GetFunction());
 }
 

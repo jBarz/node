@@ -63,7 +63,7 @@ void FSEventWrap::Initialize(Local<Object> target,
                              Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-  auto fsevent_string = FIXED_ONE_BYTE_STRING(env->isolate(), "\x46\x53\x45\x76\x65\x6e\x74");
+  auto fsevent_string = FIXED_ONE_BYTE_STRING(env->isolate(), "FSEvent");
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
   t->SetClassName(fsevent_string);
@@ -89,7 +89,7 @@ void FSEventWrap::Start(const FunctionCallbackInfo<Value>& args) {
   ASSIGN_OR_RETURN_UNWRAP(&wrap, args.Holder());
   CHECK_EQ(wrap->initialized_, false);
 
-  static const char kErrMsg[] = "\x66\x69\x6c\x65\x6e\x61\x6d\x65\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67\x20\x6f\x72\x20\x42\x75\x66\x66\x65\x72";
+  static const char kErrMsg[] = "filename must be a string or Buffer";
   if (args.Length() < 1)
     return env->ThrowTypeError(kErrMsg);
 

@@ -31,24 +31,24 @@ void InitConfig(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 #ifdef NODE_HAVE_I18N_SUPPORT
 
-  READONLY_BOOLEAN_PROPERTY("\x68\x61\x73\x49\x6e\x74\x6c");
+  READONLY_BOOLEAN_PROPERTY("hasIntl");
 
 #ifdef NODE_HAVE_SMALL_ICU
-  READONLY_BOOLEAN_PROPERTY("\x68\x61\x73\x53\x6d\x61\x6c\x6c\x49\x43\x55");
+  READONLY_BOOLEAN_PROPERTY("hasSmallICU");
 #endif  // NODE_HAVE_SMALL_ICU
 
   if (flag_icu_data_dir)
-    READONLY_BOOLEAN_PROPERTY("\x75\x73\x69\x6e\x67\x49\x43\x55\x44\x61\x74\x61\x44\x69\x72");
+    READONLY_BOOLEAN_PROPERTY("usingICUDataDir");
 #endif  // NODE_HAVE_I18N_SUPPORT
 
   if (config_preserve_symlinks)
-    READONLY_BOOLEAN_PROPERTY("\x70\x72\x65\x73\x65\x72\x76\x65\x53\x79\x6d\x6c\x69\x6e\x6b\x73");
+    READONLY_BOOLEAN_PROPERTY("preserveSymlinks");
 
   if (config_expose_internals)
-    READONLY_BOOLEAN_PROPERTY("\x65\x78\x70\x6f\x73\x65\x49\x6e\x74\x65\x72\x6e\x61\x6c\x73");
+    READONLY_BOOLEAN_PROPERTY("exposeInternals");
 
   if (!config_warning_file.empty()) {
-    Local<String> name = OneByteString(env->isolate(), "\x77\x61\x72\x6e\x69\x6e\x67\x46\x69\x6c\x65");
+    Local<String> name = OneByteString(env->isolate(), "warningFile");
     Local<String> value = String::NewFromUtf8(env->isolate(),
                                               config_warning_file.data(),
                                               v8::NewStringType::kNormal,

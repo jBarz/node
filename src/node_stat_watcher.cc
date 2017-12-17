@@ -24,12 +24,12 @@ void StatWatcher::Initialize(Environment* env, Local<Object> target) {
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(StatWatcher::New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x74\x61\x74\x57\x61\x74\x63\x68\x65\x72"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "StatWatcher"));
 
   env->SetProtoMethod(t, "\x73\x74\x61\x72\x74", StatWatcher::Start);
   env->SetProtoMethod(t, "\x73\x74\x6f\x70", StatWatcher::Stop);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x53\x74\x61\x74\x57\x61\x74\x63\x68\x65\x72"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "StatWatcher"),
               t->GetFunction());
 }
 

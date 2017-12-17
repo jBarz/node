@@ -435,7 +435,7 @@ void InspectorConsoleCall(const v8::FunctionCallbackInfo<v8::Value>& info) {
     call_args[i] = info[i];
   }
 
-  v8::Local<v8::String> in_call_key = OneByteString(isolate, "\x69\x6e\x5f\x63\x61\x6c\x6c");
+  v8::Local<v8::String> in_call_key = OneByteString(isolate, "in_call");
   bool in_call = config_object->Has(context, in_call_key).FromMaybe(false);
   if (!in_call) {
     CHECK(config_object->Set(context,
@@ -463,8 +463,8 @@ void InspectorWrapConsoleCall(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
   if (args.Length() != 3 || !args[0]->IsFunction() ||
       !args[1]->IsFunction() || !args[2]->IsObject()) {
-    return env->ThrowError("\x69\x6e\x73\x70\x65\x63\x74\x6f\x72\x2e\x77\x72\x61\x70\x43\x6f\x6e\x73\x6f\x6c\x65\x43\x61\x6c\x6c\x20\x74\x61\x6b\x65\x73\x20\x65\x78\x61\x63\x74\x6c\x79\x20\x33\x20"
-        "\x61\x72\x67\x75\x6d\x65\x6e\x74\x73\x3a\x20\x74\x77\x6f\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e\x73\x20\x61\x6e\x64\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74\x2e");
+    return env->ThrowError("inspector.wrapConsoleCall takes exactly 3 "
+        "arguments: two functions and an object.");
   }
 
   v8::Local<v8::Array> array = v8::Array::New(env->isolate(), args.Length());
@@ -538,7 +538,7 @@ void AgentImpl::InstallInspectorOnProcess() {
   auto env = parent_env_;
   v8::Local<v8::Object> process = env->process_object();
   v8::Local<v8::Object> inspector = v8::Object::New(env->isolate());
-  READONLY_PROPERTY(process, "\x69\x6e\x73\x70\x65\x63\x74\x6f\x72", inspector);
+  READONLY_PROPERTY(process, "inspector", inspector);
   env->SetMethod(inspector, "\x77\x72\x61\x70\x43\x6f\x6e\x73\x6f\x6c\x65\x43\x61\x6c\x6c", InspectorWrapConsoleCall);
 }
 

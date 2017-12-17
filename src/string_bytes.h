@@ -22,7 +22,7 @@ class StringBytes {
                        enum encoding _default) {
       enum encoding enc = ParseEncoding(env->isolate(), encoding, _default);
       if (!StringBytes::IsValidString(env->isolate(), string, enc)) {
-        env->ThrowTypeError("\x42\x61\x64\x20\x69\x6e\x70\x75\x74\x20\x73\x74\x72\x69\x6e\x67");
+        env->ThrowTypeError("Bad input string");
         return false;
       }
 

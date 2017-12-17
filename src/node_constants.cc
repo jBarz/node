@@ -1168,11 +1168,11 @@ void DefineConstants(v8::Isolate* isolate, Local<Object> target) {
   DefineOpenSSLConstants(crypto_constants);
   DefineCryptoConstants(crypto_constants);
 
-  os_constants->Set(OneByteString(isolate, "\x65\x72\x72\x6e\x6f"), err_constants);
-  os_constants->Set(OneByteString(isolate, "\x73\x69\x67\x6e\x61\x6c\x73"), sig_constants);
-  target->Set(OneByteString(isolate, "\x6f\x73"), os_constants);
-  target->Set(OneByteString(isolate, "\x66\x73"), fs_constants);
-  target->Set(OneByteString(isolate, "\x63\x72\x79\x70\x74\x6f"), crypto_constants);
+  os_constants->Set(OneByteString(isolate, "errno"), err_constants);
+  os_constants->Set(OneByteString(isolate, "signals"), sig_constants);
+  target->Set(OneByteString(isolate, "os"), os_constants);
+  target->Set(OneByteString(isolate, "fs"), fs_constants);
+  target->Set(OneByteString(isolate, "crypto"), crypto_constants);
 }
 
 }  // namespace node

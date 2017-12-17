@@ -13,6 +13,10 @@
 #include <stdlib.h>  // free()
 #include <string.h>  // strdup()
 
+#ifdef __MVS__
+# include <unistd.h>
+#endif
+
 // This is a binding to http_parser (https://github.com/nodejs/http-parser)
 // The goal is to decouple sockets from parsing for more javascript-level
 // agility. A Buffer is read from a socket and passed to parser.execute().
@@ -126,8 +130,13 @@ struct StringPtr {
 
 
   Local<String> ToString(Environment* env) const {
+    std::vector<char> ebcdic(size_);
+    std::transform(str_, str_ + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     if (str_)
-      return OneByteString(env->isolate(), str_, size_);
+      return OneByteString(env->isolate(), &ebcdic[0], size_);
     else
       return String::Empty(env->isolate());
   }
@@ -433,8 +442,14 @@ class Parser : public AsyncWrap {
       Local<Value> e = Exception::Error(env->parse_error_string());
       Local<Object> obj = e->ToObject(env->isolate());
       obj->Set(env->bytes_parsed_string(), Integer::New(env->isolate(), 0));
+      const char* ascii = http_errno_name(err);
+      std::vector<char> ebcdic(strlen(ascii) + 1);
+      std::transform(ascii, ascii + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+        __a2e_l(&c, 1);
+        return c;
+      });
       obj->Set(env->code_string(),
-               OneByteString(env->isolate(), http_errno_name(err)));
+               OneByteString(env->isolate(), &ebcdic[0]));
 
       args.GetReturnValue().Set(e);
     }
@@ -630,8 +645,14 @@ class Parser : public AsyncWrap {
       Local<Value> e = Exception::Error(env()->parse_error_string());
       Local<Object> obj = e->ToObject(env()->isolate());
       obj->Set(env()->bytes_parsed_string(), nparsed_obj);
+      const char* ascii = http_errno_name(err);
+      std::vector<char> ebcdic(strlen(ascii) + 1);
+      std::transform(ascii, ascii + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+        __a2e_l(&c, 1);
+        return c;
+      });
       obj->Set(env()->code_string(),
-               OneByteString(env()->isolate(), http_errno_name(err)));
+               OneByteString(env()->isolate(), &ebcdic[0]));
 
       return scope.Escape(e);
     }
@@ -739,29 +760,29 @@ void InitHttpParser(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
   Local<FunctionTemplate> t = env->NewFunctionTemplate(Parser::New);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x48\x54\x54\x50\x50\x61\x72\x73\x65\x72"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "HTTPParser"));
 
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x52\x45\x51\x55\x45\x53\x54"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "REQUEST"),
          Integer::New(env->isolate(), HTTP_REQUEST));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x52\x45\x53\x50\x4f\x4e\x53\x45"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "RESPONSE"),
          Integer::New(env->isolate(), HTTP_RESPONSE));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4f\x6e\x48\x65\x61\x64\x65\x72\x73"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnHeaders"),
          Integer::NewFromUnsigned(env->isolate(), kOnHeaders));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4f\x6e\x48\x65\x61\x64\x65\x72\x73\x43\x6f\x6d\x70\x6c\x65\x74\x65"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnHeadersComplete"),
          Integer::NewFromUnsigned(env->isolate(), kOnHeadersComplete));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4f\x6e\x42\x6f\x64\x79"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnBody"),
          Integer::NewFromUnsigned(env->isolate(), kOnBody));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4f\x6e\x4d\x65\x73\x73\x61\x67\x65\x43\x6f\x6d\x70\x6c\x65\x74\x65"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnMessageComplete"),
          Integer::NewFromUnsigned(env->isolate(), kOnMessageComplete));
-  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4f\x6e\x45\x78\x65\x63\x75\x74\x65"),
+  t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnExecute"),
          Integer::NewFromUnsigned(env->isolate(), kOnExecute));
 
   Local<Array> methods = Array::New(env->isolate());
 #define V(num, name, string)                                                  \
-    methods->Set(num, FIXED_ONE_BYTE_STRING(env->isolate(), USTR(#string)));
+    methods->Set(num, FIXED_ONE_BYTE_STRING(env->isolate(), #string));
   HTTP_METHOD_MAP(V)
 #undef V
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6d\x65\x74\x68\x6f\x64\x73"), methods);
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "methods"), methods);
 
   env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", Parser::Close);
   env->SetProtoMethod(t, "\x65\x78\x65\x63\x75\x74\x65", Parser::Execute);
@@ -773,7 +794,7 @@ void InitHttpParser(Local<Object> target,
   env->SetProtoMethod(t, "\x75\x6e\x63\x6f\x6e\x73\x75\x6d\x65", Parser::Unconsume);
   env->SetProtoMethod(t, "\x67\x65\x74\x43\x75\x72\x72\x65\x6e\x74\x42\x75\x66\x66\x65\x72", Parser::GetCurrentBuffer);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x48\x54\x54\x50\x50\x61\x72\x73\x65\x72"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "HTTPParser"),
               t->GetFunction());
 }
 

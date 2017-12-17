@@ -27,8 +27,8 @@ class TimerWrap : public HandleWrap {
     Environment* env = Environment::GetCurrent(context);
     Local<FunctionTemplate> constructor = env->NewFunctionTemplate(New);
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x69\x6d\x65\x72"));
-    constructor->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4f\x6e\x54\x69\x6d\x65\x6f\x75\x74"),
+    constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Timer"));
+    constructor->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnTimeout"),
                      Integer::New(env->isolate(), kOnTimeout));
 
     env->SetTemplateMethod(constructor, "\x6e\x6f\x77", Now);
@@ -41,7 +41,7 @@ class TimerWrap : public HandleWrap {
     env->SetProtoMethod(constructor, "\x73\x74\x61\x72\x74", Start);
     env->SetProtoMethod(constructor, "\x73\x74\x6f\x70", Stop);
 
-    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x69\x6d\x65\x72"),
+    target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Timer"),
                 constructor->GetFunction());
   }
 

@@ -58,7 +58,7 @@ static void GetHostname(const FunctionCallbackInfo<Value>& args) {
   }
   buf[sizeof(buf) - 1] = '\0';
 
-  args.GetReturnValue().Set(OneByteString(env->isolate(), *E2A(buf)));
+  args.GetReturnValue().Set(OneByteString(env->isolate(), buf));
 }
 
 
@@ -76,7 +76,7 @@ static void GetOSType(const FunctionCallbackInfo<Value>& args) {
   rval = "\x57\x69\x6e\x64\x6f\x77\x73\x5f\x4e\x54";
 #endif  // __POSIX__
 
-  args.GetReturnValue().Set(OneByteString(env->isolate(), *E2A(rval)));
+  args.GetReturnValue().Set(OneByteString(env->isolate(), rval));
 }
 
 
@@ -117,7 +117,7 @@ static void GetOSRelease(const FunctionCallbackInfo<Value>& args) {
   rval = release;
 #endif  // __POSIX__
 
-  args.GetReturnValue().Set(OneByteString(env->isolate(), *E2A(rval)));
+  args.GetReturnValue().Set(OneByteString(env->isolate(), rval));
 }
 
 
@@ -217,9 +217,6 @@ static void GetInterfaceAddresses(const FunctionCallbackInfo<Value>& args) {
   }
 
   for (i = 0; i < count; i++) {
-#ifdef __MVS__
-    __e2a_s(interfaces[i].name);
-#endif
     const char* const raw_name = interfaces[i].name;
 
     // On Windows, the interface name is the UTF8-encoded friendly name and may
@@ -252,25 +249,15 @@ static void GetInterfaceAddresses(const FunctionCallbackInfo<Value>& args) {
       uv_ip4_name(&interfaces[i].address.address4, ip, sizeof(ip));
       uv_ip4_name(&interfaces[i].netmask.netmask4, netmask, sizeof(netmask));
       family = env->ipv4_string();
-#ifdef __MVS__
-      __e2a_s(ip);
-#endif
     } else if (interfaces[i].address.address4.sin_family == AF_INET6) {
       uv_ip6_name(&interfaces[i].address.address6, ip, sizeof(ip));
       uv_ip6_name(&interfaces[i].netmask.netmask6, netmask, sizeof(netmask));
       family = env->ipv6_string();
-#ifdef __MVS__
-      __e2a_s(ip);
-#endif
     } else {
-      strncpy(ip, "\x3c\x75\x6e\x6b\x6e\x6f\x77\x6e\x20\x73\x61\x20\x66\x61\x6d\x69\x6c\x79\x3e", INET6_ADDRSTRLEN);
+      strncpy(ip, "<unknown sa family>", INET6_ADDRSTRLEN);
       family = env->unknown_string();
     }
 
-#ifdef __MVS__
-    __e2a_s(netmask);
-    __e2a_s(mac);
-#endif
     o = Object::New(env->isolate());
     o->Set(env->address_string(), OneByteString(env->isolate(), ip));
     o->Set(env->netmask_string(), OneByteString(env->isolate(), netmask));
@@ -400,7 +387,7 @@ void Initialize(Local<Object> target,
   env->SetMethod(target, "\x67\x65\x74\x49\x6e\x74\x65\x72\x66\x61\x63\x65\x41\x64\x64\x72\x65\x73\x73\x65\x73", GetInterfaceAddresses);
   env->SetMethod(target, "\x67\x65\x74\x48\x6f\x6d\x65\x44\x69\x72\x65\x63\x74\x6f\x72\x79", GetHomeDirectory);
   env->SetMethod(target, "\x67\x65\x74\x55\x73\x65\x72\x49\x6e\x66\x6f", GetUserInfo);
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x69\x73\x42\x69\x67\x45\x6e\x64\x69\x61\x6e"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "isBigEndian"),
               Boolean::New(env->isolate(), IsBigEndian()));
 }
 

@@ -81,9 +81,9 @@ void SetFlagsFromString(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (args.Length() < 1)
-    return env->ThrowTypeError("\x76\x38\x20\x66\x6c\x61\x67\x20\x69\x73\x20\x72\x65\x71\x75\x69\x72\x65\x64");
+    return env->ThrowTypeError("v8 flag is required");
   if (!args[0]->IsString())
-    return env->ThrowTypeError("\x76\x38\x20\x66\x6c\x61\x67\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67");
+    return env->ThrowTypeError("v8 flag must be a string");
 
   String::Utf8Value flags(args[0]);
   V8::SetFlagsFromString(*flags, flags.length());
@@ -105,20 +105,20 @@ void InitializeV8Bindings(Local<Object> target,
       sizeof(*env->heap_statistics_buffer()) * kHeapStatisticsPropertiesCount;
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(),
-                                    "\x68\x65\x61\x70\x53\x74\x61\x74\x69\x73\x74\x69\x63\x73\x41\x72\x72\x61\x79\x42\x75\x66\x66\x65\x72"),
+                                    "heapStatisticsArrayBuffer"),
               ArrayBuffer::New(env->isolate(),
                                env->heap_statistics_buffer(),
                                heap_statistics_buffer_byte_length));
 
 #define V(i, _, name)                                                         \
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), USTR(#name)),                   \
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), #name),                   \
               Uint32::NewFromUnsigned(env->isolate(), i));
 
   HEAP_STATISTICS_PROPERTIES(V)
 #undef V
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(),
-                                    "\x6b\x48\x65\x61\x70\x53\x70\x61\x63\x65\x53\x74\x61\x74\x69\x73\x74\x69\x63\x73\x50\x72\x6f\x70\x65\x72\x74\x69\x65\x73\x43\x6f\x75\x6e\x74"),
+                                    "kHeapSpaceStatisticsPropertiesCount"),
               Uint32::NewFromUnsigned(env->isolate(),
                                       kHeapSpaceStatisticsPropertiesCount));
 
@@ -137,7 +137,7 @@ void InitializeV8Bindings(Local<Object> target,
                                         .ToLocalChecked();
     heap_spaces->Set(i, heap_space_name);
   }
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x48\x65\x61\x70\x53\x70\x61\x63\x65\x73"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kHeapSpaces"),
               heap_spaces);
 
   env->SetMethod(target,
@@ -153,13 +153,13 @@ void InitializeV8Bindings(Local<Object> target,
       number_of_heap_spaces;
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(),
-                                    "\x68\x65\x61\x70\x53\x70\x61\x63\x65\x53\x74\x61\x74\x69\x73\x74\x69\x63\x73\x41\x72\x72\x61\x79\x42\x75\x66\x66\x65\x72"),
+                                    "heapSpaceStatisticsArrayBuffer"),
               ArrayBuffer::New(env->isolate(),
                                env->heap_space_statistics_buffer(),
                                heap_space_statistics_buffer_byte_length));
 
 #define V(i, _, name)                                                         \
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), USTR(#name)),                   \
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), #name),                   \
               Uint32::NewFromUnsigned(env->isolate(), i));
 
   HEAP_SPACE_STATISTICS_PROPERTIES(V)

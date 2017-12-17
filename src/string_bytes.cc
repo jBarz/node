@@ -632,14 +632,25 @@ Local<Value> StringBytes::Encode(Isolate* isolate,
         }
         force_ascii(buf, out, buflen);
         if (buflen < EXTERN_APEX) {
-          val = OneByteString(isolate, out, buflen);
+          std::vector<char> ebcdic(buflen);
+          std::transform(out, out + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+            __a2e_l(&c, 1);
+            return c;
+          });
+          val = OneByteString(isolate, &ebcdic[0], buflen);
           free(out);
         } else {
           val = ExternOneByteString::New(isolate, out, buflen);
         }
       } else {
-        if (buflen < EXTERN_APEX)
-          val = OneByteString(isolate, buf, buflen);
+        if (buflen < EXTERN_APEX) {
+          std::vector<char> ebcdic(buflen);
+          std::transform(buf, buf + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+            __a2e_l(&c, 1);
+            return c;
+          });
+          val = OneByteString(isolate, &ebcdic[0], buflen);
+        }
         else
           val = ExternOneByteString::NewFromCopy(isolate, buf, buflen);
       }
@@ -660,8 +671,14 @@ Local<Value> StringBytes::Encode(Isolate* isolate,
       break;
 
     case LATIN1:
-      if (buflen < EXTERN_APEX)
-        val = OneByteString(isolate, buf, buflen);
+      if (buflen < EXTERN_APEX) {
+        std::vector<char> ebcdic(buflen);
+        std::transform(buf, buf + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+          __a2e_l(&c, 1);
+          return c;
+        });
+        val = OneByteString(isolate, &ebcdic[0], buflen);
+      }
       else
         val = ExternOneByteString::NewFromCopy(isolate, buf, buflen);
       break;
@@ -677,7 +694,12 @@ Local<Value> StringBytes::Encode(Isolate* isolate,
       CHECK_EQ(written, dlen);
 
       if (dlen < EXTERN_APEX) {
-        val = OneByteString(isolate, dst, dlen);
+        std::vector<char> ebcdic(dlen);
+        std::transform(dst, dst + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+          __a2e_l(&c, 1);
+          return c;
+        });
+        val = OneByteString(isolate, &ebcdic[0], dlen);
         free(dst);
       } else {
         val = ExternOneByteString::New(isolate, dst, dlen);
@@ -695,7 +717,12 @@ Local<Value> StringBytes::Encode(Isolate* isolate,
       CHECK_EQ(written, dlen);
 
       if (dlen < EXTERN_APEX) {
-        val = OneByteString(isolate, dst, dlen);
+        std::vector<char> ebcdic(dlen);
+        std::transform(dst, dst + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+          __a2e_l(&c, 1);
+          return c;
+        });
+        val = OneByteString(isolate, &ebcdic[0], dlen);
         free(dst);
       } else {
         val = ExternOneByteString::New(isolate, dst, dlen);

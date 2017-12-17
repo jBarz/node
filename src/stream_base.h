@@ -11,6 +11,10 @@
 
 #include "v8.h"
 
+#ifdef __MVS__
+# include <unistd.h>
+#endif
+
 namespace node {
 
 // Forward declarations
@@ -28,8 +32,13 @@ class StreamReq {
     Req* req = static_cast<Req*>(this);
     Environment* env = req->env();
     if (error_str != nullptr) {
+      std::vector<char> ebcdic(strlen(error_str) + 1);
+      std::transform(error_str, error_str + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+        __a2e_l(&c, 1);
+        return c;
+      });
       req->object()->Set(env->error_string(),
-                         OneByteString(env->isolate(), error_str));
+                         OneByteString(env->isolate(), &ebcdic[0]));
     }
 
     cb_(req, status);

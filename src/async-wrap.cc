@@ -107,7 +107,7 @@ static void EnableHooksJS(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
   Local<Function> init_fn = env->async_hooks_init_function();
   if (init_fn.IsEmpty() || !init_fn->IsFunction())
-    return env->ThrowTypeError("\x69\x6e\x69\x74\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b\x20\x69\x73\x20\x6e\x6f\x74\x20\x61\x73\x73\x69\x67\x6e\x65\x64\x20\x74\x6f\x20\x61\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e");
+    return env->ThrowTypeError("init callback is not assigned to a function");
   env->async_hooks()->set_enable_callbacks(1);
 }
 
@@ -122,27 +122,27 @@ static void SetupHooks(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (env->async_hooks()->callbacks_enabled())
-    return env->ThrowError("\x68\x6f\x6f\x6b\x73\x20\x73\x68\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x62\x65\x20\x73\x65\x74\x20\x77\x68\x69\x6c\x65\x20\x61\x6c\x73\x6f\x20\x65\x6e\x61\x62\x6c\x65\x64");
+    return env->ThrowError("hooks should not be set while also enabled");
   if (!args[0]->IsObject())
-    return env->ThrowTypeError("\x66\x69\x72\x73\x74\x20\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x6e\x20\x6f\x62\x6a\x65\x63\x74");
+    return env->ThrowTypeError("first argument must be an object");
 
   Local<Object> fn_obj = args[0].As<Object>();
 
   Local<Value> init_v = fn_obj->Get(
       env->context(),
-      FIXED_ONE_BYTE_STRING(env->isolate(), "\x69\x6e\x69\x74")).ToLocalChecked();
+      FIXED_ONE_BYTE_STRING(env->isolate(), "init")).ToLocalChecked();
   Local<Value> pre_v = fn_obj->Get(
       env->context(),
-      FIXED_ONE_BYTE_STRING(env->isolate(), "\x70\x72\x65")).ToLocalChecked();
+      FIXED_ONE_BYTE_STRING(env->isolate(), "pre")).ToLocalChecked();
   Local<Value> post_v = fn_obj->Get(
       env->context(),
-      FIXED_ONE_BYTE_STRING(env->isolate(), "\x70\x6f\x73\x74")).ToLocalChecked();
+      FIXED_ONE_BYTE_STRING(env->isolate(), "post")).ToLocalChecked();
   Local<Value> destroy_v = fn_obj->Get(
       env->context(),
-      FIXED_ONE_BYTE_STRING(env->isolate(), "\x64\x65\x73\x74\x72\x6f\x79")).ToLocalChecked();
+      FIXED_ONE_BYTE_STRING(env->isolate(), "destroy")).ToLocalChecked();
 
   if (!init_v->IsFunction())
-    return env->ThrowTypeError("\x69\x6e\x69\x74\x20\x63\x61\x6c\x6c\x62\x61\x63\x6b\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x66\x75\x6e\x63\x74\x69\x6f\x6e");
+    return env->ThrowTypeError("init callback must be a function");
 
   env->set_async_hooks_init_function(init_v.As<Function>());
 
@@ -168,11 +168,11 @@ void AsyncWrap::Initialize(Local<Object> target,
 
   Local<Object> async_providers = Object::New(isolate);
 #define V(PROVIDER)                                                           \
-  async_providers->Set(FIXED_ONE_BYTE_STRING(isolate, USTR(#PROVIDER)),             \
+  async_providers->Set(FIXED_ONE_BYTE_STRING(isolate, #PROVIDER),             \
       Integer::New(isolate, AsyncWrap::PROVIDER_ ## PROVIDER));
   NODE_ASYNC_PROVIDER_TYPES(V)
 #undef V
-  target->Set(FIXED_ONE_BYTE_STRING(isolate, "\x50\x72\x6f\x76\x69\x64\x65\x72\x73"), async_providers);
+  target->Set(FIXED_ONE_BYTE_STRING(isolate, "Providers"), async_providers);
 
   env->set_async_hooks_init_function(Local<Function>());
   env->set_async_hooks_pre_function(Local<Function>());

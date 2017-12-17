@@ -14,6 +14,10 @@
 #include <string.h>
 #include <sys/types.h>
 
+#ifdef __MVS__
+# include <unistd.h>
+#endif
+
 namespace node {
 
 using v8::Array;
@@ -393,8 +397,13 @@ class ZCtx : public AsyncWrap {
     }
 
     HandleScope scope(env->isolate());
+    std::vector<char> ebcdic(strlen(message) + 1);
+    std::transform(message, message + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     Local<Value> args[2] = {
-      OneByteString(env->isolate(), message),
+      OneByteString(env->isolate(), &ebcdic[0]),
       Number::New(env->isolate(), ctx->err_)
     };
     ctx->MakeCallback(env->onerror_string(), arraysize(args), args);
@@ -411,12 +420,12 @@ class ZCtx : public AsyncWrap {
     Environment* env = Environment::GetCurrent(args);
 
     if (args.Length() < 1 || !args[0]->IsInt32()) {
-      return env->ThrowTypeError("\x42\x61\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74");
+      return env->ThrowTypeError("Bad argument");
     }
     node_zlib_mode mode = static_cast<node_zlib_mode>(args[0]->Int32Value());
 
     if (mode < DEFLATE || mode > UNZIP) {
-      return env->ThrowTypeError("\x42\x61\x64\x20\x61\x72\x67\x75\x6d\x65\x6e\x74");
+      return env->ThrowTypeError("Bad argument");
     }
 
     new ZCtx(env, args.This(), mode);
@@ -540,7 +549,7 @@ class ZCtx : public AsyncWrap {
         ctx->dictionary_ = nullptr;
       }
       ctx->mode_ = NONE;
-      ctx->env()->ThrowError("\x49\x6e\x69\x74\x20\x65\x72\x72\x6f\x72");
+      ctx->env()->ThrowError("Init error");
     }
   }
 
@@ -667,8 +676,8 @@ void InitZlib(Local<Object> target,
   env->SetProtoMethod(z, "\x70\x61\x72\x61\x6d\x73", ZCtx::Params);
   env->SetProtoMethod(z, "\x72\x65\x73\x65\x74", ZCtx::Reset);
 
-  z->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x5a\x6c\x69\x62"));
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x5a\x6c\x69\x62"), z->GetFunction());
+  z->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Zlib"));
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Zlib"), z->GetFunction());
 
   // valid flush values.
   NODE_DEFINE_CONSTANT(target, Z_NO_FLUSH);
@@ -708,7 +717,7 @@ void InitZlib(Local<Object> target,
   NODE_DEFINE_CONSTANT(target, INFLATERAW);
   NODE_DEFINE_CONSTANT(target, UNZIP);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x5a\x4c\x49\x42\x5f\x56\x45\x52\x53\x49\x4f\x4e"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "ZLIB_VERSION"),
               FIXED_ONE_BYTE_STRING(env->isolate(), ZLIB_VERSION));
 }
 

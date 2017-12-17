@@ -11,19 +11,23 @@
 #include <string.h>
 #include <limits.h>
 
+#ifdef __MVS__
+# include <unistd.h>
+#endif
+
 #define BUFFER_ID 0xB0E4
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 #define THROW_AND_RETURN_IF_OOB(r)                                          \
   do {                                                                      \
-    if (!(r)) return env->ThrowRangeError("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78");            \
+    if (!(r)) return env->ThrowRangeError("out of range index");            \
   } while (0)
 
 #define THROW_AND_RETURN_UNLESS_BUFFER(env, obj)                            \
   do {                                                                      \
     if (!HasInstance(obj))                                                  \
-      return env->ThrowTypeError("\x61\x72\x67\x75\x6d\x65\x6e\x74\x20\x73\x68\x6f\x75\x6c\x64\x20\x62\x65\x20\x61\x20\x42\x75\x66\x66\x65\x72");            \
+      return env->ThrowTypeError("argument should be a Buffer");            \
   } while (0)
 
 #define SPREAD_ARG(val, name)                                                 \
@@ -563,7 +567,7 @@ void Copy(const FunctionCallbackInfo<Value> &args) {
     return args.GetReturnValue().Set(0);
 
   if (source_start > ts_obj_length)
-    return env->ThrowRangeError("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78");
+    return env->ThrowRangeError("out of range index");
 
   if (source_end - source_start > target_length - target_start)
     source_end = source_start + target_length - target_start;
@@ -614,7 +618,7 @@ void Fill(const FunctionCallbackInfo<Value>& args) {
       enc == UCS2 ? str_obj->Length() * sizeof(uint16_t) : str_obj->Length();
 
   if (enc == HEX && str_length  % 2 != 0)
-    return env->ThrowTypeError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x68\x65\x78\x20\x73\x74\x72\x69\x6e\x67");
+    return env->ThrowTypeError("Invalid hex string");
 
   if (str_length == 0)
     return;
@@ -679,19 +683,19 @@ void StringWrite(const FunctionCallbackInfo<Value>& args) {
   SPREAD_ARG(args.This(), ts_obj);
 
   if (!args[0]->IsString())
-    return env->ThrowTypeError("\x41\x72\x67\x75\x6d\x65\x6e\x74\x20\x6d\x75\x73\x74\x20\x62\x65\x20\x61\x20\x73\x74\x72\x69\x6e\x67");
+    return env->ThrowTypeError("Argument must be a string");
 
   Local<String> str = args[0]->ToString(env->isolate());
 
   if (encoding == HEX && str->Length() % 2 != 0)
-    return env->ThrowTypeError("\x49\x6e\x76\x61\x6c\x69\x64\x20\x68\x65\x78\x20\x73\x74\x72\x69\x6e\x67");
+    return env->ThrowTypeError("Invalid hex string");
 
   size_t offset;
   size_t max_length;
 
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[1], 0, &offset));
   if (offset > ts_obj_length)
-    return env->ThrowRangeError("\x4f\x66\x66\x73\x65\x74\x20\x69\x73\x20\x6f\x75\x74\x20\x6f\x66\x20\x62\x6f\x75\x6e\x64\x73");
+    return env->ThrowRangeError("Offset is out of bounds");
 
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[2], ts_obj_length - offset,
                                           &max_length));
@@ -918,9 +922,9 @@ void CompareOffset(const FunctionCallbackInfo<Value> &args) {
   THROW_AND_RETURN_IF_OOB(ParseArrayIndex(args[5], ts_obj_length, &source_end));
 
   if (source_start > ts_obj_length)
-    return env->ThrowRangeError("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78");
+    return env->ThrowRangeError("out of range index");
   if (target_start > target_length)
-    return env->ThrowRangeError("\x6f\x75\x74\x20\x6f\x66\x20\x72\x61\x6e\x67\x65\x20\x69\x6e\x64\x65\x78");
+    return env->ThrowRangeError("out of range index");
 
   CHECK_LE(source_start, source_end);
   CHECK_LE(target_start, target_end);
@@ -1290,11 +1294,11 @@ void Initialize(Local<Object> target,
   env->SetMethod(target, "\x73\x77\x61\x70\x36\x34", Swap64);
 
   target->Set(env->context(),
-              FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x4d\x61\x78\x4c\x65\x6e\x67\x74\x68"),
+              FIXED_ONE_BYTE_STRING(env->isolate(), "kMaxLength"),
               Integer::NewFromUnsigned(env->isolate(), kMaxLength)).FromJust();
 
   target->Set(env->context(),
-              FIXED_ONE_BYTE_STRING(env->isolate(), "\x6b\x53\x74\x72\x69\x6e\x67\x4d\x61\x78\x4c\x65\x6e\x67\x74\x68"),
+              FIXED_ONE_BYTE_STRING(env->isolate(), "kStringMaxLength"),
               Integer::New(env->isolate(), String::kMaxLength)).FromJust();
 }
 

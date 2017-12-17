@@ -216,7 +216,7 @@ void JSStream::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x4a\x53\x53\x74\x72\x65\x61\x6d"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "JSStream"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
   env->SetProtoMethod(t, "\x64\x6f\x41\x6c\x6c\x6f\x63", DoAlloc);
@@ -228,7 +228,7 @@ void JSStream::Initialize(Local<Object> target,
   env->SetProtoMethod(t, "\x65\x6d\x69\x74\x45\x4f\x46", EmitEOF);
 
   StreamBase::AddMethods<JSStream>(env, t, StreamBase::kFlagHasWritev);
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x4a\x53\x53\x74\x72\x65\x61\x6d"),
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "JSStream"),
               t->GetFunction());
   env->set_jsstream_constructor_template(t);
 }

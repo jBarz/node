@@ -154,7 +154,7 @@ static void ToUnicode(const FunctionCallbackInfo<Value>& args) {
   int32_t len = ToUnicode(&buf, *val, val.length());
 
   if (len < 0) {
-    return env->ThrowError("\x43\x61\x6e\x6e\x6f\x74\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x6e\x61\x6d\x65\x20\x74\x6f\x20\x55\x6e\x69\x63\x6f\x64\x65");
+    return env->ThrowError("Cannot convert name to Unicode");
   }
 
   args.GetReturnValue().Set(
@@ -173,7 +173,7 @@ static void ToASCII(const FunctionCallbackInfo<Value>& args) {
   int32_t len = ToASCII(&buf, *val, val.length());
 
   if (len < 0) {
-    return env->ThrowError("\x43\x61\x6e\x6e\x6f\x74\x20\x63\x6f\x6e\x76\x65\x72\x74\x20\x6e\x61\x6d\x65\x20\x74\x6f\x20\x41\x53\x43\x49\x49");
+    return env->ThrowError("Cannot convert name to ASCII");
   }
 
   args.GetReturnValue().Set(

@@ -172,7 +172,12 @@ int StreamBase::Writev(const FunctionCallbackInfo<Value>& args) {
   req_wrap_obj->Set(env->bytes_string(), Number::New(env->isolate(), bytes));
   const char* msg = Error();
   if (msg != nullptr) {
-    req_wrap_obj->Set(env->error_string(), OneByteString(env->isolate(), msg));
+    std::vector<char> ebcdic(strlen(msg) + 1);
+    std::transform(msg, msg + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
+    req_wrap_obj->Set(env->error_string(), OneByteString(env->isolate(), &ebcdic[0]));
     ClearError();
   }
 
@@ -191,7 +196,7 @@ int StreamBase::WriteBuffer(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
 
   if (!args[1]->IsUint8Array()) {
-    env->ThrowTypeError(u8"Second argument must be a buffer");
+    env->ThrowTypeError("Second argument must be a buffer");
     return 0;
   }
 
@@ -227,7 +232,12 @@ int StreamBase::WriteBuffer(const FunctionCallbackInfo<Value>& args) {
  done:
   const char* msg = Error();
   if (msg != nullptr) {
-    req_wrap_obj->Set(env->error_string(), OneByteString(env->isolate(), msg));
+    std::vector<char> ebcdic(strlen(msg) + 1);
+    std::transform(msg, msg + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
+    req_wrap_obj->Set(env->error_string(), OneByteString(env->isolate(), &ebcdic[0]));
     ClearError();
   }
   req_wrap_obj->Set(env->bytes_string(),
@@ -346,7 +356,12 @@ int StreamBase::WriteString(const FunctionCallbackInfo<Value>& args) {
  done:
   const char* msg = Error();
   if (msg != nullptr) {
-    req_wrap_obj->Set(env->error_string(), OneByteString(env->isolate(), msg));
+    std::vector<char> ebcdic(strlen(msg) + 1);
+    std::transform(msg, msg + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
+    req_wrap_obj->Set(env->error_string(), OneByteString(env->isolate(), &ebcdic[0]));
     ClearError();
   }
   req_wrap_obj->Set(env->bytes_string(),
@@ -379,7 +394,12 @@ void StreamBase::AfterWrite(WriteWrap* req_wrap, int status) {
 
   const char* msg = wrap->Error();
   if (msg != nullptr) {
-    argv[3] = OneByteString(env->isolate(), msg);
+    std::vector<char> ebcdic(strlen(msg) + 1);
+    std::transform(msg, msg + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
+    argv[3] = OneByteString(env->isolate(), &ebcdic[0]);
     wrap->ClearError();
   }
 

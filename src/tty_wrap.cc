@@ -26,7 +26,7 @@ void TTYWrap::Initialize(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x54\x59"));
+  t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TTY"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
   env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
@@ -41,7 +41,7 @@ void TTYWrap::Initialize(Local<Object> target,
   env->SetMethod(target, "\x69\x73\x54\x54\x59", IsTTY);
   env->SetMethod(target, "\x67\x75\x65\x73\x73\x48\x61\x6e\x64\x6c\x65\x54\x79\x70\x65", GuessHandleType);
 
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "\x54\x54\x59"), t->GetFunction());
+  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TTY"), t->GetFunction());
   env->set_tty_constructor_template(t);
 }
 
@@ -60,12 +60,12 @@ void TTYWrap::GuessHandleType(const FunctionCallbackInfo<Value>& args) {
   const char* type = nullptr;
 
   switch (t) {
-  case UV_TCP: type = "\x54\x43\x50"; break;
-  case UV_TTY: type = "\x54\x54\x59"; break;
-  case UV_UDP: type = "\x55\x44\x50"; break;
-  case UV_FILE: type = "\x46\x49\x4c\x45"; break;
-  case UV_NAMED_PIPE: type = "\x50\x49\x50\x45"; break;
-  case UV_UNKNOWN_HANDLE: type = "\x55\x4e\x4b\x4e\x4f\x57\x4e"; break;
+  case UV_TCP: type = "TCP"; break;
+  case UV_TTY: type = "TTY"; break;
+  case UV_UDP: type = "UDP"; break;
+  case UV_FILE: type = "FILE"; break;
+  case UV_NAMED_PIPE: type = "PIPE"; break;
+  case UV_UNKNOWN_HANDLE: type = "UNKNOWN"; break;
   default:
     ABORT();
   }

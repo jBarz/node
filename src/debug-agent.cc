@@ -287,7 +287,7 @@ void Agent::ChildSignalCb(uv_async_t* signal) {
     if (msg->data() == nullptr) {
       delete msg;
 
-      MakeCallback(isolate, api, "\x6f\x6e\x63\x6c\x6f\x73\x65", 0, nullptr);
+      MakeCallback(isolate, api, "onclose", 0, nullptr);
       break;
     }
 
@@ -307,7 +307,7 @@ void Agent::ChildSignalCb(uv_async_t* signal) {
     // Emit message
     MakeCallback(isolate,
                  api,
-                 "\x6f\x6e\x6d\x65\x73\x73\x61\x67\x65",
+                 "onmessage",
                  arraysize(argv),
                  argv);
     delete msg;
