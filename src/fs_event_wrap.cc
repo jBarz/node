@@ -68,8 +68,8 @@ void FSEventWrap::Initialize(Local<Object> target,
   t->InstanceTemplate()->SetInternalFieldCount(1);
   t->SetClassName(fsevent_string);
 
-  env->SetProtoMethod(t, "\x73\x74\x61\x72\x74", Start);
-  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", Close);
+  env->SetProtoMethod(t, "start", Start);
+  env->SetProtoMethod(t, "close", Close);
 
   target->Set(fsevent_string, t->GetFunction());
 }

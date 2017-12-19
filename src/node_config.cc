@@ -3,6 +3,9 @@
 #include "env-inl.h"
 #include "util-inl.h"
 
+#ifdef __MVS__
+# include <unistd.h>
+#endif
 
 namespace node {
 
@@ -49,8 +52,13 @@ void InitConfig(Local<Object> target,
 
   if (!config_warning_file.empty()) {
     Local<String> name = OneByteString(env->isolate(), "warningFile");
+    std::vector<char> ebcdic(config_warning_file.size());
+    std::transform(config_warning_file.data(), config_warning_file.data() + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     Local<String> value = String::NewFromUtf8(env->isolate(),
-                                              config_warning_file.data(),
+                                              &ebcdic[0],
                                               v8::NewStringType::kNormal,
                                               config_warning_file.size())
                                                 .ToLocalChecked();

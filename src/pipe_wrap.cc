@@ -47,10 +47,10 @@ void PipeWrap::Initialize(Local<Object> target,
   t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Pipe"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
-  env->SetProtoMethod(t, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
-  env->SetProtoMethod(t, "\x72\x65\x66", HandleWrap::Ref);
-  env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
+  env->SetProtoMethod(t, "close", HandleWrap::Close);
+  env->SetProtoMethod(t, "unref", HandleWrap::Unref);
+  env->SetProtoMethod(t, "ref", HandleWrap::Ref);
+  env->SetProtoMethod(t, "hasRef", HandleWrap::HasRef);
 
 #ifdef _WIN32
   StreamWrap::AddMethods(env, t);
@@ -58,13 +58,13 @@ void PipeWrap::Initialize(Local<Object> target,
   StreamWrap::AddMethods(env, t, StreamBase::kFlagHasWritev);
 #endif
 
-  env->SetProtoMethod(t, "\x62\x69\x6e\x64", Bind);
-  env->SetProtoMethod(t, "\x6c\x69\x73\x74\x65\x6e", Listen);
-  env->SetProtoMethod(t, "\x63\x6f\x6e\x6e\x65\x63\x74", Connect);
-  env->SetProtoMethod(t, "\x6f\x70\x65\x6e", Open);
+  env->SetProtoMethod(t, "bind", Bind);
+  env->SetProtoMethod(t, "listen", Listen);
+  env->SetProtoMethod(t, "connect", Connect);
+  env->SetProtoMethod(t, "open", Open);
 
 #ifdef _WIN32
-  env->SetProtoMethod(t, "\x73\x65\x74\x50\x65\x6e\x64\x69\x6e\x67\x49\x6e\x73\x74\x61\x6e\x63\x65\x73", SetPendingInstances);
+  env->SetProtoMethod(t, "setPendingInstances", SetPendingInstances);
 #endif
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Pipe"), t->GetFunction());

@@ -157,9 +157,14 @@ static void ToUnicode(const FunctionCallbackInfo<Value>& args) {
     return env->ThrowError("Cannot convert name to Unicode");
   }
 
+  std::vector<char> ebcdic(len);
+  std::transform(*buf, *buf + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+    __a2e_l(&c, 1);
+    return c;
+  });
   args.GetReturnValue().Set(
       String::NewFromUtf8(env->isolate(),
-                          *buf,
+                          &ebcdic[0],
                           v8::NewStringType::kNormal,
                           len).ToLocalChecked());
 }
@@ -176,9 +181,14 @@ static void ToASCII(const FunctionCallbackInfo<Value>& args) {
     return env->ThrowError("Cannot convert name to ASCII");
   }
 
+  std::vector<char> ebcdic(len);
+  std::transform(*buf, *buf + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+    __a2e_l(&c, 1);
+    return c;
+  });
   args.GetReturnValue().Set(
       String::NewFromUtf8(env->isolate(),
-                          *buf,
+                          &ebcdic[0],
                           v8::NewStringType::kNormal,
                           len).ToLocalChecked());
 }
@@ -188,8 +198,8 @@ void Init(Local<Object> target,
           Local<Context> context,
           void* priv) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, "\x74\x6f\x55\x6e\x69\x63\x6f\x64\x65", ToUnicode);
-  env->SetMethod(target, "\x74\x6f\x41\x53\x43\x49\x49", ToASCII);
+  env->SetMethod(target, "toUnicode", ToUnicode);
+  env->SetMethod(target, "toASCII", ToASCII);
 }
 
 }  // namespace i18n

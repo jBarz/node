@@ -86,25 +86,25 @@ void UDPWrap::Initialize(Local<Object> target,
                                       v8::DEFAULT,
                                       attributes);
 
-  env->SetProtoMethod(t, "\x62\x69\x6e\x64", Bind);
-  env->SetProtoMethod(t, "\x73\x65\x6e\x64", Send);
-  env->SetProtoMethod(t, "\x62\x69\x6e\x64\x36", Bind6);
-  env->SetProtoMethod(t, "\x73\x65\x6e\x64\x36", Send6);
-  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", Close);
-  env->SetProtoMethod(t, "\x72\x65\x63\x76\x53\x74\x61\x72\x74", RecvStart);
-  env->SetProtoMethod(t, "\x72\x65\x63\x76\x53\x74\x6f\x70", RecvStop);
-  env->SetProtoMethod(t, "\x67\x65\x74\x73\x6f\x63\x6b\x6e\x61\x6d\x65",
+  env->SetProtoMethod(t, "bind", Bind);
+  env->SetProtoMethod(t, "send", Send);
+  env->SetProtoMethod(t, "bind6", Bind6);
+  env->SetProtoMethod(t, "send6", Send6);
+  env->SetProtoMethod(t, "close", Close);
+  env->SetProtoMethod(t, "recvStart", RecvStart);
+  env->SetProtoMethod(t, "recvStop", RecvStop);
+  env->SetProtoMethod(t, "getsockname",
                       GetSockOrPeerName<UDPWrap, uv_udp_getsockname>);
-  env->SetProtoMethod(t, "\x61\x64\x64\x4d\x65\x6d\x62\x65\x72\x73\x68\x69\x70", AddMembership);
-  env->SetProtoMethod(t, "\x64\x72\x6f\x70\x4d\x65\x6d\x62\x65\x72\x73\x68\x69\x70", DropMembership);
-  env->SetProtoMethod(t, "\x73\x65\x74\x4d\x75\x6c\x74\x69\x63\x61\x73\x74\x54\x54\x4c", SetMulticastTTL);
-  env->SetProtoMethod(t, "\x73\x65\x74\x4d\x75\x6c\x74\x69\x63\x61\x73\x74\x4c\x6f\x6f\x70\x62\x61\x63\x6b", SetMulticastLoopback);
-  env->SetProtoMethod(t, "\x73\x65\x74\x42\x72\x6f\x61\x64\x63\x61\x73\x74", SetBroadcast);
-  env->SetProtoMethod(t, "\x73\x65\x74\x54\x54\x4c", SetTTL);
+  env->SetProtoMethod(t, "addMembership", AddMembership);
+  env->SetProtoMethod(t, "dropMembership", DropMembership);
+  env->SetProtoMethod(t, "setMulticastTTL", SetMulticastTTL);
+  env->SetProtoMethod(t, "setMulticastLoopback", SetMulticastLoopback);
+  env->SetProtoMethod(t, "setBroadcast", SetBroadcast);
+  env->SetProtoMethod(t, "setTTL", SetTTL);
 
-  env->SetProtoMethod(t, "\x72\x65\x66", HandleWrap::Ref);
-  env->SetProtoMethod(t, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
-  env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
+  env->SetProtoMethod(t, "ref", HandleWrap::Ref);
+  env->SetProtoMethod(t, "unref", HandleWrap::Unref);
+  env->SetProtoMethod(t, "hasRef", HandleWrap::HasRef);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "UDP"), t->GetFunction());
   env->set_udp_constructor_function(t->GetFunction());

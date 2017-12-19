@@ -30,6 +30,9 @@
 
 #include <string.h>
 #include <algorithm>
+#ifdef __MVS__
+# include <unistd.h>
+#endif
 
 namespace node {
 namespace debugger {
@@ -211,23 +214,28 @@ void Agent::InitAdaptor(Environment* env) {
   // Create API adaptor
   Local<FunctionTemplate> t = FunctionTemplate::New(isolate);
   t->InstanceTemplate()->SetInternalFieldCount(1);
-  t->SetClassName(String::NewFromUtf8(isolate, "\x44\x65\x62\x75\x67\x41\x50\x49"));
+  t->SetClassName(String::NewFromUtf8(isolate, "DebugAPI"));
 
-  NODE_SET_PROTOTYPE_METHOD(t, "\x6e\x6f\x74\x69\x66\x79\x4c\x69\x73\x74\x65\x6e", NotifyListen);
-  NODE_SET_PROTOTYPE_METHOD(t, "\x6e\x6f\x74\x69\x66\x79\x57\x61\x69\x74", NotifyWait);
-  NODE_SET_PROTOTYPE_METHOD(t, "\x73\x65\x6e\x64\x43\x6f\x6d\x6d\x61\x6e\x64", SendCommand);
+  NODE_SET_PROTOTYPE_METHOD(t, "notifyListen", NotifyListen);
+  NODE_SET_PROTOTYPE_METHOD(t, "notifyWait", NotifyWait);
+  NODE_SET_PROTOTYPE_METHOD(t, "sendCommand", SendCommand);
 
   Local<Object> api =
       t->GetFunction()->NewInstance(env->context()).ToLocalChecked();
   api->SetAlignedPointerInInternalField(0, this);
 
-  api->Set(String::NewFromUtf8(isolate, "\x68\x6f\x73\x74",
+  std::vector<char> ebcdic(host_.size());
+  std::transform(host_.data(), host_.data() + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+    __a2e_l(&c, 1);
+    return c;
+  });
+  api->Set(String::NewFromUtf8(isolate, "host",
                                NewStringType::kNormal).ToLocalChecked(),
-           String::NewFromUtf8(isolate, host_.data(), NewStringType::kNormal,
+           String::NewFromUtf8(isolate, &ebcdic[0], NewStringType::kNormal,
                                host_.size()).ToLocalChecked());
-  api->Set(String::NewFromUtf8(isolate, "\x70\x6f\x72\x74"), Integer::New(isolate, port_));
+  api->Set(String::NewFromUtf8(isolate, "port"), Integer::New(isolate, port_));
 
-  env->process_object()->Set(String::NewFromUtf8(isolate, "\x5f\x64\x65\x62\x75\x67\x41\x50\x49"), api);
+  env->process_object()->Set(String::NewFromUtf8(isolate, "_debugAPI"), api);
   api_.Reset(env->isolate(), api);
 }
 

@@ -240,9 +240,9 @@ class ContextifyContext {
     function_template->InstanceTemplate()->SetInternalFieldCount(1);
     env->set_script_data_constructor_function(function_template->GetFunction());
 
-    env->SetMethod(target, "\x72\x75\x6e\x49\x6e\x44\x65\x62\x75\x67\x43\x6f\x6e\x74\x65\x78\x74", RunInDebugContext);
-    env->SetMethod(target, "\x6d\x61\x6b\x65\x43\x6f\x6e\x74\x65\x78\x74", MakeContext);
-    env->SetMethod(target, "\x69\x73\x43\x6f\x6e\x74\x65\x78\x74", IsContext);
+    env->SetMethod(target, "runInDebugContext", RunInDebugContext);
+    env->SetMethod(target, "makeContext", MakeContext);
+    env->SetMethod(target, "isContext", IsContext);
   }
 
 
@@ -472,8 +472,8 @@ class ContextifyScript : public BaseObject {
     Local<FunctionTemplate> script_tmpl = env->NewFunctionTemplate(New);
     script_tmpl->InstanceTemplate()->SetInternalFieldCount(1);
     script_tmpl->SetClassName(class_name);
-    env->SetProtoMethod(script_tmpl, "\x72\x75\x6e\x49\x6e\x43\x6f\x6e\x74\x65\x78\x74", RunInContext);
-    env->SetProtoMethod(script_tmpl, "\x72\x75\x6e\x49\x6e\x54\x68\x69\x73\x43\x6f\x6e\x74\x65\x78\x74", RunInThisContext);
+    env->SetProtoMethod(script_tmpl, "runInContext", RunInContext);
+    env->SetProtoMethod(script_tmpl, "runInThisContext", RunInThisContext);
 
     target->Set(class_name, script_tmpl->GetFunction());
     env->set_script_context_constructor_template(script_tmpl);

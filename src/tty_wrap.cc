@@ -29,17 +29,17 @@ void TTYWrap::Initialize(Local<Object> target,
   t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TTY"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
-  env->SetProtoMethod(t, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
-  env->SetProtoMethod(t, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
+  env->SetProtoMethod(t, "close", HandleWrap::Close);
+  env->SetProtoMethod(t, "unref", HandleWrap::Unref);
+  env->SetProtoMethod(t, "hasRef", HandleWrap::HasRef);
 
   StreamWrap::AddMethods(env, t, StreamBase::kFlagNoShutdown);
 
-  env->SetProtoMethod(t, "\x67\x65\x74\x57\x69\x6e\x64\x6f\x77\x53\x69\x7a\x65", TTYWrap::GetWindowSize);
-  env->SetProtoMethod(t, "\x73\x65\x74\x52\x61\x77\x4d\x6f\x64\x65", SetRawMode);
+  env->SetProtoMethod(t, "getWindowSize", TTYWrap::GetWindowSize);
+  env->SetProtoMethod(t, "setRawMode", SetRawMode);
 
-  env->SetMethod(target, "\x69\x73\x54\x54\x59", IsTTY);
-  env->SetMethod(target, "\x67\x75\x65\x73\x73\x48\x61\x6e\x64\x6c\x65\x54\x79\x70\x65", GuessHandleType);
+  env->SetMethod(target, "isTTY", IsTTY);
+  env->SetMethod(target, "guessHandleType", GuessHandleType);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "TTY"), t->GetFunction());
   env->set_tty_constructor_template(t);

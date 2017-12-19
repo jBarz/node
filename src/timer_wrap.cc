@@ -31,15 +31,15 @@ class TimerWrap : public HandleWrap {
     constructor->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kOnTimeout"),
                      Integer::New(env->isolate(), kOnTimeout));
 
-    env->SetTemplateMethod(constructor, "\x6e\x6f\x77", Now);
+    env->SetTemplateMethod(constructor, "now", Now);
 
-    env->SetProtoMethod(constructor, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
-    env->SetProtoMethod(constructor, "\x72\x65\x66", HandleWrap::Ref);
-    env->SetProtoMethod(constructor, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
-    env->SetProtoMethod(constructor, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
+    env->SetProtoMethod(constructor, "close", HandleWrap::Close);
+    env->SetProtoMethod(constructor, "ref", HandleWrap::Ref);
+    env->SetProtoMethod(constructor, "unref", HandleWrap::Unref);
+    env->SetProtoMethod(constructor, "hasRef", HandleWrap::HasRef);
 
-    env->SetProtoMethod(constructor, "\x73\x74\x61\x72\x74", Start);
-    env->SetProtoMethod(constructor, "\x73\x74\x6f\x70", Stop);
+    env->SetProtoMethod(constructor, "start", Start);
+    env->SetProtoMethod(constructor, "stop", Stop);
 
     target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Timer"),
                 constructor->GetFunction());

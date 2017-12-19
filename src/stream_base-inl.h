@@ -58,26 +58,26 @@ void StreamBase::AddMethods(Environment* env,
                                       attributes,
                                       signature);
 
-  env->SetProtoMethod(t, "\x72\x65\x61\x64\x53\x74\x61\x72\x74", JSMethod<Base, &StreamBase::ReadStart>);
-  env->SetProtoMethod(t, "\x72\x65\x61\x64\x53\x74\x6f\x70", JSMethod<Base, &StreamBase::ReadStop>);
+  env->SetProtoMethod(t, "readStart", JSMethod<Base, &StreamBase::ReadStart>);
+  env->SetProtoMethod(t, "readStop", JSMethod<Base, &StreamBase::ReadStop>);
   if ((flags & kFlagNoShutdown) == 0)
-    env->SetProtoMethod(t, "\x73\x68\x75\x74\x64\x6f\x77\x6e", JSMethod<Base, &StreamBase::Shutdown>);
+    env->SetProtoMethod(t, "shutdown", JSMethod<Base, &StreamBase::Shutdown>);
   if ((flags & kFlagHasWritev) != 0)
-    env->SetProtoMethod(t, "\x77\x72\x69\x74\x65\x76", JSMethod<Base, &StreamBase::Writev>);
+    env->SetProtoMethod(t, "writev", JSMethod<Base, &StreamBase::Writev>);
   env->SetProtoMethod(t,
-                      "\x77\x72\x69\x74\x65\x42\x75\x66\x66\x65\x72",
+                      "writeBuffer",
                       JSMethod<Base, &StreamBase::WriteBuffer>);
   env->SetProtoMethod(t,
-                      "\x77\x72\x69\x74\x65\x41\x73\x63\x69\x69\x53\x74\x72\x69\x6e\x67",
+                      "writeAsciiString",
                       JSMethod<Base, &StreamBase::WriteString<ASCII> >);
   env->SetProtoMethod(t,
-                      "\x77\x72\x69\x74\x65\x55\x74\x66\x38\x53\x74\x72\x69\x6e\x67",
+                      "writeUtf8String",
                       JSMethod<Base, &StreamBase::WriteString<UTF8> >);
   env->SetProtoMethod(t,
-                      "\x77\x72\x69\x74\x65\x55\x63\x73\x32\x53\x74\x72\x69\x6e\x67",
+                      "writeUcs2String",
                       JSMethod<Base, &StreamBase::WriteString<UCS2> >);
   env->SetProtoMethod(t,
-                      "\x77\x72\x69\x74\x65\x4c\x61\x74\x69\x6e\x31\x53\x74\x72\x69\x6e\x67",
+                      "writeLatin1String",
                       JSMethod<Base, &StreamBase::WriteString<LATIN1> >);
 }
 

@@ -669,12 +669,12 @@ void InitZlib(Local<Object> target,
 
   z->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(z, "\x77\x72\x69\x74\x65", ZCtx::Write<true>);
-  env->SetProtoMethod(z, "\x77\x72\x69\x74\x65\x53\x79\x6e\x63", ZCtx::Write<false>);
-  env->SetProtoMethod(z, "\x69\x6e\x69\x74", ZCtx::Init);
-  env->SetProtoMethod(z, "\x63\x6c\x6f\x73\x65", ZCtx::Close);
-  env->SetProtoMethod(z, "\x70\x61\x72\x61\x6d\x73", ZCtx::Params);
-  env->SetProtoMethod(z, "\x72\x65\x73\x65\x74", ZCtx::Reset);
+  env->SetProtoMethod(z, "write", ZCtx::Write<true>);
+  env->SetProtoMethod(z, "writeSync", ZCtx::Write<false>);
+  env->SetProtoMethod(z, "init", ZCtx::Init);
+  env->SetProtoMethod(z, "close", ZCtx::Close);
+  env->SetProtoMethod(z, "params", ZCtx::Params);
+  env->SetProtoMethod(z, "reset", ZCtx::Reset);
 
   z->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Zlib"));
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Zlib"), z->GetFunction());

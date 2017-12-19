@@ -1499,27 +1499,27 @@ static void Initialize(Local<Object> target,
       CaresTimerClose,
       nullptr);
 
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x41", Query<QueryAWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x41\x61\x61\x61", Query<QueryAaaaWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x43\x6e\x61\x6d\x65", Query<QueryCnameWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x4d\x78", Query<QueryMxWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x4e\x73", Query<QueryNsWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x54\x78\x74", Query<QueryTxtWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x53\x72\x76", Query<QuerySrvWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x50\x74\x72", Query<QueryPtrWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x4e\x61\x70\x74\x72", Query<QueryNaptrWrap>);
-  env->SetMethod(target, "\x71\x75\x65\x72\x79\x53\x6f\x61", Query<QuerySoaWrap>);
-  env->SetMethod(target, "\x67\x65\x74\x48\x6f\x73\x74\x42\x79\x41\x64\x64\x72", Query<GetHostByAddrWrap>);
+  env->SetMethod(target, "queryA", Query<QueryAWrap>);
+  env->SetMethod(target, "queryAaaa", Query<QueryAaaaWrap>);
+  env->SetMethod(target, "queryCname", Query<QueryCnameWrap>);
+  env->SetMethod(target, "queryMx", Query<QueryMxWrap>);
+  env->SetMethod(target, "queryNs", Query<QueryNsWrap>);
+  env->SetMethod(target, "queryTxt", Query<QueryTxtWrap>);
+  env->SetMethod(target, "querySrv", Query<QuerySrvWrap>);
+  env->SetMethod(target, "queryPtr", Query<QueryPtrWrap>);
+  env->SetMethod(target, "queryNaptr", Query<QueryNaptrWrap>);
+  env->SetMethod(target, "querySoa", Query<QuerySoaWrap>);
+  env->SetMethod(target, "getHostByAddr", Query<GetHostByAddrWrap>);
 
-  env->SetMethod(target, "\x67\x65\x74\x61\x64\x64\x72\x69\x6e\x66\x6f", GetAddrInfo);
-  env->SetMethod(target, "\x67\x65\x74\x6e\x61\x6d\x65\x69\x6e\x66\x6f", GetNameInfo);
-  env->SetMethod(target, "\x69\x73\x49\x50", IsIP);
-  env->SetMethod(target, "\x69\x73\x49\x50\x76\x34", IsIPv4);
-  env->SetMethod(target, "\x69\x73\x49\x50\x76\x36", IsIPv6);
+  env->SetMethod(target, "getaddrinfo", GetAddrInfo);
+  env->SetMethod(target, "getnameinfo", GetNameInfo);
+  env->SetMethod(target, "isIP", IsIP);
+  env->SetMethod(target, "isIPv4", IsIPv4);
+  env->SetMethod(target, "isIPv6", IsIPv6);
 
-  env->SetMethod(target, "\x73\x74\x72\x65\x72\x72\x6f\x72", StrError);
-  env->SetMethod(target, "\x67\x65\x74\x53\x65\x72\x76\x65\x72\x73", GetServers);
-  env->SetMethod(target, "\x73\x65\x74\x53\x65\x72\x76\x65\x72\x73", SetServers);
+  env->SetMethod(target, "strerror", StrError);
+  env->SetMethod(target, "getServers", GetServers);
+  env->SetMethod(target, "setServers", SetServers);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "AF_INET"),
               Integer::New(env->isolate(), AF_INET));

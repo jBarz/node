@@ -539,7 +539,7 @@ void AgentImpl::InstallInspectorOnProcess() {
   v8::Local<v8::Object> process = env->process_object();
   v8::Local<v8::Object> inspector = v8::Object::New(env->isolate());
   READONLY_PROPERTY(process, "inspector", inspector);
-  env->SetMethod(inspector, "\x77\x72\x61\x70\x43\x6f\x6e\x73\x6f\x6c\x65\x43\x61\x6c\x6c", InspectorWrapConsoleCall);
+  env->SetMethod(inspector, "wrapConsoleCall", InspectorWrapConsoleCall);
 }
 
 String16 ToProtocolString(v8::Local<v8::Value> value) {

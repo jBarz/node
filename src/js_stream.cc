@@ -219,13 +219,13 @@ void JSStream::Initialize(Local<Object> target,
   t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "JSStream"));
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x64\x6f\x41\x6c\x6c\x6f\x63", DoAlloc);
-  env->SetProtoMethod(t, "\x64\x6f\x52\x65\x61\x64", DoRead);
-  env->SetProtoMethod(t, "\x64\x6f\x41\x66\x74\x65\x72\x57\x72\x69\x74\x65", DoAfterWrite);
-  env->SetProtoMethod(t, "\x66\x69\x6e\x69\x73\x68\x57\x72\x69\x74\x65", Finish<WriteWrap>);
-  env->SetProtoMethod(t, "\x66\x69\x6e\x69\x73\x68\x53\x68\x75\x74\x64\x6f\x77\x6e", Finish<ShutdownWrap>);
-  env->SetProtoMethod(t, "\x72\x65\x61\x64\x42\x75\x66\x66\x65\x72", ReadBuffer);
-  env->SetProtoMethod(t, "\x65\x6d\x69\x74\x45\x4f\x46", EmitEOF);
+  env->SetProtoMethod(t, "doAlloc", DoAlloc);
+  env->SetProtoMethod(t, "doRead", DoRead);
+  env->SetProtoMethod(t, "doAfterWrite", DoAfterWrite);
+  env->SetProtoMethod(t, "finishWrite", Finish<WriteWrap>);
+  env->SetProtoMethod(t, "finishShutdown", Finish<ShutdownWrap>);
+  env->SetProtoMethod(t, "readBuffer", ReadBuffer);
+  env->SetProtoMethod(t, "emitEOF", EmitEOF);
 
   StreamBase::AddMethods<JSStream>(env, t, StreamBase::kFlagHasWritev);
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "JSStream"),

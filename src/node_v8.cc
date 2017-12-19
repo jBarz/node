@@ -96,7 +96,7 @@ void InitializeV8Bindings(Local<Object> target,
   Environment* env = Environment::GetCurrent(context);
 
   env->SetMethod(target,
-                 "\x75\x70\x64\x61\x74\x65\x48\x65\x61\x70\x53\x74\x61\x74\x69\x73\x74\x69\x63\x73\x41\x72\x72\x61\x79\x42\x75\x66\x66\x65\x72",
+                 "updateHeapStatisticsArrayBuffer",
                  UpdateHeapStatisticsArrayBuffer);
 
   env->set_heap_statistics_buffer(new double[kHeapStatisticsPropertiesCount]);
@@ -131,8 +131,13 @@ void InitializeV8Bindings(Local<Object> target,
                                               number_of_heap_spaces);
   for (size_t i = 0; i < number_of_heap_spaces; i++) {
     env->isolate()->GetHeapSpaceStatistics(&s, i);
+    std::vector<char> ebcdic(strlen(s.space_name()) + 1);
+    std::transform(s.space_name(), s.space_name() + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     Local<String> heap_space_name = String::NewFromUtf8(env->isolate(),
-                                                        s.space_name(),
+                                                        &ebcdic[0],
                                                         NewStringType::kNormal)
                                         .ToLocalChecked();
     heap_spaces->Set(i, heap_space_name);
@@ -141,7 +146,7 @@ void InitializeV8Bindings(Local<Object> target,
               heap_spaces);
 
   env->SetMethod(target,
-                 "\x75\x70\x64\x61\x74\x65\x48\x65\x61\x70\x53\x70\x61\x63\x65\x53\x74\x61\x74\x69\x73\x74\x69\x63\x73\x41\x72\x72\x61\x79\x42\x75\x66\x66\x65\x72",
+                 "updateHeapSpaceStatisticsArrayBuffer",
                  UpdateHeapSpaceStatisticsBuffer);
 
   env->set_heap_space_statistics_buffer(
@@ -165,7 +170,7 @@ void InitializeV8Bindings(Local<Object> target,
   HEAP_SPACE_STATISTICS_PROPERTIES(V)
 #undef V
 
-  env->SetMethod(target, "\x73\x65\x74\x46\x6c\x61\x67\x73\x46\x72\x6f\x6d\x53\x74\x72\x69\x6e\x67", SetFlagsFromString);
+  env->SetMethod(target, "setFlagsFromString", SetFlagsFromString);
 }
 
 }  // namespace node

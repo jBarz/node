@@ -346,7 +346,7 @@ void SyncProcessRunner::Initialize(Local<Object> target,
                                    Local<Value> unused,
                                    Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, "\x73\x70\x61\x77\x6e", Spawn);
+  env->SetMethod(target, "spawn", Spawn);
 }
 
 

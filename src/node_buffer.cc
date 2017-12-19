@@ -1230,23 +1230,22 @@ void SetupBufferJS(const FunctionCallbackInfo<Value>& args) {
   Local<Object> proto = args[0].As<Object>();
   env->set_buffer_prototype_object(proto);
 
-  env->SetMethod(proto, "\x61\x73\x63\x69\x69\x53\x6c\x69\x63\x65", AsciiSlice);
-  env->SetMethod(proto, "\x62\x61\x73\x65\x36\x34\x53\x6c\x69\x63\x65", Base64Slice);
-  env->SetMethod(proto, "\x6c\x61\x74\x69\x6e\x31\x53\x6c\x69\x63\x65", Latin1Slice);
-  env->SetMethod(proto, "\x68\x65\x78\x53\x6c\x69\x63\x65", HexSlice);
-  env->SetMethod(proto, "\x75\x63\x73\x32\x53\x6c\x69\x63\x65", Ucs2Slice);
-  env->SetMethod(proto, "\x75\x74\x66\x38\x53\x6c\x69\x63\x65", Utf8Slice);
-  env->SetMethod(proto, "\x65\x62\x63\x64\x69\x63\x53\x6c\x69\x63\x65", EbcdicSlice);
+  env->SetMethod(proto, "asciiSlice", AsciiSlice);
+  env->SetMethod(proto, "base64Slice", Base64Slice);
+  env->SetMethod(proto, "latin1Slice", Latin1Slice);
+  env->SetMethod(proto, "hexSlice", HexSlice);
+  env->SetMethod(proto, "ucs2Slice", Ucs2Slice);
+  env->SetMethod(proto, "utf8Slice", Utf8Slice);
+  env->SetMethod(proto, "ebcdicSlice", EbcdicSlice);
 
-  env->SetMethod(proto, "\x61\x73\x63\x69\x69\x57\x72\x69\x74\x65", AsciiWrite);
-  env->SetMethod(proto, "\x62\x61\x73\x65\x36\x34\x57\x72\x69\x74\x65", Base64Write);
-  env->SetMethod(proto, "\x6c\x61\x74\x69\x6e\x31\x57\x72\x69\x74\x65", Latin1Write);
-  env->SetMethod(proto, "\x68\x65\x78\x57\x72\x69\x74\x65", HexWrite);
-  env->SetMethod(proto, "\x75\x63\x73\x32\x57\x72\x69\x74\x65", Ucs2Write);
-  env->SetMethod(proto, "\x75\x74\x66\x38\x57\x72\x69\x74\x65", Utf8Write);
-  env->SetMethod(proto, "\x65\x62\x63\x64\x69\x63\x57\x72\x69\x74\x65", EbcdicWrite);
+  env->SetMethod(proto, "asciiWrite", AsciiWrite);
+  env->SetMethod(proto, "base64Write", Base64Write);
+  env->SetMethod(proto, "latin1Write", Latin1Write);
+  env->SetMethod(proto, "hexWrite", HexWrite);
+  env->SetMethod(proto, "ucs2Write", Ucs2Write);
+  env->SetMethod(proto, "utf8Write", Utf8Write);
 
-  env->SetMethod(proto, "\x63\x6f\x70\x79", Copy);
+  env->SetMethod(proto, "copy", Copy);
 
   CHECK(args[1]->IsObject());
   Local<Object> bObj = args[1].As<Object>();
@@ -1258,7 +1257,7 @@ void SetupBufferJS(const FunctionCallbackInfo<Value>& args) {
   Local<ArrayBuffer> array_buffer =
       ArrayBuffer::New(env->isolate(), fields, sizeof(*fields) * fields_count);
 
-  bObj->Set(String::NewFromUtf8(env->isolate(), "\x66\x6c\x61\x67\x73"),
+  bObj->Set(String::NewFromUtf8(env->isolate(), "flags"),
             Uint32Array::New(array_buffer, 0, fields_count));
 }
 
@@ -1268,30 +1267,30 @@ void Initialize(Local<Object> target,
                 Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-  env->SetMethod(target, "\x73\x65\x74\x75\x70\x42\x75\x66\x66\x65\x72\x4a\x53", SetupBufferJS);
-  env->SetMethod(target, "\x63\x72\x65\x61\x74\x65\x46\x72\x6f\x6d\x53\x74\x72\x69\x6e\x67", CreateFromString);
+  env->SetMethod(target, "setupBufferJS", SetupBufferJS);
+  env->SetMethod(target, "createFromString", CreateFromString);
 
-  env->SetMethod(target, "\x62\x79\x74\x65\x4c\x65\x6e\x67\x74\x68\x55\x74\x66\x38", ByteLengthUtf8);
-  env->SetMethod(target, "\x63\x6f\x6d\x70\x61\x72\x65", Compare);
-  env->SetMethod(target, "\x63\x6f\x6d\x70\x61\x72\x65\x4f\x66\x66\x73\x65\x74", CompareOffset);
-  env->SetMethod(target, "\x66\x69\x6c\x6c", Fill);
-  env->SetMethod(target, "\x69\x6e\x64\x65\x78\x4f\x66\x42\x75\x66\x66\x65\x72", IndexOfBuffer);
-  env->SetMethod(target, "\x69\x6e\x64\x65\x78\x4f\x66\x4e\x75\x6d\x62\x65\x72", IndexOfNumber);
-  env->SetMethod(target, "\x69\x6e\x64\x65\x78\x4f\x66\x53\x74\x72\x69\x6e\x67", IndexOfString);
+  env->SetMethod(target, "byteLengthUtf8", ByteLengthUtf8);
+  env->SetMethod(target, "compare", Compare);
+  env->SetMethod(target, "compareOffset", CompareOffset);
+  env->SetMethod(target, "fill", Fill);
+  env->SetMethod(target, "indexOfBuffer", IndexOfBuffer);
+  env->SetMethod(target, "indexOfNumber", IndexOfNumber);
+  env->SetMethod(target, "indexOfString", IndexOfString);
 
-  env->SetMethod(target, "\x72\x65\x61\x64\x44\x6f\x75\x62\x6c\x65\x42\x45", ReadDoubleBE);
-  env->SetMethod(target, "\x72\x65\x61\x64\x44\x6f\x75\x62\x6c\x65\x4c\x45", ReadDoubleLE);
-  env->SetMethod(target, "\x72\x65\x61\x64\x46\x6c\x6f\x61\x74\x42\x45", ReadFloatBE);
-  env->SetMethod(target, "\x72\x65\x61\x64\x46\x6c\x6f\x61\x74\x4c\x45", ReadFloatLE);
+  env->SetMethod(target, "readDoubleBE", ReadDoubleBE);
+  env->SetMethod(target, "readDoubleLE", ReadDoubleLE);
+  env->SetMethod(target, "readFloatBE", ReadFloatBE);
+  env->SetMethod(target, "readFloatLE", ReadFloatLE);
 
-  env->SetMethod(target, "\x77\x72\x69\x74\x65\x44\x6f\x75\x62\x6c\x65\x42\x45", WriteDoubleBE);
-  env->SetMethod(target, "\x77\x72\x69\x74\x65\x44\x6f\x75\x62\x6c\x65\x4c\x45", WriteDoubleLE);
-  env->SetMethod(target, "\x77\x72\x69\x74\x65\x46\x6c\x6f\x61\x74\x42\x45", WriteFloatBE);
-  env->SetMethod(target, "\x77\x72\x69\x74\x65\x46\x6c\x6f\x61\x74\x4c\x45", WriteFloatLE);
+  env->SetMethod(target, "writeDoubleBE", WriteDoubleBE);
+  env->SetMethod(target, "writeDoubleLE", WriteDoubleLE);
+  env->SetMethod(target, "writeFloatBE", WriteFloatBE);
+  env->SetMethod(target, "writeFloatLE", WriteFloatLE);
 
-  env->SetMethod(target, "\x73\x77\x61\x70\x31\x36", Swap16);
-  env->SetMethod(target, "\x73\x77\x61\x70\x33\x32", Swap32);
-  env->SetMethod(target, "\x73\x77\x61\x70\x36\x34", Swap64);
+  env->SetMethod(target, "swap16", Swap16);
+  env->SetMethod(target, "swap32", Swap32);
+  env->SetMethod(target, "swap64", Swap64);
 
   target->Set(env->context(),
               FIXED_ONE_BYTE_STRING(env->isolate(), "kMaxLength"),

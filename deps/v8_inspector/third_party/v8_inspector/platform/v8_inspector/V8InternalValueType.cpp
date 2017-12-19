@@ -12,20 +12,20 @@ namespace {
 
 v8::Local<v8::Private> internalSubtypePrivate(v8::Isolate* isolate)
 {
-    return v8::Private::ForApi(isolate, toV8StringInternalized(isolate, u8"V8InternalType#internalSubtype"));
+    return v8::Private::ForApi(isolate, toV8StringInternalized(isolate, "V8InternalType#internalSubtype"));
 }
 
 v8::Local<v8::String> subtypeForInternalType(v8::Isolate* isolate, V8InternalValueType type)
 {
     switch (type) {
     case V8InternalValueType::kEntry:
-        return toV8StringInternalized(isolate, u8"internal#entry");
+        return toV8StringInternalized(isolate, "internal#entry");
     case V8InternalValueType::kLocation:
-        return toV8StringInternalized(isolate, u8"internal#location");
+        return toV8StringInternalized(isolate, "internal#location");
     case V8InternalValueType::kScope:
-        return toV8StringInternalized(isolate, u8"internal#scope");
+        return toV8StringInternalized(isolate, "internal#scope");
     case V8InternalValueType::kScopeList:
-        return toV8StringInternalized(isolate, u8"internal#scopeList");
+        return toV8StringInternalized(isolate, "internal#scopeList");
     }
     NOTREACHED();
     return v8::Local<v8::String>();

@@ -76,7 +76,7 @@ StreamWrap::StreamWrap(Environment* env,
 void StreamWrap::AddMethods(Environment* env,
                             v8::Local<v8::FunctionTemplate> target,
                             int flags) {
-  env->SetProtoMethod(target, "\x73\x65\x74\x42\x6c\x6f\x63\x6b\x69\x6e\x67", SetBlocking);
+  env->SetProtoMethod(target, "setBlocking", SetBlocking);
   StreamBase::AddMethods<StreamWrap>(env, target, flags);
 }
 

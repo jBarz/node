@@ -784,15 +784,15 @@ void InitHttpParser(Local<Object> target,
 #undef V
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "methods"), methods);
 
-  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", Parser::Close);
-  env->SetProtoMethod(t, "\x65\x78\x65\x63\x75\x74\x65", Parser::Execute);
-  env->SetProtoMethod(t, "\x66\x69\x6e\x69\x73\x68", Parser::Finish);
-  env->SetProtoMethod(t, "\x72\x65\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65", Parser::Reinitialize);
-  env->SetProtoMethod(t, "\x70\x61\x75\x73\x65", Parser::Pause<true>);
-  env->SetProtoMethod(t, "\x72\x65\x73\x75\x6d\x65", Parser::Pause<false>);
-  env->SetProtoMethod(t, "\x63\x6f\x6e\x73\x75\x6d\x65", Parser::Consume);
-  env->SetProtoMethod(t, "\x75\x6e\x63\x6f\x6e\x73\x75\x6d\x65", Parser::Unconsume);
-  env->SetProtoMethod(t, "\x67\x65\x74\x43\x75\x72\x72\x65\x6e\x74\x42\x75\x66\x66\x65\x72", Parser::GetCurrentBuffer);
+  env->SetProtoMethod(t, "close", Parser::Close);
+  env->SetProtoMethod(t, "execute", Parser::Execute);
+  env->SetProtoMethod(t, "finish", Parser::Finish);
+  env->SetProtoMethod(t, "reinitialize", Parser::Reinitialize);
+  env->SetProtoMethod(t, "pause", Parser::Pause<true>);
+  env->SetProtoMethod(t, "resume", Parser::Pause<false>);
+  env->SetProtoMethod(t, "consume", Parser::Consume);
+  env->SetProtoMethod(t, "unconsume", Parser::Unconsume);
+  env->SetProtoMethod(t, "getCurrentBuffer", Parser::GetCurrentBuffer);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "HTTPParser"),
               t->GetFunction());

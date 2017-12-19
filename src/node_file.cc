@@ -601,9 +601,14 @@ static void InternalModuleReadFile(const FunctionCallbackInfo<Value>& args) {
     start = 3;  // Skip UTF-8 BOM.
   }
 
+  std::vector<char> ebcdic(chars.size() - start);
+  std::transform(&chars[start], &chars[start + ebcdic.size()], ebcdic.begin(), [](char c) -> char {
+    __a2e_l(&c, 1);
+    return c;
+  });
   Local<String> chars_string =
       String::NewFromUtf8(env->isolate(),
-                          &chars[start],
+                          &ebcdic[0],
                           String::kNormalString,
                           chars.size() - start);
   args.GetReturnValue().Set(chars_string);
@@ -1506,43 +1511,43 @@ void InitFs(Local<Object> target,
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "FSInitialize"),
               env->NewFunctionTemplate(FSInitialize)->GetFunction());
 
-  env->SetMethod(target, "\x61\x63\x63\x65\x73\x73", Access);
-  env->SetMethod(target, "\x63\x6c\x6f\x73\x65", Close);
-  env->SetMethod(target, "\x6f\x70\x65\x6e", Open);
-  env->SetMethod(target, "\x72\x65\x61\x64", Read);
-  env->SetMethod(target, "\x66\x64\x61\x74\x61\x73\x79\x6e\x63", Fdatasync);
-  env->SetMethod(target, "\x66\x73\x79\x6e\x63", Fsync);
-  env->SetMethod(target, "\x72\x65\x6e\x61\x6d\x65", Rename);
-  env->SetMethod(target, "\x66\x74\x72\x75\x6e\x63\x61\x74\x65", FTruncate);
-  env->SetMethod(target, "\x72\x6d\x64\x69\x72", RMDir);
-  env->SetMethod(target, "\x6d\x6b\x64\x69\x72", MKDir);
-  env->SetMethod(target, "\x72\x65\x61\x64\x64\x69\x72", ReadDir);
-  env->SetMethod(target, "\x69\x6e\x74\x65\x72\x6e\x61\x6c\x4d\x6f\x64\x75\x6c\x65\x52\x65\x61\x64\x46\x69\x6c\x65", InternalModuleReadFile);
-  env->SetMethod(target, "\x69\x6e\x74\x65\x72\x6e\x61\x6c\x4d\x6f\x64\x75\x6c\x65\x53\x74\x61\x74", InternalModuleStat);
-  env->SetMethod(target, "\x73\x74\x61\x74", Stat);
-  env->SetMethod(target, "\x6c\x73\x74\x61\x74", LStat);
-  env->SetMethod(target, "\x66\x73\x74\x61\x74", FStat);
-  env->SetMethod(target, "\x6c\x69\x6e\x6b", Link);
-  env->SetMethod(target, "\x73\x79\x6d\x6c\x69\x6e\x6b", Symlink);
-  env->SetMethod(target, "\x72\x65\x61\x64\x6c\x69\x6e\x6b", ReadLink);
-  env->SetMethod(target, "\x75\x6e\x6c\x69\x6e\x6b", Unlink);
-  env->SetMethod(target, "\x77\x72\x69\x74\x65\x42\x75\x66\x66\x65\x72", WriteBuffer);
-  env->SetMethod(target, "\x77\x72\x69\x74\x65\x42\x75\x66\x66\x65\x72\x73", WriteBuffers);
-  env->SetMethod(target, "\x77\x72\x69\x74\x65\x53\x74\x72\x69\x6e\x67", WriteString);
-  env->SetMethod(target, "\x72\x65\x61\x6c\x70\x61\x74\x68", RealPath);
+  env->SetMethod(target, "access", Access);
+  env->SetMethod(target, "close", Close);
+  env->SetMethod(target, "open", Open);
+  env->SetMethod(target, "read", Read);
+  env->SetMethod(target, "fdatasync", Fdatasync);
+  env->SetMethod(target, "fsync", Fsync);
+  env->SetMethod(target, "rename", Rename);
+  env->SetMethod(target, "ftruncate", FTruncate);
+  env->SetMethod(target, "rmdir", RMDir);
+  env->SetMethod(target, "mkdir", MKDir);
+  env->SetMethod(target, "readdir", ReadDir);
+  env->SetMethod(target, "internalModuleReadFile", InternalModuleReadFile);
+  env->SetMethod(target, "internalModuleStat", InternalModuleStat);
+  env->SetMethod(target, "stat", Stat);
+  env->SetMethod(target, "lstat", LStat);
+  env->SetMethod(target, "fstat", FStat);
+  env->SetMethod(target, "link", Link);
+  env->SetMethod(target, "symlink", Symlink);
+  env->SetMethod(target, "readlink", ReadLink);
+  env->SetMethod(target, "unlink", Unlink);
+  env->SetMethod(target, "writeBuffer", WriteBuffer);
+  env->SetMethod(target, "writeBuffers", WriteBuffers);
+  env->SetMethod(target, "writeString", WriteString);
+  env->SetMethod(target, "realpath", RealPath);
 
-  env->SetMethod(target, "\x63\x68\x6d\x6f\x64", Chmod);
-  env->SetMethod(target, "\x66\x63\x68\x6d\x6f\x64", FChmod);
+  env->SetMethod(target, "chmod", Chmod);
+  env->SetMethod(target, "fchmod", FChmod);
   // env->SetMethod(target, "lchmod", LChmod);
 
-  env->SetMethod(target, "\x63\x68\x6f\x77\x6e", Chown);
-  env->SetMethod(target, "\x66\x63\x68\x6f\x77\x6e", FChown);
+  env->SetMethod(target, "chown", Chown);
+  env->SetMethod(target, "fchown", FChown);
   // env->SetMethod(target, "lchown", LChown);
 
-  env->SetMethod(target, "\x75\x74\x69\x6d\x65\x73", UTimes);
-  env->SetMethod(target, "\x66\x75\x74\x69\x6d\x65\x73", FUTimes);
+  env->SetMethod(target, "utimes", UTimes);
+  env->SetMethod(target, "futimes", FUTimes);
 
-  env->SetMethod(target, "\x6d\x6b\x64\x74\x65\x6d\x70", Mkdtemp);
+  env->SetMethod(target, "mkdtemp", Mkdtemp);
 
   StatWatcher::Initialize(env, target);
 

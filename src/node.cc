@@ -770,7 +770,7 @@ static inline const char *errno_string(int errorno) {
 }
 
 const char *signo_string(int signo) {
-#define SIGNO_CASE(e)  case e: return USTR(#e;)
+#define SIGNO_CASE(e)  case e: return #e;
   switch (signo) {
 #ifdef SIGHUP
   SIGNO_CASE(SIGHUP);
@@ -1044,7 +1044,7 @@ static Local<String> StringFromPath(Isolate* isolate, const char* path) {
   }
 #endif
 
-  return String::NewFromUtf8(isolate, *E2A(path));
+  return String::NewFromUtf8(isolate, path);
 }
 
 
@@ -1341,7 +1341,7 @@ void SetupNextTick(const FunctionCallbackInfo<Value>& args) {
 
   env->set_tick_callback_function(args[0].As<Function>());
 
-  env->SetMethod(args[1].As<Object>(), "\x72\x75\x6e\x4d\x69\x63\x72\x6f\x74\x61\x73\x6b\x73", RunMicrotasks);
+  env->SetMethod(args[1].As<Object>(), "runMicrotasks", RunMicrotasks);
 
   // Do a little housekeeping.
   env->process_object()->Delete(
@@ -1812,10 +1812,6 @@ void AppendExceptionLine(Environment* env,
   arrow[off] = '\n';
   arrow[off + 1] = '\0';
 
-#ifdef __MVS__
-  __e2a_s(arrow);
-#endif
-  
   Local<String> arrow_str = String::NewFromUtf8(env->isolate(), arrow);
 
   const bool can_set_arrow = !arrow_str.IsEmpty() && !err_obj.IsEmpty();
@@ -1830,6 +1826,10 @@ void AppendExceptionLine(Environment* env,
     env->set_printed_error(true);
 
     uv_tty_reset_mode();
+#ifdef __MVS__
+  __e2a_s(arrow);
+#endif
+  
     PrintErrorString(u8"\n%s", arrow);
     return;
   }
@@ -2079,11 +2079,7 @@ static void Cwd(const FunctionCallbackInfo<Value>& args) {
   }
 
   Local<String> cwd = String::NewFromUtf8(env->isolate(),
-#ifdef __MVS__
-                                          *E2A(buf, cwd_len),
-#else
                                           buf,
-#endif
                                           String::kNormalString,
                                           cwd_len);
   args.GetReturnValue().Set(cwd);
@@ -3016,7 +3012,7 @@ static void LinkedBinding(const FunctionCallbackInfo<Value>& args) {
 
   Local<Object> module = Object::New(env->isolate());
   Local<Object> exports = Object::New(env->isolate());
-  Local<String> exports_prop = String::NewFromUtf8(env->isolate(), "\x65\x78\x70\x6f\x72\x74\x73");
+  Local<String> exports_prop = String::NewFromUtf8(env->isolate(), "exports");
   module->Set(exports_prop, exports);
 
   if (mod->nm_context_register_func != nullptr) {
@@ -3040,9 +3036,6 @@ static void ProcessTitleGetter(Local<Name> property,
                                const PropertyCallbackInfo<Value>& info) {
   char buffer[512];
   uv_get_process_title(buffer, sizeof(buffer));
-#ifdef __MVS__
-  __e2a_s(buffer);
-#endif
   info.GetReturnValue().Set(String::NewFromUtf8(info.GetIsolate(), buffer));
 }
 
@@ -3069,15 +3062,7 @@ static void EnvGetter(Local<Name> property,
 #endif
   const char* val = getenv(*key);
   if (val) {
-#ifdef __MVS__
-    char *utf8val = strdup(val);
-    __e2a_s(utf8val);
-    Local<String> vall = String::NewFromUtf8(isolate, utf8val);
-    free(utf8val);
-    return info.GetReturnValue().Set(vall);
-#else
     return info.GetReturnValue().Set(String::NewFromUtf8(isolate, val));
-#endif
   }
 #else  // _WIN32
   String::Value key(property);
@@ -3193,20 +3178,12 @@ static void EnvEnumerator(const PropertyCallbackInfo<Array>& info) {
 
   for (int i = 0; i < size; ++i) {
     const char* var = environ[i];
-#ifdef __MVS__
-    char * ascii_var = strdup(var);
-    __e2a_s(ascii_var);
-    var = ascii_var;
-#endif
-    const char* s = strchr(var, '\x3d');
+    const char* s = strchr(var, '=');
     const int length = s ? s - var : strlen(var);
     argv[idx] = String::NewFromUtf8(isolate,
                                     var,
                                     String::kNormalString,
                                     length);
-#ifdef __MVS__
-    free((void*)ascii_var);
-#endif
     if (++idx >= arraysize(argv)) {
       fn->Call(ctx, envarr, idx, argv).ToLocalChecked();
       idx = 0;
@@ -3634,14 +3611,24 @@ void SetupProcessObject(Environment* env,
   // process.argv
   Local<Array> arguments = Array::New(env->isolate(), argc);
   for (int i = 0; i < argc; ++i) {
-    arguments->Set(i, String::NewFromUtf8(env->isolate(), argv[i]));
+    std::vector<char> ebcdic(strlen(argv[i]) + 1);
+    std::transform(argv[i], argv[i] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
+    arguments->Set(i, String::NewFromUtf8(env->isolate(), &ebcdic[0]));
   }
   process->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "argv"), arguments);
 
   // process.execArgv
   Local<Array> exec_arguments = Array::New(env->isolate(), exec_argc);
   for (int i = 0; i < exec_argc; ++i) {
-    exec_arguments->Set(i, String::NewFromUtf8(env->isolate(), exec_argv[i]));
+    std::vector<char> ebcdic(strlen(exec_argv[i]) + 1);
+    std::transform(exec_argv[i], exec_argv[i] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
+    exec_arguments->Set(i, String::NewFromUtf8(env->isolate(), &ebcdic[0]));
   }
   process->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "execArgv"),
                exec_arguments);
@@ -3674,9 +3661,14 @@ void SetupProcessObject(Environment* env,
 
   // -e, --eval
   if (eval_string) {
+    std::vector<char> ebcdic(strlen(eval_string) + 1);
+    std::transform(eval_string, eval_string + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     READONLY_PROPERTY(process,
                       "_eval",
-                      String::NewFromUtf8(env->isolate(), eval_string));
+                      String::NewFromUtf8(env->isolate(), &ebcdic[0]));
   }
 
   // -p, --print
@@ -3698,8 +3690,13 @@ void SetupProcessObject(Environment* env,
   if (!preload_modules.empty()) {
     Local<Array> array = Array::New(env->isolate());
     for (unsigned int i = 0; i < preload_modules.size(); ++i) {
+      std::vector<char> ebcdic(strlen(preload_modules[i].c_str()) + 1);
+      std::transform(preload_modules[i].c_str(), preload_modules[i].c_str() + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+        __a2e_l(&c, 1);
+        return c;
+      });
       Local<String> module = String::NewFromUtf8(env->isolate(),
-                                                 preload_modules[i].c_str());
+                                                 &ebcdic[0]);
       array->Set(i, module);
     }
     READONLY_PROPERTY(process,
@@ -3763,14 +3760,16 @@ void SetupProcessObject(Environment* env,
   char* exec_path = new char[exec_path_len];
   Local<String> exec_path_value;
   if (uv_exepath(exec_path, &exec_path_len) == 0) {
-#ifdef __MVS__
-    __e2a_s(exec_path);
-#endif
     exec_path_value = String::NewFromUtf8(env->isolate(),
                                           exec_path,
                                           String::kNormalString,
                                           exec_path_len);
   } else {
+    std::vector<char> ebcdic(strlen(argv[0]) + 1);
+    std::transform(argv[0], argv[0] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     exec_path_value = String::NewFromUtf8(env->isolate(), argv[0]);
   }
   process->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "execPath"),
@@ -3786,58 +3785,58 @@ void SetupProcessObject(Environment* env,
 
   // define various internal methods
   env->SetMethod(process,
-                 "\x5f\x73\x74\x61\x72\x74\x50\x72\x6f\x66\x69\x6c\x65\x72\x49\x64\x6c\x65\x4e\x6f\x74\x69\x66\x69\x65\x72",
+                 "_startProfilerIdleNotifier",
                  StartProfilerIdleNotifier);
   env->SetMethod(process,
-                 "\x5f\x73\x74\x6f\x70\x50\x72\x6f\x66\x69\x6c\x65\x72\x49\x64\x6c\x65\x4e\x6f\x74\x69\x66\x69\x65\x72",
+                 "_stopProfilerIdleNotifier",
                  StopProfilerIdleNotifier);
-  env->SetMethod(process, "\x5f\x67\x65\x74\x41\x63\x74\x69\x76\x65\x52\x65\x71\x75\x65\x73\x74\x73", GetActiveRequests);
-  env->SetMethod(process, "\x5f\x67\x65\x74\x41\x63\x74\x69\x76\x65\x48\x61\x6e\x64\x6c\x65\x73", GetActiveHandles);
-  env->SetMethod(process, "\x72\x65\x61\x6c\x6c\x79\x45\x78\x69\x74", Exit);
-  env->SetMethod(process, "\x61\x62\x6f\x72\x74", Abort);
-  env->SetMethod(process, "\x63\x68\x64\x69\x72", Chdir);
-  env->SetMethod(process, "\x63\x77\x64", Cwd);
+  env->SetMethod(process, "_getActiveRequests", GetActiveRequests);
+  env->SetMethod(process, "_getActiveHandles", GetActiveHandles);
+  env->SetMethod(process, "reallyExit", Exit);
+  env->SetMethod(process, "abort", Abort);
+  env->SetMethod(process, "chdir", Chdir);
+  env->SetMethod(process, "cwd", Cwd);
 
-  env->SetMethod(process, "\x75\x6d\x61\x73\x6b", Umask);
+  env->SetMethod(process, "umask", Umask);
 
 #if defined(__POSIX__) && !defined(__ANDROID__)
-  env->SetMethod(process, "\x67\x65\x74\x75\x69\x64", GetUid);
-  env->SetMethod(process, "\x67\x65\x74\x65\x75\x69\x64", GetEUid);
-  env->SetMethod(process, "\x73\x65\x74\x75\x69\x64", SetUid);
-  env->SetMethod(process, "\x73\x65\x74\x65\x75\x69\x64", SetEUid);
+  env->SetMethod(process, "getuid", GetUid);
+  env->SetMethod(process, "geteuid", GetEUid);
+  env->SetMethod(process, "setuid", SetUid);
+  env->SetMethod(process, "seteuid", SetEUid);
 
-  env->SetMethod(process, "\x73\x65\x74\x67\x69\x64", SetGid);
-  env->SetMethod(process, "\x73\x65\x74\x65\x67\x69\x64", SetEGid);
-  env->SetMethod(process, "\x67\x65\x74\x67\x69\x64", GetGid);
-  env->SetMethod(process, "\x67\x65\x74\x65\x67\x69\x64", GetEGid);
+  env->SetMethod(process, "setgid", SetGid);
+  env->SetMethod(process, "setegid", SetEGid);
+  env->SetMethod(process, "getgid", GetGid);
+  env->SetMethod(process, "getegid", GetEGid);
 
-  env->SetMethod(process, "\x67\x65\x74\x67\x72\x6f\x75\x70\x73", GetGroups);
-  env->SetMethod(process, "\x73\x65\x74\x67\x72\x6f\x75\x70\x73", SetGroups);
-  env->SetMethod(process, "\x69\x6e\x69\x74\x67\x72\x6f\x75\x70\x73", InitGroups);
+  env->SetMethod(process, "getgroups", GetGroups);
+  env->SetMethod(process, "setgroups", SetGroups);
+  env->SetMethod(process, "initgroups", InitGroups);
 #endif  // __POSIX__ && !defined(__ANDROID__)
 
-  env->SetMethod(process, "\x5f\x6b\x69\x6c\x6c", Kill);
+  env->SetMethod(process, "_kill", Kill);
 
-  env->SetMethod(process, "\x5f\x64\x65\x62\x75\x67\x50\x72\x6f\x63\x65\x73\x73", DebugProcess);
-  env->SetMethod(process, "\x5f\x64\x65\x62\x75\x67\x50\x61\x75\x73\x65", DebugPause);
-  env->SetMethod(process, "\x5f\x64\x65\x62\x75\x67\x45\x6e\x64", DebugEnd);
+  env->SetMethod(process, "_debugProcess", DebugProcess);
+  env->SetMethod(process, "_debugPause", DebugPause);
+  env->SetMethod(process, "_debugEnd", DebugEnd);
 
-  env->SetMethod(process, "\x68\x72\x74\x69\x6d\x65", Hrtime);
+  env->SetMethod(process, "hrtime", Hrtime);
 
-  env->SetMethod(process, "\x63\x70\x75\x55\x73\x61\x67\x65", CPUUsage);
+  env->SetMethod(process, "cpuUsage", CPUUsage);
 
-  env->SetMethod(process, "\x64\x6c\x6f\x70\x65\x6e", DLOpen);
+  env->SetMethod(process, "dlopen", DLOpen);
 
-  env->SetMethod(process, "\x75\x70\x74\x69\x6d\x65", Uptime);
-  env->SetMethod(process, "\x6d\x65\x6d\x6f\x72\x79\x55\x73\x61\x67\x65", MemoryUsage);
+  env->SetMethod(process, "uptime", Uptime);
+  env->SetMethod(process, "memoryUsage", MemoryUsage);
 
-  env->SetMethod(process, "\x62\x69\x6e\x64\x69\x6e\x67", Binding);
-  env->SetMethod(process, "\x5f\x6c\x69\x6e\x6b\x65\x64\x42\x69\x6e\x64\x69\x6e\x67", LinkedBinding);
+  env->SetMethod(process, "binding", Binding);
+  env->SetMethod(process, "_linkedBinding", LinkedBinding);
 
-  env->SetMethod(process, "\x5f\x73\x65\x74\x75\x70\x50\x72\x6f\x63\x65\x73\x73\x4f\x62\x6a\x65\x63\x74", SetupProcessObject);
-  env->SetMethod(process, "\x5f\x73\x65\x74\x75\x70\x4e\x65\x78\x74\x54\x69\x63\x6b", SetupNextTick);
-  env->SetMethod(process, "\x5f\x73\x65\x74\x75\x70\x50\x72\x6f\x6d\x69\x73\x65\x73", SetupPromises);
-  env->SetMethod(process, "\x5f\x73\x65\x74\x75\x70\x44\x6f\x6d\x61\x69\x6e\x55\x73\x65", SetupDomainUse);
+  env->SetMethod(process, "_setupProcessObject", SetupProcessObject);
+  env->SetMethod(process, "_setupNextTick", SetupNextTick);
+  env->SetMethod(process, "_setupPromises", SetupPromises);
+  env->SetMethod(process, "_setupDomainUse", SetupDomainUse);
 
   // pre-set _events object for faster emit checks
   Local<Object> events_obj = Object::New(env->isolate());
@@ -3940,7 +3939,7 @@ void LoadEnvironment(Environment* env) {
   // thrown during process startup.
   try_catch.SetVerbose(true);
 
-  env->SetMethod(env->process_object(), "\x5f\x72\x61\x77\x44\x65\x62\x75\x67", RawDebug);
+  env->SetMethod(env->process_object(), "_rawDebug", RawDebug);
 
   // Expose the global object as a property on itself
   // (Allows you to set stuff on `global` from anywhere in JavaScript.)

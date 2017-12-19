@@ -658,16 +658,23 @@ Local<Value> StringBytes::Encode(Isolate* isolate,
 
     case EBCDIC:
       val = String::NewFromUtf8(isolate,
-                                *E2A(buf, buflen),
+                                buf,
                                 String::kNormalString,
                                 buflen);
       break;
 
     case UTF8:
-      val = String::NewFromUtf8(isolate,
-                                buf,
-                                String::kNormalString,
-                                buflen);
+      {
+        std::vector<char> ebcdic(buflen);
+        std::transform(buf, buf + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+          __a2e_l(&c, 1);
+          return c;
+        });
+        val = String::NewFromUtf8(isolate,
+                                  &ebcdic[0],
+                                  String::kNormalString,
+                                  buflen);
+      }
       break;
 
     case LATIN1:

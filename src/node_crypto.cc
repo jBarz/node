@@ -304,30 +304,30 @@ void SecureContext::Initialize(Environment* env, Local<Object> target) {
   t->InstanceTemplate()->SetInternalFieldCount(1);
   t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "SecureContext"));
 
-  env->SetProtoMethod(t, "\x69\x6e\x69\x74", SecureContext::Init);
-  env->SetProtoMethod(t, "\x73\x65\x74\x4b\x65\x79", SecureContext::SetKey);
-  env->SetProtoMethod(t, "\x73\x65\x74\x43\x65\x72\x74", SecureContext::SetCert);
-  env->SetProtoMethod(t, "\x61\x64\x64\x43\x41\x43\x65\x72\x74", SecureContext::AddCACert);
-  env->SetProtoMethod(t, "\x61\x64\x64\x43\x52\x4c", SecureContext::AddCRL);
-  env->SetProtoMethod(t, "\x61\x64\x64\x52\x6f\x6f\x74\x43\x65\x72\x74\x73", SecureContext::AddRootCerts);
-  env->SetProtoMethod(t, "\x73\x65\x74\x43\x69\x70\x68\x65\x72\x73", SecureContext::SetCiphers);
-  env->SetProtoMethod(t, "\x73\x65\x74\x45\x43\x44\x48\x43\x75\x72\x76\x65", SecureContext::SetECDHCurve);
-  env->SetProtoMethod(t, "\x73\x65\x74\x44\x48\x50\x61\x72\x61\x6d", SecureContext::SetDHParam);
-  env->SetProtoMethod(t, "\x73\x65\x74\x4f\x70\x74\x69\x6f\x6e\x73", SecureContext::SetOptions);
-  env->SetProtoMethod(t, "\x73\x65\x74\x53\x65\x73\x73\x69\x6f\x6e\x49\x64\x43\x6f\x6e\x74\x65\x78\x74",
+  env->SetProtoMethod(t, "init", SecureContext::Init);
+  env->SetProtoMethod(t, "setKey", SecureContext::SetKey);
+  env->SetProtoMethod(t, "setCert", SecureContext::SetCert);
+  env->SetProtoMethod(t, "addCACert", SecureContext::AddCACert);
+  env->SetProtoMethod(t, "addCRL", SecureContext::AddCRL);
+  env->SetProtoMethod(t, "addRootCerts", SecureContext::AddRootCerts);
+  env->SetProtoMethod(t, "setCiphers", SecureContext::SetCiphers);
+  env->SetProtoMethod(t, "setECDHCurve", SecureContext::SetECDHCurve);
+  env->SetProtoMethod(t, "setDHParam", SecureContext::SetDHParam);
+  env->SetProtoMethod(t, "setOptions", SecureContext::SetOptions);
+  env->SetProtoMethod(t, "setSessionIdContext",
                       SecureContext::SetSessionIdContext);
-  env->SetProtoMethod(t, "\x73\x65\x74\x53\x65\x73\x73\x69\x6f\x6e\x54\x69\x6d\x65\x6f\x75\x74",
+  env->SetProtoMethod(t, "setSessionTimeout",
                       SecureContext::SetSessionTimeout);
-  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", SecureContext::Close);
-  env->SetProtoMethod(t, "\x6c\x6f\x61\x64\x50\x4b\x43\x53\x31\x32", SecureContext::LoadPKCS12);
-  env->SetProtoMethod(t, "\x67\x65\x74\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x73", SecureContext::GetTicketKeys);
-  env->SetProtoMethod(t, "\x73\x65\x74\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x73", SecureContext::SetTicketKeys);
-  env->SetProtoMethod(t, "\x73\x65\x74\x46\x72\x65\x65\x4c\x69\x73\x74\x4c\x65\x6e\x67\x74\x68", SecureContext::SetFreeListLength);
+  env->SetProtoMethod(t, "close", SecureContext::Close);
+  env->SetProtoMethod(t, "loadPKCS12", SecureContext::LoadPKCS12);
+  env->SetProtoMethod(t, "getTicketKeys", SecureContext::GetTicketKeys);
+  env->SetProtoMethod(t, "setTicketKeys", SecureContext::SetTicketKeys);
+  env->SetProtoMethod(t, "setFreeListLength", SecureContext::SetFreeListLength);
   env->SetProtoMethod(t,
-                      "\x65\x6e\x61\x62\x6c\x65\x54\x69\x63\x6b\x65\x74\x4b\x65\x79\x43\x61\x6c\x6c\x62\x61\x63\x6b",
+                      "enableTicketKeyCallback",
                       SecureContext::EnableTicketKeyCallback);
-  env->SetProtoMethod(t, "\x67\x65\x74\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65", SecureContext::GetCertificate<true>);
-  env->SetProtoMethod(t, "\x67\x65\x74\x49\x73\x73\x75\x65\x72", SecureContext::GetCertificate<false>);
+  env->SetProtoMethod(t, "getCertificate", SecureContext::GetCertificate<true>);
+  env->SetProtoMethod(t, "getIssuer", SecureContext::GetCertificate<false>);
 
   t->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "kTicketKeyReturnIndex"),
          Integer::NewFromUnsigned(env->isolate(), kTicketKeyReturnIndex));
@@ -1331,39 +1331,39 @@ template <class Base>
 void SSLWrap<Base>::AddMethods(Environment* env, Local<FunctionTemplate> t) {
   HandleScope scope(env->isolate());
 
-  env->SetProtoMethod(t, "\x67\x65\x74\x50\x65\x65\x72\x43\x65\x72\x74\x69\x66\x69\x63\x61\x74\x65", GetPeerCertificate);
-  env->SetProtoMethod(t, "\x67\x65\x74\x53\x65\x73\x73\x69\x6f\x6e", GetSession);
-  env->SetProtoMethod(t, "\x73\x65\x74\x53\x65\x73\x73\x69\x6f\x6e", SetSession);
-  env->SetProtoMethod(t, "\x6c\x6f\x61\x64\x53\x65\x73\x73\x69\x6f\x6e", LoadSession);
-  env->SetProtoMethod(t, "\x69\x73\x53\x65\x73\x73\x69\x6f\x6e\x52\x65\x75\x73\x65\x64", IsSessionReused);
-  env->SetProtoMethod(t, "\x69\x73\x49\x6e\x69\x74\x46\x69\x6e\x69\x73\x68\x65\x64", IsInitFinished);
-  env->SetProtoMethod(t, "\x76\x65\x72\x69\x66\x79\x45\x72\x72\x6f\x72", VerifyError);
-  env->SetProtoMethod(t, "\x67\x65\x74\x43\x75\x72\x72\x65\x6e\x74\x43\x69\x70\x68\x65\x72", GetCurrentCipher);
-  env->SetProtoMethod(t, "\x65\x6e\x64\x50\x61\x72\x73\x65\x72", EndParser);
-  env->SetProtoMethod(t, "\x63\x65\x72\x74\x43\x62\x44\x6f\x6e\x65", CertCbDone);
-  env->SetProtoMethod(t, "\x72\x65\x6e\x65\x67\x6f\x74\x69\x61\x74\x65", Renegotiate);
-  env->SetProtoMethod(t, "\x73\x68\x75\x74\x64\x6f\x77\x6e\x53\x53\x4c", Shutdown);
-  env->SetProtoMethod(t, "\x67\x65\x74\x54\x4c\x53\x54\x69\x63\x6b\x65\x74", GetTLSTicket);
-  env->SetProtoMethod(t, "\x6e\x65\x77\x53\x65\x73\x73\x69\x6f\x6e\x44\x6f\x6e\x65", NewSessionDone);
-  env->SetProtoMethod(t, "\x73\x65\x74\x4f\x43\x53\x50\x52\x65\x73\x70\x6f\x6e\x73\x65", SetOCSPResponse);
-  env->SetProtoMethod(t, "\x72\x65\x71\x75\x65\x73\x74\x4f\x43\x53\x50", RequestOCSP);
-  env->SetProtoMethod(t, "\x67\x65\x74\x45\x70\x68\x65\x6d\x65\x72\x61\x6c\x4b\x65\x79\x49\x6e\x66\x6f", GetEphemeralKeyInfo);
-  env->SetProtoMethod(t, "\x67\x65\x74\x50\x72\x6f\x74\x6f\x63\x6f\x6c", GetProtocol);
+  env->SetProtoMethod(t, "getPeerCertificate", GetPeerCertificate);
+  env->SetProtoMethod(t, "getSession", GetSession);
+  env->SetProtoMethod(t, "setSession", SetSession);
+  env->SetProtoMethod(t, "loadSession", LoadSession);
+  env->SetProtoMethod(t, "isSessionReused", IsSessionReused);
+  env->SetProtoMethod(t, "isInitFinished", IsInitFinished);
+  env->SetProtoMethod(t, "verifyError", VerifyError);
+  env->SetProtoMethod(t, "getCurrentCipher", GetCurrentCipher);
+  env->SetProtoMethod(t, "endParser", EndParser);
+  env->SetProtoMethod(t, "certCbDone", CertCbDone);
+  env->SetProtoMethod(t, "renegotiate", Renegotiate);
+  env->SetProtoMethod(t, "shutdownSSL", Shutdown);
+  env->SetProtoMethod(t, "getTLSTicket", GetTLSTicket);
+  env->SetProtoMethod(t, "newSessionDone", NewSessionDone);
+  env->SetProtoMethod(t, "setOCSPResponse", SetOCSPResponse);
+  env->SetProtoMethod(t, "requestOCSP", RequestOCSP);
+  env->SetProtoMethod(t, "getEphemeralKeyInfo", GetEphemeralKeyInfo);
+  env->SetProtoMethod(t, "getProtocol", GetProtocol);
 
 #ifdef SSL_set_max_send_fragment
-  env->SetProtoMethod(t, "\x73\x65\x74\x4d\x61\x78\x53\x65\x6e\x64\x46\x72\x61\x67\x6d\x65\x6e\x74", SetMaxSendFragment);
+  env->SetProtoMethod(t, "setMaxSendFragment", SetMaxSendFragment);
 #endif  // SSL_set_max_send_fragment
 
 #ifndef OPENSSL_NO_NEXTPROTONEG
-  env->SetProtoMethod(t, "\x67\x65\x74\x4e\x65\x67\x6f\x74\x69\x61\x74\x65\x64\x50\x72\x6f\x74\x6f\x63\x6f\x6c", GetNegotiatedProto);
+  env->SetProtoMethod(t, "getNegotiatedProtocol", GetNegotiatedProto);
 #endif  // OPENSSL_NO_NEXTPROTONEG
 
 #ifndef OPENSSL_NO_NEXTPROTONEG
-  env->SetProtoMethod(t, "\x73\x65\x74\x4e\x50\x4e\x50\x72\x6f\x74\x6f\x63\x6f\x6c\x73", SetNPNProtocols);
+  env->SetProtoMethod(t, "setNPNProtocols", SetNPNProtocols);
 #endif
 
-  env->SetProtoMethod(t, "\x67\x65\x74\x41\x4c\x50\x4e\x4e\x65\x67\x6f\x74\x69\x61\x74\x65\x64\x50\x72\x6f\x74\x6f\x63\x6f\x6c", GetALPNNegotiatedProto);
-  env->SetProtoMethod(t, "\x73\x65\x74\x41\x4c\x50\x4e\x50\x72\x6f\x74\x6f\x63\x6f\x6c\x73", SetALPNProtocols);
+  env->SetProtoMethod(t, "getALPNNegotiatedProtocol", GetALPNNegotiatedProto);
+  env->SetProtoMethod(t, "setALPNProtocols", SetALPNProtocols);
 
   t->PrototypeTemplate()->SetAccessor(
       FIXED_ONE_BYTE_STRING(env->isolate(), "_external"),
@@ -1533,8 +1533,13 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
                          0,
                          X509_NAME_FLAGS) > 0) {
     BIO_get_mem_ptr(bio, &mem);
+    std::vector<char> ebcdic(mem->length);
+    std::transform(mem->data, mem->data + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     info->Set(env->subject_string(),
-              String::NewFromUtf8(env->isolate(), mem->data,
+              String::NewFromUtf8(env->isolate(), &ebcdic[0],
                                   String::kNormalString, mem->length));
   }
   (void) BIO_reset(bio);
@@ -1542,8 +1547,13 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
   X509_NAME* issuer_name = X509_get_issuer_name(cert);
   if (X509_NAME_print_ex(bio, issuer_name, 0, X509_NAME_FLAGS) > 0) {
     BIO_get_mem_ptr(bio, &mem);
+    std::vector<char> ebcdic(mem->length);
+    std::transform(mem->data, mem->data + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     info->Set(env->issuer_string(),
-              String::NewFromUtf8(env->isolate(), mem->data,
+              String::NewFromUtf8(env->isolate(), &ebcdic[0],
                                   String::kNormalString, mem->length));
   }
   (void) BIO_reset(bio);
@@ -1569,8 +1579,13 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
     }
 
     BIO_get_mem_ptr(bio, &mem);
+    std::vector<char> ebcdic(mem->length);
+    std::transform(mem->data, mem->data + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     info->Set(keys[i],
-              String::NewFromUtf8(env->isolate(), mem->data,
+              String::NewFromUtf8(env->isolate(), &ebcdic[0],
                                   String::kNormalString, mem->length));
 
     (void) BIO_reset(bio);
@@ -1584,8 +1599,13 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
   if (rsa != nullptr) {
     BN_print(bio, rsa->n);
     BIO_get_mem_ptr(bio, &mem);
+    std::vector<char> ebcdic(mem->length);
+    std::transform(mem->data, mem->data + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     info->Set(env->modulus_string(),
-              String::NewFromUtf8(env->isolate(), mem->data,
+              String::NewFromUtf8(env->isolate(), &ebcdic[0],
                                   String::kNormalString, mem->length));
     (void) BIO_reset(bio);
 
@@ -1598,8 +1618,13 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
       BIO_printf(bio, "\x30\x78\x25\x78\x25\x30\x38\x78", hi, lo);
     }
     BIO_get_mem_ptr(bio, &mem);
+    std::vector<char> ebcdic1(mem->length);
+    std::transform(mem->data, mem->data + ebcdic1.size(), ebcdic1.begin(), [](char c) -> char {
+      __a2e_l(&c, 1);
+      return c;
+    });
     info->Set(env->exponent_string(),
-              String::NewFromUtf8(env->isolate(), mem->data,
+              String::NewFromUtf8(env->isolate(), &ebcdic1[0],
                                   String::kNormalString, mem->length));
     (void) BIO_reset(bio);
   }
@@ -1615,15 +1640,25 @@ static Local<Object> X509ToObject(Environment* env, X509* cert) {
 
   ASN1_TIME_print(bio, X509_get_notBefore(cert));
   BIO_get_mem_ptr(bio, &mem);
+  std::vector<char> ebcdic(mem->length);
+  std::transform(mem->data, mem->data + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
+    __a2e_l(&c, 1);
+    return c;
+  });
   info->Set(env->valid_from_string(),
-            String::NewFromUtf8(env->isolate(), mem->data,
+            String::NewFromUtf8(env->isolate(), &ebcdic[0],
                                 String::kNormalString, mem->length));
   (void) BIO_reset(bio);
 
   ASN1_TIME_print(bio, X509_get_notAfter(cert));
   BIO_get_mem_ptr(bio, &mem);
+  std::vector<char> ebcdic2(mem->length);
+  std::transform(mem->data, mem->data + ebcdic2.size(), ebcdic2.begin(), [](char c) -> char {
+    __a2e_l(&c, 1);
+    return c;
+  });
   info->Set(env->valid_to_string(),
-            String::NewFromUtf8(env->isolate(), mem->data,
+            String::NewFromUtf8(env->isolate(), &ebcdic2[0],
                                 String::kNormalString, mem->length));
   BIO_free_all(bio);
 
@@ -2845,21 +2880,21 @@ void Connection::Initialize(Environment* env, Local<Object> target) {
   t->InstanceTemplate()->SetInternalFieldCount(1);
   t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Connection"));
 
-  env->SetProtoMethod(t, "\x65\x6e\x63\x49\x6e", Connection::EncIn);
-  env->SetProtoMethod(t, "\x63\x6c\x65\x61\x72\x4f\x75\x74", Connection::ClearOut);
-  env->SetProtoMethod(t, "\x63\x6c\x65\x61\x72\x49\x6e", Connection::ClearIn);
-  env->SetProtoMethod(t, "\x65\x6e\x63\x4f\x75\x74", Connection::EncOut);
-  env->SetProtoMethod(t, "\x63\x6c\x65\x61\x72\x50\x65\x6e\x64\x69\x6e\x67", Connection::ClearPending);
-  env->SetProtoMethod(t, "\x65\x6e\x63\x50\x65\x6e\x64\x69\x6e\x67", Connection::EncPending);
-  env->SetProtoMethod(t, "\x73\x74\x61\x72\x74", Connection::Start);
-  env->SetProtoMethod(t, "\x63\x6c\x6f\x73\x65", Connection::Close);
+  env->SetProtoMethod(t, "encIn", Connection::EncIn);
+  env->SetProtoMethod(t, "clearOut", Connection::ClearOut);
+  env->SetProtoMethod(t, "clearIn", Connection::ClearIn);
+  env->SetProtoMethod(t, "encOut", Connection::EncOut);
+  env->SetProtoMethod(t, "clearPending", Connection::ClearPending);
+  env->SetProtoMethod(t, "encPending", Connection::EncPending);
+  env->SetProtoMethod(t, "start", Connection::Start);
+  env->SetProtoMethod(t, "close", Connection::Close);
 
   SSLWrap<Connection>::AddMethods(env, t);
 
 
 #ifdef SSL_CTRL_SET_TLSEXT_SERVERNAME_CB
-  env->SetProtoMethod(t, "\x67\x65\x74\x53\x65\x72\x76\x65\x72\x6e\x61\x6d\x65", Connection::GetServername);
-  env->SetProtoMethod(t, "\x73\x65\x74\x53\x4e\x49\x43\x61\x6c\x6c\x62\x61\x63\x6b",  Connection::SetSNICallback);
+  env->SetProtoMethod(t, "getServername", Connection::GetServername);
+  env->SetProtoMethod(t, "setSNICallback",  Connection::SetSNICallback);
 #endif
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Connection"),
@@ -3410,14 +3445,14 @@ void CipherBase::Initialize(Environment* env, Local<Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x69\x6e\x69\x74", Init);
-  env->SetProtoMethod(t, "\x69\x6e\x69\x74\x69\x76", InitIv);
-  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", Update);
-  env->SetProtoMethod(t, "\x66\x69\x6e\x61\x6c", Final);
-  env->SetProtoMethod(t, "\x73\x65\x74\x41\x75\x74\x6f\x50\x61\x64\x64\x69\x6e\x67", SetAutoPadding);
-  env->SetProtoMethod(t, "\x67\x65\x74\x41\x75\x74\x68\x54\x61\x67", GetAuthTag);
-  env->SetProtoMethod(t, "\x73\x65\x74\x41\x75\x74\x68\x54\x61\x67", SetAuthTag);
-  env->SetProtoMethod(t, "\x73\x65\x74\x41\x41\x44", SetAAD);
+  env->SetProtoMethod(t, "init", Init);
+  env->SetProtoMethod(t, "initiv", InitIv);
+  env->SetProtoMethod(t, "update", Update);
+  env->SetProtoMethod(t, "final", Final);
+  env->SetProtoMethod(t, "setAutoPadding", SetAutoPadding);
+  env->SetProtoMethod(t, "getAuthTag", GetAuthTag);
+  env->SetProtoMethod(t, "setAuthTag", SetAuthTag);
+  env->SetProtoMethod(t, "setAAD", SetAAD);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "CipherBase"),
               t->GetFunction());
@@ -3821,9 +3856,9 @@ void Hmac::Initialize(Environment* env, v8::Local<v8::Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x69\x6e\x69\x74", HmacInit);
-  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", HmacUpdate);
-  env->SetProtoMethod(t, "\x64\x69\x67\x65\x73\x74", HmacDigest);
+  env->SetProtoMethod(t, "init", HmacInit);
+  env->SetProtoMethod(t, "update", HmacUpdate);
+  env->SetProtoMethod(t, "digest", HmacDigest);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Hmac"), t->GetFunction());
 }
@@ -3958,8 +3993,8 @@ void Hash::Initialize(Environment* env, v8::Local<v8::Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", HashUpdate);
-  env->SetProtoMethod(t, "\x64\x69\x67\x65\x73\x74", HashDigest);
+  env->SetProtoMethod(t, "update", HashUpdate);
+  env->SetProtoMethod(t, "digest", HashDigest);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Hash"), t->GetFunction());
 }
@@ -4136,9 +4171,9 @@ void Sign::Initialize(Environment* env, v8::Local<v8::Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x69\x6e\x69\x74", SignInit);
-  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", SignUpdate);
-  env->SetProtoMethod(t, "\x73\x69\x67\x6e", SignFinal);
+  env->SetProtoMethod(t, "init", SignInit);
+  env->SetProtoMethod(t, "update", SignUpdate);
+  env->SetProtoMethod(t, "sign", SignFinal);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Sign"), t->GetFunction());
 }
@@ -4383,9 +4418,9 @@ void Verify::Initialize(Environment* env, v8::Local<v8::Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x69\x6e\x69\x74", VerifyInit);
-  env->SetProtoMethod(t, "\x75\x70\x64\x61\x74\x65", VerifyUpdate);
-  env->SetProtoMethod(t, "\x76\x65\x72\x69\x66\x79", VerifyFinal);
+  env->SetProtoMethod(t, "init", VerifyInit);
+  env->SetProtoMethod(t, "update", VerifyUpdate);
+  env->SetProtoMethod(t, "verify", VerifyFinal);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Verify"),
               t->GetFunction());
@@ -4767,14 +4802,14 @@ void DiffieHellman::Initialize(Environment* env, Local<Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x67\x65\x6e\x65\x72\x61\x74\x65\x4b\x65\x79\x73", GenerateKeys);
-  env->SetProtoMethod(t, "\x63\x6f\x6d\x70\x75\x74\x65\x53\x65\x63\x72\x65\x74", ComputeSecret);
-  env->SetProtoMethod(t, "\x67\x65\x74\x50\x72\x69\x6d\x65", GetPrime);
-  env->SetProtoMethod(t, "\x67\x65\x74\x47\x65\x6e\x65\x72\x61\x74\x6f\x72", GetGenerator);
-  env->SetProtoMethod(t, "\x67\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", GetPublicKey);
-  env->SetProtoMethod(t, "\x67\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", GetPrivateKey);
-  env->SetProtoMethod(t, "\x73\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", SetPublicKey);
-  env->SetProtoMethod(t, "\x73\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", SetPrivateKey);
+  env->SetProtoMethod(t, "generateKeys", GenerateKeys);
+  env->SetProtoMethod(t, "computeSecret", ComputeSecret);
+  env->SetProtoMethod(t, "getPrime", GetPrime);
+  env->SetProtoMethod(t, "getGenerator", GetGenerator);
+  env->SetProtoMethod(t, "getPublicKey", GetPublicKey);
+  env->SetProtoMethod(t, "getPrivateKey", GetPrivateKey);
+  env->SetProtoMethod(t, "setPublicKey", SetPublicKey);
+  env->SetProtoMethod(t, "setPrivateKey", SetPrivateKey);
 
   t->InstanceTemplate()->SetAccessor(
       env->verify_error_string(),
@@ -4791,12 +4826,12 @@ void DiffieHellman::Initialize(Environment* env, Local<Object> target) {
   Local<FunctionTemplate> t2 = env->NewFunctionTemplate(DiffieHellmanGroup);
   t2->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t2, "\x67\x65\x6e\x65\x72\x61\x74\x65\x4b\x65\x79\x73", GenerateKeys);
-  env->SetProtoMethod(t2, "\x63\x6f\x6d\x70\x75\x74\x65\x53\x65\x63\x72\x65\x74", ComputeSecret);
-  env->SetProtoMethod(t2, "\x67\x65\x74\x50\x72\x69\x6d\x65", GetPrime);
-  env->SetProtoMethod(t2, "\x67\x65\x74\x47\x65\x6e\x65\x72\x61\x74\x6f\x72", GetGenerator);
-  env->SetProtoMethod(t2, "\x67\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", GetPublicKey);
-  env->SetProtoMethod(t2, "\x67\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", GetPrivateKey);
+  env->SetProtoMethod(t2, "generateKeys", GenerateKeys);
+  env->SetProtoMethod(t2, "computeSecret", ComputeSecret);
+  env->SetProtoMethod(t2, "getPrime", GetPrime);
+  env->SetProtoMethod(t2, "getGenerator", GetGenerator);
+  env->SetProtoMethod(t2, "getPublicKey", GetPublicKey);
+  env->SetProtoMethod(t2, "getPrivateKey", GetPrivateKey);
 
   t2->InstanceTemplate()->SetAccessor(
       env->verify_error_string(),
@@ -5169,12 +5204,12 @@ void ECDH::Initialize(Environment* env, Local<Object> target) {
 
   t->InstanceTemplate()->SetInternalFieldCount(1);
 
-  env->SetProtoMethod(t, "\x67\x65\x6e\x65\x72\x61\x74\x65\x4b\x65\x79\x73", GenerateKeys);
-  env->SetProtoMethod(t, "\x63\x6f\x6d\x70\x75\x74\x65\x53\x65\x63\x72\x65\x74", ComputeSecret);
-  env->SetProtoMethod(t, "\x67\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", GetPublicKey);
-  env->SetProtoMethod(t, "\x67\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", GetPrivateKey);
-  env->SetProtoMethod(t, "\x73\x65\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", SetPublicKey);
-  env->SetProtoMethod(t, "\x73\x65\x74\x50\x72\x69\x76\x61\x74\x65\x4b\x65\x79", SetPrivateKey);
+  env->SetProtoMethod(t, "generateKeys", GenerateKeys);
+  env->SetProtoMethod(t, "computeSecret", ComputeSecret);
+  env->SetProtoMethod(t, "getPublicKey", GetPublicKey);
+  env->SetProtoMethod(t, "getPrivateKey", GetPrivateKey);
+  env->SetProtoMethod(t, "setPublicKey", SetPublicKey);
+  env->SetProtoMethod(t, "setPrivateKey", SetPrivateKey);
 
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "ECDH"),
               t->GetFunction());
@@ -6295,34 +6330,34 @@ void InitCrypto(Local<Object> target,
   Sign::Initialize(env, target);
   Verify::Initialize(env, target);
 
-  env->SetMethod(target, "\x63\x65\x72\x74\x56\x65\x72\x69\x66\x79\x53\x70\x6b\x61\x63", VerifySpkac);
-  env->SetMethod(target, "\x63\x65\x72\x74\x45\x78\x70\x6f\x72\x74\x50\x75\x62\x6c\x69\x63\x4b\x65\x79", ExportPublicKey);
-  env->SetMethod(target, "\x63\x65\x72\x74\x45\x78\x70\x6f\x72\x74\x43\x68\x61\x6c\x6c\x65\x6e\x67\x65", ExportChallenge);
+  env->SetMethod(target, "certVerifySpkac", VerifySpkac);
+  env->SetMethod(target, "certExportPublicKey", ExportPublicKey);
+  env->SetMethod(target, "certExportChallenge", ExportChallenge);
 #ifndef OPENSSL_NO_ENGINE
-  env->SetMethod(target, "\x73\x65\x74\x45\x6e\x67\x69\x6e\x65", SetEngine);
+  env->SetMethod(target, "setEngine", SetEngine);
 #endif  // !OPENSSL_NO_ENGINE
-  env->SetMethod(target, "\x67\x65\x74\x46\x69\x70\x73\x43\x72\x79\x70\x74\x6f", GetFipsCrypto);
-  env->SetMethod(target, "\x73\x65\x74\x46\x69\x70\x73\x43\x72\x79\x70\x74\x6f", SetFipsCrypto);
-  env->SetMethod(target, "\x50\x42\x4b\x44\x46\x32", PBKDF2);
-  env->SetMethod(target, "\x72\x61\x6e\x64\x6f\x6d\x42\x79\x74\x65\x73", RandomBytes);
-  env->SetMethod(target, "\x74\x69\x6d\x69\x6e\x67\x53\x61\x66\x65\x45\x71\x75\x61\x6c", TimingSafeEqual);
-  env->SetMethod(target, "\x67\x65\x74\x53\x53\x4c\x43\x69\x70\x68\x65\x72\x73", GetSSLCiphers);
-  env->SetMethod(target, "\x67\x65\x74\x43\x69\x70\x68\x65\x72\x73", GetCiphers);
-  env->SetMethod(target, "\x67\x65\x74\x48\x61\x73\x68\x65\x73", GetHashes);
-  env->SetMethod(target, "\x67\x65\x74\x43\x75\x72\x76\x65\x73", GetCurves);
-  env->SetMethod(target, "\x70\x75\x62\x6c\x69\x63\x45\x6e\x63\x72\x79\x70\x74",
+  env->SetMethod(target, "getFipsCrypto", GetFipsCrypto);
+  env->SetMethod(target, "setFipsCrypto", SetFipsCrypto);
+  env->SetMethod(target, "PBKDF2", PBKDF2);
+  env->SetMethod(target, "randomBytes", RandomBytes);
+  env->SetMethod(target, "timingSafeEqual", TimingSafeEqual);
+  env->SetMethod(target, "getSSLCiphers", GetSSLCiphers);
+  env->SetMethod(target, "getCiphers", GetCiphers);
+  env->SetMethod(target, "getHashes", GetHashes);
+  env->SetMethod(target, "getCurves", GetCurves);
+  env->SetMethod(target, "publicEncrypt",
                  PublicKeyCipher::Cipher<PublicKeyCipher::kPublic,
                                          EVP_PKEY_encrypt_init,
                                          EVP_PKEY_encrypt>);
-  env->SetMethod(target, "\x70\x72\x69\x76\x61\x74\x65\x44\x65\x63\x72\x79\x70\x74",
+  env->SetMethod(target, "privateDecrypt",
                  PublicKeyCipher::Cipher<PublicKeyCipher::kPrivate,
                                          EVP_PKEY_decrypt_init,
                                          EVP_PKEY_decrypt>);
-  env->SetMethod(target, "\x70\x72\x69\x76\x61\x74\x65\x45\x6e\x63\x72\x79\x70\x74",
+  env->SetMethod(target, "privateEncrypt",
                  PublicKeyCipher::Cipher<PublicKeyCipher::kPrivate,
                                          EVP_PKEY_sign_init,
                                          EVP_PKEY_sign>);
-  env->SetMethod(target, "\x70\x75\x62\x6c\x69\x63\x44\x65\x63\x72\x79\x70\x74",
+  env->SetMethod(target, "publicDecrypt",
                  PublicKeyCipher::Cipher<PublicKeyCipher::kPublic,
                                          EVP_PKEY_verify_recover_init,
                                          EVP_PKEY_verify_recover>);

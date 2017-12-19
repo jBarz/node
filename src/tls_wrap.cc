@@ -916,7 +916,7 @@ void TLSWrap::Initialize(Local<Object> target,
                          Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
 
-  env->SetMethod(target, "\x77\x72\x61\x70", TLSWrap::Wrap);
+  env->SetMethod(target, "wrap", TLSWrap::Wrap);
 
   auto constructor = [](const FunctionCallbackInfo<Value>& args) {
     CHECK(args.IsConstructCall());
@@ -926,19 +926,19 @@ void TLSWrap::Initialize(Local<Object> target,
   t->InstanceTemplate()->SetInternalFieldCount(1);
   t->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "TLSWrap"));
 
-  env->SetProtoMethod(t, "\x72\x65\x63\x65\x69\x76\x65", Receive);
-  env->SetProtoMethod(t, "\x73\x74\x61\x72\x74", Start);
-  env->SetProtoMethod(t, "\x73\x65\x74\x56\x65\x72\x69\x66\x79\x4d\x6f\x64\x65", SetVerifyMode);
-  env->SetProtoMethod(t, "\x65\x6e\x61\x62\x6c\x65\x53\x65\x73\x73\x69\x6f\x6e\x43\x61\x6c\x6c\x62\x61\x63\x6b\x73", EnableSessionCallbacks);
-  env->SetProtoMethod(t, "\x64\x65\x73\x74\x72\x6f\x79\x53\x53\x4c", DestroySSL);
-  env->SetProtoMethod(t, "\x65\x6e\x61\x62\x6c\x65\x43\x65\x72\x74\x43\x62", EnableCertCb);
+  env->SetProtoMethod(t, "receive", Receive);
+  env->SetProtoMethod(t, "start", Start);
+  env->SetProtoMethod(t, "setVerifyMode", SetVerifyMode);
+  env->SetProtoMethod(t, "enableSessionCallbacks", EnableSessionCallbacks);
+  env->SetProtoMethod(t, "destroySSL", DestroySSL);
+  env->SetProtoMethod(t, "enableCertCb", EnableCertCb);
 
   StreamBase::AddMethods<TLSWrap>(env, t, StreamBase::kFlagHasWritev);
   SSLWrap<TLSWrap>::AddMethods(env, t);
 
 #ifdef SSL_CTRL_SET_TLSEXT_SERVERNAME_CB
-  env->SetProtoMethod(t, "\x67\x65\x74\x53\x65\x72\x76\x65\x72\x6e\x61\x6d\x65", GetServername);
-  env->SetProtoMethod(t, "\x73\x65\x74\x53\x65\x72\x76\x65\x72\x6e\x61\x6d\x65", SetServername);
+  env->SetProtoMethod(t, "getServername", GetServername);
+  env->SetProtoMethod(t, "setServername", SetServername);
 #endif  // SSL_CRT_SET_TLSEXT_SERVERNAME_CB
 
   env->set_tls_wrap_constructor_template(t);

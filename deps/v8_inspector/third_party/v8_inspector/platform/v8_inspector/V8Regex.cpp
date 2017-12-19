@@ -57,7 +57,7 @@ int V8Regex::match(const String16& string, int startFrom, int* matchLength) cons
 
     v8::Local<v8::RegExp> regex = m_regex.Get(isolate);
     v8::Local<v8::Value> exec;
-    if (!regex->Get(context, toV8StringInternalized(isolate, u8"exec")).ToLocal(&exec))
+    if (!regex->Get(context, toV8StringInternalized(isolate, "exec")).ToLocal(&exec))
         return -1;
     v8::Local<v8::Value> argv[] = { toV8String(isolate, string.substring(startFrom)) };
     v8::Local<v8::Value> returnValue;
@@ -77,7 +77,7 @@ int V8Regex::match(const String16& string, int startFrom, int* matchLength) cons
 
     v8::Local<v8::Array> result = returnValue.As<v8::Array>();
     v8::Local<v8::Value> matchOffset;
-    if (!result->Get(context, toV8StringInternalized(isolate, u8"index")).ToLocal(&matchOffset))
+    if (!result->Get(context, toV8StringInternalized(isolate, "index")).ToLocal(&matchOffset))
         return -1;
     if (matchLength) {
         v8::Local<v8::Value> match;

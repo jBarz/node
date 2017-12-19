@@ -1145,10 +1145,10 @@ void DefineUVConstants(Local<Object> target) {
 void DefineCryptoConstants(Local<Object> target) {
 #if HAVE_OPENSSL
   NODE_DEFINE_STRING_CONSTANT(target,
-                              "\x64\x65\x66\x61\x75\x6c\x74\x43\x6f\x72\x65\x43\x69\x70\x68\x65\x72\x4c\x69\x73\x74",
+                              "defaultCoreCipherList",
                               DEFAULT_CIPHER_LIST_CORE);
   NODE_DEFINE_STRING_CONSTANT(target,
-                              "\x64\x65\x66\x61\x75\x6c\x74\x43\x69\x70\x68\x65\x72\x4c\x69\x73\x74",
+                              "defaultCipherList",
                               default_cipher_list);
 #endif
 }

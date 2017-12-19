@@ -294,7 +294,7 @@ static void GetHomeDirectory(const FunctionCallbackInfo<Value>& args) {
   }
 
   Local<String> home = String::NewFromUtf8(env->isolate(),
-                                           *E2A(buf),
+                                           buf,
                                            String::kNormalString,
                                            len);
   args.GetReturnValue().Set(home);
@@ -376,17 +376,17 @@ void Initialize(Local<Object> target,
                 Local<Value> unused,
                 Local<Context> context) {
   Environment* env = Environment::GetCurrent(context);
-  env->SetMethod(target, "\x67\x65\x74\x48\x6f\x73\x74\x6e\x61\x6d\x65", GetHostname);
-  env->SetMethod(target, "\x67\x65\x74\x4c\x6f\x61\x64\x41\x76\x67", GetLoadAvg);
-  env->SetMethod(target, "\x67\x65\x74\x55\x70\x74\x69\x6d\x65", GetUptime);
-  env->SetMethod(target, "\x67\x65\x74\x54\x6f\x74\x61\x6c\x4d\x65\x6d", GetTotalMemory);
-  env->SetMethod(target, "\x67\x65\x74\x46\x72\x65\x65\x4d\x65\x6d", GetFreeMemory);
-  env->SetMethod(target, "\x67\x65\x74\x43\x50\x55\x73", GetCPUInfo);
-  env->SetMethod(target, "\x67\x65\x74\x4f\x53\x54\x79\x70\x65", GetOSType);
-  env->SetMethod(target, "\x67\x65\x74\x4f\x53\x52\x65\x6c\x65\x61\x73\x65", GetOSRelease);
-  env->SetMethod(target, "\x67\x65\x74\x49\x6e\x74\x65\x72\x66\x61\x63\x65\x41\x64\x64\x72\x65\x73\x73\x65\x73", GetInterfaceAddresses);
-  env->SetMethod(target, "\x67\x65\x74\x48\x6f\x6d\x65\x44\x69\x72\x65\x63\x74\x6f\x72\x79", GetHomeDirectory);
-  env->SetMethod(target, "\x67\x65\x74\x55\x73\x65\x72\x49\x6e\x66\x6f", GetUserInfo);
+  env->SetMethod(target, "getHostname", GetHostname);
+  env->SetMethod(target, "getLoadAvg", GetLoadAvg);
+  env->SetMethod(target, "getUptime", GetUptime);
+  env->SetMethod(target, "getTotalMem", GetTotalMemory);
+  env->SetMethod(target, "getFreeMem", GetFreeMemory);
+  env->SetMethod(target, "getCPUs", GetCPUInfo);
+  env->SetMethod(target, "getOSType", GetOSType);
+  env->SetMethod(target, "getOSRelease", GetOSRelease);
+  env->SetMethod(target, "getInterfaceAddresses", GetInterfaceAddresses);
+  env->SetMethod(target, "getHomeDirectory", GetHomeDirectory);
+  env->SetMethod(target, "getUserInfo", GetUserInfo);
   target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "isBigEndian"),
               Boolean::New(env->isolate(), IsBigEndian()));
 }

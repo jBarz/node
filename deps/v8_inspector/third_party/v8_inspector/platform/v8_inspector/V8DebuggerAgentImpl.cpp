@@ -926,31 +926,31 @@ std::unique_ptr<Array<CallFrame>> V8DebuggerAgentImpl::currentCallFrames(ErrorSt
         InjectedScript* injectedScript = contextId ? m_session->findInjectedScript(&ignored, contextId) : nullptr;
 
         String16 callFrameId = RemoteCallFrameId::serialize(contextId, frameOrdinal);
-        if (hasInternalError(errorString, !details->Set(debuggerContext, toV8StringInternalized(m_isolate, u8"callFrameId"), toV8String(m_isolate, callFrameId)).FromMaybe(false)))
+        if (hasInternalError(errorString, !details->Set(debuggerContext, toV8StringInternalized(m_isolate, "callFrameId"), toV8String(m_isolate, callFrameId)).FromMaybe(false)))
             return Array<CallFrame>::create();
 
         if (injectedScript) {
             v8::Local<v8::Value> scopeChain;
-            if (hasInternalError(errorString, !details->Get(debuggerContext, toV8StringInternalized(m_isolate, u8"scopeChain")).ToLocal(&scopeChain) || !scopeChain->IsArray()))
+            if (hasInternalError(errorString, !details->Get(debuggerContext, toV8StringInternalized(m_isolate, "scopeChain")).ToLocal(&scopeChain) || !scopeChain->IsArray()))
                 return Array<CallFrame>::create();
             v8::Local<v8::Array> scopeChainArray = scopeChain.As<v8::Array>();
-            if (!injectedScript->wrapPropertyInArray(errorString, scopeChainArray, toV8StringInternalized(m_isolate, u8"object"), backtraceObjectGroup))
+            if (!injectedScript->wrapPropertyInArray(errorString, scopeChainArray, toV8StringInternalized(m_isolate, "object"), backtraceObjectGroup))
                 return Array<CallFrame>::create();
-            if (!injectedScript->wrapObjectProperty(errorString, details, toV8StringInternalized(m_isolate, u8"this"), backtraceObjectGroup))
+            if (!injectedScript->wrapObjectProperty(errorString, details, toV8StringInternalized(m_isolate, "this"), backtraceObjectGroup))
                 return Array<CallFrame>::create();
-            if (details->Has(debuggerContext, toV8StringInternalized(m_isolate, u8"returnValue")).FromMaybe(false)) {
-                if (!injectedScript->wrapObjectProperty(errorString, details, toV8StringInternalized(m_isolate, u8"returnValue"), backtraceObjectGroup))
+            if (details->Has(debuggerContext, toV8StringInternalized(m_isolate, "returnValue")).FromMaybe(false)) {
+                if (!injectedScript->wrapObjectProperty(errorString, details, toV8StringInternalized(m_isolate, "returnValue"), backtraceObjectGroup))
                     return Array<CallFrame>::create();
             }
         } else {
-            if (hasInternalError(errorString, !details->Set(debuggerContext, toV8StringInternalized(m_isolate, u8"scopeChain"), v8::Array::New(m_isolate, 0)).FromMaybe(false)))
+            if (hasInternalError(errorString, !details->Set(debuggerContext, toV8StringInternalized(m_isolate, "scopeChain"), v8::Array::New(m_isolate, 0)).FromMaybe(false)))
                 return Array<CallFrame>::create();
             v8::Local<v8::Object> remoteObject = v8::Object::New(m_isolate);
-            if (hasInternalError(errorString, !remoteObject->Set(debuggerContext, toV8StringInternalized(m_isolate, u8"type"), toV8StringInternalized(m_isolate, "undefined")).FromMaybe(false)))
+            if (hasInternalError(errorString, !remoteObject->Set(debuggerContext, toV8StringInternalized(m_isolate, "type"), toV8StringInternalized(m_isolate, "undefined")).FromMaybe(false)))
                 return Array<CallFrame>::create();
-            if (hasInternalError(errorString, !details->Set(debuggerContext, toV8StringInternalized(m_isolate, u8"this"), remoteObject).FromMaybe(false)))
+            if (hasInternalError(errorString, !details->Set(debuggerContext, toV8StringInternalized(m_isolate, "this"), remoteObject).FromMaybe(false)))
                 return Array<CallFrame>::create();
-            if (hasInternalError(errorString, !details->Delete(debuggerContext, toV8StringInternalized(m_isolate, u8"returnValue")).FromMaybe(false)))
+            if (hasInternalError(errorString, !details->Delete(debuggerContext, toV8StringInternalized(m_isolate, "returnValue")).FromMaybe(false)))
                 return Array<CallFrame>::create();
         }
 

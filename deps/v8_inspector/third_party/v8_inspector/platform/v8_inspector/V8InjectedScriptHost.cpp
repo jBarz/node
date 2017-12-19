@@ -45,13 +45,13 @@ v8::Local<v8::Object> V8InjectedScriptHost::create(v8::Local<v8::Context> contex
     bool success = injectedScriptHost->SetPrototype(context, v8::Null(isolate)).FromMaybe(false);
     DCHECK(success);
     v8::Local<v8::External> debuggerExternal = v8::External::New(isolate, inspector);
-    setFunctionProperty(context, injectedScriptHost, u8"internalConstructorName", V8InjectedScriptHost::internalConstructorNameCallback, debuggerExternal);
-    setFunctionProperty(context, injectedScriptHost, u8"formatAccessorsAsProperties", V8InjectedScriptHost::formatAccessorsAsProperties, debuggerExternal);
-    setFunctionProperty(context, injectedScriptHost, u8"subtype", V8InjectedScriptHost::subtypeCallback, debuggerExternal);
-    setFunctionProperty(context, injectedScriptHost, u8"getInternalProperties", V8InjectedScriptHost::getInternalPropertiesCallback, debuggerExternal);
-    setFunctionProperty(context, injectedScriptHost, u8"objectHasOwnProperty", V8InjectedScriptHost::objectHasOwnPropertyCallback, debuggerExternal);
-    setFunctionProperty(context, injectedScriptHost, u8"bind", V8InjectedScriptHost::bindCallback, debuggerExternal);
-    setFunctionProperty(context, injectedScriptHost, u8"proxyTargetValue", V8InjectedScriptHost::proxyTargetValueCallback, debuggerExternal);
+    setFunctionProperty(context, injectedScriptHost, "internalConstructorName", V8InjectedScriptHost::internalConstructorNameCallback, debuggerExternal);
+    setFunctionProperty(context, injectedScriptHost, "formatAccessorsAsProperties", V8InjectedScriptHost::formatAccessorsAsProperties, debuggerExternal);
+    setFunctionProperty(context, injectedScriptHost, "subtype", V8InjectedScriptHost::subtypeCallback, debuggerExternal);
+    setFunctionProperty(context, injectedScriptHost, "getInternalProperties", V8InjectedScriptHost::getInternalPropertiesCallback, debuggerExternal);
+    setFunctionProperty(context, injectedScriptHost, "objectHasOwnProperty", V8InjectedScriptHost::objectHasOwnPropertyCallback, debuggerExternal);
+    setFunctionProperty(context, injectedScriptHost, "bind", V8InjectedScriptHost::bindCallback, debuggerExternal);
+    setFunctionProperty(context, injectedScriptHost, "proxyTargetValue", V8InjectedScriptHost::proxyTargetValueCallback, debuggerExternal);
     return injectedScriptHost;
 }
 
@@ -91,47 +91,47 @@ void V8InjectedScriptHost::subtypeCallback(const v8::FunctionCallbackInfo<v8::Va
         }
     }
     if (value->IsArray() || value->IsArgumentsObject()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"array"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "array"));
         return;
     }
     if (value->IsTypedArray()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"typedarray"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "typedarray"));
         return;
     }
     if (value->IsDate()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"date"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "date"));
         return;
     }
     if (value->IsRegExp()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"regexp"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "regexp"));
         return;
     }
     if (value->IsMap() || value->IsWeakMap()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"map"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "map"));
         return;
     }
     if (value->IsSet() || value->IsWeakSet()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"set"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "set"));
         return;
     }
     if (value->IsMapIterator() || value->IsSetIterator()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"iterator"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "iterator"));
         return;
     }
     if (value->IsGeneratorObject()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"generator"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "generator"));
         return;
     }
     if (value->IsNativeError()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"error"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "error"));
         return;
     }
     if (value->IsProxy()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"proxy"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "proxy"));
         return;
     }
     if (value->IsPromise()) {
-        info.GetReturnValue().Set(toV8StringInternalized(isolate, u8"promise"));
+        info.GetReturnValue().Set(toV8StringInternalized(isolate, "promise"));
         return;
     }
     String16 subtype = unwrapInspector(info)->client()->valueSubtype(value);

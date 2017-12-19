@@ -162,9 +162,9 @@ void AsyncWrap::Initialize(Local<Object> target,
   Isolate* isolate = env->isolate();
   HandleScope scope(isolate);
 
-  env->SetMethod(target, "\x73\x65\x74\x75\x70\x48\x6f\x6f\x6b\x73", SetupHooks);
-  env->SetMethod(target, "\x64\x69\x73\x61\x62\x6c\x65", DisableHooksJS);
-  env->SetMethod(target, "\x65\x6e\x61\x62\x6c\x65", EnableHooksJS);
+  env->SetMethod(target, "setupHooks", SetupHooks);
+  env->SetMethod(target, "disable", DisableHooksJS);
+  env->SetMethod(target, "enable", EnableHooksJS);
 
   Local<Object> async_providers = Object::New(isolate);
 #define V(PROVIDER)                                                           \

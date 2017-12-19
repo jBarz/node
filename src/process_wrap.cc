@@ -33,14 +33,14 @@ class ProcessWrap : public HandleWrap {
     constructor->InstanceTemplate()->SetInternalFieldCount(1);
     constructor->SetClassName(FIXED_ONE_BYTE_STRING(env->isolate(), "Process"));
 
-    env->SetProtoMethod(constructor, "\x63\x6c\x6f\x73\x65", HandleWrap::Close);
+    env->SetProtoMethod(constructor, "close", HandleWrap::Close);
 
-    env->SetProtoMethod(constructor, "\x73\x70\x61\x77\x6e", Spawn);
-    env->SetProtoMethod(constructor, "\x6b\x69\x6c\x6c", Kill);
+    env->SetProtoMethod(constructor, "spawn", Spawn);
+    env->SetProtoMethod(constructor, "kill", Kill);
 
-    env->SetProtoMethod(constructor, "\x72\x65\x66", HandleWrap::Ref);
-    env->SetProtoMethod(constructor, "\x75\x6e\x72\x65\x66", HandleWrap::Unref);
-    env->SetProtoMethod(constructor, "\x68\x61\x73\x52\x65\x66", HandleWrap::HasRef);
+    env->SetProtoMethod(constructor, "ref", HandleWrap::Ref);
+    env->SetProtoMethod(constructor, "unref", HandleWrap::Unref);
+    env->SetProtoMethod(constructor, "hasRef", HandleWrap::HasRef);
 
     target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Process"),
                 constructor->GetFunction());
@@ -268,15 +268,9 @@ class ProcessWrap : public HandleWrap {
     HandleScope handle_scope(env->isolate());
     Context::Scope context_scope(env->context());
 
-    const char* ascii = signo_string(term_signal);
-    std::vector<char> ebcdic(strlen(ascii) + 1);
-    std::transform(ascii, ascii + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
     Local<Value> argv[] = {
       Number::New(env->isolate(), static_cast<double>(exit_status)),
-      OneByteString(env->isolate(), &ebcdic[0])
+      OneByteString(env->isolate(), signo_string(term_signal))
     };
 
     wrap->MakeCallback(env->onexit_string(), arraysize(argv), argv);

@@ -44,7 +44,7 @@ InspectedContext::InspectedContext(V8InspectorImpl* inspector, const V8ContextIn
     v8::Isolate* isolate = m_inspector->isolate();
     v8::Local<v8::Object> global = info.context->Global();
     v8::Local<v8::Object> console = V8Console::createConsole(this, info.hasMemoryOnConsole);
-    if (!global->Set(info.context, toV8StringInternalized(isolate, u8"console"), console).FromMaybe(false))
+    if (!global->Set(info.context, toV8StringInternalized(isolate, "console"), console).FromMaybe(false))
         return;
     m_console.Reset(isolate, console);
     m_console.SetWeak(this, &InspectedContext::consoleWeakCallback, v8::WeakCallbackType::kParameter);

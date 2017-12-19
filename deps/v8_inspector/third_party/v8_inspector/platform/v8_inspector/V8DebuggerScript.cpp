@@ -67,22 +67,22 @@ static String16 calculateHash(const String16& str)
 
 V8DebuggerScript::V8DebuggerScript(v8::Isolate* isolate, v8::Local<v8::Object> object, bool isLiveEdit)
 {
-    v8::Local<v8::Value> idValue = object->Get(toV8StringInternalized(isolate, u8"id"));
+    v8::Local<v8::Value> idValue = object->Get(toV8StringInternalized(isolate, "id"));
     DCHECK(!idValue.IsEmpty() && idValue->IsInt32());
     m_id = String16::fromInteger(idValue->Int32Value());
 
-    m_url = toProtocolStringWithTypeCheck(object->Get(toV8StringInternalized(isolate, u8"name")));
-    m_sourceURL = toProtocolStringWithTypeCheck(object->Get(toV8StringInternalized(isolate, u8"sourceURL")));
-    m_sourceMappingURL = toProtocolStringWithTypeCheck(object->Get(toV8StringInternalized(isolate, u8"sourceMappingURL")));
-    m_startLine = object->Get(toV8StringInternalized(isolate, u8"startLine"))->ToInteger(isolate)->Value();
-    m_startColumn = object->Get(toV8StringInternalized(isolate, u8"startColumn"))->ToInteger(isolate)->Value();
-    m_endLine = object->Get(toV8StringInternalized(isolate, u8"endLine"))->ToInteger(isolate)->Value();
-    m_endColumn = object->Get(toV8StringInternalized(isolate, u8"endColumn"))->ToInteger(isolate)->Value();
-    m_executionContextAuxData = toProtocolStringWithTypeCheck(object->Get(toV8StringInternalized(isolate, u8"executionContextAuxData")));
-    m_executionContextId = object->Get(toV8StringInternalized(isolate, u8"executionContextId"))->ToInteger(isolate)->Value();
+    m_url = toProtocolStringWithTypeCheck(object->Get(toV8StringInternalized(isolate, "name")));
+    m_sourceURL = toProtocolStringWithTypeCheck(object->Get(toV8StringInternalized(isolate, "sourceURL")));
+    m_sourceMappingURL = toProtocolStringWithTypeCheck(object->Get(toV8StringInternalized(isolate, "sourceMappingURL")));
+    m_startLine = object->Get(toV8StringInternalized(isolate, "startLine"))->ToInteger(isolate)->Value();
+    m_startColumn = object->Get(toV8StringInternalized(isolate, "startColumn"))->ToInteger(isolate)->Value();
+    m_endLine = object->Get(toV8StringInternalized(isolate, "endLine"))->ToInteger(isolate)->Value();
+    m_endColumn = object->Get(toV8StringInternalized(isolate, "endColumn"))->ToInteger(isolate)->Value();
+    m_executionContextAuxData = toProtocolStringWithTypeCheck(object->Get(toV8StringInternalized(isolate, "executionContextAuxData")));
+    m_executionContextId = object->Get(toV8StringInternalized(isolate, "executionContextId"))->ToInteger(isolate)->Value();
     m_isLiveEdit = isLiveEdit;
 
-    v8::Local<v8::Value> sourceValue = object->Get(toV8StringInternalized(isolate, u8"source"));
+    v8::Local<v8::Value> sourceValue = object->Get(toV8StringInternalized(isolate, "source"));
     if (!sourceValue.IsEmpty() && sourceValue->IsString())
         setSource(isolate, sourceValue.As<v8::String>());
 }
