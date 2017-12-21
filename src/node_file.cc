@@ -732,11 +732,11 @@ static void Symlink(const FunctionCallbackInfo<Value>& args) {
 
   if (args[2]->IsString()) {
     node::Utf8Value mode(env->isolate(), args[2]);
-    if (strcmp(*mode, "\x64\x69\x72") == 0) {
+    if (strcmp(*mode, "dir") == 0) {
       flags |= UV_FS_SYMLINK_DIR;
-    } else if (strcmp(*mode, "\x6a\x75\x6e\x63\x74\x69\x6f\x6e") == 0) {
+    } else if (strcmp(*mode, "junction") == 0) {
       flags |= UV_FS_SYMLINK_JUNCTION;
-    } else if (strcmp(*mode, "\x66\x69\x6c\x65") != 0) {
+    } else if (strcmp(*mode, "file") != 0) {
       return env->ThrowError("Unknown symlink type");
     }
   }

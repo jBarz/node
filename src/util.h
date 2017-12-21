@@ -368,6 +368,11 @@ class MaybeStackBuffer {
   T buf_st_[kStackStorageSize];
 };
 
+class OneByteValue : public MaybeStackBuffer<uint8_t> {
+ public:
+  explicit OneByteValue(v8::Isolate* isolate, v8::Local<v8::Value> value);
+};
+
 class Utf8Value : public MaybeStackBuffer<char> {
  public:
   explicit Utf8Value(v8::Isolate* isolate, v8::Local<v8::Value> value);
@@ -382,12 +387,6 @@ class BufferValue : public MaybeStackBuffer<char> {
  public:
   explicit BufferValue(v8::Isolate* isolate, v8::Local<v8::Value> value);
 };
-
-class NativeEncodingValue : public MaybeStackBuffer<char> {
- public:
-  explicit NativeEncodingValue(v8::Isolate* isolate, v8::Local<v8::Value> value);
-};
-
 
 class E2A {
   public:

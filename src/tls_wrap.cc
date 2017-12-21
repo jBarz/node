@@ -870,6 +870,7 @@ void TLSWrap::SetServername(const FunctionCallbackInfo<Value>& args) {
 
 #ifdef SSL_CTRL_SET_TLSEXT_SERVERNAME_CB
   node::Utf8Value servername(env->isolate(), args[0].As<String>());
+  __e2a_s(*servername);
   SSL_set_tlsext_host_name(wrap->ssl_, *servername);
 #endif  // SSL_CTRL_SET_TLSEXT_SERVERNAME_CB
 }

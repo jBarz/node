@@ -169,9 +169,8 @@ NODE_EXTERN v8::Local<v8::Value> MakeCallback(
 #include <stdint.h>
 
 #ifndef NODE_STRINGIFY
-#define USTR(x) u8##x
 #define NODE_STRINGIFY(n) NODE_STRINGIFY_HELPER(n)
-#define NODE_STRINGIFY_HELPER(n) USTR(#n)
+#define NODE_STRINGIFY_HELPER(n) #n
 #endif
 
 #ifdef _WIN32

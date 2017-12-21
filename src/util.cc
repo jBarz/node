@@ -34,18 +34,11 @@ Utf8Value::Utf8Value(Isolate* isolate, Local<Value> value) {
     return;
 
   MakeUtf8String(isolate, value, this);
-}
-
-
-NativeEncodingValue::NativeEncodingValue(Isolate* isolate, Local<Value> value) {
-  if (value.IsEmpty())
-    return;
-
-  MakeUtf8String(isolate, value, this);
 #ifdef __MVS__
   __a2e_l(out(), length());
 #endif
 }
+
 
 
 E2A::E2A(const char* val)

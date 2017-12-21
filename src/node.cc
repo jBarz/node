@@ -1589,71 +1589,71 @@ Local<Value> MakeCallback(Isolate* isolate,
 enum encoding ParseEncoding(const char* encoding,
                             enum encoding default_encoding) {
   switch (encoding[0]) {
-    case '\x75':
+    case 'u':
       // utf8, utf16le
-      if (encoding[1] == '\x74' && encoding[2] == '\x66') {
+      if (encoding[1] == 't' && encoding[2] == 'f') {
         // Skip `-`
-        encoding += encoding[3] == '\x2d' ? 4 : 3;
-        if (encoding[0] == '\x38' && encoding[1] == '\x0')
+        encoding += encoding[3] == '-' ? 4 : 3;
+        if (encoding[0] == '8' && encoding[1] == '\0')
           return UTF8;
-        if (strncmp(encoding, "\x31\x36\x6c\x65", 4) == 0)
+        if (strncmp(encoding, "16le", 4) == 0)
           return UCS2;
 
       // ucs2
-      } else if (encoding[1] == '\x63' && encoding[2] == '\x73') {
-        encoding += encoding[3] == '\x2d' ? 4 : 3;
-        if (encoding[0] == '\x32' && encoding[1] == '\x0')
+      } else if (encoding[1] == 'c' && encoding[2] == 's') {
+        encoding += encoding[3] == '-' ? 4 : 3;
+        if (encoding[0] == '2' && encoding[1] == '\0')
           return UCS2;
       }
       break;
-    case '\x6c':
+    case 'l':
       // latin1
-      if (encoding[1] == '\x61') {
-        if (strncmp(encoding + 2, "\x74\x69\x6e\x31", 4) == 0)
+      if (encoding[1] == 'a') {
+        if (strncmp(encoding + 2, "tin1", 4) == 0)
           return LATIN1;
       }
       break;
-    case '\x62':
+    case 'b':
       // binary
-      if (encoding[1] == '\x69') {
-        if (strncmp(encoding + 2, "\x6e\x61\x72\x79", 4) == 0)
+      if (encoding[1] == 'i') {
+        if (strncmp(encoding + 2, "nary", 4) == 0)
           return LATIN1;
 
       // buffer
-      } else if (encoding[1] == '\x75') {
-        if (strncmp(encoding + 2, "\x66\x66\x65\x72", 4) == 0)
+      } else if (encoding[1] == 'u') {
+        if (strncmp(encoding + 2, "ffer", 4) == 0)
           return BUFFER;
       }
       break;
-    case '\x0':
+    case '\0':
       return default_encoding;
     default:
       break;
   }
 
-  if (StringEqualNoCase(encoding, "\x75\x74\x66\x38")) {
+  if (StringEqualNoCase(encoding, "utf8")) {
     return UTF8;
-  } else if (StringEqualNoCase(encoding, "\x75\x74\x66\x2d\x38")) {
+  } else if (StringEqualNoCase(encoding, "utf-8")) {
     return UTF8;
-  } else if (StringEqualNoCase(encoding, "\x61\x73\x63\x69\x69")) {
+  } else if (StringEqualNoCase(encoding, "ascii")) {
     return ASCII;
-  } else if (StringEqualNoCase(encoding, "\x62\x61\x73\x65\x36\x34")) {
+  } else if (StringEqualNoCase(encoding, "base64")) {
     return BASE64;
-  } else if (StringEqualNoCase(encoding, "\x75\x63\x73\x32")) {
+  } else if (StringEqualNoCase(encoding, "ucs2")) {
     return UCS2;
-  } else if (StringEqualNoCase(encoding, "\x75\x63\x73\x2d\x32")) {
+  } else if (StringEqualNoCase(encoding, "ucs-2")) {
     return UCS2;
-  } else if (StringEqualNoCase(encoding, "\x75\x74\x66\x31\x36\x6c\x65")) {
+  } else if (StringEqualNoCase(encoding, "utf16le")) {
     return UCS2;
-  } else if (StringEqualNoCase(encoding, "\x75\x74\x66\x2d\x31\x36\x6c\x65")) {
+  } else if (StringEqualNoCase(encoding, "utf-16le")) {
     return UCS2;
-  } else if (StringEqualNoCase(encoding, "\x6c\x61\x74\x69\x6e\x31")) {
+  } else if (StringEqualNoCase(encoding, "latin1")) {
     return LATIN1;
-  } else if (StringEqualNoCase(encoding, "\x62\x69\x6e\x61\x72\x79")) {
+  } else if (StringEqualNoCase(encoding, "binary")) {
     return LATIN1;  // BINARY is a deprecated alias of LATIN1.
-  } else if (StringEqualNoCase(encoding, "\x62\x75\x66\x66\x65\x72")) {
+  } else if (StringEqualNoCase(encoding, "buffer")) {
     return BUFFER;
-  } else if (StringEqualNoCase(encoding, "\x68\x65\x78")) {
+  } else if (StringEqualNoCase(encoding, "hex")) {
     return HEX;
   } else {
     return default_encoding;
@@ -1740,11 +1740,11 @@ void AppendExceptionLine(Environment* env,
 
   // Print (filename):(line number): (message).
   ScriptOrigin origin = message->GetScriptOrigin();
-  node::NativeEncodingValue filename(env->isolate(), message->GetScriptResourceName());
+  node::Utf8Value filename(env->isolate(), message->GetScriptResourceName());
   const char* filename_string = *filename;
   int linenum = message->GetLineNumber();
   // Print line of source code.
-  node::NativeEncodingValue sourceline(env->isolate(), message->GetSourceLine());
+  node::Utf8Value sourceline(env->isolate(), message->GetSourceLine());
   const char* sourceline_string = *sourceline;
 
   // Because of how node modules work, all scripts are wrapped with a
@@ -1865,6 +1865,7 @@ static void ReportException(Environment* env,
   }
 
   node::Utf8Value trace(env->isolate(), trace_value);
+  __e2a_s(*trace);
 
   // range errors have a trace member set to undefined
   if (trace.length() > 0 && !trace_value->IsUndefined()) {
@@ -1872,6 +1873,7 @@ static void ReportException(Environment* env,
       PrintErrorString(u8"%s\n", *trace);
     } else {
       node::Utf8Value arrow_string(env->isolate(), arrow);
+      __e2a_s(*arrow_string);
       PrintErrorString(u8"%s\n%s\n", *arrow_string, *trace);
     }
   } else {
@@ -1899,11 +1901,14 @@ static void ReportException(Environment* env,
     } else {
       node::Utf8Value name_string(env->isolate(), name);
       node::Utf8Value message_string(env->isolate(), message);
+      __e2a_l(*name_string, name_string.length());
+      __e2a_l(*message_string, message_string.length());
 
       if (arrow.IsEmpty() || !arrow->IsString() || decorated) {
         PrintErrorString(u8"%s: %s\n", *name_string, *message_string);
       } else {
         node::Utf8Value arrow_string(env->isolate(), arrow);
+        __e2a_l(*arrow_string, arrow_string.length());
         PrintErrorString(u8"%s\n%s: %s\n",
                          *arrow_string,
                          *name_string,
@@ -2055,7 +2060,7 @@ static void Chdir(const FunctionCallbackInfo<Value>& args) {
     return env->ThrowTypeError("Bad argument.");
   }
 
-  node::NativeEncodingValue path(args.GetIsolate(), args[0]);
+  node::Utf8Value path(args.GetIsolate(), args[0]);
   int err = uv_chdir(*path);
   if (err) {
     return env->ThrowUVException(err, "\x75\x76\x5f\x63\x68\x64\x69\x72");
@@ -2106,11 +2111,11 @@ static void Umask(const FunctionCallbackInfo<Value>& args) {
       // Parse the octal string.
       for (size_t i = 0; i < str.length(); i++) {
         char c = (*str)[i];
-        if (c > '\x37' || c < '\x30') {
+        if (c > '7' || c < '0') {
           return env->ThrowTypeError("invalid octal string");
         }
         oct *= 8;
-        oct += c - '\x30';
+        oct += c - '0';
       }
     }
     old = umask(static_cast<mode_t>(oct));
@@ -2644,9 +2649,6 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
 
   Local<Object> module = args[0]->ToObject(env->isolate());  // Cast
   node::Utf8Value filename(env->isolate(), args[1]);  // Cast
-#ifdef __MVS__
-  __a2e_s(*filename);
-#endif
   const bool is_dlopen_error = uv_dlopen(*filename, &lib);
 
   // Objects containing v14 or later modules will have registered themselves
@@ -2924,20 +2926,11 @@ static void Binding(const FunctionCallbackInfo<Value>& args) {
 
   // Append a string to process.moduleLoadList
   char buf[1024];
-#ifdef __MVS__
-  __snprintf_a(buf, sizeof(buf), u8"Binding %s", *module_v);
-#else
   snprintf(buf, sizeof(buf), "Binding %s", *module_v);
-#endif
 
   Local<Array> modules = env->module_load_list_array();
   uint32_t l = modules->Length();
-  std::vector<char> ebcdic(strlen(buf) + 1);
-  std::transform(buf, buf + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
-  modules->Set(l, OneByteString(env->isolate(), &ebcdic[0]));
+  modules->Set(l, OneByteString(env->isolate(), buf));
 
   node_module* mod = get_builtin_module(*module_v);
   if (mod != nullptr) {
@@ -2949,30 +2942,21 @@ static void Binding(const FunctionCallbackInfo<Value>& args) {
     mod->nm_context_register_func(exports, unused,
       env->context(), mod->nm_priv);
     cache->Set(module, exports);
-  } else if (!strcmp(*module_v, "\x63\x6f\x6e\x73\x74\x61\x6e\x74\x73")) {
+  } else if (!strcmp(*module_v, "constants")) {
     exports = Object::New(env->isolate());
     DefineConstants(env->isolate(), exports);
     cache->Set(module, exports);
-  } else if (!strcmp(*module_v, "\x6e\x61\x74\x69\x76\x65\x73")) {
+  } else if (!strcmp(*module_v, "natives")) {
     exports = Object::New(env->isolate());
     DefineJavaScript(env, exports);
     cache->Set(module, exports);
   } else {
     char errmsg[1024];
-#ifdef __MVS__
-    __snprintf_a(errmsg,
-#else
     snprintf(errmsg,
-#endif
              sizeof(errmsg),
-             u8"No such module: %s",
+             "No such module: %s",
              *module_v);
-    std::vector<char> ebcdic(strlen(errmsg) + 1);
-    std::transform(errmsg, errmsg + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
-    return env->ThrowError(&ebcdic[0]);
+    return env->ThrowError(errmsg);
   }
 
   args.GetReturnValue().Set(exports);
@@ -2994,20 +2978,11 @@ static void LinkedBinding(const FunctionCallbackInfo<Value>& args) {
 
   if (mod == nullptr) {
     char errmsg[1024];
-#ifdef __MVS__
-    __snprintf_a(errmsg,
-#else
     snprintf(errmsg,
-#endif
              sizeof(errmsg),
-             u8"No such module was linked: %s",
+             "No such module was linked: %s",
              *module_name_v);
-    std::vector<char> ebcdic(strlen(errmsg) + 1);
-    std::transform(errmsg, errmsg + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
-    return env->ThrowError(&ebcdic[0]);
+    return env->ThrowError(errmsg);
   }
 
   Local<Object> module = Object::New(env->isolate());
@@ -3045,9 +3020,6 @@ static void ProcessTitleSetter(Local<Name> property,
                                const PropertyCallbackInfo<void>& info) {
   node::Utf8Value title(info.GetIsolate(), value);
   // TODO(piscisaureus): protect with a lock
-#ifdef __MVS__
-  __a2e_s(*title);
-#endif
   uv_set_process_title(*title);
 }
 
@@ -3057,9 +3029,6 @@ static void EnvGetter(Local<Name> property,
   Isolate* isolate = info.GetIsolate();
 #ifdef __POSIX__
   node::Utf8Value key(isolate, property);
-#ifdef __MVS__
-  __a2e_s(*key);
-#endif
   const char* val = getenv(*key);
   if (val) {
     return info.GetReturnValue().Set(String::NewFromUtf8(isolate, val));
@@ -3089,21 +3058,13 @@ static void EnvSetter(Local<Name> property,
 #ifdef __POSIX__
   node::Utf8Value key(info.GetIsolate(), property);
   node::Utf8Value val(info.GetIsolate(), value);
-#ifdef __MVS__
-  __a2e_s(*key);
-  __a2e_s(*val);
-#endif
   setenv(*key, *val, 1);
-#ifdef __MVS__
-  __e2a_s(*key);
-  __e2a_s(*val);
-#endif
 #else  // _WIN32
   String::Value key(property);
   String::Value val(value);
   WCHAR* key_ptr = reinterpret_cast<WCHAR*>(*key);
   // Environment variables that start with '=' are read-only.
-  if (key_ptr[0] != L'\x3d') {
+  if (key_ptr[0] != L'=') {
     SetEnvironmentVariableW(key_ptr, reinterpret_cast<WCHAR*>(*val));
   }
 #endif
@@ -3117,9 +3078,6 @@ static void EnvQuery(Local<Name> property,
   int32_t rc = -1;  // Not found unless proven otherwise.
 #ifdef __POSIX__
   node::Utf8Value key(info.GetIsolate(), property);
-#ifdef __MVS__
-  __a2e_s(*key);
-#endif
   if (getenv(*key))
     rc = 0;
 #else  // _WIN32
@@ -3128,7 +3086,7 @@ static void EnvQuery(Local<Name> property,
   if (GetEnvironmentVariableW(key_ptr, nullptr, 0) > 0 ||
       GetLastError() == ERROR_SUCCESS) {
     rc = 0;
-    if (key_ptr[0] == L'\x3d') {
+    if (key_ptr[0] == L'=') {
       // Environment variables that start with '=' are hidden and read-only.
       rc = static_cast<int32_t>(v8::ReadOnly) |
            static_cast<int32_t>(v8::DontDelete) |
@@ -3145,9 +3103,6 @@ static void EnvDeleter(Local<Name> property,
                        const PropertyCallbackInfo<Boolean>& info) {
 #ifdef __POSIX__
   node::Utf8Value key(info.GetIsolate(), property);
-#ifdef __MVS__
-  __a2e_s(*key);
-#endif
   unsetenv(*key);
 #else
   String::Value key(property);
@@ -3277,7 +3232,7 @@ static Local<Object> GetFeatures(Environment* env) {
 
   obj->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "tls"),
            Boolean::New(env->isolate(),
-                        get_builtin_module("\x63\x72\x79\x70\x74\x6f") != nullptr));
+                        get_builtin_module("crypto") != nullptr));
 
   return scope.Escape(obj);
 }
@@ -3409,14 +3364,9 @@ void SetupProcessObject(Environment* env,
                              env->as_external()).FromJust());
 
   // process.version
-  std::vector<char> ebcdic(strlen(NODE_VERSION) + 1);
-  std::transform(NODE_VERSION, &NODE_VERSION[ebcdic.size()], ebcdic.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
   READONLY_PROPERTY(process,
                     "version",
-                    FIXED_ONE_BYTE_STRING(env->isolate(), &ebcdic[0]));
+                    FIXED_ONE_BYTE_STRING(env->isolate(), NODE_VERSION));
 
   // process.moduleLoadList
   READONLY_PROPERTY(process,
@@ -3428,30 +3378,19 @@ void SetupProcessObject(Environment* env,
   READONLY_PROPERTY(process, "versions", versions);
 
   const char http_parser_version[] = NODE_STRINGIFY(HTTP_PARSER_VERSION_MAJOR)
-                                     "\x2e"
+                                     "."
                                      NODE_STRINGIFY(HTTP_PARSER_VERSION_MINOR)
-                                     "\x2e"
+                                     "."
                                      NODE_STRINGIFY(HTTP_PARSER_VERSION_PATCH);
-  std::vector<char> ebcdic1(strlen(http_parser_version) + 1);
-  std::transform(http_parser_version, http_parser_version + ebcdic1.size(), ebcdic1.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
   READONLY_PROPERTY(versions,
                     "http_parser",
-                    FIXED_ONE_BYTE_STRING(env->isolate(), &ebcdic1[0]));
+                    FIXED_ONE_BYTE_STRING(env->isolate(), http_parser_version));
 
   // +1 to get rid of the leading 'v'
-  const char* tmpbuf = NODE_VERSION + 1;
-  std::vector<char> ebcdicnodeversion(strlen(tmpbuf) + 1);
-  std::transform(tmpbuf, tmpbuf + ebcdicnodeversion.size(), ebcdicnodeversion.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
   READONLY_PROPERTY(versions,
                     "node",
-                    OneByteString(env->isolate(), &ebcdicnodeversion[0]));
-  tmpbuf = V8::GetVersion();
+                    OneByteString(env->isolate(), NODE_VERSION + 1));
+  const char *tmpbuf = V8::GetVersion();
   std::vector<char> ebcdicv8version(strlen(tmpbuf) + 1);
   std::transform(tmpbuf, tmpbuf + ebcdicv8version.size(), ebcdicv8version.begin(), [](char c) -> char {
     __a2e_l(&c, 1);
@@ -3463,7 +3402,7 @@ void SetupProcessObject(Environment* env,
   READONLY_PROPERTY(versions,
                     "uv",
                     OneByteString(env->isolate(), uv_version_string()));
-  std::vector<char> ebcdic2(strlen(ZLIB_VERSION) + 1);
+  std::vector<char> ebcdic2(sizeof(ZLIB_VERSION));
   std::transform(ZLIB_VERSION, &ZLIB_VERSION[ebcdic2.size()], ebcdic2.begin(), [](char c) -> char {
     __a2e_l(&c, 1);
     return c;
@@ -3494,15 +3433,10 @@ void SetupProcessObject(Environment* env,
 #endif
 
   const char node_modules_version[] = NODE_STRINGIFY(NODE_MODULE_VERSION);
-  std::vector<char> ebcdic4(strlen(node_modules_version) + 1);
-  std::transform(node_modules_version, node_modules_version+ ebcdic4.size(), ebcdic4.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
   READONLY_PROPERTY(
       versions,
       "modules",
-      FIXED_ONE_BYTE_STRING(env->isolate(), &ebcdic4[0]));
+      FIXED_ONE_BYTE_STRING(env->isolate(), node_modules_version));
 
   // process._promiseRejectEvent
   Local<Object> promiseRejectEvent = Object::New(env->isolate());
@@ -3561,38 +3495,26 @@ void SetupProcessObject(Environment* env,
   READONLY_PROPERTY(release, "name", OneByteString(env->isolate(), "node"));
 
 #if NODE_VERSION_IS_LTS
-  const char *version = NODE_VERSION_LTS_CODENAME;
-  std::vector<char> ebcdic5(strlen(version) + 1);
-  std::transform(version, version + ebcdic5.size(), ebcdic5.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
   READONLY_PROPERTY(release, "lts",
-                    OneByteString(env->isolate(), &ebcdic5[0]));
+                    OneByteString(env->isolate(), NODE_VERSION_LTS_CODENAME));
 #endif
 
 // if this is a release build and no explicit base has been set
 // substitute the standard release download URL
 #ifndef NODE_RELEASE_URLBASE
 # if NODE_VERSION_IS_RELEASE
-#  define NODE_RELEASE_URLBASE "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x6e\x6f\x64\x65\x6a\x73\x2e\x6f\x72\x67\x2f\x64\x6f\x77\x6e\x6c\x6f\x61\x64\x2f\x72\x65\x6c\x65\x61\x73\x65\x2f"
+#  define NODE_RELEASE_URLBASE "https://nodejs.org/download/release/"
 # endif
 #endif
 
 #if defined(NODE_RELEASE_URLBASE)
-#  define NODE_RELEASE_URLPFX NODE_RELEASE_URLBASE "\x76" NODE_VERSION_STRING "\x2f"
-#  define NODE_RELEASE_URLFPFX NODE_RELEASE_URLPFX "\x6e\x6f\x64\x65\x2d\x76" NODE_VERSION_STRING
+#  define NODE_RELEASE_URLPFX NODE_RELEASE_URLBASE "v" NODE_VERSION_STRING "/"
+#  define NODE_RELEASE_URLFPFX NODE_RELEASE_URLPFX "node-v" NODE_VERSION_STRING
 
-  const char* ascii6 = NODE_RELEASE_URLFPFX ".tar.gz";
-  std::vector<char> ebcdic6(strlen(ascii6) + 1);
-  std::transform(ascii6, ascii6 + ebcdic6.size(), ebcdic6.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
   READONLY_PROPERTY(release,
                     "sourceUrl",
                     OneByteString(env->isolate(),
-                    &ebcdic6[0]));
+                    NODE_RELEASE_URLFPFX ".tar.gz"));
   READONLY_PROPERTY(release,
                     "headersUrl",
                     OneByteString(env->isolate(),
@@ -3601,8 +3523,8 @@ void SetupProcessObject(Environment* env,
   READONLY_PROPERTY(release,
                     "libUrl",
                     OneByteString(env->isolate(),
-                    strcmp(NODE_ARCH, "\x69\x61\x33\x32") ? NODE_RELEASE_URLPFX "\x77\x69\x6e\x2d"
-                                                NODE_ARCH "\x2f\x6e\x6f\x64\x65\x2e\x6c\x69\x62"
+                    strcmp(NODE_ARCH, "ia32") ? NODE_RELEASE_URLPFX "win-"
+                                                NODE_ARCH "/node.lib"
                                               : NODE_RELEASE_URLPFX
                                                 "win-x86/node.lib"));
 #  endif
@@ -4288,6 +4210,11 @@ static void ParseArgs(int* argc,
     if (ParseDebugOpt(arg)) {
       // Done, consumed by ParseDebugOpt().
     } else if (strcmp(arg, u8"--version") == 0 || strcmp(arg, "-v") == 0) {
+      std::vector<char> ebcdic(strlen(NODE_VERSION) + 1);
+      std::transform(&NODE_VERSION[0], &NODE_VERSION[ebcdic.size()], ebcdic.begin(), [](char c) -> char {
+        __e2a_l(&c, 1);
+        return c;
+      });
       PrintOutString(u8"%s\n", NODE_VERSION);
       exit(0);
     } else if (strcmp(arg, "\x2d\x2d\x68\x65\x6c\x70") == 0 || strcmp(arg, "\x2d\x68") == 0) {

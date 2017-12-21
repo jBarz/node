@@ -375,41 +375,41 @@ void SecureContext::Init(const FunctionCallbackInfo<Value>& args) {
     // are still accepted.  They are OpenSSL's way of saying that all known
     // protocols are supported unless explicitly disabled (which we do below
     // for SSLv2 and SSLv3.)
-    if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    if (strcmp(*sslmethod, "SSLv2_method") == 0) {
       return env->ThrowError("SSLv2 methods disabled");
-    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "SSLv2_server_method") == 0) {
       return env->ThrowError("SSLv2 methods disabled");
-    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "SSLv2_client_method") == 0) {
       return env->ThrowError("SSLv2 methods disabled");
-    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x33\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "SSLv3_method") == 0) {
       return env->ThrowError("SSLv3 methods disabled");
-    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x33\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "SSLv3_server_method") == 0) {
       return env->ThrowError("SSLv3 methods disabled");
-    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x33\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "SSLv3_client_method") == 0) {
       return env->ThrowError("SSLv3 methods disabled");
-    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x33\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "SSLv23_method") == 0) {
       method = SSLv23_method();
-    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x33\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "SSLv23_server_method") == 0) {
       method = SSLv23_server_method();
-    } else if (strcmp(*sslmethod, "\x53\x53\x4c\x76\x32\x33\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "SSLv23_client_method") == 0) {
       method = SSLv23_client_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_method") == 0) {
       method = TLSv1_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_server_method") == 0) {
       method = TLSv1_server_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_client_method") == 0) {
       method = TLSv1_client_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x31\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_1_method") == 0) {
       method = TLSv1_1_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x31\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_1_server_method") == 0) {
       method = TLSv1_1_server_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x31\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_1_client_method") == 0) {
       method = TLSv1_1_client_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x32\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_2_method") == 0) {
       method = TLSv1_2_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x32\x5f\x73\x65\x72\x76\x65\x72\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_2_server_method") == 0) {
       method = TLSv1_2_server_method();
-    } else if (strcmp(*sslmethod, "\x54\x4c\x53\x76\x31\x5f\x32\x5f\x63\x6c\x69\x65\x6e\x74\x5f\x6d\x65\x74\x68\x6f\x64") == 0) {
+    } else if (strcmp(*sslmethod, "TLSv1_2_client_method") == 0) {
       method = TLSv1_2_client_method();
     } else {
       return env->ThrowError("Unknown method");
@@ -442,7 +442,8 @@ static BIO* LoadBIO(Environment* env, Local<Value> v) {
   HandleScope scope(env->isolate());
 
   if (v->IsString()) {
-    const node::Utf8Value s(env->isolate(), v);
+    node::Utf8Value s(env->isolate(), v);
+    __e2a_l(*s, s.length());
     return NodeBIO::NewFixed(*s, s.length());
   }
 
@@ -481,6 +482,7 @@ void SecureContext::SetKey(const FunctionCallbackInfo<Value>& args) {
     return;
 
   node::Utf8Value passphrase(env->isolate(), args[1]);
+  __e2a_l(*passphrase, passphrase.length());
 
   EVP_PKEY* key = PEM_read_bio_PrivateKey(bio,
                                           nullptr,
@@ -899,7 +901,8 @@ void SecureContext::SetCiphers(const FunctionCallbackInfo<Value>& args) {
 
   THROW_AND_RETURN_IF_NOT_STRING(args[0], "Ciphers");
 
-  const node::Utf8Value ciphers(args.GetIsolate(), args[0]);
+  node::Utf8Value ciphers(args.GetIsolate(), args[0]);
+  __e2a_l(*ciphers, ciphers.length());
   SSL_CTX_set_cipher_list(sc->ctx_, *ciphers);
 }
 
@@ -915,6 +918,7 @@ void SecureContext::SetECDHCurve(const FunctionCallbackInfo<Value>& args) {
   THROW_AND_RETURN_IF_NOT_STRING(args[0], "ECDH curve name");
 
   node::Utf8Value curve(env->isolate(), args[0]);
+  __e2a_l(*curve, curve.length());
 
   int nid = OBJ_sn2nid(*curve);
 
@@ -999,7 +1003,8 @@ void SecureContext::SetSessionIdContext(
 
   THROW_AND_RETURN_IF_NOT_STRING(args[0], "Session ID context");
 
-  const node::Utf8Value sessionIdContext(args.GetIsolate(), args[0]);
+  node::Utf8Value sessionIdContext(args.GetIsolate(), args[0]);
+  __e2a_l(*sessionIdContext, sessionIdContext.length());
   const unsigned char* sid_ctx =
       reinterpret_cast<const unsigned char*>(*sessionIdContext);
   unsigned int sid_ctx_len = sessionIdContext.length();
@@ -3109,7 +3114,8 @@ void Connection::New(const FunctionCallbackInfo<Value>& args) {
   if (is_server) {
     SSL_CTX_set_tlsext_servername_callback(sc->ctx_, SelectSNIContextCallback_);
   } else if (args[2]->IsString()) {
-    const node::Utf8Value servername(env->isolate(), args[2]);
+    node::Utf8Value servername(env->isolate(), args[2]);
+    __e2a_l(*servername, servername.length());
     SSL_set_tlsext_host_name(conn->ssl_, *servername);
   }
 #endif
@@ -3535,7 +3541,8 @@ void CipherBase::Init(const FunctionCallbackInfo<Value>& args) {
   THROW_AND_RETURN_IF_NOT_STRING(args[0], "Cipher type");
   THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "Key");
 
-  const node::Utf8Value cipher_type(args.GetIsolate(), args[0]);
+  node::Utf8Value cipher_type(args.GetIsolate(), args[0]);
+  __e2a_l(*cipher_type, cipher_type.length());
   const char* key_buf = Buffer::Data(args[1]);
   ssize_t key_buf_len = Buffer::Length(args[1]);
   cipher->Init(*cipher_type, key_buf, key_buf_len);
@@ -3604,7 +3611,8 @@ void CipherBase::InitIv(const FunctionCallbackInfo<Value>& args) {
   THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "Key");
   THROW_AND_RETURN_IF_NOT_BUFFER(args[2], "IV");
 
-  const node::Utf8Value cipher_type(env->isolate(), args[0]);
+  node::Utf8Value cipher_type(env->isolate(), args[0]);
+  __e2a_l(*cipher_type, cipher_type.length());
   ssize_t key_len = Buffer::Length(args[1]);
   const char* key_buf = Buffer::Data(args[1]);
   ssize_t iv_len = Buffer::Length(args[2]);
@@ -3901,7 +3909,8 @@ void Hmac::HmacInit(const FunctionCallbackInfo<Value>& args) {
   THROW_AND_RETURN_IF_NOT_STRING(args[0], "Hash type");
   THROW_AND_RETURN_IF_NOT_BUFFER(args[1], "Key");
 
-  const node::Utf8Value hash_type(env->isolate(), args[0]);
+  node::Utf8Value hash_type(env->isolate(), args[0]);
+  __e2a_l(*hash_type, hash_type.length());
   const char* buffer_data = Buffer::Data(args[1]);
   size_t buffer_length = Buffer::Length(args[1]);
   hmac->HmacInit(*hash_type, buffer_data, buffer_length);
@@ -4007,7 +4016,8 @@ void Hash::New(const FunctionCallbackInfo<Value>& args) {
     return env->ThrowError("Must give hashtype string as argument");
   }
 
-  const node::Utf8Value hash_type(env->isolate(), args[0]);
+  node::Utf8Value hash_type(env->isolate(), args[0]);
+  __e2a_l(*hash_type, hash_type.length());
 
   Hash* hash = new Hash(env, args.This());
   if (!hash->HashInit(*hash_type)) {
@@ -4211,7 +4221,8 @@ void Sign::SignInit(const FunctionCallbackInfo<Value>& args) {
 
   THROW_AND_RETURN_IF_NOT_STRING(args[0], "Sign type");
 
-  const node::Utf8Value sign_type(args.GetIsolate(), args[0]);
+  node::Utf8Value sign_type(args.GetIsolate(), args[0]);
+  __e2a_l(*sign_type, sign_type.length());
   sign->CheckThrow(sign->SignInit(*sign_type));
 }
 
@@ -4368,6 +4379,7 @@ void Sign::SignFinal(const FunctionCallbackInfo<Value>& args) {
   }
 
   node::Utf8Value passphrase(env->isolate(), args[2]);
+  __e2a_l(*passphrase, passphrase.length());
 
   THROW_AND_RETURN_IF_NOT_BUFFER(args[0], "Data");
   size_t buf_len = Buffer::Length(args[0]);
@@ -4459,7 +4471,8 @@ void Verify::VerifyInit(const FunctionCallbackInfo<Value>& args) {
 
   THROW_AND_RETURN_IF_NOT_STRING(args[0], "Verify type");
 
-  const node::Utf8Value verify_type(args.GetIsolate(), args[0]);
+  node::Utf8Value verify_type(args.GetIsolate(), args[0]);
+  __e2a_l(*verify_type, verify_type.length());
   verify->CheckThrow(verify->VerifyInit(*verify_type));
 }
 
@@ -4898,7 +4911,8 @@ void DiffieHellman::DiffieHellmanGroup(
 
   bool initialized = false;
 
-  const node::Utf8Value group_name(env->isolate(), args[0]);
+  node::Utf8Value group_name(env->isolate(), args[0]);
+  __e2a_l(*group_name, group_name.length());
   for (size_t i = 0; i < arraysize(modp_groups); ++i) {
     const modp_group* it = modp_groups + i;
 
@@ -5224,6 +5238,7 @@ void ECDH::New(const FunctionCallbackInfo<Value>& args) {
   // TODO(indutny): Support raw curves?
   THROW_AND_RETURN_IF_NOT_STRING(args[0], "ECDH curve name");
   node::Utf8Value curve(env->isolate(), args[0]);
+  __e2a_l(*curve, curve.length());
 
   int nid = OBJ_sn2nid(*curve);
   if (nid == NID_undef)
@@ -5690,6 +5705,7 @@ void PBKDF2(const FunctionCallbackInfo<Value>& args) {
 
   if (args[4]->IsString()) {
     node::Utf8Value digest_name(env->isolate(), args[4]);
+    __e2a_l(*digest_name, digest_name.length());
     digest = EVP_get_digestbyname(*digest_name);
     if (digest == nullptr) {
       type_error = "Bad digest name";
@@ -6251,7 +6267,8 @@ void SetEngine(const FunctionCallbackInfo<Value>& args) {
   ClearErrorOnReturn clear_error_on_return;
   (void) &clear_error_on_return;  // Silence compiler warning.
 
-  const node::Utf8Value engine_id(env->isolate(), args[0]);
+  node::Utf8Value engine_id(env->isolate(), args[0]);
+  __e2a_l(*engine_id, engine_id.length());
   ENGINE* engine = ENGINE_by_id(*engine_id);
 
   // Engine not found, try loading dynamically

@@ -113,11 +113,16 @@ void SendHttpResponse(InspectorSocket* socket, const std::string& response) {
 
 void SendVersionResponse(InspectorSocket* socket) {
   static const char response[] =
-      u8"{\n"
-      u8"  \"Browser\": \"node.js/" NODE_VERSION "\",\n"
-      u8"  \"Protocol-Version\": \"1.1\"\n"
-      u8"}\n";
-  SendHttpResponse(socket, response, sizeof(response) - 1);
+      "{\n"
+      "  \"Browser\": \"node.js/" NODE_VERSION "\",\n"
+      "  \"Protocol-Version\": \"1.1\"\n"
+      "}\n";
+  std::vector<char> ebcdic(sizeof(response));
+  std::transform(&response[0], &response[ebcdic.size()], ebcdic.begin(), [](char c) -> char {
+    __e2a_l(&c, 1);
+    return c;
+  });
+  SendHttpResponse(socket, &ebcdic[0], sizeof(response) - 1);
 }
 
 std::string GetProcessTitle() {

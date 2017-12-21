@@ -627,6 +627,7 @@ void Fill(const FunctionCallbackInfo<Value>& args) {
   // to write a two byte character into a one byte Buffer.
   if (enc == UTF8) {
     node::Utf8Value str(env->isolate(), args[1]);
+    __e2a_s(*str);
     memcpy(ts_obj_data + start, *str, MIN(str_length, fill_length));
 
   } else if (enc == UCS2) {
