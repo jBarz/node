@@ -3488,24 +3488,14 @@ void SetupProcessObject(Environment* env,
   // process.argv
   Local<Array> arguments = Array::New(env->isolate(), argc);
   for (int i = 0; i < argc; ++i) {
-    std::vector<char> ebcdic(strlen(argv[i]) + 1);
-    std::transform(argv[i], argv[i] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
-    arguments->Set(i, String::NewFromUtf8(env->isolate(), &ebcdic[0]));
+    arguments->Set(i, String::NewFromUtf8(env->isolate(), argv[i]));
   }
   process->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "argv"), arguments);
 
   // process.execArgv
   Local<Array> exec_arguments = Array::New(env->isolate(), exec_argc);
   for (int i = 0; i < exec_argc; ++i) {
-    std::vector<char> ebcdic(strlen(exec_argv[i]) + 1);
-    std::transform(exec_argv[i], exec_argv[i] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
-    exec_arguments->Set(i, String::NewFromUtf8(env->isolate(), &ebcdic[0]));
+    exec_arguments->Set(i, String::NewFromUtf8(env->isolate(), exec_argv[i]));
   }
   process->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "execArgv"),
                exec_arguments);
@@ -3538,14 +3528,9 @@ void SetupProcessObject(Environment* env,
 
   // -e, --eval
   if (eval_string) {
-    std::vector<char> ebcdic(strlen(eval_string) + 1);
-    std::transform(eval_string, eval_string + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
     READONLY_PROPERTY(process,
                       "_eval",
-                      String::NewFromUtf8(env->isolate(), &ebcdic[0]));
+                      String::NewFromUtf8(env->isolate(), eval_string));
   }
 
   // -p, --print
@@ -3567,13 +3552,8 @@ void SetupProcessObject(Environment* env,
   if (!preload_modules.empty()) {
     Local<Array> array = Array::New(env->isolate());
     for (unsigned int i = 0; i < preload_modules.size(); ++i) {
-      std::vector<char> ebcdic(strlen(preload_modules[i].c_str()) + 1);
-      std::transform(preload_modules[i].c_str(), preload_modules[i].c_str() + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-        __a2e_l(&c, 1);
-        return c;
-      });
       Local<String> module = String::NewFromUtf8(env->isolate(),
-                                                 &ebcdic[0]);
+                                                 preload_modules[i].c_str());
       array->Set(i, module);
     }
     READONLY_PROPERTY(process,
@@ -3642,11 +3622,6 @@ void SetupProcessObject(Environment* env,
                                           String::kNormalString,
                                           exec_path_len);
   } else {
-    std::vector<char> ebcdic(strlen(argv[0]) + 1);
-    std::transform(argv[0], argv[0] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
     exec_path_value = String::NewFromUtf8(env->isolate(), argv[0]);
   }
   process->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "execPath"),
@@ -3845,36 +3820,36 @@ static void PrintHelp();
 static bool ParseDebugOpt(const char* arg) {
   const char* port = nullptr;
 
-  if (!strcmp(arg, "\x2d\x2d\x64\x65\x62\x75\x67")) {
+  if (!strcmp(arg, "--debug")) {
     use_debug_agent = true;
-  } else if (!strncmp(arg, "\x2d\x2d\x64\x65\x62\x75\x67\x3d", sizeof("\x2d\x2d\x64\x65\x62\x75\x67\x3d") - 1)) {
+  } else if (!strncmp(arg, "--debug=", sizeof("--debug=") - 1)) {
     use_debug_agent = true;
-    port = arg + sizeof("\x2d\x2d\x64\x65\x62\x75\x67\x3d") - 1;
-  } else if (!strcmp(arg, "\x2d\x2d\x64\x65\x62\x75\x67\x2d\x62\x72\x6b")) {
-    use_debug_agent = true;
-    debug_wait_connect = true;
-  } else if (!strncmp(arg, "\x2d\x2d\x64\x65\x62\x75\x67\x2d\x62\x72\x6b\x3d", sizeof("\x2d\x2d\x64\x65\x62\x75\x67\x2d\x62\x72\x6b\x3d") - 1)) {
+    port = arg + sizeof("--debug=") - 1;
+  } else if (!strcmp(arg, "--debug-brk")) {
     use_debug_agent = true;
     debug_wait_connect = true;
-    port = arg + sizeof("\x2d\x2d\x64\x65\x62\x75\x67\x2d\x62\x72\x6b\x3d") - 1;
-  } else if (!strncmp(arg, "\x2d\x2d\x64\x65\x62\x75\x67\x2d\x70\x6f\x72\x74\x3d", sizeof("\x2d\x2d\x64\x65\x62\x75\x67\x2d\x70\x6f\x72\x74\x3d") - 1)) {
+  } else if (!strncmp(arg, "--debug-brk=", sizeof("--debug-brk=") - 1)) {
+    use_debug_agent = true;
+    debug_wait_connect = true;
+    port = arg + sizeof("--debug-brk=") - 1;
+  } else if (!strncmp(arg, "--debug-port=", sizeof("--debug-port=") - 1)) {
     // XXX(bnoordhuis) Misnomer, configures port and listen address.
-    port = arg + sizeof("\x2d\x2d\x64\x65\x62\x75\x67\x2d\x70\x6f\x72\x74\x3d") - 1;
+    port = arg + sizeof("--debug-port=") - 1;
 #if HAVE_INSPECTOR
   // Specifying both --inspect and --debug means debugging is on, using Chromium
   // inspector.
-  } else if (!strcmp(arg, "\x2d\x2d\x69\x6e\x73\x70\x65\x63\x74")) {
+  } else if (!strcmp(arg, "--inspect")) {
     use_debug_agent = true;
     use_inspector = true;
-  } else if (!strncmp(arg, "\x2d\x2d\x69\x6e\x73\x70\x65\x63\x74\x3d", sizeof("\x2d\x2d\x69\x6e\x73\x70\x65\x63\x74\x3d") - 1)) {
+  } else if (!strncmp(arg, "--inspect=", sizeof("--inspect=") - 1)) {
     use_debug_agent = true;
     use_inspector = true;
     port = arg + sizeof("--inspect=") - 1;
-  } else if (!strcmp(arg, "\x2d\x2d\x69\x6e\x73\x70\x65\x63\x74\x2d\x62\x72\x6b")) {
+  } else if (!strcmp(arg, "--inspect-brk")) {
     use_debug_agent = true;
     use_inspector = true;
     debug_wait_connect = true;
-  } else if (!strncmp(arg, "\x2d\x2d\x69\x6e\x73\x70\x65\x63\x74\x2d\x62\x72\x6b\x3d", sizeof("--inspect-brk=") - 1)) {
+  } else if (!strncmp(arg, "--inspect-brk=", sizeof("--inspect-brk=") - 1)) {
     use_debug_agent = true;
     use_inspector = true;
     debug_wait_connect = true;
@@ -3900,35 +3875,31 @@ static bool ParseDebugOpt(const char* arg) {
   // It seems reasonable to support [address]:port notation
   // in net.Server#listen() and net.Socket#connect().
   const size_t port_len = strlen(port);
-  if (port[0] == '\x5b' && port[port_len - 1] == '\x5d') {
+  if (port[0] == '[' && port[port_len - 1] == ']') {
     the_host->assign(port + 1, port_len - 2);
     return true;
   }
 
-  const char* const colon = strrchr(port, '\x3a');
+  const char* const colon = strrchr(port, ':');
   if (colon == nullptr) {
     // Either a port number or a host name.  Assume that
     // if it's not all decimal digits, it's a host name.
-    for (size_t n = 0; port[n] != '\x0'; n += 1) {
-      if (port[n] < '\x30' || port[n] > '\x39') {
+    for (size_t n = 0; port[n] != '\0'; n += 1) {
+      if (port[n] < '0' || port[n] > '9') {
         *the_host = port;
         return true;
       }
     }
   } else {
-    const bool skip = (colon > port && port[0] == '\x5b' && colon[-1] == '\x5d');
+    const bool skip = (colon > port && port[0] == '[' && colon[-1] == ']');
     the_host->assign(port + skip, colon - skip);
   }
 
   char* endptr;
   errno = 0;
   const char* const digits = colon != nullptr ? colon + 1 : port;
-#ifdef __MVS__
-  const long result = __strtol_a(digits, &endptr, 10);  // NOLINT(runtime/int)
-#else
   const long result = strtol(digits, &endptr, 10);  // NOLINT(runtime/int)
-#endif
-  if (errno != 0 || *endptr != '\x0' || result < 1024 || result > 65535) {
+  if (errno != 0 || *endptr != '\0' || result < 1024 || result > 65535) {
     fprintf(stderr, "Debug port must be in range 1024 to 65535.\n");
     PrintHelp();
     exit(12);
@@ -4071,39 +4042,35 @@ static void CheckIfAllowedInEnv(const char* exe, bool is_env,
   if (!is_env)
     return;
 
-  // Find the arg prefix when its --some_arg=val
-  const char* eq = strchr(arg, '\x3d');
-  size_t arglen = eq ? eq - arg : strlen(arg);
-
   static const char* whitelist[] = {
     // Node options, sorted in `node --help` order for ease of comparison.
-    u8"--require", u8"-r",
-    u8"--debug",
-    u8"--debug-brk",
-    u8"--debug-port",
-    u8"--no-deprecation",
-    u8"--trace-deprecation",
-    u8"--throw-deprecation",
-    u8"--pending-deprecation",
-    u8"--no-warnings",
-    u8"--napi-modules",
-    u8"--trace-warnings",
-    u8"--redirect-warnings",
-    u8"--trace-sync-io",
-    u8"--track-heap-objects",
-    u8"--zero-fill-buffers",
-    u8"--v8-pool-size",
-    u8"--tls-cipher-list",
-    u8"--use-bundled-ca",
-    u8"--use-openssl-ca",
-    u8"--enable-fips",
-    u8"--force-fips",
-    u8"--openssl-config",
-    u8"--icu-data-dir",
+    "--require", "-r",
+    "--debug",
+    "--debug-brk",
+    "--debug-port",
+    "--no-deprecation",
+    "--trace-deprecation",
+    "--throw-deprecation",
+    "--pending-deprecation",
+    "--no-warnings",
+    "--napi-modules",
+    "--trace-warnings",
+    "--redirect-warnings",
+    "--trace-sync-io",
+    "--track-heap-objects",
+    "--zero-fill-buffers",
+    "--v8-pool-size",
+    "--tls-cipher-list",
+    "--use-bundled-ca",
+    "--use-openssl-ca",
+    "--enable-fips",
+    "--force-fips",
+    "--openssl-config",
+    "--icu-data-dir",
 
     // V8 options (define with '_', which allows '-' or '_')
-    u8"--abort-on-uncaught-exception",
-    u8"--max_old_space_size",
+    "--abort_on_uncaught_exception",
+    "--max_old_space_size",
   };
 
   for (unsigned i = 0; i < arraysize(whitelist); i++) {
@@ -4112,17 +4079,7 @@ static void CheckIfAllowedInEnv(const char* exe, bool is_env,
       return;
   }
 
-  std::vector<char> ebcdic(strlen(exe) + 1);
-  std::transform(exe, exe + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
-  std::vector<char> ebcdic1(strlen(arg) + 1);
-  std::transform(arg, arg + ebcdic1.size(), ebcdic1.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
-  fprintf(stderr, "%s: %s is not allowed in NODE_OPTIONS\n", &ebcdic[0], &ebcdic1[0]);
+  fprintf(stderr, "%s: %s is not allowed in NODE_OPTIONS\n", exe, arg);
   exit(9);
 }
 
@@ -4165,7 +4122,7 @@ static void ParseArgs(int* argc,
 
   unsigned int index = 1;
   bool short_circuit = false;
-  while (index < nargs && argv[index][0] == '\x2d' && !short_circuit) {
+  while (index < nargs && argv[index][0] == '-' && !short_circuit) {
     const char* const arg = argv[index];
     unsigned int args_consumed = 1;
 
@@ -4173,126 +4130,106 @@ static void ParseArgs(int* argc,
 
     if (ParseDebugOpt(arg)) {
       // Done, consumed by ParseDebugOpt().
-    } else if (strcmp(arg, u8"--version") == 0 || strcmp(arg, "-v") == 0) {
+    } else if (strcmp(arg, "--version") == 0 || strcmp(arg, "-v") == 0) {
       printf("%s\n", NODE_VERSION);
       exit(0);
-    } else if (strcmp(arg, "\x2d\x2d\x68\x65\x6c\x70") == 0 || strcmp(arg, "\x2d\x68") == 0) {
+    } else if (strcmp(arg, "--help") == 0 || strcmp(arg, "-h") == 0) {
       PrintHelp();
       exit(0);
-    } else if (strcmp(arg, "\x2d\x2d\x65\x76\x61\x6c") == 0 ||
-               strcmp(arg, "\x2d\x65") == 0 ||
-               strcmp(arg, "\x2d\x2d\x70\x72\x69\x6e\x74") == 0 ||
-               strcmp(arg, "\x2d\x70\x65") == 0 ||
-               strcmp(arg, "\x2d\x70") == 0) {
-      bool is_eval = strchr(arg, '\x65') != nullptr;
-      bool is_print = strchr(arg, '\x70') != nullptr;
+    } else if (strcmp(arg, "--eval") == 0 ||
+               strcmp(arg, "-e") == 0 ||
+               strcmp(arg, "--print") == 0 ||
+               strcmp(arg, "-pe") == 0 ||
+               strcmp(arg, "-p") == 0) {
+      bool is_eval = strchr(arg, 'e') != nullptr;
+      bool is_print = strchr(arg, 'p') != nullptr;
       print_eval = print_eval || is_print;
       // --eval, -e and -pe always require an argument.
       if (is_eval == true) {
         args_consumed += 1;
         eval_string = argv[index + 1];
         if (eval_string == nullptr) {
-          std::vector<char> ebcdic(strlen(argv[0]) + 1);
-          std::transform(argv[0], argv[0] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-            __a2e_l(&c, 1);
-            return c;
-          });
-          std::vector<char> ebcdic1(strlen(arg) + 1);
-          std::transform(arg, arg + ebcdic1.size(), ebcdic1.begin(), [](char c) -> char {
-            __a2e_l(&c, 1);
-            return c;
-          });
-          fprintf(stderr, "%s: %s requires an argument\n", &ebcdic[0], &ebcdic[1]);
+          fprintf(stderr, "%s: %s requires an argument\n", argv[0], arg);
           exit(9);
         }
       } else if ((index + 1 < nargs) &&
                  argv[index + 1] != nullptr &&
-                 argv[index + 1][0] != '\x2d') {
+                 argv[index + 1][0] != '-') {
         args_consumed += 1;
         eval_string = argv[index + 1];
-        if (strncmp(eval_string, "\x5c\x2d", 2) == 0) {
+        if (strncmp(eval_string, "\\-", 2) == 0) {
           // Starts with "\\-": escaped expression, drop the backslash.
           eval_string += 1;
         }
       }
-    } else if (strcmp(arg, "\x2d\x2d\x72\x65\x71\x75\x69\x72\x65") == 0 ||
-               strcmp(arg, "\x2d\x72") == 0) {
+    } else if (strcmp(arg, "--require") == 0 ||
+               strcmp(arg, "-r") == 0) {
       const char* module = argv[index + 1];
       if (module == nullptr) {
-        std::vector<char> ebcdic(strlen(argv[0]) + 1);
-        std::transform(argv[0], argv[0] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-          __a2e_l(&c, 1);
-          return c;
-        });
-        std::vector<char> ebcdic1(strlen(arg) + 1);
-        std::transform(arg, arg + ebcdic1.size(), ebcdic1.begin(), [](char c) -> char {
-          __a2e_l(&c, 1);
-          return c;
-        });
-        fprintf(stderr, "%s: %s requires an argument\n", &ebcdic[0], &ebcdic[1]);
+        fprintf(stderr, "%s: %s requires an argument\n", argv[0], arg);
         exit(9);
       }
       args_consumed += 1;
       preload_modules.push_back(module);
-    } else if (strcmp(arg, "\x2d\x2d\x63\x68\x65\x63\x6b") == 0 || strcmp(arg, "\x2d\x63") == 0) {
+    } else if (strcmp(arg, "--check") == 0 || strcmp(arg, "-c") == 0) {
       syntax_check_only = true;
-    } else if (strcmp(arg, "\x2d\x2d\x69\x6e\x74\x65\x72\x61\x63\x74\x69\x76\x65") == 0 || strcmp(arg, "\x2d\x69") == 0) {
+    } else if (strcmp(arg, "--interactive") == 0 || strcmp(arg, "-i") == 0) {
       force_repl = true;
-    } else if (strcmp(arg, "\x2d\x2d\x6e\x6f\x2d\x64\x65\x70\x72\x65\x63\x61\x74\x69\x6f\x6e") == 0) {
+    } else if (strcmp(arg, "--no-deprecation") == 0) {
       no_deprecation = true;
-    } else if (strcmp(arg, "\x2d\x2d\x6e\x6f\x2d\x77\x61\x72\x6e\x69\x6e\x67\x73") == 0) {
+    } else if (strcmp(arg, "--no-warnings") == 0) {
       no_process_warnings = true;
-    } else if (strcmp(arg, "\x2d\x2d\x74\x72\x61\x63\x65\x2d\x77\x61\x72\x6e\x69\x6e\x67\x73") == 0) {
+    } else if (strcmp(arg, "--trace-warnings") == 0) {
       trace_warnings = true;
-    } else if (strncmp(arg, "\x2d\x2d\x72\x65\x64\x69\x72\x65\x63\x74\x2d\x77\x61\x72\x6e\x69\x6e\x67\x73\x3d", 20) == 0) {
+    } else if (strncmp(arg, "--redirect-warnings=", 20) == 0) {
       config_warning_file = arg + 20;
-    } else if (strcmp(arg, "\x2d\x2d\x74\x72\x61\x63\x65\x2d\x64\x65\x70\x72\x65\x63\x61\x74\x69\x6f\x6e") == 0) {
+    } else if (strcmp(arg, "--trace-deprecation") == 0) {
       trace_deprecation = true;
-    } else if (strcmp(arg, "\x2d\x2d\x74\x72\x61\x63\x65\x2d\x73\x79\x6e\x63\x2d\x69\x6f") == 0) {
+    } else if (strcmp(arg, "--trace-sync-io") == 0) {
       trace_sync_io = true;
-    } else if (strcmp(arg, "\x2d\x2d\x74\x72\x61\x63\x6b\x2d\x68\x65\x61\x70\x2d\x6f\x62\x6a\x65\x63\x74\x73") == 0) {
+    } else if (strcmp(arg, "--track-heap-objects") == 0) {
       track_heap_objects = true;
-    } else if (strcmp(arg, "\x2d\x2d\x74\x68\x72\x6f\x77\x2d\x64\x65\x70\x72\x65\x63\x61\x74\x69\x6f\x6e") == 0) {
+    } else if (strcmp(arg, "--throw-deprecation") == 0) {
       throw_deprecation = true;
-    } else if (strncmp(arg, "\x2d\x2d\x73\x65\x63\x75\x72\x69\x74\x79\x2d\x72\x65\x76\x65\x72\x74\x3d", 18) == 0) {
+    } else if (strncmp(arg, "--security-revert=", 18) == 0) {
       const char* cve = arg + 18;
       Revert(cve);
-    } else if (strcmp(arg, "\x2d\x2d\x70\x72\x65\x73\x65\x72\x76\x65\x2d\x73\x79\x6d\x6c\x69\x6e\x6b\x73") == 0) {
+    } else if (strcmp(arg, "--preserve-symlinks") == 0) {
       config_preserve_symlinks = true;
-    } else if (strcmp(arg, "\x2d\x2d\x70\x72\x6f\x66\x2d\x70\x72\x6f\x63\x65\x73\x73") == 0) {
+    } else if (strcmp(arg, "--prof-process") == 0) {
       prof_process = true;
       short_circuit = true;
-    } else if (strcmp(arg, "\x2d\x2d\x7a\x65\x72\x6f\x2d\x66\x69\x6c\x6c\x2d\x62\x75\x66\x66\x65\x72\x73") == 0) {
+    } else if (strcmp(arg, "--zero-fill-buffers") == 0) {
       zero_fill_all_buffers = true;
-    } else if (strcmp(arg, "\x2d\x2d\x76\x38\x2d\x6f\x70\x74\x69\x6f\x6e\x73") == 0) {
-      new_v8_argv[new_v8_argc] = "\x2d\x2d\x68\x65\x6c\x70";
+    } else if (strcmp(arg, "--v8-options") == 0) {
+      new_v8_argv[new_v8_argc] = "--help";
       new_v8_argc += 1;
-    } else if (strncmp(arg, "\x2d\x2d\x76\x38\x2d\x70\x6f\x6f\x6c\x2d\x73\x69\x7a\x65\x3d", 15) == 0) {
+    } else if (strncmp(arg, "--v8-pool-size=", 15) == 0) {
       v8_thread_pool_size = atoi(arg + 15);
 #if HAVE_OPENSSL
-    } else if (strncmp(arg, "\x2d\x2d\x74\x6c\x73\x2d\x63\x69\x70\x68\x65\x72\x2d\x6c\x69\x73\x74\x3d", 18) == 0) {
+    } else if (strncmp(arg, "--tls-cipher-list=", 18) == 0) {
       default_cipher_list = arg + 18;
-    } else if (strncmp(arg, u8"--use-openssl-ca", 16) == 0) {
+    } else if (strncmp(arg, "--use-openssl-ca", 16) == 0) {
       ssl_openssl_cert_store = true;
-    } else if (strncmp(arg, u8"--use-bundled-ca", 16) == 0) {
+    } else if (strncmp(arg, "--use-bundled-ca", 16) == 0) {
       ssl_openssl_cert_store = false;
 #if NODE_FIPS_MODE
-    } else if (strcmp(arg, "\x2d\x2d\x65\x6e\x61\x62\x6c\x65\x2d\x66\x69\x70\x73") == 0) {
+    } else if (strcmp(arg, "--enable-fips") == 0) {
       enable_fips_crypto = true;
-    } else if (strcmp(arg, "\x2d\x2d\x66\x6f\x72\x63\x65\x2d\x66\x69\x70\x73") == 0) {
+    } else if (strcmp(arg, "--force-fips") == 0) {
       force_fips_crypto = true;
 #endif /* NODE_FIPS_MODE */
-    } else if (strncmp(arg, "\x2d\x2d\x6f\x70\x65\x6e\x73\x73\x6c\x2d\x63\x6f\x6e\x66\x69\x67\x3d", 17) == 0) {
+    } else if (strncmp(arg, "--openssl-config=", 17) == 0) {
       openssl_config.assign(arg + 17);
 #endif /* HAVE_OPENSSL */
 #if defined(NODE_HAVE_I18N_SUPPORT)
-    } else if (strncmp(arg, "\x2d\x2d\x69\x63\x75\x2d\x64\x61\x74\x61\x2d\x64\x69\x72\x3d", 15) == 0) {
+    } else if (strncmp(arg, "--icu-data-dir=", 15) == 0) {
       icu_data_dir.assign(arg + 15);
 #endif
-    } else if (strcmp(arg, "\x2d\x2d\x65\x78\x70\x6f\x73\x65\x2d\x69\x6e\x74\x65\x72\x6e\x61\x6c\x73") == 0 ||
-               strcmp(arg, "\x2d\x2d\x65\x78\x70\x6f\x73\x65\x5f\x69\x6e\x74\x65\x72\x6e\x61\x6c\x73") == 0) {
+    } else if (strcmp(arg, "--expose-internals") == 0 ||
+               strcmp(arg, "--expose_internals") == 0) {
       config_expose_internals = true;
-    } else if (strcmp(arg, u8"--") == 0) {
+    } else if (strcmp(arg, "--") == 0) {
       index += 1;
       break;
     } else {
@@ -4313,18 +4250,8 @@ static void ParseArgs(int* argc,
   const unsigned int args_left = nargs - index;
 
   if (is_env && args_left) {
-    std::vector<char> ebcdic(strlen(argv[0]) + 1);
-    std::transform(argv[0], argv[0] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
-    std::vector<char> ebcdic1(strlen(argv[index]) + 1);
-    std::transform(argv[index], argv[index] + ebcdic1.size(), ebcdic1.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
     fprintf(stderr, "%s: %s is not supported in NODE_OPTIONS\n",
-            &ebcdic[0], &ebcdic1[0]);
+            argv[0], argv[index]);
     exit(9);
   }
 
@@ -4842,17 +4769,7 @@ void ProcessArgv(int* argc,
 
   // Anything that's still in v8_argv is not a V8 or a node option.
   for (int i = 1; i < v8_argc; i++) {
-    std::vector<char> ebcdic(strlen(argv[0]) + 1);
-    std::transform(argv[0], argv[0] + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
-    std::vector<char> ebcdic1(strlen(v8_argv[i]) + 1);
-    std::transform(v8_argv[i], v8_argv[i] + ebcdic1.size(), ebcdic1.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
-    fprintf(stderr, "%s: bad option: %s\n", &ebcdic[0], &ebcdic1[0]);
+    fprintf(stderr, "%s: bad option: %s\n", argv[0], v8_argv[i]);
   }
   delete[] v8_argv;
   v8_argv = nullptr;
@@ -4905,12 +4822,9 @@ void Init(int* argc,
     argv_from_env[argc_from_env++] = argv[0];
 
     char* cstr = strdup(node_options.c_str());
-#ifdef __MVS__
-    __e2a_s(cstr);
-#endif
     char* initptr = cstr;
     char* token;
-    while ((token = strtok(initptr, "\x20"))) {  // NOLINT(runtime/threadsafe_fn)
+    while ((token = strtok(initptr, " "))) {  // NOLINT(runtime/threadsafe_fn)
       initptr = nullptr;
       argv_from_env[argc_from_env++] = token;
     }
@@ -4930,12 +4844,6 @@ void Init(int* argc,
   // If the parameter isn't given, use the env variable.
   if (icu_data_dir.empty())
     SafeGetenv("NODE_ICU_DATA", &icu_data_dir);
-#ifdef __MVS__
-  transform(icu_data_dir.begin(), icu_data_dir.end(), back_inserter(icu_data_dir), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
-#endif
   // Initialize ICU.
   // If icu_data_dir is empty here, it will load the 'minimal' data.
   if (!i18n::InitializeICUDirectory(icu_data_dir)) {
@@ -4947,7 +4855,7 @@ void Init(int* argc,
   // Unconditionally force typed arrays to allocate outside the v8 heap. This
   // is to prevent memory pointers from being moved around that are returned by
   // Buffer::Data().
-  const char no_typed_array_heap[] = "\x2d\x2d\x74\x79\x70\x65\x64\x5f\x61\x72\x72\x61\x79\x5f\x6d\x61\x78\x5f\x73\x69\x7a\x65\x5f\x69\x6e\x5f\x68\x65\x61\x70\x3d\x30";
+  const char no_typed_array_heap[] = "--typed_array_max_size_in_heap=0";
   V8::SetFlagsFromString(no_typed_array_heap, sizeof(no_typed_array_heap) - 1);
 
   if (!use_debug_agent) {
@@ -5261,11 +5169,6 @@ int Start(int argc, char** argv) {
 
   // Hack around with the argv pointer. Used for process.title = "blah".
   argv = uv_setup_args(argc, argv);
-
-#ifdef __MVS__
-  for (int i = 0; i < argc; i++)
-    __e2a_s(argv[i]);
-#endif
 
   // This needs to run *before* V8::Initialize().  The const_cast is not
   // optional, in case you're wondering.
