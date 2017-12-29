@@ -54,7 +54,7 @@ static void GetHostname(const FunctionCallbackInfo<Value>& args) {
 #else  // __MINGW32__
     int errorno = WSAGetLastError();
 #endif  // __POSIX__
-    return env->ThrowErrnoException(errorno, "\x67\x65\x74\x68\x6f\x73\x74\x6e\x61\x6d\x65");
+    return env->ThrowErrnoException(errorno, "gethostname");
   }
   buf[sizeof(buf) - 1] = '\0';
 
@@ -69,7 +69,7 @@ static void GetOSType(const FunctionCallbackInfo<Value>& args) {
 #ifdef __POSIX__
   struct utsname info;
   if (uname(&info) < 0) {
-    return env->ThrowErrnoException(errno, "\x75\x6e\x61\x6d\x65");
+    return env->ThrowErrnoException(errno, "uname");
   }
   rval = info.sysname;
 #else  // __MINGW32__
@@ -87,7 +87,7 @@ static void GetOSRelease(const FunctionCallbackInfo<Value>& args) {
 #ifdef __POSIX__
   struct utsname info;
   if (uname(&info) < 0) {
-    return env->ThrowErrnoException(errno, "\x75\x6e\x61\x6d\x65");
+    return env->ThrowErrnoException(errno, "uname");
   }
 # ifdef _AIX
   char release[256];

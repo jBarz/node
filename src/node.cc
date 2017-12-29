@@ -428,7 +428,7 @@ int SNPrintFASCII(char * out, int length, const char* format_a, ...) {
 #endif
 
 static inline const char *errno_string(int errorno) {
-#define ERRNO_CASE(e)  case e: return USTR(#e;)
+#define ERRNO_CASE(e)  case e: return #e;
   switch (errorno) {
 #ifdef EACCES
   ERRNO_CASE(EACCES);
@@ -963,22 +963,11 @@ Local<Value> ErrnoException(Isolate* isolate,
   Environment* env = Environment::GetCurrent(isolate);
 
   Local<Value> e;
-  const char* ascii = errno_string(errorno);
-  std::vector<char> ebcdic(strlen(ascii) + 1);
-  std::transform(ascii, ascii + ebcdic.size(), ebcdic.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
-  Local<String> estring = OneByteString(env->isolate(), &ebcdic[0]);
-  if (msg == nullptr || msg[0] == '\x0') {
+  Local<String> estring = OneByteString(env->isolate(), errno_string(errorno));
+  if (msg == nullptr || msg[0] == '\0') {
     msg = strerror(errorno);
   }
-  std::vector<char> ebcdicmsg(strlen(msg) + 1);
-  std::transform(msg, msg + ebcdicmsg.size(), ebcdicmsg.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
-  Local<String> message = OneByteString(env->isolate(), &ebcdicmsg[0]);
+  Local<String> message = OneByteString(env->isolate(), msg);
 
   Local<String> cons =
       String::Concat(estring, FIXED_ONE_BYTE_STRING(env->isolate(), ", "));
@@ -1006,12 +995,7 @@ Local<Value> ErrnoException(Isolate* isolate,
   }
 
   if (syscall != nullptr) {
-    std::vector<char> ebcdicsyscall(strlen(syscall) + 1);
-    std::transform(syscall, syscall + ebcdicsyscall.size(), ebcdicsyscall.begin(), [](char c) -> char {
-      __a2e_l(&c, 1);
-      return c;
-    });
-    obj->Set(env->syscall_string(), OneByteString(env->isolate(), &ebcdicsyscall[0]));
+    obj->Set(env->syscall_string(), OneByteString(env->isolate(), syscall));
   }
 
   return e;
@@ -1151,12 +1135,7 @@ Local<Value> WinapiErrnoException(Isolate* isolate,
   if (!msg || !msg[0]) {
     msg = winapi_strerror(errorno, &must_free);
   }
-  std::vector<char> ebcdicmsg(strlen(msg) + 1);
-  std::transform(msg, msg + ebcdicmsg.size(), ebcdicmsg.begin(), [](char c) -> char {
-    __a2e_l(&c, 1);
-    return c;
-  });
-  Local<String> message = OneByteString(env->isolate(), &ebcdicmsg[0]);
+  Local<String> message = OneByteString(env->isolate(), msg);
 
   if (path) {
     Local<String> cons1 =
@@ -2242,7 +2221,7 @@ static void SetGid(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (setgid(gid)) {
-    return env->ThrowErrnoException(errno, "\x73\x65\x74\x67\x69\x64");
+    return env->ThrowErrnoException(errno, "setgid");
   }
 }
 
@@ -2261,7 +2240,7 @@ static void SetEGid(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (setegid(gid)) {
-    return env->ThrowErrnoException(errno, "\x73\x65\x74\x65\x67\x69\x64");
+    return env->ThrowErrnoException(errno, "setegid");
   }
 }
 
@@ -2280,7 +2259,7 @@ static void SetUid(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (setuid(uid)) {
-    return env->ThrowErrnoException(errno, "\x73\x65\x74\x75\x69\x64");
+    return env->ThrowErrnoException(errno, "setuid");
   }
 }
 
@@ -2299,7 +2278,7 @@ static void SetEUid(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (seteuid(uid)) {
-    return env->ThrowErrnoException(errno, "\x73\x65\x74\x65\x75\x69\x64");
+    return env->ThrowErrnoException(errno, "seteuid");
   }
 }
 
@@ -2310,7 +2289,7 @@ static void GetGroups(const FunctionCallbackInfo<Value>& args) {
   int ngroups = getgroups(0, nullptr);
 
   if (ngroups == -1) {
-    return env->ThrowErrnoException(errno, "\x67\x65\x74\x67\x72\x6f\x75\x70\x73");
+    return env->ThrowErrnoException(errno, "getgroups");
   }
 
   gid_t* groups = new gid_t[ngroups];
@@ -2319,7 +2298,7 @@ static void GetGroups(const FunctionCallbackInfo<Value>& args) {
 
   if (ngroups == -1) {
     delete[] groups;
-    return env->ThrowErrnoException(errno, "\x67\x65\x74\x67\x72\x6f\x75\x70\x73");
+    return env->ThrowErrnoException(errno, "getgroups");
   }
 
   Local<Array> groups_list = Array::New(env->isolate(), ngroups);
@@ -2368,7 +2347,7 @@ static void SetGroups(const FunctionCallbackInfo<Value>& args) {
   delete[] groups;
 
   if (rc == -1) {
-    return env->ThrowErrnoException(errno, "\x73\x65\x74\x67\x72\x6f\x75\x70\x73");
+    return env->ThrowErrnoException(errno, "setgroups");
   }
 }
 
@@ -2416,7 +2395,7 @@ static void InitGroups(const FunctionCallbackInfo<Value>& args) {
   }
 
   if (rc) {
-    return env->ThrowErrnoException(errno, "\x69\x6e\x69\x74\x67\x72\x6f\x75\x70\x73");
+    return env->ThrowErrnoException(errno, "initgroups");
   }
 }
 
@@ -4488,7 +4467,7 @@ void DebugProcess(const FunctionCallbackInfo<Value>& args) {
   pid = args[0]->IntegerValue();
   r = kill(pid, SIGUSR1);
   if (r != 0) {
-    return env->ThrowErrnoException(errno, "\x6b\x69\x6c\x6c");
+    return env->ThrowErrnoException(errno, "kill");
   }
 }
 
@@ -4640,14 +4619,14 @@ static void DebugProcess(const FunctionCallbackInfo<Value>& args) {
                         pid);
   if (process == nullptr) {
     isolate->ThrowException(
-        WinapiErrnoException(isolate, GetLastError(), "\x4f\x70\x65\x6e\x50\x72\x6f\x63\x65\x73\x73"));
+        WinapiErrnoException(isolate, GetLastError(), "OpenProcess"));
     goto out;
   }
 
   if (GetDebugSignalHandlerMappingName(pid,
                                        mapping_name,
                                        arraysize(mapping_name)) < 0) {
-    env->ThrowErrnoException(errno, "\x73\x70\x72\x69\x6e\x74\x66");
+    env->ThrowErrnoException(errno, "sprintf");
     goto out;
   }
 
@@ -4655,7 +4634,7 @@ static void DebugProcess(const FunctionCallbackInfo<Value>& args) {
   if (mapping == nullptr) {
     isolate->ThrowException(WinapiErrnoException(isolate,
                                              GetLastError(),
-                                             "\x4f\x70\x65\x6e\x46\x69\x6c\x65\x4d\x61\x70\x70\x69\x6e\x67\x57"));
+                                             "OpenFileMappingW"));
     goto out;
   }
 
@@ -4667,7 +4646,7 @@ static void DebugProcess(const FunctionCallbackInfo<Value>& args) {
                     sizeof *handler));
   if (handler == nullptr || *handler == nullptr) {
     isolate->ThrowException(
-        WinapiErrnoException(isolate, GetLastError(), "\x4d\x61\x70\x56\x69\x65\x77\x4f\x66\x46\x69\x6c\x65"));
+        WinapiErrnoException(isolate, GetLastError(), "MapViewOfFile"));
     goto out;
   }
 
@@ -4681,7 +4660,7 @@ static void DebugProcess(const FunctionCallbackInfo<Value>& args) {
   if (thread == nullptr) {
     isolate->ThrowException(WinapiErrnoException(isolate,
                                                  GetLastError(),
-                                                 "\x43\x72\x65\x61\x74\x65\x52\x65\x6d\x6f\x74\x65\x54\x68\x72\x65\x61\x64"));
+                                                 "CreateRemoteThread"));
     goto out;
   }
 
@@ -4689,7 +4668,7 @@ static void DebugProcess(const FunctionCallbackInfo<Value>& args) {
   if (WaitForSingleObject(thread, INFINITE) != WAIT_OBJECT_0) {
     isolate->ThrowException(WinapiErrnoException(isolate,
                                                  GetLastError(),
-                                                 "\x57\x61\x69\x74\x46\x6f\x72\x53\x69\x6e\x67\x6c\x65\x4f\x62\x6a\x65\x63\x74"));
+                                                 "WaitForSingleObject"));
     goto out;
   }
 
