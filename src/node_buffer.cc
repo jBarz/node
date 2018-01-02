@@ -1071,6 +1071,7 @@ void IndexOfString(const FunctionCallbackInfo<Value>& args) {
     result *= 2;
   } else if (enc == UTF8) {
     String::Utf8Value needle_value(needle);
+    __e2a_l(*needle_value, needle_value.length());
     if (*needle_value == nullptr)
       return args.GetReturnValue().Set(-1);
 

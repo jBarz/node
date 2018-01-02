@@ -1852,7 +1852,6 @@ static void ReportException(Environment* env,
         name->IsUndefined()) {
       // Not an error object. Just print as-is.
       String::Utf8Value message(er);
-      __a2e_s(*message);
 
       PrintErrorString("%s\n", *message ? *message :
                                           "<toString() threw exception>");

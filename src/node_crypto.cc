@@ -4771,6 +4771,7 @@ void PublicKeyCipher::Cipher(const FunctionCallbackInfo<Value>& args) {
   int padding = args[2]->Uint32Value();
 
   String::Utf8Value passphrase(args[3]);
+  __e2a_l(*passphrase, passphrase.length());
 
   unsigned char* out_value = nullptr;
   size_t out_len = 0;
