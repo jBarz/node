@@ -26,6 +26,8 @@ var templates = path.join(remotes, '_templates')
 
 var VALID_VARIABLES = [
   'GIT_ASKPASS',
+  'GIT_SHELL',
+  'GIT_TEMPLATE_DIR',
   'GIT_EXEC_PATH',
   'GIT_PROXY_COMMAND',
   'GIT_SSH',
