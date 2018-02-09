@@ -199,8 +199,11 @@ static void epoll_init(void) {
   if (uv_mutex_init(&global_epoll_lock))
     abort();
 
+  /* TODO: fix */
+#if 0
   if (pthread_atfork(&before_fork, &after_fork, &child_fork))
     abort();
+#endif
 }
 
 
