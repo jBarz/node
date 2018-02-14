@@ -4326,8 +4326,8 @@ static void ParseArgs(int* argc,
 
 #if HAVE_OPENSSL
   if (use_openssl_ca && use_bundled_ca) {
-    fprintf(stderr,
-            "%s: either --use-openssl-ca or --use-bundled-ca can be used, "
+    PrintErrorString(
+            u8"%s: either --use-openssl-ca or --use-bundled-ca can be used, "
             "not both\n",
             argv[0]);
     exit(9);
