@@ -3535,7 +3535,7 @@ void CipherBase::SetAuthTag(const FunctionCallbackInfo<Value>& args) {
   unsigned int tag_len = Buffer::Length(buf);
   if (tag_len > 16 || (tag_len < 12 && tag_len != 8 && tag_len != 4)) {
     ProcessEmitWarning(cipher->env(),
-        "Permitting authentication tag lengths of %u bytes is deprecated. "
+        u8"Permitting authentication tag lengths of %u bytes is deprecated. "
         "Valid GCM tag lengths are 4, 8, 12, 13, 14, 15, 16.",
         tag_len);
   }
@@ -5824,7 +5824,7 @@ void RandomBytesBuffer(const FunctionCallbackInfo<Value>& args) {
                              RandomBytesRequest::DONT_FREE_DATA);
   if (args[3]->IsFunction()) {
     obj->Set(env->context(),
-             FIXED_ONE_BYTE_STRING(args.GetIsolate(), "ondone"),
+             FIXED_ONE_BYTE_STRING(args.GetIsolate(), "\x6f\x6e\x64\x6f\x6e\x65"),
              args[3]).FromJust();
 
     if (env->in_domain()) {
