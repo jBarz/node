@@ -7,6 +7,7 @@
 #include "util-inl.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 
 
 namespace node {
@@ -219,6 +220,7 @@ void UDPWrap::SetMulticastInterface(const FunctionCallbackInfo<Value>& args) {
   CHECK(args[0]->IsString());
 
   Utf8Value iface(args.GetIsolate(), args[0]);
+  __a2e_s(&((*iface)[0]));
 
   const char* iface_cstr = *iface;
 
