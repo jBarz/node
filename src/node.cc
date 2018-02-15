@@ -4141,7 +4141,7 @@ static void CheckIfAllowedInEnv(const char* exe, bool is_env,
     u8"--icu-data-dir",
 
     // V8 options (define with '_', which allows '-' or '_')
-    u8"--abort-on-uncaught-exception",
+    u8"--abort_on_uncaught_exception",
     u8"--max_old_space_size",
   };
 
