@@ -4086,8 +4086,8 @@ static bool ArgIsAllowed(const char* arg, const char* allowed) {
   for (; *arg && *allowed; arg++, allowed++) {
     // Like normal strcmp(), except that a '_' in `allowed` matches either a '-'
     // or '_' in `arg`.
-    if (*allowed == '_') {
-      if (!(*arg == '_' || *arg == '-'))
+    if (*allowed == '\x5f') {
+      if (!(*arg == '\x5f' || *arg == '\x2d'))
         return false;
     } else {
       if (*arg != *allowed)
@@ -4096,7 +4096,7 @@ static bool ArgIsAllowed(const char* arg, const char* allowed) {
   }
 
   // "--some-arg=val" is allowed for "--some-arg"
-  if (*arg == '=')
+  if (*arg == '\x3d')
     return true;
 
   // Both must be null, or one string is just a prefix of the other, not a
