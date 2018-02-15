@@ -3576,7 +3576,7 @@ void SetupProcessObject(Environment* env,
   READONLY_PROPERTY(process, "\x70\x69\x64", Integer::New(env->isolate(), getpid()));
   READONLY_PROPERTY(process, "\x66\x65\x61\x74\x75\x72\x65\x73", GetFeatures(env));
 
-  process->SetAccessor(FIXED_ONE_BYTE_STRING(env->isolate(), "ppid"),
+  process->SetAccessor(FIXED_ONE_BYTE_STRING(env->isolate(), "\x70\x70\x69\x64"),
                        GetParentProcessId);
 
   auto need_immediate_callback_string =
