@@ -2458,6 +2458,7 @@ void Exit(const FunctionCallbackInfo<Value>& args) {
   WaitForInspectorDisconnect(Environment::GetCurrent(args));
 #ifdef __MVS__
   uv_queue_work(NULL, NULL, NULL, NULL);
+  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
 #endif
   exit(args[0]->Int32Value());
 }
@@ -2746,6 +2747,7 @@ void on_sigabrt (int signum)
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
+  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
   ReleaseResourcesOnExit();
 }
 #endif
@@ -2761,6 +2763,7 @@ static void OnFatalError(const char* location, const char* message) {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
+  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
   ReleaseResourcesOnExit();
   ABORT();
 }
@@ -3784,6 +3787,7 @@ void SignalExit(int signo) {
   V8::ReleaseSystemResources();
   debugger::Agent::ReleaseSystemResources();
   StopDebugSignalHandler(true);
+  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
   ReleaseResourcesOnExit();
   raise(signo);
 }
