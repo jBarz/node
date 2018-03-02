@@ -4809,13 +4809,6 @@ inline void PlatformInit() {
     }
   }
 #endif  // _WIN32
-#ifdef __MVS__
-  atexit(ReleaseResourcesOnExit);
-  sigset_t set;
-  sigfillset(&set);
-  uv_thread_create(&signalHandlerThread, SignalHandlerThread, NULL);
-  sigprocmask(SIG_BLOCK, &set, NULL);
-#endif
 }
 
 
@@ -5276,6 +5269,14 @@ int Start(int argc, char** argv) {
   int exec_argc;
   const char** exec_argv;
   Init(&argc, const_cast<const char**>(argv), &exec_argc, &exec_argv);
+
+#ifdef __MVS__
+  atexit(ReleaseResourcesOnExit);
+  sigset_t set;
+  sigfillset(&set);
+  uv_thread_create(&signalHandlerThread, SignalHandlerThread, NULL);
+  sigprocmask(SIG_BLOCK, &set, NULL);
+#endif
 
 #if HAVE_OPENSSL
   {
