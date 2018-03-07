@@ -4806,6 +4806,9 @@ inline void PlatformInit() {
     }
   }
 #endif  // _WIN32
+#ifdef __MVS__
+  atexit(ReleaseResourcesOnExit);
+#endif
 }
 
 
@@ -5272,7 +5275,6 @@ int Start(int argc, char** argv) {
   Init(&argc, const_cast<const char**>(argv), &exec_argc, &exec_argv);
 
 #ifdef __MVS__
-  atexit(ReleaseResourcesOnExit);
   sigset_t set;
   sigfillset(&set);
   uv_thread_create(&signalHandlerThread, SignalHandlerThread, NULL);
