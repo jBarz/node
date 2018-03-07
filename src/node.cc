@@ -2745,6 +2745,7 @@ void on_sigabrt (int signum)
   StopDebugSignalHandler(true);
   SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
   ReleaseResourcesOnExit();
+  raise(signum);
 }
 #endif
 
@@ -5159,9 +5160,13 @@ static void StartNodeInstance(void* arg) {
   }
 
 #ifdef __MVS__
-  signal(SIGABRT, &on_sigabrt);
-  signal(SIGABND, &on_sigabrt);
-  signal(SIGHUP, &on_sigabrt);
+  struct sigaction action;
+  memset(&action, 0, sizeof(action));
+  action.sa_flags = SA_RESETHAND;
+  action.sa_handler = &on_sigabrt;
+  sigaction(SIGABRT, &action, NULL);
+  sigaction(SIGABND, &action, NULL);
+  sigaction(SIGHUP, &action, NULL);
 #endif
   {
     Locker locker(isolate);
