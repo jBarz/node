@@ -932,6 +932,16 @@ const char *signo_string(int signo) {
 
 // Convenience methods
 
+static void platform_exit(int code) {
+#ifndef __MVS__
+  exit(code);
+#endif
+
+  uv_queue_work(NULL, NULL, NULL, NULL);
+  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
+  exit(code);
+}
+
 
 void ThrowError(v8::Isolate* isolate, const char* errmsg) {
   Environment::GetCurrent(isolate)->ThrowError(errmsg);
@@ -1924,13 +1934,13 @@ static Local<Value> ExecuteString(Environment* env,
       v8::Script::Compile(env->context(), source, &origin);
   if (script.IsEmpty()) {
     ReportException(env, try_catch);
-    exit(3);
+    platform_exit(3);
   }
 
   Local<Value> result = script.ToLocalChecked()->Run();
   if (result.IsEmpty()) {
     ReportException(env, try_catch);
-    exit(4);
+    platform_exit(4);
   }
 
   return scope.Escape(result);
@@ -2456,11 +2466,7 @@ static void WaitForInspectorDisconnect(Environment* env) {
 
 void Exit(const FunctionCallbackInfo<Value>& args) {
   WaitForInspectorDisconnect(Environment::GetCurrent(args));
-#ifdef __MVS__
-  uv_queue_work(NULL, NULL, NULL, NULL);
-  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
-#endif
-  exit(args[0]->Int32Value());
+  platform_exit(args[0]->Int32Value());
 }
 
 
@@ -2820,7 +2826,7 @@ void FatalException(Isolate* isolate,
       env->inspector_agent()->FatalException(error, message);
     }
 #endif
-    exit(exit_code);
+    platform_exit(exit_code);
   }
 }
 
@@ -3826,7 +3832,7 @@ void LoadEnvironment(Environment* env) {
   Local<Value> f_value = ExecuteString(env, MainSource(env), script_name);
   if (try_catch.HasCaught())  {
     ReportException(env, try_catch);
-    exit(10);
+    platform_exit(10);
   }
   // The bootstrap_node.js file returns a function 'f'
   CHECK(f_value->IsFunction());
@@ -3970,7 +3976,7 @@ static bool ParseDebugOpt(const char* arg) {
   if (errno != 0 || *endptr != '\x0' || result < 1024 || result > 65535) {
     PrintErrorString(u8"Debug port must be in range 1024 to 65535.\n");
     PrintHelp();
-    exit(12);
+    platform_exit(12);
   }
 
   *the_port = static_cast<int>(result);
@@ -4153,7 +4159,7 @@ static void CheckIfAllowedInEnv(const char* exe, bool is_env,
   }
 
   PrintErrorString(u8"%s: %s is not allowed in NODE_OPTIONS\n", exe, arg);
-  exit(9);
+  platform_exit(9);
 }
 
 
@@ -4209,10 +4215,10 @@ static void ParseArgs(int* argc,
       // Done, consumed by ParseDebugOpt().
     } else if (strcmp(arg, u8"--version") == 0 || strcmp(arg, "-v") == 0) {
       PrintOutString(u8"%s\n", NODE_VERSION);
-      exit(0);
+      platform_exit(0);
     } else if (strcmp(arg, "\x2d\x2d\x68\x65\x6c\x70") == 0 || strcmp(arg, "\x2d\x68") == 0) {
       PrintHelp();
-      exit(0);
+      platform_exit(0);
     } else if (strcmp(arg, "\x2d\x2d\x65\x76\x61\x6c") == 0 ||
                strcmp(arg, "\x2d\x65") == 0 ||
                strcmp(arg, "\x2d\x2d\x70\x72\x69\x6e\x74") == 0 ||
@@ -4227,7 +4233,7 @@ static void ParseArgs(int* argc,
         eval_string = argv[index + 1];
         if (eval_string == nullptr) {
           PrintErrorString(u8"%s: %s requires an argument\n", argv[0], arg);
-          exit(9);
+          platform_exit(9);
         }
       } else if ((index + 1 < nargs) &&
                  argv[index + 1] != nullptr &&
@@ -4244,7 +4250,7 @@ static void ParseArgs(int* argc,
       const char* module = argv[index + 1];
       if (module == nullptr) {
         PrintErrorString(u8"%s: %s requires an argument\n", argv[0], arg);
-        exit(9);
+        platform_exit(9);
       }
       args_consumed += 1;
       preload_modules.push_back(module);
@@ -4331,7 +4337,7 @@ static void ParseArgs(int* argc,
             u8"%s: either --use-openssl-ca or --use-bundled-ca can be used, "
             "not both\n",
             argv[0]);
-    exit(9);
+    platform_exit(9);
   }
 #endif
 
@@ -4341,7 +4347,7 @@ static void ParseArgs(int* argc,
   if (is_env && args_left) {
     PrintErrorString(u8"%s: %s is not supported in NODE_OPTIONS\n",
             argv[0], argv[index]);
-    exit(9);
+    platform_exit(9);
   }
 
   memcpy(new_argv + new_argc, argv + index, args_left * sizeof(*argv));
@@ -4855,7 +4861,7 @@ void ProcessArgv(int* argc,
   v8_argv = nullptr;
 
   if (v8_argc > 1) {
-    exit(9);
+    platform_exit(9);
   }
 }
 
@@ -5190,7 +5196,7 @@ static void StartNodeInstance(void* arg) {
                          : nullptr;
       StartDebug(env, path, debug_wait_connect);
       if (use_inspector && !debugger_running) {
-        exit(12);
+        platform_exit(12);
       }
     }
 
