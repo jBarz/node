@@ -259,10 +259,10 @@ void SigintWatchdogHelper::Unregister(SigintWatchdog* wd) {
 
 
 void SigintWatchdogHelper::ReleaseSystemResources() {
+  if (has_running_thread_ == false)
+    return;
   start_stop_count_ = 0;
   Stop();
-
-  CHECK_EQ(has_running_thread_, false);
   uv_sem_destroy(&sem_);
 }
 
