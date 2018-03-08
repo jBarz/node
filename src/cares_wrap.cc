@@ -1296,6 +1296,9 @@ static void IsIPv6(const FunctionCallbackInfo<Value>& args) {
 void CanonicalizeIP(const FunctionCallbackInfo<Value>& args) {
   v8::Isolate* isolate = args.GetIsolate();
   node::Utf8Value ip(isolate, args[0]);
+#ifdef __MVS__
+  __a2e_s(*ip);
+#endif
   char address_buffer[sizeof(struct in6_addr)];
   char canonical_ip[INET6_ADDRSTRLEN];
 
@@ -1311,6 +1314,9 @@ void CanonicalizeIP(const FunctionCallbackInfo<Value>& args) {
                          sizeof(canonical_ip));
   CHECK_EQ(err, 0);
 
+#ifdef __MVS__
+  __e2a_s(canonical_ip);
+#endif
   args.GetReturnValue().Set(String::NewFromUtf8(isolate, canonical_ip));
 }
 
