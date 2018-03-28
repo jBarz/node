@@ -8,7 +8,7 @@
 #define NODE_VERSION_IS_LTS 1
 #define NODE_VERSION_LTS_CODENAME "\x42\x6f\x72\x6f\x6e"
 
-#define NODE_VERSION_IS_RELEASE 1
+#define NODE_VERSION_IS_RELEASE 0
 
 #ifndef NODE_STRINGIFY
 #define USTR(x) u8##x
