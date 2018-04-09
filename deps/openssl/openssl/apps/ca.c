@@ -1995,7 +1995,7 @@ static int do_body(X509 **xret, EVP_PKEY *pkey, X509 *x509,
     }
 
     if (BN_is_zero(serial))
-        row[DB_serial] = BUF_strdup("00");
+        row[DB_serial] = BUF_strdup("\x30\x30");
     else
         row[DB_serial] = BN_bn2hex(serial);
     if (row[DB_serial] == NULL) {
@@ -2040,16 +2040,16 @@ static int do_body(X509 **xret, EVP_PKEY *pkey, X509 *x509,
 
     if (rrow != NULL) {
         BIO_printf(bio_err, "The matching entry has the following details\n");
-        if (rrow[DB_type][0] == 'E')
+        if (rrow[DB_type][0] == '\x45')
             p = "Expired";
-        else if (rrow[DB_type][0] == 'R')
+        else if (rrow[DB_type][0] == '\x52')
             p = "Revoked";
-        else if (rrow[DB_type][0] == 'V')
+        else if (rrow[DB_type][0] == '\x56')
             p = "Valid";
         else
             p = "\ninvalid type, Data base error\n";
         BIO_printf(bio_err, "Type          :%s\n", p);;
-        if (rrow[DB_type][0] == 'R') {
+        if (rrow[DB_type][0] == '\x52') {
             p = rrow[DB_exp_date];
             if (p == NULL)
                 p = "undef";

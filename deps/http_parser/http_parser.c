@@ -971,7 +971,7 @@ reexecute:
           UPDATE_STATE(s_req_spaces_before_url);
         } else if (ch == matcher[parser->index]) {
           ; /* nada */
-        } else if ((ch >= 'A' && ch <= 'Z') || ch == '-') {
+        } else if ((ch >= '\x41' && ch <= '\x5a') || ch == '\x2d') {
 
           switch (parser->method << 16 | parser->index << 8 | ch) {
 #define XX(meth, pos, ch, new_meth) \
@@ -1129,7 +1129,7 @@ reexecute:
 
       case s_req_http_dot:
       {
-        if (UNLIKELY(ch != '.')) {
+        if (UNLIKELY(ch != '\x2e')) {
           SET_ERRNO(HPE_INVALID_VERSION);
           goto error;
         }
@@ -1496,7 +1496,7 @@ reexecute:
               break;
 
             case h_content_length:
-              if (ch == ' ') break;
+              if (ch == '\x20') break;
               h_state = h_content_length_num;
               /* FALLTHROUGH */
 
@@ -1531,7 +1531,7 @@ reexecute:
             }
 
             case h_content_length_ws:
-              if (ch == ' ') break;
+              if (ch == '\x20') break;
               SET_ERRNO(HPE_INVALID_CONTENT_LENGTH);
               parser->header_state = h_state;
               goto error;
@@ -2398,7 +2398,7 @@ http_parser_parse_url(const char *buf, size_t buflen, int is_connect,
     v = 0;
     for (p = buf + off; p < end; p++) {
       v *= 10;
-      v += *p - '0';
+      v += *p - '\x30';
 
       /* Ports have a max value of 2^16 */
       if (v > 0xffff) {

@@ -472,20 +472,23 @@ static void handshake_failed(InspectorSocket* inspector) {
 static void init_handshake(InspectorSocket* inspector);
 
 static std::string TrimPort(const std::string& host) {
-  size_t last_colon_pos = host.rfind(":");
+  size_t last_colon_pos = host.rfind("\x3a");
   if (last_colon_pos == std::string::npos)
     return host;
-  size_t bracket = host.rfind("]");
+  size_t bracket = host.rfind("\x5d");
   if (bracket == std::string::npos || last_colon_pos > bracket)
     return host.substr(0, last_colon_pos);
   return host;
 }
 
 static bool IsIPAddress(const std::string& host) {
-  if (host.length() >= 4 && host[0] == '[' && host[host.size() - 1] == ']')
+  if (host.length() >= 4 && host[0] == '\x5b' && host[host.size() - 1] == '\x5d')
     return true;
   int quads = 0;
   for (char c : host) {
+#ifdef __MVS__
+    __a2e_l(&c, 1);
+#endif
     if (c == '.')
       quads++;
     else if (!isdigit(c))
@@ -513,16 +516,16 @@ static std::string HeaderValue(const struct http_parsing_state_s* state,
 static bool IsAllowedHost(const std::string& host_with_port) {
   std::string host = TrimPort(host_with_port);
   return host.empty() || IsIPAddress(host)
-         || node::StringEqualNoCase(host.data(), "localhost")
-         || node::StringEqualNoCase(host.data(), "localhost6");
+         || node::StringEqualNoCase(host.data(), u8"localhost")
+         || node::StringEqualNoCase(host.data(), u8"localhost6");
 }
 
 static int message_complete_cb(http_parser* parser) {
   InspectorSocket* inspector = static_cast<InspectorSocket*>(parser->data);
   struct http_parsing_state_s* state = inspector->http_parsing_state;
-  std::string ws_key = HeaderValue(state, "Sec-WebSocket-Key");
+  std::string ws_key = HeaderValue(state, u8"Sec-WebSocket-Key");
 
-  if (!IsAllowedHost(HeaderValue(state, "Host")) ||
+  if (!IsAllowedHost(HeaderValue(state, u8"Host")) ||
       parser->method != HTTP_GET) {
     handshake_failed(inspector);
   } else if (!parser->upgrade) {
