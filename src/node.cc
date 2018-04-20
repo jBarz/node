@@ -269,19 +269,24 @@ static struct {
 
 #ifdef __POSIX__
 static uv_sem_t debug_semaphore;
-static uv_sem_t debug_shutdown;
 static bool debug_semaphore_active = false;
-static void StopDebugSignalHandler(bool);
+static void StopDebugSignalHandler();
 static const unsigned kMaxSignal = 32;
 #endif
 
 #ifdef __MVS__
 static uv_thread_t signalHandlerThread;
-class ThreadPoolObject {
+static int signalHandlerExit;
+class OS390ThreadManager {
 public:
-  ~ThreadPoolObject()
-  {
-    int rc = uv_queue_work(NULL, NULL, NULL, NULL);
+  static void Destroy(int sig) {
+    uv_queue_work(NULL, NULL, NULL, NULL);
+    StopDebugSignalHandler();
+    SigintWatchdogHelper::GetInstance()->StopThread();
+    msgctl(uv_backend_fd(uv_default_loop()), IPC_RMID, NULL);
+  }
+  ~OS390ThreadManager() {
+    Destroy(0);
   }
 };
 #endif
@@ -937,8 +942,7 @@ static void platform_exit(int code) {
   exit(code);
 #endif
 
-  uv_queue_work(NULL, NULL, NULL, NULL);
-  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
+  OS390ThreadManager::Destroy(0);
   exit(code);
 }
 
@@ -2712,50 +2716,6 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
 }
 
 
-#ifdef __MVS__
-
-static void ReleaseResourcesOnExit() {
-  /* TODO: This might make all other ReleaseSystem... functions redundant */
-  IPCQPROC bufptr;
-  int token;
-  int foreignid;
-
-  /* There are 3 ways we know that we have completed looping through the list.
-   * 1. If the token returned is -1.
-   * 2. If the token returned is equal to 0. This means we have looped through
-        and are back to the first item which we skipped over.
-   * 3. If the new token is equal to the previous token. This means we removed all
-        items from the list.
-   */
-
-  token = __getipc(0, &bufptr, sizeof(bufptr), IPCQMSG);
-  while (token != -1 && token != 0) {
-    if (bufptr.msg.ipcqpcp.uid == getuid() && bufptr.msg.ipcqlspid == getpid())
-      msgctl(bufptr.msg.ipcqmid, IPC_RMID, NULL);
-    token = __getipc(token, &bufptr, sizeof(bufptr), IPCQMSG);
-  }
-
-  token = __getipc(0, &bufptr, sizeof(bufptr), IPCQSEM);
-  while (token != -1 && token != 0) {
-    if (bufptr.sem.ipcqpcp.uid == getuid() && bufptr.sem.ipcqlopid == getpid())
-      semctl(bufptr.sem.ipcqmid, 1, IPC_RMID);
-    token = __getipc(token, &bufptr, sizeof(bufptr), IPCQSEM);
-  }
-}
-
-
-void on_sigabrt (int signum)
-{
-  V8::ReleaseSystemResources();
-  debugger::Agent::ReleaseSystemResources();
-  StopDebugSignalHandler(true);
-  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
-  ReleaseResourcesOnExit();
-  raise(signum);
-}
-#endif
-
-
 static void OnFatalError(const char* location, const char* message) {
   if (location) {
     PrintErrorString(u8"FATAL ERROR: %s %s\n", location, message);
@@ -2763,11 +2723,7 @@ static void OnFatalError(const char* location, const char* message) {
     PrintErrorString(u8"FATAL ERROR: %s\n", message);
   }
   fflush(stderr);
-  V8::ReleaseSystemResources();
-  debugger::Agent::ReleaseSystemResources();
-  StopDebugSignalHandler(true);
-  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
-  ReleaseResourcesOnExit();
+  OS390ThreadManager::Destroy(0);
   ABORT();
 }
 
@@ -3772,9 +3728,6 @@ void SetupProcessObject(Environment* env,
 
 static void AtProcessExit() {
   uv_tty_reset_mode();
-  V8::ReleaseSystemResources();
-  debugger::Agent::ReleaseSystemResources();
-  StopDebugSignalHandler(false);
 }
 
 
@@ -3787,12 +3740,11 @@ void SignalExit(int signo) {
   sa.sa_handler = SIG_DFL;
   CHECK_EQ(sigaction(signo, &sa, nullptr), 0);
 #endif
-  V8::ReleaseSystemResources();
-  debugger::Agent::ReleaseSystemResources();
-  StopDebugSignalHandler(true);
-  SigintWatchdogHelper::GetInstance()->ReleaseSystemResources();
-  ReleaseResourcesOnExit();
+#ifdef __MVS__
+  signalHandlerExit = signo;
+#else
   raise(signo);
+#endif
 }
 
 
@@ -4497,21 +4449,14 @@ inline void* DebugSignalThreadMain(void* unused) {
     TryStartDebugger();
   }
 
-  uv_sem_post(&debug_shutdown);
   return nullptr;
 }
 
 
-static void StopDebugSignalHandler(bool waitForThread) {
+static void StopDebugSignalHandler() {
   if (debug_semaphore_active == true) {
     debug_semaphore_active = false;
-    if (waitForThread) {
-      CHECK_EQ(0, uv_sem_init(&debug_shutdown, 0));
-      uv_sem_post(&debug_semaphore);
-      uv_sem_wait(&debug_shutdown);
-      uv_sem_destroy(&debug_shutdown);
-    }
-    uv_sem_destroy(&debug_semaphore);
+    uv_sem_post(&debug_semaphore);
   }
 }
 
@@ -4725,15 +4670,23 @@ static void DebugEnd(const FunctionCallbackInfo<Value>& args) {
 
 
 void SignalHandlerThread(void* data) {
+  struct sigaction sa;
   int old;
 
   CHECK_EQ(pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &old), 0);
   CHECK_EQ(pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &old),0);
 
-  while(true) {
+  while(!signalHandlerExit) {
     CHECK_EQ(pause(),-1);
     CHECK_EQ(errno,EINTR);
   }
+  OS390ThreadManager::Destroy(signalHandlerExit);
+  memset(&sa, 0, sizeof(sa));
+  sa.sa_handler = SIG_DFL;
+  CHECK_EQ(sigaction(signalHandlerExit, &sa, nullptr), 0);
+  if (signalHandlerExit == SIGABRT)
+    abort();
+  raise(signalHandlerExit);
 }
 
 
@@ -4777,6 +4730,7 @@ inline void PlatformInit() {
 
   RegisterSignalHandler(SIGINT, SignalExit, true);
   RegisterSignalHandler(SIGTERM, SignalExit, true);
+  RegisterSignalHandler(SIGABRT, SignalExit, true);
 
   // Raise the open file descriptor limit.
   struct rlimit lim;
@@ -4812,9 +4766,6 @@ inline void PlatformInit() {
     }
   }
 #endif  // _WIN32
-#ifdef __MVS__
-  atexit(ReleaseResourcesOnExit);
-#endif
 }
 
 
@@ -4852,6 +4803,10 @@ void ProcessArgv(int* argc,
   // the argv array or the elements it points to.
   if (v8_argc > 1)
     V8::SetFlagsFromCommandLine(&v8_argc, const_cast<char**>(v8_argv), true);
+
+#ifdef __MVS__
+  V8::SetFlagsFromString(u8"--nohard_abort", 14);
+#endif
 
   // Anything that's still in v8_argv is not a V8 or a node option.
   for (int i = 1; i < v8_argc; i++) {
@@ -5168,15 +5123,6 @@ static void StartNodeInstance(void* arg) {
     isolate->GetHeapProfiler()->StartTrackingHeapObjects(true);
   }
 
-#ifdef __MVS__
-  struct sigaction action;
-  memset(&action, 0, sizeof(action));
-  action.sa_flags = SA_RESETHAND;
-  action.sa_handler = &on_sigabrt;
-  sigaction(SIGABRT, &action, NULL);
-  sigaction(SIGABND, &action, NULL);
-  sigaction(SIGHUP, &action, NULL);
-#endif
   {
     Locker locker(isolate);
     Isolate::Scope isolate_scope(isolate);
@@ -5261,7 +5207,7 @@ static void StartNodeInstance(void* arg) {
 }
 
 int Start(int argc, char** argv) {
-  ThreadPoolObject threadPoolObj;
+  OS390ThreadManager threadPoolObj;
   PlatformInit();
 
   CHECK_GT(argc, 0);
@@ -5281,6 +5227,7 @@ int Start(int argc, char** argv) {
   Init(&argc, const_cast<const char**>(argv), &exec_argc, &exec_argv);
 
 #ifdef __MVS__
+  signalHandlerExit = 0;
   sigset_t set;
   sigfillset(&set);
   uv_thread_create(&signalHandlerThread, SignalHandlerThread, NULL);
@@ -5327,7 +5274,7 @@ int Start(int argc, char** argv) {
   if (pthread_cancel(signalHandlerThread) == -1)
     abort();
 
-  StopDebugSignalHandler(true);
+  StopDebugSignalHandler();
 
   delete[] exec_argv;
   exec_argv = nullptr;

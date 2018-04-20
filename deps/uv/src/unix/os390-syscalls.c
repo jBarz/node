@@ -135,6 +135,11 @@ static void maybe_resize(uv__os390_epoll* lst, unsigned int len) {
 }
 
 
+UV_DESTRUCTOR(static void cleanup(void)) {
+  msgctl(uv_backend_fd(uv_default_loop()), IPC_RMID, NULL);
+}
+
+
 static void init_message_queue(uv__os390_epoll* lst) {
   struct {
     long int header;
@@ -142,7 +147,7 @@ static void init_message_queue(uv__os390_epoll* lst) {
   } msg;
 
   /* initialize message queue */
-  lst->msg_queue = msgget(IPC_PRIVATE, 0622 | IPC_CREAT);
+  lst->msg_queue = msgget(IPC_PRIVATE, 0600 | IPC_CREAT);
   if (lst->msg_queue == -1)
     abort();
 
@@ -236,12 +241,20 @@ int epoll_ctl(uv__os390_epoll* lst,
   uv_mutex_lock(&global_epoll_lock);
 
   if (op == EPOLL_CTL_DEL) {
-    if (fd >= lst->size || lst->items[fd].fd == -1) {
-      uv_mutex_unlock(&global_epoll_lock);
-      errno = ENOENT;
-      return -1;
+    if (fd == lst->msg_queue) {
+      /* The user has deleted the System V message queue. Highly likely
+       * because the process is being shut down. So stop listening to it.
+       */
+      lst->msg_queue = -1;
+      lst->items[lst->size - 1].fd = -1;
+    } else {
+      if (fd >= lst->size || lst->items[fd].fd == -1) {
+        uv_mutex_unlock(&global_epoll_lock);
+        errno = ENOENT;
+        return -1;
+      }
+      lst->items[fd].fd = -1;
     }
-    lst->items[fd].fd = -1;
   } else if (op == EPOLL_CTL_ADD) {
 
     /* Resizing to 'fd + 1' would expand the list to contain at least

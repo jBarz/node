@@ -542,8 +542,8 @@ exports.nodeProcessAborted = function nodeProcessAborted(exitCode, signal) {
   if (exports.isWindows)
     expectedExitCodes = [3221225477, 3];
   else if (process.platform === 'os390') {
-    expectedExitCodes = [137];
-    expectedSignals = ['SIGKILL'];
+    expectedExitCodes = [131];
+    expectedSignals = ['SIGABRT'];
   }
 
   // When using --abort-on-uncaught-exception, V8 will use
