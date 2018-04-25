@@ -780,18 +780,11 @@ static int os390_message_queue_handler(uv__os390_epoll* ep) {
 
   msglen = msgrcv(ep->msg_queue, &msg, sizeof(msg), 0, IPC_NOWAIT);
 
-  if (msglen == -1) {
-    if (errno == ENOMSG)
-      return 0;
-    else if (errno == EINVAL)
-    /* A signal exit closed the message queue from another thread.
-     * Pause this thread until the inevitable process shutdown.
-     */
-      while(1)
-        pause();
-    else
-      abort();
-  }
+  if (msglen == -1 && errno == ENOMSG)
+    return 0;
+
+  if (msglen == -1)
+    abort();
 
   events = 0;
   if (msg.__rfim_event == _RFIM_ATTR || msg.__rfim_event == _RFIM_WRITE)
