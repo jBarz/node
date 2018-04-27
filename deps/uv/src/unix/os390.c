@@ -780,11 +780,13 @@ static int os390_message_queue_handler(uv__os390_epoll* ep) {
 
   msglen = msgrcv(ep->msg_queue, &msg, sizeof(msg), 0, IPC_NOWAIT);
 
-  if (msglen == -1 && errno == ENOMSG)
-    return 0;
-
   if (msglen == -1)
-    abort();
+    if (errno == ENOMSG)
+      return 0;
+    else if (errno == EINVAL)
+      return -1;
+    else
+      abort();
 
   events = 0;
   if (msg.__rfim_event == _RFIM_ATTR || msg.__rfim_event == _RFIM_WRITE)
@@ -922,15 +924,13 @@ void uv__io_poll(uv_loop_t* loop, int timeout) {
 
       ep = loop->ep;
       if (fd == ep->msg_queue) {
-        if (pe->events & (POLLHUP | POLLNVAL | POLLERR)) {
+        if (os390_message_queue_handler(ep) == -1) {
           /* The user has deleted the System V message queue. Highly likely
            * because the process is being shut down. So stop listening to it.
            */
           epoll_ctl(loop->ep, UV__EPOLL_CTL_DEL, ep->msg_queue, pe);
           loop->backend_fd = -1;
         }
-        else
-          os390_message_queue_handler(ep);
         continue;
       }
 
