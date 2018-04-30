@@ -298,19 +298,6 @@ static ssize_t uv__fs_open(uv_fs_t* req) {
     r = -1;
   }
 
-  if (r != -1) {
-    struct stat statbuf;
-    if(fstat(r, &statbuf))
-      return -1;
-
-    struct f_cnvrt cnv;
-    cnv.cvtcmd = SETCVTON;
-    cnv.pccsid = 819;
-    cnv.fccsid = statbuf.st_tag.ft_ccsid == 0 ? 1047 : statbuf.st_tag.ft_ccsid;
-    if (fcntl(r, F_CONTROL_CVT, &cnv))
-      return -1;
-  }
-
   if (req->cb != NULL)
     uv_rwlock_rdunlock(&req->loop->cloexec_lock);
 
@@ -387,6 +374,15 @@ static ssize_t uv__fs_read(uv_fs_t* req) {
   }
 
 done:
+#if defined(__MVS__)
+  if ( !( 
+          (getenv("_BPXK_AUTOCVT") == NULL && buf.st_tag.ft_txtflag && buf.st_tag.ft_ccsid == 819) ||
+          buf.st_tag.ft_ccsid == FT_BINARY
+        )
+     )
+    for (int idx = 0; idx < req->nbufs; idx++)
+      __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
+#endif
   return result;
 }
 
@@ -724,6 +720,26 @@ static ssize_t uv__fs_utime(uv_fs_t* req) {
 
 
 static ssize_t uv__fs_write(uv_fs_t* req) {
+#if defined(__MVS__)
+  int doconvert;
+  struct stat statbuf;
+
+  if(fstat(req->file, &statbuf))
+    return -1;
+
+  doconvert = 0;
+  if ( !( 
+          (getenv("_BPXK_AUTOCVT") == NULL && statbuf.st_tag.ft_txtflag && statbuf.st_tag.ft_ccsid == 819) ||
+          statbuf.st_tag.ft_ccsid == FT_BINARY
+        )
+     )
+    doconvert = 1;
+
+  if (doconvert)
+    for (int idx = 0; idx < req->nbufs; idx++)
+      __a2e_l(req->bufs[idx].base, req->bufs[idx].len);
+#endif
+
 #if defined(__linux__)
   static int no_pwritev;
 #endif
@@ -796,6 +812,11 @@ done:
 #if defined(__APPLE__)
   if (pthread_mutex_unlock(&lock))
     abort();
+#endif
+#if defined(__MVS__)
+  if (doconvert)
+    for (int idx = 0; idx < req->nbufs; idx++)
+      __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
 #endif
 
   return r;
