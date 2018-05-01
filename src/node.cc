@@ -2671,7 +2671,9 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
     env->ThrowError("\x4d\x6f\x64\x75\x6c\x65\x20\x64\x69\x64\x20\x6e\x6f\x74\x20\x73\x65\x6c\x66\x2d\x72\x65\x67\x69\x73\x74\x65\x72\x2e");
     return;
   }
-  if (mp->nm_version != NODE_MODULE_VERSION) {
+
+  // -1 is used for N-API modules
+  if ((mp->nm_version != -1) && (mp->nm_version != NODE_MODULE_VERSION)) {
     char errmsg[1024];
 #ifdef __MVS__
     __snprintf_a(errmsg,
@@ -3004,6 +3006,7 @@ static void EnvGetter(Local<Name> property,
 #else  // _WIN32
   String::Value key(property);
   WCHAR buffer[32767];  // The maximum size allowed for environment variables.
+  SetLastError(ERROR_SUCCESS);
   DWORD result = GetEnvironmentVariableW(reinterpret_cast<WCHAR*>(*key),
                                          buffer,
                                          arraysize(buffer));
@@ -3062,6 +3065,7 @@ static void EnvQuery(Local<Name> property,
 #else  // _WIN32
   String::Value key(property);
   WCHAR* key_ptr = reinterpret_cast<WCHAR*>(*key);
+  SetLastError(ERROR_SUCCESS);
   if (GetEnvironmentVariableW(key_ptr, nullptr, 0) > 0 ||
       GetLastError() == ERROR_SUCCESS) {
     rc = 0;
@@ -3418,6 +3422,12 @@ void SetupProcessObject(Environment* env,
       "\x6d\x6f\x64\x75\x6c\x65\x73",
       FIXED_ONE_BYTE_STRING(env->isolate(), node_modules_version));
 
+  const char node_napi_version[] = NODE_STRINGIFY(NAPI_VERSION);
+  READONLY_PROPERTY(
+      versions,
+      "napi",
+      FIXED_ONE_BYTE_STRING(env->isolate(), node_napi_version));
+
   // process._promiseRejectEvent
   Local<Object> promiseRejectEvent = Object::New(env->isolate());
   READONLY_DONT_ENUM_PROPERTY(process,
@@ -3466,7 +3476,8 @@ void SetupProcessObject(Environment* env,
   // process.release
   Local<Object> release = Object::New(env->isolate());
   READONLY_PROPERTY(process, "\x72\x65\x6c\x65\x61\x73\x65", release);
-  READONLY_PROPERTY(release, "\x6e\x61\x6d\x65", OneByteString(env->isolate(), "\x6e\x6f\x64\x65"));
+  READONLY_PROPERTY(release, "\x6e\x61\x6d\x65",
+                    OneByteString(env->isolate(), NODE_RELEASE));
 
 #if NODE_VERSION_IS_LTS
   READONLY_PROPERTY(release, "\x6c\x74\x73",
@@ -3939,8 +3950,7 @@ static bool ParseDebugOpt(const char* arg) {
 static void PrintHelp() {
   // XXX: If you add an option here, please also add it to doc/node.1 and
   // doc/api/cli.md
-  PrintOutString(
-         u8"Usage: node [options] [ -e script | script.js ] [arguments] \n"
+  printf(u8"Usage: node [options] [ -e script | script.js ] [arguments] \n"
          u8"       node debug script.js [arguments] \n"
          u8"\n"
          u8"Options:\n"
@@ -3956,6 +3966,8 @@ static void PrintHelp() {
          u8"  --throw-deprecation   throw an exception anytime a deprecated "
          u8"function is used\n"
          u8"  --no-warnings         silence all process warnings\n"
+         u8"  --napi-modules        load N-API modules (no-op - option kept for "
+         u8"                        compatibility)\n"
          u8"  --trace-warnings      show stack traces on process warnings\n"
          u8"  --redirect-warnings=path\n"
          u8"                        write warnings to path instead of stderr\n"
@@ -4212,6 +4224,8 @@ static void ParseArgs(int* argc,
       force_repl = true;
     } else if (strcmp(arg, "\x2d\x2d\x6e\x6f\x2d\x64\x65\x70\x72\x65\x63\x61\x74\x69\x6f\x6e") == 0) {
       no_deprecation = true;
+    } else if (strcmp(arg, "\x2d\x2d\x6e\x61\x70\x69\x2d\x6d\x6f\x64\x75\x6c\x65\x73") == 0) {
+      // no-op
     } else if (strcmp(arg, "\x2d\x2d\x6e\x6f\x2d\x77\x61\x72\x6e\x69\x6e\x67\x73") == 0) {
       no_process_warnings = true;
     } else if (strcmp(arg, "\x2d\x2d\x74\x72\x61\x63\x65\x2d\x77\x61\x72\x6e\x69\x6e\x67\x73") == 0) {
