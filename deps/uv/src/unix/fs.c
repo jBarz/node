@@ -133,6 +133,19 @@
 
 #if defined(__MVS__)
 #define readlink(...) os390_readlink(__VA_ARGS__)
+static int in_ascii_mode() {
+  static int ascii_file_encoding = -1;
+  if (ascii_file_encoding != -1)
+    return ascii_file_encoding;
+
+  char * ch = getenv("NODE_FILE_ENCODING");
+  if (ch != NULL && strcmp(ch, "ASCII") == 0)
+    ascii_file_encoding = 1;
+  else
+    ascii_file_encoding = 0;
+  return ascii_file_encoding;
+  }
+
 #endif
 
 
@@ -288,6 +301,17 @@ static ssize_t uv__fs_open(uv_fs_t* req) {
 
   r = open(req->path, req->flags, req->mode);
 
+#ifdef __MVS__
+  if ( 0 && r >= 0 && (req->flags & O_CREAT) && in_ascii_mode()) {
+    struct file_tag tag;
+    memset(&tag, 0, sizeof(tag));
+    tag.ft_ccsid = 819;
+    tag.ft_txtflag = 1;
+    if (fcntl(r, F_SETTAG, &tag))
+      r = -1;
+  }
+#endif
+
   /* In case of failure `uv__cloexec` will leave error in `errno`,
    * so it is enough to just set `r` to `-1`.
    */
@@ -376,6 +400,7 @@ static ssize_t uv__fs_read(uv_fs_t* req) {
 done:
 #if defined(__MVS__)
   if ( !( 
+          (buf.st_tag.ft_ccsid == FT_UNTAGGED && in_ascii_mode() && S_ISREG(buf.st_mode)) ||
           (getenv("_BPXK_AUTOCVT") == NULL && buf.st_tag.ft_txtflag && buf.st_tag.ft_ccsid == 819) ||
           buf.st_tag.ft_ccsid == FT_BINARY
         )
@@ -732,9 +757,19 @@ static ssize_t uv__fs_write(uv_fs_t* req) {
   if(fstat(req->file, &statbuf))
     return -1;
 
+  if (S_ISREG(statbuf.st_mode) && in_ascii_mode() && statbuf.st_tag.ft_ccsid != 819) {
+    struct file_tag tag;
+    memset(&tag, 0, sizeof(tag));
+    tag.ft_ccsid = 819;
+    tag.ft_txtflag = 1;
+    if (fcntl(req->file, F_SETTAG, &tag))
+      return -1;
+  }
+
   doconvert = 0;
   if ( !( 
-          (getenv("_BPXK_AUTOCVT") == NULL && statbuf.st_tag.ft_txtflag && statbuf.st_tag.ft_ccsid == 819) ||
+          (getenv("_BPXK_AUTOCVT") == NULL && 
+            (in_ascii_mode() || (statbuf.st_tag.ft_txtflag && statbuf.st_tag.ft_ccsid == 819))) ||
           statbuf.st_tag.ft_ccsid == FT_BINARY
         )
      )
