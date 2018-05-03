@@ -383,6 +383,11 @@ done:
     for (int idx = 0; idx < req->nbufs; idx++)
       __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
 #endif
+  printf("JBAR result=%d, %d %d %d\n", result
+    , (int)(req->bufs[0].base[0])
+    , (int)(req->bufs[0].base[1])
+    , (int)(req->bufs[0].base[2])
+  );
   return result;
 }
 
