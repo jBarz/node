@@ -1095,7 +1095,11 @@ static ssize_t uv__fs_buf_iter(uv_fs_t* req, uv__fs_buf_iter_processor process) 
   ssize_t total;
   ssize_t result;
 
+#ifdef __MVS__
+  iovmax = 1;
+#else
   iovmax = uv__getiovmax();
+#endif
   nbufs = req->nbufs;
   bufs = req->bufs;
   total = 0;
