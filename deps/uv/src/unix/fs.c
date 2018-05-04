@@ -408,6 +408,11 @@ done:
     for (int idx = 0; idx < req->nbufs; idx++)
       __e2a_l(req->bufs[idx].base, req->bufs[idx].len);
 #endif
+  printf("JBAR result=%d, %d %d %d\n", result
+    , (int)(req->bufs[0].base[0])
+    , (int)(req->bufs[0].base[1])
+    , (int)(req->bufs[0].base[2])
+  );
   return result;
 }
 
@@ -753,7 +758,6 @@ static ssize_t uv__fs_write(uv_fs_t* req) {
     return -1;
 
   if (S_ISREG(statbuf.st_mode) && in_ascii_mode() && statbuf.st_tag.ft_ccsid != 819) {
-  printf("JBAR file tagged fd=%d\n", req->file);
     struct file_tag tag;
     memset(&tag, 0, sizeof(tag));
     tag.ft_ccsid = 819;
@@ -770,8 +774,6 @@ static ssize_t uv__fs_write(uv_fs_t* req) {
         )
      )
     doconvert = 1;
-
-  printf("JBAR write doconvert=%d fd=%d\n", doconvert, req->file);
 
   if (doconvert)
     for (int idx = 0; idx < req->nbufs; idx++)
