@@ -146,7 +146,7 @@
       ],
       'include_dirs': [
         'src',
-        'deps/v8/include',
+        'deps/v8z/include',
       ],
       'conditions': [
         [ 'node_intermediate_lib_type=="static_library" and '
@@ -1001,8 +1001,14 @@
         ['OS=="zos"', {
           'libraries': [ 
             '<(OBJ_DIR)/deps/uv/libuv.a',
+            '<(OBJ_DIR)/deps/http_parser/libhttp_parser.a',
+            '<(OBJ_DIR)/deps/zlib/libzlib.a',
+            '<(OBJ_DIR)/deps/openssl/libopenssl.a',
             '<(OBJ_DIR)/deps/v8z/tools/gyp/libv8_libplatform.a',
-            '<(OBJ_DIR)/deps/v8z/tools/gyp/libv8_libbase.a'
+            '<(OBJ_DIR)/deps/v8z/tools/gyp/libv8_base.a',
+            '<(OBJ_DIR)/deps/v8z/tools/gyp/libv8_libbase.a',
+            '<(OBJ_DIR)/deps/v8z/tools/gyp/libv8_nosnapshot.a',
+            '<(OBJ_DIR)/deps/v8_inspector/third_party/v8_inspector/platform/v8_inspector/libv8_inspector_stl.a'
           ]
         }],
       ]
