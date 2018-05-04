@@ -1172,7 +1172,6 @@ static void uv__read(uv_stream_t* stream) {
     if (!is_ipc) {
       do {
         nread = read(uv__stream_fd(stream), buf.base, buf.len);
-fprintf(stderr, "JBAR stream read fd=%d type=%d nlen=%d, nread=%d, errno=%d\n", uv__stream_fd(stream), stream->type, buf.len, nread, errno);
       }
       while (nread < 0 && errno == EINTR);
     } else {
