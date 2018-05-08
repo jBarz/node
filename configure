@@ -927,6 +927,8 @@ def configure_node(o):
     shlib_suffix = '%s.dylib'
   elif sys.platform.startswith('aix'):
     shlib_suffix = '%s.a'
+  elif sys.platform.startswith('zos'):
+    shlib_suffix = '%s.x'
   else:
     shlib_suffix = 'so.%s'
 

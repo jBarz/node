@@ -202,9 +202,6 @@
         '-qlonglong',
         '-qenum=int',
       ],
-      'ldflags': [
-        '-Wl,DLL',
-      ],
       'conditions': [
         [ 'v8_enable_i18n_support==1', {
           'libraries': [

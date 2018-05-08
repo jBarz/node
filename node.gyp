@@ -134,6 +134,9 @@
       }, {
         'use_openssl_def': 0,
       }],
+      [ 'OS=="zos"', {
+        'node_intermediate_lib_type': 'shared_library',
+      }],
     ],
   },
 
