@@ -3425,7 +3425,7 @@ void SetupProcessObject(Environment* env,
   const char node_napi_version[] = NODE_STRINGIFY(NAPI_VERSION);
   READONLY_PROPERTY(
       versions,
-      "napi",
+      "\x6e\x61\x70\x69",
       FIXED_ONE_BYTE_STRING(env->isolate(), node_napi_version));
 
   // process._promiseRejectEvent
