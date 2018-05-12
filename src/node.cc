@@ -4862,8 +4862,15 @@ void Init(int* argc,
   if (openssl_config.empty())
     SafeGetenv("OPENSSL_CONF", &openssl_config);
 
-  if (config_warning_file.empty())
+  if (config_warning_file.empty()) {
     SafeGetenv("NODE_REDIRECT_WARNINGS", &config_warning_file);
+#ifdef __MVS__
+    transform(config_warning_file.begin(), config_warning_file.end(), config_warning_file.begin(), [](char c) -> char {
+      __e2a_l(&c, 1);
+      return c;
+    });
+#endif
+  }
 
 #if !defined(NODE_WITHOUT_NODE_OPTIONS)
   std::string node_options;
