@@ -50,9 +50,48 @@ int wmain(int argc, wchar_t *wargv[]) {
 }
 #else
 // UNIX
+
+# if defined(__MVS__)
+#include <sys/ps.h>
+#include <unistd.h>
+#include <libgen.h>
+#include <sstream>
+#include <string.h>
+#include <stdlib.h>
+
+void setlibpath(void) {
+  std::vector<char> parent(512, 0);
+  W_PSPROC buf;
+  int token = 0;
+  pid_t mypid = getpid();
+  memset(&buf, 0, sizeof(buf));
+  buf.ps_pathlen = parent.size();
+  buf.ps_pathptr = &parent[0];
+  while ((token = w_getpsent(token, &buf, sizeof(buf))) > 0) {
+    if (buf.ps_pid == mypid) {
+      dirname(&parent[0]);
+      std::vector<char> parent2(parent.begin(), parent.end());
+      dirname(&parent2[0]);
+
+      std::ostringstream libpath;
+      libpath << getenv("LIBPATH");
+      libpath << ":" << &parent[0] << "/obj.target/";
+      libpath << ":" << &parent2[0] << "/lib/";
+      setenv("LIBPATH", libpath.str().c_str(), 1);
+      break;
+    }
+  }
+}
+
+# endif
+
 int main(int argc, char *argv[]) {
   // Disable stdio buffering, it interacts poorly with printf()
   // calls elsewhere in the program (e.g., any logging from V8.)
+
+#if defined(__MVS__)
+  setlibpath();
+#endif
   setvbuf(stdout, nullptr, _IONBF, 0);
   setvbuf(stderr, nullptr, _IONBF, 0);
   return node::Start(argc, argv);
