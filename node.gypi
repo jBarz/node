@@ -198,10 +198,6 @@
         'NODE_PLATFORM="os390"',
         'PATH_MAX=_POSIX_PATH_MAX',
       ],
-      'cflags': [
-        '-qlonglong',
-        '-qenum=int',
-      ],
       'conditions': [
         [ 'v8_enable_i18n_support==1', {
           'libraries': [
